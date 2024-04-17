@@ -2,24 +2,30 @@ import json
 from typing import List, Dict
 
 from cmdcompass.models.collection import Collection
-from cmdcompass.models.command import Command
+from cmdcompass.models.command import Command, Tag
 
 class DataManager:
-    def __init__(self, data_file="data.json"):
+    def __init__(self, data_file="./data/data.json"):
         self.data_file = data_file
         self.data: Dict[str, Collection] = {}  # {collection_name: Collection object}
         self.load_data()
 
     def load_data(self):
-        """Loads data from the JSON file."""
+        """Loads data from the JSON file and parses tags."""
         try:
             with open(self.data_file, "r") as f:
                 raw_data = json.load(f)
                 for collection_name, collection_data in raw_data.items():
-                    commands = [Command(**cmd_data) for cmd_data in collection_data["commands"]]
+                    commands = []
+                    for cmd_data in collection_data["commands"]:
+                        # Parse tags into Tag objects
+                        tags = [Tag(name=tag_data["name"], color=tag_data["color"]) for tag_data in cmd_data["tags"]]
+                        cmd_data["tags"] = tags  # Update cmd_data with Tag objects
+                        commands.append(Command(**cmd_data))
+
                     self.data[collection_name] = Collection(
-                        name=collection_name, 
-                        description=collection_data["description"], 
+                        name=collection_name,
+                        description=collection_data["description"],
                         commands=commands
                     )
         except FileNotFoundError:
