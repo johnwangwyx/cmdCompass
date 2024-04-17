@@ -1,5 +1,5 @@
 import unittest
-from cmdcompass.models.Command import Command, Tag
+from cmdcompass.models.command import Command, Tag
 
 class TestCommand(unittest.TestCase):
     def setUp(self):

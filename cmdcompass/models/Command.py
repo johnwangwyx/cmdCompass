@@ -1,6 +1,7 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List, Dict
 import re
+import uuid
 
 @dataclass
 class Tag:
@@ -12,6 +13,7 @@ class Command:
     command_str: str
     description: str
     tags: List[Tag]
+    uuid: str = field(default_factory=lambda: str(uuid.uuid4()))
 
     def parse_command(self, replacements: Dict[str, str]) -> str:
         """Parses the command string, replaces variables, and handles missing keys."""
