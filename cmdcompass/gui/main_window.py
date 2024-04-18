@@ -6,7 +6,7 @@ class MainWindow(ctk.CTk):
     def __init__(self):
         super().__init__()
         self.title("cmdCompass")
-        self.geometry("800x600")
+        self.geometry("900x650")
 
         # Load data
         self.data_manager = DataManager()
@@ -18,8 +18,8 @@ class MainWindow(ctk.CTk):
         self.right_frame = ctk.CTkFrame(self)
 
         # Layout frames
-        self.left_frame.grid(row=0, column=0, sticky="nsew", padx=10)
-        self.right_frame.grid(row=0, column=1, sticky="nsew")
+        self.left_frame.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
+        self.right_frame.grid(row=0, column=1, sticky="nsew", padx=10, pady=10)
         self.grid_rowconfigure(0, weight=1)
         # Adjust layout weights
         self.grid_columnconfigure(0, weight=1)
@@ -48,6 +48,13 @@ class MainWindow(ctk.CTk):
         # Configure scrolling behavior
         self.command_list_frame.configure(corner_radius=5)
         self.command_list_box.configure(fg_color="transparent")  # Make textbox background transparent
+
+        self.theme_toggle_button = ctk.CTkSwitch(
+            self.left_frame,
+            text="Light Mode",
+            command=self.toggle_theme
+        )
+        self.theme_toggle_button.grid(row=3, column=0, padx=10, pady=10, sticky="nsew")
         
     def on_collection_select(self, choice):
         selected_collection = self.data_manager.get_collection(choice)
@@ -61,6 +68,15 @@ class MainWindow(ctk.CTk):
         for command in commands:
             command_box = CommandBox(self.command_list_frame, command)
             command_box.pack(pady=5, padx=10, fill="x")
+
+    def toggle_theme(self):
+        m = ctk.get_appearance_mode()
+        if ctk.get_appearance_mode() == "Dark":
+            ctk.set_appearance_mode("light")
+            self.theme_toggle_button.configure(text="Light Mode")
+        else:
+            ctk.set_appearance_mode("Dark")
+            self.theme_toggle_button.configure(text="Dark Mode")
 
 if __name__ == "__main__":
     app = MainWindow()
