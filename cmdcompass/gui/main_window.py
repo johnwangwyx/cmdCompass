@@ -1,6 +1,10 @@
 import customtkinter as ctk
 from cmdcompass.data.datamanager import DataManager
 from cmdcompass.gui.commandbox import CommandBox
+from cmdcompass.gui.commentbox import CommentBox
+from cmdcompass.gui.commandbodybox import CommandBodyBox
+from cmdcompass.gui.tagoperationbox import TagOperationBox
+from cmdcompass.gui.utilitybox import UtilityBox
 
 class MainWindow(ctk.CTk):
     def __init__(self):
@@ -55,7 +59,24 @@ class MainWindow(ctk.CTk):
             command=self.toggle_theme
         )
         self.theme_toggle_button.grid(row=3, column=0, padx=10, pady=10, sticky="nsew")
-        
+
+        # Right Pane Boxes (using imported classes)
+        self.command_body_box = CommandBodyBox(self.right_frame)
+        self.command_body_box.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
+
+        self.tag_operation_box = TagOperationBox(self.right_frame, width=70)
+        self.tag_operation_box.grid(row=0, column=1, padx=10, pady=10, sticky="nsew")
+
+        self.utility_box = UtilityBox(self.right_frame)
+        self.utility_box.grid(row=1, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")
+
+        self.comment_box = CommentBox(self.right_frame)
+        self.comment_box.grid(row=2, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")
+
+        # Adjust layout weights for right pane
+        self.right_frame.grid_rowconfigure((0,1,2), weight=1)
+        self.right_frame.grid_columnconfigure(0, weight=4)
+
     def on_collection_select(self, choice):
         selected_collection = self.data_manager.get_collection(choice)
         if selected_collection:
