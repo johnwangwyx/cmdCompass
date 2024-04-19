@@ -66,11 +66,11 @@ class MainWindow(ctk.CTk):
             child.destroy()  # Clear previous command boxes
 
         for command in commands:
-            command_box = CommandBox(self.command_list_frame, command)
+            tags = [self.data_manager.tags[tag_id] for tag_id in command.tag_ids]
+            command_box = CommandBox(self.command_list_frame, command, tags)
             command_box.pack(pady=5, padx=10, fill="x")
 
     def toggle_theme(self):
-        m = ctk.get_appearance_mode()
         if ctk.get_appearance_mode() == "Dark":
             ctk.set_appearance_mode("light")
             self.theme_toggle_button.configure(text="Light Mode")

@@ -2,25 +2,31 @@ import json
 from typing import List, Dict
 
 from cmdcompass.models.collection import Collection
-from cmdcompass.models.command import Command, Tag
+from cmdcompass.models.command import Command
+from cmdcompass.models.tag import Tag
 
 class DataManager:
     def __init__(self, data_file="./data/data.json"):
         self.data_file = data_file
         self.data: Dict[str, Collection] = {}  # {collection_name: Collection object}
         self.load_data()
+        self.tags: Dict[str, Tag] = {}  # Store tags by UUID
 
     def load_data(self):
         """Loads data from the JSON file and parses tags."""
         try:
             with open(self.data_file, "r") as f:
                 raw_data = json.load(f)
+
+                # Load tags first
+                self.tags = {tag_data["uuid"]: Tag(**tag_data) for tag_data in raw_data.get("tags", [])}
+
                 for collection_name, collection_data in raw_data.items():
+                    if collection_name == "tags":
+                        continue  # Skip the "tags" section
+
                     commands = []
                     for cmd_data in collection_data["commands"]:
-                        # Parse tags into Tag objects
-                        tags = [Tag(name=tag_data["name"], color=tag_data["color"]) for tag_data in cmd_data["tags"]]
-                        cmd_data["tags"] = tags  # Update cmd_data with Tag objects
                         commands.append(Command(**cmd_data))
 
                     self.data[collection_name] = Collection(
@@ -36,13 +42,16 @@ class DataManager:
         """Saves data to the JSON file."""
         with open(self.data_file, "w") as f:
             json_data = {
-                collection.name: {
-                    "description": collection.description,
-                    "commands": [cmd.__dict__ for cmd in collection.commands]
-                } 
-                for collection in self.data.values()
+                "tags": [tag.__dict__ for tag in self.tags.values()],  # Save tags separately
+                **{
+                    collection.name: {
+                        "description": collection.description,
+                        "commands": [cmd.__dict__ for cmd in collection.commands]
+                    } 
+                    for collection in self.data.values()
+                }
             }
-            json.dump(json_data, f, indent=4)  # Use indent for readability
+            json.dump(json_data, f, indent=4)
 
     #------------------Collection-----------------
     def get_collections(self) -> List[Collection]:

@@ -31,6 +31,10 @@ class TestDataManager(unittest.TestCase):
         self.assertEqual(len(collections), 1)
         self.assertEqual(collections[0].name, "Test Collection 1")
 
+        # Check if tags are loaded correctly
+        self.assertEqual(len(self.data_manager.tags), 3)
+        self.assertIn("tag1", self.data_manager.tags)
+
     def test_save_data_to_json(self):
         command = Command("echo 'saved'", "Saved command", [])
         collection = Collection("Saved Collection", "Description", [command])
@@ -59,17 +63,20 @@ class TestDataManager(unittest.TestCase):
         self.data_manager.load_data()
 
         new_command = Command("echo 'new command'", "New test command", [])
+        prev_len = len(self.data_manager.get_collection("Test Collection 1").commands)
         self.data_manager.add_command("Test Collection 1", new_command)
 
         collection = self.data_manager.get_collection("Test Collection 1")
-        self.assertEqual(len(collection.commands), 2)  # Should have added one command
+        self.assertEqual(len(collection.commands), prev_len+1)  # Should have added one command
 
     def test_delete_command(self):
         self.data_manager.load_data()
 
+        prev_len = len(self.data_manager.get_collection("Test Collection 1").commands)
+
         self.data_manager.delete_command("Test Collection 1", "a1b2c3d4-e5f6-7890-1234-567890abcdef")
         collection = self.data_manager.get_collection("Test Collection 1")
-        self.assertEqual(len(collection.commands), 0)  # Should have deleted the command
+        self.assertEqual(len(collection.commands), prev_len-1)  # Should have deleted the command
 
     def test_update_command(self):
         self.data_manager.load_data()

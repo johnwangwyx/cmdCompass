@@ -4,15 +4,10 @@ import re
 import uuid
 
 @dataclass
-class Tag:
-    name: str
-    color: str
-
-@dataclass
 class Command:
     command_str: str
     description: str
-    tags: List[Tag]
+    tag_ids: List[str]
     uuid: str = field(default_factory=lambda: str(uuid.uuid4()))
 
     def parse_command(self, replacements: Dict[str, str]) -> str:

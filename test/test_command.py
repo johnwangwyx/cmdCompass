@@ -3,12 +3,12 @@ from cmdcompass.models.command import Command, Tag
 
 class TestCommand(unittest.TestCase):
     def setUp(self):
-        self.tag1 = Tag("Network", "blue")
-        self.tag2 = Tag("Database", "green")
+        self.tag1 = Tag(None, "Network", "blue", uuid="tag1")
+        self.tag2 = Tag(None, "Database", "green", uuid="tag2")
         self.command = Command(
             command_str="ping {{ host  }} -c {{count}}",
             description="Ping a host",
-            tags=[self.tag1, self.tag2],
+            tag_ids=["tag1", "tag2"],
         )
 
     def test_parse_command_success(self):
