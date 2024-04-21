@@ -9,9 +9,11 @@ class TagBox(ctk.CTkFrame):
             tag_label.grid(row=0, column=i, padx=(2, 0), pady=2)
 
 class CommandBox(ctk.CTkFrame):
-    def __init__(self, master, command, tags, **kwargs):
+    def __init__(self, master, command, tags, command_index, main_window, **kwargs):
         super().__init__(master, **kwargs)
         self.command = command
+        self.command_index = command_index
+        self.main_window = main_window
 
         # Command label (first row)
         self.command_label = ctk.CTkLabel(self, text=command.command_str.split(" ")[0] + "...",  font=("TkDefaultFont", 12))
@@ -20,3 +22,17 @@ class CommandBox(ctk.CTkFrame):
         # Tag box (second row, first column)
         tag_box = TagBox(self, tags)
         tag_box.grid(row=1, column=0, padx=10, pady=(0, 5))
+
+        # Select button
+        self.select_button = ctk.CTkButton(
+            self,
+            text=">",
+            width=20,
+            height=40,
+            command=lambda: self.main_window.on_command_select(self.command_index)
+        )
+        self.select_button.grid(row=0, column=1, rowspan=2, padx=(2, 3), pady=2, sticky="ns")
+
+        # Adjust column weights
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(1, weight=0)

@@ -6,7 +6,7 @@ import uuid
 @dataclass
 class Command:
     command_str: str
-    description: str
+    comment: str
     tag_ids: List[str]
     uuid: str = field(default_factory=lambda: str(uuid.uuid4()))
 

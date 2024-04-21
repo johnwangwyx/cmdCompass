@@ -7,7 +7,7 @@ class TestCommand(unittest.TestCase):
         self.tag2 = Tag(None, "Database", "green", uuid="tag2")
         self.command = Command(
             command_str="ping {{ host  }} -c {{count}}",
-            description="Ping a host",
+            comment="Ping a host",
             tag_ids=["tag1", "tag2"],
         )
 
@@ -26,7 +26,7 @@ class TestCommand(unittest.TestCase):
         replacements = {"host": "google.com", "count": "4"}
         command_with_spaces = Command(
             command_str="ping {{  host }} -c {{ count     }}", 
-            description="Ping a host", 
+            comment="Ping a host",
             tags=[]
         )
         parsed_command = command_with_spaces.parse_command(replacements)

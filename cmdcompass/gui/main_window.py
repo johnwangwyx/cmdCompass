@@ -23,7 +23,7 @@ class MainWindow(ctk.CTk):
 
         # Layout frames
         self.left_frame.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
-        self.right_frame.grid(row=0, column=1, sticky="nsew", padx=10, pady=10)
+        self.right_frame.grid(row=0, column=1, sticky="nsew", padx=3, pady=3)
         self.grid_rowconfigure(0, weight=1)
         # Adjust layout weights
         self.grid_columnconfigure(0, weight=1)
@@ -47,7 +47,7 @@ class MainWindow(ctk.CTk):
 
         # Command list (using CTkTextbox inside the scrollable frame)
         self.command_list_box = ctk.CTkTextbox(self.command_list_frame)
-        self.command_list_box.grid(row=0, column=0, padx=(10, 0), pady=10, sticky="nsew")
+        self.command_list_box.grid(row=0, column=0, padx=(3, 0), pady=3, sticky="nsew")
 
         # Configure scrolling behavior
         self.command_list_frame.configure(corner_radius=5)
@@ -71,7 +71,7 @@ class MainWindow(ctk.CTk):
         self.utility_box.grid(row=1, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")
 
         self.comment_box = CommentBox(self.right_frame)
-        self.comment_box.grid(row=2, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")
+        self.comment_box.grid(row=2, column=0, columnspan=2, padx=3, pady=3, sticky="nsew")
 
         # Adjust layout weights for right pane
         self.right_frame.grid_rowconfigure((0,1,2), weight=1)
@@ -81,15 +81,17 @@ class MainWindow(ctk.CTk):
         selected_collection = self.data_manager.get_collection(choice)
         if selected_collection:
             self.update_command_list(selected_collection.commands)
+            self.selected_command = None
+            self.update_command_view()
 
     def update_command_list(self, commands):
         for child in self.command_list_frame.winfo_children():
             child.destroy()  # Clear previous command boxes
 
-        for command in commands:
+        for i, command in enumerate(commands):
             tags = [self.data_manager.tags[tag_id] for tag_id in command.tag_ids]
-            command_box = CommandBox(self.command_list_frame, command, tags)
-            command_box.pack(pady=5, padx=10, fill="x")
+            command_box = CommandBox(self.command_list_frame, command, tags, i, self)  # Pass self (MainWindow instance)
+            command_box.pack(pady=5, padx=5, fill="x")
 
     def toggle_theme(self):
         if ctk.get_appearance_mode() == "Dark":
@@ -98,6 +100,24 @@ class MainWindow(ctk.CTk):
         else:
             ctk.set_appearance_mode("Dark")
             self.theme_toggle_button.configure(text="Dark Mode")
+
+    def on_command_select(self, command_index):
+        selected_collection_name = self.collection_dropdown.get()
+        for i, collection in enumerate(self.collections):
+            if collection.name == selected_collection_name:
+                self.selected_command = self.collections[i].commands[command_index]
+                self.update_command_view()
+                return  # Exit the loop once the collection is found
+        # Raise if the loop completes without finding the collection
+        raise ValueError(f"Collection '{selected_collection_name}' not found.")
+
+    def update_command_view(self):
+        if self.selected_command:
+            self.command_body_box.set_command(self.selected_command)
+            self.comment_box.set_comment(self.selected_command.comment)
+        else:
+            self.command_body_box.set_command(None)
+            self.comment_box.set_comment(None)
 
 if __name__ == "__main__":
     app = MainWindow()
