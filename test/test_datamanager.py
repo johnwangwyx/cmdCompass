@@ -37,7 +37,7 @@ class TestDataManager(unittest.TestCase):
 
     def test_save_data_to_json(self):
         command = Command("echo 'saved'", "Saved command", [])
-        collection = Collection("Saved Collection", "Description", [command])
+        collection = Collection("Saved Collection", [command])
         self.data_manager.add_collection(collection)
 
         with open(self.data_file, "r") as f:

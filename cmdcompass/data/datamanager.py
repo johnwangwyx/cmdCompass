@@ -31,7 +31,6 @@ class DataManager:
 
                     self.data[collection_name] = Collection(
                         name=collection_name,
-                        description=collection_data["description"],
                         commands=commands
                     )
         except FileNotFoundError:
@@ -45,7 +44,6 @@ class DataManager:
                 "tags": [tag.__dict__ for tag in self.tags.values()],  # Save tags separately
                 **{
                     collection.name: {
-                        "description": collection.description,
                         "commands": [cmd.__dict__ for cmd in collection.commands]
                     } 
                     for collection in self.data.values()
