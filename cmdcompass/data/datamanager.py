@@ -51,7 +51,7 @@ class DataManager:
             }
             json.dump(json_data, f, indent=4)
 
-    #------------------Collection-----------------
+    # ------------------Collection-----------------
     def get_collections(self) -> List[Collection]:
         """Returns a list of all collections."""
         return list(self.data.values())
@@ -74,7 +74,7 @@ class DataManager:
             del self.data[collection_name]
             self.save_data()
 
-    #------------------Command-----------------
+    # ------------------Command-----------------
     def add_command(self, collection_name: str, command: Command):
         """Adds a new command to a collection."""
         collection = self.get_collection(collection_name)
@@ -109,3 +109,41 @@ class DataManager:
             raise ValueError(f"Command with UUID '{command_uuid}' not found in collection.")
         else:
             raise ValueError(f"Collection '{collection_name}' not found.")
+
+    # ------------------Tag-----------------
+    def add_tag(self, tag: Tag):
+        """Adds a new tag, ensuring no duplicates by name."""
+        if tag.name in [t.name for t in self.tags.values()]:
+            raise ValueError(f"Tag with name '{tag.name}' already exists.")
+        self.tags[tag.uuid] = tag
+        self.save_data()
+
+    def remove_tag(self, tag_uuid: str):
+        """Removes a tag by UUID."""
+        if tag_uuid in self.tags:
+            del self.tags[tag_uuid]
+            self.save_data()
+        else:
+            raise ValueError(f"Tag with UUID '{tag_uuid}' not found.")
+
+    def add_tag_to_command(self, command_uuid: str, tag_uuid: str):
+        """Adds a tag to a command."""
+        for collection in self.data.values():
+            for command in collection.commands:
+                if command.uuid == command_uuid:
+                    if tag_uuid not in command.tag_ids:
+                        command.tag_ids.append(tag_uuid)
+                        self.save_data()
+                    return  # Exit after adding the tag
+        raise ValueError(f"Command with UUID '{command_uuid}' not found.")
+
+    def remove_tag_from_command(self, command_uuid: str, tag_uuid: str):
+        """Removes a tag from a command."""
+        for collection in self.data.values():
+            for command in collection.commands:
+                if command.uuid == command_uuid:
+                    if tag_uuid in command.tag_ids:
+                        command.tag_ids.remove(tag_uuid)
+                        self.save_data()
+                    return
+        raise ValueError(f"Command with UUID '{command_uuid}' or tag with UUID '{tag_uuid}' not found.")

@@ -5,6 +5,7 @@ import json
 
 from cmdcompass.models.collection import Collection
 from cmdcompass.models.command import Command
+from cmdcompass.models.tag import Tag
 from cmdcompass.data.datamanager import DataManager
 
 class TestDataManager(unittest.TestCase):
@@ -74,17 +75,60 @@ class TestDataManager(unittest.TestCase):
 
         prev_len = len(self.data_manager.get_collection("Test Collection 1").commands)
 
-        self.data_manager.delete_command("Test Collection 1", "a1b2c3d4-e5f6-7890-1234-567890abcdef")
+        self.data_manager.delete_command("Test Collection 1", "command1")
         collection = self.data_manager.get_collection("Test Collection 1")
         self.assertEqual(len(collection.commands), prev_len-1)  # Should have deleted the command
 
     def test_update_command(self):
         self.data_manager.load_data()
 
-        updated_command = Command("echo 'updated'", "Updated command", [], uuid="a1b2c3d4-e5f6-7890-1234-567890abcdef")
-        self.data_manager.update_command("Test Collection 1", "a1b2c3d4-e5f6-7890-1234-567890abcdef", updated_command)
+        updated_command = Command("echo 'updated'", "Updated command", [], uuid="command1")
+        self.data_manager.update_command("Test Collection 1", "command1", updated_command)
         collection = self.data_manager.get_collection("Test Collection 1")
-        self.assertEqual(collection.commands[0].command_str, "echo 'updated'") 
+        self.assertEqual(collection.commands[0].command_str, "echo 'updated'")
+
+    def test_add_tag(self):
+        new_tag = Tag("New Tag", "purple")
+        self.data_manager.add_tag(new_tag)
+        self.assertIn(new_tag.uuid, self.data_manager.tags)
+        self.assertEqual(self.data_manager.tags[new_tag.uuid].name, "New Tag")
+
+    def test_add_tag_duplicate(self):
+        # Load data from the mock JSON
+        self.data_manager.load_data()
+
+        existing_tag = Tag("Utility", "yellow")
+        with self.assertRaises(ValueError):
+            self.data_manager.add_tag(existing_tag)  # Should raise error for duplicate name
+
+    def test_remove_tag(self):
+        # Load data from the mock JSON
+        self.data_manager.load_data()
+
+        self.data_manager.remove_tag("tag2")  # Remove existing tag
+        self.assertNotIn("tag2", self.data_manager.tags)
+
+    def test_remove_tag_not_found(self):
+        with self.assertRaises(ValueError):
+            self.data_manager.remove_tag("nonexistent_tag")
+
+    def test_add_tag_to_command(self):
+        # Load data from the mock JSON
+        self.data_manager.load_data()        
+        
+        self.data_manager.add_tag_to_command("command2", "tag3")
+        collection = self.data_manager.get_collection("Test Collection 1")
+        command = collection.commands[0]
+        self.assertIn("tag3", command.tag_ids)
+
+    def test_remove_tag_from_command(self):
+        # Load data from the mock JSON
+        self.data_manager.load_data()
+
+        self.data_manager.remove_tag_from_command("command1", "tag2")
+        collection = self.data_manager.get_collection("Test Collection 1")
+        command = collection.commands[0]
+        self.assertNotIn("tag2", command.tag_ids)
 
 if __name__ == "__main__":
     unittest.main()
