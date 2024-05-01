@@ -5,6 +5,7 @@ from cmdcompass.gui.commentbox import CommentBox
 from cmdcompass.gui.commandbodybox import CommandBodyBox
 from cmdcompass.gui.tagoperationbox import TagOperationBox
 from cmdcompass.gui.utilitybox import UtilityBox
+from cmdcompass.gui.tag_operation import TagOperation
 from cmdcompass.models.collection import Collection
 from CTkToolTip import CTkToolTip
 
@@ -50,17 +51,6 @@ class MainWindow(ctk.CTk):
         self.collection_dropdown.pack(side=ctk.LEFT, padx=(10, 0), pady=10)
         self.collection_dropdown.set("Choose a collection")
 
-        # Add new collection button
-        self.add_collection_button = ctk.CTkButton(
-            self.collection_operation_frame,
-            text="+",
-            width=30,
-            height=30,
-            command=self.on_add_collection_click
-        )
-        self.add_collection_button.pack(side=ctk.LEFT, padx=(5, 5), pady=10)
-        CTkToolTip(self.add_collection_button, message="Add New Collection")
-
         # Remove collection button
         self.remove_collection_button = ctk.CTkButton(
             self.collection_operation_frame,
@@ -69,10 +59,22 @@ class MainWindow(ctk.CTk):
             hover_color="#c77c78",
             width=30,
             height=30,
-            command=self.on_remove_collection_click
+            command=self.on_remove_collection_click,
+            font=("TkDefaultFont ", 14)
         )
-        self.remove_collection_button.pack(side=ctk.LEFT, padx=(0, 5), pady=10)
+        self.remove_collection_button.pack(side=ctk.LEFT, padx=(5, 5), pady=10)
         CTkToolTip(self.remove_collection_button, message="Remove Selected Collection")
+
+        # Add new collection button
+        self.add_collection_button = ctk.CTkButton(
+            self.collection_operation_frame,
+            text="+",
+            width=30,
+            height=30,
+            command=self.on_add_collection_click
+        )
+        self.add_collection_button.pack(side=ctk.LEFT, padx=(0, 5), pady=10)
+        CTkToolTip(self.add_collection_button, message="Add New Collection")
         
         # Create scrollable frame for the command list
         self.command_list_frame = ctk.CTkScrollableFrame(self.left_frame, height=450)
@@ -109,6 +111,12 @@ class MainWindow(ctk.CTk):
         # Adjust layout weights for right pane
         self.right_frame.grid_rowconfigure((0,1,2), weight=1)
         self.right_frame.grid_columnconfigure(0, weight=4)
+
+        # Create TagOperation instance
+        self.tag_operation = TagOperation(self, self.data_manager)
+
+    def open_add_tag_window(self, command):
+        self.tag_operation.open_add_tag_window(command)
 
     def on_collection_select(self, choice):
         selected_collection = self.data_manager.get_collection(choice)

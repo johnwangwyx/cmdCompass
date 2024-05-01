@@ -134,6 +134,8 @@ class DataManager:
                     if tag_uuid not in command.tag_ids:
                         command.tag_ids.append(tag_uuid)
                         self.save_data()
+                    else:
+                        raise ValueError(f"Tag '{self.tags[tag_uuid].name}' already exist for the command")
                     return  # Exit after adding the tag
         raise ValueError(f"Command with UUID '{command_uuid}' not found.")
 

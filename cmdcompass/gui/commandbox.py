@@ -1,12 +1,23 @@
 import customtkinter as ctk
 
 class TagBox(ctk.CTkFrame):
-    def __init__(self, master, tags, **kwargs):
+    def __init__(self, master, tags, command, main_window,**kwargs):
         super().__init__(master, **kwargs)
         for i, tag in enumerate(tags):
-            tag_label = ctk.CTkLabel(self, text=f"{tag.name}", fg_color=tag.color, font=("TkDefaultFont ", 8), height=15)
+            tag_label = ctk.CTkLabel(self, text=f"{tag.name}", fg_color=tag.color, font=("TkDefaultFont ", 9), height=15)
             tag_label.configure(corner_radius=8)
             tag_label.grid(row=0, column=i, padx=(2, 0), pady=2)
+
+            # Add Tag button
+            self.add_tag_button = ctk.CTkButton(
+                self,
+                text="+",
+                font=("TkDefaultFont ", 9),
+                width=15,
+                height=5,
+                command=lambda: main_window.open_add_tag_window(command)
+            )
+            self.add_tag_button.grid(row=0, column=len(tags), padx=(5, 5), pady=2)  # Place after existing tags
 
 class CommandBox(ctk.CTkFrame):
     def __init__(self, master, command, tags, command_index, main_window, **kwargs):
@@ -16,11 +27,14 @@ class CommandBox(ctk.CTkFrame):
         self.main_window = main_window
 
         # Command label (first row)
-        self.command_label = ctk.CTkLabel(self, text=command.command_str.split(" ")[0] + "...",  font=("TkDefaultFont", 12))
-        self.command_label.grid(row=0, column=0, padx=10, pady=5, sticky="w")
+        command_summery = command.command_str
+        if len(command_summery) > 25:
+            command_summery = command_summery[:25] + "..."
+        self.command_label = ctk.CTkLabel(self, text=command_summery,  font=("TkDefaultFont", 12))
+        self.command_label.grid(row=0, column=0, padx=10, pady=0, sticky="w")
 
         # Tag box (second row, first column)
-        tag_box = TagBox(self, tags)
+        tag_box = TagBox(self, tags, command, main_window)
         tag_box.grid(row=1, column=0, padx=10, pady=(0, 5))
 
         # Select button
