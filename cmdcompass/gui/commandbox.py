@@ -3,21 +3,21 @@ import customtkinter as ctk
 class TagBox(ctk.CTkFrame):
     def __init__(self, master, tags, command, main_window,**kwargs):
         super().__init__(master, **kwargs)
+        # Add Tag button
+        self.add_tag_button = ctk.CTkButton(
+            self,
+            text="+",
+            font=("TkDefaultFont ", 8),
+            width=15,
+            height=3,
+            command=lambda: main_window.open_add_tag_window(command)
+        )
+        self.add_tag_button.grid(row=0, column=0, padx=(0, 0), pady=2)
+        self.add_tag_button.configure(corner_radius=3)
         for i, tag in enumerate(tags):
             tag_label = ctk.CTkLabel(self, text=f"{tag.name}", fg_color=tag.color, font=("TkDefaultFont ", 9), height=15)
             tag_label.configure(corner_radius=8)
-            tag_label.grid(row=0, column=i, padx=(2, 0), pady=2)
-
-            # Add Tag button
-            self.add_tag_button = ctk.CTkButton(
-                self,
-                text="+",
-                font=("TkDefaultFont ", 9),
-                width=15,
-                height=5,
-                command=lambda: main_window.open_add_tag_window(command)
-            )
-            self.add_tag_button.grid(row=0, column=len(tags), padx=(5, 5), pady=2)  # Place after existing tags
+            tag_label.grid(row=0, column=i+1, padx=(2, 0), pady=2)
 
 class CommandBox(ctk.CTkFrame):
     def __init__(self, master, command, tags, command_index, main_window, **kwargs):

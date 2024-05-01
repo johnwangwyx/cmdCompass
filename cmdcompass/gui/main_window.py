@@ -5,7 +5,8 @@ from cmdcompass.gui.commentbox import CommentBox
 from cmdcompass.gui.commandbodybox import CommandBodyBox
 from cmdcompass.gui.tagoperationbox import TagOperationBox
 from cmdcompass.gui.utilitybox import UtilityBox
-from cmdcompass.gui.tag_operation import TagOperation
+from cmdcompass.gui.command_tag_operation import TagOperation
+from cmdcompass.gui.global_tag import GlobalTagWindow
 from cmdcompass.models.collection import Collection
 from CTkToolTip import CTkToolTip
 
@@ -34,13 +35,9 @@ class MainWindow(ctk.CTk):
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=30)
 
-        # Collection label
-        collection_label = ctk.CTkLabel(self.left_frame, text="Collections")
-        collection_label.grid(row=0, column=0, padx=10, pady=(10, 0))
-
         # Collection operations frame
         self.collection_operation_frame = ctk.CTkFrame(self.left_frame)
-        self.collection_operation_frame.grid(row=1, column=0, padx=10, pady=10, sticky="ew")
+        self.collection_operation_frame.grid(row=2, column=0, padx=10, pady=10, sticky="ew")
 
         # Collection dropdown (within collection_operation_frame)
         self.collection_dropdown = ctk.CTkOptionMenu(
@@ -75,10 +72,22 @@ class MainWindow(ctk.CTk):
         )
         self.add_collection_button.pack(side=ctk.LEFT, padx=(0, 5), pady=10)
         CTkToolTip(self.add_collection_button, message="Add New Collection")
-        
+
+        # Tag Operations Frame
+        tag_operations_frame = ctk.CTkFrame(self.left_frame)
+        tag_operations_frame.grid(row=1, column=0, padx=10, pady=10, sticky="ew")
+
+        # Tag Operations Button
+        tag_operations_button = ctk.CTkButton(
+            tag_operations_frame,
+            text="Tag Operations",
+            command=self.open_tag_creation_window
+        )
+        tag_operations_button.pack(pady=5, padx=10)
+
         # Create scrollable frame for the command list
         self.command_list_frame = ctk.CTkScrollableFrame(self.left_frame, height=450)
-        self.command_list_frame.grid(row=2, column=0, padx=10, pady=10, sticky="nsew")
+        self.command_list_frame.grid(row=3, column=0, padx=10, pady=10, sticky="nsew")
 
         # Command list (using CTkTextbox inside the scrollable frame)
         self.command_list_box = ctk.CTkTextbox(self.command_list_frame)
@@ -93,7 +102,7 @@ class MainWindow(ctk.CTk):
             text="Light Mode",
             command=self.toggle_theme
         )
-        self.theme_toggle_button.grid(row=3, column=0, padx=10, pady=10, sticky="nsew")
+        self.theme_toggle_button.grid(row=4, column=0, padx=10, pady=10, sticky="nsew")
 
         # Right Pane Boxes (using imported classes)
         self.command_body_box = CommandBodyBox(self.right_frame)
@@ -114,6 +123,10 @@ class MainWindow(ctk.CTk):
 
         # Create TagOperation instance
         self.tag_operation = TagOperation(self, self.data_manager)
+
+    def open_tag_creation_window(self):
+        tag_creation_window = GlobalTagWindow(self, self.data_manager)
+        tag_creation_window.grab_set()
 
     def open_add_tag_window(self, command):
         self.tag_operation.open_add_tag_window(command)
@@ -199,6 +212,12 @@ class MainWindow(ctk.CTk):
         else:
             self.command_body_box.set_command(None)
             self.comment_box.set_comment(None)
+
+    def refresh_command_list(self):
+        selected_collection_name = self.collection_dropdown.get()
+        selected_collection = self.data_manager.get_collection(selected_collection_name)
+        if selected_collection:
+            self.update_command_list(selected_collection.commands)
 
 if __name__ == "__main__":
     app = MainWindow()
