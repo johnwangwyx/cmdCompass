@@ -1,0 +1,343 @@
+PDFROFF(1)                  General Commands Manual                 PDFROFF(1)
+
+
+
+NNAAMMEE
+       pdfroff - create PDF documents using groff
+
+SSYYNNOOPPSSIISS
+       ppddffrrooffff [--aabbcceeggiillppssttzzCCEEGGNNRRSSUUVVXXZZ] [--dd _c_s] [--ff _f_a_m] [--FF _d_i_r] [--II _d_i_r]
+               [--LL _a_r_g] [--mm _n_a_m_e] [--MM _d_i_r] [--nn _n_u_m] [--oo _l_i_s_t] [--PP _a_r_g] [--rr _c_n]
+               [--TT _d_e_v] [--ww _n_a_m_e] [--WW _n_a_m_e] [----eemmiitt--ppss] [----nnoo--ttoocc--rreellooccaattiioonn]
+               [----nnoo--kkiillll--nnuullll--ppaaggeess] [----ssttyylleesshheeeett==_n_a_m_e] [----nnoo--ppddff--oouuttppuutt]
+               [----ppddff--oouuttppuutt==_n_a_m_e] [----nnoo--rreeffeerreennccee--ddiiccttiioonnaarryy]
+               [----rreeffeerreennccee--ddiiccttiioonnaarryy==_n_a_m_e] [----rreeppoorrtt--pprrooggrreessss]
+               [----kkeeeepp--tteemmppoorraarryy--ffiilleess] [_f_i_l_e ...]
+
+       ppddffrrooffff --hh
+       ppddffrrooffff ----hheellpp
+
+       ppddffrrooffff --vv [_g_r_o_f_f_-_o_p_t_i_o_n ...]
+       ppddffrrooffff ----vveerrssiioonn [_g_r_o_f_f_-_o_p_t_i_o_n ...]
+
+DDEESSCCRRIIPPTTIIOONN
+       ppddffrrooffff is a wrapper program for the GNU text processing system, ggrrooffff.
+       It transparently handles the mechanics of multiple pass ggrrooffff  process-
+       ing,  when  applied to suitably marked up ggrrooffff source files, such that
+       tables of contents and body text are formatted separately, and are sub-
+       sequently  combined  in  the  correct order, for final publication as a
+       single PDF document.  A further optional "style  sheet"  capability  is
+       provided;  this  allows for the definition of content which is required
+       to precede the table of contents, in the published document.
+
+       For each invocation of ppddffrrooffff, the ultimate  ggrrooffff  output  stream  is
+       post-processed  by  the  GhostScript interpreter, to produce a finished
+       PDF document.
+
+       ppddffrrooffff makes no assumptions about, and imposes no restrictions on, the
+       use of any ggrrooffff macro packages which the user may choose to employ, in
+       order to achieve a desired document format; however,  it  _d_o_e_s  include
+       specific  built  in  support  for the ppddffmmaarrkk macro package, should the
+       user choose to employ it.  Specifically, if the _p_d_f_h_r_e_f macro,  defined
+       in  the _p_d_f_m_a_r_k_._t_m_a_c package, is used to define public reference marks,
+       or dynamic links to such reference marks, then ppddffrrooffff performs as many
+       preformatting  ggrrooffff passes as required, up to a maximum limit of _f_o_u_r,
+       in order to compile a document reference dictionary, to resolve  refer-
+       ences, and to expand the dynamically defined content of links.
+
+UUSSAAGGEE
+       The  command  line is parsed in accordance with normal GNU conventions,
+       but with one exception -- when specifying any short form option  (i.e.,
+       a  single  character option introduced by a single hyphen), and if that
+       option expects an argument, then it  _m_u_s_t  be  specified  independently
+       (i.e.,  it  may  _n_o_t be appended to any group of other single character
+       short form options).
+
+       Long form option names (i.e., those introduced by a double hyphen)  may
+       be abbreviated to their minimum length unambiguous initial substring.
+
+       Otherwise, ppddffrrooffff usage closely mirrors that of ggrrooffff itself.  Indeed,
+       with the exception of the --hh, --vv, and --TT _d_e_v short  form  options,  and
+       all  long  form  options,  which  are parsed internally by ppddffrrooffff, all
+       options and file name arguments  specified  on  the  command  line  are
+       passed  on  to  ggrrooffff,  to  control the formatting of the PDF document.
+       Consequently, ppddffrrooffff accepts all options and arguments,  as  specified
+       in  ggrrooffff(1),  which may also be considered as the definitive reference
+       for all standard ppddffrrooffff options and argument usage.
+
+OOPPTTIIOONNSS
+       ppddffrrooffff accepts all of the short form options (i.e.,  those  introduced
+       by  a  single  hyphen), which are available with ggrrooffff itself.  In most
+       cases, these are simply passed transparently to ggrrooffff;  the  following,
+       however, are handled specially by ppddffrrooffff.
+
+       --hh     Same as ----hheellpp; see below.
+
+       --ii     Process  standard  input, after all other specified input files.
+              This is passed transparently to  ggrrooffff,  but,  if  grouped  with
+              other  options,  it  _m_u_s_t  be the first in the group.  Hiding it
+              within a group breaks standard input processing, in the multiple
+              pass ggrrooffff processing context of ppddffrrooffff.
+
+       --TT _d_e_v Only  --TT ppss  is supported by ppddffrrooffff.  Attempting to specify any
+              other device causes ppddffrrooffff to abort.
+
+       --vv     Same as ----vveerrssiioonn; see below.
+
+       See ggrrooffff(1) for a description of all other short form  options,  which
+       are transparently passed through ppddffrrooffff to ggrrooffff.
+
+       All  long  form options (i.e., those introduced by a double hyphen) are
+       interpreted locally by ppddffrrooffff; they are nnoott passed on to ggrrooffff, unless
+       otherwise stated below.
+
+       ----hheellpp Causes ppddffrrooffff to display a summary of the its usage syntax, and
+              supported options, and then exit.
+
+       ----eemmiitt--ppss
+              Suppresses the final output conversion step, causing ppddffrrooffff  to
+              emit  PostScript  output instead of PDF.  This may be useful, to
+              capture intermediate PostScript output, when using a specialised
+              postprocessor,  such  as  _g_p_r_e_s_e_n_t  for example, in place of the
+              default _G_h_o_s_t_S_c_r_i_p_t PDF writer.
+
+       ----kkeeeepp--tteemmppoorraarryy--ffiilleess
+              Suppresses the  deletion  of  temporary  files,  which  normally
+              occurs after ppddffrrooffff has completed PDF document formatting; this
+              may be useful, when debugging formatting problems.
+
+              See section "Files" below for a  description  of  the  temporary
+              files used by ppddffrrooffff.
+
+       ----nnoo--ppddff--oouuttppuutt
+              May   be   used   with  the  ----rreeffeerreennccee--ddiiccttiioonnaarryy==_n_a_m_e  option
+              (described below) to eliminate the overhead of  PDF  formatting,
+              when  running  ppddffrrooffff to create a reference dictionary, for use
+              in a different document.
+
+       ----nnoo--rreeffeerreennccee--ddiiccttiioonnaarryy
+              May be used to eliminate the overhead of  creating  a  reference
+              dictionary,  when  it is known that the target PDF document con-
+              tains no public references, created by the _p_d_f_h_r_e_f macro.
+
+       ----nnoo--ttoocc--rreellooccaattiioonn
+              May be used to eliminate the extra ggrrooffff processing pass,  which
+              is  required to generate a table of contents, and relocate it to
+              the start of the PDF  document,  when  processing  any  document
+              which lacks an automatically generated table of contents.
+
+       ----nnoo--kkiillll--nnuullll--ppaaggeess
+              While  preparing  for  simulation  of the manual collation step,
+              which is traditionally required to relocate a _t_a_b_l_e _o_f  _c_o_n_t_e_n_t_s
+              to  the  start  of  a  document, ppddffrrooffff accumulates a number of
+              empty page descriptions into the intermediate _P_o_s_t_S_c_r_i_p_t  output
+              stream.   During the final collation step, these empty pages are
+              normally discarded  from  the  finished  document;  this  option
+              forces ppddffrrooffff to leave them in place.
+
+       ----ppddff--oouuttppuutt==_n_a_m_e
+              Specifies the name to be used for the resultant PDF document; if
+              unspecified, the PDF output is written to  standard  output.   A
+              future  version  of  ppddffrrooffff  may use this option, to encode the
+              document name in a generated reference dictionary.
+
+       ----rreeffeerreennccee--ddiiccttiioonnaarryy==_n_a_m_e
+              Specifies the name to be used for the generated  reference  dic-
+              tionary  file;  if unspecified, the reference dictionary is cre-
+              ated in a temporary file, which is  deleted  when  ppddffrrooffff  com-
+              pletes  processing of the current document.  This option _m_u_s_t be
+              specified, if it is desired to save  the  reference  dictionary,
+              for use in references placed in other PDF documents.
+
+       ----rreeppoorrtt--pprrooggrreessss
+              Causes  ppddffrrooffff  to display an informational message on standard
+              error, at the start of each ggrrooffff processing pass.
+
+       ----ssttyylleesshheeeett==_n_a_m_e
+              Specifies the name of an _i_n_p_u_t _f_i_l_e, to be used as a style sheet
+              for  formatting of content, which is to be placed _b_e_f_o_r_e the ta-
+              ble of contents, in the formatted PDF document.
+
+       ----vveerrssiioonn
+              Causes ppddffrrooffff to display a version identification message.  The
+              entire  command line is then passed transparently to ggrrooffff, in a
+              _o_n_e pass operation _o_n_l_y, in  order  to  display  the  associated
+              ggrrooffff version information, before exiting.
+
+EENNVVIIRROONNMMEENNTT
+       The following environment variables may be set, and exported, to modify
+       the behaviour of ppddffrrooffff.
+
+       _P_D_F_R_O_F_F___C_O_L_L_A_T_E
+              Specifies the program to be used for collation of  the  finished
+              PDF document.
+
+              This  collation  step may be required to move _t_a_b_l_e_s _o_f _c_o_n_t_e_n_t_s
+              to the start of the finished PDF document, when formatting  with
+              traditional  macro  packages, which print them at the end.  How-
+              ever, users should not normally need to specify _P_D_F_R_O_F_F___C_O_L_L_A_T_E,
+              (and  indeed,  are  not  encouraged  to do so).  If unspecified,
+              ppddffrrooffff uses sseedd(1) by default, which normally suffices.
+
+              If _P_D_F_R_O_F_F___C_O_L_L_A_T_E _i_s specified, then it must act as  a  filter,
+              accepting a list of file name arguments, and write its output to
+              the   _s_t_d_o_u_t   stream,   whence   it    is    piped    to    the
+              _P_D_F_R_O_F_F___P_O_S_T_P_R_O_C_E_S_S_O_R___C_O_M_M_A_N_D,  to produce the finished PDF out-
+              put.
+
+              When specifying _P_D_F_R_O_F_F___C_O_L_L_A_T_E, it  is  normally  necessary  to
+              also specify _P_D_F_R_O_F_F___K_I_L_L___N_U_L_L___P_A_G_E_S.
+
+              _P_D_F_R_O_F_F___C_O_L_L_A_T_E  is  ignored,  if  ppddffrrooffff  is  invoked with the
+              _-_-_n_o_-_k_i_l_l_-_n_u_l_l_-_p_a_g_e_s option.
+
+       _P_D_F_R_O_F_F___K_I_L_L___N_U_L_L___P_A_G_E_S
+              Specifies options to be passed to the _P_D_F_R_O_F_F___C_O_L_L_A_T_E program.
+
+              It   should   not   normally    be    necessary    to    specify
+              _P_D_F_R_O_F_F___K_I_L_L___N_U_L_L___P_A_G_E_S.   The  internal  default  is  a  sseedd(1)
+              script, which is intended to remove completely blank pages  from
+              the  collated  output stream, and which should be appropriate in
+              most applications of ppddffrrooffff.  However, if  any  alternative  to
+              sseedd(1)  is specified for _P_D_F_R_O_F_F___C_O_L_L_A_T_E, then it is likely that
+              a     corresponding      alternative      specification      for
+              _P_D_F_R_O_F_F___K_I_L_L___N_U_L_L___P_A_G_E_S is required.
+
+              As  in  the  case of _P_D_F_R_O_F_F___C_O_L_L_A_T_E, _P_D_F_R_O_F_F___K_I_L_L___N_U_L_L___P_A_G_E_S is
+              ignored, if ppddffrrooffff is  invoked  with  the  _-_-_n_o_-_k_i_l_l_-_n_u_l_l_-_p_a_g_e_s
+              option.
+
+       _P_D_F_R_O_F_F___P_O_S_T_P_R_O_C_E_S_S_O_R___C_O_M_M_A_N_D
+              Specifies  the command to be used for the final document conver-
+              sion from PostScript intermediate output to PDF.  It must behave
+              as  a  filter, writing its output to the _s_t_d_o_u_t stream, and must
+              accept an arbitrary number of _f_i_l_e_s _._._. arguments, with the spe-
+              cial case of _- representing the _s_t_d_i_n stream.
+
+              If unspecified, _P_D_F_R_O_F_F___P_O_S_T_P_R_O_C_E_S_S_O_R___C_O_M_M_A_N_D defaults to
+                   gs -dBATCH -dQUIET -dNOPAUSE -dSAFER -sDEVICE=pdfwrite \
+                        -sOutputFile=-
+
+       _G_R_O_F_F___T_M_P_D_I_R
+              Identifies  the  directory in which ppddffrrooffff should create tempo-
+              rary files.  If _G_R_O_F_F___T_M_P_D_I_R is _n_o_t specified,  then  the  vari-
+              ables  _T_M_P_D_I_R,  _T_M_P and _T_E_M_P are considered in turn, as possible
+              temporary file repositories.  If none of  these  are  set,  then
+              temporary files are created in the current directory.
+
+       _G_R_O_F_F___G_H_O_S_T_S_C_R_I_P_T___I_N_T_E_R_P_R_E_T_E_R
+              Specifies the program to be invoked, when ppddffrrooffff converts ggrrooffff
+              PostScript output to PDF.  If  _P_D_F_R_O_F_F___P_O_S_T_P_R_O_C_E_S_S_O_R___C_O_M_M_A_N_D  is
+              specified,  then  the  command  name  it specifies is _i_m_p_l_i_c_i_t_l_y
+              assigned  to   _G_R_O_F_F___G_H_O_S_T_S_C_R_I_P_T___I_N_T_E_R_P_R_E_T_E_R,   overriding   any
+              explicit    setting    specified   in   the   environment.    If
+              _G_R_O_F_F___G_H_O_S_T_S_C_R_I_P_T___I_N_T_E_R_P_R_E_T_E_R is  not  specified,  then  ppddffrrooffff
+              searches the process _P_A_T_H, looking for a program with any of the
+              well known names for the GhostScript interpreter; if  no  Ghost-
+              Script interpreter can be found, ppddffrrooffff aborts.
+
+       _G_R_O_F_F___A_W_K___I_N_T_E_R_P_R_E_T_E_R
+              Specifies  the program to be invoked, when ppddffrrooffff is extracting
+              reference dictionary entries from a ggrrooffff  intermediate  message
+              stream.  If _G_R_O_F_F___A_W_K___I_N_T_E_R_P_R_E_T_E_R is not specified, then ppddffrrooffff
+              searches the process _P_A_T_H, looking for any of the preferred pro-
+              grams, `gawk', `mawk', `nawk', and `awk', in this order; if none
+              of these are found, ppddffrrooffff issues a warning message,  and  con-
+              tinue processing; however, in this case, no reference dictionary
+              is created.
+
+       _O_S_T_Y_P_E Typically defined automatically by the operating system,  _O_S_T_Y_P_E
+              is  used  on Microsoft Win32/MS-DOS platforms _o_n_l_y, to infer the
+              default _P_A_T_H___S_E_P_A_R_A_T_O_R character, which is used when parsing the
+              process _P_A_T_H to search for external helper programs.
+
+       _P_A_T_H___S_E_P_A_R_A_T_O_R
+              If  set,  _P_A_T_H___S_E_P_A_R_A_T_O_R overrides the default separator charac-
+              ter, (`:' on POSIX/Unix systems, inferred from _O_S_T_Y_P_E on  Micro-
+              soft  Win32/MS-DOS), which is used when parsing the process _P_A_T_H
+              to search for external helper programs.
+
+       _S_H_O_W___P_R_O_G_R_E_S_S
+              If this is set to a non-empty value, then ppddffrrooffff always behaves
+              as  if the ----rreeppoorrtt--pprrooggrreessss option is specified, on the command
+              line.
+
+FFIILLEESS
+       Input and output files for ppddffrrooffff may be named according to  any  con-
+       vention  of  the  user's  choice.   Typically, input files may be named
+       according to the choice of  the  principal  formatting  macro  package,
+       e.g., file_._m_s might be an input file for formatting using the mmss macros
+       (_s_._t_m_a_c); normally, the final output file should be named file_._p_d_f.
+
+       Temporary files, created by ppddffrrooffff, are  placed  in  the  file  system
+       hierarchy, in or below the directory specified by environment variables
+       (see section "Environment" above).  If mmkktteemmpp(1) is  available,  it  is
+       invoked  to  create  a  private subdirectory of the nominated temporary
+       files directory, (with subdirectory  name  derived  from  the  template
+       _p_d_f_r_o_f_f_-_X_X_X_X_X_X_X_X_X_X);  if this subdirectory is successfully created, the
+       temporary files will be placed within it, otherwise they will be placed
+       directly in the directory nominated in the environment.
+
+       All  temporary  files  themselves are named according to the convention
+       _p_d_f$$_.*, where _$_$ is  the  standard  shell  variable  representing  the
+       process  ID  of the ppddffrrooffff process itself, and _* represents any of the
+       extensions used by ppddffrrooffff to  identify  the  following  temporary  and
+       intermediate files.
+
+       _p_d_f$$_._t_m_p
+              A  scratch  pad  file, used to capture reference data emitted by
+              ggrrooffff, during the _r_e_f_e_r_e_n_c_e _d_i_c_t_i_o_n_a_r_y compilation phase.
+
+       _p_d_f$$_._r_e_f
+              The _r_e_f_e_r_e_n_c_e _d_i_c_t_i_o_n_a_r_y, as compiled in the last but  one  pass
+              of  the _r_e_f_e_r_e_n_c_e _d_i_c_t_i_o_n_a_r_y compilation phase; (at the start of
+              the first pass,  this  file  is  created  empty;  in  successive
+              passes,  it  contains  the _r_e_f_e_r_e_n_c_e _d_i_c_t_i_o_n_a_r_y entries, as col-
+              lected in the preceding pass).
+
+              If the ----rreeffeerreennccee--ddiiccttiioonnaarryy=_n_a_m_e  option  is  specified,  this
+              intermediate  file  becomes permanent, and is named _n_a_m_e, rather
+              than _p_d_f$$_._r_e_f.
+
+       _p_d_f$$_._c_m_p
+              Used to collect _r_e_f_e_r_e_n_c_e _d_i_c_t_i_o_n_a_r_y entries during  the  active
+              pass  of the _r_e_f_e_r_e_n_c_e _d_i_c_t_i_o_n_a_r_y compilation phase.  At the end
+              of any pass, when the content of _p_d_f$$_._c_m_p compares as identical
+              to   _p_d_f$$_._r_e_f,   (or   the  corresponding  file  named  by  the
+              ----rreeffeerreennccee--ddiiccttiioonnaarryy=_n_a_m_e option), then  _r_e_f_e_r_e_n_c_e  _d_i_c_t_i_o_n_a_r_y
+              compilation  is  terminated,  and  the _d_o_c_u_m_e_n_t _r_e_f_e_r_e_n_c_e _m_a_p is
+              appended to this intermediate file, for inclusion in  the  final
+              formatting passes.
+
+       _p_d_f$$_._t_c
+              An  intermediate  _P_o_s_t_S_c_r_i_p_t  file, in which "Table of Contents"
+              entries are collected, to facilitate relocation before the  body
+              text, on ultimate output to the _G_h_o_s_t_S_c_r_i_p_t postprocessor.
+
+       _p_d_f$$_._p_s
+              An  intermediate _P_o_s_t_S_c_r_i_p_t file, in which the body text is col-
+              lected prior to ultimate output to the  _G_h_o_s_t_S_c_r_i_p_t  postproces-
+              sor, in the proper sequence, _a_f_t_e_r _p_d_f$$_._t_c.
+
+AAUUTTHHOORRSS
+       ppddffrrooffff was written by Keith Marshall <keith.d.marshall@ntlworld.com>.
+
+SSEEEE AALLSSOO
+       See  ggrrooffff(1)  for the definitive reference to document formatting with
+       ggrrooffff.  Since ppddffrrooffff provides a superset of  all  ggrrooffff  capabilities,
+       ggrrooffff(1)  may  also be considered to be the definitive reference to all
+       _s_t_a_n_d_a_r_d capabilities of ppddffrrooffff, with this document providing the ref-
+       erence to ppddffrrooffff's extended features.
+
+       While  ppddffrrooffff  imposes neither any restriction on, nor any requirement
+       for, the use of any specific ggrrooffff macro package, a number of  supplied
+       macro  packages,  and  in  particular those associated with the package
+       _p_d_f_m_a_r_k_._t_m_a_c, are best suited for use with  ppddffrrooffff  as  the  preferred
+       formatter.   Detailed documentation on the use of these packages may be
+       found, in PDF format, in the reference guide ""PPoorrttaabbllee DDooccuummeenntt  FFoorrmmaatt
+       PPuubblliisshhiinngg wwiitthh GGNNUU TTrrooffff"", included in the installed documentation set
+       as _d_:_/_u_s_r_/_s_h_a_r_e_/_d_o_c_/_g_r_o_f_f_-_1_._2_2_._4_/_p_d_f_/_p_d_f_m_a_r_k_._p_d_f.
+
+
+
+groff 1.22.4                     December 2018                      PDFROFF(1)

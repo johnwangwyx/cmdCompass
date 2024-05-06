@@ -1,0 +1,4257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is part of groff, the GNU roff type-setting system.
+
+Copyright (C) 2004-2018 Free Software Foundation, Inc.
+Written by Peter Schaffter (peter@schaffter.ca).
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with no
+Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
+Texts.
+
+A copy of the Free Documentation License is included as a file called
+FDL in the main directory of the groff source package.
+-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
+  <title>Mom -- Document Processing, Introduction and Setup</title>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+</head>
+
+<body style="background-color: #f5faff;">
+
+<!-- ==================================================================== -->
+
+<div id="top" class="page">
+
+<!-- Navigation links -->
+<table style="width: 100%;">
+<tr>
+  <td><a href="toc.html">Back to Table of Contents</a></td>
+  <td style="text-align: right;"><a href="docelement.html#top">Next: The document element tags</a></td>
+</tr>
+</table>
+
+<h1 class="docs">Document processing with mom</h1>
+
+<h2 id="toc-doc-processing" class="docs" style="text-align: center;">Table of contents</h2>
+
+<div id="docprocessing-mini-toc" style="font-size: 90%; line-height: 150%; margin-top: .5em;">
+<div class="mini-toc-col-1" style="margin-left: 0;">
+<h3 class="toc toc-docproc-header" style="margin-top: 1em;"><a class="header-link" href="#docprocessing-intro">Introduction to document processing</a></h3>
+<h3 class="toc toc-docproc-header" style="margin-top: .5em;"><a class="header-link" href="#defaults">Document defaults</a></h3>
+<h3 class="toc toc-docproc-header" style="margin-top: .5em;"><a class="header-link" href="#vertical-whitespace-management">Vertical whitespace management</a></h3>
+<h3 class="toc toc-docproc-header" style="margin-top: .5em;"><a class="header-link" href="#setup">Preliminary document setup</a></h3>
+<ul class="toc-docproc" style="margin-top: .5em;">
+  <li><a href="#docprocessing-tut"><b>Tutorial &ndash; Setting up a mom document</b></a></li>
+  <li><a href="#reference-macros"><b>The reference macros (metadata)</b></a>
+  <ul class="toc-docproc">
+    <li><a href="#title">TITLE</a></li>
+    <li><a href="#doc-title">DOCTITLE</a></li>
+    <li><a href="#subtitle">SUBTITLE</a></li>
+    <li><a href="#author">AUTHOR</a></li>
+    <li><a href="#chapter">CHAPTER</a></li>
+    <li><a href="#chapter-title">CHAPTER_TITLE</a></li>
+    <li><a href="#draft">DRAFT</a></li>
+    <li><a href="#revision">REVISION</a></li>
+    <li><a href="#copyright">COPYRIGHT</a></li>
+    <li><a href="#misc">MISC</a></li>
+    <li><a href="#covertitle">COVERTITLE</a></li>
+    <li><a href="#doc-covertitle">DOC_COVERTITLE</a></li>
+    <li><a href="#pdftitle">PDF_TITLE</a></li>
+  </ul></li>
+  <li><a href="#docstyle-macros"><b>The docstyle macros (templates)</b></a>
+  <ul class="toc-docproc">
+    <li><a href="#doctype">DOCTYPE (default, chapter, letter, named, slides)</a></li>
+    <li><a href="#slides">DOCTYPE SLIDES</a></li>
+    <ul class="toc-docproc">
+    <li><a href="#newslide">NEWSLIDE</a></li>
+      <li><a href="#pause">PAUSE</a></li>
+      <li><a href="#transition">TRANSITION</a></li>
+    </ul>
+    <li><a href="#printstyle">PRINTSTYLE</a></li>
+    <li><a href="#copystyle">COPYSTYLE</a></li>
+  </ul></li>
+  <li><a href="cover.html"><b>Cover pages</b></a>
+  <li><a href="#docheader"><b>Managing the document header</b></a>
+  <ul class="toc-docproc">
+    <li><a href="#docheader">DOCHEADER</a></li>
+    <li><a href="#docheader-control">Docheader control</a>
+    <ul class="toc-docproc">
+      <li><a href="#docheader-desc">Docheader description</a></li>
+      <li><a href="#index-docheader-control">Macro list</a></li>
+    </ul></li>
+  </ul></li>
+</ul>
+<h3 class="toc toc-docproc-header"><a class="header-link" href="#start-macro">Initiate document processing</a></h3>
+<ul class="toc-docproc" style="margin-top: .5em;">
+  <li><a href="#start"><b>The START macro</b></a></li>
+</ul>
+</div>
+<div class="mini-toc-col-2">
+<br/>
+<h3 class="toc toc-docproc-header"><a class="header-link" href="#style-before-start">Establishing type and formatting<br/><span style="display: block; margin-top: -.3em;">parameters before START</span></a></h3>
+<ul class="toc-docproc" style="margin-top: .5em;">
+  <li><a href="#type-before-start"><b>Behaviour of the typesetting macros before START</b></a>
+  <ul class="toc-docproc">
+    <li><a href="docprocessing.html#include">Including (sourcing) style sheets and files</a></li>
+    <li><a href="#color">Initializing colours</a></li>
+  </ul></li>
+</ul>
+<ul class="toc-docproc" style="margin-top: -1em">
+  <li><a href="#doc-lead-adjust"><b>Adjust linespacing to fill pages</b></a>
+  <ul class="toc-docproc">
+    <li><a href="#doc-lead-adjust">DOC_LEAD_ADJUST</a></li>
+    <li><a href="#shim">SHIM</a> &ndash; get document leading back on track
+    <ul class="toc-docproc">
+      <li><a href="#automatic-shimming">Automatic shimming (headings, etc)</a></li>
+    </ul></li>
+  </ul></li>
+  <li><a href="#columns-intro"><b>Setting documents in columns</b></a>
+  <ul class="toc-docproc">
+    <li><a href="#columns">COLUMNS</a></li>
+    <li><a href="#marking-col-start">Marking the first page column start position</a>
+    <ul class="toc-docproc">
+      <li><a href="#col-mark">COL_MARK</a></li>
+    </ul></li>
+    <li><a href="#breaking-columns">Breaking columns manually</a>
+    <ul class="toc-docproc">
+      <li><a href="#col-next">COL_NEXT</a> and <a href="#col-break">COL_BREAK</a></li>
+    </ul></li>
+  </ul></li>
+</ul>
+<h3 class="toc toc-docproc-header"><a class="header-link" href="#style-after-start">Changing basic type and formatting<br/><span style="display: block; margin-top: -.3em;">parameters after START</span></a></h3>
+<ul class="toc-docproc" style="margin-top: .5em;">
+  <li><a href="#behaviour"><b>Behaviour of the typesetting macros during document processing</b></a></li>
+  <li><a href="docprocessing.html#intro-doc-param"><b>Changing document-wide style parameters after START</b></a>
+  <ul class="toc-docproc">
+    <li><a href="docprocessing.html#index-doc-param">Post-START global style change macros</a>
+    <ul class="toc-docproc">
+     <li><a href="#doc-left-margin">DOC_LEFT_MARGIN</a></li>
+     <li><a href="#doc-right-margin">DOC_RIGHT_MARGIN</a></li>
+     <li><a href="#doc-line-length">DOC_LINE_LENGTH</a></li>
+     <li><a href="#doc-family">DOC_FAMILY</a></li>
+     <li><a href="#doc-pt-size">DOC_PT_SIZE</a></li>
+     <li><a href="#doc-lead">DOC_LEAD</a></li>
+     <li><a href="#doc-lead-adjust">DOC_LEAD_ADJUST</a></li>
+     <li><a href="#doc-quad">DOC_QUAD</a></li>
+    </ul></li>
+  </ul></li>
+</ul>
+<h3 class="toc toc-docproc-header"><a class="header-link" href="#terminating">Terminating a document</a></h3>
+</div>
+</div>
+
+<div class="rule-short" style="margin-top: -1.75em"><br/><hr/></div>
+
+<!-- ==================================================================== -->
+
+<h2 id="docprocessing-intro" class="docs" style="margin-top: 1em">Introduction to document processing</h2>
+
+<p>
+Document processing with mom uses markup tags to identify document elements
+such as headings, paragraphs, blockquotes, and so on.  The tags are, of course,
+macros, but with sensible, readable names that make them easy
+to grasp and easy to remember.  (And don&#8217;t forget: if you
+don&#8217;t like the &#8220;official&#8221; name of a tag &mdash;
+too long, cumbersome to type in, not &#8220;intuitive&#8221; enough
+&mdash; you can change it with the
+<a href="goodies.html#alias">ALIAS</a>
+macro.)
+</p>
+
+<p>
+In addition to the tags themselves, mom has an extensive array of
+macros that control how they look and behave.
+</p>
+
+<p>
+Setting up a mom doc is a simple, four-part procedure.  You
+begin by entering metadata about the document itself (title,
+subtitle, author, etc.).  Next, you tell mom what kind of document
+you&#8217;re creating (e.g., chapter, letter, abstract, etc...) and
+what kind of output you want (typeset, typewritten, draft-style,
+etc) &mdash; essentially, templates.  Thirdly, you make as many
+or as few changes to the templates as you wish; in other words,
+create a style sheet.  Lastly, you invoke the
+<kbd><a href="#start">START</a></kbd>
+macro.  Voilà!  You&#8217;re ready to write.
+</p>
+
+<!-- ==================================================================== -->
+
+<h2 id="defaults" class="docs">Document defaults</h2>
+
+<p>
+As is to be expected, mom has defaults for everything.  If you want
+to know a particular default, read about it in the description of
+the pertinent tag.
+</p>
+
+<p>
+I fear the following may not be adequately covered in the
+documentation, so just in case:
+</p>
+<ul style="margin-top: -.5em; margin-bottom: .5em;">
+  <li>the paper size is 8.5x11 inches</li>
+  <li>the left and right margins are 1-inch</li>
+  <li>the top and bottom margins for document text are plus/minus
+      visually 1-inch
+  </li>
+  <li>pages are numbered; the number appears centred, at the
+      bottom, surrounded by hyphens ( e.g., -6- )
+  </li>
+  <li>the first page of a document begins with a
+      <a href="definitions.html#docheader">document header</a>
+  </li>
+  <li>subsequent pages have
+      <a href="definitions.html#header">page headers</a>
+      with a rule underneath
+  </li>
+</ul>
+
+<!-- ==================================================================== -->
+
+<h2 id="vertical-whitespace-management" class="macro-group">Vertical whitespace management</h2>
+
+<ul style="margin-left: -.5em;">
+  <li><a href="#shim">Macro: SHIM</a></li>
+  <li><a href="#no-shim">Macro: NO_SHIM</a></li>
+  <li><a href="#flex">Macro: FLEX</a></li>
+  <li><a href="#no-flex">Macro: NO_FLEX</a></li>
+</ul>
+
+
+<p>
+Mom takes evenly-aligned bottom margins in
+<a href="definitions.html#running">running text</a>
+very seriously.  Only under a very few, exceptional circumstances
+will she allow a bottom margin to &#8220;hang&#8221; (ie to fall
+short).
+</p>
+
+<p>
+Mom offers two modes of operation for ensuring flush bottom margins:
+shimming and flex-spacing.  Shimming means that mom nudges the
+next line after a significant break in running text back onto the
+<a href="definitions.html#baseline-grid">baseline grid</a>
+(e.g., after the insertion of a graphic).  Flex-spacing means that any
+vertical whitespace remaining between the end of running text and
+the bottom margin is distributed equally at logical points on the
+page.
+</p>
+
+<p>
+Mom uses the
+<a href="definitions.html#leading">leading</a>
+of running text (the &#8220;document leading&#8221;) that&#8217;s in effect
+<i>at the start of running text on each page</i>
+to establish the grid and space document elements such as heads or
+blockquotes so that they adhere to it.  (Prior to invoking
+<a href="#start">START</a>,
+the document leading is set with the
+<a href="typesetting.html#macros-typesetting">typesetting macro</a>
+<a href="typesetting.html#leading">LS</a>,
+afterwards with the document
+<a href="definitions.html#controlmacro">control macro</a>
+<a href="#doc-lead">DOC_LEAD</a>.)
+</p>
+
+<p>
+What this means is that documents whose paragraphs are not separated
+by whitepace and which do not contain graphics or
+<a href="definitions.html#pre-processor">pre-processor material</a>
+will fill the page completely to the bottom margin.
+However, if your paragraphs are spaced, or if there are any leading
+changes on a page, or if graphics or pre-processor material are
+inserted, it&#8217;s very likely the bottom margins will hang
+unless shimming or flex-spacing is enabled.
+</p>
+
+<h3 id="shim-vs-flex" class="docs">Shimming <span style="text-transform: none">vs.</span> flex-spacing</h3>
+
+<p>
+<b>Shimming</b> is mom's default mode of operation.  She applies it
+automatically before headings, around quotes and blockquotes, and
+beneath
+<a href="definitions.html#float">floats</a>
+and
+<a href="definitions.html#preprocessor">pre-processor material</a>.
+In addition, the
+<a href="#shim">SHIM</a>
+macro can be inserted into a document to make sure that the
+text following falls on the baseline grid.
+</p>
+
+<p>
+This mode of operation works well in documents whose paragraphs are
+not spaced.  Deviations from the baseline grid, usually
+caused by floats or pre-processor material, are corrected
+immediately.  If the shimming results in slightly unbalanced
+whitespace around them, it can easily be remedied by passing the
+<kbd>ADJUST</kbd> argument to the appropriate macro.
+</p>
+
+<p>
+If you do not want mom shimming automatically,
+<a href="#no-shim">NO_SHIM</a>
+turns shimming off globally and suppresses the SHIM macro.  If you
+want to disable shimming only for a particular float or
+pre-processor, the <kbd>NO_SHIM</kbd> argument may be given to the
+appropriate macro.
+</p>
+
+<p>
+<b>Flex-spacing</b> kicks in automatically whenever you turn shimming
+off.  In other words, if you want a document flex-spaced,
+<kbd>.NO_SHIM</kbd> is how you achieve it.  If, in addition to not
+shimming, you don&#8217;t want mom flex-spacing either,
+<a href="#no-flex">NO_FLEX</a>
+lets you disable it, too.
+</p>
+
+<p>
+Flex-spacing differs from shimming in that mom doesn&#8217;t
+correct deviations from the baseline grid.  Rather, she distributes
+whitespace left at the bottom of the page equally in appropriate
+places.  Like shimming, flex-spacing is automatically applied
+before heads, after floats and pre-processor material, and around
+quotes and blockquotes.  Like shimming, flex-spacing can be
+disabled for individual floats or pre-processor material with the
+<kbd>NO_FLEX</kbd> flag.
+</p>
+
+<p>
+In addition, you can use the
+<a href="#flex">FLEX</a>
+macro to insert flex-spacing yourself into the document, which you
+will almost certainly want to do if your paragraphs are spaced.
+This is because paragraphs are not flex-spaced.  Typographically,
+the ideal for spaced paragraphs is that the space between them
+remain constant.  Paradoxically, the only way to achieve flush
+bottom margins, or to correct excessive flex-spacing before a
+heading, is by adding flex-space between paragraphs.  This requires
+human judgment, and mom does not presume to decide for you.
+</p>
+
+<p>
+Shimming and flex-spacing are mutually exclusive.  If the one is
+active, the other isn&#8217;t unless you have disabled both.  This means
+that you cannot use the FLEX macro when shimming is enabled, or the
+SHIM macro when flex-spacing is enabled.  Mom will issue a warning
+if you do.
+</p>
+
+<p>
+The choice of whether to use shimming or flex-spacing depends on
+whether or not your paragraphs are spaced.  In a document with
+indented, non-spaced paragraphs, shimming and flex-spacing produce
+nearly the same result, with shimming winning by an aesthetic hair.
+In documents with spaced paragraphs, flex-spacing is the only way to
+achieve flush bottom margins.
+</p>
+
+<!-- -SHIM- -->
+
+<div class="macro-id-overline">
+<h3 id="shim" class="macro-id">SHIM</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>SHIM</b>
+</div>
+
+<p>
+When shimming is enabled, which it is by default, the SHIM macro
+allows you to nudge the line following it back onto the baseline
+grid.  In documents with non-spaced paragraphs, this prevents
+the bottom margins from hanging.
+</p>
+
+<p style="margin-bottom: -1em">
+Mom herself automatically applies shimming
+</p>
+<ul>
+  <li><i>before</i> headings</li>
+  <li><i>around</i> quotes and blockquotes</li>
+  <li><i>after</i> PDF images, tables, pic diagrams, equations, and floats</li>
+</ul>
+
+<p>
+You may sometimes find the amount of space generated by
+<kbd>SHIM</kbd> looks too big, whether inserted manually into a
+document or as a result of automatic shimming.
+The situation occurs when the amount of shimming applied
+comes close to the leading currently in effect, making it seem as if
+there&#8217;s one linespace too much whitespace.
+</p>
+
+<p>
+The solution is simply to add <kbd>.SPACE&nbsp;-1v</kbd> or
+<kbd>.RLD&nbsp;1v</kbd> to the document immediately after
+<kbd>.SHIM</kbd>.  (Both <kbd>.SPACE&nbsp;-1v</kbd> and
+<kbd>.RLD&nbsp;1v</kbd> back up by one linespace.)
+</p>
+
+<div class="macro-id-overline">
+<h3 id="no-shim" class="macro-id">NO_SHIM</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>NO_SHIM</b> <kbd class="macro-args">&lt;none&gt; | &lt;anything&gt;
+</div>
+
+<p>
+NO_SHIM, without an argument, disables automatic shimming,
+suppresses the SHIM macro, and enables flex-spacing.
+</p>
+
+<p>
+NO_SHIM with any argument (e.g., <b>OFF, QUIT, END, X</b>, etc)
+re-enables shimming if it has been disabled and disables
+flex-spacing.
+</p>
+
+<!-- -FLEX- -->
+
+<div class="macro-id-overline">
+<h3 id="flex" class="macro-id">FLEX</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>FLEX</b> <kbd class="macro-args">[ FORCE ]</kbd>
+</div>
+
+<p>
+When flex-spacing is enabled, the FLEX macro inserts flexible
+vertical whitespace into a document.  The amount of flex-space is
+determined from any extra whitespace at the bottom of a page divided
+by the number of flex points on the same page.
+</p>
+
+<p style="margin-bottom: -1em">
+If flex-spacing is enabled, mom herself automatically applies
+flex-spacing
+</p>
+<ul style="margin-bottom: -.5em">
+  <li><i>before</i> headings</li>
+  <li><i>around</i> quotes and blockquotes</li>
+  <li><i>after</i> PDF images, tables, pic diagrams, equations, and floats</li>
+</ul>
+
+<p>
+Near the bottom of some pages, you may find that
+<a href="definitions.html#float">floated</a>
+or
+<a href="definitions.html#preprocessor">pre-proccesor material</a>,
+including images, or a single line of text afterward, is not flush
+with the bottom margin.  This is a result of mom flex-spacing
+<i>after</i> such material but not before.  The solution to is
+insert <kbd>.FLEX</kbd> immediately beforehand.
+</p>
+
+<p>
+There are some instances where mom inhibits flex-spacing, notably
+after outputting deferred floats and pre-processor material.
+Introducing FLEX by itself in these instances&mdash;say, before a head
+or paragraph&mdash;will not have any effect; you must pass FLEX the
+<kbd>FORCE</kbd> argument.
+</p>
+
+<div class="box-tip">
+<p class="tip">
+<span class="important">Important note on flex-spacing policy:</span><br/>
+Mom disables flex-spacing on
+</p>
+<ul style="margin-top: -1em; margin-bottom: -.5em">
+  <li>the last page or column of a document, before the Table of Contents,
+      Endnotes, Bibliography, and/or any &#8220;Lists of...&#8221;
+  </li>
+  <li>the page preceding a
+      <a href="rectoverso.html#collate">COLLATE</a>
+  </li>
+  <li>the page preceding a
+      <a href="typesetting.html#NEWPAGE">NEWPAGE</a>
+      or
+      <a href="headfootpage.html#blankpage">BLANKPAGE</a>
+  </li>
+  <li>the column preceding a
+      <a href="#col-next">COL_NEXT</a>
+      or
+      <a href="#col-break">COL_BREAK</a>
+  </li>
+</ul>
+
+<p>
+If this is not what you want, insert
+<a href="#no-flex"><kbd>.NO_FLEX&nbsp;OFF</kbd></a>
+before the first flex-space point on the affected page or in the
+affected column.
+</p>
+
+<p>
+Flex-spacing is also disabled for any page or column where
+insufficient room at or near the bottom causes a
+<a href="docelement.html#heading">HEADING</a>
+or
+<a href="images.html#tbl">table</a>
+to be moved to the top of the next page.  These situations cannot
+be harmonized with flex-spacing except by adjusting your layout
+to prevent them.  You may try re-enabling flex-spacing for the
+page (<kbd>.NO_FLEX&nbsp;OFF</kbd>) and manually inserting
+flex-spaces at appropriate points, but the original whitespace is
+usually large enough that re-distributing it merely changes
+one layout gaffe into another.
+</p>
+
+<p>
+Very occasionally you may notice that a document element (spaced
+paragraph, floated material, pre-processor material, or a PDF image)
+near the bottom of page has also caused mom to disable flex-spacing
+for that page.  This occurs when the document element following it
+is a
+<a href="docelement.html#pp-space">spaced paragraph</a>.
+</p>
+
+<p>
+It is typographically acceptable for there to be space between
+insertions in running text (e.g., an image) and the bottom margin when
+the next page begins with a paragraph.  If you&#8217;d like to
+nudge the insertion a little closer to the bottom margin&mdash;not
+all the way; that isn&#8217;t possible without pushing it to the
+next page and disrupting subsequent flex-spacing&mdash;insert a
+small amount of space beforehand with
+<a href="typesetting.html#sp">SP</a>.
+Do not, in these cases, use the <kbd>ADJUST</kbd>
+argument (for example to
+<a href="images.html#pdf-image">PDF_IMAGE</a>.)
+</p>
+
+<p class="tip-bottom">
+In the case of a spaced paragraph itself near the bottom of the page
+causing a break, re-enabling flex-spacing
+(<kbd>.NO_FLEX&nbsp;OFF</kbd>) at an appropriate place in your input
+file will resolve the issue, provided there is at least one
+flex-point on the page.  If not, add one or more.
+</p>
+</div>
+
+<div class="macro-id-overline">
+<h3 id="no-flex" class="macro-id">NO_FLEX</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>NO_FLEX</b> <kbd class="macro-args">&lt;none&gt; | &lt;anything&gt;</kbd>
+</div>
+
+<p>
+NO_FLEX, without an argument, disables automatic flex-spacing
+and suppresses the FLEX macro.  If, in addition to NO_FLEX, NO_SHIM
+has also been given, your document will be neither flex-spaced nor
+shimmed.
+</p>
+
+<p>
+NO_FLEX with any argument (e.g., <b>OFF, QUIT, END, X</b>, etc)
+re-enables flex-spacing if it has been disabled.
+</p>
+
+<div class="rule-short"><hr/></div>
+
+<!-- ==================================================================== -->
+
+<h2 id="setup" class="docs" style="margin-bottom: .5em;">Preliminary document setup</h2>
+
+<div class="examples-container" style="margin-bottom: 1.5em;">
+<h3 id="docprocessing-tut" class="docs">Tutorial &ndash; Setting up a mom document</h3>
+
+<p style="margin-top: 1em;">
+There are four parts to setting up a mom doc (three, actually,
+with one optional).  Before we proceed, though, be reassured that
+something as simple as
+<br/>
+<span class="pre-in-pp">
+  .TITLE     "By the Shores of Lake Attica"
+  .AUTHOR    "Rosemary Winspeare"
+  .PRINTSTYLE TYPESET
+  .START
+</span>
+produces a beautifully typeset 8.5x11 document, with a
+<a href="definitions.html#docheader">docheader</a>
+at the top of page 1,
+<a href="definitions.html#header">page headers</a>
+with the title and author on subsequent pages, and page numbers at
+the bottom of each page.  In the course of the document, headings,
+citations, quotes, epigraphs, and so on, all come out looking neat,
+trim, and professional.
+</p>
+
+<p>
+For the purposes of this tutorial, we&#8217;re going to set up
+a short story&mdash;<i>My Pulitzer Winner</i>&mdash;by Joe Blow.
+Thankfully, we don&#8217;t have to look at story itself, just the
+setup.  Joe wants the document
+</p>
+<ul style="margin-top: -.5em; margin-bottom: -.5em;">
+  <li>to be draft 7, revision 39;</li>
+  <li>to use the DEFAULT template;</li>
+  <li>to print as draft-style output (instead of final-copy output);</li>
+  <li>to be typeset, in Helvetica, 12 on 14,
+      <a href="definitions.html#rag">rag-right</a>;
+  </li>
+  <li>to have <a href="definitions.html#footer">footers</a>
+      instead of
+      <a href="definitions.html#header">headers</a>;
+  </li>
+  <li>to use a single asterisk for
+      <a href="definitions.html#linebreak">author linebreaks</a>.
+  </li>
+</ul>
+
+<p>
+Joe Blow has no taste in typography.  His draft won&#8217;t look
+pretty, but this is, after all, a tutorial; we&#8217;re after
+examples, not beauty.
+</p>
+
+<h4 class="docs" style="margin-top: -.5em;">Step 1</h4>
+
+<p style="margin-bottom: -.5em;">
+The first step in setting up any document is giving mom some
+reference information (metadata).  The reference macros are:
+</p>
+<div style="width: 50%; float: left;">
+<ul>
+  <li>TITLE</li>
+  <li>SUBTITLE</li>
+  <li>AUTHOR</li>
+  <li>CHAPTER &ndash; chapter number</li>
+  <li>CHAPTER_TITLE &ndash; chapter name</li>
+  <li>DRAFT &ndash; the draft number</li>
+  <li>REVISION &ndash; the revision number</li>
+</ul>
+</div>
+<div>
+<ul>
+  <li>COPYRIGHT &ndash; only used on cover pages</li>
+  <li>MISC &ndash; only used on cover pages</li>
+  <li>DOCTITLE</li>
+  <li>COVERTITLE</li>
+  <li>DOC_COVERTITLE</li>
+  <li>PDF_TITLE</li>
+</ul>
+</div>
+
+<p style="margin-top: -.5em; clear: both;">
+You can use as many or as few as you wish, although at a minimum,
+you&#8217;ll probably fill in TITLE (unless the document&#8217;s a
+letter) and AUTHOR.  Order doesn&#8217;t matter.  You can separate
+the
+<a href="definitions.html#arguments">arguments</a>
+from the macros by any number of spaces.  The following are what
+you&#8217;d need to start Joe Blow&#8217;s story.
+<br/>
+<span class="pre-in-pp">
+  .TITLE    "My Pulitzer Winner"
+  .AUTHOR   "Joe Blow"
+  .DRAFT     7
+  .REVISION  39
+</span>
+</p>
+
+<h4 class="docs" style="margin-top: -1.5em;">Step 2</h4>
+
+<p>
+Once you&#8217;ve given mom the reference information she needs, you
+tell her how you want your document formatted.  What kind of
+document is it?  Should it be typeset or typewritten?  Is this a
+final copy (for the world to see) or just a draft?  Mom calls
+the macros that answer these questions &#8220;the docstyle
+macros&#8221;, and they're essentially templates.
+</p>
+<ul style="margin-top: -.5em; margin-bottom: -.5em;">
+  <li>PRINTSTYLE&mdash;typeset or typewritten</li>
+  <li>DOCTYPE&mdash;the type of document (default, chapter, user-defined, letter)</li>
+  <li>COPYSTYLE &mdash;draft or final copy</li>
+</ul>
+
+<p>
+Mom has defaults for DOCTYPE and COPYSTYLE; if they&#8217;re what
+you want, you don&#8217;t need to include them.  However,
+PRINTSTYLE has no default and must be present in every formatted
+document.  If you omit it, mom won&#8217;t process the document
+AND she&#8217;ll complain (both to stderr and as a single printed
+sheet with a warning).  Moms&mdash;they can be so annoying
+sometimes. &lt;sigh&gt;
+</p>
+
+<p>
+Adding to what we already have, the next bit of setup for Joe
+Blow&#8217;s story looks like this:
+<br/>
+<span class="pre-in-pp">
+    .TITLE    "My Pulitzer Winner"
+    .AUTHOR   "Joe Blow"
+    .DRAFT     7
+    .REVISION  39
+    \#
+    .DOCTYPE     DEFAULT \"Superfluous; mom uses DOCTYPE DEFAULT by default
+    .PRINTSTYLE  TYPESET
+    .COPYSTYLE   DRAFT
+</span>
+Notice the use of the
+<a href="definitions.html#commentlines">comment line</a>
+( <kbd>\#</kbd> ), a handy way to keep groups of macros visually
+separated for easy reading in a text editor.
+</p>
+
+<h4 class="docs" style="margin-top: -.5em; margin-bottom: -.5em;">Step 3</h4>
+
+<p>
+This step&mdash;completely optional&mdash;is where you, the user,
+take charge.  Mom has reasonable defaults for every document element
+and tag, but who&#8217;s ever satisfied with defaults?  Use any of
+the
+<a href="typesetting.html#macros-typesetting">typesetting macros</a>
+here to change mom&#8217;s document defaults (paper size, margins,
+family, point size, line space, rag, etc), or any of the document
+processing
+<a href="definitions.html#controlmacro">control macros</a>.
+This is the style-sheet section of a document, and
+must come after the
+<a href="#printstyle">PRINTSTYLE</a>
+directive.  Failure to observe this condition will result in
+PRINTSTYLE overriding your changes.
+</p>
+
+<p>
+Joe Blow wants his story printed in Helvetica, 12 on 14, rag right,
+with
+<a href="definitions.html#footer">page footers</a>
+instead of
+<a href="definitions.html#header">page headers</a>
+and a single asterisk for the
+<a href="definitions.html#linebreak">linebreak</a>
+character.  None of these requirements conforms to mom&#8217;s
+defaults for the chosen PRINTSTYLE (TYPESET), so we change them
+here.  The setup for Joe Blow&#8217;s story now looks like this:
+<br/>
+<span class="pre-in-pp">
+  .TITLE    "My Pulitzer Winner"
+  .AUTHOR   "Joe Blow"
+  .DRAFT     7
+  .REVISION  39
+  \#
+  .DOCTYPE     DEFAULT
+  .PRINTSTYLE  TYPESET
+  .COPYSTYLE   DRAFT
+  \#
+  .FAMILY  H
+  .PT_SIZE 12
+  .LS      14
+  .QUAD    LEFT    \"ie rag right
+  .FOOTERS
+  .LINEBREAK_CHAR *
+</span>
+</p>
+
+<h4 class="docs" style="margin-top: -1.5em; margin-bottom: -.5em;">Step 4</h4>
+
+<p>
+The final step in setting up a document is telling mom to start
+document processing.  It&#8217;s a no-brainer, just the single
+macro START.  Other than PRINTSTYLE, it&#8217;s the only macro
+required for document processing.
+</p>
+
+<p>
+Here&#8217;s the complete setup for <i>My Pulitzer Winner</i>:
+<br/>
+<span class="pre-in-pp">
+  .TITLE    "My Pulitzer Winner"
+  .AUTHOR   "Joe Blow"
+  .DRAFT     7
+  .REVISION  39
+  \#
+  .DOCTYPE     DEFAULT
+  .PRINTSTYLE  TYPESET
+  .COPYSTYLE   DRAFT
+  \#
+  .FAMILY   H
+  .PT_SIZE  12
+  .LS       14
+  .QUAD     LEFT    \"ie rag right
+  .FOOTERS
+  .LINEBREAK_CHAR *
+  \#
+  .START
+</span>
+As pointed out earlier, Joe Blow is no typographer.  Given that all he
+needs is a printed draft of his work, a simpler setup would have been:
+<br/>
+<span class="pre-in-pp">
+  .TITLE    "My Pulitzer Winner"
+  .AUTHOR   "Joe Blow"
+  .DRAFT     7
+  .REVISION  39
+  \#
+  .PRINTSTYLE  TYPEWRITE
+  .COPYSTYLE   DRAFT
+  \#
+  .START
+</span>
+<kbd>.PRINTSTYLE&nbsp;TYPEWRITE</kbd>, above, means that Joe&#8217;s
+work will come out &#8220;typewritten, double-spaced&#8221;,
+making the blue-pencilling he (or someone else) is sure to do much
+easier (which is why many publishers and agents still insist on
+typewritten, double-spaced copy).
+</p>
+
+<p>
+When J. Blow stops re-writing and decides to print off a final,
+typeset copy of his work for the world to see, he need only make two
+changes to the (simplified) setup:
+<br/>
+<span class="pre-in-pp">
+  .TITLE    "My Pulitzer Winner"
+  .AUTHOR   "Joe Blow"
+  .DRAFT     7
+  .REVISION  39
+  \#
+  .PRINTSTYLE  TYPESET  \"first change
+  .COPYSTYLE   FINAL    \"second change
+  \#
+  .START
+</span>
+In the above, <kbd>.DRAFT&nbsp;7,&nbsp;.REVISION 39,</kbd> and
+<kbd>.COPYSTYLE FINAL</kbd> are actually superfluous.  The draft
+and revision numbers aren&#8217;t used when COPYSTYLE is FINAL,
+and <b>COPYSTYLE FINAL</b> is mom&#8217;s default unless you tell
+her otherwise.
+</p>
+
+<p>
+But... to judge from the number of drafts already,
+J. Blow may very well decide his &#8220;final&#8221; version still
+isn&#8217;t up to snuff.  Hence, he might as well leave in the
+superfluous macros.  That way, when draft 7, rev. 62 becomes draft
+8, rev. 1, he&#8217;ll be ready to tackle his Pulitzer winner again.
+</p>
+</div>
+
+<div class="rule-short"><hr/></div>
+
+<!-- ======================================================================== -->
+
+<h2 id="reference-macros" class="macro-group">The reference macros (metadata)</h2>
+
+<p>
+The reference macros give mom the metadata she needs to generate
+<a href="definitions.html#docheader">docheaders</a>,
+<a href="definitions.html#header">page headers</a>,
+and
+<a href="cover.html#cover-top">covers</a>.
+They must go at the top of any file that uses mom&#8217;s document
+processing macros.
+</p>
+
+<div class="macro-list-container">
+<h3 id="index-reference" class="macro-list">Reference macros</h3>
+
+<ul class="macro-list">
+  <li><a href="#title">TITLE</a> &ndash; title of a story, article, etc</li>
+  <li><a href="#doc-title">DOCTITLE</a> &ndash; title of a book, or any collated document</li>
+  <li><a href="#subtitle">SUBTITLE</a></li>
+  <li><a href="#author">AUTHOR</a></li>
+  <li><a href="#chapter">CHAPTER</a> &ndash; the chapter number
+  <ul>
+    <li class="sublist"><a href="#chapter-string">CHAPTER_STRING</a> &ndash; &#8220;Chapter&#8221;, &#8220;CHAPTER&#8221;, &#8220;Chapître&#8221;, etc</li>
+  </ul></li>
+  <li><a href="#chapter-title">CHAPTER_TITLE</a></li>
+  <li><a href="#draft">DRAFT</a>
+  <ul>
+    <li class="sublist"><a href="#draft-string">DRAFT_STRING</a> &ndash; &#8220;Draft&#8221;, &#8220;DRAFT&#8221;, &#8220;Jet&#8221;, etc</li>
+  </ul></li>
+  <li><a href="#revision">REVISION</a>
+  <ul>
+    <li class="sublist"><a href="#revision-string">REVISION_STRING</a> &ndash; &#8220;Revision&#8221;, &#8220;Rev.&#8221;, &#8220;Révision&#8221;, etc</li>
+  </ul></li>
+  <li><a href="#copyright">COPYRIGHT</a></li>
+  <li><a href="#misc">MISC</a></li>
+  <li><a href="#covertitle">COVERTITLE</a> &ndash; frontispiece, title page, etc</li>
+  <li><a href="#doc-covertitle">DOC_COVERTITLE</a> &ndash; book cover, collated document cover, etc</li>
+  <li><a href="#pdftitle">PDF_TITLE</a> &ndash; window title for PDF viewers</li>
+</ul>
+</div>
+
+<!-- -TITLE- -->
+
+<div class="macro-id-overline">
+<h3 id="title" class="macro-id">TITLE</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>TITLE</b> <kbd>&quot;&lt;title string&gt;&quot; [&quot;&lt;2nd line&gt;&quot; [&quot;&lt;3rd line&gt;&quot; ... ] ]</kbd> 
+</div>
+<p class="requires">
+&bull;&nbsp;Arguments must be enclosed in double-quotes
+</p>
+
+<p>
+The title string can be caps or caps/lower-case; it&#8217;s up to you.  In
+<a href="#printstyle">PRINTSTYLE TYPESET</a>,
+the title will appear in the
+<a href="definitions.html#docheader">docheader</a>
+exactly as you typed it.  However, mom converts the title to all
+caps in
+<a href="definitions.html#header">page headers</a>
+unless you turn that feature off (see
+<a href="headfootpage.html#_caps">HEADER_&lt;POSITION&gt;_CAPS</a>).
+In
+<a href="#printstyle">PRINTSTYLE TYPEWRITE</a>,
+the title always gets converted to caps.
+</p>
+
+<p>
+TITLE accepts multiple arguments, each surrounded by double-quotes.
+Each argument is printed on a separate line, permitting you to
+create multi-line titles in your docheaders.
+</p>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Note:</span>
+If your <kbd><a href="#doctype">DOCTYPE</a></kbd> is CHAPTER, TITLE
+should be the title of the opus, not &#8220;CHAPTER whatever&#8221;.
+</p>
+</div>
+
+<!-- -DOCTITLE- -->
+
+<div class="macro-id-overline">
+<h3 id="doc-title" class="macro-id">DOCUMENT TITLE</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>DOCTITLE</b> <kbd class="macro-args">&quot;&lt;overall document title&gt;&quot; [&quot;&lt;2nd line&gt;&quot; [&quot;&lt;3rd line&gt;&quot; ... ] ]</kbd> 
+</div>
+<p class="requires">
+&bull;&nbsp;Arguments must be enclosed in double-quotes
+</p>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Note:</span>
+This macro should be used only if your <a
+href="#doctype">DOCTYPE</a> is <kbd>DEFAULT</kbd> (which is
+mom&#8217;s default).  If your DOCTYPE is CHAPTER, use
+<a href="#title">TITLE</a>
+to set the overall document title for cover pages, document cover
+pages, and page headers or footers.
+</p>
+</div>
+
+<p style="margin-top: -.5em;">
+When you&#8217;re creating a single document, say, an essay or a
+short story, you have no need of this macro.
+<a href="#title">TITLE</a>
+takes care of all your title needs.
+</p>
+
+<p>
+However if you&#8217;re 
+<a href="rectoverso.html#collate">collating</a>
+a bunch of documents together, say, to print out a report containing
+many articles with different titles, or a book of short stories with
+different authors, you need DOCTITLE.
+</p>
+
+<p>
+DOCTITLE tells mom the title of the complete document (as opposed to
+the title of each article or entitled section), and appears
+</p>
+
+<ol style="list-style-type: lower-alpha">
+  <li>as the window title in PDF viewers (e.g., Okular or Evince)</li>
+  <li>in the initial rightmost position of page headers in the document</li>
+</ol>
+
+<p>
+Moreover, DOCTITLE does not appear in the
+<a href="definitions.html#pdfoutline">PDF outline</a>,
+as its presence in window title would make it redundant.
+</p>
+
+<p>
+The doctitle string can be caps or caps/lower-case; it&#8217;s up to
+you.  In
+<a href="#printstyle">PRINTSTYLE TYPESET</a>,
+by default, the doctitle in
+<a href="definitions.html#header">page headers</a>
+is all in caps, unless you turn that feature off (see
+<a href="headfootpage.html#_caps">HEADER_&lt;POSITION&gt;_CAPS</a>).
+In
+<a href="#printstyle">PRINTSTYLE TYPEWRITE</a>,
+the doctitle always gets converted to caps.
+</p>
+
+<p>
+DOCTITLE accepts multiple arguments, each surrounded
+by double-quotes.  Each argument is printed on a separate line,
+permitting you to create multi-line document titles for use on
+<a href="cover.html#cover">Covers</a>
+and/or
+<a href="cover.html#doc-cover">Doc covers</a>.
+</p>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Note:</span>
+If your
+<a href="#doctype">DOCTYPE</a>
+is CHAPTER, you don&#8217;t need DOCTITLE.  TITLE takes care of
+everything.
+</p>
+</div>
+
+<!-- -SUBTITLE- -->
+
+<div class="macro-id-overline">
+<h3 id="subtitle" class="macro-id">SUBTITLE</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>SUBTITLE</b> <kbd class="macro-args">[COVER | DOC_COVER] &quot;&lt;subtitle&gt;&quot; [&quot;&lt;2nd line&gt;&quot; [&quot;&lt;3rd line&gt;&quot; ... ] ]</kbd> 
+</div>
+<p class="requires">
+&bull;&nbsp;String arguments must be enclosed in double-quotes
+</p>
+
+<p>
+The subtitle string can be caps or caps/lower-case.  I recommend
+caps/lower case.
+</p>
+
+<p>
+SUBTITLE accepts multiple arguments, each surrounded
+by double-quotes.  Each argument is printed on a separate line,
+permitting you to create multi-line subtitles.
+</p>
+
+<p>
+If the optional argument, <kbd>COVER</kbd> or <kbd>DOC_COVER</kbd>,
+is given to SUBTITLE, the remaining string
+arguments represent the subtitle that will appear on cover or
+document cover pages (see the
+<a href="cover.html#cover-intro">Introduction to cover pages</a>
+for a description of the difference between &#8220;document
+covers&#8221; and &#8220;covers&#8221;).  Thus, it is possible to have
+differing subtitles appear on the document cover, the cover
+(&#8220;title&#8221;) page, and in the document header.  An extreme
+example would be:
+<br/>
+<span class="pre-in-pp">
+  .SUBTITLE "The Docheader Subtitle"
+  .SUBTITLE DOC_COVER "The Document Cover Subtitle"
+  .SUBTITLE COVER "The Cover Subtitle"
+</span>
+The first invocation of <kbd>.SUBTITLE</kbd> establishes the
+subtitle that appears in the docheader at the top of the first page
+of a document.  The second invocation establishes the subtitle that
+appears on the document cover; the third establishes the subtitle
+that appears on the cover (&#8220;title&#8221;) page.
+</p>
+
+<p>
+If you don&#8217;t require differing subtitles for doc cover and cover
+pages, <kbd>.SUBTITLE</kbd>, without the optional first argument, is
+sufficient, provided you give the word, <kbd>SUBTITLE</kbd>, as an
+argument to the macro
+<a href="cover.html#doc-cover">DOC_COVER</a>
+or
+<a href="cover.html#cover">COVER</a>
+</p>
+
+<!-- -AUTHOR- -->
+
+<div class="macro-id-overline">
+<h3 id="author" class="macro-id">AUTHOR</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>AUTHOR</b> <kbd class="macro-args">[COVER | DOC_COVER] &quot;&lt;author&gt;&quot; [ &quot;&lt;author2&gt;&quot; [&quot;&lt;author3&gt;&quot; ... ] ]</kbd>
+</div>
+
+<p class="alias" style="margin-bottom: 0;">
+<i>Alias:</i> <b>EDITOR</b>
+</p>
+<p class="requires">
+&bull;&nbsp;String arguments must be enclosed in double-quotes
+</p>
+
+<p>
+Each author string can hold as many names as you like, e.g.,
+<br/>
+<span class="pre-in-pp" style="margin-bottom: -1em;">
+  .AUTHOR "Joe Blow"
+</span>
+or
+<br/>
+<span class="pre-in-pp" style="margin-top: -.5em;">
+  .AUTHOR "Joe Blow, Jane Doe" "John Hancock"
+</span>
+Mom prints each string that&#8217;s enclosed in double-quotes on a
+separate line in the
+<a href="definitions.html#docheader">docheader</a>,
+however only the first string appears in
+<a href="definitions.html#header">page headers</a>.
+If you want mom to put something else in the author part of page
+headers (say, just the last names of a document&#8217;s two
+authors), redefine the appropriate part of the header (see
+<a href="headfootpage.html#header-control">header/footer control</a>).
+</p>
+
+<p>
+The strings can be caps or caps/lower-case.  I recommend caps/lower
+case.
+</p>
+
+<p>
+If the optional argument, <kbd>COVER</kbd> or <kbd>DOC_COVER</kbd>,
+is given to AUTHOR, the remaining string arguments represent the
+author(s) that will appear on cover or document cover pages (see the
+<a href="cover.html#cover-intro">Introduction to cover pages</a>
+for a description of the difference between &#8220;document
+covers&#8221; and &#8220;covers&#8221;).  Thus, it is possible
+to have differing authors on the document cover, the cover
+(&#8220;title&#8221;) page, in the document first-page header and
+subsequent page headers/footers.  An example might be:
+<br/>
+<span class="pre-in-pp">
+  .AUTHOR "Joe Blow"
+  .EDITOR DOC_COVER "John Smith" "and" "Jane Doe"  \" EDITOR is an alias for AUTHOR
+  .AUTHOR COVER "Joe Blow" "(assisted by Jane Doe)"
+</span>
+The first invocation of <kbd>.AUTHOR</kbd> establishes the author
+that appears in the docheader at the top of the first page of
+a document and in subsequent page headers/footers.  The second
+invocation establishes the authors (editors, in this instance) that
+appear on the document cover; the third establishes the author(s)
+that appear(s) on the cover (&#8220;title&#8221;) page.
+</p>
+
+<p>
+If you don&#8217;t require differing authors for doc cover and cover
+pages, <kbd>.AUTHOR</kbd>, without the optional first argument, is
+sufficient, provided you give the word, <kbd>AUTHOR</kbd> as an
+argument to the macro
+<a href="cover.html#doc-cover">DOC_COVER</a>
+or
+<a href="cover.html#cover">COVER</a>
+</p>
+
+<!-- -CHAPTER- -->
+
+<div class="macro-id-overline">
+<h3 id="chapter" class="macro-id">CHAPTER</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>CHAPTER</b> <kbd class="macro-args">&lt;chapter number&gt;</kbd>
+</div>
+
+<p>
+The chapter number can be in any form you like&mdash;a digit, a roman
+numeral, a word.  If you choose
+<a href="#doctype">DOCTYPE CHAPTER</a>,
+mom prints whatever argument you pass CHAPTER beside the word,
+&#8220;Chapter&#8221;, as a single line
+<a href="definitions.html#docheader">docheader</a>.
+She also puts the same thing in the middle of
+<a href="definitions.html#header">page headers</a>.
+</p>
+
+<p>
+Please note that if your argument to CHAPTER runs to more than one
+word, you must enclose the argument in double-quotes.
+</p>
+
+<p>
+If you&#8217;re not using DOCTYPE CHAPTER, the macro can
+be used to identify any document as a chapter <i>for the purpose of
+prepending a chapter number to numbered head elements</i>, provided
+you pass it a
+<a href="definitions.html#numericargument">numeric argument</a>.
+See
+<a href="docelement.html#prefix-chapter-number">PREFIX_CHAPTER_NUMBER</a>.
+</p>
+
+<!-- -CHAPTER_STRING- -->
+
+<h3 id="chapter-string" class="docs">Chapter string</h3>
+
+<p>
+If you&#8217;re not writing in English, you can ask mom to use the
+word for &#8220;chapter&#8221; in your own language by telling her
+what it is with the CHAPTER_STRING macro, like this:
+<br/>
+<span class="pre">
+  .CHAPTER_STRING "Chapître"
+</span>
+</p>
+
+<p>
+If you would like a blank chapter string, ie you&#8217;d like
+the chapter number to appear without &#8220;Chapter&#8221;
+beforehand, enter <kbd>.CHAPTER_STRING "\&"</kbd>.
+</p>
+
+<!-- -CHAPTER_TITLE- -->
+
+<div class="macro-id-overline">
+<h3 id="chapter-title" class="macro-id">CHAPTER_TITLE</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>CHAPTER_TITLE</b>  <kbd class="macro-args">&quot;&lt;chapter title&gt;&quot; [&quot;&lt;2nd line&gt;&quot; [&quot;&lt;3rd line&gt;&quot; ... ] ]</kbd> 
+</div>
+<p class="requires">
+&bull;&nbsp;Arguments must be enclosed in double-quotes
+</p>
+
+<p>
+If, either in addition to or instead of &#8220;Chapter
+&lt;n&gt;&#8221; appearing at the top of chapters, you want your
+chapter to have a title, use CHAPTER_TITLE, with your title enclosed
+in double-quotes, like this:
+<br/>
+<span class="pre">
+  .CHAPTER_TITLE "The DMCA Nazis"
+</span>
+</p>
+
+<p>
+CHAPTER_TITLE accepts multiple arguments, each surrounded by
+double-quotes.  Each argument is printed on a separate line,
+permitting you to create multi-line chapter titles in your
+docheaders.
+</p>
+
+<p>
+If you&#8217;ve used
+<a href="#chapter">CHAPTER</a>
+to give the chapter a number, both &#8220;Chapter &lt;n&gt;&#8221;
+and the chapter title will appear at the top of the chapter, like
+this:
+<br/>
+<span class="pre-in-pp">
+       Chapter 1
+    The DMCA Nazis
+</span>
+In such a case, by default, only the chapter&#8217;s title will appear in
+the
+<a href="definitions.html#header">page headers</a>,
+not &#8220;Chapter &lt;n&gt;&#8221;.
+</p>
+
+<p>
+If you omit CHAPTER when setting up your reference macros, only the
+title will appear, both at the top of page one and in subsequent
+page headers.
+</p>
+
+<p>
+The style of the chapter title can be altered by
+<a href="docelement.html#docelement-control">control macros</a>,
+e.g., CHAPTER_TITLE_FAMILY, CHAPTER_TITLE_FONT, etc.  The default
+family, font and point size are Times Roman, Bold Italic, 4 points
+larger than
+<a href="definitions.html#running">running text</a>.
+</p>
+
+<!-- -DRAFT- -->
+
+<div class="macro-id-overline">
+<h3 id="draft" class="macro-id">DRAFT</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>DRAFT</b> <kbd class="macro-args">&lt;draft number&gt;</kbd>
+</div>
+
+<p>
+DRAFT only gets used with
+<a href="#copystyle">COPYSTYLE&nbsp;DRAFT</a>.
+If the COPYSTYLE is FINAL (the default), mom ignores DRAFT.  DRAFT
+accepts both alphabetic and numeric arguments, hence it&#8217;s
+possible to do either
+<br/>
+<span class="pre">
+  .DRAFT 2
+     or
+  .DRAFT Two
+</span>
+</p>
+
+<p>
+Mom prints the argument to <kbd>.DRAFT</kbd> (ie the draft number)
+beside the word &#8220;Draft&#8221; in the middle part of
+<a href="definitions.html#header">page headers</a>.
+</p>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">A small word of caution:</span>
+If your argument to <kbd>.DRAFT</kbd> is more than one word long,
+you must enclose the argument in double-quotes.
+</p>
+</div>
+
+<p>
+You may, if you wish, invoke <kbd>.DRAFT</kbd> without an
+argument, in which case, no draft number will be printed beside
+&#8220;Draft&#8221; in headers or footers.
+</p>
+
+<!-- -DRAFT_STRING- -->
+
+<h3 id="draft-string" class="docs">The draft string</h3>
+
+<p>
+If you&#8217;re not writing in English, you can ask mom
+to use the word for &#8220;draft&#8221; in your own language by
+telling her what it is with the DRAFT_STRING macro,
+like this:
+<br/>
+<span class="pre">
+  .DRAFT_STRING "Jet"
+</span>
+</p>
+
+<p>
+Equally, DRAFT_STRING can be used to roll your own solution to
+something other than the word &#8220;Draft.&#8221; For example, you
+might want &#8220;Trial run alpha-three&#8221; to appear in the
+headers of a draft version.  You&#8217;d accomplish this by doing
+<br/>
+<span class="pre">
+  .DRAFT alpha-three
+  .DRAFT_STRING "Trial run"
+</span>
+</p>
+
+<p>
+If you wanted only &#8220;Trial run&#8221; to appear, entering
+<kbd>.DRAFT</kbd> without an argument as well as
+<kbd>.DRAFT_STRING&nbsp;"Trial&nbsp;run"</kbd> is how you&#8217;d do it.
+</p>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Note:</span>
+If you define both a blank <kbd>.DRAFT</kbd> and a blank
+<kbd>.DRAFT_STRING</kbd>, mom skips the draft field in headers
+entirely.  If this is what you want, this is also the only way
+to do it.  Simply omitting invocations of <kbd>.DRAFT</kbd> and
+<kbd>.DRAFT_STRING</kbd> will result in mom using her default, which
+is to print &#8220;Draft &lt;number&gt;&#8221;.
+</p>
+</div>
+
+<!-- -REVISION- -->
+
+<div class="macro-id-overline">
+<h3 id="revision" class="macro-id">REVISION</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>REVISION</b> <kbd class="macro-args">&lt;revision number&gt;</kbd>
+</div>
+
+<p>
+REVISION only gets used with
+<a href="#copystyle">COPYSTYLE DRAFT</a>.
+If the COPYSTYLE is FINAL (the default), mom ignores the REVISION
+macro. REVISION accepts both alphabetic and numeric arguments, hence
+it&#8217;s possible to do either
+<br/>
+<span class="pre" style="margin-bottom: -1em;">
+  .REVISION 2
+</span>
+or
+<span class="pre" style="margin-top: -.5em;">
+  .REVISION Two
+</span>
+</p>
+
+<p>
+Mom prints the revision number beside the shortform
+&#8220;Rev.&#8221; in the middle part of
+<a href="definitions.html#header">page headers</a>.
+</p>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">A small word of caution:</span>
+If your argument to <kbd>.REVISION</kbd> is more than one word long,
+you must enclose the argument in double-quotes.
+</p>
+</div>
+
+<p>
+You may, if you wish, invoke <kbd>.REVISION</kbd> without an
+argument, in which case, no revision number will be printed beside
+&#8220;Rev.&#8221; in headers or footers.
+</p>
+
+<!-- -REVISION_STRING- -->
+
+<h3 id="revision-string" class="docs">The revision string</h3>
+
+<p>
+If you&#8217;re not writing in English, you can ask mom
+to use the word for &#8220;revision,&#8221; or a shortform
+thereof, in your own language by telling her what it is with the
+REVISION_STRING macro, like this:
+<br/>
+<span class="pre">
+  .REVISION_STRING "Rév."
+</span>
+</p>
+
+<p>
+Additionally, you may sometimes want to make use of mom&#8217;s
+<a href="#copystyle">COPYSTYLE DRAFT</a>
+but not actually require any draft information.  For example,
+you might like mom to indicate only the revision number of
+your document.  The way to do that is to define an empty
+<kbd>.DRAFT</kbd> and <kbd>.DRAFT_STRING</kbd> in addition to
+<kbd>.REVISION</kbd>, like this:
+<br/>
+<span class="pre">
+  .DRAFT
+  .DRAFT_STRING
+  .REVISION 2
+</span>
+</p>
+
+<p>
+Equally, if you want to roll your own solution to what revision
+information appears in headers, you could do something like this:
+<br/>
+<span class="pre">
+  .DRAFT
+  .DRAFT_STRING
+  .REVISION "two-twenty-two"
+  .REVISION_STRING "Revision"
+</span>
+</p>
+
+<p>
+The above, naturally, has no draft information.  If you want to roll
+your own <kbd>.DRAFT</kbd> and/or <kbd>.DRAFT_STRING</kbd> as well,
+simply supply arguments to either or both.
+</p>
+
+<!-- -COPYRIGHT- -->
+
+<div class="macro-id-overline">
+<h3 id="copyright" class="macro-id">COPYRIGHT</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>COPYRIGHT</b> <kbd class="macro-args">[COVER | DOC_COVER] &quot;&lt;copyright info&gt;&quot;</kbd>
+</div>
+
+<p class="requires">
+&bull;&nbsp;Argument must be enclosed in double-quotes
+</p>
+
+<p>
+The argument passed to COPYRIGHT is only used on cover or doc cover
+pages, and then only if the argument COPYRIGHT is passed to
+<a href="cover.html#cover">COVER</a>
+or
+<a href="cover.html#doc-cover">DOC_COVER</a>.
+Do not include the copyright symbol in the argument passed to
+COPYRIGHT; mom puts it in for you.
+</p>
+
+<p>
+If the optional argument, <kbd>COVER</kbd> or <kbd>DOC_COVER</kbd>,
+is given to COPYRIGHT, the string argument represents the copyright
+information that will appear on cover or document cover pages (see
+the
+<a href="cover.html#cover-intro">Introduction to cover pages</a>
+for a description of the difference between &#8220;document
+covers&#8221; and &#8220;covers&#8221;).  Thus, it is possible to
+have differing copyright information on the document cover and on
+the cover (&#8220;title&#8221;) page.  An example might be:
+<br/>
+<span class="pre-in-pp">
+  .COPYRIGHT DOC_COVER "2010 John Smith and Jane Doe"
+  .COPYRIGHT COVER "2008 Joe Blow"
+</span>
+The first invocation of <kbd>.COPYRIGHT</kbd> establishes the
+copyright information that appears on the document cover; the second
+establishes the copyright information that appears on the cover
+(&#8220;title&#8221;) page.
+</p>
+
+<p>
+If you don&#8217;t require differing copyright information for
+doc cover and cover pages, <kbd>.COPYRIGHT</kbd>, without the
+optional first argument, is sufficient, provided you give the word,
+<kbd>COPYRIGHT</kbd>, as an argument to the macro
+<a href="cover.html#doc-cover">DOC_COVER</a>
+or
+<a href="cover.html#cover">COVER</a>
+</p>
+
+<p>
+Style parameters for the copyright line may be
+entered as individual macros or
+<a href="docelement.html#grouping">grouped</a>,
+e.g.,
+<br/>
+<span class="pre-in-pp">
+  .COPYRIGHT_FAMILY H
+  .COPYRIGHT_FONT   R
+  .COPYRIGHT_SIZE   -2
+</span>
+or
+<br/>
+<span class="pre-in-pp">
+  .COPYRIGHT_STYLE \
+  FAMILY H \
+  FONT   R \
+  SIZE   -2
+</span>
+The vertical position of the copyright line may be raised (-) or
+lowered (+) with the macro COPYRIGHT_V_ADJUST.  For example, to
+raise the copyright line by 3
+<a href="definitions.html#picaspoints">points</a>, you&#8217;d do
+<br/>
+<span class="pre-in-pp">
+  .COPYRIGHT_V_ADJUST -3p
+</span>
+Alternatively, the COPYRIGHT_STYLE macro may be used with the
+argument <kbd>V_ADJUST</kbd>:
+<span class="pre-in-pp">
+  .COPYRIGHT_STYLE \
+  FAMILY    H \
+  FONT      R \
+  SIZE     -2 \
+  V_ADJUST -3p
+</span>
+</p>
+
+<!-- -MISC- -->
+
+<div class="macro-id-overline">
+<h3 id="misc" class="macro-id">MISC</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>MISC</b> <kbd class="macro-args">[COVER | DOC_COVER] &quot;&lt;argument 1&gt;&quot; [&quot;&lt;argument 2&gt;&quot; &quot;&lt;argument 3&gt;&quot; ...]</kbd>
+</div>
+
+<p class="requires">
+&bull;&nbsp;String arguments must be enclosed in double-quotes
+</p>
+
+<p>
+The argument(s) passed to MISC are only used on cover or doc cover
+pages, and then only if the argument <kbd>MISC</kbd> is passed to
+<a href="cover.html#cover">COVER</a>
+or
+<a href="cover.html#doc-cover">DOC_COVER</a>.
+MISC can contain any information you like.  Each argument appears on
+a separate line at the bottom of the cover or doc cover page.
+</p>
+
+<p>
+For example, if you&#8217;re submitting an essay where the prof has
+requested that you include the course number, his name and the date,
+you could do
+<br/>
+<span class="pre-in-pp">
+  .MISC "Music History 101" "Professor Hasbeen" "Dec. 24, 2010"
+</span>
+and the information would appear on the essay&#8217;s cover page.
+</p>
+
+<p>
+If the optional argument, <kbd>COVER</kbd> or <kbd>DOC_COVER</kbd>,
+is given to MISC, the string arguments represent the miscellaneous
+information that will appear on cover or document cover pages (see
+the
+<a href="cover.html#cover-intro">Introduction to cover pages</a>
+for a description of the difference between &#8220;document
+covers&#8221; and &#8220;covers&#8221;).  Thus, it is possible to
+have differing miscellaneous information on the document cover and
+on the cover (&#8220;title&#8221;) page.  An example might be:
+<br/>
+<span class="pre">
+  .MISC DOC_COVER "Music History 101" "Professor Hasbeen"
+  .MISC COVER "Spring Term Paper"
+</span>
+</p>
+
+<p>
+The first invocation of <kbd>.MISC</kbd> establishes the
+miscellaneous information that appears on the document cover; the
+second establishes the miscellaneous information that appears on the
+cover (&#8220;title&#8221;) page.
+</p>
+
+<p>
+If you don&#8217;t require differing miscellaneous information
+for doc cover and cover pages, <kbd>.MISC</kbd>, without the
+optional first argument, is sufficient, provided you give the word
+&#8220;MISC&#8221; as an argument to the macro
+<a href="cover.html#doc-cover">DOC_COVER</a>
+or
+<a href="cover.html#cover">COVER</a>
+</p>
+
+<!-- -COVER_TITLE- -->
+
+<div class="macro-id-overline">
+<h3 class="macro-id">COVERTITLE &amp; DOC_COVERTITLE</h3>
+</div>
+
+<div id="covertitle" class="box-macro-args">
+Macro: <b>COVERTITLE</b> <kbd class="macro-args">&quot;&lt;user defined cover page title&gt;&quot; [&quot;&lt;2nd line&gt;&quot; [&quot;&lt;3rd line&gt;&quot; ... ] ]</kbd> 
+</div>
+<p class="requires">
+&bull;&nbsp;Arguments must be enclosed in double-quotes
+</p>
+
+<div id="doc-covertitle" class="box-macro-args">
+Macro: <b>DOC_COVERTITLE</b> <kbd class="macro-args">&quot;&lt;user defined document cover page title&gt;&quot; [&quot;&lt;2nd line&gt;&quot; [&quot;&lt;3rd line&gt;&quot; ... ] ]</kbd> 
+</div>
+<p class="requires">
+&bull;&nbsp;Arguments must be enclosed in double-quotes
+</p>
+
+<p>
+The arguments passed to COVERTITLE or DOC_COVERTITLE are only
+used on cover or doc cover pages, and then only if the argument
+COVERTITLE or DOC_COVERTITLE is passed to
+<a href="cover.html#cover">COVER</a>
+or
+<a href="cover.html#doc-cover">DOC_COVER</a>.
+</p>
+
+<p>
+The only time you require a COVERTITLE or DOC_COVERTITLE is when
+none of the required first arguments to COVER or DOC_COVER fits
+your needs for the title you want to appear on cover (or doc cover)
+pages.
+</p>
+
+<p>
+COVERTITLE and DOC_COVERTITLE accept multiple arguments, each
+surrounded by double-quotes.  Each argument is printed on a separate
+line, permitting you to create multi-line titles on your cover
+and/or doc cover pages.
+</p>
+
+<div class="macro-id-overline">
+<h3 class="macro-id">PDF Title</h3>
+</div>
+
+<div id="pdftitle" class="box-macro-args">
+Macro: <b>PDF_TITLE</b> <kbd class="macro-args">&quot;&lt;pdf viewer window title&gt;&quot; </kbd> 
+</div>
+<p class="requires">
+&bull;&nbsp;Arguments must be enclosed in double-quotes
+</p>
+
+<p>
+Except for
+<a href="#doc-title">DOCTITLE</a>,
+mom does not, by default, provide PDF viewers with a document title.
+You may set one, if you like, with PDF_TITLE.
+</p>
+
+<div class="rule-short"><hr/></div>
+
+<!-- ======================================================================== -->
+
+<h2 id="docstyle-macros" class="macro-group">The docstyle macros</h2>
+
+<p>
+The docstyle macros tell mom what type of document you&#8217;re
+writing, whether you want the output typeset or &#8220;typewritten,
+double-spaced&#8221;, and whether you want a draft copy (with draft
+and revision information in the headers) or a final copy.
+</p>
+
+<div class="macro-list-container">
+<h3 id="index-docstyle" class="macro-list">Docstyle macros</h3>
+<ul class="macro-list">
+  <li><a href="#doctype">DOCTYPE</a>
+  <li><a href="#printstyle">PRINTSTYLE</a> &ndash; non-optional macro required for document processing
+  <ul style="margin-left: -.5em; list-style-type: disc;">
+    <li><a href="#typeset-defaults">Defaults for PRINTSTYLE TYPESET</a></li>
+    <li><a href="#typewrite-defaults">Defaults for PRINTSTYLE TYPEWRITE</a>
+    <ul style="margin-left: -.5em; list-style-type: circle;">
+      <li><a href="#typewrite-control">PRINTSTYLE TYPEWRITE control macros</a>
+      <ul style="margin-left: -1.5em; list-style-type: square;">
+        <li><a href="#typewriter-family">Family</a></li>
+        <li><a href="#typewriter-size">Point size</a></li>
+        <li><a href="#typewriter-underlining">Underlining of italics</a></li>
+      </ul></li>
+    </ul></li>
+  </ul></li>
+  <li><a href="#copystyle">COPYSTYLE</a></li>
+</ul>
+</div>
+
+<!-- -DOCTYPE- -->
+
+<div class="macro-id-overline">
+<h3 id="doctype" class="macro-id">DOCTYPE</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>DOCTYPE</b> <kbd class="macro-args">DEFAULT | CHAPTER | NAMED &quot;&lt;name&gt;&quot; | LETTER | SLIDES</kbd>
+</div>
+
+<p>
+The arguments <kbd>DEFAULT,</kbd> <kbd>CHAPTER</kbd> and
+<kbd>NAMED</kbd> tell mom what to put in the
+<a href="definitions.html#docheader">docheader</a>
+and
+<a href="definitions.html#header">page headers</a>.
+<kbd>LETTER</kbd> and <kbd>SLIDES</kbd> tells her you want to write
+a letter or create slides.
+</p>
+
+<p>
+Mom&#8217;s default DOCTYPE is <kbd>DEFAULT</kbd>.  If that&#8217;s
+what you want, you don&#8217;t have to give a DOCTYPE command.
+</p>
+
+<p id="default-doctype">
+<kbd>DEFAULT</kbd> prints a
+<a href="definitions.html#docheader">docheader</a>
+containing the title, subtitle and author information given to the
+<a href="#reference-macros">reference macros</a>,
+and page headers with the author and title.  (See
+<a href="headfootpage.html#header-style">Default specs for headers</a>
+for how mom outputs each part of the page header.)
+</p>
+
+<p>
+<kbd>CHAPTER</kbd> prints &#8220;Chapter &lt;n&gt;&#8221; in place
+of a
+<a href="definitions.html#docheader">docheader</a>
+(&lt;n&gt; is what you gave to the
+<a href="#reference-macros">reference macro</a>,
+<kbd><a href="#chapter">CHAPTER</a></kbd>).
+If you give the chapter a title with
+<a href="#chapter-title">CHAPTER_TITLE</a>,
+mom prints &#8220;Chapter &lt;n&gt;&#8221; and the
+title underneath.  If you omit the
+<a href="#chapter">CHAPTER</a>
+reference macro but supply a
+<a href="#chapter-title">CHAPTER_TITLE</a>,
+mom prints only the chapter title.
+</p>
+
+<p>
+The page headers in DOCTYPE <kbd>CHAPTER</kbd> contain the author,
+the title of the book (which you gave with
+<a href="#title">TITLE</a>),
+and &#8220;Chapter &lt;n&gt;&#8221; (or the chapter title).  See
+<a href="headfootpage.html#header-style">Default Specs for Headers</a>
+for mom&#8217;s default type parameters for each part of
+the page header.
+</p>
+
+<p>
+<kbd>NAMED</kbd> takes an additional argument: a name for this
+particular kind of document (e.g., outline, synopsis, abstract,
+memorandum), enclosed in double-quotes. <kbd>NAMED</kbd> is
+identical to <kbd>DEFAULT</kbd> except that mom prints the argument
+to <kbd>NAMED</kbd> beneath the
+<a href="definitions.html#docheader">docheader</a>,
+as well as in page headers.
+(See
+<a href="headfootpage.html#header-style">Default specs for headers</a>
+for how mom outputs each part of the page header.)
+</p>
+
+<div class="box-tip">
+<p id="copystyle-note" class="tip">
+<span class="note">Note: version 2.1 change</span>
+<br/>
+<kbd>DOCTYPE NAMED "string"</kbd> no longer accepts a color argument
+after <kbd>"string"</kbd>.  Setting the color of the string is now
+done with <kbd>DOCTYPE_COLOR &lt;color&gt;</kbd>.  Default
+underscoring of <kbd>"string"</kbd> in the docheader and on covers
+has been removed.  Use <kbd>DOCTYPE_UNDERLINE</kbd>,
+<kbd>DOC_COVER_DOCTYPE_UNDERLINE</kbd> and/or
+<kbd>COVER_DOCTYPE_UNDERLINE</kbd> to re-enable it.  All three
+take the same arguments listed in the
+<a href="docelement.html#underline">Underline style, rule weight</a>
+section of
+<a href="docelement.html#control-macro-args">Arguments to the control macros</a>.
+</p>
+</div>
+
+<p>
+<kbd>LETTER</kbd> tells mom you&#8217;re writing a letter.  See the
+section
+<a href="letters.html#letters">Writing Letters</a>
+for instructions on using mom to format letters.
+</p>
+
+<h4 id="slides" class="docs" style="font-size: 100%; text-transform: uppercase">Slides</h4>
+
+<p>
+PDF slides are a special kind of mom document, formatted for viewing
+in a PDF reader&#8217;s presentation mode.  In most respects, they
+behave identically to the other document types.  Key differences
+are:
+</p>
+<ul style="margin-top: -.5em">
+<li>headers, footers, and pagination are disabled by default</li>
+<li>type is set
+<a href="typesetting.html#quad">QUAD CENTER</a>
+by default</li>
+<li>
+<a href="#flex">flex-spacing</a>
+and
+<a href="#shim">shimming</a>
+are disabled by default; shimming may
+be re-enabled (with <kbd>NO_SHIM OFF</kbd>), but not flex-spacing</li>
+<li>there&#8217;s no need for
+<a href="#printstyle">PRINTSTYLE</a></li>
+</ul>
+
+<p>
+DOCTYPE SLIDES takes up to five optional arguments, which come
+immediately after SLIDES. They may be entered in any order.
+<br/>
+<span class="pre-in-pp">
+  DOCTYPE SLIDES \
+   ASPECT 4:3 | 16:9 \
+   HEADER "left" "centre" "right" \
+   FOOTER  "left" "centre" "right" \
+   TRANSITION "&lt;slide transition effect&gt;" (mode + parameters) \
+   PAUSE "&lt;text reveal effect&gt;" (mode + parameters)
+</span>
+For convenience, you many want to enter each argument on a single
+line as shown above; all but the last must be terminated by a
+backslash.
+</p>
+
+<h5 class="docs" style="margin-top: .5em">Aspect</h5>
+
+<p>
+Slides can be formatted for one of two aspect ratios common to
+monitors and screens: 4:3 and 16:9.  The default is 16:9.
+<span class="pre-in-pp">
+ 4:3                              16:9
+ media size: 11" x 8.25"          media size: 11" x 8.1875"
+ left/right margins: 36 points    left/right margins: 36 points
+ top margin: 90 points            top margin: 80 points
+ bottom margin: 84 points         bottom margin: 72 points
+ base text size: 16 points        base text size: 14 points
+ autoleading: 6 points, adjusted  autoleading: 4 points, adjusted
+ (header/footer size: -3 points)  (header/footer size: -2 points)
+</span>
+Note that both media sizes fit on either A4 or US LETTER papersizes.
+</p>
+
+<h5 class="docs" style="margin-top: .5em">Headers, footers, and pagination</h5>
+
+<p>
+If you want a header, footer, or both for your slides, pass SLIDES
+the <kbd>HEADER</kbd> and/or <kbd>FOOTER</kbd> argument(s).  Both
+take three additional
+<a href="definitions.html#stringargument">string arguments</a>,
+which must be enclosed in double-quotes, defining the left, centre,
+and right parts of the header/footer.  Any parts you want left blank
+should be entered as two double-quotes.  For example,
+<span class="pre-in-pp">
+  HEADER "" "My slide presentation" ""  
+</span>
+will result in a header with only the centre part.
+</p>
+
+<p>
+Normal pagination is disabled for slides.  If you want your slides
+numbered, the slide number must be given to one of the header/footer
+parts with the
+<a href="definitions.html#inlines">inline escape</a>
+<br/>
+<kbd>\*[SLIDE#]</kbd>.  For example:
+<span class="pre-in-pp">
+  HEADER "" "My slide presentation" "" \
+  FOOTER "" "" "\*[SLIDE#]"
+</span>
+will give you a centred header with numbering at the bottom right of
+the slide.
+</p>
+
+<p>
+The overall family, size, and colour of headers may be set with
+HEADER_FAMILY, HEADER_SIZE, and HEADER_COLOR.  If you request
+FOOTERS, you may use the FOOTER_ equivalent of these macros.
+If you request both headers and footers, use one or the other but
+not both.  For example, in a header/footer situation, HEADER_FAMILY
+would determine the family for both headers and footers, but if you
+attempted to do this
+<span class="pre-in-pp">
+  .HEADER_FAMILY T
+  .FOOTER_FAMILY H
+</span>
+FOOTER_FAMILY would take precedence, and your header family would be
+&#8220;<kbd>H</kbd>&#8221;.
+</p>
+
+<p>
+All other formatting of individual header/footer parts must be
+entered as inline escapes inside the double-quotes.  If you want,
+say, your headers to be red but your footer page numbering to be
+black and two points larger, this is how you&#8217;d do it:
+<span class="pre-in-pp">
+  .HEADER_COLOR red
+  .DOCTYPE SLIDES \
+    HEADER "" "My slide presentation" "" \
+    FOOTER "" "" "\*[black]\*S[+2]\*[SLIDE#]\*S[-2]"
+</span>
+</p>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Note:</span>
+Do not use mom&#8217;s
+<a href="inlines.html#inline-size-mom"><kbd>\*[SIZE &plusmn;n]</kbd></a>
+inline escape to change point size in the strings passed to HEADER
+or FOOTER.  Prefer either mom&#8217;s <kbd>\*S[&plusmn;n]</kbd> or
+groff's <kbd>\s[&plusmn;n]</kbd>.
+</span>
+</p>
+</div>
+
+<h5 class="docs" style="margin-top: .5em">Transition</h5>
+
+<p>
+&#8220;Transition&#8221; refers to how new slides appear during a
+presentation.  The official PDF specification lists a number of modes,
+each with a choice of configurable parameters.  Modes include Box,
+Blinds, Wipe, Fade, and several others.  Parameters include things
+like duration, dimension, and direction.  There are a total of
+twelve modes; for each one there are from one to six configurable
+parameters.  Consult <kbd>man gropdf(1)</kbd> for a complete listing
+of modes and parameters.
+</p>
+
+<p>
+If you pass SLIDES the <kbd>TRANSTION</kbd> argument, you must
+at a minimum follow it with a mode.  Afterwards, you may give as
+many or as few parameters as you wish.  Parameters are, in order,
+<span class="pre-in-pp">
+  1. duration
+  2. dimension
+  3. motion
+  4. direction
+  5. scale
+  6. bool
+</span>
+You don't have to fill them all out.  If you only need the first
+three, that's all you need to input.  If you need the first and
+third, enter the second as a period (dot), which is used any time
+you want to leave a parameter at its current default or when it
+isn&#8217;t applicable.  For example, if you want a Box transition
+that lasts 1 second, filling the screen from the centre outwards,
+you'd enter
+<span class="pre-in-pp">
+  TRANSITION "Box 1 . O"
+</span>
+because Box does not take a &#8220;dimension&#8221; parameter but it
+does take a motion parameter.
+</p>
+
+<p>
+Notice that the entire string (mode+parameters) must be enclosed in
+double-quotes.
+</p>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Note:</span>
+Not all PDF viewers support all modes.  Any that are not supported
+are replaced by the &#8220;R&#8221; mode, which simply replaces one
+slide with the next unless the PDF viewer has a different default
+transition mode.
+</span>
+</p>
+</div>
+
+<h5 class="docs" style="margin-top: .5em">Pause</h5>
+
+<p>
+A &#8220;pause&#8221; occurs when material on a slide is halted (see
+<a href="#pause">PAUSE</a>),
+awaiting a mouse click, PgDown, Next, or the spacebar to reveal 
+subsequent material.  All the same modes and parameters as
+<kbd>TRANSITION</kbd> may be used.  The manner of entering them is
+is identical, including that the entire mode+parameter string must
+be enclosed in double-quotes.
+</p>
+
+<div class="macro-id-overline">
+<h3 id="slide-macros" class="macro-id">SLIDE MACROS</h3>
+</div>
+
+<div id="newslide" class="box-macro-args">
+Macro: <b>NEWSLIDE</b> <kbd class="macro-args">["&lt;transition mode and parameters&gt;"]</kbd>
+</div>
+
+<p>
+Unless you want material from one slide to flow onto the next, you
+need to tell mom when to start a new slide with the macro NEWSLIDE.
+Without any arguments, the new slide will appear with the default
+TRANSTION you gave to DOCTYPE SLIDES.
+</p>
+
+<p>
+If you would like a different transition, you may pass NEWSLIDE a
+new mode and associated parameters, following the same rules as the
+TRANSITION argument to DOCTYPE.  Note that the new effect becomes
+the default.  If you wish to return to the original transition, you
+must give it explicitly to the appropriate NEWSLIDE.
+</p>
+
+<div id="pause" class="box-macro-args">
+Macro: <b>PAUSE</b> <kbd class="macro-args">["&lt;pause mode and parameters&gt;"]</kbd>
+</div>
+
+<p>
+Pauses in slides are accomplished by entering the macro PAUSE at
+desired locations in your input file.  Subsequent material will be
+revealed using the pause mode given to DOCTYPE SLIDES.
+</p>
+
+<p>
+If you would like a different mode, you may pass PAUSE a
+new mode and associated parameters, following the same rules as the
+PAUSE argument to DOCTYPE.
+</p>
+
+<div id="transition" class="box-macro-args">
+Macro: <b>TRANSITION</b> <kbd class="macro-args">["&lt;transition mode and parameters&gt;"]</kbd>
+</div>
+
+<p>
+If for some reason you have material that flows from one slide to
+the next <i>and</i> you want the next slide to have a transition
+different from the current one, you can tell mom about the new
+transition with the macro TRANSITION anywhere prior to the break to
+the next slide.
+</p>
+
+<h4 id="slide-printing" class="docs" style="font-size: 100%; text-transform: uppercase">Printing slides</h4>
+
+<p>
+If you want to print slides as handouts, you have to tell
+<kbd>pdfmom</kbd> or <kbd>gropdf</kbd>, otherwise printing will
+stop at the first pause.  Simply precede <kbd>pdfmom</kbd> or
+<kbd>gropdf</kbd> with GROPDF_NOSLIDE=1, like this:
+<br/>
+<span class="pre-in-pp">
+ GROPDF_NOSLIDE=1 pdfmom &lt;options&gt; slidefile.mom &gt; slidefile.pdf
+</span>
+
+</p>
+
+<!-- -PRINTSTYLE- -->
+
+<div class="macro-id-overline">
+<h3 id="printstyle" class="macro-id">PRINTSTYLE</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>PRINTSTYLE</b> <kbd class="macro-args">TYPESET | TYPEWRITE [ SINGLESPACE ]</kbd>
+</div>
+
+<p class="requires">
+&bull;&nbsp;Required for document processing, except in the case of
+slides
+<br/>
+Must come before any changes to default document style
+</p>
+
+<p>
+PRINTSTYLE tells mom whether to typeset a document, or to print it
+out &#8220;typewritten, doubled-spaced&#8221;.
+</p>
+
+<div class="box-important">
+<p class="tip-top">
+<span class="important">Important:</span>
+<b>This macro may not be omitted.</b> In order for document
+processing to take place, mom requires a PRINTSTYLE.  If you
+don&#8217;t give one, mom will warn you on stderr and print a single
+page with a nasty message.
+</p>
+
+<p class="tip-bottom">
+<span class="important">Just as important:</span>
+PRINTSTYLE <b>must precede any and all page and style
+parameters associated with a document</b> with the exception of
+<kbd>PAPER</kbd>, <kbd>PAGEWIDTH</kbd>, and/or
+<kbd>PAGELENGTH</kbd>, which should be placed at the top of your
+file.  PRINTSTYLE sets up complete templates that include default
+margins, family, fonts, point sizes, and so on.  Therefore, changes
+to any aspect of document style must come afterwards.  For example,
+<br/>
+<span class="pre-in-pp">
+  .PAPER A4
+  .LS 14
+  .QUAD LEFT
+  .PRINTSTYLE TYPESET
+</span>
+will not change mom&#8217;s default document leading to 14 points,
+nor the default justification style (fully justified) to left
+justified, whereas
+<br/>
+<span class="pre-in-pp">
+  .PAPER A4
+  .PRINTSTYLE TYPESET
+  .LS 14
+  .QUAD LEFT
+</span>
+will.
+</p>
+
+</div>
+
+<p>
+<kbd>TYPESET</kbd>, as the argument implies, typesets
+documents (by default in Times Roman; see
+<a href="#typeset-defaults">TYPESET defaults</a>).
+You have full access to all the
+<a href="typesetting.html#macros-typesetting">typesetting macros</a>
+as well as the
+<a href="definitions.html#style-control">style control macros</a>
+of document processing.
+</p>
+
+<p>
+With <kbd>TYPEWRITE</kbd>, mom does her best to reproduce the look
+and feel of typewritten, double-spaced copy (see
+<a href="#typewrite-defaults">TYPEWRITE defaults</a>).
+<a href="docelement.html#docelement-control">Control macros</a>
+and
+<a href="typesetting.html#intro-macros-typesetting">typesetting macros</a>
+that alter family, font, point size, and
+<a href="definitions.html#leading">leading</a>
+are (mostly) ignored.  An important exception is
+<a href="headfootpage.html#hdrftr-global-size">HEADER_SIZE</a>
+(and, by extension, FOOTER_SIZE), which allows you to reduce the
+point size of headers/footers should they become too crowded.  Most
+of mom&#8217;s inlines affecting the appearance of type are also
+ignored
+(<kbd><a href="inlines.html#inline-size-mom">\*S[&lt;size&gt;]</a></kbd>
+is an exception; there may be a few others).
+</p>
+
+<p>
+In short, <kbd>TYPEWRITE</kbd> never produces effects
+other than those available on a typewriter.  Don&#8217;t be fooled
+by how brainless this sounds; mom is remarkably sophisticated when
+it comes to conveying the typographic sense of a document within the
+confines of <kbd>TYPEWRITE</kbd>.
+</p>
+
+<p>
+The primary uses of <kbd>TYPEWRITE</kbd> are: outputting hard
+copy drafts of your work (for editing) and producing documents
+for submission to publishers and agents who (wisely) insist on
+typewritten, double-spaced copy.  To get a nicely typeset version of
+work that&#8217;s in the submission phase of its life (say, to show
+fellow writers for critiquing), simply change <kbd>TYPEWRITE</kbd>
+to <kbd>TYPESET</kbd> and print out a copy.
+</p>
+
+<p>
+If, for some reason, you would prefer the output of
+<kbd>TYPEWRITE</kbd> single-spaced, pass PRINTSTYLE
+<kbd>TYPEWRITE</kbd> the optional argument, <kbd>SINGLESPACE</kbd>.
+</p>
+
+<div class="defaults-container">
+<h3 id="typeset-defaults" class="docs defaults" style="margin-top: 0;">PRINTSTYLE TYPESET defaults</h3>
+<span class="pre defaults">
+  Family            = Times Roman
+  Point size        = 12.5
+  Paragraph leading = 16 points, adjusted
+  Fill mode         = justified
+  Hyphenation       = enabled
+                      max. lines = 2
+                      margin = 36 points
+                      interword adjustment = 1 point
+  Kerning           = enabled
+  Ligatures         = enabled
+  Smartquotes       = enabled
+  Word space        = groff default
+  Sentence space    = 0
+</span>
+</div>
+
+<div class="defaults-container">
+<h3 id="typewrite-defaults" class="docs defaults" style="margin-top: 0;">PRINTSTYLE TYPEWRITE defaults</h3>
+<span class="pre defaults">
+  Family            = Courier
+  Italics           = underlined
+  Point size        = 12
+  Paragraph leading = 24 points, adjusted; 12 points for SINGLESPACE
+  Fill mode         = left
+  Hyphenation       = disabled
+  Kerning           = disabled
+  Ligatures         = disabled
+  Smartquotes       = disabled
+  Word space        = groff default
+  Sentence space    = groff default
+  Columns           = ignored
+</span>
+</div>
+
+<div class="box-tip" style="margin-top: 1.5em;">
+<h3 id="typewrite-control" class="docs control">PRINTSTYLE TYPEWRITE control macros</h3>
+
+<h4 id="typewriter-family" class="docs">Family</h4>
+
+<p style="margin-top: .5em;">
+If you&#8217;d prefer a monospace
+<a href="definitions.html#family">family</a>
+for PRINTSTYLE <kbd>TYPEWRITE</kbd> other than than mom's default,
+Courier, you can change it with
+<kbd>.TYPEWRITER_FAMILY&nbsp;&lt;family&gt;</kbd> (or
+<kbd>.TYPEWRITER_FAM</kbd>).  Since groff ships with only the
+Courier family, you will have to install any other monospace family
+yourself.  See
+<a href="appendices.html#fonts">Adding fonts to
+groff</a>.
+</p>
+
+<h4 id="typewriter-size" class="docs">Point size</h4>
+
+<p style="margin-top: .5em;">
+If you&#8217;d like a smaller or larger point size for
+for PRINTSTYLE <kbd>TYPEWRITE</kbd> (mom&#8217;s default is 12-point),
+you can change it with
+<kbd>.TYPEWRITER_SIZE&nbsp;&lt;size&gt;</kbd>.  There&#8217;s no need to
+add a
+<a href="definitions.html#unitofmeasure">unit of measure</a>
+to the <kbd>&lt;size&gt;</kbd> argument; points is assumed.  Be
+aware, however, that regardless of point size, mom&#8217;s
+leading/linespacing for <kbd>TYPEWRITE</kbd> is fixed at 24-point
+for double-spaced, and 12-point for single-spaced.
+</p>
+
+<h4 id="typewriter-underlining" class="docs">Underlining of italics</h4>
+
+<p>
+In PRINTSTYLE <kbd>TYPEWRITE</kbd>, mom, by default, underlines
+anything that looks like italics.  This includes the
+<a href="typesetting.html#slant-inline"><kbd>\*[SLANT]</kbd></a>
+<a href="definitions.html#inlines">inline escape</a>
+for pseudo-italics.
+</p>
+
+<p id="printstyle-italics">
+If you&#8217;d prefer that mom were less bloody-minded
+about pretending to be a typewriter (ie you&#8217;d like italics and
+pseudo-italics to come out as italics), use the control macros
+<br/>
+<span class="pre-in-pp">
+  .ITALIC_MEANS_ITALIC
+</span>
+and
+<span class="pre-in-pp">
+  .SLANT_MEANS_SLANT
+</span>
+Neither requires an argument.
+</p>
+
+<p>
+Although it&#8217;s unlikely, should you wish to reverse
+the sense of these macros in the midst of a document,
+<kbd>.UNDERLINE_ITALIC</kbd> and <kbd>.UNDERLINE_SLANT</kbd> restore
+underlining of italics and pseudo-italics.
+</p>
+
+<p id="underline-quotes">
+Additionally, by default, mom underlines
+<a href="definitions.html#quotes">quotes</a>
+(but not
+<a href="definitions.html#blockquotes">blockquotes</a>)
+in PRINTSTYLE <kbd>TYPEWRITE</kbd>.  If you don&#8217;t like this
+behaviour, turn it off with
+<br/>
+<span class="pre">
+  .UNDERLINE_QUOTES OFF
+</span>
+</p>
+
+<p>
+To turn underlining of quotes back on, use UNDERLINE_QUOTES without
+an argument.
+</p>
+
+<p class="tip-bottom">
+While most of the
+<a href="docelement.html#docelement-control">control macros</a>
+have no effect on <b>PRINTSTYLE TYPEWRITE</b>, there
+is an important exception:
+<a href="headfootpage.html#hdrftr-global-size">HEADER_SIZE</a>
+(and by extension, FOOTER_SIZE).  This is
+particularly useful for reducing the point size of
+headers/footers should they become crowded (quite likely to
+happen if the title of your document is long and your
+<kbd><a href="#copystyle">COPYSTYLE</a></kbd>
+is DRAFT).
+</p>
+</div>
+
+<!-- -COPYSTYLE- -->
+
+<div class="macro-id-overline">
+<h3 id="copystyle" class="macro-id">COPYSTYLE</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>COPYSTYLE</b> <kbd class="macro-args">DRAFT | FINAL</kbd>
+</div>
+
+<p>
+Mom&#8217;s default COPYSTYLE is <kbd>FINAL</kbd>, so you
+don&#8217;t have to use this macro unless you want to.
+</p>
+
+<p>
+COPYSTYLE <kbd>DRAFT</kbd> exhibits the following behaviour:
+</p>
+<ol style="margin-top: -.5em;">
+  <li>Documents start on page 1, whether or not you
+      request a different starting page number with
+      <a href="headfootpage.html#pagenumber">PAGENUMBER</a>.
+  </li>
+  <li>Page numbers are set in lower case roman numerals.</li>
+  <li>The draft number supplied by 
+      <a href="#draft">DRAFT</a>
+      and a revision number, if supplied with 
+      <a href="#revision">REVISION</a>
+      (see
+      <a href="#reference-macros">reference macros</a>),
+      appear in the centre part of
+      <a href="definitions.html#header">page headers</a>
+      (or footers, depending on which you&#8217;ve selected) along with
+      any other information that normally appears there.
+  </li>
+</ol>
+
+<div class="box-important">
+<p class="tip">
+<span class="important">Important:</span>
+If you define your own centre part for page headers with
+<a href="headfootpage.html#hdrftr-center">HEADER_CENTER</a>,
+no draft and/or revision number will appear there.  If you want
+draft and revision information in this circumstance, use
+<a href="headfootpage.html#draft-with-pagenumber">DRAFT_WITH_PAGENUMBER</a>.
+</p>
+</div>
+
+<p>
+COPYSTYLE <kbd>FINAL</kbd> differs from <kbd>DRAFT</kbd> in that:
+</p>
+<ol style="margin-top: -.5em;">
+  <li>It respects the starting page number you give the document.</li>
+  <li>Page numbers are set in normal (Arabic) digits.</li>
+  <li>No draft or revision number appears in the page headers.</li>
+</ol>
+
+<div class="box-tip">
+<p id="copystyle-note" class="tip">
+<span class="note">Note:</span>
+The centre part of page headers can get crowded, especially with
+<a href="docprocessing.html#doctype">DOCTYPE <kbd>CHAPTER</kbd></a>
+and
+<a href="docprocessing.html#doctype">DOCTYPE <kbd>NAMED</kbd></a>,
+when the COPYSTYLE is <kbd>DRAFT</kbd>.  Three mechanisms are
+available to overcome this problem.  One is to reduce the overall
+size of headers (with
+<a href="headfootpage.html#hdrftr-global-size">HEADER_SIZE</a>).
+Another, which only works with
+<a href="docprocessing.html#printstyle">PRINTSTYLE <kbd>TYPESET</kbd></a>,
+is to reduce the size of the header&#8217;s centre part only (with
+<a href="headfootpage.html#_size">HEADER_CENTER_SIZE</a>).
+And finally, you can elect to have the draft/revision information
+attached to page numbers instead of having it appear in the centre
+of page headers (see
+<a href="headfootpage.html#draft-with-pagenumber">DRAFT_WITH_PAGENUMBER</a>).
+</p>
+</div>
+
+<div class="rule-short"><hr/></div>
+
+<!-- ======================================================================== -->
+
+<h2 id="start-macro" class="macro-group">Initiate document processing</h2>
+
+<p>
+In order to use mom&#8217;s document element macros (tags), you have
+to tell her you want them.  The macro to do this is
+<a href="#start">START</a>.
+</p>
+
+<p>
+START collects the information you gave mom in the setup section at
+the top of your file (see
+<a href="#docprocessing-tut">Tutorial &ndash; Setting up a mom document</a>),
+merges it with her defaults, sets up headers and page numbering,
+and prepares mom to process your document using the document
+element tags.  No document processing takes place until you invoke
+<kbd>.START</kbd>.
+</p>
+
+<!-- -START- -->
+
+<div class="macro-id-overline">
+<h3 id="start" class="macro-id">START</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>START</b>
+</div>
+<p class="requires">
+&bull;&nbsp;Required for document processing
+</p>
+
+<p>
+START takes no arguments.  It simply instructs mom to begin document
+processing.  If you don&#8217;t want document processing (ie you
+only want the
+<a href="typesetting.html#macros-typesetting">typesetting macros</a>),
+don&#8217;t use START.
+</p>
+
+<p>
+At a barest minimum before START, you must enter a
+<a href="#printstyle">PRINTSTYLE</a>
+command.
+</p>
+
+<div class="rule-short"><hr/></div>
+
+<!-- ======================================================================== -->
+
+<h2 id="style-before-start" class="macro-group">Establishing typestyle and formatting parameters before START</h2>
+
+<p>
+In the third (optional) part of setting up a document (the
+stylesheet; see
+<a href="#docprocessing-tut">Tutorial &ndash; Setting up a mom document</a>),
+you can use the
+<a href="typesetting.html">typesetting macros</a>
+to change mom&#8217;s document-wide defaults for margins,
+line length, family, base point size,
+<a href="definitions.html#leading">leading</a>,
+and justification style.
+</p>
+
+<p>
+Two additional style concerns have to be addressed here (ie in
+macros before
+<a href="#start">START</a>):
+changes to the
+<a href="definitions.html#docheader">docheader</a>,
+and whether you want you want the document&#8217;s nominal leading
+adjusted to fill pages fully to the bottom margin.
+</p>
+
+<div class="macro-list-container" style="margin-top: 2em;">
+<h3 id="index-style-before-start" class="macro-list">Type &amp; formatting parameters before START</h3>
+<ul class="macro-list">
+  <li><a href="#type-before-start">Behaviour of the typesetting macros before START</a>
+  <ul class="sublist" style="line-height: 120%; margin-bottom: .25em;">
+    <li><a href="#meanings">List of meanings</a></li>
+    <li><a href="#lrc-note">Special note on LEFT, RIGHT and CENTER</a></li>
+    <li><a href="#include">Including (sourcing) style sheets and files</a></li>
+    <li><a href="#color">Initializing colors</a></li>
+  </ul></li>
+  <li><a href="#doc-lead-adjust">DOC_LEAD_ADJUST</a> &ndash; adjust linespacing to fill pages and align bottom margins</li>
+  <li><a href="#docheader">DOCHEADER</a>
+  <ul class="sublist" style="line-height: 120%;">
+    <li><a href="#docheader-control">Docheader control</a></li>
+  </ul></li>
+  <li><a href="#columns">COLUMNS</a>
+  <ul class="sublist" style="line-height: 120%;">
+    <li><a href="#col-next">COL_NEXT</a></li>
+    <li><a href="#col-break">COL_BREAK</a></li>
+  </ul></li>
+</ul>
+</div>
+
+<h3 id="type-before-start" class="docs">Behaviour of the typesetting macros before START</h3>
+
+<p>
+From time to time (or maybe frequently), you&#8217;ll want the
+overall look of a document to differ from mom&#8217;s defaults.
+Perhaps you&#8217;d like her to use a different
+<a href="definitions.html#family">family</a>,
+or a different overall
+<a href="definitions.html#leading">leading</a>,
+or have different left and/or right page margins.
+</p>
+
+<p>
+To accomplish such alterations, use the appropriate
+<a href="typesetting.html#macros-typesetting">typesetting macros</a>
+(listed below) after
+<a href="#printstyle">PRINTSTYLE</a>
+and before
+<a href="#start">START</a>.
+</p>
+
+<p>
+More than one user has, quite understandably, not fully grasped the
+significance of the preceding sentence.  The part they&#8217;ve missed is
+<i>after</i> PRINTSTYLE.
+</p>
+
+<p>
+Changes to any aspect of the default look and/or formatting of a mom
+document must come after PRINTSTYLE.  For example, it might seem
+natural to set up page margins at the very top of a document with
+<br/>
+<span class="pre-in-pp">
+  .L_MARGIN 1i
+  .R_MARGIN 1.5i
+</span>
+However, when you invoke <kbd>.PRINTSTYLE</kbd>, those margins
+will be overridden.  The correct place to set margins&mdash;and
+all other changes to the look of a document&mdash;is <i>after</i>
+PRINTSTYLE.
+</p>
+
+<div class="box-tip">
+<p class="tip">
+<span class="important">Important:</span>
+Do not use the macros listed in
+<a href="#doc-param-macros">Changing document-wide typesetting parameters after START</a>
+prior to START; they are exclusively for use afterwards.
+</p>
+</div>
+
+<div id="meanings" class="defaults-container">
+<h3 class="docs defaults" style="margin-top: 0;">Meanings</h3>
+<p style="margin-left: 9px; margin-top: -.25em;">
+When used before START, the
+<a href="typesetting.html#macros-typesetting">typesetting macros</a>,
+below have the following meanings:
+<br/>
+<span class="pre">
+  L_MARGIN       Left margin of pages, including headers/footers
+  R_MARGIN       Right margin of pages, including headers/footers
+  T_MARGIN       The point at which running text (ie not
+                 headers/footers or page numbers) starts on each
+                 page
+  B_MARGIN*      The point at which running text (ie not
+  (see note)     headers/footers or page numbers) ends on each page
+
+  PAGE           If you use PAGE, its final four arguments have the
+                 same meaning as L_ R_ T_ and B_MARGIN (above).
+
+  LL             The line length for everything on the page;
+                 equivalent to setting the right margin with
+                 R_MARGIN
+  FAMILY         The family of all type in the document
+  PT_SIZE        The point size of type in paragraphs; mom uses
+                 this to calculate automatic point size changes
+                 (e.g., for heads, footnotes, quotes, headers, etc)
+  LS/AUTOLEAD**  The leading used in paragraphs; all leading and
+                 spacing of running text is calculated from this
+
+  QUAD/JUSTIFY   Affects paragraphs only
+  LEFT***        No effect
+  RIGHT***       No effect
+  CENTER***      No effect
+
+------
+  *See <a href="headfootpage.html#footer-margin">FOOTER MARGIN AND BOTTOM MARGIN</a> for an important warning
+ **See <kbd><a href="#doc-lead-adjust">DOC_LEAD_ADJUST</a></kbd>
+***See <a href="#lrc-note">Special note</a>
+</span>
+</p>
+</div>
+
+<p style="margin-top: -.75em;">
+Other macros that deal with type style, or refinements thereof
+(<b>KERN, LIGATURES, HY, WS, SS,</b> etc.), behave normally.
+It is not recommended that you set up tabs or indents prior to
+START.
+</p>
+
+<p>
+If you want to change any of the basic parameters (above)
+<i>after</i> START and have them affect a document globally (as if
+you&#8217;d entered them <i>before</i> START), you must use the macros
+listed in
+<a href="#doc-param-macros">Changing document-wide style parameters after START</a>.
+</p>
+
+<h4 id="lrc-note" class="docs">Special note on LEFT, RIGHT and CENTER prior to START</h4>
+
+<p>
+In a word, these three macros have no effect on document processing
+when invoked prior to START.
+</p>
+
+<p>
+All mom&#8217;s document element tags (PP, HEAD, BLOCKQUOTE,
+FOOTNOTE, etc.) except
+<a href="docelement.html#quote">QUOTE</a>
+set a
+<a href="definitions.html#filled">fill mode</a>
+as soon as they&#8217;re invoked.  If you wish to turn fill mode off
+for the duration of any tag (with
+<a href="typesetting.html#lrc">LEFT, RIGHT or CENTER</a>)
+you must do so immediately after invoking the tag.  Furthermore,
+the change affects <i>only</i> the current invocation of the tag.
+Subsequent invocations of the same tag for which you want the same
+change require that you invoke <kbd>.LEFT</kbd>, <kbd>.RIGHT</kbd>
+or <kbd>.CENTER</kbd> immediately after every invocation of the tag.
+</p>
+
+<!-- -INCLUDE- -->
+
+<h4 id="include" class="docs">Including (sourcing) style sheets and files</h4>
+
+<p>
+If you routinely make the same changes to mom&#8217;s defaults in
+order to create similar documents in a similar style&mdash;in other
+words, you need a template&mdash; you can create style-sheet files
+and include, or "source", them into your mom documents with the
+macro INCLUDE.  The right place for such style sheets is after
+<a href="#printstyle">PRINTSTYLE</a>
+and before
+<a href="#start">START</a>.
+</p>
+
+<p>
+Say, for example, in a particular kind of document, you always
+want main heads set in Helvetica Bold Italic, flush left,
+with no underscore.  You&#8217;d create a file, let&#8217;s call it
+<kbd>head-template</kbd>, in which you&#8217;d place the pertinent HEAD
+control macros.
+<br/>
+<span class="pre-in-pp">
+  .HEADING_STYLE 1 \
+  FAMILY    H \
+  FONT      BI \
+  QUAD      L \
+  NO_UNDERSCORE
+</span>
+Then, in the preliminary document set-up section of your main file,
+you&#8217;d include the style sheet, or template, like this:
+<br/>
+<span class="pre-in-pp">
+  .TITLE      "Sample Document
+  .AUTHOR     "Joe Blow
+  .PRINTSTYLE TYPESET
+  \#
+  .INCLUDE    head-template
+  \#
+  .START
+</span>
+
+The blank comment lines ( <kbd>\#</kbd> ) aren&#8217;t required, but
+they do make your file(s) easier to read.
+</p>
+
+<p>
+If the file to be included is in the same directory as the file
+you&#8217;re working, you simply enter the filename after
+<kbd>.INCLUDE</kbd>.  If the file&#8217;s in another directory, you must
+provide a full path name to it.  For example, if you&#8217;re working in
+a directory called <kbd>/home/joe/stories</kbd> and your
+style-sheet is in <kbd>/home/joe/style-sheets</kbd>, the above
+example would have to look like this:
+<br/>
+<span class="pre-in-pp">
+  .TITLE      "Sample Document
+  .AUTHOR     "Joe Blow
+  .PRINTSTYLE TYPESET
+  \#
+  .INCLUDE    /home/joe/style-sheets/head-template
+  \#
+  .START
+</span>
+</p>
+
+<p>
+INCLUDE is not restricted to style sheets or templates.  You can
+include any file at any point into a document, provided the file
+contains only text and valid groff or mom formatting commands.
+Neither is INCLUDE restricted to use with mom&#8217;s document
+processing macros.  You can use it in plain typeset documents as
+well.
+</p>
+
+<div class="box-tip">
+<p class="tip">
+<span class="experts">Experts:</span>
+INCLUDE is an alias for the groff request, <kbd>.so</kbd>.  Mix 'n'
+match with impunity.
+</p>
+</div>
+
+<!-- -COLOUR- -->
+
+<h4 id="color" class="docs">Initializing colours</h4>
+
+<p>
+Although it doesn&#8217;t really matter where you define/initialize
+colours for use in document processing (see
+<a href="color.html#newcolor">NEWCOLOR</a>
+and
+<a href="color.html#xcolor">XCOLOR</a>
+in the section
+<a href="color.html#color-intro">Coloured text</a>),
+I recommend doing so before you begin document processing with
+<kbd><a href="#start">START</a></kbd>.
+</p>
+
+<p>
+The macro
+<a href="color.html#color">COLOR</a>
+and the
+<a href="definitions.html#inlines">inline escape</a>,
+<a href="color.html#color-inline"><kbd>\*[&lt;colorname&gt;]</kbd></a>
+can be used at any time during document processing for occasional
+colour effects.  However, consistent and reliable colourizing of
+various document elements (the docheader, heads, linebreaks,
+footnotes, pagenumbers, and so on) must be managed through the use
+of the
+<a href="docelement.html#docelement-control">document element control macros</a>.
+</p>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Note:</span>
+If you plan to have mom generate a
+<a href="docelement.html#toc">table of contents</a>,
+do not embed colour
+<a href="definitions.html#inlines">inline escapes</a>
+(<a href="color.html#color-inline"><kbd>\*[&lt;colorname&gt;]</kbd></a>)
+in the
+<a href="definitions.html#stringargument">string arguments</a>
+given to any of the
+<a href="docprocessing.html#reference-macros">reference macros</a>,
+nor in the string arguments given to
+<a href="docelement.html#heading">HEADING</a>.
+Use, rather, the
+<a href="definitions.html#controlmacro">control macros</a>
+mom provides to automatically colourize these elements.
+</p>
+</div>
+
+<!-- -DOC LEAD ADJUST- -->
+
+<div class="macro-id-overline">
+<h3 id="doc-lead-adjust" class="macro-id">Adjust linespacing to fill pages and align bottom margins</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>DOC_LEAD_ADJUST</b> <kbd class="macro-args">toggle</kbd>
+</div>
+
+<p class="requires">
+&bull;&nbsp;Must come after
+<a href="typesetting.html#ls"><span class="normal">LS</span></a>
+or
+<a href="typesetting.html.#autoloead"><span class="normal">AUTOLEAD</span></a>
+and before
+<a href="#start"><span class="normal">START</span></a>
+</p>
+
+<p>
+DOC_LEAD_ADJUST is a special macro to adjust document
+<a href="definitions.html#leading">leading</a>
+so that bottom margins fall precisely where you expect.
+</p>
+
+<p>
+When you invoke <kbd>.DOC_LEAD_ADJUST</kbd>, mom takes the number
+of lines that fit on the page at your requested leading, then
+incrementally adds
+<a href="definitions.html#units">machine units</a>
+to the leading until the maximum number of lines at the new leading
+that fit on the page coincides perfectly with the bottom margin of
+<a href="definitions.html#running">running text</a>.
+</p>
+
+<p>
+In most instances, the difference between the requested lead and
+the adjusted lead is unnoticeable, and since in almost all cases
+adjusted leading is what you want, it&#8217;s mom&#8217;s default
+and you don't have to invoke it explicitly.
+</p>
+
+<p>
+However, should you not want adjusted document leading, you must
+turn it off manually, like this:
+<br/>
+<span class="pre">
+  .DOC_LEAD_ADJUST OFF
+</span>
+</p>
+
+<p>
+If you set the document leading prior to START with
+<a href="typesetting.html#leading">LS</a>
+or
+<a href="typesetting.html#autolead">AUTOLEAD</a>,
+DOC_LEAD_ADJUST&nbsp;<kbd>OFF</kbd> must come afterwards, like
+this:
+<br/>
+<span class="pre-in-pp">
+  .LS 12
+  .DOC_LEAD_ADJUST OFF
+</span>
+In this scenario, the maximum number of lines that fit on a page at
+a
+<a href="definitions.html#leading">leading</a>
+of 12
+<a href="definitions.html#picaspoints">points</a>
+determine where mom ends a page.  The effect will be that last lines
+usually fall (slightly) short of the &#8220;official&#8221; bottom
+margin.
+</p>
+
+<p>
+In
+<a href="docprocessing.html#printstyle">PRINTSTYLE</a>&nbsp;<kbd>TYPEWRITE</kbd>,
+the leading is always adjusted and can&#8217;t be turned off.
+</p>
+
+<div class="box-tip">
+<p class="tip-top">
+<span class="note">Note:</span>
+DOC_LEAD_ADJUST, if used, must be invoked after
+<a href="typesetting.html#leading">LS</a>
+or
+<a href="typesetting.html#autolead">AUTOLEAD</a>
+and before
+<a href="#start">START</a>.
+</p>
+
+<p class="tip-bottom">
+<span class="additional-note">Additional note:</span>
+Even if you disable DOC_LEAD_ADJUST, mom will still adjust the
+leading of endnotes pages and toc pages.  See
+<a href="docelement.html#endnote-lead">ENDNOTE_LEAD</a>
+and
+<a href="docelement.html#toc-lead">TOC_LEAD</a>
+for an explanation of how to disable this default behaviour.
+</p>
+</div>
+
+<!-- -DOCHEADER- -->
+
+<div class="macro-id-overline">
+<h3 id="docheader" class="macro-id">Managing the docheader</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>DOCHEADER</b> <kbd class="macro-args">&lt;toggle&gt; [ distance to advance from top of page ] [ NO_SHIM ]</kbd>
+</div>
+
+<p class="requires">
+&bull;&nbsp;Must come before
+<a href="#start"><span class="normal">START</span></a>; <kbd><span class="normal">distance</span></kbd> requires a <a href="definitions.html#unitofmeasure">unit of measure</a>
+</p>
+
+<p>
+By default, mom prints a
+<a href="definitions.html#docheader">docheader</a>
+on the first page of any document (see
+<a href="#docheader-desc">below</a>
+for a description of the docheader).  If you don&#8217;t want a docheader,
+turn it off with
+<br/>
+<span class="pre-in-pp">
+  .DOCHEADER OFF
+</span> 
+DOCHEADER is a toggle macro, so the argument doesn&#8217;t
+have to be OFF; it can be anything you like.
+</p>
+
+<p>
+If you turn the docheader off, mom, by default, starts
+the running text of your document on the same top
+<a href="definitions.html#baseline">baseline</a>
+as all subsequent pages.  If you&#8217;d like her to start at a different
+vertical position, give her the distance you&#8217;d like as a second
+argument.
+<br/>
+<span class="pre-in-pp">
+  .DOCHEADER OFF 1.5i
+</span>
+This starts the document 1.5 inches from the top of the page PLUS
+whatever spacing adjustment mom has to make in order to ensure that
+the first baseline of running text falls on a &#8220;valid&#8221;
+baseline (ie one that ensures that the bottom margin of the first
+page falls where it should).  The distance is measured from the top
+edge of the paper to the
+<a href="definitions.html#baseline">baseline</a>
+of the first line of type.
+</p>
+
+<p>
+With <kbd>DOCHEADER OFF</kbd>, it is possible to create your own
+custom docheaders (after
+<a href="#start">START</a>)
+using mom&#8217;s typesetting macros.  It is recommended that if you
+do create a custom docheader, you make
+<a href="docprocessing.html#shim"><kbd>.SHIM</kbd></a>
+the last macro before the first item of your document (for
+example, <kbd>PP</kbd> or <kbd>HEADING&nbsp;1</kbd>.
+</p>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Note:</span>
+You may have tried <kbd>DOCHEAHER&nbsp;OFF</kbd> with a distance argument
+and discovered that mom will not budge the starting position of the document
+from her chosen default location.  This is byproduct of
+<a href="#shim">shimming</a>,
+which mom always applies before the first line of running text after
+the docheader, regardless of which
+<a href="#vertical-whitespace-management">vertical whitespace management</a>
+strategy is in effect.  If you encounter the problem, pass
+<kbd>DOCHEADER&nbsp;OFF&nbsp;&lt;distance&gt;</kbd>
+the additional final argument, <kbd>NO_SHIM</kbd>.
+</p>
+</div>
+
+<!-- DOCHEADER CONTROL -->
+
+<h3 id="docheader-control" class="docs">Docheader control: How to change the look of docheaders</h3>
+
+<p>
+In
+<a href="#printstyle">PRINTSTYLE <kbd>TYPEWRITE</kbd></a>,
+the look of docheaders is carved in stone.  In
+<a href="#printstyle">PRINTSTYLE <kbd>TYPESET</kbd></a>,
+however, you can make a lot of changes.  Macros that alter
+docheaders must come before
+<a href="#start">START</a>.
+</p>
+
+<h4 id="docheader-desc" class="docs">Docheader description</h4>
+
+<p>
+A typeset docheader has the following characteristics:
+</p>
+<div class="box-code" style="margin-left: 24px;">
+<span class="pre" style="color: #302419;">
+    TITLE       bold, 3.5 points larger than running text (not necessarily caps)
+   Subtitle     medium, same size as running text
+      by        medium italic, same size as running text
+   Author(s)    medium italic, same size as running text
+
+(Document type) bold italic, 3 points larger than running text
+</span>
+</div>
+
+<p>
+Or, if the
+<a href="#doctype">DOCTYPE</a>
+is <kbd>CHAPTER</kbd>,
+</p>
+<div class="box-code" style="margin-left: 24px;">
+<span class="pre" style="color: #302419;">
+ Chapter &lt;n&gt;   bold, 4 points larger than running text
+Chapter Title  bold italic, 4 points larger than running text
+</span>
+</div>
+
+<p>
+The
+<a href="definitions.html#family">family</a>
+is the prevailing family of the whole document.  Title, subtitle,
+author and document type are what you supply with the
+<a href="#reference-macros">reference macros</a>.
+Any you leave out will not appear; mom will compensate:
+</p>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Note:</span>
+If your DOCTYPE is <kbd>CHAPTER</kbd> and you have both &#8220;Chapter
+&lt;n&gt;&#8221; and a &#8220;Chapter Title&#8221; (as above), mom
+inserts a small amount of whitespace between them, equal to
+one-quarter of the
+<a href="definitions.html#leading">leading</a>
+in effect.  If this doesn&#8217;t suit you, you can remove or alter
+the space with
+<a href="#space-before">CHAPTER_TITLE_SPACE_BEFORE</a>.
+</p>
+</div>
+
+<div class="macro-list-container">
+<h3 id="index-docheader-control" class="macro-list">Docheader control</h3>
+
+<p style="margin-top: -1.5em; margin-left: .5em; margin-right: .5em">
+With the docheader control macros, you can change the family,
+colour, leading and quad direction of the entire docheader.  You can
+also set the style parameters for each part individually.  Style
+parameters include family, font, size, colour, lead, space before,
+caps, smallcaps and underscoring.
+</p>
+
+<ul class="macro-list" style="margin-top: -.5em">
+  <li><a href="#change-whole-docheader">1. Changes to the whole docheader</a>
+  <ul style="list-style-type: disc">
+    <li><a href="#change-start">Change the starting position of the docheader</a></li>
+    <li><a href="#docheader-family">Change the family of the whole docheader</a></li>
+    <li><a href="#docheader-color">Change the colour of the whole docheader</a></li>
+    <li><a href="#docheader-lead">Change the leading of the whole docheader</a></li>
+    <li><a href="#docheader-quad">Change the quad direction of the docheader</a></li>
+  </ul>
+  </li>
+  <li><a href="#part-by-part">2. Part by part changes</a>
+  <ul style="list-style-type: disc">
+    <li><a href="#list-of-params">List of parameters and arguments</a></li>
+    <li><a href="#grouping">Grouping part/parameter changes</a> &ndash; very handy</li>
+  </ul>
+  </li>
+  <li><a href="#change-attribute">3. Changing or removing the attribution string (&#8220;by&#8221;)</a></li>
+</ul>
+</div>
+
+<h4 id="change-whole-docheader" class="docs" style="font-size: 100%">1. Changes to the whole docheader</h4>
+
+<h5 id="change-start" class="docs">Change the starting position of the docheader</h5>
+
+<p>
+By default, a docheader starts on the same
+<a href="definitions.html#baseline">baseline</a>
+as
+<a href="definitions.html#running">running text</a>.
+If you&#8217;d like it to start somewhere else, use the macro
+DOCHEADER_ADVANCE and give it the distance you want (measured from
+the top edge of the paper to the first baseline of the docheader),
+like this:
+<br/>
+<span class="pre-in-pp">
+    .DOCHEADER_ADVANCE 4P
+</span>
+A
+<a href="definitions.html#unitofmeasure">unit of measure</a>
+is required.
+</p>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Note:</span>
+If
+<a href="headfootpage.html#headers">HEADERS</a>
+are <kbd>OFF</kbd>, mom&#8217;s normal top margin for
+<a href="definitions.html#running">running text</a>
+(7.5
+<a href="definitions.html#picaspoints">picas</a>)
+changes to 6 picas (visually approx. 1 inch).  Since the first
+baseline of the docheader falls on the same baseline as the first
+line of running text (on pages after page 1), you might find the
+docheaders a bit high when headers are off.  Use DOCHEADER_ADVANCE
+to place them where you want.
+</p>
+</div>
+
+<h5 id="docheader-quad" class="docs">Change the quad direction of the docheader</h5>
+
+<p>
+By default, mom centres the docheader.  If you&#8217;d prefer to
+have your docheaders set flush left or right, or need to restore
+the default centreing, invoke <kbd>.DOCHEADER_QUAD</kbd> with the
+quad direction you want, either <kbd>LEFT</kbd> (or <kbd>L</kbd>),
+<kbd>RIGHT</kbd> (or <kbd>R</kbd>) or <kbd>CENTER</kbd> (or
+<kbd>C</kbd>).
+</p>
+
+<h5 id="docheader-family" class="docs">Change the family of the entire docheader</h5>
+
+<p>
+By default, mom sets the docheader in the same
+family used for 
+<a href="definitions.html#running">running text</a>.
+If you&#8217;d prefer to have your docheaders set in a different
+family, invoke <kbd>.DOCHEADER_FAMILY</kbd> with the family you
+want.  The argument to DOCHEADER_FAMILY is the same as for
+<a href="typesetting.html#family">FAMILY</a>.
+</p>
+
+<p>
+For example, mom&#8217;s default family for running text is Times
+Roman.  If you&#8217;d like to keep that default, but have the
+docheaders set entirely in Helvetica,
+<br/>
+<span class="pre-in-pp">
+  .DOCHEADER_FAMILY H
+</span>
+is how you&#8217;d do it.
+</p>
+
+<p>
+Please note that if you use DOCHEADER_FAMILY, you can still alter
+the family of individual parts of the docheader.
+</p>
+
+<h5 id="docheader-color" class="docs">Change the color of the entire docheader</h5>
+
+<p>
+The default color for docheaders is black, as you&#8217;d expect.
+If you wish to change it, use
+<kbd>.DOCHEADER_COLOR&nbsp;&lt;color&gt;</kbd>, where
+<kbd>&nbsp;&lt;color&gt;</kbd> is a color pre-initialized with
+<a href="color.html#xcolor">XCOLOR</a>
+or
+<a href="color.html#newcolor">NEWCOLOR</a>.
+</p>
+
+<h5 id="docheader-lead" class="docs">Change the leading of the entire docheader</h5>
+
+<p>
+By default, mom uses the leading in effect for
+<a href="definitions.html#running">running text</a>
+for docheaders.  If you want to increase or
+decrease the overall docheader leading, use
+<kbd>.DOCHEADER_LEAD&nbsp;+|-&lt;amount&gt;</kbd>, where
+<kbd>&lt;amount&gt;</kbd> is the number of
+<a href="definitions.html#picaspoints">points</a>
+by which to make the adjustment.  
+</p>
+
+<h4 id="part-by-part" class="docs" style="font-size: 100%">2. Part by part changes</h4>
+
+<p>
+Whenever you want to change the style parameters for any part of
+the docheader, simply join the name of the part to the parameter
+you wish to change using an underscore, then supply any necessary
+arguments.  The subitle double-underlined?  No problem.
+<br/>
+<span class="pre-in-pp">
+  .SUBTITLE_UNDERLINE DOUBLE
+</span>
+Author in red?
+<br/>
+<span class="pre-in-pp">
+  .AUTHOR_COLOR red
+</span>
+Title in smallcaps?
+<span class="pre-in-pp">
+  .TITLE_SMALLCAPS
+</span>
+</p>
+
+<div class="box-tip" style="margin-top: -1em;">
+<p class="tip">
+<span class="note">Note:</span>
+Use <kbd>ATTRIBUTE</kbd> as the part name for the attribution string
+(&#8220;by&#8221;) that precedes the author, and <kbd>DOCTYPE</kbd>
+as the name for the string passed to <kbd>DOCTYPE NAMED&nbsp;"string"</kbd>.
+</p>
+</div>
+
+<h5 id="list-of-params" class="docs">List of parameters with arguments</h5>
+
+<dl>
+  <dt class="params">_FAMILY</dt>
+    <dd>
+      Takes the same argument as <a href="typesetting.html#family">FAMILY</a>.
+    </dd>
+  <dt class="params">_FONT</dt>
+    <dd>
+      Takes the same argument as <a href="typesetting.html#font">FT</a>.
+    </dd>
+  <dt class="params">_SIZE</dt>
+    <dd>
+      Takes a <kbd>+</kbd> or <kbd>-</kbd> value relative to the size of
+      <a href="definitions.html#running">running text</a>.
+    </dd>
+  <dt class="params">_COLOR</dt>
+    <dd>
+      Takes the same argument as <a href="color.html#color">COLOR</a>.
+      Colors should be pre-initialized with
+      <a href="color.html#xcolor">XCOLOR</a>
+      or
+      <a href="color.html#newcolor">NEWCOLOR</a>.
+    </dd>
+  <dt class="params">_LEAD</dt>
+    <dd>
+      Takes an absolute leading value, i.e. not relative to the
+      overall leading of the docheader.  The leading applies to
+      multiple lines of type within the same docheader part, e.g.
+      several authors or a long title that must be split over two
+      lines.  No
+      <a href="definitions.html#unitofmeasure">unit of measure</a>
+      is required;
+      <a href="definitions.html#picaspoints">points</a>
+      is assumed.
+    </dd>
+  <dt id="space-before" class="params">_SPACE</dt>
+    <dd>
+      Takes a numeric value with a
+      <a href="definitions.html#unitofmeasure">unit of measure</a>
+      appended to it.  The value may be negative.  This allows you
+      to adjust the whitespace before a docheader part, for example
+      if you want more whitespace between the title and the author.
+      <span style="display: block; margin-top: .5em">
+      Note that <kbd>TITLE</kbd> does not have a <kbd>_SPACE</kbd>
+      parameter; use
+      <a href="#change-start">DOCHEADER_ADVANCE</a>
+      to move the title further down on the page.
+      </span>
+    </dd>
+  <dt class="params">_CAPS</dt>
+    <dd>
+      Capitalizes the entire docheader part.  No argument is
+      required.
+    </dd>
+  <dt class="params">_NO_CAPS</dt>
+    <dd>
+      Only used if you need to reverse the sense of <kbd>_CAPS</kbd>, as
+      can sometimes happen when
+      <a href="rectoverso.html#collate">collating</a>
+      documents that have differing docheader style requirements.
+    </dd>
+  <dt class="params">_SMALLCAPS</dt>
+    <dd>
+      Set the entire docheader part in smallcaps.  No argument is
+      required.
+    </dd>
+  <dt class="params">_NO_SMALLCAPS</dt>
+    <dd>
+      Only used if you need to reverse the sense of
+      <kbd>_SMALLCAPS</kbd>, as can sometimes happen when
+      <a href="rectoverso.html#collate">collating</a>
+      documents that have differing docheader style requirements.
+    </dd>
+  <dt class="params">_UNDERSCORE</dt>
+    <dd>
+      With no argument, underscores the docheader part.  With a
+      single, possibly decimal numeric argument, sets the weight of
+      the underscore.  A second numeric argument to which a
+      <a href="definitions.html#unitofmeasure">unit of measure</a>
+      is appended (most likely <kbd>p</kbd>) sets the distance
+      between the baseline and the underscore.
+      <span style="display: block; margin-top: .5em">
+      If the argument <kbd>DOUBLE</kbd> is given, double underscores
+      the docheader part.  With a single, possibly decimal numeric
+      argument afterwards, sets the weight of the underscore rules.
+      A third numeric argument to which a
+      <a href="definitions.html#unitofmeasure">unit of measure</a>
+      is appended (most likely <kbd>p</kbd>) sets the distance
+      between the baseline and the first underscore rule.  A fourth
+      numeric argument to which a unit of measure is appended sets
+      the distance between the two underscore rules.
+      </span>
+      <span style="display: block; margin-top: .5em">
+      You may give <kbd>_UNDERLINE</kbd> as the parameter instead of
+      <kbd>_UNDERSCORE</kbd> if you prefer.
+      </span>
+    </dd>
+  <dt class="params">NO_UNDERSCORE</dt>
+    <dd>
+      Only used if you need to reverse the sense of
+      <kbd>_UNDERSCORE</kbd>, as can sometimes happen when
+      <a href="rectoverso.html#collate">collating</a>
+      documents that have differing docheader style requirements.
+    </dd>
+</dl>
+
+<h5 id="grouping" class="docs">Grouping part/parameter changes</h5>
+
+<p>
+If you want to change several parameters for a particular docheader
+part, you may group the changes together in a single macro by
+joining the name of the part to <kbd>STYLE</kbd> with an underscore,
+for example <kbd>TITLE_STYLE</kbd> or <kbd>AUTHOR_STYLE</kbd>.
+The following demonstrates:
+<span class="pre-in-pp">
+  .CHAPTER_TITLE_STYLE \
+  FAMILY T \
+  SIZE +4 \
+  UNDERSCORE 2 \
+  SMALLCAPS
+</span>
+Notice the use of the backslash character, which is required after
+the macro name and all parameters except the last.  Grouping reduces
+clutter and the finger fatigue caused by entering
+<span class="pre-in-pp">
+   .CHAPTER_TITLE_FAMILY T
+   .CHAPTER_TITLE_SIZE +4
+   .CHAPTER_TITLE_UNDERSCORE 2
+   .CHAPTER_TITLE_SMALLCAPS
+</span>
+</p>
+
+<h4 id="change-attribute" class="docs" style="font-size: 100%">3. Changing or removing the attribution string (&#8220;by&#8221;)</h4>
+
+<p>
+If you&#8217;re not writing in English, you can change what mom
+prints where &#8220;by&#8221; appears in docheaders.  For example,
+<br/>
+<span class="pre-in-pp">
+  .ATTRIBUTE_STRING "par"
+</span>
+changes &#8220;by&#8221; to &#8220;par&#8221;.  ATTRIBUTE_STRING
+can also be used, for example, to make the attribution read
+&#8220;Edited by&#8221;.
+</p>
+
+<p>
+If you don&#8217;t want an attribution string at all, simply pass
+ATTRIBUTE_STRING an empty argument, like this:
+<br/>
+<span class="pre-in-pp">
+  .ATTRIBUTE_STRING ""
+</span>
+Mom will deposit a blank line where the attribution string normally
+appears.
+</p>
+
+<p>
+If the optional argument, <kbd>COVER</kbd> or <kbd>DOC_COVER</kbd>,
+is given to ATTRIBUTE_STRING, the string argument represents the
+attribution string that will appear on cover or document cover pages
+(see the
+<a href="cover.html#cover-intro">Introduction to cover pages</a>
+for a description of the difference between &#8220;document
+covers&#8221; and &#8220;covers&#8221;).  Thus, it is possible to
+have different attribution strings on the document cover page, the
+cover (&#8220;title&#8221;) page, and in the first-page docheader.
+An extreme example would be:
+<br/>
+<span class="pre-in-pp">
+  .ATTRIBUTE_STRING ""
+  .ATTRIBUTE_STRING DOC_COVER "Edited by"
+  .ATTRIBUTE_STRING COVER "by"
+</span>
+The first invocation of <kbd>.ATTRIBUTE_STRING</kbd> establishes a
+blank attribution string that will be incorporated in the first-page
+docheader.  The second will print &#8220;Edited by&#8221; on the
+document cover; the third will print &#8220;by&#8221; on the cover
+(&#8220;title&#8221;) page.
+</p>
+
+<p>
+If you don&#8217;t require differing attribute strings for
+doc cover pages, cover pages, or the first-page docheader,
+<kbd>.ATTRIBUTE_STRING</kbd>, without either of the optional first
+arguments, is sufficient.
+</p>
+
+<div class="rule-short"><hr/></div>
+
+<!-- -COLUMNS- -->
+
+<h2 id="columns-intro" class="docs">Setting documents in columns</h2>
+
+<p>
+Setting documents in columns is easy with mom.  All you have to do
+is is say how many columns you want and how much space you want
+between them (the
+<a href="definitions.html#gutter">gutters</a>).
+That&#8217;s it. Mom takes care of everything else, from soup to
+nuts.
+</p>
+
+<h3 class="docs">Some words of advice</h3>
+
+<p>
+If you want your type to achieve a pleasing
+<a href="definitions.html#just">justification</a>
+or
+<a href="definitions.html#rag">rag</a>
+in columns, reduce the point size of type (and probably the
+<a href="definitions.html#leading">leading</a>
+as well).  Mom&#8217;s default document point size is 12.5, which
+works well across her default 39
+<a href="definitions.html#picaspoints">pica</a>
+full page line length, but with even just two columns on a page, the
+default point size is awkward to work with.
+</p>
+
+<p>
+Furthermore, you&#8217;ll absolutely need to reduce the indents for
+<a href="docelement.html#epigraph-control">epigraphs</a>,
+<a href="docelement.html#quote-general">quotes</a>,
+and
+<a href="docelement.html#blockquote-general">blockquotes</a>
+(and probably the
+<a href="docelement.html#para-indent">paragraph first-line indent</a>
+as well).
+</p>
+
+<!-- -COLUMN- -->
+
+<div class="macro-id-overline">
+<h3 id="columns" class="macro-id">COLUMNS</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>COLUMNS</b> <kbd class="macro-args">&lt;number of columns&gt; &lt;width of gutters&gt;</kbd>
+</div>
+
+<p class="requires">
+&bull;&nbsp;Should be the last macro before START
+<br/>
+
+<i>The second argument requires a <a href="definitions.html#unitofmeasure">unit of measure</a></i>
+</p>
+
+<p>
+COLUMNS takes two arguments: the number of columns you want on
+document pages, and the width of the
+<a href="definitions.html#gutter">gutter</a>
+between them.  For example, to set up a page with two columns
+separated by an 18 point gutter, you&#8217;d do
+<br/>
+<span class="pre-in-pp">
+  .COLUMNS 2 18p
+</span>
+Nothing to it, really.  However, as noted above, COLUMNS should
+always be the last document setup macro prior to
+<a href="#start">START</a>.
+</p>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Note:</span>
+Mom ignores columns completely when the
+<a href="#printstyle">PRINTSTYLE</a>
+is <kbd>TYPEWRITE</kbd>.  The notion of typewriter-style
+output in columns is just too ghastly for her to bear.
+</p>
+</div>
+
+<h3 class="docs" id="marking-col-start">Marking the first page column start position</h3>
+
+<p>
+If you insert or remove space after the docheader, i.e. immediately after
+<a href="#start">START</a>
+in your input file, mom needs to know where your first column begins
+in order to align subsequent columns on the first page.
+</p>
+
+<div id="col-mark" class="box-macro-args">
+Macro: <b>COL_MARK</b>
+</div>
+
+<p>
+<kbd>COL_MARK</kbd> tells mom where the first column after the
+docheader begins, in order for the top of subsequent columns on the
+first page to be aligned.  Note that if you do not manually add
+or remove space after the docheader, there is no need to invoke
+<kbd>COL_MARK</kbd>.
+</p>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Note:</span>
+If you do add or subtract space after the docheader, e.g. with
+<a href="typesetting.html#ald">ALD</a>
+or
+<a href="typesetting.html#SP">SP</a>,
+and your
+<a href="definitions.html#unitofmeasure">unit of measure</a>
+is something other than a multiple of &#8220;<kbd>v</kbd>&#8221;, be
+sure to follow the spacing command with
+<a href="docprocessing.html#shim">SHIM</a>
+before entering <kbd>.COL_MARK</kbd> unless shimming has been
+disabled with
+<a href="#no-shim">NO_SHIM</a>.
+If your document is being flex-spaced, do not use
+<a href="docprocessing.html#flex">FLEX</a>.
+Rather, disable flex-spacing temporarily with
+<br/>
+<span class="pre-in-pp">
+  .NO_FLEX
+  .NO_SHIM off
+  .SHIM
+  .COL_MARK
+</span>
+and re-enable it afterwards with
+<span class="pre-in-pp">
+  .NO_SHIM
+  .NO_FLEX off
+</span>
+</p>
+</div>
+
+<h3 class="docs">Using tabs when COLUMNS are enabled</h3>
+
+<p>
+Mom&#8217;s tabs (both
+<a href="typesetting.html#typesetting-tabs">typesetting tabs</a>
+and
+<a href="typesetting.html#string-tabs">string tabs</a>)
+behave as you&#8217;d expect during document processing, even
+when COLUMNS are enabled.  Tab structures set up during document
+processing carry over from page to page and column to column.
+</p>
+
+<!-- -BREAKING COLUMNS- -->
+
+<h3 id="breaking-columns" class="docs">Breaking columns manually</h3>
+
+<p>
+Mom takes care of breaking columns when they reach the bottom
+margin of a page.  However, there may be times you want to break
+the columns yourself.  There are two macros for breaking columns
+manually: COL_NEXT and COL_BREAK.
+</p>
+
+<div id="col-next" class="box-macro-args">
+Macro: <b>COL_NEXT</b>
+</div>
+
+<p>
+<kbd>.COL_NEXT</kbd> breaks the line just before it,
+<a href="definitions.html#quad">quads</a>
+it left (assuming the type is justified or quad left), and moves over
+to the top of the next column.  If the column happens to be the last
+(rightmost) one on the page, mom starts a new page
+at the &#8220;column 1&#8221; position.  This is the macro to use when
+you want to start a new column after the end of a paragraph.
+</p>
+
+<div id="col-break" class="box-macro-args">
+Macro: <b>COL_BREAK</b>
+</div>
+
+<p>
+<kbd>.COL_BREAK</kbd> is almost the same as <kbd>.COL_NEXT</kbd>,
+except that instead of breaking and quadding the line preceding it,
+mom breaks and spreads it (see
+<a href="typesetting.html#spread">SPREAD</a>).
+Use this macro whenever you need to start a new column in the middle
+of a paragraph.
+</p>
+
+<div class="box-important">
+<p class="tip">
+<span class="important">Warning:</span>
+If you need COL_BREAK in the middle of a blockquote or (god help
+you) an epigraph, you must do the following in order for COL_BREAK
+to work:
+<br/>
+<span class="pre-in-pp">
+  .SPREAD
+  \!.COL_BREAK
+</span>
+</p>
+</div>
+
+<div class="rule-short"><hr/></div>
+
+<!-- ======================================================================== -->
+
+<!-- *** -->
+
+
+<h2 id="style-after-start" class="macro-group">Changing basic type and formatting parameters after START</h2>
+
+<ul id="changing-basic-type">
+  <li><a href="#behaviour">Behaviour of the typesetting macros during document processing</a>
+  <ul style="margin-left: -.5em;">
+    <li><a href="#behaviour-specific">Effect of specific typesetting macros</a></li>
+  </ul></li>
+  <li><a href="#tb-margins">Top and bottom margins in document processing</a></li>
+  <li><a href="#space">Inserting space at the top of a new page</a>
+  <ul style="margin-left: -.5em;">
+    <li><a href="#add-space">ADD_SPACE</a></li>
+  </ul></li>
+</ul>
+
+<div class="rule-medium"><hr/></div>
+
+<h3 id="behaviour" class="docs">Behaviour of the typesetting macros during document processing</h3>
+
+<p>
+During document processing, most of the
+<a href="typesetting.html#macros-typesetting">typesetting macros</a>
+affect type in the document globally.  For example, if you turn
+kerning off, pairwise kerning is disabled not only in paragraphs,
+but also in headers, footers, quotes, and so on.
+</p>
+
+<p>
+Typesetting macros that alter margins and line lengths affect
+<a href="definitions.html#running">running text</a>
+globally (or at least try to), but leave headers/footers and
+footnotes alone.  (To indent footnotes, see the full explanation of
+the
+<a href="docelement.html#footnote">FOOTNOTE</a>
+macro.)
+</p>
+
+<p>
+Mom&#8217;s tabs (both
+<a href="typesetting.html#typesetting-tabs">typesetting tabs</a>
+and
+<a href="typesetting.html#string-tabs">string tabs</a>)
+behave as expected in running text during document processing.  Tab
+structures that do not exceed the line length of running text are
+preserved sensibly from page to page, and, if
+<a href="docprocessing.html#columns">COLUMNS</a>
+are enabled, from column to column.
+</p>
+
+<p>
+Some typesetting macros, however, when used during document
+processing, behave in special ways.  These are the macros that deal
+with the basic parameters of type style: horizontal and vertical
+margins, line length,
+<a href="definitions.html#family">family</a>,
+<a href="definitions.html#font">font</a>,
+<a href="definitions.html#ps">point size</a>,
+<a href="definitions.html#leading">leading</a>,
+and
+<a href="definitions.html#quad">quad</a>.
+</p>
+
+<p>
+Mom assumes that any changes to these parameters stem from a
+temporary need to set type in a style different from that provided
+by mom&#8217;s
+<a href="docelement.html#index-docelement">document element tags</a>.
+In other words, you need to do a bit of creative typesetting in the
+middle of a document.
+</p>
+
+<p>
+The following lists those typesetting macros whose behaviour during
+document processing requires some explanation.
+(Please refer to
+<a href="#tb-margins">Top and bottom margins in document processing</a>
+for information on how mom interprets
+<a href="typesetting.html#t-margin">T_MARGIN</a>
+and
+<a href="typesetting.html#b-margin">B_MARGIN</a>
+in document processing.  Additionally, see
+<a href="#add-space">ADD_SPACE</a>
+if you encounter the problem of trying to get mom to put space at
+the tops of pages after the first.)
+</p>
+<div id="behaviour-specific" class="box-code" style="margin-left: 24px;">
+<span class="pre" style="color: #302419;">
+  MACRO       EFFECT DURING DOCUMENT PROCESSING
+  -----       ---------------------------------
+
+  L_MARGIN    &bull;The left margin of all running text
+               assumes the new value.
+
+              &bull;The line length remains unaltered.
+
+              &bull;The header and footer left margin
+               remain at the current document default.
+
+              (You won&#8217;t use this often by itself.  Most
+               likely, you&#8217;ll use it in combination with
+               R_MARGIN or LL.)
+
+  R_MARGIN    &bull;The right margin of all running text
+               assumes the new value.  In other words,
+               the line length is altered.
+
+              &bull;The header and footer right margin
+               remain at the current document default.
+
+  LL          &bull;The line length of all running text
+               is set to the new value.
+
+              &bull;The header and footer line length remain
+               at the current document default.
+
+  FAMILY      &bull;Changes family for the duration of the
+               current tag only.  As soon as another document
+               element tag is invoked, the family reverts to
+               the current default for the new tag.
+
+  FT          &bull;Changes font for the duration of the
+               current tag only.  As soon as another document
+               element tag is entered, the font reverts
+               to the current default for the new tag.
+
+               N.B. &mdash; \*[SLANT] and \*[BOLDER] affect
+               paragraph text, and remain in effect for all
+               paragraphs until turned off.  If you want to
+               use them in a macro that takes a string
+               argument, include the escape in the string.
+               \*[COND] and \*[EXT] behave similarly.
+
+  PT_SIZE     &bull;Changes point size for the duration of the
+               current tag only.  As soon as another document
+               element tag is entered, the point size reverts
+               to the current document default for the new
+               tag.
+
+  LS          &bull;Changes line space for the duration of the
+               current tag only.  As soon as another document
+               element tag is entered, the line space reverts
+               to the current document default for the new
+               tag.
+
+               Using LS to temporarily change leading within
+               a document will almost certainly result in a
+               bottom margin that doesn&#8217;t align with the
+               bottom margin of subsequent pages.  You&#8217;ll
+               need to use the SHIM or FLEX macro to get mom back
+               on track when you&#8217;re ready to return to the
+               document&#8217;s default leading.
+
+  <a id="autolead" style="margin-top: -1em">AUTOLEAD</a>   &bull;Invoked before START, sets the overall document
+              leading as a function of the overall document
+              point size (ie the point size used in paragraphs);
+              subsequently disabled after START, except for calls
+              to DOC_PT_SIZE
+
+             &bull;DOC_LEAD before DOC_PT_SIZE cancels the AUTOLEAD
+              set before START
+
+             &bull;Invoked after START, remains in effect for all
+              subsequent point size changes made with PT_SIZE,
+              but does not affect the leading of the document
+              element tags (e.g., HEADING, PP, QUOTE...), or calls
+              to DOC_PT_SIZE
+
+  QUAD        &bull;Changes quad for the duration of the
+               current tag only.  As soon as another document
+               element tag is entered, the quad reverts to
+               the current document default for the new
+               tag.
+
+               N.B. &mdash; Line-for-line quadding macros
+               (LEFT, CENTER, RIGHT) are also temporary,
+               overridden by the QUAD value of any subsequent
+               document element tag.
+</span>
+</div>
+
+<h3 id="tb-margins" class="docs" style="margin-top: 1.5em;">Top and bottom margins in document processing</h3>
+
+<p>
+Normally, mom establishes the top and bottom
+margins of
+<a href="definitions.html#running">running text</a>
+in documents from the values of <b>HEADER_MARGIN +
+HEADER_GAP</b> and <b>FOOTER_MARGIN + FOOTER_GAP</b>
+respectively.  However, if you invoke
+<a href="typesetting.html#t-margin">T_MARGIN</a>
+or
+<a href="typesetting.html#b-margin">B_MARGIN</a>
+either before or after
+<a href="docelement.html#start">START</a>,
+they set the top and bottom margins of running text irrespective of
+HEADER_GAP and FOOTER_GAP.
+</p>
+
+<p>
+Put another way, in document processing, T_MARGIN
+and B_MARGIN set the top and bottom margins of
+running text, but have no effect on the placement of
+<a href="definitions.html#header">headers</a>,
+<a href="definitions.html#footer">footers</a>,
+or page numbers.
+</p>
+
+<!-- ==================================================================== -->
+
+<h3 id="space" class="docs">Inserting space at the top of a new page</h3>
+
+<p>
+Occasionally, you may want to insert space before the start of
+<a href="definitions.html#running">running text</a>
+on pages after the first.
+</p>
+
+<p>
+You might have tried using
+<a href="typesetting.html#ald">ALD</a>
+or
+<a href="typesetting.html#space">SPACE</a>
+and found it did nothing.  This is because mom normally inhibits
+any extra space before the start of running text on pages after the
+first.
+</p>
+
+<p>
+If you need the space, you must use the macro ADD_SPACE in
+conjunction with
+<a href="typesetting.html#newpage">NEWPAGE</a>.
+</p>
+
+<!-- -ADD_SPACE- -->
+
+<div class="macro-id-overline">
+<h3 id="add-space" class= "macro-id">ADD_SPACE/RESTORE_SPACE</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>ADD_SPACE</b> <kbd class="macro-args">&lt;amount of space&gt;</kbd>
+<br/>
+Macro: <b>RESTORE_SPACE</b>
+</div>
+
+<p class="requires">
+&bull;&nbsp;Requires a <a href="definitions.html#unitofmeasure">unit of measure</a>
+</p>
+
+<p>
+If your
+<a href="#doctype">DOCTYPE</a>
+is DEFAULT, CHAPTER, NAMED, or LETTER, ADD_SPACE takes as its
+single argument the distance you want mom to advance from the normal
+baseline position at the top of any page <i>after the first</i> (ie
+the one on which the docheader is normally printed).  A
+<a href="definitions.html#unitofmeasure">unit of measure</a> is
+required.
+</p>
+
+<p>
+For example, say you wanted to insert 2 inches of space before the
+start of
+<a href="definitions.html#running">running text</a>
+on a page other than the first.  You&#8217;d accomplish it with
+<br/>
+<span class="pre-in-pp">
+  .NEWPAGE
+  .ADD_SPACE 2i
+</span>
+which would terminate your current page, break to a new page, print
+the header (assuming headers are on) and insert 2 inches of space
+before the start of running text.
+</p>
+
+<p>
+Since adding space in this way is almost sure to disrupt mom&#8217;s
+ability to guarantee perfectly flush bottom margins, I highly
+recommend using the
+<a href="docprocessing.html#shim">SHIM</a>
+or
+<a href="docprocessing.html#flex">FLEX</a>
+macro immediately after ADD_SPACE, which will add the space plus
+whatever correction is required by the
+<a href="docprocessing.html#vertical-whitespace-management">vertical whitespace management</a>
+strategy in effect.
+</p>
+
+<p>
+If your
+<a href="#doctype">DOCTYPE</a>
+is SLIDES, ADD_SPACE may be used on any slide <i>including the
+first</i> to introduce additional white space at the top.
+</p>
+
+<h4 class="docs doc-param-macros" style="margin-top: .5em">RESTORE_SPACE</h4>
+
+<p style="margin-top: .5em">
+You may sometimes find that mom refuses to respect
+<a href="typesetting.html#space">SP</a>,
+<a href="typesetting.html#index-aldrld">ALD/RLD</a>,
+<a href="docprocessing.html#shim">SHIM</a>,
+or
+<a href="docprocessing.html#flex">FLEX</a>
+after the first element (line of text, floated material) output
+at the top of a page.  Should this happen, insert the macro
+RESTORE_SPACE before issuing the spacing command.
+</p>
+
+<!-- *** -->
+
+<h2 id="intro-doc-param" class="macro-group">Changing document-wide style parameters after START</h2>
+
+<p>
+In the normal course of things, you establish the basic type style
+parameters of a document prior to invoking
+<a href="#start">START</a>,
+using the
+<a href="typesetting.html#macros-typesetting">typesetting macros</a>
+(<b>L_MARGIN, FAMILY, PT_SIZE, LS,</b> etc).  After START, you must
+use the following macros if you wish to make global changes to the
+basic type style parameters, for example changing the overall leading or
+the justification style.
+</p>
+
+<div class="box-important">
+<p class="tip">
+<span class="important">Important:</span>
+Because these macros globally update the chosen parameter, they
+should only be used immediately prior to
+<a href="rectoverso.html#collate">COLLATE</a>
+or, if an occasional effect is desired,
+<a href="typesetting.html#newpage">NEWPAGE</a>.
+<a href="#doc-pt-size">DOC_PT_SIZE</a>,
+for example, updates the point size of every page element, including
+headers, footers, page numbers, and so on, which is almost certainly
+not what you want in the middle of a page.
+</p>
+</div>
+
+<div class="macro-list-container">
+<h3 id="index-doc-param" class="macro-list">Post-START global style change macros</h3>
+<ul class="macro-list">
+  <li><a href="#doc-left-margin">DOC_LEFT_MARGIN</a></li>
+  <li><a href="#doc-right-margin">DOC_RIGHT_MARGIN</a></li>
+  <li><a href="#doc-line-length">DOC_LINE_LENGTH</a></li>
+  <li><a href="#doc-family">DOC_FAMILY</a></li>
+  <li><a href="#doc-pt-size">DOC_PT_SIZE</a></li>
+  <li><a href="#doc-lead">DOC_LEAD</a></li>
+  <li><a href="#doc-lead-adjust">DOC_LEAD_ADJUST</a></li>
+  <li><a href="#doc-quad">DOC_QUAD</a></li>
+</ul>
+</div>
+
+<!-- -DOC_LEFT_MARGIN -->
+
+<div class="macro-id-overline">
+<h3 id="doc-left-margin" class="macro-id">DOC_LEFT_MARGIN</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>DOC_LEFT_MARGIN</b> <kbd class="macro-args">&lt;left margin&gt;</kbd>
+</div>
+
+<p class="requires">
+&bull;&nbsp;Requires a <a href="definitions.html#unitofmeasure">unit of measure</a>
+</p>
+
+<h4 class="docs doc-param-macros">Arguments and behaviour</h4>
+
+<ul class="doc-param-macros">
+  <li>the argument is the same as for
+      <a href="typesetting.html#l-margin">L_MARGIN</a>
+  </li>
+  <li>changes all left margins, including headers, footers, and page
+      numbers to the new value
+  </li>
+  <li>any document elements that use a left indent calculate
+      the indent from the new value
+  </li>
+  <li>the line length remains the same (ie the right margin
+      shifts when you change the left margin)
+  </li>
+</ul>
+
+<!-- -DOC_RIGHT_MARGIN -->
+
+<div class="macro-id-overline">
+<h3 id="doc-right-margin" class="macro-id">DOC_RIGHT_MARGIN</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>DOC_RIGHT_MARGIN</b> <kbd class="macro-args">&lt;right margin&gt;</kbd>
+</div>
+
+<p class="requires">
+&bull;&nbsp;Requires a <a href="definitions.html#unitofmeasure">unit of measure</a>
+</p>
+
+<h4 class="docs doc-param-macros">Arguments and behaviour</h4>
+
+<ul class="doc-param-macros">
+  <li>the argument is the same as for
+      <a href="typesetting.html#r-margin">R_MARGIN</a>
+  </li>
+  <li>changes all right margins, including headers, footers, and
+      page numbers to the new value;
+  </li>
+  <li>any document elements that use a right indent calculate
+      the indent from the new value
+  </li>
+</ul>
+
+<!-- -DOC_RIGHT_MARGIN -->
+
+<div class="macro-id-overline">
+<h3 id="doc-line-length" class="macro-id">DOC_LINE_LENGTH</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>DOC_LINE_LENGTH</b> <kbd class="macro-args">&lt;length&gt;</kbd>
+</div>
+
+<p class="requires">
+&bull;&nbsp;Requires a <a href="definitions.html#unitofmeasure">unit of measure</a>
+</p>
+
+<h4 class="docs doc-param-macros">Arguments and behaviour</h4>
+
+<ul class="doc-param-macros">
+  <li>the argument is the same as for
+      <a href="typesetting.html#linelength">LL</a>
+  </li>
+  <li>exactly equivalent to changing the right margin with
+      DOC_RIGHT_MARGIN (see
+      <a href="#doc-right-margin">above</a>);
+  </li>
+</ul>
+
+<!-- -DOC_FAMILY- -->
+
+<div class="macro-id-overline">
+<h3 id="doc-family" class="macro-id">DOC_FAMILY</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>DOC_FAMILY</b> <kbd class="macro-args">&lt;family&gt;</kbd>
+</div>
+
+<h4 class="docs doc-param-macros" style="margin-top: 1em;">Arguments and behaviour</h4>
+
+<ul class="doc-param-macros">
+  <li>the argument is the same as for
+      <a href="typesetting.html#family">FAMILY</a>
+  </li>
+  <li>globally changes the type family for
+  <ul>
+    <li style="margin-left: -.5em;">the <a href="definitions.html#docheader">docheader</a></li>
+    <li style="margin-left: -.5em;">all <a href="docelement.html#index-docelement">document element tags</a>, including footnotes</li>
+    <li style="margin-left: -.5em;"><a href="definitions.html#header">headers and/or footers</a></li>
+    <li style="margin-left: -.5em;"><a href="docelement.html#number-lines-intro">line numbering</a></li>
+    <li style="margin-left: -.5em;"><a href="headfootpage.html#pagination">page numbering</a></li>
+  </ul></li>
+  <li>does <i>not</i> change the family of
+  <ul>
+      <li><a href="cover.html#doc-cover">document cover pages</a></li>
+      <li><a href="cover.html#cover">cover pages</a></li>
+      <li><a href="docelement.html#endnote-intro">endnotes pages</a></li>
+      <li><a href="docelement.html#toc-intro">table of contents</a></li>
+  </ul></li>
+  <li>any page elements (e.g., headers page numbers, footnotes) whose
+      families you wish to remain at their old values must be
+      reset with the appropriate
+      <a href="docelement.html#docelement-control">control macros</a>
+  </li>
+</ul>
+
+<!-- -DOC_PT_SIZE- -->
+
+<div class="macro-id-overline">
+<h3 id="doc-pt-size" class="macro-id">DOC_PT_SIZE</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>DOC_PT_SIZE</b> <kbd class="macro-args">&lt;point size&gt;</kbd>
+</div>
+
+<p class="requires">
+&bull;&nbsp;Does not require a <a href="definitions.html#unitofmeasure">unit of measure</a>; points is assumed
+</p>
+
+<h4 class="docs doc-param-macros">Arguments and behaviour</h4>
+
+<ul class="doc-param-macros">
+  <li>the argument is the same as for
+      <a href="typesetting.html#ps">PT_SIZE</a>,
+      and refers to the point size of type in paragraphs
+  </li>
+  <li>all automatic point size changes (heads, quotes,
+      footnotes, headers, etc.) are affected by the new size;
+      anything you do not want affected must be reset to
+      its former value (see the Control Macros section of
+      the pertinent document element for instructions on
+      how to do this)
+  </li>
+  <li>if
+      <a href="typesetting.html#autolead">AUTOLEAD</a>
+      was invoked before START; the value of AUTOLEAD will be used
+      to update the leading of all document element tags except
+      FOOTNOTE and EPIGRAPH
+  </li>
+</ul>
+
+<!-- -DOC_LEAD- -->
+
+<div class="macro-id-overline">
+<h3 id="doc-lead" class="macro-id">DOC_LEAD</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>DOC_LEAD</b> <kbd class="macro-args">&lt;points&gt; [ ADJUST ]</kbd>
+</div>
+
+<p class="requires">
+&bull;&nbsp;Does not require a <a href="definitions.html#unitofmeasure">unit of measure</a>; points is assumed
+</p>
+
+<h4 class="docs doc-param-macros">Arguments and behaviour</h4>
+
+<ul class="doc-param-macros">
+  <li>the argument is the same as for
+      <a href="typesetting.html#leading">LS</a>,
+      and refers to the
+      <a href="definitions.html#lead">leading</a>
+      of paragraphs
+  </li>
+  <li>because paragraphs will have a new leading, the leading and
+      spacing of most running text is influenced by the new value
+  </li>
+  <li>epigraphs and footnotes remain unaffected;
+      if you wish to change their leading, use
+      <a href="docelement.html#epigraph-autolead">EPIGRAPH_AUTOLEAD</a>
+      and
+      <a href="docelement.html#footnote-autolead">FOOTNOTE_AUTOLEAD</a>.
+  </li>
+  <li>the optional argument <kbd>ADJUST</kbd> performs
+      leading adjustment as explained in
+      <a href="#doc-lead-adjust">DOC_LEAD_ADJUST</a>
+  </li>
+  <li>if
+      <a href="typesetting.html#autolead">AUTOLEAD</a>
+      was invoked before START; the value of that AUTOLEAD will be
+      cancelled
+  </li>
+</ul>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Note:</span>
+Even if you don&#8217;t pass DOC_LEAD the optional argument
+<kbd>ADJUST</kbd>, mom will still adjust the leading of endnotes
+pages and toc pages.  See
+<a href="docelement.html#endnote-lead">ENDNOTE_LEAD</a>
+and
+<a href="docelement.html#toc-lead">TOC_LEAD</a>
+for an explanation of how to disable this default behaviour.
+</p>
+</div>
+
+<!-- -DOC_QUAD- -->
+
+<div class="macro-id-overline">
+<h3 id="doc-quad" class="macro-id">DOC_QUAD</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>DOC_QUAD</b> <kbd class="macro-args">L | R | C | J</kbd>
+</div>
+
+<h4 class="docs doc-param-macros" style="margin-top: 1em;">Arguments and behaviour</h4>
+
+<ul class="doc-param-macros">
+  <li>the arguments are the same as for
+      <a href="typesetting.html#quad">QUAD</a>
+  </li>
+  <li>affects paragraphs, epigraphs and footnotes; does not
+      affect blockquotes
+  </li>
+</ul>
+
+<h2 id="terminating" class="macro-group">Terminating a document</h2>
+
+<p>
+You need do nothing special to terminate a document.  When groff
+finishes processing the last
+<a href="definitions.html#inputline">input line</a>
+of a file, the page is ejected, subject to whatever routines are
+needed to complete it (e.g., printing footnotes or adding the page
+number).
+</p>
+
+<p>
+It happens sometimes, however, that a last line of
+<a href="definitions.html#running">running text</a>,
+falling on or very near the bottom of the page, tricks groff into
+breaking to a new page before terminating.  The result is a blank
+page at the end of the formatted document.
+</p>
+
+<p>
+The situation is rare, generally occurring only when some additional
+macro is required after the input text, e.g., to exit a
+<a href="docelement.html#list-intro">list</a>
+or terminate a
+<a href="docelement.html#quote">quote</a>.
+To prevent it from ever happening, I recommend getting into the habit
+of following the final input line of all your mom files with
+<a href="typesetting.html#el"><kbd>.EL</kbd></a>.
+Depending on the
+<a href="definitions.html#filled">fill mode</a>
+in effect, you may also have to append the &#8220;join line&#8221;
+<a href="definitions.html#inlines">escape</a>,
+<kbd>\c</kbd>, to the final line.</p>
+
+<p>
+Thus, for normal text at the end of a paragraph, which is in fill
+mode,
+<br/>
+<span class="pre-in-pp">
+  and they all lived happily ever after.
+  .EL
+</span>
+or for ending a 
+<a href="docelement.html#list-intro">LIST</a>
+(also in fill mode)
+<span class="pre-in-pp">
+  .ITEM
+  peaches, pears, plums
+  .EL
+  .LIST OFF
+</span>
+whereas, at the end of a
+<a href="docelement.html#quote-intro">QUOTE</a>
+(which is in nofill mode),
+<span class="pre-in-pp">
+  Shall be lifted\[em]nevermore!\c
+  .EL
+  .QUOTE OFF
+</span>
+Notice that the <kbd>.EL</kbd> comes after the last line of input
+text, not any macros following.
+</p>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Note:</span>
+<a href="inlines.html#b"><kbd>\*[B]</kbd></a>
+cannot be used as a replacement for <kbd>.EL</kbd> when terminating
+a document.
+</p>
+</div>
+
+<!-- Navigation links -->
+<table style="width: 100%; margin-top: 12px;">
+<tr>
+  <td style="width: 33%;"><a href="toc.html">Back to Table of Contents</a></td>
+  <td style="width: 24%; text-align: center;"><a href="#top">Top</a></td>
+  <td style="width: 43%; text-align: right;"><a href="docelement.html#top">Next: The document element tags</a></td>
+</tr>
+</table>
+
+</div>
+
+<div class="bottom-spacer"><br/></div>
+
+</body>
+</html>

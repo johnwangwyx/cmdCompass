@@ -1,0 +1,61 @@
+PDFMOM(1)                   General Commands Manual                  PDFMOM(1)
+
+
+
+NNAAMMEE
+       pdfmom - produce PDF documents using the mom macro package for groff
+
+SSYYNNOOPPSSIISS
+       ppddffmmoomm [--TTppddff] [_g_r_o_f_f_-_o_p_t_i_o_n_s] _f_i_l_e ...
+
+       ppddffmmoomm --TTppss [_p_d_f_r_o_f_f_-_o_p_t_i_o_n_s] [_g_r_o_f_f_-_o_p_t_i_o_n_s] _f_i_l_e ...
+
+       ppddffmmoomm --vv
+
+DDEESSCCRRIIPPTTIIOONN
+       _p_d_f_m_o_m  is a wrapper around _g_r_o_f_f(1) that facilitates the production of
+       PDF documents from files formatted with the _m_o_m macros.
+
+       _p_d_f_m_o_m prints to the standard output, so output must usually  be  redi-
+       rected to a destination file.  The size of the final PDF can be reduced
+       by piping the output through _p_s_2_p_d_f(1).
+
+       If called with the --TTppddff option (which is  the  default),  _p_d_f_m_o_m  pro-
+       cesses  files  using  groff's native PDF driver, _g_r_o_p_d_f(1).  If --TTppss is
+       given, processing is passed over to _p_d_f_r_o_f_f, which uses  _g_r_o_f_f's  Post-
+       Script  driver.   In  either case, multiple runs of the source file are
+       performed in order to satisfy any forward references in the document.
+
+       _p_d_f_m_o_m accepts all the same options as _g_r_o_f_f.  If --TTppss  is  given,  the
+       options associated with _p_d_f_r_o_f_f are accepted as well.  Please note that
+       when _p_d_f_m_o_m calls _p_d_f_r_o_f_f, the
+              --mmppddffmmaarrkk --mmoomm ----nnoo--ttoocc
+       options are implied and should  not  be  given  on  the  command  line.
+       Equally,  it is not necessary to supply the --mmoomm or --mm mmoomm options when
+       --TTppss is absent.
+
+       PDF integration with the _m_o_m macros is discussed in full in the  manual
+       _P_r_o_d_u_c_i_n_g  _P_D_F_s _w_i_t_h _g_r_o_f_f _a_n_d _m_o_m, which was itself produced with _p_d_f_-
+       _m_o_m.
+
+       If called with the --vv option, _p_d_f_m_o_m simply displays its version infor-
+       mation and exits.
+
+BBUUGGSS
+       _p_d_f_m_o_m sometimes issues warnings of the type
+              ...: can't transparently output node at top level
+       but this is more of an annoyance than a bug, and may safely be ignored.
+
+AAUUTTHHOORRSS
+       _p_f_d_m_o_m  was  written  by  Deri  James <deri@chuzzlewit.demon.co.uk> and
+       Peter Schaffter <peter@schaffter.ca>.
+
+SSEEEE AALLSSOO
+       _P_r_o_d_u_c_i_n_g _P_D_F_s _w_i_t_h _g_r_o_f_f _a_n_d _m_o_m, by Deri James and Peter Schaffter; a
+       copy is installed at _d_:_/_u_s_r_/_s_h_a_r_e_/_d_o_c_/_g_r_o_f_f_-_1_._2_2_._4_/_p_d_f_/_m_o_m_-_p_d_f_._p_d_f.
+
+       _g_r_o_f_f(1), _g_r_o_p_d_f(1), _p_d_f_r_o_f_f(1), _p_s_2_p_d_f(1)
+
+
+
+groff 1.22.4                     November 2018                       PDFMOM(1)

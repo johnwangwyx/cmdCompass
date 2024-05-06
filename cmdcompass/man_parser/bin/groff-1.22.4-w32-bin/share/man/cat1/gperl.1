@@ -1,0 +1,175 @@
+GPERL(1)                    General Commands Manual                   GPERL(1)
+
+
+
+NNAAMMEE
+       gperl - groff preprocessor for Perl parts in roff files
+
+SSYYNNOOPPSSIISS
+       ggppeerrll [_f_i_l_e_s_p_e_c ...]
+
+       ggppeerrll --hh
+       ggppeerrll ----hheellpp
+
+       ggppeerrll --vv
+       ggppeerrll ----vveerrssiioonn
+
+DDEESSCCRRIIPPTTIIOONN
+       This is a preprocessor for ggrrooffff(1).  It allows the use of ppeerrll(7) code
+       in ggrrooffff(7) files.  The result of a _P_e_r_l _p_a_r_t can be  stored  in  groff
+       _s_t_r_i_n_g_s  or  _n_u_m_e_r_i_c_a_l _r_e_g_i_s_t_e_r_s based on the arguments at a final line
+       of a _P_e_r_l _p_a_r_t.
+
+OOPPTTIIOONNSS
+       So far, there are only _f_i_l_e_s_p_e_c or _b_r_e_a_k_i_n_g options.
+
+       _f_i_l_e_s_p_e_c are file names or the minus character -- character for standard
+       input.   As usual, the argument ---- can be used in order to let all fol-
+       lowing arguments mean file names, even if the names begin with a  minus
+       character --.
+
+       An  option  is  _b_r_e_a_k_i_n_g,  when the program just writes the information
+       that was asked for and then stops.  All other arguments will be ignored
+       by that.  These _b_r_e_a_k_i_n_g options are here
+
+       --hh | ----hheellpp
+              Print  help  information  with a short explanation of options to
+              standard output.
+
+       --vv | ----vveerrssiioonn
+              Print version information to standard output.
+
+PPEERRLL PPAARRTTSS
+       _P_e_r_l parts in _g_r_o_f_f _f_i_l_e_s are enclosed by two ..PPeerrll requests with  dif-
+       ferent arguments, a _s_t_a_r_t_i_n_g and an _e_n_d_i_n_g command.
+
+   SSttaarrttiinngg PPeerrll MMooddee
+       The  starting  _P_e_r_l  _r_e_q_u_e_s_t  can  either be without arguments, or by a
+       request that has the term ssttaarrtt as its only argument.
+
+              * ..PPeerrll
+
+              * ..PPeerrll ssttaarrtt
+
+   EEnnddiinngg PPeerrll MMooddee wwiitthhoouutt SSttoorraaggee
+       A ..PPeerrll command line with an argument different from ssttaarrtt  finishes  a
+       running  _P_e_r_l _p_a_r_t.  Of course, it would be reasonable to add the argu-
+       ment ssttoopp; that's possible, but not necessary.
+
+              * ..PPeerrll ssttoopp
+
+              * ..PPeerrll _o_t_h_e_r___t_h_a_n___s_t_a_r_t
+       The argument _o_t_h_e_r___t_h_a_n___s_t_a_r_t can  additionally  be  used  as  a  _g_r_o_f_f
+       string variable name for storage -- see next section.
+
+   EEnnddiinngg PPeerrll MMooddee wwiitthh SSttoorraaggee
+       A useful feature of ggppeerrll is to store one or more results from the _P_e_r_l
+       _m_o_d_e.
+
+       The output of a _P_e_r_l _p_a_r_t can be got with backticks ``......``.
+
+       This program collects all printing to STDOUT (normal  standard  output)
+       by  the  Perl pprriinntt program.  This pseudo-printing output can have sev-
+       eral lines, due to printed line breaks with \\nn.  By that, the output of
+       a  Perl  run should be stored into a Perl array, with a single line for
+       each array member.
+
+       This Perl array output can be stored by ggppeerrll in either
+
+       _g_r_o_f_f _s_t_r_i_n_g_s
+              by creating a groff command ..ddss
+
+       _g_r_o_f_f _n_u_m_b_e_r _r_e_g_i_s_t_e_r
+              by creating a groff command ..rrnn
+
+       The storage modes can be determined by arguments of  a  final  stopping
+       ..PPeerrll  command.   Each  argument ..ddss changes the mode into _g_r_o_f_f _s_t_r_i_n_g
+       and ..nnrr changes the mode into _g_r_o_f_f _n_u_m_b_e_r _r_e_g_i_s_t_e_r for  all  following
+       output parts.
+
+       By default, all output is saved as strings, so ..ddss is not really needed
+       before the first ..nnrr command.  That suits to  ggrrooffff(7),  because  every
+       output  can  be  saved as _g_r_o_f_f string, but the number registers can be
+       very restrictive.
+
+       In _s_t_r_i_n_g _m_o_d_e, ggppeerrll generates a _g_r_o_f_f _s_t_r_i_n_g storage line
+              ..ddss _v_a_r___n_a_m_e _c_o_n_t_e_n_t
+       In _n_u_m_b_e_r _r_e_g_i_s_t_e_r _m_o_d_e the following groff command is generated
+              ..nnrr _v_a_r___n_a_m_e _c_o_n_t_e_n_t
+
+       We present argument collections in the following.  You can add as first
+       argument for all ssttoopp.  We omit this additional element.
+
+       ..PPeerrll ..ddss _v_a_r___n_a_m_e
+              This  will  store  1  output  line  into  the groff string named
+              _v_a_r___n_a_m_e by the automatically created command
+                     ..ddss _v_a_r___n_a_m_e _o_u_t_p_u_t
+
+       ..PPeerrll _v_a_r___n_a_m_e
+              If _v_a_r___n_a_m_e is different from ssttaarrtt this is  equivalent  to  the
+              former  command, because the string mode is string with ..ddss com-
+              mand.  default.
+
+       ..PPeerrll _v_a_r___n_a_m_e_1 _v_a_r___n_a_m_e_2
+              This will store 2 output lines into groff string names _v_a_r___n_a_m_e_1
+              and _v_a_r___n_a_m_e_2, because the default mode ..ddss is active, such that
+              no ..ddss argument is needed.  Of course, this is equivalent to
+                     ..PPeerrll ..ddss _v_a_r___n_a_m_e_1 _v_a_r___n_a_m_e_2
+              and
+                     ..PPeerrll ..ddss _v_a_r___n_a_m_e_1 ..ddss _v_a_r___n_a_m_e_2
+
+       ..PPeerrll ..nnrr _v_a_r___n_a_m_e_1 _v_a_r_n_a_m_e_2
+              stores both variables as number register variables.  ggppeerrll  gen-
+              erates
+              ..nnrr _v_a_r___n_a_m_e_1 _o_u_t_p_u_t___l_i_n_e_1
+              ..nnrr _v_a_r___n_a_m_e_2 _o_u_t_p_u_t___l_i_n_e_2
+
+       ..PPeerrll ..nnrr _v_a_r___n_a_m_e_1 ..ddss _v_a_r___n_a_m_e_2
+              stores  the  1st  argument  as _n_u_m_b_e_r _r_e_g_i_s_t_e_r and the second as
+              _s_t_r_i_n_g by
+              ..nnrr _v_a_r___n_a_m_e_1 _o_u_t_p_u_t___l_i_n_e_1
+              ..ddss _v_a_r___n_a_m_e_2 _o_u_t_p_u_t___l_i_n_e_2
+
+   PPrriinnttiinngg ttoowwaarrddss SSTTDDEERRRR iiss wwiitthhoouutt SSttoorraaggee
+       The printing towards _S_T_D_E_R_R, (standard  error)  works  as  usual.   All
+       error information goes to the real normal _s_t_a_n_d_a_r_d _e_r_r_o_r, without other
+       automatic storage.
+
+EEXXAAMMPPLLEESS
+       A possible _P_e_r_l _p_a_r_t in a _r_o_f_f _f_i_l_e could look like that:
+              before
+              .Perl start
+              my $result = 'some data';
+              print $result;
+              .Perl stop .ds string_var
+              after
+
+       This stores  the  result  ""ssoommee  ddaattaa""  into  the  _r_o_f_f  _s_t_r_i_n_g  called
+       ssttrriinngg__vvaarr, such that the following line is printed:
+              .ds string_var some data
+       by ggppeerrll as food for the coming ggrrooffff run.
+
+       A _P_e_r_l _p_a_r_t with several outputs is:
+              .Perl start
+              print "first\n";
+              print "second line\n";
+              print "3\n";
+              .Perl var1 var2 .nr var3
+       This  stores 3 printed lines into 3 _g_r_o_f_f strings.  vvaarr11,vvaarr22,vvaarr33.  So
+       the following _g_r_o_f_f command lines are created:
+              .ds var1 first
+              .ds var2 second line
+              .nr var3 3
+
+AAUUTTHHOORRSS
+       ggppeerrll was written by Bernd Warken <groff-bernd.warken-72@web.de>.
+
+SSEEEE AALLSSOO
+       Man pages  related  to  _g_r_o_f_f  are  ggrrooffff(1),  ggrrooffff(7),  ggrroogg(1),  and
+       ggrrooffffeerr(1).
+
+       Documents related to _P_e_r_l are ppeerrll(1), ppeerrll(7).
+
+
+
+groff 1.22.4                     November 2018                        GPERL(1)

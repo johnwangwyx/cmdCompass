@@ -1,0 +1,3401 @@
+.TH GROFF_MOM 7 "December 2018" "groff 1.22.4"
+.SH NAME
+groff_mom \- groff \(lqmom\(rq macros; \(lqmom\(rq is a \(lqroff\(rq \
+language, part of \(lqgroff\(rq
+.
+.
+.\" Save and disable compatibility mode (for, e.g., Solaris 10/11).
+.do nr groff_mom_C \n[.C]
+.cp 0
+.
+.
+.\" ====================================================================
+.\" Legal Terms
+.\" ====================================================================
+.\"
+.\" Copyright (C) 2002-2018 Free Software Foundation, Inc.
+.\"
+.\" This file is part of mom, which is part of groff, the GNU roff
+.\" type-setting system.
+.\"
+.\" This program is free software: you can redistribute it and/or modify
+.\" it under the terms of the GNU General Public License as published by
+.\" the Free Software Foundation, either version 3 of the License, or
+.\" (at your option) any later version.
+.\"
+.\" This program is distributed in the hope that it will be useful, but
+.\" WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+.\" General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public License
+.\" along with this program.  If not, see
+.\" <http://www.gnu.org/licenses/>.
+.
+.
+.\" ====================================================================
+.\" Setup
+.\" ====================================================================
+.
+.ds Ellipsis \&.\|.\|.\&\"
+.
+.hw line-space
+.
+.
+.\" ====================================================================
+.\" .FONT (<font name> <text> [<font name> <text> ...])
+.\"
+.\" Print in different fonts: R, I, B, CR, CI, CB
+.\"
+.de FONT
+.  if (\\n[.$] = 0) \{\
+.	nop \&\f[P]\&
+.	return
+.  \}
+.  ds result \&
+.  while (\\n[.$] >= 2) \{\
+.	as result \,\f[\\$1]\\$2
+.	if !"\\$1"P" .as result \f[P]\""
+.	shift 2
+.  \}
+.  if (\\n[.$] = 1) .as result \,\f[\\$1]
+.  nh
+.  nop \\*[result]\&
+.  hy
+..
+.
+.
+.\" ====================================================================
+.SH "SYNOPSIS"
+.\" ====================================================================
+.
+.SY pdfmom
+.RB [ \-Tps
+.RI [ pdfroff-option
+\*[Ellipsis]]]
+.RI [ groff-option
+\*[Ellipsis]]
+.I file
+\*[Ellipsis]
+.YS
+.
+.SY groff
+.B \-mom
+.RI [ option
+\*[Ellipsis]]
+.I file
+\*[Ellipsis]
+.SY groff
+.B "\-m mom"
+.RI [ option
+\*[Ellipsis]]
+.I file
+\*[Ellipsis]
+.YS
+.
+.
+.\" ====================================================================
+.SH CALLING MOM
+.\" ====================================================================
+.
+.B mom
+is a macro set for
+.BR groff ,
+designed primarily to format documents for
+.I PDF
+and
+.I PostScript
+output.
+.
+.
+.P
+.B mom
+provides two categories of macros: macros for typesetting, and
+macros for document processing.
+.
+The typesetting macros provide access to groff's typesetting
+capabilities in ways that are simpler to master than groff's
+primitives.
+.
+The document processing macros provide highly customizable markup
+tags that allow the user to design and output professional-looking
+documents with a minimum of typesetting intervention.
+.
+.
+.P
+Files processed with
+.BR pdfmom (1)
+with or without the
+.RI \-T ps
+option, produce
+.I PDF
+documents.
+.
+The documents include a
+.I PDF
+outline that appears in the \[oq]Contents\[cq] panel of document
+viewers, and may contain clickable internal and external links.
+.
+.
+.P
+When
+.RI \-T ps
+is absent,
+.B groff's
+native
+.I PDF
+driver,
+.BR gropdf ,
+is used to generate the output.
+.
+When given, the output is still
+.IR PDF ,
+but processing is passed over to
+.BR pdfroff ,
+which uses
+.B groff's
+PostScript driver,
+.BR grops \&.
+Not all
+.I PDF
+features are available when
+.RI \-T ps
+is given; its primary use is to allow processing of files with
+embedded
+.I PostScript
+images.
+.
+.
+.P
+Files processed with
+.B groff \-mom
+(or
+.BI "\-m " mom\/\c
+) produce
+.I PostScript
+output by default.
+.
+.
+.P
+.B mom
+comes with her own very complete documentation in
+.I HTML
+format.
+.
+A separate
+.IR "PDF manual" ,
+.I Producing PDFs
+with groff and
+.BR mom ,
+covers full
+.B mom
+or
+.I PDF
+usage.
+.
+.
+.\" ====================================================================
+.SH FILES
+.\" ====================================================================
+.
+.TP
+.I d:/\:usr/\:share/\:groff/\:1.22.4/\:tmac/\:om.tmac
+\[en] the main macro file
+.TQ
+.I d:/\:usr/\:share/\:groff/\:1.22.4/\:tmac/\:mom.tmac
+\[en] a wrapper file that calls om.tmac directly.
+.
+.TP
+.I d:/\:usr/\:share/\:doc/\:groff\-1.22.4/\:html/\:mom/\:toc.html
+\[en] entry point to the HTML documentation
+.
+.TP
+.I d:/\:usr/\:share/\:doc/\:groff\-1.22.4/\:pdf/\:mom\-pdf.pdf
+\[en] the PDF manual,
+.I Producing PDFs with groff and mom
+.
+.TP
+.IR d:/\:usr/\:share/\:doc/\:groff\-1.22.4/\:examples/\:mom/\: * .mom
+\[en] example files using mom
+.
+.
+.\" ====================================================================
+.SH DOCUMENTATION IN ALPHABETICAL ORDER
+.\" ====================================================================
+.
+.
+This part of the man page contains information just as in groff(7),
+.I mom macros
+and
+.I mom escape sequences
+in alphabetical order.
+.
+.
+.P
+The logical order of
+.I mom macros
+and
+.I mom escape sequences
+is very well documented in
+.
+.TP
+.I d:/\:usr/\:share/\:doc/\:groff\-1.22.4/\:html/\:mom/\:toc.html
+\[en] entry point to the HTML documentation
+.
+.
+.P
+That document is quite good for beginners, but other users should be
+happy to have some documentation in reference style.
+.
+.
+.P
+So we restrict this part to the alphabetical order of macros and
+escape sequences.
+.
+But, so far, we took all documentation details from the
+.I toc.html
+file, just in a more useful alphabetical order.
+.
+.
+So this part of the man page is nothing new, but only a logical
+arrangement.
+.
+.
+.\" ====================================================================
+.SH "QUICK REFERENCE"
+.\" ====================================================================
+.
+.\" ====================================================================
+.SS "Quick Reference of Inline Escape Sequences in alphabetical Order"
+.\" ====================================================================
+.
+.TP
+.FONT B \[rs]*[ I <colorname> B ]
+begin using an initialized colour inline
+.
+.
+.TP
+.FONT B \[rs]*[BCK I " n" B ]
+move backwards in a line
+.
+.
+.TP
+.B \[rs]*[BOLDER]
+invoke pseudo bold inline (related to macro
+.BR .SETBOLDER )
+.
+.
+.TP
+.B \[rs]*[BOLDERX]
+off pseudo bold inline (related to macro
+.BR .SETBOLDER )
+.
+.
+.TP
+.FONT B \[rs]*[BU I " n" B ]
+move characters pairs closer together inline (related to macro
+.BR \%.KERN )
+.
+.
+.TP
+.B \[rs]*[COND]
+invoke pseudo condensing inline (related to macro
+.BR \%.CONDENSE )
+.
+.
+.TP
+.B \[rs]*[CONDX]
+off pseudo condensing inline (related to macro
+.BR \%.CONDENSE )
+.
+.
+.TP
+.FONT B \[rs]*[CONDSUP] R \*[Ellipsis] B \[rs]*[CONDSUPX]
+pseudo-condensed superscript
+.
+.
+.TP
+.FONT B \[rs]*[DOWN I " n" B ]
+temporarily move downwards in a line
+.
+.
+.TP
+.B \[rs]*[EN\-MARK]
+mark initial line of a range of line numbers (for use with line
+numbered endnotes)
+.
+.
+.TP
+.B \[rs]*[EXT]
+invoke pseudo extending inline (related to macro
+.BR \%.EXTEND )
+.
+.
+.TP
+.B \[rs]*[EXTX]
+off pseudo condensing inline (related to macro
+.BR \%.EXTEND )
+.
+.
+.TP
+.FONT B \[rs]*[EXTSUP] R \*[Ellipsis] B \[rs]*[EXTSUPX]
+pseudo extended superscript
+.
+.
+.TP
+.FONT B \[rs]*[FU I " n" B ]
+move characters pairs further apart inline (related to macro
+.BR \%.KERN )
+.
+.
+.TP
+.FONT B \[rs]*[FWD I " n" B ]
+move forward in a line
+.
+.
+.TP
+.B \[rs]*[LEADER]
+insert leaders at the end of a line
+.
+.
+.TP
+.B \[rs]*[RULE]
+draw a full measure rule
+.
+.
+.TP
+.FONT B \[rs]*[SIZE I " n" B ]
+change the point size inline (related to macro
+.BR \%.PT_SIZE )
+.
+.
+.TP
+.B \[rs]*[SLANT]
+invoke pseudo italic inline (related to macro
+.BR \%.SETSLANT )
+.
+.
+.TP
+.B \[rs]*[SLANTX]
+off pseudo italic inline (related to macro
+.BR \%.SETSLANT )
+.
+.
+.TP
+.FONT B \[rs]*[ST I <n> B ] R \*[Ellipsis] B \[rs]*[ST I <n> B X]
+string tabs (mark tab positions inline)
+.
+.
+.TP
+.FONT B \[rs]*[SUP] R \*[Ellipsis] B \[rs]*[SUPX]
+superscript
+.
+.
+.TP
+.B \[rs]*[TB+]
+inline escape for
+.B .TN
+.RI ( "Tab Next" )
+.
+.
+.TP
+.FONT B \[rs]*[UL] R \*[Ellipsis] B \[rs]*[ULX]
+invoke underlining inline (fixed width fonts only)
+.
+.
+.TP
+.FONT B \[rs]*[UP I " n" B ]
+temporarily move upwards in a line
+.
+.
+.\" ====================================================================
+.SS "Quick Reference of Macros in alphabetical Order"
+.\" ====================================================================
+.
+.TP
+.B .AUTOLEAD
+set the linespacing relative to the point size
+.
+.
+.TP
+.B .B_MARGIN
+set a bottom margin
+.
+.
+.TP
+.B .BR
+break a justified line
+.
+.
+.TP
+.B .CENTER
+set line-by-line quad centre
+.
+.
+.TP
+.B .CONDENSE
+set the amount to pseudo condense
+.
+.
+.TP
+.B .EL
+break a line without advancing on the page
+.
+.
+.TP
+.B .EXTEND
+set the amount to pseudo extend
+.
+.
+.TP
+.B .FALLBACK_FONT
+establish a fallback font (for missing fonts)
+.
+.
+.TP
+.B .FAM
+alias to
+.B .FAMILY
+.
+.
+.TP
+.BI ".FAMILY " <family>
+set the
+.I family type
+.
+.
+.TP
+.B .FT
+set the font style (roman, italic, etc.)
+.
+.
+.TP
+.BI ".HI [" " <measure> " ]
+hanging indent
+.
+.
+.TP
+.B .HY
+automatic hyphenation on/off
+.
+.
+.TP
+.B .HY_SET
+set automatic hyphenation parameters
+.
+.
+.TP
+.BI ".IB [" " <left measure> <right measure> " ]
+indent both
+.
+.
+.TP
+.B .IBX [ CLEAR ]
+exit indent both
+.
+.
+.TP
+.BI ".IL [" " <measure> " ]
+indent left
+.
+.
+.TP
+.B .ILX [ CLEAR ]
+exit indent left
+.
+.
+.TP
+.B .IQ [ CLEAR ]
+quit any/all indents
+.
+.
+.TP
+.BI ".IR [" " <measure> " ]
+indent right
+.
+.
+.TP
+.B .IRX [ CLEAR ]
+exit indent right
+.
+.
+.TP
+.B .JUSTIFY
+justify text to both margins
+.
+.
+.TP
+.B .KERN
+automatic character pair kerning on/off
+.
+.
+.TP
+.B .L_MARGIN
+set a left margin (page offset)
+.
+.
+.TP
+.B .LEFT
+set line-by-line quad left
+.
+.
+.TP
+.B .LL
+set a line length
+.
+.
+.TP
+.B .LS
+set a linespacing (leading)
+.
+.
+.TP
+.B .PAGE
+set explicit page dimensions and margins
+.
+.
+.TP
+.B .PAGEWIDTH
+set a custom page width
+.
+.
+.TP
+.B .PAGELENGTH
+set a custom page length
+.
+.
+.TP
+.BI .PAPER " <paper_type>"
+set common paper sizes (letter, A4, etc)
+.
+.
+.TP
+.B .PT_SIZE
+set the point size
+.
+.
+.TP
+.B .QUAD
+"justify" text left, centre, or right
+.
+.
+.TP
+.B .R_MARGIN
+set a right margin
+.
+.
+.TP
+.B .RIGHT
+set line-by-line quad right
+.
+.
+.TP
+.B .SETBOLDER
+set the amount of emboldening
+.
+.
+.TP
+.B .SETSLANT
+set the degree of slant
+.
+.
+.TP
+.B .SPREAD
+force justify a line
+.
+.
+.TP
+.B .SS
+set the sentence space size
+.
+.
+.TP
+.B .T_MARGIN
+set a top margin
+.
+.
+.TP
+.BI ".TI [" " <measure> " ]
+temporary left indent
+.
+.
+.TP
+.B .WS
+set the minimum word space size
+.
+.
+.\" ====================================================================
+.SH "DOCUMENTATION OF DETAILS"
+.\" ====================================================================
+.
+.\" ====================================================================
+.SS "Details of Inline Escape Sequences in alphabetical Order"
+.\" ====================================================================
+.
+.TP
+.FONT B \[rs]*[ I <colorname> B ]
+begin using an initialized colour inline
+.
+.
+.TP
+.FONT B \[rs]*[BCK I " n" B ]
+move wards in a line
+.
+.
+.\" ======================================================================
+.\" BOLDER
+.\" ======================================================================
+.TP
+.B \[rs]*[BOLDER]
+.TQ
+.B \[rs]*[BOLDERX]
+Emboldening on/off
+.
+.RS
+.
+.P
+.B \[rs]*[BOLDER]
+begins emboldening type.
+.
+.B \[rs]*[BOLDERX]
+turns the feature off.
+.
+Both are inline escapes, therefore they should not appear as separate
+lines, but rather be embedded in text lines, like this:
+.RS
+.EX
+.FONT R "Not " B \[rs]*[BOLDER] R everything B \[rs]*[BOLDERX] R " is as it seems."
+.EE
+.RE
+.
+.P
+Alternatively, if you wanted the whole line emboldened, you should do
+.RS
+.EX
+.FONT B \[rs]*[BOLDER] R "Not everything is as it seems." B \[rs]*[BOLDERX]
+.EE
+.RE
+.
+Once
+.B \[rs]*[BOLDER]
+is invoked, it remains in effect until turned off.
+.
+.P
+Note: If you're using the document processing macros with
+.BR "\%.PRINTSTYLE \%TYPEWRITE" ,
+.B mom
+ignores
+.B \[rs]*[BOLDER]
+requests.
+.
+.RE
+.
+.
+.\" ======================================================================
+.\" BU
+.\" ======================================================================
+.TP
+.FONT B \[rs]*[BU I " n" B ]
+move characters pairs closer together inline (related to macro
+.BR \%.KERN )
+.
+.
+.\" ======================================================================
+.\" COND
+.\" ======================================================================
+.TP
+.B \[rs]*[COND]
+.TQ
+.B \[rs]*[CONDX]
+Pseudo-condensing on/off
+.
+.RS
+.
+.P
+.B \[rs]*[COND]
+begins pseudo-condensing type.
+.
+.B \[rs]*[CONDX]
+turns the feature off.
+.
+Both are inline escapes, therefore they should not appear as separate
+lines, but rather be embedded in text lines, like this:
+.RS
+.EX
+.FONT B \[rs]*[COND] I "Not everything is as it seems." B \[rs]*[CONDX]
+.EE
+.RE
+.B \%\[rs]*[COND]
+remains in effect until you turn it off with
+.BR \%\[rs]*[CONDX] .
+.
+.P
+IMPORTANT: You must turn
+.B \%\[rs]*[COND]
+off before making any changes to the point size of your type, either
+via the
+.B \%.PT_SIZE
+macro or with the
+.B \[rs]s
+inline escape.
+.
+If you wish the new point size to be pseudo-condensed, simply reinvoke
+.B \%\[rs]*[COND]
+afterwards.
+.
+Equally,
+.B \%\[rs]*[COND]
+must be turned off before changing the condense percentage with
+.BR \%.CONDENSE .
+.
+.P
+Note: If you're using the document processing macros with
+.BR "\%.PRINTSTYLE \%TYPEWRITE" ,
+.B mom
+ignores
+.B \%\[rs]*[COND]
+requests.
+.
+.RE
+.
+.
+.\" ======================================================================
+.\" CONDSUP
+.\" ======================================================================
+.TP
+.FONT B \[rs]*[CONDSUP] R \*[Ellipsis] B \[rs]*[CONDSUPX]
+pseudo-condensed superscript
+.
+.
+.\" ======================================================================
+.\" DOWN
+.\" ======================================================================
+.TP
+.FONT B \[rs]*[DOWN I " n" B ]
+temporarily move downwards in a line
+.
+.
+.\" ======================================================================
+.\" EN-MARK
+.\" ======================================================================
+.TP
+.B \[rs]*[EN\-MARK]
+mark initial line of a range of line numbers (for use with line
+numbered endnotes)
+.
+.
+.\" ======================================================================
+.\" EXT
+.\" ======================================================================
+.TP
+.B \[rs]*[EXT]
+.TQ
+.B \[rs]*[EXTX]
+Pseudo-extending on/off
+.
+.RS
+.
+.P
+.B \[rs]*[EXT]
+begins pseudo-extending type.
+.
+.B \[rs]*[EXTX]
+turns the feature off.
+.
+Both are inline escapes, therefore they should not appear as separate
+lines, but rather be embedded in text lines, like this:
+.RS
+.EX
+.FONT B \[rs]*[EXT] I "Not everything is as it seems." B \[rs]*[EXTX]
+.EE
+.RE
+.B \[rs]*[EXT]
+remains in effect until you turn it off with
+.BR \[rs]*[EXTX] .
+.
+.P
+IMPORTANT: You must turn
+.B \%\[rs]*[EXT]
+off before making any changes to the point size of your type, either
+via the
+.B \%.PT_SIZE
+macro or with the
+.B \[rs]s
+inline escape.
+.
+If you wish the new point size to be
+.IR \%pseudo-extended ,
+simply reinvoke
+.B \%\[rs]*[EXT]
+afterwards.
+.
+Equally,
+.B \%\[rs]*[EXT]
+must be turned off before changing the extend percentage with
+.BR \%.EXTEND .
+.
+.P
+Note: If you are using the document processing macros with
+.BR "\%.PRINTSTYLE \%TYPEWRITE" ,
+.B mom
+ignores
+.B \%\[rs]*[EXT]
+requests.
+.
+.RE
+.
+.
+.\" ======================================================================
+.\" EXTSUP
+.\" ======================================================================
+.TP
+.FONT B \[rs]*[EXTSUP] R \*[Ellipsis] B \[rs]*[EXTSUPX]
+pseudo extended superscript
+.
+.
+.\" ======================================================================
+.\" FU
+.\" ======================================================================
+.TP
+.FONT B \[rs]*[FU I " n" B ]
+move characters pairs further apart inline (related to macro
+.BR .KERN )
+.
+.
+.\" ======================================================================
+.\" FWD
+.\" ======================================================================
+.TP
+.FONT B \[rs]*[FWD I " n" B ]
+move forward in a line
+.
+.
+.\" ======================================================================
+.\" LEADER
+.\" ======================================================================
+.TP
+.B \[rs]*[LEADER]
+insert leaders at the end of a line
+.
+.
+.\" ======================================================================
+.\" RULE
+.\" ======================================================================
+.TP
+.B \[rs]*[RULE]
+draw a full measure rule
+.
+.
+.\" ======================================================================
+.\" PT_SIZE
+.\" ======================================================================
+.TP
+.FONT B \[rs]*[SIZE I " n" B ]
+change the point size inline (related to macro
+.BR \%.PT_SIZE )
+.
+.
+.\" ======================================================================
+.\" SLANT
+.\" ======================================================================
+.TP
+.B \[rs]*[SLANT]
+.TQ
+.B \[rs]*[SLANTX]
+Pseudo italic on/off
+.
+.RS
+.
+.P
+.B \%\[rs]*[SLANT]
+begins
+.I pseudo-italicizing
+.IR type .
+.
+.B \%\[rs]*[SLANTX]
+turns the feature off.
+.
+Both are
+.I inline
+.IR escapes ,
+therefore they should not appear as separate lines, but rather be
+embedded in text lines, like this:
+.RS
+.EX
+.FONT R "Not " B \[rs]*[SLANT] R everything B \[rs]*[SLANTX] R " is as it seems."
+.EE
+.RE
+.
+.P
+Alternatively, if you wanted the whole line
+.IR pseudo-italicized ,
+you'd do
+.RS
+.EX
+.FONT B \[rs]*[SLANT] R "Not everything is as it seems." B \[rs]*[SLANTX]
+.EE
+.RE
+.
+.P
+Once
+.B \[rs]*[SLANT]
+is invoked, it remains in effect until turned off.
+.
+.P
+Note: If you're using the document processing macros with
+.BR "\%.PRINTSTYLE \%TYPEWRITE" ,
+.B mom
+underlines pseudo-italics by default.
+.
+To change this behaviour, use the special macro
+.BR .SLANT_MEANS_SLANT .
+.
+.RE
+.
+.
+.\" ======================================================================
+.\" ST
+.\" ======================================================================
+.TP
+.FONT B \[rs]*[ST I <number> B ] R \*[Ellipsis] B \[rs]*[ST I <number> B X]
+Mark positions of string tabs
+.
+.RS
+.P
+The
+.I quad
+direction must be
+.B LEFT
+or
+.B \%JUSTIFY
+(see
+.B \%.QUAD
+and
+.BR \%.JUSTIFY )
+or the
+.I no-fill mode
+set to
+.B LEFT
+in order for these inlines to function properly.
+.
+Please see
+.IR \%IMPORTANT ,
+below.
+.
+.P
+String tabs need to be marked off with inline escapes before being set
+up with the
+.B .ST
+macro.
+.
+Any input line may contain string tab markers.
+.
+.IR <number> ,
+above, means the numeric identifier of the tab.
+.
+.P
+The following shows a sample input line with string tab markers.
+.RS
+.EX
+.FONT B \[rs]*[ST1] R "Now is the time" B \[rs]*[ST1X] R " for all " B \[rs]*[ST2] R "good men" B \[rs]*ST2X] R " to come to the aid of the party."
+.EE
+.RE
+.
+.P
+String
+.I tab 1
+begins at the start of the line and ends after the word
+.IR \%time .
+.
+String
+.I tab 2
+starts at
+.I good
+and ends after
+.IR men .
+.
+.I Inline escapes
+(e.g.\&
+.I font
+or
+.I point size
+.IR changes ,
+or horizontal movements, including padding) are taken into account
+when
+.B mom
+determines the
+.I position
+and
+.I length
+of
+.I string
+.IR tabs .
+.
+.P
+Up to nineteen string tabs may be marked (not necessarily all on the
+same line, of course), and they must be numbered between 1 and 19.
+.
+.P
+Once string tabs have been marked in input lines, they have to be
+.I set
+with
+.BR .ST ,
+after which they may be called, by number, with
+.BR .TAB .
+.
+.P
+Note: Lines with string tabs marked off in them are normal input
+lines, i.e.\& they get printed, just like any input line.
+.
+If you want to set up string tabs without the line printing, use the
+.B \%.SILENT
+macro.
+.
+.P
+.I IMPORTANT:
+Owing to the way
+.B groff
+processes input lines and turns them into output lines, it is not
+possible for
+.B mom
+to
+.I guess
+the correct starting position of string tabs marked off in lines that
+are centered or set flush right.
+.
+.P
+Equally, she cannot guess the starting position if a line is fully
+justified and broken with
+.BR \%.SPREAD .
+.
+.P
+In other words, in order to use string tabs,
+.B LEFT
+must be active, or, if
+.B .QUAD LEFT
+or
+.B \%JUSTIFY
+are active, the line on which the
+.I string tabs
+are marked must be broken
+.I manually
+with
+.B .BR
+(but not
+.BR \%.SPREAD ).
+.
+.P
+To circumvent this behaviour, I recommend using the
+.B PAD
+to set up string tabs in centered or flush right lines.
+.
+Say, for example, you want to use a
+.I string tab
+to
+.I underscore
+the text of a centered line with a rule.
+.
+Rather than this,
+.RS
+.EX
+.B .CENTER
+.B \[rs]*[ST1]A line of text\[rs]*[ST1X]\[rs]c
+.B .EL
+.B .ST 1
+.B .TAB 1
+.B .PT_SIZE 24
+.B .ALD 3p
+.B \[rs]*[RULE]
+.B .RLD 3p
+.B .TQ
+.EE
+.RE
+you should do:
+.RS
+.EX
+.B .QUAD CENTER
+.B .PAD """#\[rs]*[ST1]A line of text\[rs]*[ST1X]#"""
+.B .EL
+.B .ST 1
+.B .TAB 1
+.B .PT_SIZE 24
+.B .ALD 3p
+.B \[rs]*[RULE] \[rs]" Note that you can't use \[rs]*[UP] or \[rs]*[DOWN] with \[rs]*[RULE]\""
+.B .RLD 3p
+.B .TQ
+.EE
+.RE
+.
+.RE
+.
+.
+.\" ======================================================================
+.\" SUP
+.\" ======================================================================
+.TP
+.FONT B \[rs]*[SUP] R \*[Ellipsis] B \[rs]*[SUPX]
+superscript
+.
+.
+.\" ======================================================================
+.\" TB+
+.\" ======================================================================
+.TP
+.B \[rs]*[TB+]
+Inline escape for
+.B .TN
+.RI ( "Tab Next" )
+.
+.
+.\" ======================================================================
+.\" UL
+.\" ======================================================================
+.TP
+.FONT B \[rs]*[UL] R \*[Ellipsis] B \[rs]*[ULX]
+invoke underlining inline (fixed width fonts only)
+.
+.
+.\" ======================================================================
+.\" UP
+.\" ======================================================================
+.TP
+.FONT B \[rs]*[UP I " n" B ]
+temporarily move upwards in a line
+.
+.
+.\" ====================================================================
+.SS "Details of Macros in alphabetical Order"
+.\" ====================================================================
+.
+.\" ======================================================================
+.\" AUTOLEAD
+.\" ======================================================================
+.TP
+.B .AUTOLEAD
+set the linespacing relative to the point size
+.
+.
+.\" ======================================================================
+.\" Bottom Margin
+.\" ======================================================================
+.TP
+.BI .B_MARGIN " <bottom margin>"
+Bottom Margin
+.
+.RS
+.
+.P
+Requires a unit of measure
+.
+.P
+.B .B_MARGIN
+sets a nominal position at the bottom of the page beyond which you
+don't want your type to go.
+.
+When the bottom margin is reached,
+.B mom
+starts a new page.
+.
+.B .B_MARGIN requires a unit of measure.
+.
+Decimal fractions are allowed.
+.
+To set a nominal bottom margin of 3/4 inch, enter
+.RS
+.EX
+.B \&.B_MARGIN \&.75i
+.EE
+.RE
+.
+.P
+Obviously, if you haven't spaced the type on your pages so that the
+last lines fall perfectly at the bottom margin, the margin will vary
+from page to page.
+.
+Usually, but not always, the last line of type that fits on a page
+before the bottom margin causes mom to start a new page.
+.
+.P
+Occasionally, owing to a peculiarity in
+.IR groff ,
+an extra line will fall below the nominal bottom margin.
+.
+If you're using the document processing macros, this is unlikely to
+happen; the document processing macros are very hard-nosed about
+aligning bottom margins.
+.
+.P
+Note: The meaning of
+.B .B_MARGIN
+is slightly different when you're using the document processing
+macros.
+.
+.RE
+.
+.
+.\" ======================================================================
+.\" Fallback Font
+.\" ======================================================================
+.TP
+.BI \%.FALLBACK_FONT " <fallback font> " "[ ABORT | WARN ]"
+Fallback Font
+.
+.RS
+.
+.P
+In the event that you pass an invalid argument to
+.B \%.FAMILY
+(i.e.\& a non-existent
+.IR family ),
+.BR mom ,
+by default, uses the
+.IR "fallback font" ,
+.B Courier Medium Roman
+.RB ( CR ),
+in order to continue processing your file.
+.
+.P
+If you'd prefer another
+.IR "fallback font" ,
+pass
+.B \%.FALLBACK_FONT
+the full
+.I family+font name
+of the
+.I font
+you'd like.
+.
+For example, if you'd rather the
+.I fallback font
+were
+.BR "Times Roman Medium Roman" ,
+.RS
+.EX
+.B .FALLBACK_FONT TR
+.EE
+.RE
+would do the trick.
+.
+.P
+.B Mom
+issues a warning whenever a
+.I font style set
+with
+.B .FT
+does not exist, either because you haven't registered the style
+or because the
+.I font style
+does not exist in the current
+.I family set
+with
+.BR .FAMILY .
+.
+By default,
+.B \%mom
+then aborts, which allows you to correct the problem.
+.
+.P
+If you'd prefer that
+.B \%mom
+not abort on non-existent
+.IR fonts ,
+but rather continue processing using a
+.IR "fallback font" ,
+you can pass
+.B \%.FALLBACK_FONT
+the argument
+.BR WARN ,
+either by itself, or in conjunction with your chosen
+.IB "fallback font" .
+.
+.P
+Some examples of invoking
+.BR \%.FALLBACK_FONT :
+.
+.TP
+.B .FALLBACK_FONT WARN
+.B mom
+will issue a warning whenever you try to access a non-existent
+.I font
+but will continue processing your file with the default
+.IR "fallback font" ,
+.BR "Courier Medium Roman" .
+.
+.
+.TP
+.B .FALLBACK_FONT TR WARN
+.B \%mom
+will issue a warning whenever you try to access a non-existent
+.I font
+but will continue processing your file with a
+.I fallback font
+of
+.BR "Times Roman Medium Roman" ;
+additionally,
+.B TR
+will be the
+.I fallback font
+whenever you try to access a
+.I family
+that does not exist.
+.
+.TP
+.B .FALLBACK_FONT TR ABORT
+.B \%mom
+will abort whenever you try to access a non-existent
+.BR font ,
+and will use the
+.I fallback font
+.B TR
+whenever you try to access a
+.I family
+that does not exist.
+.
+If, for some reason, you want to revert to
+.BR ABORT ,
+just enter
+.B \%".FALLBACK_FONT ABORT"
+and
+.B mom
+will once again abort on
+.IR "font errors" .
+.
+.RE
+.
+.
+.\" ======================================================================
+.\" FAM
+.\" ======================================================================
+.TP
+.BI .FAM " <family>"
+Type Family, alias of \fB.FAMILY\fR
+.
+.
+.\" ======================================================================
+.\" FAMILY
+.\" ======================================================================
+.TP
+.BI .FAMILY " <family>"
+Type Family, alias \fB.FAM\fR
+.
+.RS
+.
+.P
+.B .FAMILY
+takes one argument: the name of the
+.I family
+you want.
+.
+.I Groff
+comes with a small set of basic families, each identified by a 1-,
+2- or 3-letter mnemonic.
+.
+The standard families are:
+.RS
+.EX
+.B "A   = Avant Garde"
+.B "BM  = Bookman"
+.B "H   = Helvetica"
+.B "HN  = Helvetica Narrow"
+.B "N   = New Century Schoolbook"
+.B "P   = Palatino"
+.B "T   = Times Roman"
+.B "ZCM = Zapf Chancery"
+.EE
+.RE
+.
+.P
+The argument you pass to
+.B .FAMILY
+is the identifier at left, above.
+.
+For example, if you want
+.BR Helvetica ,
+enter
+.RS
+.EX
+.B .FAMILY H
+.EE
+.RE
+.
+.P
+Note: The font macro
+.RB ( .FT )
+lets you specify both the type
+.I family
+and the desired font with a single macro.
+.
+While this saves a few
+keystrokes, I recommend using
+.B .FAMILY for
+.IR family ,
+and
+.B .FT for
+.IR font ,
+except where doing so is genuinely inconvenient.
+.
+.BR ZCM ,
+for example,
+only exists in one style:
+.B Italic
+.RB ( I ).
+.
+.P
+Therefore,
+.RS
+.EX
+.B .FT ZCMI
+.EE
+.RE
+makes more sense than setting the
+.I family
+to
+.BR ZCM ,
+then setting the
+.I font
+to
+.IR I .
+.
+.P
+Additional note: If you are running a version of groff lower than
+1.19.2, you must follow all
+.B .FAMILY
+requests with a
+.B .FT
+request, otherwise
+.B mom
+will set all type up to the next
+.B .FT
+request in the fallback font.
+.
+.P
+If you are running a version of groff greater than or equal to 1.19.2,
+when you invoke the
+.B .FAMILY
+macro,
+.B mom
+.I remembers
+the font style
+.BR ( Roman ,
+.BR Italic ,
+etc) currently in use (if the font style exists in the new
+.IR family )
+and will continue to use the same font style in the new family.
+For example:
+.RS
+.EX
+.BI ".FAMILY BM " "\[rs]"" Bookman family"
+.BI ".FT I " "\[rs]"" Medium Italic"
+.I <some text> \[rs]" Bookman Medium Italic
+.BI ".FAMILY H " "\[rs]"" Helvetica family"
+.I <more text> \[rs]" Helvetica Medium Italic
+.EE
+.RE
+.
+.P
+However, if the font style does not exist in the new family,
+.B mom
+will set all subsequent type in the fallback font (by default,
+.B Courier Medium
+.BR Roman )
+until she encounters a
+.B .FT
+request that's valid for the
+.IR family .
+.
+.P
+For example, assuming you don't have the font
+.B Medium Condensed Roman
+.RB  ( mom
+extension
+.IR CD )
+in the
+.I Helvetica
+.IR family :
+.RS
+.EX
+.BI ".FAMILY UN " "\[rs]"" Univers family"
+.BI ".FT CD " "\[rs]"" Medium Condensed"
+.I <some text> \[rs]" Univers Medium Condensed
+.BI ".FAMILY H " "\[rs]"" Helvetica family"
+.I <more text> \[rs]" Courier Medium Roman!
+.EE
+.RE
+.
+.P
+In the above example, you must follow
+.B .FAMILY H
+with a
+.B .FT
+request that's valid for
+.BR Helvetica .
+.
+.P
+Please see the Appendices,
+.I Adding fonts to
+.IR groff ,
+for information on adding fonts and families to groff, as well as to
+see a list of the extensions
+.B mom
+provides to
+.IR groff 's
+basic
+.BR R ,
+.BR I ,
+.BR B ,
+.B BI
+styles.
+.
+.P
+Suggestion: When adding
+.I families to
+.IR groff ,
+I recommend following the established standard for the naming families
+and fonts.
+.
+For example, if you add the
+.B Garamond
+family, name the font files
+.RS
+.EX
+.B GARAMONDR
+.B GARAMONDI
+.B GARAMONDB
+.B GARAMONDBI
+.EE
+.RE
+.
+.B GARAMOND then becomes a valid
+.I family name
+you can pass to
+.BR .FAMILY .
+.
+(You could, of course, shorten
+.B GARAMOND
+to just
+.BR G ,
+or
+.BR GD .)
+.BR R ,
+.BR I ,
+.BR B ,
+and
+.B BI
+after
+.B GARAMOND
+are the
+.IR roman ,
+.IR italic ,
+.I bold
+and
+.I bold-italic
+fonts respectively.
+.
+.RE
+.
+.
+.\" ======================================================================
+.\" FONT
+.\" ======================================================================
+.TP
+.BI ".FONT R | B | BI | " "<any other valid font style>"
+Alias to
+.B .FT
+.
+.
+.\" ======================================================================
+.\" FT
+.\" ======================================================================
+.TP
+.BI ".FT R | B | BI | " "<any other valid font style>"
+Set font
+.
+.RS
+.
+.P
+By default,
+.I groff
+permits
+.B .FT
+to take one of four possible arguments specifying the desired font:
+.RS
+.EX
+.B R = (Medium) Roman
+.B I = (Medium) Italic
+.B B = Bold (Roman)
+.B BI = Bold Italic
+.EE
+.RE
+.
+.P
+For example, if your
+.I family
+is
+.BR Helvetica ,
+entering
+.RS
+.EX
+.B .FT B
+.EE
+.RE
+will give you the
+.I Helvetica bold
+.IR font .
+.
+If your
+.I family
+were
+.BR \%Palatino ,
+you'd get the
+.I \%Palatino bold
+.IR font .
+.
+.P
+.B Mom
+considerably extends the range of arguments you can pass to
+.BR .FT ,
+making it more convenient to add and access fonts of differing weights
+and shapes within the same family.
+.
+.P
+Have a look here for a list of the weight/style arguments
+.B mom
+allows.
+.
+Be aware, though, that you must have the fonts, correctly installed
+and named, in order to use the arguments.
+.
+(See
+.I Adding fonts to groff
+for instructions and information.)
+.
+Please also read the
+.I ADDITIONAL NOTE
+found in the description of the
+.B \%.FAMILY
+macro.
+.
+.P
+How
+.B mom
+reacts to an invalid argument to
+.B .FT
+depends on which version of groff you're using.
+.
+If your
+.I groff version
+is greater than or equal to 1.19.2,
+.B mom
+will issue a warning and, depending on how you've set up the fallback
+font, either continue processing using the fallback font, or abort
+(allowing you to correct the problem).  If your
+.I groff version
+is less than 1.19.2,
+.B mom
+will silently continue processing, using either the fallback font or
+the font that was in effect prior to the invalid
+.B .FT
+call.
+.
+.P
+.B .FT
+will also accept, as an argument, a full
+.I family
+and
+.I font
+.IR name .
+.
+.P
+For example,
+.RS
+.EX
+.B .FT HB
+.EE
+.RE
+will set subsequent type in
+.I Helvetica
+.IR Bold .
+.
+.P
+However, I strongly recommend keeping
+.I family
+and
+.I font
+separate except where doing so is genuinely inconvenient.
+.
+.P
+For inline control of
+.IR fonts ,
+see
+.I Inline
+.IR Escapes ,
+font control.
+.
+.RE
+.
+.
+.\" ======================================================================
+.\" Hanging Indent
+.\" ======================================================================
+.TP
+.BI "\%.HI [" " <measure> " ]
+Hanging indent \[em] the optional argument requires a unit of measure.
+.
+.RS
+.
+.P
+A hanging indent looks like this:
+.RS
+.EX
+\fB  The thousand injuries of Fortunato I had borne as best I
+    could, but when he ventured upon insult, I vowed
+    revenge.  You who so well know the nature of my soul
+    will not suppose, however, that I gave utterance to a
+    threat, at length I would be avenged\*[Ellipsis]
+.EE
+.RE
+.
+The first line of text
+.I hangs
+outside the
+.IR "left margin" .
+.
+.P
+In order to use
+.IR "hanging indents" ,
+you must first have a
+.I left indent
+active (set with either
+.B .IL
+or
+.BR .IB ).
+.
+.B Mom
+will not hang text outside the
+.I left margin set
+with
+.B \%.L_MARGIN
+or outside the
+.I left margin
+of a
+.IR \%tab .
+.
+.P
+The first time you invoke
+.BR .HI ,
+you must give it a
+.BR measure .
+.
+If you want the first line of a paragraph to
+.IR "hang by" ,
+say,
+.IR "1 pica" ,
+do
+.RS
+.EX
+.B ".IL 1P"
+.B ".HI 1P"
+.EE
+.RE
+.
+Subsequent invocations of
+.B \%.HI
+do not require you to supply a
+.IR measure ;
+.B mom
+keeps track of the last measure you gave it.
+.
+.P
+Generally speaking, you should invoke
+.B .HI
+immediately prior to the line you want hung (i.e.\& without any
+intervening control lines).
+.
+And because
+.I hanging indents
+affect only one line, there's no need to turn them off.
+.
+.P
+.I IMPORTANT:
+Unlike
+.BR IL ,
+.B IR
+and
+.BR IB ,
+measures given to
+.B .HI
+are NOT additive.
+.
+Each time you pass a measure to
+.B .HI ,
+the measure is treated literally.
+.
+.B
+.I Recipe:
+A numbered list using
+.I hanging indents
+.
+.P
+.I Note:
+.B mom
+has macros for setting lists.
+.
+This recipe exists to demonstrate the use of
+.I hanging indents
+only.
+.RS
+.EX
+.B ".PAGE 8.5i 11i 1i 1i 1i 1i"
+.B ".FAMILY  T"
+.B ".FT      R"
+.B ".PT_SIZE 12"
+.B ".LS      14"
+.B ".JUSTIFY"
+.B ".KERN"
+.B ".SS 0"
+.B ".IL \[rs]w'\[rs]0\[rs]0.'"
+.B ".HI \[rs]w'\[rs]0\[rs]0.'"
+\fB1.\[rs]0The most important point to be considered is whether the
+answer to the meaning of Life, the Universe, and Everything
+really is 42.  We have no-one's word on the subject except
+Mr.\& Adams'.
+.B .HI
+2.\[rs]0If the answer to the meaning of Life, the Universe,
+and Everything is indeed 42, what impact does this have on
+the politics of representation?  42 is, after all not a
+prime number.  Are we to infer that prime numbers don't
+deserve equal rights and equal access in the universe?
+.B .HI
+3.\[rs]0If 42 is deemed non-exclusionary, how do we present it
+as the answer and, at the same time, forestall debate on its
+exclusionary implications?
+.EE
+.RE
+.
+.P
+First, we invoke a left indent with a measure equal to the width of 2
+figures spaces plus a period (using the \[rs]w inline escape).
+.
+At this point, the left indent is active; text afterwards would
+normally be indented.
+.
+However, we invoke a hanging indent of exactly the same width, which
+hangs the first line (and first line only!\&) to the left of the indent
+by the same distance (in this case, that means \[lq]out to the left
+margin\[rq]).
+.
+Because we begin the first line with a number, a period, and a figure
+space, the actual text
+.RI ( "The most important point\*[Ellipsis]" )
+starts at exactly the same spot as the indented lines that follow.
+.
+.P
+Notice that subsequent invocations of
+.B .HI
+don't require a
+.I measure
+to be given.
+.
+.P
+Paste the example above into a file and preview it with
+.RS
+.EX
+.B pdfmom filename.mom | ps2pdf \- filename.pdf
+.EE
+.RE
+to see hanging indents in action.
+.
+.RE
+.
+.
+.\" ======================================================================
+.\" IB - INDENT BOTH
+.\" ======================================================================
+.TP
+.BI "\%.IB [" " <left measure> <right measure> " ]
+Indent both \[em] the optional argument requires a unit of measure
+.
+.RS
+.
+.P
+.B .IB
+allows you to set or invoke a left and a right indent at the same time.
+.
+.P
+At its first invocation, you must supply a measure for both indents;
+at subsequent invocations when you wish to supply a measure, both must
+be given again.
+.
+As with
+.B .IL
+and
+.BR .IR ,
+the measures are added to the values previously passed to the
+macro.
+.
+Hence, if you wish to change just one of the values, you must give an
+argument of zero to the other.
+.
+.P
+.I A word of advice:
+If you need to manipulate left and right indents separately, use a
+combination of
+.B .IL
+and
+.B .IR
+instead of
+.BR .IB .
+.
+You'll save yourself a lot of grief.
+.
+.P
+A
+.I minus sign
+may be prepended to the arguments to subtract from their current
+values.
+.
+The \[rs]w inline escape may be used to specify text-dependent
+measures, in which case no unit of measure is required.
+.
+For example,
+.RS
+.EX
+.B .IB \[rs]w\[aq]margarine\[aq] \[rs]w\[aq]jello\[aq]
+.EE
+.RE
+left indents text by the width of the word
+.I margarine
+and right indents by the width of
+.IR jello .
+.
+.P
+Like
+.B .IL
+and
+.BR .IR ,
+.B .IB
+with no argument indents by its last active values.
+.
+See the brief explanation of how mom handles indents for more details.
+.
+.P
+.I Note:
+Calling a
+.I tab
+(with
+.BR ".TAB <n>" )
+automatically cancels any active indents.
+.
+.P
+.I Additional note:
+Invoking
+.B .IB
+automatically turns off
+.B .IL
+and
+.BR .IR .
+.
+.RE
+.
+.
+.\" ======================================================================
+.\" IL - INDENT LEFT
+.\" ======================================================================
+.TP
+.BI "\%.IL [" " <measure> " ]
+Indent left \[em] the optional argument requires a unit of measure
+.
+.RS
+.
+.P
+.B .IL
+indents text from the left margin of the page, or if you're in a
+.IR tab ,
+from the left edge of the
+.IR tab .
+.
+Once
+.I IL
+is on, the
+.I left indent
+is applied uniformly to every subsequent line of text, even if you
+change the line length.
+.
+.P
+The first time you invoke
+.BR .IL ,
+you must give it a measure.
+.
+Subsequent invocations with a measure add to the previous measure.
+.
+A minus sign may be prepended to the argument to subtract from the
+current measure.
+.
+The
+.B \[rs]w
+inline escape may be used to specify a text-dependent measure, in
+which case no unit of measure is required.
+.
+For example,
+.RS
+.EX
+.B .IL \[rs]w'margarine'
+.EE
+.RE
+indents text by the width of the word
+.IR margarine .
+.
+.P
+With no argument,
+.B .IL
+indents by its last active value.
+.
+See the brief explanation of how
+.B mom
+handles indents for more details.
+.
+.P
+.I Note:
+Calling a
+.I tab
+(with
+.BR ".TAB <n>" )
+automatically cancels any active indents.
+.
+.P
+.I Additional note:
+Invoking
+.B .IL
+automatically turns off
+.BR IB .
+.
+.RE
+.
+.
+.\" ======================================================================
+.\" IQ - quit any/all indents
+.\" ======================================================================
+.TP
+.BI "\%.IQ [" " <measure> " ]
+IQ \[em] quit any/all indents
+.
+.RS
+.
+.P
+.I IMPORTANT NOTE:
+The original macro for quitting all indents was
+.BR .IX .
+.
+This usage has been deprecated in favour of
+.BR IQ .
+.
+.B .IX
+will continue to behave as before, but
+.B mom
+will issue a warning to
+.I stderr
+indicating that you should update your documents.
+.
+.P
+As a consequence of this change,
+.BR .ILX ,
+.B .IRX
+and
+.B .IBX
+may now also be invoked as
+.BR .ILQ ,
+.B .IRQ
+and
+.BR .IBQ .
+.
+Both forms are acceptable.
+.
+.P
+Without an argument, the macros to quit indents merely restore your
+original margins and line length.
+.
+The measures stored in the indent macros themselves are saved so you
+can call them again without having to supply a measure.
+.
+.P
+If you pass these macros the optional argument
+.BR CLEAR ,
+they not only restore your original left margin and line length, but
+also clear any values associated with a particular indent style.
+.
+The next time you need an indent of the same style, you have to supply
+a measure again.
+.
+.P
+.BR ".IQ CLEAR" ,
+as you'd suspect, quits and clears the values for all indent
+styles at once.
+.
+.RE
+.
+.
+.\" ======================================================================
+.\" IR - INDENT RIGHT
+.\" ======================================================================
+.TP
+.BI "\%.IR [" " <measure> " ]
+Indent right \[em] the optional argument requires a unit of measure
+.
+.RS
+.
+.P
+.B .IR
+indents text from the
+.I right margin
+of the page, or if you're in a
+.IR tab ,
+from the end of the
+.IR tab .
+.
+.P
+The first time you invoke
+.BR .IR ,
+you must give it a measure.
+.
+Subsequent invocations with a measure add to the previous indent
+measure.
+.
+A
+.I minus sign
+may be prepended to the argument to subtract from the current indent
+measure.
+.
+The \[rs]w inline escape may be used to specify a text-dependent
+measure, in which case no
+.I unit of measure
+is required.
+.
+For example,
+.RS
+.EX
+.B .IR \[rs]w'jello'
+.EE
+.RE
+indents text by the width of the word
+.IR jello .
+.
+.P
+With no argument,
+.B .IR
+indents by its last active value.
+.
+See the brief explanation of how
+.B mom
+handles indents for more details.
+.
+.P
+.I Note:
+Calling a
+.I tab
+(with
+.BR "\%.TAB <n>" )
+automatically cancels any active indents.
+.
+.P
+.I Additional note:
+Invoking
+.B .IR
+automatically turns off
+.BR IB .
+.
+.RE
+.
+.
+.\" ======================================================================
+.\" Left Margin
+.\" ======================================================================
+.TP
+.BI .L_MARGIN " <left margin>"
+Left Margin
+.
+.RS
+.
+.P
+L_MARGIN establishes the distance from the left edge of the printer
+sheet at which you want your type to start.
+.
+It may be used any time, and remains in effect until you enter a new value.
+.
+.P
+Left indents and tabs are calculated from the value you pass to
+.BR .L_MARGIN ,
+hence it's always a good idea to invoke it before starting any serious
+typesetting.
+.
+A unit of measure is required.
+.
+Decimal fractions are allowed.
+.
+Therefore, to set the left margin at 3 picas (1/2 inch), you'd enter either
+.RS
+.EX
+.B .L_MARGIN 3P
+.EE
+.RE
+or
+.RS
+.EX
+.B .L_MARGIN .5i
+.EE
+.RE
+.
+.P
+If you use the macros
+.BR .PAGE ,
+.B .PAGEWIDTH
+or
+.B .PAPER
+without invoking
+.B .L_MARGIN
+(either before or afterwards),
+.B mom
+automatically sets
+.B .L_MARGIN
+to
+.IR "1 inch" .
+.
+.P
+Note:
+.B .L_MARGIN
+behaves in a special way when you're using the document processing
+macros.
+.
+.RE
+.
+.
+.\" ======================================================================
+.\" MCO - BEGIN MULTI-COLUMN SETTING
+.\" ======================================================================
+.TP
+.B .MCO
+Begin multi-column setting.
+.
+.RS
+.P
+.B .MCO
+.RI ( "Multi-Column On" )
+is the
+.I macro
+you use to begin
+.IR "multi-column setting" .
+.
+It marks the current baseline as the top of your columns, for use
+later with
+.BR .MCR .
+.
+See the introduction to columns for an explanation of
+.I multi-columns
+and some sample input.
+.
+.P
+.I Note:
+Do not confuse
+.B .MCO
+with the
+.B .COLUMNS
+macro in the document processing macros.
+.
+.RE
+.
+.
+.\" ======================================================================
+.\" MCR - RETURN TO TOP OF COLUMN
+.\" ======================================================================
+.TP
+.B \%.MCR
+Once you've turned
+.I multi-columns
+on (with
+.BR \%.MCO ),
+.BR .MCR ,
+at any time, returns you to the
+.IR "top of your columns".
+.
+.
+.\" ======================================================================
+.\" MCX - EXIT MULTI-COLUMNS
+.\" ======================================================================
+.TP
+.BI "\%.MCX [ " "<distance to advance below longest column>" " ]"
+Optional argument requires a unit of measure.
+.
+.RS
+.
+.P
+.B .MCX
+takes you out of any
+.I tab
+you were in (by silently invoking
+.BR .TQ )
+and advances to the bottom of the longest column.
+.
+.P
+Without an argument,
+.B .MCX
+advances
+.I 1 linespace
+below the longest column.
+.
+.P
+Linespace, in this instance, is the leading in effect at the moment
+.B .MCX
+is invoked.
+.
+.P
+If you pass the
+.I <distance>
+argument to
+.BR .MCX ,
+it advances
+.I 1 linespace
+below the longest column (see above)
+.I PLUS
+the distance specified by the argument.
+.
+The argument requires a unit of measure; therefore, to advance an
+extra 6 points below where
+.B \%.MCX
+would normally place you, you'd enter
+.RS
+.EX
+.B .MCX 6p
+.EE
+.RE
+.
+.P
+.I Note:
+If you wish to advance a precise distance below the baseline of the
+longest column, use
+.B .MCX
+with an argument of
+.B 0
+(zero; no
+.I unit of measure
+required) in conjunction with the
+.B \%.ALD
+macro, like this:
+.RS
+.EX
+.B .MCX 0
+.B .ALD 24p
+.EE
+.RE
+.
+The above advances to precisely
+.I 24 points
+below the baseline of the longest column.
+.
+.RE
+.
+.
+.\" ======================================================================
+.\" Start a new Page
+.\" ======================================================================
+.TP
+.B .NEWPAGE
+.
+.RS
+.
+.P
+Whenever you want to start a new page, use
+.BR .NEWPAGE ,
+by itself with no argument.
+.
+.B Mom
+will finish up processing the current page and move you to the top of
+a new one (subject to the top margin set with
+.BR .T_MARGIN ).
+.
+.RE
+.
+.
+.\" ======================================================================
+.\" Page
+.\" ======================================================================
+.TP
+.BI ".PAGE " <width> " [ " <length> " [ " <lm> " [ " <rm> " [ " \
+             <tm> " [ " <bm> " ] ] ] ] ]"
+.
+.RS
+.
+.P
+All arguments require a unit of measure
+.
+.P
+.I IMPORTANT:
+If you're using the document processing macros,
+.B .PAGE
+must come after
+.BR .START .
+.
+Otherwise, it should go at the top of a document, prior to any text.
+.
+And remember, when you're using the document processing macros, top
+margin and bottom margin mean something slightly different than when
+you're using just the typesetting macros (see Top and bottom margins
+in document processing).
+.
+.P
+.B .PAGE
+lets you establish paper dimensions and page margins with a single
+macro.
+.
+The only required argument is page width.
+.
+The rest are
+optional, but they must appear in order and you can't skip over
+any.
+.
+.IR <lm> ,
+.IR <rm> ,
+.I <tm>
+and
+.I <bm>
+refer to the left, right, top and bottom margins respectively.
+.
+.P
+Assuming your page dimensions are 11 inches by 17 inches, and that's
+all you want to set, enter
+.RS
+.EX
+.B .PAGE 11i 17i
+.EE
+.RE
+.
+If you want to set the left margin as well, say, at 1 inch,
+.B PAGE
+would look like this:
+.RS
+.EX
+.B .PAGE 11i 17i 1i
+.EE
+.RE
+.
+.P
+Now suppose you also want to set the top margin, say, at 1\(en1/2 inches.
+.
+.I <tm>
+comes after
+.I <rm>
+in the optional arguments, but you can't skip over any arguments,
+therefore to set the top margin, you must also give a right margin.
+.
+The
+.B .PAGE
+macro would look like this:
+.RS
+.EX
+\f[CB].PAGE 11i 17i 1i 1i 1.5i
+                 |   |
+required right---+   +---top margin
+        margin\f[R]
+.EE
+.RE
+.
+.P
+Clearly,
+.B .PAGE
+is best used when you want a convenient way to tell
+.B mom
+just the dimensions of your printer sheet (width and length), or when
+you want to tell her everything about the page (dimensions and all the
+margins), for example
+.RS
+.EX
+.B .PAGE 8.5i 11i 45p 45p 45p 45p
+.EE
+.RE
+.
+This sets up an 8\(12 by 11 inch page with margins of 45 points
+(5/8-inch) all around.
+.
+.P
+Additionally, if you invoke
+.B .PAGE
+with a top margin argument, any macros you invoke after
+.B .PAGE
+will almost certainly move the baseline of the first line of text down
+by one linespace.
+.
+To compensate, do
+.RS
+.EX
+.B .RLD 1v
+.EE
+.RE
+immediately before entering any text, or, if it's feasible, make
+.B .PAGE
+the last macro you invoke prior to entering text.
+.
+.P
+Please read the
+.I Important note
+on page dimensions and papersize for information on ensuring groff
+respects your
+.B .PAGE
+dimensions and margins.
+.
+.RE
+.
+.
+.\" ======================================================================
+.\" Page Length
+.\" ======================================================================
+.TP
+.BI .PAGELENGTH " <length of printer sheet>"
+tells
+.B mom
+how long your printer sheet is.
+.
+It works just like
+.BR .PAGEWIDTH .
+.
+.RS
+.
+.P
+Therefore, to tell
+.B mom
+your printer sheet is 11 inches long, you enter
+.RS
+.EX
+.B .PAGELENGTH 11i
+.EE
+.RE
+.
+Please read the important note on page dimensions and papersize for
+information on ensuring groff respects your
+.IR PAGELENGTH .
+.
+.RE
+.
+.
+.\" ======================================================================
+.\" Page Width
+.\" ======================================================================
+.TP
+.BI .PAGEWIDTH " <width of printer sheet>"
+.
+.RS
+.
+.P
+The argument to
+.B .PAGEWIDTH
+is the width of your printer sheet.
+.
+.P
+.B .PAGEWIDTH
+requires a unit of measure.
+.
+Decimal fractions are allowed.
+.
+Hence, to tell
+.B mom
+that the width of your printer sheet is 8\(12 inches, you enter
+.RS
+.EX
+\&.PAGEWIDTH 8.5i
+.EE
+.RE
+.
+.P
+Please read the Important note on page dimensions and papersize for
+information on ensuring groff respects your
+.IR PAGEWIDTH .
+.
+.RE
+.
+.
+.\" ======================================================================
+.\" Paper
+.\" ======================================================================
+.TP
+.BI .PAPER " <paper type>"
+provides a convenient way to set the page dimensions for some common
+printer sheet sizes.
+.
+The argument
+.I <paper type>
+can be one of:
+.BR LETTER ,
+.BR LEGAL ,
+.BR STATEMENT ,
+.BR TABLOID ,
+.BR LEDGER ,
+.BR FOLIO ,
+.BR QUARTO ,
+.BR EXECUTIVE ,
+.BR 10x14 ,
+.BR A3 ,
+.BR A4 ,
+.BR A5 ,
+.BR B4 ,
+.BR B5 .
+.
+.
+.TP
+.B .PRINTSTYLE
+.
+.
+.\" ======================================================================
+.\" PT_SIZE - POINT SIZE OF TYPE
+.\" ======================================================================
+.TP
+.BI .PT_SIZE " <size of type in points>"
+Point size of type, does not require a
+.IR "unit of measure" .
+.
+.RS
+.
+.P
+.B \%.PT_SIZE
+.RI ( "Point Size" )
+takes one argument: the
+.I size of type
+in
+.IR points .
+.
+Unlike most other macros that establish the
+.I size
+or
+.I measure
+of something,
+.B \%.PT_SIZE
+does not require that you supply a
+.I unit of measure
+since it's a near universal convention that
+.I type size
+is measured in
+.IR points .
+.
+Therefore, to change the
+.I type size
+to, say,
+.IR "11 points" ,
+enter
+.RS
+.EX
+.B .PT_SIZE 11
+.EE
+.RE
+.
+.I Point sizes
+may be
+.I fractional
+(e.g.\&
+.I 10.25
+or
+.IR 12.5 ).
+.
+.P
+You can prepend a
+.I plus
+or a
+.I minus sign
+to the argument to
+.BR \%.PT_SIZE ,
+in which case the
+.I point size
+will be changed by
+.I +
+or
+.I \-
+the original value.
+.
+For example, if the
+.I point size
+is
+.I 12 ,
+and you want
+.I 14 ,
+you can do
+.RS
+.EX
+.B .PT_SIZE +2
+.EE
+.RE
+then later reset it to
+.I 12
+with
+.RS
+.EX
+.B .PT_SIZE \-2
+.EE
+.RE
+.
+The
+.I size of type
+can also be changed inline.
+.
+.P
+.I Note:
+It is unfortunate that the
+.B \%pic
+preprocessor has already taken the name, PS, and thus
+.IR mom 's
+macro for setting
+.I point sizes
+can't use it.
+.
+However, if you aren't using
+.BR pic ,
+you might want to alias
+.B \%.PT_SIZE
+as
+.BR .PS ,
+since there'd be no conflict.
+.
+For example
+.RS
+.EX
+.B .ALIAS PS PT_SIZE
+.EE
+.RE
+would allow you to set
+.I point sizes
+with
+.BR .PS .
+.
+.RE
+.
+.
+.\" ======================================================================
+.\" Right Margin
+.\" ======================================================================
+.TP
+.BI .R_MARGIN " <right margin>"
+Right Margin
+.
+.RS
+.
+.P
+Requires a unit of measure.
+.
+.P
+IMPORTANT:
+.BR .R_MARGIN ,
+if used, must come after
+.BR .PAPER ,
+.BR .PAGEWIDTH ,
+.BR .L_MARGIN ,
+and/or
+.B .PAGE
+(if a right margin isn't given to PAGE).
+.
+The reason is that
+.B .R_MARGIN
+calculates line length from the overall page dimensions and the left margin.
+.
+.P
+Obviously, it can't make the calculation if it doesn't know the page
+width and the left margin.
+.
+.P
+.B .R_MARGIN
+establishes the amount of space you want between the end of typeset
+lines and the right hand edge of the printer sheet.
+.
+In other words, it sets the line length.
+.B .R_MARGIN
+requires a unit of measure.
+.
+Decimal fractions are allowed.
+.
+.P
+The line length macro (LL) can be used in place of
+.BR .R_MARGIN .
+.
+In either case, the last one invoked sets the line length.
+.
+The choice of which to use is up to you.
+.
+In some instances, you may find it easier to think of a section of
+type as having a right margin.
+.
+In others, giving a line length may make more sense.
+.
+.P
+For example, if you're setting a page of type you know should have
+6-pica margins left and right, it makes sense to enter a left and
+right margin, like this:
+.RS
+.EX
+.B .L_MARGIN 6P
+.B .R_MARGIN 6P
+.EE
+.RE
+.
+.P
+That way, you don't have to worry about calculating the line
+length.
+.
+On the other hand, if you know the line length for a patch of type
+should be 17 picas and 3 points, entering the line length with LL is
+much easier than calculating the right margin, e.g.\&
+.RS
+.EX
+.B .LL 17P+3p
+.EE
+.RE
+.
+.P
+If you use the macros
+.BR .PAGE ,
+.B .PAGEWIDTH
+or
+.B PAPER
+without invoking
+.B .R_MARGIN
+afterwards,
+.B mom
+automatically sets
+.B .R_MARGIN
+to
+.IR "1 inch" .
+.
+If you set a line length after these macros (with
+.BR .LL ),
+the line length calculated by
+.B .R_MARGIN
+is, of course, overridden.
+.
+.P
+Note:
+.B .R_MARGIN
+behaves in a special way when you're using the document processing
+macros.
+.
+.RE
+.
+.
+.\" ======================================================================
+.\" ST - Set String Tabs
+.\" ======================================================================
+.TP
+.FONT B .ST I " <tab number> " B "L | R | C | J [ QUAD ]"
+.
+.RS
+.P
+After
+.I string tabs
+have been marked off on an input line (see
+.BR \[rs]*[ST]\*[Ellipsis]\[rs]*[STX] ),
+you need to
+.I set
+them by giving them a direction and, optionally, the
+.B \%QUAD
+argument.
+.
+.P
+In this respect,
+.B .ST
+is like
+.B \%.TAB_SET
+except that you don't have to give
+.B .ST
+an indent or a line length (that's already taken care of, inline,
+by
+.BR \[rs]*[ST]\*[Ellipsis]\[rs]*[STX] ).
+.
+.P
+If you want string
+.I tab 1
+to be
+.BR \%left ,
+enter
+.RS
+.EX
+.B .ST 1 L
+.EE
+.RE
+.
+If you want it to be
+.I \%left
+and
+.IR \%filled ,
+enter
+.RS
+.EX
+.B .ST 1 L \%QUAD
+.EE
+.RE
+.
+If you want it to be justified, enter
+.RS
+.EX
+.B .ST 1 J
+.EE
+.RE
+.
+.RE
+.
+.
+.\" ======================================================================
+.\" TAB - Call Tabs
+.\" ======================================================================
+.TP
+.BI \%.TAB " <tab number>"
+After
+.I tabs
+have been defined (either with
+.B \%.TAB_SET
+or
+.BR .ST ),
+.B \%.TAB
+moves to whatever
+.I tab number
+you pass it as an argument.
+.
+.RS
+.
+.P
+For example,
+.RS
+.EX
+.B \%.TAB 3
+.EE
+.RE
+moves you to
+.IR "\%tab 3" .
+.
+.P
+Note:
+.B \%.TAB
+breaks the line preceding it and advances 1 linespace.
+.
+Hence,
+.RS
+.EX
+.B .TAB 1
+.B  A line of text in tab 1.
+.B .TAB 2
+.B  A line of text in tab 2.
+.EE
+.RE
+produces, on output
+.RS
+.EX
+.B "A line of text in tab 1."
+.B "                             A line of text in tab 2."
+.EE
+.RE
+.
+.P
+If you want the tabs to line up, use
+.B .TN
+.RI ( "Tab Next" )
+or, more conveniently, the inline escape \[rs]*[TB+]:
+.RS
+.EX
+\fB.TAB 1
+A line of text in tab 1.\[rs]*[TB+]
+A line of text in tab 2.
+.EE
+.RE
+which produces
+.RS
+.EX
+.B "A line of text in tab 1.   A line of text in tab 2."
+.EE
+.RE
+.
+.P
+If the text in your tabs runs to several lines, and you want the first
+lines of each tab to align, you must use the multi-column macros.
+.
+.P
+.I Additional note:
+Any indents in effect prior to calling a tab are automatically turned
+off by
+.BR TAB .
+.
+If you were happily zipping down the page with a left indent of
+.I 2 picas
+turned on, and you call a
+.I tab
+whose indent from the left margin is
+.IR "6 picas" ,
+your new distance from the
+.I left margin
+will be
+.IR "6 picas" ,
+not
+I 6 picas plus the 2 pica
+indent.
+.
+.P
+.I \%Tabs
+are not by nature columnar, which is to say that if the text inside a
+.I tab
+runs to several lines, calling another
+.I tab
+does not automatically move to the baseline of the first line in the
+.IR "previous tab" .
+.
+To demonstrate:
+.RS
+.EX
+\f[B]TAB 1
+Carrots
+Potatoes
+Broccoli
+\&.TAB 2
+$1.99/5 lbs
+$0.25/lb
+$0.99/bunch
+.EE
+.RE
+produces, on output
+.RS
+.EX
+\fBCarrots
+Potatoes
+Broccoli
+            $1.99/5 lbs
+            $0.25/lb
+            $0.99/bunch
+.EE
+.RE
+.
+.RE
+.
+.\" ======================================================================
+.\" TB - Call Tabs Alias
+.\" ======================================================================
+.TP
+.BI .TB " <tab number>"
+Alias to
+.B .TAB
+.
+.
+.\" ======================================================================
+.\" TI - TEMPORARY (LEFT) INDENT
+.\" ======================================================================
+.TP
+.BI "\%.TI [" " <measure> " ]
+Temporary left indent \[em] the optional argument requires a
+.I unit of measure
+.
+.RS
+.
+.P
+A temporary indent is one that applies only to the first line of text
+that comes after it.
+.
+Its chief use is indenting the first line of paragraphs.
+.RB ( Mom's
+.B .PP
+macro, for example, uses a
+.IR "temporary indent" .)
+.
+.P
+The first time you invoke
+.BR .TI ,
+you must give it a measure.
+.
+If you want to
+.I indent
+the first line of a paragraph by, say, 2 ems, do
+.RS
+.EX
+.B .TI 2m
+.EE
+.RE
+.
+.P
+Subsequent invocations of
+.B .TI
+do not require you to supply a measure;
+.B mom
+keeps track of the last measure you gave it.
+.
+.P
+Because
+.I temporary indents
+are temporary, there's no need to turn them off.
+.
+.P
+.I IMPORTANT:
+Unlike
+.BR .IL ,
+.B .IR
+and
+.BR IB ,
+measures given to
+.B .TI
+are NOT additive.
+.
+In the following example, the second
+.B \%".TI 2P"
+is exactly
+.IR "2 picas" .
+.RS
+.EX
+.B .TI 1P
+.B The beginning of a paragraph\*[Ellipsis]
+.B .TI 2P
+.B The beginning of another paragraph\*[Ellipsis]
+.EE
+.RE
+.
+.RE
+.
+.
+.
+.\" ======================================================================
+.\" TN - Tab Next
+.\" ======================================================================
+.TP
+.B .TN
+Tab Next
+.
+.RS
+.P
+Inline escape
+.B \[rs]*[TB+]
+.
+.P
+.B TN
+moves over to the
+.I next tab
+in numeric sequence
+.RI ( "tab n+1" )
+without advancing on the page.
+.
+See the
+.I NOTE
+in the description of the
+.B \%.TAB
+macro for an example of how
+.B TN
+works.
+.
+.P
+In
+.I \%tabs
+that aren't given the
+.B QUAD
+argument when they're set up with
+.B \%.TAB_SET
+or
+.BR ST ,
+you must terminate the line preceding
+.B .TN
+with the
+.B \[rs]c
+inline escape.
+.
+Conversely, if you did give a
+.B QUAD
+argument to
+.B \%.TAB_SET
+or
+.BR ST ,
+the
+.B \[rs]c must not be used.
+.
+.P
+If you find remembering whether to put in the
+.B \[rs]c
+bothersome, you may prefer to use the inline escape alternative
+to
+.BR .TN ,
+.BR \[rs]*[TB+] ,
+which works consistently regardless of the fill mode.
+.
+.P
+.I Note:
+You must put text in the input line immediately after
+.BR .TN .
+.
+Stacking of
+.BR .TN 's
+is not allowed.
+.
+In other words, you cannot do
+.RS
+.EX
+\fB.TAB 1
+Some text\[rs]c
+\&.TN
+Some more text\[rs]c
+\&.TN
+\&.TN
+Yet more text\fR
+.EE
+.RE
+.
+The above example, assuming
+.I tabs
+numbered from
+.I 1
+to
+.IR 4 ,
+should be entered
+.RS
+.EX
+\fB.TAB 1
+Some text\[rs]c
+\&.TN
+Some more text\[rs]c
+\&.TN
+\[rs]&\[rs]c
+\&.TN
+Yet more text
+.EE
+.RE
+.
+\[rs]& is a zero-width, non-printing character that
+.I groff
+recognizes as valid input, hence meets the requirement for input text
+following
+.BR .TN .
+.
+.RE
+.
+.
+.\" ======================================================================
+.\" Tab Quit
+.\" ======================================================================
+.TP
+.B .TQ
+.B TQ
+takes you out of whatever
+.I tab
+you were in, advances
+.IR "1 linespace" ,
+and restores the
+.IR "left margin" ,
+.IR "line length" ,
+.I quad direction
+and
+.I fill mode
+that were in effect prior to invoking any
+.IR tabs .
+.
+.
+.\" ======================================================================
+.\" Top Margin
+.\" ======================================================================
+.TP
+.BI .T_MARGIN " <top margin>"
+Top margin
+.
+.RS
+.
+.P
+Requires a unit of measure
+.
+.P
+.B .T_MARGIN
+establishes the distance from the top of the printer sheet at which
+you want your type to start.
+.
+It requires a unit of measure, and decimal fractions are allowed.
+.
+To set a top margin of 2\(12 centimetres, you'd enter
+.RS
+.EX
+.B .T_MARGIN 2.5c
+.EE
+.RE
+.
+.B .T_MARGIN
+calculates the vertical position of the first line of type on a page
+by treating the top edge of the printer sheet as a baseline.
+Therefore,
+.RS
+.EX
+.B .T_MARGIN 1.5i
+.EE
+.RE
+puts the baseline of the first line of type 1\(12 inches beneath the
+top of the page.
+.
+.P
+Note:
+.B .T_MARGIN
+means something slightly different when you're using the document
+processing macros.
+.
+See Top and bottom margins in document processing for an explanation.
+.
+.P
+IMPORTANT:
+.B .T_MARGIN
+does two things: it establishes the top margin for pages that come
+after it and it moves to that position on the current page.
+.
+Therefore,
+.B .T_MARGIN
+should only be used at the top of a file (prior to entering text) or
+after NEWPAGE, like this:
+.RS
+.EX
+.B .NEWPAGE
+.B .T_MARGIN 6P
+.I <text>
+.EE
+.RE
+.
+.RE
+.
+.
+.\" ====================================================================
+.SH AUTHORS
+.\" ====================================================================
+.I mom
+was written by
+.MT peter@\:schaffter.ca
+Peter Schaffter
+.ME .
+.
+PDF support was provided by
+.MT deri@\:chuzzlewit.demon.co.uk
+Deri James
+.ME .
+.
+The alphabetical documentation of macros and escape sequences in this
+man page were written by the
+.I mom
+team.
+.
+.
+.\" ====================================================================
+.SH "SEE ALSO"
+.\" ====================================================================
+.
+.BR groff (1),
+.BR groff_mom (7),
+.
+.TP
+.I \%d:/\:usr/\:share/\:doc/\:groff\-1.22.4/\:html/\:mom/\:toc.html
+\[en] entry point to the HTML documentation
+.
+.TP
+.UR http://\:www.schaffter.ca/\:mom/\:momdoc/\:toc.html
+.UE
+\[en] HTML documentation online
+.
+.TP
+.UR http://\:www.schaffter.ca/\:mom/
+.UE
+\[en] the mom macros homepage
+.
+.
+.\" Restore compatibility mode (for, e.g., Solaris 10/11).
+.cp \n[groff_mom_C]
+.
+.
+.\" ====================================================================
+.\" Emacs settings
+.\" ====================================================================
+.
+.\" Local Variables:
+.\" mode: nroff
+.\" End:
+.\" vim: set filetype=groff:

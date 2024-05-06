@@ -1,0 +1,720 @@
+GROFF_MS(7)            Miscellaneous Information Manual            GROFF_MS(7)
+
+
+
+NNAAMMEE
+       groff_ms - GNU roff manuscript macro package for formatting documents
+
+SSYYNNOOPPSSIISS
+       ggrrooffff --mmss [_o_p_t_i_o_n ...] [_i_n_p_u_t_-_f_i_l_e ...]
+       ggrrooffff --mm mmss [_o_p_t_i_o_n ...] [_i_n_p_u_t_-_f_i_l_e ...]
+
+DDEESSCCRRIIPPTTIIOONN
+       This manual page describes the GNU version of the _m_s macros, part of
+       the _g_r_o_f_f typesetting system.  The _m_s macros are mostly compatible with
+       the documented behavior of the 4.3 BSD Unix _m_s macros (see _D_i_f_f_e_r_e_n_c_e_s
+       _f_r_o_m _t_r_o_f_f _m_s below for details).  The _m_s macros are suitable for
+       reports, letters, books, and technical documentation.
+
+UUSSAAGGEE
+       The _m_s macro package expects files to have a certain amount of
+       structure.  The simplest documents can begin with a paragraph macro and
+       consist of text separated by paragraph macros or even blank lines.
+       Longer documents have a structure as follows:
+
+       DDooccuummeenntt ttyyppee
+              If you use the RRPP (report) macro at the beginning of the
+              document, _g_r_o_f_f prints the cover page information on its own
+              page; otherwise it prints the information on the first page with
+              your document text immediately following.  Other document
+              formats found in AT&T _t_r_o_f_f are specific to AT&T or Berkeley,
+              and are not supported in _g_r_o_f_f _m_s.
+
+       FFoorrmmaatt aanndd llaayyoouutt
+              By setting number registers, you can change your document's
+              margins, spacing, headers and footers, footnotes, and the base
+              point size for the text.  See _D_o_c_u_m_e_n_t _c_o_n_t_r_o_l _r_e_g_i_s_t_e_r_s below
+              for more details.
+
+       CCoovveerr ppaaggee
+              A cover page consists of a title, and optionally the author's
+              name and institution, an abstract, and the date.  See _C_o_v_e_r _p_a_g_e
+              _m_a_c_r_o_s below for more details.
+
+       BBooddyy   Following the cover page is your document.  It consists of
+              paragraphs, headings, and lists.
+
+       TTaabbllee ooff ccoonntteennttss
+              Longer documents usually include a table of contents, which you
+              can add by placing the TTCC macro at the end of your document.
+
+   DDooccuummeenntt ccoonnttrrooll rreeggiisstteerrss
+       The following table lists the document control number registers.  For
+       the sake of consistency, set registers related to margins at the
+       beginning of your document, or just after the RRPP macro.
+
+       MMaarrggiinn sseettttiinnggss
+
+              RReegg..          DDeeffiinniittiioonn             EEffffeeccttiivvee      DDeeffaauulltt
+              ------------------------------------------------------------
+              PO     Page offset (left margin)   next page        1i
+              LL     Line length                 next paragraph   6i
+              LT     Header/footer length        next paragraph   6i
+              HM     Top (header) margin         next page        1i
+              FM     Bottom (footer) margin      next page        1i
+              ------------------------------------------------------------
+
+       TTeexxtt sseettttiinnggss
+
+               RReegg..             DDeeffiinniittiioonn              EEffffeeccttiivvee      DDeeffaauulltt
+              -----------------------------------------------------------------
+              PS       Point size                     next paragraph   10p
+              VS       Line spacing (leading)         next paragraph   12p
+              PSINCR   Point size increment for       next heading     1p
+                       section headings of
+                       increasing importance
+              GROWPS   Heading level beyond which     next heading     0
+                       PSINCR is ignored
+              -----------------------------------------------------------------
+
+       PPaarraaggrraapphh sseettttiinnggss
+
+                RReegg..             DDeeffiinniittiioonn             EEffffeeccttiivvee      DDeeffaauulltt
+              -----------------------------------------------------------------
+              PI         Initial indent               next paragraph   5n
+              PD         Space between paragraphs     next paragraph   0.3v
+              QI         Quoted paragraph indent      next paragraph   5n
+              PORPHANS   Number of initial lines to   next paragraph   1
+                         be kept together
+              HORPHANS   Number of initial lines to   next heading     1
+                         be kept with heading
+              -----------------------------------------------------------------
+
+       FFoooottnnoottee sseettttiinnggss
+
+              RReegg..     DDeeffiinniittiioonn        EEffffeeccttiivvee      DDeeffaauulltt
+              ----------------------------------------------------
+              FL     Footnote length   next footnote   \n[LL]*5/6
+              FI     Footnote indent   next footnote   2n
+              FF     Footnote format   next footnote   0
+              FPS    Point size        next footnote   \n[PS]-2
+              FVS    Vert. spacing     next footnote   \n[FPS]+2
+              FPD    Para. spacing     next footnote   \n[PD]/2
+              ----------------------------------------------------
+
+       OOtthheerr sseettttiinnggss
+
+              RReegg..               DDeeffiinniittiioonn              EEffffeeccttiivvee    DDeeffaauulltt
+              ----------------------------------------------------------------
+              DD      Display, table, eqn, pic spacing   next para.   0.5v
+              MINGW   Minimum width between columns      next page    2n
+              ----------------------------------------------------------------
+
+   CCoovveerr ppaaggee mmaaccrrooss
+       Use the following macros to create a cover page for your document in
+       the order shown.
+
+       ..RRPP [nnoo]
+              Specifies the report format for your document.  The report
+              format creates a separate cover page.  With no RRPP macro, _g_r_o_f_f
+              prints a subset of the cover page on page 1 of your document.
+
+              If you use the optional nnoo argument, _g_r_o_f_f prints a title page
+              but does not repeat any of the title page information (title,
+              author, abstract, etc.) on page 1 of the document.
+
+       ..PP11    (P-one) Prints the header on page 1.  The default is to suppress
+              the header.
+
+       ..DDAA [_x_x_x]
+              (optional) Print the current date, or the arguments to the macro
+              if any, on the title page (if specified) and in the footers.
+              This is the default for _n_r_o_f_f.
+
+       ..NNDD [_x_x_x]
+              (optional) Print the current date, or the arguments to the macro
+              if any, on the title page (if specified) but not in the footers.
+              This is the default for _t_r_o_f_f.
+
+       ..TTLL    Specifies the document title.  _G_r_o_f_f collects text following the
+              TTLL macro into the title, until reaching the author name or
+              abstract.
+
+       ..AAUU    Specifies the author's name.  You can specify multiple authors
+              by using an AAUU macro for each author.
+
+       ..AAII    Specifies the author's institution.  You can specify multiple
+              institutions.
+
+       ..AABB [nnoo]
+              Begins the abstract.  The default is to print the word AABBSSTTRRAACCTT,
+              centered and in italics, above the text of the abstract.  The
+              option nnoo suppresses this heading.
+
+       ..AAEE    End the abstract.
+
+   PPaarraaggrraapphhss
+       Use the PPPP macro to create indented paragraphs, and the LLPP macro to
+       create paragraphs with no initial indent.
+
+       The QQPP macro indents all text at both left and right margins by the
+       amount of the register QQII.  The effect is reminiscent of the HTML
+       <<BBLLOOCCKKQQUUOOTTEE>> tag.  The next paragraph or heading returns the margins to
+       normal.  QQPP inserts the vertical space specified in register PPDD as
+       inter-paragraph spacing.
+
+       A paragraph bracketed between the macros QQSS and QQEE has the same
+       appearance as a paragraph started with QQPP and a following paragraph
+       started with LLPP.  Both QQSS and QQEE insert the inter-paragraph spacing
+       specified in PPDD and the text is indented on both sides by the amount of
+       register QQII.  The text between QQSS and QQEE can be split into further
+       paragraphs by using ..LLPP or ..PPPP.
+
+       The XXPP macro produces an "exdented" paragraph; that is, one with a
+       hanging indent.  The first line of the paragraph begins at the left
+       margin, and subsequent lines are indented (the opposite of PPPP).
+
+       For each of the above paragraph types, and also for any list entry
+       introduced by the IIPP macro (described later), the document control
+       register PPOORRPPHHAANNSS, sets the _m_i_n_i_m_u_m number of lines which must be
+       printed, after the start of the paragraph, and before any page break
+       occurs.  If there is insufficient space remaining on the current page
+       to accommodate this number of lines, then a page break is forced _b_e_f_o_r_e
+       the first line of the paragraph is printed.
+
+       Similarly, when a section heading (see subsection "Headings" below)
+       precedes any of these paragraph types, the HHOORRPPHHAANNSS document control
+       register specifies the _m_i_n_i_m_u_m number of lines of the paragraph which
+       must be kept on the same page as the heading.  If insufficient space
+       remains on the current page to accommodate the heading and this number
+       of lines of paragraph text, then a page break is forced _b_e_f_o_r_e the
+       heading is printed.
+
+   HHeeaaddiinnggss
+       Use headings to create a hierarchical structure for your document.  By
+       default, the _m_s macros print headings in bboolldd using the same font
+       family and point size as the body text.  For output devices which
+       support scalable fonts, this behaviour may be modified by defining the
+       document control registers GGRROOWWPPSS and PPSSIINNCCRR.
+
+       The following heading macros are available:
+
+       ..NNHH _x_x Numbered heading.  The argument _x_x is either a numeric argument
+              to indicate the level of the heading, or SS _x_x _x_x ... to set the
+              section number explicitly.  If you specify heading levels out of
+              sequence, such as invoking ..NNHH 33 after ..NNHH 11, _g_r_o_f_f prints a
+              warning on standard error.
+
+              If the GGRROOWWPPSS register is set to a value greater than the level
+              of the heading, then the point size of the heading will be
+              increased by PPSSIINNCCRR units over the text size specified by the PPSS
+              register, for each level by which the heading level is less than
+              the value of GGRROOWWPPSS.  For example, the sequence:
+
+                     .nr PS 10
+                     .nr GROWPS 3
+                     .nr PSINCR 1.5p
+                     .
+                     .NH 1
+                     Top Level Heading
+                     .
+                     .NH 2
+                     Second Level Heading
+                     .
+                     .NH 3
+                     Third Level Heading
+
+              will cause "_1_. _T_o_p _L_e_v_e_l _H_e_a_d_i_n_g" to be printed in 13pt bboolldd
+              text, followed by "_1_._1_. _S_e_c_o_n_d _L_e_v_e_l _H_e_a_d_i_n_g" in 11.5pt bboolldd
+              text, while "_1_._1_._1_. _T_h_i_r_d _L_e_v_e_l _H_e_a_d_i_n_g", and all more deeply
+              nested heading levels, will remain in the 10pt bboolldd text which
+              is specified by the PPSS register.
+
+              Note that the value stored in PPSSIINNCCRR is interpreted in _g_r_o_f_f
+              basic units; the _p scaling factor should be employed when
+              assigning a value specified in points.
+
+              The style used to represent the section number, within a
+              numbered heading, is controlled by the SSNN--SSTTYYLLEE string; this may
+              be set to either the SSNN--DDOOTT or the SSNN--NNOO--DDOOTT style, (described
+              below), by aliasing SSNN--SSTTYYLLEE accordingly.  By default, SSNN--SSTTYYLLEE
+              is initialised by defining the alias
+
+                     .als SN-STYLE SN-DOT
+
+              it may be changed to the SSNN--NNOO--DDOOTT style, if preferred, by
+              defining the alternative alias
+
+                     .als SN-STYLE SN-NO-DOT
+
+              Any such change becomes effective with the first use of ..NNHH,
+              _a_f_t_e_r the new alias is defined.
+
+              After invoking ..NNHH, the assigned heading number is available in
+              the strings SSNN--DDOOTT (as it appears in the default formatting
+              style for numbered headings, with a terminating period following
+              the number), and SSNN--NNOO--DDOOTT (with this terminating period
+              omitted).  The string SSNN is also defined, as an alias for
+              SSNN--DDOOTT; if preferred, the user may redefine it as an alias for
+              SSNN--NNOO--DDOOTT, by including the initialisation:
+
+                     .als SN SN-NO-DOT
+
+              at any time; the change becomes effective with the next use of
+              ..NNHH, _a_f_t_e_r the new alias is defined.
+
+       ..SSHH [_x_x]
+              Unnumbered subheading.  The use of the optional _x_x argument is a
+              GNU extension, which adjusts the point size of the unnumbered
+              subheading to match that of a numbered heading, introduced using
+              ..NNHH _x_x with the same value of _x_x.  For example, given the same
+              settings for PPSS, GGRROOWWPPSS and PPSSIINNCCRR, as used in the preceding ..NNHH
+              example, the sequence:
+
+                     .SH 2
+                     An Unnumbered Subheading
+
+              will print "_A_n _U_n_n_u_m_b_e_r_e_d _S_u_b_h_e_a_d_i_n_g" in 11.5pt bboolldd text.
+
+   HHiigghhlliigghhttiinngg
+       The _m_s macros provide a variety of methods to highlight or emphasize
+       text:
+
+       ..BB [_t_x_t [_p_o_s_t [_p_r_e]]]
+              Sets its first argument in bboolldd ttyyppee.  If you specify a second
+              argument, _g_r_o_f_f prints it in the previous font after the bold
+              text, with no intervening space (this allows you to set
+              punctuation after the highlighted text without highlighting the
+              punctuation).  Similarly, it prints the third argument (if any)
+              in the previous font bbeeffoorree the first argument.  For example,
+
+                     .B foo ) (
+
+              prints "(ffoooo)".
+
+              If you give this macro no arguments, _g_r_o_f_f prints all text
+              following in bold until the next highlighting, paragraph, or
+              heading macro.
+
+       ..RR [_t_x_t [_p_o_s_t [_p_r_e]]]
+              Sets its first argument in roman (or regular) type.  It operates
+              similarly to the BB macro otherwise.
+
+       ..II [_t_x_t [_p_o_s_t [_p_r_e]]]
+              Sets its first argument in _i_t_a_l_i_c _t_y_p_e.  It operates similarly
+              to the BB macro otherwise.
+
+       ..CCWW [_t_x_t [_p_o_s_t [_p_r_e]]]
+              Sets its first argument in a constant-width face.  It operates
+              similarly to the BB macro otherwise.
+
+       ..BBII [_t_x_t [_p_o_s_t [_p_r_e]]]
+              Sets its first argument in bold italic type.  It operates
+              similarly to the BB macro otherwise.
+
+       ..BBXX [_t_x_t]
+              Prints its argument and draws a box around it.  If you want to
+              box a string that contains spaces, use a digit-width space (\0).
+
+       ..UULL [_t_x_t [_p_o_s_t]]
+              Prints its first argument with an underline.  If you specify a
+              second argument, _g_r_o_f_f prints it in the previous font after the
+              underlined text, with no intervening space.
+
+       ..LLGG    Prints all text following in larger type (2 points larger than
+              the current point size) until the next font size, highlighting,
+              paragraph, or heading macro.  You can specify this macro
+              multiple times to enlarge the point size as needed.
+
+       ..SSMM    Prints all text following in smaller type (2 points smaller than
+              the current point size) until the next type size, highlighting,
+              paragraph, or heading macro.  You can specify this macro
+              multiple times to reduce the point size as needed.
+
+       ..NNLL    Prints all text following in the normal point size (that is, the
+              value of the PPSS register).
+
+       \\**{{_t_e_x_t\\**}}
+              Print the enclosed _t_e_x_t as a superscript.
+
+   IInnddeennttss
+       You may need to indent sections of text.  A typical use for indents is
+       to create nested lists and sublists.
+
+       Use the RRSS and RREE macros to start and end a section of indented text,
+       respectively.  The PPII register controls the amount of indent.
+
+       You can nest indented sections as deeply as needed by using multiple,
+       nested pairs of RRSS and RREE.
+
+   LLiissttss
+       The IIPP macro handles duties for all lists.  Its syntax is as follows:
+
+       ..IIPP [_m_a_r_k_e_r [_w_i_d_t_h]]
+              The _m_a_r_k_e_r is usually a bullet character \\((bbuu for unordered
+              lists, a number (or auto-incrementing number register) for
+              numbered lists, or a word or phrase for indented (glossary-
+              style) lists.
+
+              The _w_i_d_t_h specifies the indent for the body of each list item.
+              Once specified, the indent remains the same for all list items
+              in the document until specified again.
+
+   TTaabb ssttooppss
+       Use the ttaa request to set tab stops as needed.  Use the TTAA macro to
+       reset tabs to the default (every 5n).  You can redefine the TTAA macro to
+       create a different set of default tab stops.
+
+   DDiissppllaayyss aanndd kkeeeeppss
+       Use displays to show text-based examples or figures (such as code
+       listings).  Displays turn off filling, so lines of code can be
+       displayed as-is without inserting bbrr requests in between each line.
+       Displays can be _k_e_p_t on a single page, or allowed to break across
+       pages.  The following table shows the display types available.
+
+                   DDiissppllaayy mmaaccrroo                    TTyyppee ooff ddiissppllaayy
+                WWiitthh kkeeeepp      NNoo kkeeeepp
+              -----------------------------------------------------------------
+              .DS L            .LD       Left-justified.
+              .DS I [_i_n_d_e_n_t]   .ID       Indented (default indent in the DDII
+                                         register).
+              .DS B            .BD       Block-centered (left-justified,
+                                         longest line centered).
+              .DS C            .CD       Centered.
+              .DS R            .RD       Right-justified.
+              -----------------------------------------------------------------
+
+       Use  the  DDEE  macro to end any display type.  The macros DDss and DDee were
+       formerly provided as aliases for DDSS and DDEE, respectively, but they have
+       been  removed,  and  should  no  longer  be  used.  X11 documents which
+       actually use DDss and DDee always load a specific macro file from  the  X11
+       distribution  (_m_a_c_r_o_s_._t)  which provides proper definitions for the two
+       macros.
+
+       To _k_e_e_p text together on a page, such as a paragraph that refers  to  a
+       table (or list, or other item) immediately following, use the KKSS and KKEE
+       macros.  The KKSS macro begins a block of text to be  kept  on  a  single
+       page, and the KKEE macro ends the block.
+
+       You  can  specify  a  _f_l_o_a_t_i_n_g _k_e_e_p using the KKFF and KKEE macros.  If the
+       keep cannot fit on the current page, _g_r_o_f_f holds the  contents  of  the
+       keep and allows text following the keep (in the source file) to fill in
+       the remainder of the current page.  When the page breaks, whether by an
+       explicit  bbpp  request  or by reaching the end of the page, _g_r_o_f_f prints
+       the floating keep at the top of the  new  page.   This  is  useful  for
+       printing  large  graphics  or tables that do not need to appear exactly
+       where specified.
+
+       The macros BB11 and BB22 can be used to enclose a text within  a  box;  ..BB11
+       begins  the  box,  and  ..BB22  ends it.  Text in the box is automatically
+       placed in a diversion (keep).
+
+   TTaabblleess,, ffiigguurreess,, eeqquuaattiioonnss,, aanndd rreeffeerreenncceess
+       The _m_s macros support the standard _g_r_o_f_f preprocessors: _t_b_l, _p_i_c,  _e_q_n,
+       and  _r_e_f_e_r.  Mark text meant for preprocessors by enclosing it in pairs
+       of tags as follows:
+
+       ..TTSS [HH] and ..TTEE
+              Denote a table to be processed by  the  _t_b_l  preprocessor.   The
+              optional  HH  argument instructs _g_r_o_f_f to create a running header
+              with the information up to  the  TTHH  macro.   _G_r_o_f_f  prints  the
+              header  at  the  beginning  of the table; if the table runs onto
+              another page, _g_r_o_f_f prints the header on the next page as well.
+
+       ..PPSS and ..PPEE
+              Denote a graphic to be processed by the _p_i_c  preprocessor.   You
+              can  create  a  _p_i_c  file  by  hand,  using  the AT&T _p_i_c manual
+              available on the Web as a reference,  or  by  using  a  graphics
+              program such as _x_f_i_g.
+
+       ..EEQQ [_a_l_i_g_n] and ..EENN
+              Denote an equation to be processed by the _e_q_n preprocessor.  The
+              optional _a_l_i_g_n argument can  be  CC,  LL,  or  II  to  center  (the
+              default), left-justify, or indent the equation, respectively.
+
+       ..[[ and ..]]
+              Denote  a  reference  to be processed by the _r_e_f_e_r preprocessor.
+              The GNU _r_e_f_e_r(1) manual page provides a comprehensive  reference
+              to   the  preprocessor  and  the  format  of  the  bibliographic
+              database.
+
+   FFoooottnnootteess
+       The _m_s macros provide a flexible footnote system.  You  can  specify  a
+       numbered  footnote by using the \\**** escape, followed by the text of the
+       footnote enclosed by FFSS and FFEE macros.
+
+       You can specify symbolic footnotes by placing the mark character  (such
+       as  \\((ddgg  for  the  dagger character) in the body text, followed by the
+       text of the footnote enclosed by FFSS \\((ddgg and FFEE macros.
+
+       You can control how _g_r_o_f_f prints footnote numbers by changing the value
+       of the FFFF register as follows:
+
+              0      Prints  the footnote number as a superscript; indents the
+                     footnote (default).
+
+              1      Prints the number followed by a period  (that  is,  "1.")
+                     and indents the footnote.
+
+              2      Like 1, without an indent.
+
+              3      Like  1,  but  prints  the footnote number as a paragraph
+                     with a hanging indent.
+
+       You can use footnotes safely within keeps and displays, but avoid using
+       numbered  footnotes  within  floating  keeps.  You can set a second \\****
+       between a \\**** and its corresponding ..FFSS; as long  as  each  ..FFSS  occurs
+       _a_f_t_e_r  the corresponding \\**** and the occurrences of ..FFSS are in the same
+       order as the corresponding occurrences of \\****.
+
+   HHeeaaddeerrss aanndd ffooootteerrss
+       There are three ways to define headers and footers:
+
+       +o  Use the strings LLHH, CCHH, and RRHH to set the left,  center,  and  right
+          headers.   Use  LLFF,  CCFF,  and  RRFF to set the left, center, and right
+          footers.  The string-setting approach works best for documents  that
+          do not distinguish between odd and even pages.
+
+       +o  Use  the  OOHH  and  EEHH  macros to define headers for the odd and even
+          pages, and OOFF and EEFF macros to define footers for the odd  and  even
+          pages.   This is more flexible than defining the individual strings.
+          The syntax for these macros is as follows:
+
+                 .._X_X ''_l_e_f_t''_c_e_n_t_e_r''_r_i_g_h_t''
+
+          where _X_X is one of the foregoing  four  macros  and  each  of  _l_e_f_t,
+          _c_e_n_t_e_r, and _r_i_g_h_t is text of your choice.  You can replace the quote
+          (') marks with any character not appearing in the header  or  footer
+          text.
+
+       +o  You  can redefine the PPTT and BBTT macros to change the behavior of the
+          header and footer, respectively.  The header process also calls  the
+          (undefined) HHDD macro after PPTT; you can define this macro if you need
+          additional processing after printing the  header  (for  example,  to
+          draw a line below the header).
+
+   MMaarrggiinnss
+       You  control  margins  using  a set of number registers.  The following
+       table lists the register names and defaults:
+
+              RReegg..          DDeeffiinniittiioonn             EEffffeeccttiivvee      DDeeffaauulltt
+              ------------------------------------------------------------
+              PO     Page offset (left margin)   next page        1i
+              LL     Line length                 next paragraph   6i
+              LT     Header/footer length        next paragraph   6i
+              HM     Top (header) margin         next page        1i
+              FM     Bottom (footer) margin      next page        1i
+              ------------------------------------------------------------
+
+       Note that there is no right margin setting.  The  combination  of  page
+       offset  and line length provide the information necessary to derive the
+       right margin.
+
+   MMuullttiippllee ccoolluummnnss
+       The _m_s macros can set text in as many columns as will reasonably fit on
+       the  page.   The  following  macros are available.  All of them force a
+       page break if a multi-column mode is  already  set.   However,  if  the
+       current  mode  is  single-column, starting a multi-column mode does _n_o_t
+       force a page break.
+
+       ..11CC    Single-column mode.
+
+       ..22CC    Two-column mode.
+
+       ..MMCC [_c_o_l_u_m_n_-_w_i_d_t_h [_g_u_t_t_e_r_-_w_i_d_t_h]]
+              Multi-column  mode.   If  you  specify  no  arguments,   it   is
+              equivalent  to  the  22CC  macro.   Otherwise, _c_o_l_u_m_n_-_w_i_d_t_h is the
+              width of each column  and  _g_u_t_t_e_r_-_w_i_d_t_h  is  the  space  between
+              columns.  The MMIINNGGWW number register is the default gutter width.
+
+   CCrreeaattiinngg aa ttaabbllee ooff ccoonntteennttss
+       Wrap text that you want to appear in the table of contents in XXSS and XXEE
+       macros.  Use the TTCC macro to print the table of contents at the end  of
+       the document, resetting the page number to ii (Roman numeral 1).
+
+       You can manually create a table of contents by specifying a page number
+       as the first argument to XXSS.   Add  subsequent  entries  using  the  XXAA
+       macro.  For example:
+
+              .XS 1
+              Introduction
+              .XA 2
+              A Brief History of the Universe
+              .XA 729
+              Details of Galactic Formation
+              ...
+              .XE
+
+       Use  the  PPXX  macro  to  print  a  manually-generated table of contents
+       without resetting the page number.
+
+       If you give the argument nnoo  to  either  PPXX  or  TTCC,  _g_r_o_f_f  suppresses
+       printing the title specified by the \\**[[TTOOCC]] string.
+
+   FFrraaccttiioonnaall ppooiinntt ssiizzeess
+       Traditionally,  the  _m_s  macros  only  support  integer  values for the
+       document's  font  size  and  vertical  spacing.    To   overcome   this
+       restriction,  values  larger  than  or  equal  to  1000  are  taken  as
+       fractional values, multiplied by 1000.  For  example,  `.nr  PS  10250'
+       sets the font size to 10.25 points.
+
+       The  following  four  registers  accept fractional point sizes: PPSS, VVSS,
+       FFPPSS, and FFVVSS.
+
+       Due to backwards compatibility, the value of VVSS must  be  smaller  than
+       40000 (this is 40.0 points).
+
+DDIIFFFFEERREENNCCEESS FFRROOMM ttrrooffff mmss
+       The _g_r_o_f_f _m_s macros are a complete re-implementation, using no original
+       AT&T code.  Since they take  advantage  of  the  extended  features  in
+       _g_r_o_f_f, they cannot be used with AT&T _t_r_o_f_f.  Other differences include:
+
+       +o  The  internals  of  _g_r_o_f_f  _m_s  differ from the internals of Unix _m_s.
+          Documents that depend upon implementation details of Unix _m_s may not
+          format properly with _g_r_o_f_f _m_s.
+
+       +o  The  error-handling  policy  of  _g_r_o_f_f  _m_s  is  to detect and report
+          errors, rather than silently to ignore them.
+
+       +o  Some Bell Labs localisms are not implemented by  default.   However,
+          if  you call the otherwise undocumented SSCC section-header macro, you
+          will enable implementations of three other archaic Bell Labs macros:
+          UUCC,  PP11,  and PP22.  These are not enabled by default because (a) they
+          were not documented, in the original _m_s _m_a_n_u_a_l, and (b) the  PP11  and
+          UUCC macros both collide with different macros in the Berkeley version
+          of _m_s.
+
+          These emulations are sufficient to give back the  1976  Kernighan  &
+          Cherry  paper  _T_y_p_e_s_e_t_t_i_n_g  _M_a_t_h_e_m_a_t_i_c_s  _-  _U_s_e_r_'_s _G_u_i_d_e its section
+          headings, and restore some text that had gone missing  as  arguments
+          of  undefined macros.  No warranty express or implied is given as to
+          how well the typographic details these produce  match  the  original
+          Bell Labs macros.
+
+       +o  Berkeley  localisms,  in  particular  the  TTMM and CCTT macros, are not
+          implemented.
+
+       +o  _G_r_o_f_f _m_s does not work in compatibility  mode  (e.g.,  with  the  --CC
+          option).
+
+       +o  There is no support for typewriter-like devices.
+
+       +o  _G_r_o_f_f _m_s does not provide cut marks.
+
+       +o  Multiple  line  spacing  is  not  supported  (use  a larger vertical
+          spacing instead).
+
+       +o  Some Unix _m_s documentation says that the CCWW and GGWW number  registers
+          can   be  used  to  control  the  column  width  and  gutter  width,
+          respectively.  These number registers are not used in _g_r_o_f_f _m_s.
+
+       +o  Macros that cause a reset (paragraphs, headings,  etc.)  may  change
+          the  indent.   Macros  that  change  the  indent do not increment or
+          decrement the indent, but rather set it absolutely.  This can  cause
+          problems  for  documents that define additional macros of their own.
+          The solution is to use not the iinn request but instead the RRSS and  RREE
+          macros.
+
+       +o  The  number  register  GGSS is set to 1 by the _g_r_o_f_f _m_s macros, but is
+          not used by the Unix _m_s macros.  Documents that  need  to  determine
+          whether they are being formatted with Unix _m_s or _g_r_o_f_f _m_s should use
+          this number register.
+
+       +o  To make _g_r_o_f_f _m_s use the default page offset (which  also  specifies
+          the  left  margin), the PPOO number register must stay undefined until
+          the first mmss macro is evaluated.  This implies that PPOO should not be
+          used early in the document, unless it is changed also: remember that
+          accessing an undefined register automatically defines it.
+
+   SSttrriinnggss
+       You can redefine the following strings to adapt the _g_r_o_f_f _m_s macros  to
+       languages other than English:
+
+                SSttrriinngg       DDeeffaauulltt VVaalluuee
+              -------------------------------
+              REFERENCES   References
+              ABSTRACT     ABSTRACT
+              TOC          Table of Contents
+              MONTH1       January
+              MONTH2       February
+              MONTH3       March
+              MONTH4       April
+              MONTH5       May
+              MONTH6       June
+              MONTH7       July
+              MONTH8       August
+              MONTH9       September
+              MONTH10      October
+              MONTH11      November
+              MONTH12      December
+              -------------------------------
+
+       The \\**-- string produces an em dash--like this.
+
+       Use  \\**QQ  and  \\**UU  to  get  a  left  and  right  typographer's  quote,
+       respectively, in _t_r_o_f_f (and plain quotes in _n_r_o_f_f).
+
+   TTeexxtt SSeettttiinnggss
+       The FFAAMM string sets  the  default  font  family.   If  this  string  is
+       undefined at initialization, it is set to Times.
+
+       The  point  size,  vertical  spacing,  and  inter-paragraph spacing for
+       footnotes are controlled by the number registers FFPPSS, FFVVSS, and FFPPDD;  at
+       initialization  these  are  set  to  \\nn((PPSS--22,  \\nn[[FFPPSS]]++22,  and \\nn((PPDD//22,
+       respectively.   If  any  of  these   registers   are   defined   before
+       initialization, the initialization macro does not change them.
+
+       The  hyphenation  flags  (as set by the hhyy request) are set from the HHYY
+       register; the default is 6.
+
+       Improved accent marks (as originally defined in Berkeley's _m_s  version)
+       are  available  by  specifying  the  AAMM  macro at the beginning of your
+       document.  You can place an accent over most characters  by  specifying
+       the  string  defining  the  accent  directly  after the character.  For
+       example, nn\\**~~ produces an n with a tilde over it.
+
+NNAAMMIINNGG CCOONNVVEENNTTIIOONNSS
+       The following conventions are used for names of  macros,  strings,  and
+       number  registers.   External names available to documents that use the
+       _g_r_o_f_f _m_s macros contain only uppercase letters and digits.
+
+       Internally the macros are divided into modules; naming conventions  are
+       as follows:
+
+       +o  Names used only within one module are of the form _m_o_d_u_l_e**_n_a_m_e.
+
+       +o  Names  used  outside the module in which they are defined are of the
+          form _m_o_d_u_l_e@@_n_a_m_e.
+
+       +o  Names associated with a  particular  environment  are  of  the  form
+          _e_n_v_i_r_o_n_m_e_n_t::_n_a_m_e; these are used only within the ppaarr module.
+
+       +o  _n_a_m_e does not have a module prefix.
+
+       +o  Constructed   names  used  to  implement  arrays  are  of  the  form
+          _a_r_r_a_y!!_i_n_d_e_x.
+
+       Thus the groff ms macros reserve the following names:
+
+       +o  Names containing the characters **, @@, and ::.
+
+       +o  Names containing only uppercase letters and digits.
+
+FFIILLEESS
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_t_m_a_c_/_m_s_._t_m_a_c (a wrapper file for _s_._t_m_a_c)
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_t_m_a_c_/_s_._t_m_a_c
+
+AAUUTTHHOORRSS
+       The GNU version of the _m_s macro package was written by James Clark  and
+       contributors.  This document was (re-)written by Larry Kollar <lkollar@
+       despammed.com>.
+
+SSEEEE AALLSSOO
+       ggrrooffff(1), ttrrooffff(1), ttbbll(1), ppiicc(1), eeqqnn(1), rreeffeerr(1)
+
+       _G_r_o_f_f_: _T_h_e _G_N_U _I_m_p_l_e_m_e_n_t_a_t_i_o_n _o_f _t_r_o_f_f, by Trent A. Fisher  and  Werner
+       Lemberg
+
+
+
+groff 1.22.4                     December 2018                     GROFF_MS(7)

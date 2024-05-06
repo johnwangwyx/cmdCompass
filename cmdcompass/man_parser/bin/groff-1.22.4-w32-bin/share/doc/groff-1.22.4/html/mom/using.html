@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is part of groff, the GNU roff type-setting system.
+
+Copyright (C) 2004-2018 Free Software Foundation, Inc.
+Written by Peter Schaffter (peter@schaffter.ca).
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with no
+Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
+Texts.
+
+A copy of the Free Documentation License is included as a file called
+FDL in the main directory of the groff source package.
+-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
+  <title>Using mom</title>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+</head>
+
+<body style="background-color: #f5faff;">
+
+<!-- ==================================================================== -->
+
+<div id="top" class="page">
+
+<!-- Navigation links -->
+<table style="width: 100%;">
+  <tr>
+    <td><a href="toc.html">Back to Table of Contents</a></td>
+    <td style="text-align: right;"><a href="typesetting.html#top">Next: The typesetting macros</a></td>
+  </tr>
+  </table>
+
+<h1 id="using" class="docs">Using mom</h1>
+
+<div style="text-align: left; margin-left: 33%">
+<ul class="no-enumerator" style="margin-left: -2.5em;">
+  <li><a href="#using-intro">Introduction</a></li>
+  <li><a href="#using-macros">How to input mom&#8217;s macros</a></li>
+  <li><a href="#viewing">Processing and viewing documents</a>
+    <ul>
+    <li class="item"><a href="#pdf">Mom and PDF</a></li>
+    <li class="item"><a href="#pdfmom">pdfmom</a></li>
+  </ul></li>
+  <li><a href="#previewing">Automatic previewing of documents</a></li>
+</ul>
+</div>
+
+<div class="rule-short" style="margin-top: 18px;"><hr/></div>
+
+<h2 id="using-intro" class="docs">Introduction</h2>
+
+<p>
+As explained in the section
+<a href="intro.html#top">What is mom?</a>,
+mom can be used in two ways: for straightforward typesetting or for
+document processing.  The difference between the two is that in
+straightforward typesetting, every macro is a literal instruction
+that determines precisely how text following it will look.  Document
+processing, on the other hand, uses markup tags (e.g. <kbd>.PP</kbd>
+for paragraphs, <kbd>.HEADING</kbd> for different levels of heads,
+<kbd>.FOOTNOTE</kbd> for footnotes, etc.) that perform typesetting
+operations automatically.
+</p>
+
+<p>
+You tell mom that you want to use the document processing macros
+with the
+<a href="docprocessing.html#start"><kbd>START</kbd></a>
+macro.  After <kbd>START</kbd>, mom determines the appearance of
+text following the markup tags automatically, although you, the
+user, can easily change how the tags are interpreted.
+</p>
+
+<h2 id="using-macros" class="docs">How to input mom&#8217;s macros</h2>
+
+<p>
+Regardless of whether you&#8217;re preparing a term paper or making a
+flyer for your lost dog, the following apply.
+</p>
+
+<ol style="margin-top: -.5em; margin-bottom: -.5em;">
+  <li>
+    You need a good text editor for inputting mom files.
+    <br/>
+    <span style="display: block; margin-top: .25em; margin-bottom: .5em;">
+    I cannot recommend highly enough that you use an editor that
+    lets you write syntax highlighting rules for mom&#8217;s
+    macros and
+    <a href="definitions.html#inlines">inline escapes</a>.
+    Simply colourizing macros and inlines to half-intensity can be
+    enough to make text stand out clearly from formatting commands.
+    Mom herself comes with a complete set of syntax highlighting
+    rules for the vim editor.
+    </span>
+  </li>
+  <li>
+    Macros begin with a period (dot) at the left margin of your text
+    editor's screen, and must be entered in upper case (capital)
+    letters.
+  </li>
+  <li>
+    Macro
+    <a href="definitions.html#arguments">arguments</a>
+    are separated from the macro itself by spaces.  Multiple
+    arguments to the same macro are separated from each
+    other by spaces.  Any number of spaces may be used.  
+  </li>
+  <li>
+    Arguments to a macro must appear on the same line as the
+    macro.
+    <br/>
+    <span style="display: block; margin-top: .25em; margin-bottom: .5em;">
+    If the argument list is very long, you may use the
+    backslash character (<kbd>\</kbd>) to break the line visually.
+    From groff&#8217;s point of view, the backslash and newline are
+    invisible.  Thus, for example,
+    <span class="pre" style="margin-bottom: -2.25em">
+  .HEADING_STYLE 1 FAMILY Garamond FONT B SIZE +2
+    </span>
+    and
+    <span class="pre" style="margin-bottom: -2.25em">
+  .HEADING_STYLE 1 \
+   FAMILY Garamond \
+   FONT B \
+   SIZE +2
+    </span>
+    are exactly equivalent.
+  </li>
+  <li>
+    Any argument (except a
+    <a href="definitions.html#stringargument">string argument</a>)
+    that is not a digit must be entered in upper case
+    (capital) letters.
+  </li>
+  <li>
+    Any argument that requires a plus or minus sign must
+    have the plus or minus sign prepended to the argument
+    with no intervening space (e.g. <kbd>+2</kbd>).
+  </li>
+  <li>
+    Any argument that requires a
+    <a href="definitions.html#unitofmeasure">unit of measure</a>
+    must have the unit appended directly to the argument, with no
+    intervening space (e.g. <kbd>.5i</kbd>).
+  </li>
+  <li>
+    <a href="definitions.html#stringargument">String arguments</a>,
+    in the sense of this manual, must be surrounded by double-quotes
+    (e.g., <kbd>"text"</kbd>).  Multiple
+    string arguments are separated from each other by spaces (with
+    each argument surrounded by double-quotes).
+    <br/>
+    <span style="display: block; margin-top: .25em; margin-bottom: .5em;">
+    If a string argument becomes
+    uncomfortably long, you may break it into two or more lines
+    with the backslash character.
+    <span class="pre">
+  .SUBTITLE "An In-Depth Consideration of the \
+  Implications of Forty-Two as the Answer to Life, \
+  The Universe, and Everything"
+    </span>
+  </li>
+</ol>
+
+<div class="box-tip">
+<p class="tip">
+<span class="tip">Tip:</span>
+It&#8217;s important that your documents be easy to read and
+understand in a text editor.  One way to achieve this is to group
+macros that serve a similar purpose together, and separate them from
+other groups of macros with a comment line.  In groff, that&#8217;s
+done with <kbd>\#</kbd> (backslash-pound) or <kbd>.\"</kbd>
+(period-backslash-doublequote) on a line by itself.  Either
+instructs groff to ignore the remainder of the line, which may or
+may not contain text.  Consider the following, which is a template
+for starting the chapter of a book.
+<br/>
+<span class="pre-in-pp">
+  \# Reference/meta-data
+  .TITLE   "My Pulitzer Novel"
+  .AUTHOR  "Joe Blow"
+  .CHAPTER  1
+  \# Template
+  .DOCTYPE    CHAPTER
+  .PRINTSTYLE TYPESET
+  \# Type style
+  .FAM     P
+  .PT_SIZE 10
+  .LS      12
+  \#
+  .START
+</span>
+You may also, if you wish, add a comment to the end of a line with
+<kbd>\"</kbd> (no period), like this:
+<br/>
+<span class="pre-in-pp">
+  .FAMILY P \" Maybe Garamond instead?
+</span>
+</p>
+</div>
+
+<h2 id="viewing" class="docs">Processing and viewing documents</h2>
+
+<p>
+The most basic command-line usage for processing a file formatted
+with the mom macros is
+<br/>
+<span class="pre-in-pp">
+  groff -mom filename.mom &gt; filename.ps
+</span>
+which processes the .mom file and dumps the output into a
+viewable/printable PostScript file.
+</p>
+
+<h3 id="pdf" class="docs">Mom and PDF</h3>
+
+<p>
+Adobe's Portable Document Format (PDF) has largely supplanted
+PostScript, of which it is a subset, as the standard for typeset
+documents.  While printed versions of documents in either format
+will be identical, PDF documents, when viewed at the screen, may
+also contain clickable links and a number of other special features.
+</p>
+
+<p>
+As of version 2.0, mom supports full PDF integration.  The creation
+and processing of mom files into PostScript documents remains
+unchanged from 1.x, but the expected and recommended format of final
+documents is now PDF.
+
+<p>
+The manual,
+<a href="http://www.schaffter.ca/mom/pdf/mom-pdf.pdf"><span class="book-title">Producing PDFs with groff and mom</span></a>,
+explains and demonstrates the PDF-specific macros that are available
+in mom, as well as the use of <strong>pdfmom</strong>, the
+recommended way to process mom files.
+</p>
+
+<h4 id="pdfmom" class="docs">pdfmom</h4>
+
+<p>
+Groff provides more than one way to generate PDF documents,
+but when processing files formatted with the mom macros,
+<strong>pdfmom</strong> is the recommended and most robust way to do
+it:
+<br/>
+<span class="pre-in-pp">
+  pdfmom filename.mom &gt; filename.pdf
+</span>
+<strong>pdfmom</strong> is a wrapper around groff, and accepts all
+groff's command-line options as listed in the groff manpage.
+Full usage is explained in the manual,
+<a href="http://www.schaffter.ca/mom/pdf/mom-pdf.pdf"><span class="book-title">Producing PDFs with groff and mom</span></a>.
+</p>
+
+<p>
+PDF links in a document, including linked entries in the
+Table of Contents, are identified by colour.  When printing
+documents with links, you will most likely not want the link
+text coloured.  The groff option, <kbd>-c</kbd>, disables colour
+throughout a document; thus, when preparing a document for printing,
+you should use:
+<br/>
+<span class="pre-in-pp">
+  pdfmom -c filename.mom  &gt; filename.pdf
+</span>
+<strong>pdfmom</strong> tends to produce large files.  You may
+reduce their size by piping them through ps2pdf:
+<br/>
+<span class="pre-in-pp">
+  pdfmom -c filename.mom  | ps2pdf - filename.pdf
+</span>
+Be aware, though, that files piped through ps2pdf will lose some pdf
+metadata, notably the document window title set with PDF_TITLE.
+</p>
+
+<h2 id="previewing" class="docs">Automatic previewing of documents</h2>
+
+<p>
+Most PDF viewers have a &#8220;Watch File&#8221; option, which
+automaticaly updates a displayed document whenever there&#8217;s
+a change.  This is useful when preparing documents that require
+judgment calls.  I recommend creating a keymapping in your
+text editor that both saves the mom file and processes it with
+<strong>pdfmom</strong>.  The displayed PDF then automatically
+reflects whatever changes you save to the mom file.
+</p>
+
+<div class="rule-long"><hr/></div>
+
+<!-- Navigation links -->
+<table style="width: 100%; margin-top: 12px;">
+  <tr>
+    <td style="width: 33%;"><a href="toc.html">Back to Table of Contents</a></td>
+    <td style="width: 33%; text-align: center;"><a href="#top">Top</a></td>
+    <td style="width: 33%; text-align: right;"><a href="typesetting.html#top">Next: The typesetting macros</a></td>
+</tr>
+</table>
+
+</div>
+
+<div class="bottom-spacer"><br/></div>
+
+</body>
+</html>

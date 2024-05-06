@@ -1,0 +1,136 @@
+GROG(1)                     General Commands Manual                    GROG(1)
+
+
+
+NNAAMMEE
+       grog - guess options for a following groff command
+
+SSYYNNOOPPSSIISS
+       ggrroogg [--CC] [--TT _d_e_v_i_c_e] [----rruunn] [----wwaarrnniinnggss] [----lliiggaattuurreess] [_g_r_o_f_f_-_o_p_t_i_o_n
+            ...] [----] [_f_i_l_e_s_p_e_c ...]
+
+       ggrroogg --hh
+       ggrroogg ----hheellpp
+
+       ggrroogg --vv
+       ggrroogg ----vveerrssiioonn
+
+DDEESSCCRRIIPPTTIIOONN
+       ggrroogg reads the input (file names or standard input) and  guesses  which
+       of  the ggrrooffff(1) options are needed to perform the input with the ggrrooffff
+       program.  A suitable device is now always written as --TT_d_e_v_i_c_e including
+       the groff default as --TT ppss.
+
+       The  corresponding  ggrrooffff command is usually displayed in standard out-
+       put.  With the option ----rruunn, the generated line is output into standard
+       error  and  the  generated ggrrooffff command is run on the _s_t_a_n_d_a_r_d _o_u_t_p_u_t.
+       ggrrooffffeerr(1) relies on a perfectly running ggrrooffff(1).
+
+OOPPTTIIOONNSS
+       The option --vv or ----vveerrssiioonn prints information on  the  version  number.
+       Also  --hh  or  ----hheellpp  prints  usage information.  Both of these options
+       automatically end the ggrroogg program.  Other options are thenignored, and
+       no  ggrrooffff  command  line is generated.  The following 3 options are the
+       only ggrroogg options,
+
+       --CC     this option means enabling the _g_r_o_f_f compatibility  mode,  which
+              is also transfered to the generated ggrrooffff command line.
+
+       ----lliiggaattuurreess
+              this  option forces to include the arguments --PP--yy --PPUU within the
+              generated ggrrooffff command line.
+
+       ----rruunn  with this option, the command line is output at  standard  error
+              and then run on the computer.
+
+       ----wwaarrnniinnggss
+              with  this  option,  some  more  warnings are output to standard
+              error.
+
+       All other specified short options (words starting with one minus  char-
+       acter  --)  are  interpreted as ggrrooffff options or option clusters with or
+       without argument.  No space is allowed between options and their  argu-
+       ment.   Except  from  the --mm_a_r_g options, all options will be passed on,
+       i.e. they are included unchanged in the command for the output  without
+       effecting the work of ggrroogg.
+
+       A  _f_i_l_e_s_p_e_c  argument  can  either be the name of an existing file or a
+       single minus -- to mean standard input.  If  no  _f_i_l_e_s_p_e_c  is  specified
+       standard input is read automatically.
+
+DDEETTAAIILLSS
+       ggrroogg reads all _f_i_l_e_s_p_e_c parameters as a whole.  It tries to guess which
+       of the following ggrrooffff options are required for running the input under
+       ggrrooffff: --ee, --gg, --GG, --jj, --pp, --RR, --ss, --tt (preprocessors); and --mmaann, --mmddoocc,
+       --mmddoocc--oolldd, --mmee, --mmmm, --mmoomm, and --mmss (macro packages).
+
+       The guessed ggrrooffff command including those options and the  found  _f_i_l_e_-
+       _s_p_e_c parameters is put on the standard output.
+
+       It  is possible to specify arbitrary ggrrooffff options on the command line.
+       These are passed on the output without change,  except  for  the  --mm_a_r_g
+       options.
+
+       The ggrrooffff program has trouble when the wrong --mm_a_r_g option or several of
+       these options are specified.  In these cases, ggrroogg will print an  error
+       message  and exit with an error code.  It is better to specify no --mm_a_r_g
+       option.  Because such an option is only accepted and passed  when  ggrroogg
+       does not find any of these options or the same option is found.
+
+       If  several  different --mm_a_r_g options are found by ggrroogg an error message
+       is produced and the program is terminated with an error code.  But  the
+       output is written with the wrong options nevertheless.
+
+       Remember that it is not necessary to determine a macro package.  A _r_o_f_f
+       file can also be written in the _g_r_o_f_f language without any macro  pack-
+       age.  ggrroogg will produce an output without an --mm_a_r_g option.
+
+       As  ggrrooffff  also  works  with pure text files without any _r_o_f_f requests,
+       ggrroogg cannot be used to identify a file to be a _r_o_f_f file.
+
+       The ggrrooffffeerr(1) program heavily depends on a working ggrroogg.
+
+EEXXAAMMPPLLEESS
+       Calling
+              grog meintro.me
+       results in
+              groff -me meintro.me
+       So ggrroogg recognized that the file mmeeiinnttrroo..mmee is  written  with  the  --mmee
+       macro package.
+       On the other hand,
+              grog pic.ms
+       outputs
+              groff -p -t -e -ms pic.ms
+       Besides  determining  the  macro  package --mmss, ggrroogg recognized that the
+       file ppiicc..mmss additionally needs --ppttee, the combination of --pp for _p_i_c,  --tt
+       for _t_b_l, and --ee for _e_q_n.
+       If both of the former example files are combined by the command
+              grog meintro.me pic.ms
+       an  error  message  is sent to standard error because ggrrooffff cannot work
+       with two different macro packages:
+              grog: error: there are several macro packages: -me -ms
+       Additionally the corresponding output with the wrong options is printed
+       to standard output:
+              groff -pte -me -ms meintro.me pic.ms
+       But the program is terminated with an error code.  The call of
+              grog -ksS -Tdvi grnexmpl.g
+       contains several ggrrooffff options that are just passed on the output with-
+       out any interface to ggrroogg.  These are the option cluster --kkssSS  consist-
+       ing of --kk, --ss, and --SS; and the option --TT with argument ddvvii.  The output
+       is
+              groff -k -s -S -Tdvi grnexmpl.g
+       so no additional option was added by ggrroogg.   As  no  option  --mm_a_r_g  was
+       found by ggrroogg this file does not use a macro package.
+
+AAUUTTHHOORRSS
+       ggrroogg was originally written by James Clark.  The current Perl implemen-
+       tation was written by Bernd Warken <groff-bernd.warken-72@web.de>  with
+       contributions  from Ralph Corderoy, and is maintained by Werner Lemberg
+       <wl@gnu.org>.
+
+SSEEEE AALLSSOO
+       ggrrooffff(1), ggrrooffffeerr(1)
+
+
+
+groff 1.22.4                     November 2018                         GROG(1)

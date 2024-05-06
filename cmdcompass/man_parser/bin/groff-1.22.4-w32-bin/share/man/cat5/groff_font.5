@@ -1,0 +1,282 @@
+GROFF_FONT(5)                 File Formats Manual                GROFF_FONT(5)
+
+
+
+NNAAMMEE
+       groff_font - format of groff device and font description files
+
+DDEESSCCRRIIPPTTIIOONN
+       The groff font format is roughly a superset of the ditroff font format.
+       The font files for device _n_a_m_e  are  stored  in  a  directory  _d_e_vname.
+       There  are two types of file: a device description file called _D_E_S_C and
+       for each font _F, a font file called F.  These are  text  files;  unlike
+       the ditroff font format, there is no associated binary format.
+
+   DDEESSCC ffiillee ffoorrmmaatt
+       The  _D_E_S_C  file can contain the following types of line as shown below.
+       Later entries in the file override previous values.
+
+       Empty lines are ignored.
+
+       cchhaarrsseett
+              This line and everything following in the file are ignored.   It
+              is allowed for the sake of backwards compatibility.
+
+       ffaammiillyy _f_a_m
+              The default font family is _f_a_m.
+
+       ffoonnttss _n _F_1 _F_2 _F_3 _._._. _F_n
+              Fonts  _F_1,  ...,  _F_n are mounted in the font positions _m+1, ...,
+              _m+_n where _m is the number of styles.  This  command  may  extend
+              over  more than one line.  A font name of 00 causes no font to be
+              mounted on the corresponding font position.
+
+       hhoorr _n  The horizontal resolution is _n machine units.
+
+       iimmaaggee__ggeenneerraattoorr _s_t_r_i_n_g
+              Needed for ggrroohhttmmll only.  It specifies the program  to  generate
+              PNG  images from PostScript input.  Under GNU/Linux this is usu-
+              ally _g_s but under other systems (notably cygwin) it might be set
+              to another name.
+
+       ppaappeerrlleennggtthh _n
+              The  physical vertical dimension of the output medium in machine
+              units.  This isn't used by ttrrooffff itself but by  output  devices.
+              Deprecated.  Use ppaappeerrssiizzee instead.
+
+       ppaappeerrssiizzee _s_t_r_i_n_g
+              Select  a paper size.  Valid values for _s_t_r_i_n_g are the ISO paper
+              types A0-A7, B0-B7, C0-C7, D0-D7, DL, and  the  US  paper  types
+              letter, legal, tabloid, ledger, statement, executive, com10, and
+              monarch.  Case is not significant for _s_t_r_i_n_g if it holds  prede-
+              fined  paper  types.   Alternatively,  _s_t_r_i_n_g can be a file name
+              (e.g. _/_e_t_c_/_p_a_p_e_r_s_i_z_e); if the file can be  opened,  ggrrooffff  reads
+              the  first  line  and tests for the above paper sizes.  Finally,
+              _s_t_r_i_n_g can be a custom paper size in the format _l_e_n_g_t_h,,_w_i_d_t_h (no
+              spaces  before and after the comma).  Both _l_e_n_g_t_h and _w_i_d_t_h must
+              have a unit appended; valid values are `i' for inches,  `c'  for
+              centimeters,  `p'  for  points,  and  `P'  for  picas.  Example:
+              1122cc,,223355pp.  An argument which  starts  with  a  digit  is  always
+              treated  as a custom paper format.  ppaappeerrssiizzee sets both the ver-
+              tical and horizontal dimension of the output medium.
+
+              More than one argument can be specified; ggrrooffff scans  from  left
+              to right and uses the first valid paper specification.
+
+       ppaappeerrwwiiddtthh _n
+              The  physical  horizontal  dimension  of  the  output  medium in
+              machine units.  Deprecated.  Use ppaappeerrssiizzee instead.  This  isn't
+              used by ttrrooffff itself but by output devices.
+
+       ppaassss__ffiilleennaammeess
+              Make troff tell the driver the source file name being processed.
+              This is achieved by another tcommand: FF _f_i_l_e_n_a_m_e.
+
+       ppoossttpprroo _p_r_o_g_r_a_m
+              Use _p_r_o_g_r_a_m as the postprocessor.
+
+       pprreepprroo _p_r_o_g_r_a_m
+              Call _p_r_o_g_r_a_m as a preprocessor.
+
+       pprriinntt _p_r_o_g_r_a_m
+              Use _p_r_o_g_r_a_m as the spooler program for  printing.   If  omitted,
+              the --ll and --LL options of ggrrooffff are ignored.
+
+       rreess _n  There are _n machine units per inch.
+
+       ssiizzeess _s_1 _s_2 _._._. _s_n 00
+              This  means  that the device has fonts at _s_1, _s_2, ..., _s_n scaled
+              points.  The list of sizes must be terminated by a 00.   Each  _s_i
+              can also be a range of sizes _m-_n.  The list can extend over more
+              than one line.
+
+       ssiizzeessccaallee _n
+              The scale factor for point sizes.  By default this has  a  value
+              of  1.  One _s_c_a_l_e_d _p_o_i_n_t is equal to one point/_n.  The arguments
+              to the uunniittwwiiddtthh and ssiizzeess commands are given in scaled points.
+
+       ssttyylleess _S_1 _S_2 _._._. _S_m
+              The first _m font positions are associated with styles  _S_1,  ...,
+              _S_m.
+
+       ttccoommmmaanndd
+              This  means that the postprocessor can handle the tt and uu output
+              commands.
+
+       uunniiccooddee
+              Indicate that the output device supports  the  complete  Unicode
+              repertoire.   Useful  only  for  devices which produce _c_h_a_r_a_c_t_e_r
+              _e_n_t_i_t_i_e_s instead of glyphs.
+
+              If uunniiccooddee is present, no cchhaarrsseett section  is  required  in  the
+              font  description  files  since  the Unicode handling built into
+              ggrrooffff is used.  However, if there are entries in a cchhaarrsseett  sec-
+              tion,  they  either override the default mappings for those par-
+              ticular characters or add new mappings (normally  for  composite
+              characters).
+
+              This is used for --TTuuttff88, --TThhttmmll, and --TTxxhhttmmll.
+
+       uunniittwwiiddtthh _n
+              Quantities  in  the  font  files  are given in machine units for
+              fonts whose point size is _n scaled points.
+
+       uunnssccaalleedd__cchhaarrwwiiddtthhss
+              Make the font  handling  module  always  return  unscaled  glyph
+              widths.  Needed for the ggrroohhttmmll device.
+
+       uussee__cchhaarrnnaammeess__iinn__ssppeecciiaall
+              This  command  indicates  that  troff should encode named glyphs
+              inside special commands.
+
+       vveerrtt _n The vertical resolution is _n machine units.
+
+       The rreess, uunniittwwiiddtthh, ffoonnttss, and ssiizzeess lines  are  compulsory.   Not  all
+       commands  in  the  _D_E_S_C file are used by ttrrooffff itself; some of the key-
+       words (or even additional ones) are used  by  postprocessors  to  store
+       arbitrary information about the device.
+
+       Here a list of obsolete keywords which are recognized by ggrrooffff but com-
+       pletely ignored: ssppaarree11, ssppaarree22, bbiiggggeessttffoonntt.
+
+   FFoonntt ffiillee ffoorrmmaatt
+       A font file has two sections; empty lines are ignored in both of them.
+
+       The first section is a sequence of lines each containing a sequence  of
+       blank  delimited words; the first word in the line is a key, and subse-
+       quent words give a value for that key.
+
+       lliiggaattuurreess _l_i_g_1 _l_i_g_2 _._._. _l_i_g_n [00]
+              Glyphs _l_i_g_1, _l_i_g_2, ..., _l_i_g_n are ligatures;  possible  ligatures
+              are  ffff, ffii, ffll, ffffii, and ffffll.  For backwards compatibility, the
+              list of ligatures may be terminated with a 00.  The list of liga-
+              tures may not extend over more than one line.
+
+       nnaammee _F The name of the font is _F.
+
+       ssllaanntt _n
+              The  glyphs  of  the  font have a slant of _n degrees.  (Positive
+              means forward.)
+
+       ssppaacceewwiiddtthh _n
+              The normal width of a space is _n.
+
+       ssppeecciiaall
+              The font is _s_p_e_c_i_a_l; this means that when a glyph  is  requested
+              that  is  not present in the current font, it is searched for in
+              any special fonts that are mounted.
+
+       Other commands are ignored by ttrrooffff but may be used  by  postprocessors
+       to store arbitrary information about the font in the font file.
+
+       The first section can contain comments which start with the ## character
+       and extend to the end of a line.
+
+       The second section contains one or two subsections.  It must contain  a
+       _c_h_a_r_s_e_t  subsection  and  it  may  also contain a _k_e_r_n_p_a_i_r_s subsection.
+       These subsections can appear in any order.  Each subsection starts with
+       a word on a line by itself.
+
+       The  word  cchhaarrsseett  starts the charset subsection.  The cchhaarrsseett line is
+       followed by a sequence of lines.  Each line gives information  for  one
+       glyph.   A  line  comprises  a  number of fields separated by blanks or
+       tabs.  The format is
+
+              _n_a_m_e _m_e_t_r_i_c_s _t_y_p_e _c_o_d_e [_e_n_t_i_t_y___n_a_m_e] [---- _c_o_m_m_e_n_t]
+
+       _n_a_m_e identifies the glyph: if _n_a_m_e is a single glyph _c then  it  corre-
+       sponds  to the groff input character _c; if it is of the form \\_c where c
+       is a single character, then it corresponds  to  the  special  character
+       \\[[_c]];  otherwise  it  corresponds to the groff input character \\[[_n_a_m_e]].
+       If it is exactly two characters _x_x it can be  entered  as  \\((_x_x.   Note
+       that single-letter special characters can't be accessed as \\_c; the only
+       exception is `\-' which is identical to `\[-]'.  The name ------  is  spe-
+       cial  and  indicates that the glyph is unnamed; such glyphs can only be
+       used by means of the \\NN escape sequence in ttrrooffff.
+
+       The _t_y_p_e field gives the glyph type:
+
+       1      means the glyph has a descender, for example, `p';
+
+       2      means the glyph has an ascender, for example, `b';
+
+       3      means the glyph has both an ascender and a descender, for  exam-
+              ple, `('.
+
+       The _c_o_d_e field gives the code which the postprocessor uses to print the
+       glyph.  The glyph can also be input to groff using this code  by  means
+       of  the \\NN escape sequence.  The code can be any integer.  If it starts
+       with a 00 it is interpreted as octal; if it starts with 00xx or 00XX  it  is
+       interpreted as hexadecimal.  Note, however, that the \\NN escape sequence
+       only accepts a decimal integer.
+
+       The _e_n_t_i_t_y___n_a_m_e field gives an ASCII string identifying the glyph which
+       the postprocessor uses to print that glyph.  This field is optional and
+       is currently used by ggrrooppss to build sub-encoding arrays  for  PS  fonts
+       containing  more than 256 glyphs.  (It has also been used for ggrroohhttmmll's
+       entity names but for efficiency  reasons  this  data  is  now  compiled
+       directly into ggrroohhttmmll.)
+
+       Anything on the line after the encoding field or `--' are ignored.
+
+       The  _m_e_t_r_i_c_s field has the form (in one line; it is broken here for the
+       sake of readability):
+
+              _w_i_d_t_h[,,_h_e_i_g_h_t[,,_d_e_p_t_h[,,_i_t_a_l_i_c_-_c_o_r_r_e_c_t_i_o_n
+              [,,_l_e_f_t_-_i_t_a_l_i_c_-_c_o_r_r_e_c_t_i_o_n[,,_s_u_b_s_c_r_i_p_t_-_c_o_r_r_e_c_t_i_o_n]]]]]
+
+       There must not be any spaces between  these  subfields.   Missing  sub-
+       fields  are  assumed  to be 0.  The subfields are all decimal integers.
+       Since there is no  associated  binary  format,  these  values  are  not
+       required  to  fit  into a variable of type cchhaarr as they are in ditroff.
+       The _w_i_d_t_h subfields gives the width of the glyph.  The _h_e_i_g_h_t  subfield
+       gives  the  height  of the glyph (upwards is positive); if a glyph does
+       not extend above the baseline, it should be given a zero height, rather
+       than  a  negative  height.   The  _d_e_p_t_h subfield gives the depth of the
+       glyph, that is, the distance below the  baseline  to  which  the  glyph
+       extends  (downwards  is positive); if a glyph does not extend below the
+       baseline, it should be given a  zero  depth,  rather  than  a  negative
+       depth.   The  _i_t_a_l_i_c_-_c_o_r_r_e_c_t_i_o_n subfield gives the amount of space that
+       should be added after the glyph when it is immediately to  be  followed
+       by  a  glyph  from  a  roman font.  The _l_e_f_t_-_i_t_a_l_i_c_-_c_o_r_r_e_c_t_i_o_n subfield
+       gives the amount of space that should be added before the glyph when it
+       is  immediately  to be preceded by a glyph from a roman font.  The _s_u_b_-
+       _s_c_r_i_p_t_-_c_o_r_r_e_c_t_i_o_n gives the amount of space that should be added  after
+       a glyph before adding a subscript.  This should be less than the italic
+       correction.
+
+       A line in the charset section can also have the format
+
+              _n_a_m_e ""
+
+       This indicates that _n_a_m_e is just another name for the  glyph  mentioned
+       in the preceding line.
+
+       The  word  kkeerrnnppaaiirrss  starts  the  kernpairs  section.  This contains a
+       sequence of lines of the form:
+
+              _c_1 _c_2 _n
+
+       This means that when glyph _c_1  appears  next  to  glyph  _c_2  the  space
+       between  them should be increased by _n.  Most entries in kernpairs sec-
+       tion have a negative value for _n.
+
+FFIILLEESS
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_vname_/_D_E_S_C
+              Device description file for device _n_a_m_e.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_vname_/F
+              Font file for font _F of device _n_a_m_e.
+
+SSEEEE AALLSSOO
+       ggrrooffff__oouutt(5), ttrrooffff(1), aaddddffttiinnffoo(1), aaffmmttooddiitt(1)
+
+       A man page _n_a_m_e(_n) of section _n can be viewed either with
+              $ mmaann _n _n_a_m_e
+       for text mode or
+              $ ggrrooffffeerr _n _n_a_m_e
+       for graphical mode (default is PDF mode).
+
+
+
+groff 1.22.4                     December 2018                   GROFF_FONT(5)

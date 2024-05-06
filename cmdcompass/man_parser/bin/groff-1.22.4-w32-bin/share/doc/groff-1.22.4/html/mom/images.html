@@ -1,0 +1,3011 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is part of groff, the GNU roff type-setting system.
+
+Copyright (C) 2004-2018 Free Software Foundation, Inc.
+Written by Peter Schaffter (peter@schaffter.ca).
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with no
+Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
+Texts.
+
+A copy of the Free Documentation License is included as a file called
+FDL in the main directory of the groff source package.
+-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
+  <title>Mom -- Graphics, floats, and preprocessor support</title>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+</head>
+
+<body style="background-color: #f5faff;">
+
+<!-- ==================================================================== -->
+
+<div id="top" class="page">
+
+<!-- Navigation links -->
+<table style="width: 100%;">
+<tr>
+  <td><a href="toc.html">Back to Table of Contents</a></td>
+  <td style="text-align: right;"><a href="headfootpage.html#top">Next: Page headers/footers, pagination</a></td>
+</tr>
+</table>
+
+<h1 class="docs">Graphics, floats, and preprocessor support</h1>
+
+<div style="width: 80%; margin: auto;">
+<ul class="no-enumerator" style="margin-left: -1em;">
+  <li><a href="#images-intro">Inserting images and graphics</a>
+  <ul>
+    <li><a href="#converting">Image conversion and file processing</a>
+    <ul style="margin-left: -1.25em">
+      <li><a href="#pdf">PDF</a></li>
+      <li><a href="#eps">EPS</a></li>
+    </ul></li>
+    <li><a href="#pdf-image">The PDF_IMAGE macro</a>
+    <ul style="margin-left: -1.25em">
+      <li><a href="#pdf-image-frame">PDF_IMAGE_FRAME</a>&mdash;set parameters for image frames</li>
+    </ul></li>
+    <li><a href="#pspic">The PSPIC macro</a></li>
+  </ul>
+  <li><a href="#floats-intro">Floats</a>
+  <ul>
+    <li><a href="#float">The FLOAT macro</a></li>
+    <li><a href="#float-label-caption">Labelling and captioning floats</a>
+		<ul style="margin-left: -1.25em">
+		<li><a href="#label">LABEL</a></li>
+		<li><a href="#caption">CAPTION</a></li>
+		</ul></li>
+  </ul></li>
+  <li><a href="#preprocessor-support">Preprocessor support</a>
+  <ul>
+    <li><a href="#tbl">tbl</a>
+    <ul style="margin-left: -1.25em;">
+      <li><a href="#ts-te">.TS / .TH / .TE macros and arguments</a></li>
+    </ul></li>
+    <li><a href="#eqn">eqn</a>
+      <ul style="margin-left: -1.25em;">
+        <li><a href="#eq-en">.EQ / .EN macros and arguments</a></li>
+      </ul></li>
+    <li><a href="#pic">pic</a>
+    <ul style="margin-left: -1.25em;">
+      <li><a href="#ps-pe">.PS / .PE macros and arguments</a></li>
+      <li><a href="#pic-text-style">PIC_TEXT_STYLE</a>&mdash;set parameters for text used in diagrams</li>
+    </ul></li>
+    <li><a href="#grap">grap</a>
+    <ul style="margin-left: -1.25em;">
+    </ul></li>
+    <li><a href="#refer">refer</a></li>
+  </ul>
+  <li><a href="#captions-and-labels">Captions and labels</a>
+    <ul>
+      <li><a href="#autolabel">AUTOLABEL</a></li>
+      <li><a href="#set-autolabel">SET_AUTOLABEL</a></li>
+      <li><a href="#caption-after-label">CAPTION_AFTER_LABEL</a></li>
+      <li><a href="#captions-labels-sources">CAPTIONS / LABELS / SOURCES</a>&mdash;set style parameters for each</li>
+      <li><a href="#mla">MLA</a></li>
+    </ul></li>
+  <li><a href="#lists-of">Lists of Figures, Tables, and Equations</a>
+    <ul>
+      <li><a href="#lists-placement">Placement of Lists</a></li>
+      <li><a href="#lists-macros">Macros to generate Lists</a></li>
+      <li><a href="#formatting-lists">Formatting and style parameters for Lists</a>
+      <ul style="margin-left: -1.25em">
+        <li><a href="#lists-style">LISTS_STYLE</a></li>
+      </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+<div class="rule-medium"><hr/></div>
+
+<h2 id="images-intro" class="docs">Inserting images and graphics</h2>
+
+<p>
+In order to include images in mom documents, the images must be in
+either PDF (.pdf) or EPS (.eps) format.  Each format requires its own
+macro, but both take the same arguments, and in the same order.
+</p>
+
+<p>
+Please note that there are differences in the way the files
+containing PDF and EPS images must be processed, hence documents may
+not contain a mix.
+</p>
+
+<h3 id=converting class="docs">Image conversion and file processing</h3>
+
+<p>
+When your image files are not in PDF or EPS format&mdash;jpgs,
+for example&mdash;you must convert them before including them in
+a mom document.  Any utility for converting images may used.  The
+ImageMagick suite of programmes, present on most GNU/Linux
+systems, contains <b>convert</b>, which is simple and effective.
+</p>
+
+<h4 id="pdf" class="docs">PDF</h4>
+
+<p>
+Assuming a jpg image, conversion to PDF is done like this:
+<br/>
+<span class="pre-in-pp">
+  convert &lt;image&gt;.jpg &lt;image&gt;.pdf
+</span>
+Any image type supported by <b>convert</b> may be converted this
+way.
+</p>
+
+<p>
+Mom files containing PDF images must be processed using
+groff&#8217;s pdf driver.  Use of
+<a href="using.html#pdfmom" style="font-weight: bold">pdfmom</a>
+is strongly recommended, which natively invokes the pdf driver.
+<br/>
+<span class="pre-in-pp">
+  pdfmom doc.mom &gt; doc.pdf
+</span>
+</p>
+
+<h4 id="eps" class="docs">EPS</h4>
+
+<p>
+Assuming a jpg image, conversion to EPS is done like this:
+<br/>
+<span class="pre-in-pp">
+  convert &lt;image&gt;.jpg &lt;image&gt;.eps
+</span>
+Any image type supported by <b>convert</b> may be converted this
+way.  There have been reports of trouble with PostScript level 2
+images, so don&#8217;t save your images in this format.
+</p>
+
+<p>
+Mom files containing EPS images must be processed using
+groff&#8217;s postscript driver.  Use of
+<a href="using.html#pdfmom" style="font-weight: bold">pdfmom</a>,
+which can be told to use the postscript driver, is strongly
+recommended.
+<br/>
+<span class="pre-in-pp">
+  pdfmom -Tps doc.mom &gt; doc.pdf
+</span>
+</p>
+
+<!---PDF_IMAGE--->
+
+<div class="macro-id-overline">
+<h3 id="pdf-image" class= "macro-id">PDF_IMAGE</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>PDF_IMAGE</b> <kbd class="macro-args">[ -L | -C | -R | -I &lt;indent&gt; ] \
+<br/>
+&lt;image-file.pdf&gt; &lt;width&gt; &lt;height&gt; [ SCALE &lt;factor&gt; ] \
+<br/>
+[ ADJUST +|-&lt;vertical adjustment&gt; ] [ NO_SHIM ] [ NO_FLEX ] \
+<br/>
+[ FRAME ] \
+<br/>
+[ CAPTION "&lt;caption&gt;" ] [ SHORT_CAPTION "&lt;short caption&gt;" ] \
+<br/>
+[ LABEL "&lt;label&gt;" ] [ TARGET "&lt;name&gt;" ]</kbd>
+</div>
+<p class="requires">
+&bull;&nbsp;<span style="font-style: normal">
+<kbd>&lt;indent&gt;</kbd>,
+<kbd>&lt;width&gt;</kbd>,
+<kbd>&lt;height&gt;</kbd></span>
+and
+<span style="font-style: normal">
+<kbd>&lt;vertical adjustment&gt;</kbd></span>
+require a
+<a href="definitions.html#unitofmeasure">unit of measure</a>
+</p>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Note:</span>
+Arguments may be broken into several lines using the
+&#8220;line-continued&#8221; backslash (<b>\</b>), as shown above.
+</p>
+</div>
+
+<p>
+Unlike
+<a href="#pspic">PSPIC</a>,
+which it resembles, PDF_IMAGE requires that the pdf image&#8217;s
+dimensions (the bounding box,
+<a href="#bounding-box">see below</a>)
+be supplied each time it&#8217;s called.
+</p>
+
+<p>
+The first optional argument tells mom how to align the image
+horizontally, with <kbd>-L</kbd>, <kbd>-C</kbd>, and <kbd>-R</kbd>
+standing for left, centre and right respectively.  If you need more
+precise placement, the <kbd>-I</kbd> argument allows you to give an
+indent from the left margin.  Thus, to indent a PDF image 6
+<a href="definitions.html#picaspoints">picas</a>
+from the left margin
+<br/>
+<span class="pre-in-pp">
+  .PDF_IMAGE -I 6P &lt;remaining arguments&gt;
+</span>
+If you omit the first argument, the image will be centred.
+</p>
+
+<p>
+<kbd>&lt;pdf image&gt;</kbd> must be in PDF format, with a .pdf
+extension.  If it is not, mom will abort with a message.  See
+<a href="#pdf">here</a>
+for instructions on converting image formats to PDF.
+</p>
+
+<p id="bounding-box">
+<kbd>&lt;width&gt;</kbd> and <kbd>&lt;height&gt;</kbd> are the
+dimensions of the image&#8217;s bounding box.  The most reliable way
+of getting the bounding box is with the utility, <strong>pdfinfo</strong>:
+<br/>
+<span class="pre-in-pp">
+  pdfinfo &lt;image.pdf&gt; | grep "Page *size"
+</span>
+This will spit out a line that looks like this:
+<br/>
+<span class="pre-in-pp">
+  Page size:      width x height pts
+</span>
+<kbd>pts</kbd> means
+<a href="definitions.html#picaspoints">points</a>,
+therefore the unit of measure appended to <kbd>&lt;width&gt;</kbd>
+and <kbd>&lt;height&gt;</kbd> must be <kbd>p</kbd>.
+</p>
+
+<p>
+The remaining arguments are optional and may be entered in any
+order, although it&#8217;s best to put <kbd>CAPTION</kbd>,
+<kbd>SHORT_CAPTION</kbd>, and <kbd>LABEL</kbd> last.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'SCALE'</h5>
+
+<p>
+<kbd>SCALE</kbd> allows you to scale the image by
+<kbd>&lt;factor&gt;</kbd>.  The factor is a percentage of the
+image&#8217;s original dimensions, thus <kbd>SCALE&nbsp;50</kbd>
+scales the image to 50 percent of its original size.  No percent
+sign or unit of measure should be appended.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'ADJUST'</h5>
+
+<p>
+<kbd>ADJUST</kbd> lets you raise (<kbd>+</kbd>) or lower (<kbd>-</kbd>) the image
+<span style="font-style: italic">within the space allotted for it</span>
+by the amount you specify.  This is useful for achieving good
+optical centering between surrounding blocks of type.  A unit of
+measure is required.
+</p>
+
+<div class="box-tip">
+<p class="tip-top">
+<span class="note">Tip:</span>
+You may sometimes find that a PDF_IMAGE at the bottom of a page
+doesn&#8217;t sit flush on the bottom margin, however attempts to lower it
+by adding space beforehand result in it being deferred to the next
+page.
+</p>
+
+<p class="tip-bottom">
+The solution is to introduce <i>negative</i> space before the image
+so that it displays on the page, then lower it to the bottom margin
+with PDF_IMAGE&#8217;s ADJUST argument.
+</p>
+</div>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'NO_SHIM'</h5>
+
+<p>
+<kbd>NO_SHIM</kbd> instructs mom not to apply
+<a href="docprocessing.html#shim-vs-flex">shimming</a>
+after an image, which she will do automatically when shimming is
+enabled, which it is by default.  Shimming ensures that running text
+after the image falls properly on the page&#8217;s
+<a href="definitions.html#baseline-grid">baseline grid</a>,
+but can result in slightly unequal spacing above and below
+(correctible with the <kbd>ADJUST</kbd> argument).
+<kbd>NO_SHIM</kbd> is useful when you have several images on the
+page and there are visible differences in the spacing beneath them
+as a result of shimming.  To ensure a flush bottom margin, the last
+image on the page should be shimmed, ie should not be given the
+<kbd>NO_SHIM</kbd> argument.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'NO_FLEX'</h5>
+
+<p>
+<kbd>NO_FLEX</kbd> instructs mom not to apply
+<a href="docprocessing.html#shim-vs-flex">flex-spacing</a>
+after an image, which she will do automatically when flex-spacing is
+enabled. <kbd>NO_FLEX</kbd> is useful when you have several images
+on the page and you want to distribute excess vertical
+whitespace on the page amongst other flex-spacing points on the
+page.  If there are no others, the final image should be
+flex-spaced, ie not given the <kbd>NO_FLEX</kbd> argument.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'FRAME'</h5>
+
+<p>
+<kbd>FRAME</kbd> instructs mom to put a frame around the image.
+Parameters for the frame are set with
+<a href="#pdf-image-frame">PDF_IMAGE_FRAME</a>.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'CAPTION'</h5>
+
+<p>
+<kbd>CAPTION</kbd> allows you to give the image a caption.  By
+default, the caption appears above the image, but may be attached to
+the label that appears beneath the image.  See
+<a href="#caption-after-label">CAPTION_AFTER_LABEL</a>
+in
+<a href="#captions-and-labels">Captions and labels</a>.
+The text of the caption must be surrounded by double-quotes.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'SHORT_CAPTION'</h5>
+
+<p>
+<kbd>SHORT_CAPTION</kbd> allows you to trim long captions for
+inclusion in the List of Figures.  The text you supply, surrounded
+by double-quotes, is what will appear in the List.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'LABEL'</h5>
+
+<p>
+<kbd>LABEL</kbd>, if given, appears beneath the image.  The text you
+supply, surrounded by double-quotes, is how the image is labelled
+in both the document proper and the List of Figures.  Mom provides
+an auto-labelling facility for images (see
+<a href="#autolabel">AUTOLABEL</a>),
+which, if enabled, overrides the <kbd>LABEL</kbd> argument.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'TARGET'</h5>
+
+<p>
+<kbd>TARGET</kbd> followed by a unique name surrounded by
+double-quotes creates a PDF target for the image so that it may be
+linked to from other places in the file (with PDF_LINK; see
+<a href="version-2.html#mom-pdf">Producing PDFs with groff and mom</a>).
+</p>
+
+<p>
+When
+<a href="#autolabel">autolabelling</a>
+is enabled and the document is processed with
+<a href="using.html#pdfmom" style="font-weight: bold">pdfmom</a>,
+the target name can be used to generate the target&#8217;s label
+number in running text if it is entered as a groff string, ie of the
+form <kbd>\*[name]</kbd>.  For example, if you create a target named
+&#8220;foo&#8221; for a pdf image whose autolabel number would be 3,
+entering
+<br/>
+<span class="pre-in-pp">
+  See
+  .PDF_LINK foo "Figure \*[foo]"
+</span>
+anywhere in running text would result in a pdf link that reads
+&#8220;Figure 3&#8221;.  If chapter numbers are being prefixed to
+labels, the same string in, say, chapter 5 would produce the pdf
+link &#8220;Figure 5.3&#8221;.
+</p>
+
+<p>
+Remember that mom files with embedded PDF images must be processed
+with
+<br/>
+<span class="pre-in-pp">
+ pdfmom doc.mom &gt; doc.pdf
+</span>
+</p>
+
+<div class="box-tip">
+<p class="tip-top">
+<span class="note">Note: Version 2.0-c change</span>
+<br/>
+Mom now treats all pdf images identically to
+<a href="#floats-intro">floats</a>,
+which is to say that if an image doesn&#8217;t fit on the output
+page, she will defer it to the top of the next page while continuing
+to process
+<a href="definitions.html#running">running text</a>.
+<kbd>ADJUST</kbd> is ignored whenever an image is the first to be
+deferred, except when moving from column to column on the same page,
+when the image may need to be optically adjusted.  Subsequent images
+that do not fit, if any, are output in order immediately after the
+first.
+</p>
+
+<p class="tip-bottom">
+Prior to 2.0-c, it was recommended that images be wrapped inside
+<a href="#float">FLOAT</a>,
+but this is now no longer required, and should, in fact, be avoided.
+</p>
+</div>
+
+<!-- -PDF_IMAGE_FRAME- -->
+
+<div class="macro-id-overline">
+<h3 id="pdf-image-frame" class= "macro-id">PDF_IMAGE_FRAME</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>PDF_IMAGE_FRAME</b> <kbd class="macro-args">&lt;inset amount&gt; &lt;rule weight&gt; &lt;color&gt;</kbd>
+</div>
+<p class="requires">
+&bull;&nbsp;<span style="font-style: normal"><kbd>&lt;inset amount&gt;</kbd></span>
+requires a
+<a href="definitions.html#unitofmeasure">unit of measure</a>;
+conversely,
+<span style="font-style: normal"><kbd>&lt;rule weight&gt;</kbd></span>
+must not have a unit of measure appended
+</p>
+
+<p>
+PDF_IMAGE_FRAME establishes the parameters for subsequent invocations of
+<a href="#pdf-image">PDF_IMAGE</a>
+when the <kbd>FRAME</kbd> argument is given.  Arguments must appear
+in order, and any you wish left at the current value should be
+entered as two adjacent double-quotes.  So, for example,
+<br/>
+<span class="pre-in-pp">
+  .PDF_IMAGE_FRAME "" "" blue
+</span>
+leaves the inset value and rule weight at their current value and
+changes the frame colour to blue.
+<p>
+Frames are drawn <span class="italic">outside</span> the image at
+its requested dimensions inclusive of scaling.  Colours must be
+pre-initialized with
+<a href="color.html#xcolor">XCOLOR</a>
+or
+<a href="color.html#newcolor">NEWCOLOR</a>.
+</p>
+
+<p>
+The default inset is 6 <a
+href="definitions.html#picaspoints">points</a>, the default rule
+weight is .5 (points), and the default colour is black.
+</p>
+
+<!-- -PSPIC- -->
+
+<div class="macro-id-overline">
+<h3 id="pspic" class= "macro-id">PSPIC</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>PSPIC</b> <kbd class="macro-args">[ -L | -R | -I &lt;n&gt; ] &lt;file&gt; [ width [ height ] ]</kbd>
+</div>
+
+<p>
+PSPIC is not actually part of mom, but rather a macro included with
+every groff installation. <kbd>man groff_tmac</kbd> contains the
+documentation for PSPIC, but I&#8217;ll repeat it here with a few
+modifications for clarity.
+</p>
+
+<div class="examples-container">
+<h3 id="groff-tmac" class="docs" style="margin-top: .5em;">From <span style="text-transform: none">groff_tmac</span></h3>
+<p style="margin-top: .5em; margin-bottom: .5em;">
+<kbd>&lt;file&gt;</kbd> is the name of the file containing the
+image; <kbd>width</kbd> and <kbd>height</kbd> give the desired
+width and height of the image as you wish it to appear within the
+document.  The width and height arguments may have
+<a href="definitions.html#unitofmeasure">units of measure</a>
+attached; the default unit of measure is <kbd>i</kbd>.  PSPIC will
+scale the graphic uniformly in the x and y directions so that
+it is no more than <kbd>width</kbd> wide and <kbd>height</kbd>
+high.  By default, the graphic will be horizontally centred.  The
+<kbd>-L</kbd> and <kbd>-R</kbd> options cause the graphic to be
+left-aligned and right-aligned, respectively.  The <kbd>-I</kbd>
+option causes the graphic to be indented by <kbd>&lt;n&gt;</kbd>;
+the default unit of measure is <kbd>m</kbd>
+(<a href="definitions.html#em">ems</a>).
+</p>
+</div>
+
+<p>
+It is not necessary to pass PSPIC the <kbd>&lt;width&gt;</kbd>
+and <kbd>&lt;height&gt;</kbd> arguments unless you are scaling
+the image, in which case you will most likely need the original
+dimensions of the EPS image&#8217;s bounding box.  These can be
+found with
+<br/>
+<span class="pre-in-pp">
+ gs -q -dBATCH -dNOPAUSE -sDEVICE=bbox &lt;image file&gt;.pdf 2&gt;&amp;1 \
+ | grep "%%BoundingBox" | cut -d " " -f4,5
+</span>
+The two digits returned are in
+<a href="definitions.html#picaspoints">points</a>,
+therefore the
+<a href="definitions.html#unitofmeasure">unit of measure</a>
+<kbd>p</kbd> must be appended to them.
+</p>
+
+<p>
+Because PSPIC lacks the <kbd>ADJUST</kbd> option offered by
+<a href="#pdf-image">PDF_IMAGE</a>
+a certain amount of manual tweaking of the vertical placement of the
+image will probably be required, typically by using the
+<a href="typesetting.html#ald">ALD</a>
+and
+<a href="typesetting.html#rld">RLD</a>
+macros.  Wrapping the image in a
+<a href="#float">float</a>
+and using FLOAT&#8217;s <kbd>ADJUST</kbd> option can also be used to
+correct optical centering.
+</p>
+
+<p>
+Additionally, non-floated EPS images
+will almost certainly disrupt the baseline placement of
+<a href="definitions.html#running">running text</a>.
+In order to get mom back on track after inserting a non-floated
+<kbd>.PSPIC</kbd> image, insert the
+<a href="docprocessing.html#shim">SHIM</a>
+or
+<a href="docprocessing.html#flex">FLEX</a>
+macro afterwards, depending on the
+<a href="docprocessing.html#vertical-whitespace-management">vertical whitespace management</a>
+strategy in effect, so that the bottom margin of running text falls
+where it should.
+</p>
+
+<p>
+Remember that mom files with embedded EPS images must be processed
+with
+<br/>
+<span class="pre-in-pp">
+ pdfmom -Tps doc.mom &gt; doc.pdf
+</span>
+</p>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Please note:</span>
+<kbd>PSPIC</kbd> does not support
+<a href="autolabel">autolabelling</a>,
+labels, captions, or inclusion in the List of Figures.  If you wish
+this functionality,
+<a href="#converting">convert your images to pdf</a>
+and use
+<a href="#pdf-image">PDF_IMAGE</a>
+instead, then process the file with
+<a href="using.html#pdfmom" style="font-weight: bold">pdfmom</a>
+(without the <kbd>-Tps</kbd> option).
+</p>
+</div>
+<div class="rule-medium"><hr/></div>
+
+<h2 id="floats-intro" class="docs">Introduction to floats</h2>
+
+<p>
+Non-textual insertions in a document (tables, for example) sometimes
+do not fit on the output page of a PDF or PostScript document at
+the place they&#8217;re inserted in the input file.  It&#8217;s
+necessary, therefore, to defer them to the next page while carrying
+on with
+<a href="definitions.html#running">running text</a>.
+</p>
+
+<p>
+Whenever you need this functionality, mom provides the FLOAT macro.
+</p>
+
+<p>
+Floats are usually used for images and graphics, but can contain
+anything you like, including text.  Whatever&#8217;s in the
+float will be kept together as a block, output immediately if
+there&#8217;s room, or deferred to the top of the next output page
+when there isn&#8217;t; running text continues to the bottom of the
+previous page without interruption.
+</p>
+
+<p>
+In the case of a float that doesn&#8217;t fit being followed by
+one that does, both are deferred and output one after the other.
+Note that this represents a change from versions 2.1-b_1 and earlier
+where the second float was output in position and the first was
+deferred.
+</p>
+
+<p>
+A key distinction between a float and a
+<a href="docelement.html#quote">QUOTE</a>
+or
+<a href="docelement.html#blockquote">BLOCKQUOTE</a>
+is that while a float keeps everything together and defers output if
+necessary, quotes and blockquotes are output immediately, and may
+start on one page and finish on the next.
+</p>
+
+<p>
+Floats always deposit a break before they begin, which means the
+line beforehand will not be
+<a href="definitions.html#filled">filled</a>.
+Floats, therefore, cannot be inserted in the middle of a paragraph
+without studying the output file and determining where to break or
+<a href="typesetting.html#spread">spread</a>
+the line before the float.  Furthermore, if you want a float between
+paragraphs, the float should come before <kbd>.PP</kbd>, like this:
+<br/>
+<span class="pre-in-pp">
+  .FLOAT
+  ...
+  .FLOAT OFF
+  .PP
+</span>
+not
+<br/>
+<span class="pre-in-pp">
+  .PP
+  .FLOAT
+  ...
+  .FLOAT OFF
+</span>
+</p>
+
+<p id="float-spacing">
+Floats begin on the baseline immediately below the running text
+preceding them.  No additional whitespace surrounds them, above or
+below.  Running text below a float is, however,
+<a href="docprocessing.html#shim">shimmed</a>
+or
+<a href="docprocessing.html#flex">flex-spaced</a>,
+depending on the
+<a href="docprocessing.html#vertical-whitespace-management">vertical whitespace management</a>
+strategy in effect.  This behaviour can be disabled for individual
+floats with <kbd>NO_SHIM</kbd> or <kbd>NO_FLEX</kbd>.
+</p>
+
+<p>
+If you&#8217;d like more space around a float, you must add it
+manually, for example with 
+<a href="typesetting.html#ald">ALD</a>
+or
+<a href="typesetting.html#space">SPACE</a>.
+</p>
+
+<!-- -FLOAT- -->
+
+<div class="macro-id-overline">
+<h3 id="float" class= "macro-id">FLOAT</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>FLOAT</b> <kbd class="macro-args">[ ADJUST +|-&lt;amount&gt; ] [ FORCE ] [ SPAN ] [ INDENT &lt;value&gt; ] [ CENTER ] [ RIGHT ] [ NO_SHIM] [ NO_FLEX ] | TARGET "&lt;name&gt;" | &lt;anything&gt;</kbd>
+</div>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Note:</span>
+FLOAT is intended for use with the document processing macros only.
+</p>
+</div>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Note:</span>
+As a general rule, avoid consecutive floats that have no intervening
+<a href="definitions.html#running">running text</a>.
+Rather, wrap all the material into a single float.
+</p>
+</div>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Note:</span>
+Deferred floats are output with the left indent that was in effect
+when they were input.  If you do not want this behaviour, disable
+the indent prior to inputting the float and re-enable it afterward.
+</p>
+</div>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Note:</span>
+Mom treats <b>pic</b> pre-processor directives and pdf images as
+floats so it is not necessary to wrap them inside FLOAT unless
+additional material is included in what is floated.
+</p>
+</div>
+
+<p style="margin-top: -.5em">
+To begin a float, simply invoke <kbd>.FLOAT</kbd> and follow it with
+whatever you want the float to contain.  When you&#8217;re done,
+invoke <kbd>.FLOAT&nbsp;OFF</kbd> (or <kbd>QUIT, END, X</kbd>, etc).
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'ADJUST'</h5>
+
+<p>
+The optional <kbd>ADJUST</kbd> argument tells mom to raise
+(<kbd>+</kbd>) or lower (<kbd>-</kbd>) the float <i>within
+the space allotted to it</i> by the specified amount.
+<kbd>&lt;amount&gt;</kbd> must have a
+<a href="definitions.html#unitofmeasure">unit of measure</a>
+appended.  <kbd>ADJUST</kbd> gives you precise control over
+the vertical centering of floats, allowing you to compensate for
+unequal spacing that may result of from the automatic
+<a href="docprocessing.html#shim">shimming</a>
+or
+<a href="docprocessing.html#flex">flex-spacing</a>
+floats.
+</p>
+
+<p>
+<kbd>ADJUST</kbd> is ignored for the first float deferred to
+a following page but respected for subsequent deferred floats
+output immediately afterward.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'FORCE'</h5>
+
+<p>
+The <kbd>FORCE</kbd> argument instructs mom to output the float
+exactly where it occurs in the input file.  With <kbd>FORCE</kbd>,
+mom immediately breaks to a new page to output the float if it does
+not fit on the current page.  While this is somewhat contrary to the
+notion of floats (ie that running text should continue to fill the
+page), there are circumstances where it may be desirable.
+</p>
+
+<p>
+If you need to force a page break after completion of a float that
+has been deferred to a subsequent page, insert <kbd>\!.bp</kbd>
+immediately before terminating the float.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'SPAN'</h5>
+
+<p>
+The <kbd>SPAN</kbd> argument tells mom that a float, if deferred,
+may carry onto multiple pages.  Please note that <kbd>SPAN</kbd> may
+not be used for floats containing a boxed table; mom will abort with
+a warning should this occur.  Unboxed tables, on the other hand, are
+acceptable within floats that are given the <kbd>SPAN</kbd> argument.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'INDENT'</h5>
+
+<p>
+<kbd>INDENT</kbd> allows you to indent a float from the left margin
+by a specified value.  The value must have a
+(<a href="definitions.html#unitofmeasure">unit of measure</a>
+appended to it.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'CENTER'</h5>
+
+<p>
+<kbd>CENTER</kbd> instructs mom to center a float if it is not
+already centered by default.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'RIGHT'</h5>
+
+<p>
+<kbd>RIGHT</kbd> instructs mom to place a float a the right of the
+page; the longest line in the float will be flush with the page's
+right margin.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'NO_SHIM'</h5>
+
+<p>
+<kbd>NO_SHIM</kbd> instructs mom not to apply
+<a href="docprocessing.html#shim-vs-flex">shimming</a>
+after a float, which she will do automatically when shimming is
+enabled, which it is by default.  Shimming ensures that running text
+after the float falls properly on the page&#8217;s
+<a href="definitions.html#baseline-grid">baseline grid</a>,
+but can result in slightly unequal spacing above and below
+(correctible with the <kbd>ADJUST</kbd> argument).
+<kbd>NO_SHIM</kbd> is useful when you have several floats on the
+page and there are visible differences in the spacing beneath them
+as a result of shimming.  To ensure a flush bottom margin, the last
+float on the page should be shimmed, ie should not be given the
+<kbd>NO_SHIM</kbd> argument.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'NO_FLEX'</h5>
+
+<p>
+<kbd>NO_FLEX</kbd> instructs mom not to apply
+<a href="docprocessing.html#shim-vs-flex">flex-spacing</a>
+after a float, which she will do automatically when flex-spacing is
+enabled. <kbd>NO_FLEX</kbd> is useful when you have several floats
+on the page and you want to distribute excess vertical
+whitespace on the page amongst other flex-spacing points on the
+page.  If there are no others, the final float should be
+flex-spaced, ie not given the <kbd>NO_FLEX</kbd> argument.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'TARGET'</h5>
+
+<p>
+<kbd>TARGET</kbd> followed by a unique name surrounded by
+double-quotes creates a PDF target for the float so that it may be
+linked to from other places in the file (with PDF_LINK; see
+<a href="version-2.html#mom-pdf">Producing PDFs with groff and mom</a>).
+</p>
+
+<p>
+Floats cannot be autolabelled, so unlike pdf images and
+pre-processor material, the target name cannot be used as a string
+to generate the target&#8217;s label number in running text.  Label
+numbers for floats must be entered explicitly running text, however
+they may be entered symbolically in the argument to
+<a href="#label">LABEL</a>.
+See
+<a href="#reserved-label-strings">Reserved variables for
+labels</a>.
+</p>
+
+
+<div class="box-tip">
+<p class="tip-top">
+<span class="note">Note:</span>
+Floats use
+<a href="definitions.html#filled">no-fill mode</a>,
+with each input line beginning at the left margin.  If this is not
+what you want, you must specify the preferred horizontal alignment
+<i>within the float</i> (e.g.,
+<a href="typesetting.html#lrc">CENTER</a>
+or
+<a href="typesetting.html#lrc">RIGHT</a>).
+</p>
+
+<p class="tip-bottom">
+Furthermore, if you want text
+<a href="definitions.html#filled">filled</a>,
+you must specify
+<a href="typesetting.html#quad"><kbd>.QUAD&nbsp;L|R|C</kbd></a>
+or
+<a href="typesetting.html#justify"><kbd>.JUSTIFY</kbd></a>&mdash;again,
+within the float.
+</p>
+</div>
+
+<h2 id="float-label-caption" class="docs">Labelling and captioning floats</h2>
+
+<p>
+Labelling and captioning of tables (<b>tbl</b>), equations
+(<b>eq</b>), diagrams (<b>pic</b>) and pdf images
+(<a href="#pdf-image">PDF_IMAGE</a>)
+are handled by the macros that initiate them, regardless of whether
+they&#8217;re wrapped inside a float.  However, since a float may
+contain any valid input, it is sometimes necessary to add a label
+and/or caption to the float itself.
+</p>
+
+<div class="box-tip">
+<p class="tip">
+<span class="important">Important:</span>
+Always use the native labelling/captioning facilities for
+preprocessor output and pdf images rather than labelling the
+containing float, if any.
+</p>
+</div>
+
+<p>
+The macros to label and caption floats are
+<a href="#label">LABEL</a>
+and
+<a href="#caption">CAPTION</a>.
+If a label or caption is to appear above the float, the appropriate
+macro is entered immediately after
+<a href="#float">FLOAT</a>.
+If a label or caption is to appear beneath the float, the appropriate
+macro is entered immediately before ending the float with
+<kbd>FLOAT&nbsp;OFF</kbd>.
+</p>
+
+<p>
+If a label and caption are to be joined, the <b>LABEL</b> macro is
+used to enter both by passing the <kbd>CAPTION</kbd> argument to
+<kbd>LABEL</kbd>.
+</p>
+
+<p>
+It is impossible for mom to know the contents of a float, so
+floats cannot be autolabelled.  Each label must be entered
+explicitly.  Mom does, however, provide a way to enter both
+chapter numbers and incrementing label numbers
+<a href="#reserved-label-strings">symbolically</a>,
+easing the burden of keeping the numbering scheme intact as
+labelled floats are added to or subtracted from a document.
+</p>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Tip:</span>
+<a href="docelement.html#blockquote">QUOTE</a>
+and
+<a href="docelement.html#blockquote">BLOCKQUOTE</a>
+may also be labelled and captioned using <b>LABEL</b> and
+<b>CAPTION</b>.
+</p>
+</div>
+
+<h4 class="docs">Spacing</h4>
+
+<p>
+If a float has a caption at the top, the caption is whitespaced
+1/4 linespace from running text and the float itself begins
+an additional 1/4 linespace below the caption.  If the float has
+no corresponding label at the bottom, the float observes the
+bottom-spacing rules for all floats, namely that no extra space is
+added other than
+<a href="docprocessing.html#shim">shimming</a>
+or
+<a href="docprocessing.html#shim-vs-flex">flex-spacing</a>,
+depending on the
+<a href="docprocessing.html#vertical-whitespace-management">vertical whitespace management</a>
+in effect.
+</p>
+
+<p>
+If a float has a label at the bottom but no caption at the top, the
+float begins exactly where started, i.e. with no extra whitespace
+between running text and the float.  The label (and attached
+caption, if any) are whitespaced 1/4 linespace below the float,
+with an additional 1/4 linespace underneath <i>plus</i> shimming or
+flex-spacing.
+</p>
+
+<p>
+Labelled/captioned quotes and blockquotes inside floats treat the
+labels/captions as part of the quote so the spacing above and
+below the whole float block is what you&#8217;d expect from quotes
+normally, while the spacing between the label/caption and the quote
+is 1/4 linespace.
+</p>
+
+<div class="macro-id-overline">
+<h3 id="label" class="macro-id">LABEL</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>LABEL</b></a>
+<kbd class="macro-args">"&lt;label&gt;" [ CAPTION "&lt;caption&gt;" ] [ SHORT_CAPTION ] \
+<br/>
+[ TO_LIST FIGURES | TABLES | EQUATIONS ]</kbd>
+</div>
+
+<p>
+The placement of a float&#8217;s label depends on where you put it
+inside the float.
+</p>
+
+<p>
+If you want a label at the top, put <kbd>LABEL</kbd> immediately
+underneath
+<a href="#float">FLOAT</a>
+and follow it with the text of the label surrounded by double-quotes:
+<br/>
+<span class="pre-in-pp">
+  .FLOAT
+  .LABEL "Fig. 1"
+</span>
+If you want a label at the bottom, put <kbd>LABEL</kbd> immediately
+before ending the float:
+<br/>
+<span class="pre-in-pp">
+  .FLOAT
+  &lt;contents of float&gt;
+  .LABEL "Fig. 1"
+  .FLOAT OFF
+</span>
+</p>
+
+<h3  id="reserved-label-strings" class="docs" style="text-transform: none">Reserved variables for labels</h3>
+
+<p>
+Mom reserves strings you may use when entering label text after
+the <kbd>LABEL</kbd> argument. <kbd>\*[chapter]</kbd> holds the
+current chapter or major section number. <kbd>\*[fig-label]</kbd>,
+<kbd>\*[tbl-label]</kbd>, and <kbd>\*[eqn-label]</kbd>
+increment the label number of the appropriate label type by one,
+and are initially set to zero after each invocation of
+<a href="docprocessing.html#start">START</a>
+when the
+<a href="docprocessing.html#doctype">DOCTYPE</a>
+is <kbd>CHAPTER</kbd>.  Thus, in every chapter requiring numbered
+float labels, you can enter
+<br/>
+<span class="pre-in-pp">
+  .LABEL "Fig. \*[chapter].\*[fig-label]. TO_LIST FIGURES
+</span>
+which, assuming the third autolabelled float of Chapter 2, will
+produce <kbd>Fig. 2.3.</kbd>
+</p>
+
+<p>
+If your <b>DOCTYPE</b> is <kbd>DEFAULT</kbd> or <kbd>NAMED</kbd>,
+you must reset <kbd>\*[&lt;type&gt;-label]</kbd> after each
+<a href="docprocessing.html#collate">COLLATE</a>
+by entering
+<br/>
+<span class="pre-in-pp">
+  .AUTOLABEL_&lt;list type&gt;
+</span>
+before <kbd>.START</kbd>.
+</p>
+
+<p>
+If
+<a href="#autolabel">autolabelling</a>
+is enabled, e.g., <kbd>.AUTOLABEL_IMAGES</kbd> (List
+of Figures) or <kbd>.AUTOLABEL_PIC</kbd> (also List of Figures),
+the prefix is stripped from the label when it appears in
+the List.  Thus, if you have invoked <kbd>.AUTOLABEL_PIC</kbd>,
+<br/>
+<span class="pre-in-pp">
+  .LABEL "Fig. 1.1."
+   CAPTION "Caption for label \
+   TO_LIST FIGURES
+</span>
+or
+<br/>
+<span class="pre-in-pp">
+  .LABEL "Fig. \*[chapter].\*[label]." \
+   CAPTION "Caption for label \
+   TO_LIST FIGURES
+</span>
+will appear in the List of Figures as &#8220;1.1.&nbsp;&nbsp;Caption for
+label&#8221;.
+</p>
+
+<h3 class="docs">CAPTION</h3>
+
+<p>
+If you&#8217;d like a caption attached to the label, pass
+<kbd>LABEL</kbd> the optional argument <kbd>CAPTION</kbd> followed
+by the text of the caption as a single string surrounded by
+double-quotes:
+<br/>
+<span class="pre-in-pp">
+  .FLOAT
+  &lt;contents of float&gt;
+  .LABEL "Fig. 1" CAPTION "Caption for Fig. 1"
+  .FLOAT OFF
+</span>
+Note that the
+<a href="#caption">CAPTION</a>
+macro by itself permits entering several strings, each output on
+a line by itself, whereas the <kbd>CAPTION</kbd> argument to
+<kbd>LABEL</kbd> accepts only a single string.
+</p>
+
+<h3 class="docs">SHORT_CAPTION</h3>
+
+<p>
+If your caption runs long and you&#8217;re including the
+float in a &#8220;List of ...&#8221;, (see
+<a href="#list-of">TO_LIST</a>, below)
+<kbd>SHORT_CAPTION</kbd> tells
+mom how you&#8217;d like the caption to appear in the List.
+</p>
+
+<h3 class="docs">TO_LIST</h3>
+
+<p>
+The optional argument <kbd>TO_LIST</kbd> tells mom to add the
+float&#8217;s label and attached caption, if present, to the specified
+<a href="#lists-of">list</a>,
+which may be one of <kbd>FIGURES</kbd>, <kbd>TABLES</kbd>, or
+<kbd>EQUATIONS</kbd>.
+</p>
+
+<p>
+If, for some reason, you want only the caption appended to the List,
+give <kbd>\&</kbd> as the first argument to LABEL, followed by
+<kbd>CAPTION&nbsp;&#8220;caption&#8221;</kbd>:
+<br/>
+<span class="pre-in-pp">
+  .LABEL \& \
+   CAPTION "caption"
+</p>
+
+<div class="box-tip">
+<p class="tip-top">
+<span class="note">Tip:</span>
+<kbd>TO_LIST</kbd> can be used to handle situations where labelled
+floats need to go to a uniquely named &#8220;List of ...&#8221;.
+</p>
+
+<p class="tip-bottom">
+Suppose, for example, your document contains figures (e.g.
+<b>pic</b> output or pdf-images) and tables, and you need a
+&#8220;List of Examples&#8221; for floats labelled &#8220;Example
+n.n&#8221;.  By changing the default title string for
+<a href="#lists-macros">LIST_OF_EQUATIONS</a>
+to &#8220;List of Examples&#8221;, you may include the float in your
+List of Examples with
+<br/>
+<span class="pre-in-pp">
+  .TO_FIGURES EQUATIONS
+</p>
+</div>
+
+<div class="macro-id-overline">
+<h3 id="caption" class="macro-id">CAPTION</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>CAPTION</b></a>
+<kbd class="macro-args">"&lt;caption&gt;" \
+<br/>
+[ "&lt;additional line&gt;" [ "&lt;additional line&gt;"... ] ] \
+<br/>
+[ TO_LIST FIGURES | TABLES | EQUATIONS ]</kbd>
+</div>
+
+<p>
+The placement of a float&#8217;s caption depends on where you put it
+inside the float.
+</p>
+
+<p>
+If you want a caption at the top, put <kbd>CAPTIO</kbd> immediately
+underneath
+<a href="#float">FLOAT</a>
+and follow it with the text of the caption surrounded by double-quotes:
+<br/>
+<span class="pre-in-pp">
+  .FLOAT
+  .CAPTION "Caption at top of float"
+</span>
+<b>CAPTION</b> can take multiple string arguments, allowing for
+captions that run to several lines.  There is a caveat: the strings
+are not automatically broken into individual lines.  You must
+provide strings that include literal breaks or spaces:
+<br/>
+<span class="pre-in-pp">
+  .FLOAT
+  .CAPTION "Caption" ".BR" "at top" ".BR" "of float"
+</span>
+or, easier to read:
+<br/>
+<span class="pre-in-pp">
+  .FLOAT
+  .CAPTION "Caption" \
+  ".BR" \
+  "at top" \
+  ".BR" \
+  "of float"
+</span>
+If you want a caption at the bottom, put <kbd>CAPTION</kbd> immediately
+before ending the float:
+<br/>
+<span class="pre-in-pp">
+  .FLOAT
+  &lt;contents of float&gt;
+  .CAPTION "Caption at bottom of float"
+  .FLOAT OFF
+</span>
+</p>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Note:</span>
+If you want a caption attached to a label, do not use
+<b>CAPTION</b> by itself.  Rather, invoke
+<a href="#label"><kbd>.LABEL</kbd></a>
+with the <kbd>CAPTION</kbd> argument.
+</p>
+</div>
+
+<div class="rule-medium"><hr/></div>
+
+<h2 id="preprocessor-support" class="docs">Preprocessor support</h2>
+
+<p>
+Mom offers full support for the <b>eqn</b> (equations),
+<b>pic</b> (diagrams), <b>tbl</b> (tables), and <b>refer</b>
+(bibliographies/citations) preprocessors, including captions,
+labelling, autolabelling, and inclusion in the Lists of Equations,
+Figures, and Tables.
+</p>
+
+<p>
+Other than <b>refer</b>, which is discussed at length in the <a
+href="refer.html">Bibliographies and references</a> section, it is
+beyond the scope of this documentation to cover full preprocessor
+usage.  Consult the manpages <b>eqn(1)</b>, <b>pic(1)</b>, and
+<b>tbl(1)</b> for instructions.
+</p>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Version 2.0-c changes</span>
+<br/>
+Preprocessor support has been revised and expanded as of version 2.0-c.
+Please read the following sections thoroughly and update any
+documents created with versions prior to 2.0-c as necessary.
+</p>
+</div>
+
+<h3 id="tbl" class="docs">tbl support</h3>
+
+<p>
+Mom documents can include tables generated with the groff
+preprocessor, <b>tbl</b>.  If you are unfamiliar with <b>tbl</b>, I
+recommend downloading a copy of
+<a href="http://plan9.bell-labs.com/10thEdMan/tbl.pdf">Tbl - A Program to Format Tables</a>,
+which, in addition to providing a thorough introduction, contains
+some fine examples.  If you use <b>tbl</b>, you must pass groff or
+pdfmom the <b>-t</b> flag when you process the file.
+</p>
+
+<p>
+Tables formatted with <kbd>tbl</kbd> begin with the macro
+<kbd>.TS</kbd> (<b>T</b>able <b>S</b>tart) and end with
+<kbd>.TE</kbd> (<b>T</b>able <b>E</b>nd).  Depending on where you
+want your tables output in a document, you may need to wrap
+your <kbd>tbl</kbd> code inside a
+<a href="#floats-intro">float</a>,
+or pass the <kbd>H</kbd> argument to <kbd>.TS</kbd>.
+</p>
+
+<p>
+If you put <kbd>tbl</kbd> code inside a float, the table will be
+output immediately if it fits on the page, or deferred to the top
+of the next page if it doesn&#8217;t.  If you prefer a table to
+begin where you say and span over to the next page, or if you know
+for certain a boxed table will run to multiple pages, simply pass the
+<kbd>H</kbd> argument to <kbd>.TS</kbd>, along with a corresponding
+<a href="#th"><kbd>TH</kbd></a>
+and do not wrap the table inside a float.
+</p>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Note:</span>
+If you create a boxed table that will span several pages, do not
+wrap the table inside a float.  Boxed, multipage tables and FLOAT
+should be considered mutually exclusive.  This restriction is
+imposed by the <kbd>tbl</kbd> preprocessor itself, not groff or
+mom.  Unboxed tables that span several pages, however, are
+acceptable within FLOAT.
+</p>
+</div>
+
+<h4 id="tbl-placement" class="docs">tbl placement in mom docs</h4>
+
+<p>
+If you use <kbd>.TS</kbd> without the <kbd>H</kbd> argument (and
+therefore no <kbd>.TH</kbd>), tables that fit on the page are output
+in position.  If there is not enough room to output the table,
+<kbd>tbl</kbd> will abort with message instructing you to use
+<kbd>.TS H/.TH</kbd>.  Given that <kbd>.TS</kbd> without <kbd>H</kbd>
+may sometimes fail, it is advisable to begin all <b>tbl</b> blocks
+with <kbd>.TS H</kbd>.
+</p>
+
+<p>
+If you give <kbd>.TS</kbd> the <kbd>H</kbd> argument (with a
+corresponding <kbd>.TH</kbd>), tables will be output in position and
+span as many pages as necessary to complete output.  A table header
+will be printed at the top of each page&#8217;s table output.  In the
+event that there is not enough room to print the table header and
+at least one row of table data near the bottom of a page, mom will
+break to a new page before beginning table output, leaving a blank
+in
+<a href="definitions.html#running">running text</a>.
+</p>
+
+<p>
+Boxed tables inside
+<a href="#floats-intro">floats</a>
+are output in position if they fit on the page.  If not, they are
+deferred to the top of the next page without a break in running
+text.  Boxed tables within floats may not, however, span multiple
+pages; mom will abort with a message should a boxed table in a float
+run longer than the page.
+</p>
+
+<p>
+Unboxed tables inside floats may span multiple pages provided the
+<kbd>SPAN</kbd> argument has been given to
+<a href="#float">FLOAT</a>.
+</p>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Note:</span>
+The vertical spacing around unfloated tables may appear slightly
+unequal, especially if there are several tables on the page.  This
+is a result of the
+<a href="docprocessing.html#shim">shimming</a>
+or
+<a href="docprocessing.html#flex">flex-spacing</a>
+that mom applies automatically after each table, depending on which
+<a href="docprocessing.html#vertical-whitespace-management">vertical whitespace management</a>
+is in effect.  You may
+disable shimming or flex-spacing with
+<a href="docprocessing.html#no-shim">NO_SHIM</a>
+or
+<a href="docprocessing.html#no-flex">NO_FLEX</a>,
+or by passing the <kbd>NO_SHIM</kbd> or <kbd>NO_FLEX</kbd> argument
+to <kbd>.TS</kbd>.  In either case, you will still likely want to
+adjust the spacing around with table with the <kbd>AJUST</kbd>
+argument to <kbd>.TS</kbd>.  Tables inside floats should be adjusted
+with the <kbd>ADJUST</kbd> argument to
+<a href="#float">FLOAT</a>,
+not the <kbd>ADJUST</kbd> argument to <kbd>.TS</kbd>.
+</p>
+</div>
+
+<div class="macro-id-overline">
+<h3 id="ts-te" class= "macro-id">.TS / .TH / .TE</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <a href="#ts"><b>TS</b></a>
+<kbd class="macro-args"><br/>
+Arguments:
+<br/>
+&nbsp;&nbsp;[ H ]
+<br/>
+&nbsp;&nbsp;[ BOXED ]
+<br/>
+&nbsp;&nbsp;[ CENTER ]
+<br/>
+&nbsp;&nbsp;[ NEEDS ]
+<br/>
+&nbsp;&nbsp;[ ADJUST +|-&lt;vertical adjustment&gt;]</kbd>
+<span style="font-size: 95%">
+(<a href="definitions.html#unitofmeasure">unit of measure</a>
+required)
+</span>
+<kbd class="macro-args"><br/>
+&nbsp;&nbsp;[ NO_SHIM ]
+<br/>
+&nbsp;&nbsp;[ NO_FLEX ]
+<br/>
+&nbsp;&nbsp;[ CAPTION "&lt;caption&gt;" ]
+<br/>
+&nbsp;&nbsp;[ SHORT_CAPTION "&lt;short caption&gt;" ]
+<br/>
+&nbsp;&nbsp;[ LABEL "&lt;label&gt;" ]
+<br/>
+&nbsp;&nbsp;[ TARGET "&lt;name&gt;" ]
+</kbd>
+<br/>
+Macro: <a href="#th"><b>TH</b></a> <kbd class="macro-args">(optional, only if .TS H)</kbd>
+<br/>
+Macro: <a href="#te"><b>TE</b></a> <kbd class="macro-args">[ SOURCE "&lt;text of table source&gt;" ]
+</div>
+
+<p>
+Tables to be formatted with <kbd>tbl</kbd> begin with the macro
+<kbd>.TS</kbd> and end with <kbd>.TE</kbd>.  Global <kbd>tbl</kbd>
+options (&#8220;flags&#8221;), formatting, and data (per
+<kbd>tbl(1)</kbd>) come between the two macros.
+<br/>
+<span class="pre-in-pp">
+  .TS
+  &lt;tbl options, formatting, and data&gt;
+  .TE
+</span>
+Tables may be wrapped inside a
+<a href="#float-intro">float</a>,
+in which case, the entire table will be output on the current page
+if it fits, or deferred to the next page if it doesn&#8217;t.
+<br/>
+<span class="pre-in-pp">
+  .FLOAT
+  .TS
+  &lt;tbl options, formatting, and data&gt;
+  .TE
+  .FLOAT OFF
+</span>
+</p>
+
+<div class="macro-id-overline">
+<h4 id="ts" class="docs" style="font-size: 100%; margin-top: .5em">The .TS macro</h4>
+</div>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Note: Version 2.0-c change</span>
+<br/>
+2.0-c introduces revisions to the handling of labels and/or
+captions, which, along with <kbd>NO_SHIM</kbd>, must now be given
+as arguments to <kbd>.TS</kbd> rather than <kbd>.TE</kbd>, as was
+the case formerly.  Please read this section carefully if you have
+documents containing tables as they may need to be updated.
+</p>
+</div>
+
+<div class="box-important" style="margin-top: 1em">
+<p class="tip">
+<span class="important">IMPORTANT:</span>
+All arguments to <b>TS</b> must appear on the same line as
+<kbd>.TS</kbd>.  Do not attempt to break them up with the
+&#8220;line-continued&#8221; backslash.  You may want to set your
+text editor to &#8220;wrap&#8221; mode in order to see all your
+arguments.  This annoyance stems from the preprocessor mechanism
+itself, not groff or mom.
+</p>
+</div>
+
+<p>
+The <b>TS</b> macro must be invoked before entering a <kbd>tbl</kbd>
+block.  You may give as many or as few of its arguments as required,
+in any order, although it is advisable to put <kbd>CAPTION</kbd>,
+<kbd>SHORT_CAPTION</kbd>, and/or <kbd>LABEL</kbd> last.
+</p>
+
+<h5 id="h" class="docs" style="margin-top: 1em; text-transform: none">'H'</h5>
+
+<p>
+With the <b>H</b> argument, a table will span as many pages as
+necessary, with or without a running header.  The placement of the
+corresponding
+<a href="#th"><kbd>.TH</kbd></a>,
+which is required whenever the <b>H</b> argument is given,
+determines what, if anything, goes in the header.  Compare the
+following:
+<span class="pre-in-pp">
+  .TS H                   .TS H
+  c s s                   c s s
+  c s s                   c s s
+  c c c                   c c c
+  n n n.                  n n n. 
+  Percent Increase        .TH
+  2002-2012               Percent Increase
+  .TH                     2002-2012
+  &lt;tbl data&gt;              &lt;tbl data&gt;
+  .TE                     .TE
+</span>
+The first example will create a table that spans multiple
+pages if necessary, with a running header (&#8220;Percent
+Increase&nbsp;/&nbsp;2002-2012&#8221;) for that table appearing at
+the top of each page until the table ends.  The second example,
+equally, may run to several pages, but without the running header.
+See
+<a href="#th"><b>TH</b></a>
+for an explanation of <kbd>.TH</kbd> placement.
+</p>
+
+<div id="h-tip" class="box-tip">
+<p class="tip">
+<span class="note">Tip:</span>
+Generally speaking, it&#8217;s a good idea to get into the habit
+of using <kbd>.TS H</kbd> all the time, since there are no
+circumstances under which it fails, whereas <kbd>.TS</kbd> without
+<kbd>H</kbd> will fail on tables that exceed the page length.
+</p>
+</div>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'BOXED'</h5>
+
+<p>
+If a table is to be boxed (ie <kbd>tbl</kbd> is given the flags
+<kbd>'box'</kbd> or <kbd>'allbox'</kbd>) you must pass the argument
+<kbd>BOXED</kbd> to <kbd>.TS</kbd>, as in this example:
+<br/>
+<span class="pre-in-pp">
+  .TS BOXED
+  allbox;
+  c s s
+  c c c
+  n n n.
+  &lt;tbl data&gt;
+  .TE
+</span>
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'CENTER'</h5>
+
+<p>
+If a table is to be centered on the page, (ie <kbd>tbl</kbd> is
+given the <kbd>'center'</kbd> flag), you must pass the argument
+<kbd>CENTER</kbd> to <kbd>.TS</kbd>, as in this example, which
+creates a (possibly) multipage boxed table, centered on the page,
+with a running header.
+<span class="pre-in-pp">
+  .TS H BOXED CENTER
+  allbox center;
+  c s s
+  c s s
+  c c c
+  n n n.
+  Percent Increase
+  2002-2012
+  .TH
+  &lt;tbl data&gt;
+  .TE
+</span>
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'NEEDS'</h5>
+
+<p>
+If a table is not inside a float and you pass <kbd>.TS </kbd> the
+<kbd>H</kbd> argument (which you should; see the tip
+<a href="#h-tip">here</a>),
+mom begins output immediately where the table occurs in the input
+file <i>if there is enough room on the output page for the table
+header plus at least one row of table data</i>.  If there isn't
+enough room, mom breaks to a new page before beginning the table,
+leaving a gap in
+<a href="definitions.html#running">running text</a>
+at the bottom of the previous page.  If, for aesthetic reasons,
+you would prefer that mom require more than one row of table data
+beneath the header near the bottom of a page, you may increase the
+number with the <kbd>NEEDS</kbd> argument, followed by the desired
+number of rows.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'ADJUST'</h5>
+
+<p>
+<kbd>ADJUST</kbd> lets you raise (<kbd>+</kbd>) or lower
+(<kbd>-</kbd>) the table <span style="font-style: italic">within
+the space allotted for it</span> by the amount you specify.  This
+is useful for achieving good optical centering between surrounding
+blocks of type.  A unit of measure is required.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'NO_SHIM'</h5>
+
+<p>
+<kbd>NO_SHIM</kbd> instructs mom not to apply
+<a href="docprocessing.html#shim-vs-flex">shimming</a>
+after a table, which she will do automatically when shimming is
+enabled, which it is by default.  Shimming ensures that running text
+after the table falls properly on the page&#8217;s
+<a href="definitions.html#baseline-grid">baseline grid</a>,
+but can result in slightly unequal spacing above and below
+(correctible with the <kbd>ADJUST</kbd> argument).
+<kbd>NO_SHIM</kbd> is useful when you have several tables on the
+page and there are visible differences in the spacing beneath them
+as a result of shimming.  To ensure a flush bottom margin, the last
+table on the page should be shimmed, ie should not be given the
+<kbd>NO_SHIM</kbd> argument.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'NO_FLEX'</h5>
+
+<p>
+<kbd>NO_FLEX</kbd> instructs mom not to apply
+<a href="docprocessing.html#shim-vs-flex">flex-spacing</a>
+after a table, which she will do automatically when flex-spacing is
+enabled. <kbd>NO_FLEX</kbd> is useful when you have several tables
+on the page and you want to distribute excess vertical
+whitespace on the page amongst other flex-spacing points on the
+page.  If there are no others, the final table should be
+flex-spaced, ie not given the <kbd>NO_FLEX</kbd> argument.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'CAPTION'</h5>
+
+<p>
+<kbd>CAPTION</kbd> allows you to give the table a caption.  By
+default, the caption appears above the table, but may be attached to
+the label that appears beneath the table.  See
+<a href="#caption-after-label">CAPTION_AFTER_LABEL</a>
+in
+<a href="#captions-and-labels">Captions and labels</a>.
+The text of the caption must be surrounded by double-quotes.
+</p>
+
+<p>
+Please note that if your table has a caption, you must invoke
+<kbd>TS</kbd> with the <kbd>H</kbd> flag, which also entails the use
+of
+<a href="#th">TH</a>.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'SHORT_CAPTION'</h5>
+
+<p>
+<kbd>SHORT_CAPTION</kbd> allows you to trim long captions for
+inclusion in the List of Tables.  The text you supply, surrounded
+by double-quotes, is what will appear in the List.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'LABEL'</h5>
+
+<p>
+<kbd>LABEL</kbd>, if given, appears beneath the table.  The text you
+supply, surrounded by double-quotes, is how the table is labelled
+in both the document proper and the List of Tables.  Mom provides
+an auto-labelling facility for tables (see
+<a href="#autolabel">AUTOLABEL</a>),
+which, if enabled, overrides the <kbd>LABEL</kbd> argument.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'TARGET'</h5>
+
+<p>
+<kbd>TARGET</kbd> followed by a unique name surrounded by
+double-quotes creates a PDF target for the table so that it may be
+linked to from other places in the file (with PDF_LINK; see
+<a href="version-2.html#mom-pdf">Producing PDFs with groff and mom</a>).
+</p>
+
+<p>
+When
+<a href="#autolabel">autolabelling</a>
+is enabled and the document is processed with
+<a href="using.html#pdfmom" style="font-weight: bold">pdfmom</a>,
+the target name can be used to generate the target&#8217;s label
+number in running text if it is entered as a groff string, ie of
+the form <kbd>\*[name]</kbd>.  For example, if you create a target
+called &#8220;foo&#8221; for a table whose autolabel number would be
+3, entering
+<br/>
+<span class="pre-in-pp">
+  See
+  .PDF_LINK foo "Table \*[foo]"
+</span>
+anywhere in running text would result in a pdf link that reads
+&#8220;Table 3&#8221;.  If chapter numbers are being prefixed to
+labels, the same string in, say, chapter 5 would produce the pdf
+link &#8220;Table 5.3&#8221;.  
+</p>
+
+<div class="macro-id-overline">
+<h4 id="th" class="docs" style="font-size: 100%; margin-top: .5em">The .TH macro</h4>
+</div>
+
+<p>
+The <b>TH</b> macro (<b>T</b>able <b>H</b>eader), which is required
+when you begin a table with <kbd>.TS H</kbd>, allows you to
+determine what goes in a table&#8217;s running header if it spans
+multiple pages.  Placing <kbd>.TH</kbd> under the first row of
+<kbd>tbl</kbd> data makes the first row the header.  If placed under
+the second row, the first and second rows form the header, and so
+on.
+</p>
+
+<p>
+As there are sometimes reasons to run <kbd>.TS H</kbd> when
+you don&#8217;t, in fact, want a running header (e.g. when
+your table has a caption), you can suppress it by placing
+<kbd>.TH</kbd> immediately underneath your <kbd>tbl</kbd> formatting
+specifications, the last line of which always ends with a period
+(see <kbd>tbl(1)</kbd>).</p>
+</p>
+
+<p>
+See the
+<kbd><a href="#h">H</a></kbd>
+argument to <kbd>.TS</kbd> for examples demonstrating <kbd>.TH</kbd>
+placement.
+</p>
+
+<div class="macro-id-overline">
+<h4 id="te" class="docs" style="font-size: 100%; margin-top: .5em">The .TE macro</h4>
+</div>
+
+<p>
+<kbd>tbl</kbd> blocks must be terminated with <kbd>.TE</kbd>,
+which, as of version 2.0-c, takes a single, optional argument,
+<kbd>SOURCE</kbd>.  (Formerly, <kbd>TE</kbd> took a label/caption
+argument along with arguments controlling placement.)  The argument
+is followed by the text of the table&#8217;s source, surrounded by
+double-quotes.  The SOURCE argument may only be used if
+<a href="#mla">MLA</a>
+(Modern Language Association) style is enabled.
+</p>
+
+<div class="rule-medium"><hr/></div>
+
+<h3 id="pic" class="docs">pic support</h3>
+
+<p>
+Mom documents can include diagrams generated with the groff
+preprocessor, <b>pic</b>.  If you are unfamiliar with <b>pic</b>, I
+recommend downloading a copy of
+<a href="http://www.kohala.com/start/troff/gpic.raymond.ps">Making Pictures with GNU PIC</a>
+which provides a thorough introduction and contains many examples.
+If you use <b>pic</b>, you must pass groff or pdfmom the <b>-p</b>
+flag when you process the file.
+
+</p>
+
+<p>
+Diagrams created with <kbd>pic</kbd> begin with the macro
+<kbd>.PS</kbd> (<b>P</b>ic <b>S</b>tart) and end with
+<kbd>.PE</kbd> (<b>P</b>ic <b>E</b>nd).  Everything between them is
+intrepreted by the preprocessor as pic instructions.
+</p>
+
+<p>
+Pic diagrams are always centered.  Note that this represents a
+change from version 2.0-b of mom, where centering diagrams required
+passing <kbd>-mpic</kbd> to <b>groff</b> or
+<a href="using.html#pdfmom" style="font-weight: bold">pdfmom</a>
+on the command line.
+</p>
+
+<p>
+In addition, mom treats <b>pic</b> diagrams identically to
+<a href="#floats-intro">floats</a>,
+which is to say that if a diagram doesn&#8217;t fit on the output
+page, she will defer it to the top of the next page while continuing
+to process
+<a href="definitions.html#running">running text</a>.
+<kbd>ADJUST</kbd> is ignored whenever a diagram is deferred, except
+when moving from column to column on the same page, when the diagram
+may need to be optically adjusted.  Subsequent diagrams that do not
+fit, if any, are output in order immediately after the first.
+</p>
+
+<p>
+Lastly, if your diagrams contain text, you may set all the type
+parameters for the text (family, font, size, leading) separately
+from the <b>pic</b> block with the macro
+<a href="#pic-text-style">PIC_TEXT_STYLE</a>.
+If you need to change the type parameters within the block
+on-the-fly, you must use <b>pic</b>&#8217;s native facilities for
+doing so.
+</p>
+
+<div class="macro-id-overline">
+<h3 id="ps-pe" class= "macro-id">.PS / .PE</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>PS</b>
+<kbd class="macro-args">
+<br/>
+Arguments:
+<br/>
+&nbsp;&nbsp;[ width ]</kbd> <span style="font-size: 95%">(in inches; no unit of measure required)</span>
+<kbd class="macro-args"><br/>
+&nbsp;&nbsp;[ height ]</kbd> <span style="font-size: 95%">(in
+inches; no unit of measure required)</span>
+<kbd class="macro-args"><br/>
+&nbsp;&nbsp;[ ADJUST +|-&lt;vertical adjustment&gt;]</kbd>
+<span style="font-size: 95%">
+(<a href="definitions.html#unitofmeasure">unit of measure</a>
+required)
+</span>
+<kbd class="macro-args"><br/>
+&nbsp;&nbsp;[ NO_SHIM ]
+<br/>
+&nbsp;&nbsp;[ NO_FLEX ]
+<br/>
+&nbsp;&nbsp;[ CAPTION "&lt;caption&gt;" ]
+<br/>
+&nbsp;&nbsp;[ SHORT_CAPTION "&lt;short caption&gt;" ]
+<br/>
+&nbsp;&nbsp;[ LABEL "&lt;label&gt;" ]
+<br/>
+&nbsp;&nbsp;[ TARGET "&lt;name&gt;" ]
+</kbd>
+<br/>
+Macro: <b>PE</b> <span style="font-size: 95%">(no arguments; ends
+the <b>pic</b> block)</span>
+</div>
+
+<div class="box-important" style="margin-top: 1.5em">
+<p class="tip">
+<span class="important">IMPORTANT:</span>
+All arguments to <b>PS</b> must appear on the same line as
+<kbd>.PS</kbd>.  Do not attempt to break them up with the
+&#8220;line-continued&#8221; backslash.  You may want to set your
+text editor to &#8220;wrap&#8221; mode in order to see all your
+arguments.  This annoyance stems from the preprocessor mechanism
+itself, not groff or mom.
+</p>
+</div>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'width' and 'height'</h5>
+
+<p>
+The <kbd>width</kbd> and <kbd>height</kbd> arguments to
+<kbd>.PS</kbd> are idiosyncratic owing to the preprocessor itself.
+If a width argument is supplied, the diagram, but not any text it
+contains, is scaled to the given width.  If a literal width argument
+of <kbd>0</kbd> (zero) is given and a height argument is supplied,
+the diagram, but not any text it contains, will be scaled to the
+requested height.  In the case of two non-zero arguments being
+given, only the height scaling is applied.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'ADJUST'</h5>
+
+<p>
+<kbd>ADJUST</kbd> lets you raise (<kbd>+</kbd>) or lower
+(<kbd>-</kbd>) a diagram
+<span style="font-style: italic">within the space allotted for it</span>
+by the amount you specify.  This is useful for achieving good
+optical centering between surrounding blocks of type.  A unit of
+measure is required.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'NO_SHIM'</h5>
+
+<p>
+<kbd>NO_SHIM</kbd> instructs mom not to apply
+<a href="docprocessing.html#shim-vs-flex">shimming</a>
+after a <b>pic</b> diagrame, which she will do automatically when
+shimming is enabled, which it is by default.  Shimming ensures that
+running text after the diagrame falls properly on the page&#8217;s
+<a href="definitions.html#baseline-grid">baseline grid</a>,
+but can result in slightly unequal spacing above and below
+(correctible with the <kbd>ADJUST</kbd> argument).
+<kbd>NO_SHIM</kbd> is useful when you have several diagrams on the
+page and there are visible differences in the spacing beneath them
+as a result of shimming.  To ensure a flush bottom margin, the last
+diagram on the page should be shimmed, ie should not be given the
+<kbd>NO_SHIM</kbd> argument.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'NO_FLEX'</h5>
+
+<p>
+<kbd>NO_FLEX</kbd> instructs mom not to apply
+<a href="docprocessing.html#shim-vs-flex">flex-spacing</a>
+after a <b>pic</b> diagram, which she will do automatically when
+flex-spacing is enabled. <kbd>NO_FLEX</kbd> is useful when you
+have several diagrams on the page and you want to distribute excess
+vertical whitespace on the page amongst other flex-spacing points
+on the page.  If there are no others, the final diagram should be
+flex-spaced, ie not given the <kbd>NO_FLEX</kbd> argument.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'CAPTION'</h5>
+
+<p>
+<kbd>CAPTION</kbd> allows you to give the diagram a caption.  By
+default, the caption appears above the diagram, but may be attached to
+the label that appears beneath it.  See
+<a href="#caption-after-label">CAPTION_AFTER_LABEL</a>
+in
+<a href="#captions-and-labels">Captions and labels</a>.
+The text of the caption must be surrounded by double-quotes.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'SHORT_CAPTION'</h5>
+
+<p>
+<kbd>SHORT_CAPTION</kbd> allows you to trim long captions for
+inclusion in the List of Figures.  The text you supply, surrounded
+by double-quotes, is what will appear in the List.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'LABEL'</h5>
+
+<p>
+<kbd>LABEL</kbd>, if given, appears beneath the diagram.  The text you
+supply, surrounded by double-quotes, is how the diagram is labelled
+in both the document proper and the List of Figures.  Mom provides
+an auto-labelling facility for diagrams (see
+<a href="#autolabel">AUTOLABEL</a>),
+which, if enabled, overrides the <kbd>LABEL</kbd> argument.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'TARGET'</h5>
+
+<p>
+<kbd>TARGET</kbd> followed by a unique name surrounded by
+double-quotes creates a PDF target for the diagram so that it may be
+linked to from other places in the file (with PDF_LINK; see
+<a href="version-2.html#mom-pdf">Producing PDFs with groff and mom</a>).
+</p>
+
+<p>
+When
+<a href="#autolabel">autolabelling</a>
+is enabled and the document is processed with
+<a href="using.html#pdfmom" style="font-weight: bold">pdfmom</a>,
+the target name can be used to generate the target&#8217;s label
+number in running text if it is entered as a groff string, ie of
+the form <kbd>\*[name]</kbd>.  For example, if you create a target
+called &#8220;foo&#8221; for a diagram whose autolabel number would
+be 3, entering
+<br/>
+<span class="pre-in-pp">
+  See
+  .PDF_LINK foo "Figure \*[foo]"
+</span>
+anywhere in running text would result in a pdf link that reads
+&#8220;Figure 3&#8221;.  If chapter numbers are being prefixed to
+labels, the same string in, say, chapter 5 would produce the pdf
+link &#8220;Figure 5.3&#8221;.
+</p>
+
+<!---PIC_TEXT_STYLE--->
+
+<div class="macro-id-overline">
+<h3 id="pic-text-style" class= "macro-id">PIC_TEXT_STYLE</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>PIC_TEXT_STYLE</b> \
+<br/>
+<kbd class="macro-args">
+&nbsp;&nbsp;[ FAMILY ] "&lt;family&gt;" \
+<br/>
+&nbsp;&nbsp;[ FONT ] "&lt;font&gt;" \
+<br/>
+&nbsp;&nbsp;[ SIZE ] "+|-&lt;size&gt;" \
+<br/>
+&nbsp;&nbsp;[ AUTOLEAD ] "&lt;value&gt;"
+</kbd>
+</div>
+
+<p>
+Diagrams drawn with <b>pic</b> may contain text, and groff
+<a href="inlines.html#intro-inlines">inline escapes</a>
+may be used to alter the text parameters.  A problem that arises
+from so doing is that, in many cases, it clutters up the <b>pic</b>
+code unnecessarily.
+</p>
+
+<p>
+PIC_TEXT_STYLE lets you establish the type parameters for text
+inside a <b>pic</b> block all at once in cases where so doing 
+improves the readability of your mom source files.
+</p>
+
+<p>
+The arguments to PIC_TEXT_STYLE behave identically to the arguments
+to other control macros, explained
+<a href="docelement.html#control-macro-args">here</a>.
+They may be given in any order, and you may use as many or as few as
+you like.
+</p>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Note:</span>
+Text within <b>pic</b> diagrams does not scale when you provide a
+scaling argument to <kbd>.PS</kbd>.  This is a limitation of the
+preprocessor itself, not groff or mom.
+</p>
+</div>
+
+<div class="rule-medium"><hr/></div>
+
+<h3 id="grap" class="docs">grap support</h3>
+
+<p>
+Grap is a <b>pic</b> preprocessor for creating graphs.  Grap
+usage is covered in the <kbd>grap(1)</kbd> manpage.  Its mom
+implementation is the same as for <b>pic</b> except that instead of
+enclosing directives between
+<a href="#ps-pe">.PS&nbsp;/&nbsp;.PE</a>,
+they are enclosed between <b>.G1/.G2</b>.  If you use <b>grap</b>,
+you must pass groff or pdfmom the <b>-G</b> flag when you process
+the file.
+
+</p>
+
+<p>
+<b>.G1</b> takes all the same arguments as
+<a href="#ps-pe">PS</a>
+with one exception: the argument <b>GRAP</b> must always be given to
+<b>.G1</b>.  So, for example, a skeleton grap block raised 2 points
+and with a caption would be entered:
+<br/>
+<span class="pre-in-pp">
+  .G1 GRAP ADJUST +2p CAPTION "Graph caption"
+  &lt;grap directives&gt;
+  .G2
+</span>
+
+</p>
+
+<div class="rule-medium"><hr/></div>
+
+<h3 id="eqn" class="docs">eqn support</h3>
+
+<p>
+Support for <b>eqn</b> is provided via extensions to the standard
+<kbd>.EQ/.EN</kbd> macros. <kbd>eqn</kbd> usage itself is beyond
+the scope of this documentation, but is covered in the manpage
+<kbd>eqn(1)</kbd>.  You can also download a copy of Ted
+Harding&#8217;s
+<!--- edit me -->
+<a href="http://www.zen89632.zen.co.uk/Groff/Eqn/eqnguide.pdf">A Guide to Typesetting Mathematics Using GNU eqn</a>,
+which contains useful examples.  If you use <b>eqn</b>, you must give groff or
+pdfmom the <b>-e</b> flag.
+
+</p>
+
+<div class="macro-id-overline">
+<h3 id="eq-en" class= "macro-id">.EQ / .EN</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <a href="#eq"><b>EQ</b></a>
+<br/>
+<kbd class="macro-args">Arguments:
+<br/>
+&nbsp;&nbsp;[ -L | -C | -I &lt;ident&gt; ]</kbd>
+<span style="font-size: 95%">
+(<a href="definitions.html#unitofmeasure">unit of measure</a>
+required)
+</span>
+<kbd class="macro-args"><br/>
+&nbsp;&nbsp;[ ADJUST +|-&lt;vertical adjustment&gt;]</kbd>
+<span style="font-size: 95%">
+(<a href="definitions.html#unitofmeasure">unit of measure</a>
+required)
+</span>
+<kbd class="macro-args"><br/>
+&nbsp;&nbsp;[ NO_SHIM ]
+<br/>
+&nbsp;&nbsp;[ NO_FLEX ]
+<br/>
+&nbsp;&nbsp;[ CAPTION "&lt;caption&gt;" ]
+<br/>
+&nbsp;&nbsp;[ LABEL "&lt;label&gt;" ]
+<br/>
+&nbsp;&nbsp;[ SHIFT_LABEL +|-&lt;vertical adjustment&gt; ]
+<br/>
+&nbsp;&nbsp;[ SHORT_CAPTION "&lt;short caption&gt;" ]
+<br/>
+&nbsp;&nbsp;[ TARGET "&lt;name&gt;" ]
+<br/>
+Macro: <a href="#en"><b>EN</b></a> <kbd class="macro-args"> [ CONTINUED | CONT | ... ]</kbd>
+</div>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Note: Version 2.0-c change</span>
+<br/>
+2.0-c introduces revisions to <b>EQ</b>, including the addition
+of a dash (<kbd>-</kbd>) to the positioning arguments
+(<kbd>-L</kbd>, <kbd>-C</kbd>, and <kbd>-I</kbd>) and the removal of a
+default value for <kbd>-I</kbd>.  Other changes include passing all
+options to <kbd>.EQ</kbd> (including the label) such that
+<kbd>.EN</kbd> takes only a single, optional argument saying whether
+the equation is to be continued at the next invocation of
+<kbd>.EQ</kbd>.  Please read this section carefully if you have
+documents containing equations as they may need to be updated.
+</p>
+</div>
+
+<div class="box-important" style="margin-top: 1em">
+<p class="tip">
+<span class="important">IMPORTANT:</span>
+All arguments to <b>EQ</b> must appear on the same line as
+<kbd>.EQ</kbd>.  Do not attempt to break them up with the
+&#8220;line-continued&#8221; backslash.  You may want to set your
+text editor to &#8220;wrap&#8221; mode in order to see all your
+arguments.  This annoyance stems from the preprocessor mechanism
+itself, not groff or mom.
+</p>
+</div>
+
+<div class="macro-id-overline" style="margin-top: .5em">
+<h4 id="eq" class="docs" style="font-size: 100%; margin-top: .5em">The .EQ macro</h4>
+</div>
+
+<p>
+Equations to be set with <b>eqn</b> begin with <kbd>.EQ</kbd>,
+followed by <b>eqn</b> code.  Equations are centered by default,
+but may be set flush left or indented from the left margin
+if <kbd>-L</kbd> or <kbd>-I</kbd> are passed as arguments to
+<kbd>.EQ</kbd>.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'ADJUST'</h5>
+
+<p>
+<kbd>ADJUST</kbd> lets you raise (<kbd>+</kbd>) or lower
+(<kbd>-</kbd>) an equation
+<span style="font-style: italic">within the space allotted for it</span>
+by the amount you specify.  This is useful for achieving good
+optical centering between surrounding blocks of type.  A unit of
+measure is required.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'NO_SHIM'</h5>
+
+<p>
+<kbd>NO_SHIM</kbd> instructs mom not to apply
+<a href="docprocessing.html#shim-vs-flex">shimming</a>
+after an equation, which she will do automatically when shimming is
+enabled, which it is by default.  Shimming ensures that running text
+after the equation falls properly on the page&#8217;s
+<a href="definitions.html#baseline-grid">baseline grid</a>,
+but can result in slightly unequal spacing above and
+below (correctible with the <kbd>ADJUST</kbd> argument).
+<kbd>NO_SHIM</kbd> is useful when you have several equations on the
+page and there are visible differences in the spacing beneath them
+as a result of shimming.  To ensure a flush bottom margin, the last
+equation on the page should be shimmed, ie should not be given the
+<kbd>NO_SHIM</kbd> argument.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'NO_FLEX'</h5>
+
+<p>
+<kbd>NO_FLEX</kbd> instructs mom not to apply
+<a href="docprocessing.html#shim-vs-flex">flex-spacing</a>
+after an equation, which she will do automatically when flex-spacing
+is enabled. <kbd>NO_FLEX</kbd> is useful when you have several
+equations on the page and you want to distribute excess vertical
+whitespace on the page amongst other flex-spacing points on
+the page.  If there are no others, the final equation should be
+flex-spaced, ie not given the <kbd>NO_FLEX</kbd> argument.
+</p>
+
+</p>
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'CAPTION'</h5>
+
+<p>
+<kbd>CAPTION</kbd> allows you to give the equation a caption.  
+Equation captions always appear beneath the equation.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'SHORT_CAPTION'</h5>
+
+<p>
+<kbd>SHORT_CAPTION</kbd> allows you to trim long captions for
+inclusion in the List of Equations.  The text you supply, surrounded
+by double-quotes, is what will appear in the List.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'LABEL'</h5>
+
+<p>
+<kbd>LABEL</kbd>, if given, appears on the same baseline as the last line of the
+equation, flush with the left or right margin, depending on the
+equation&#8217;s horizontal position.  The text you supply, surrounded by
+double-quotes, is how
+the equation is labelled in both the document proper and the List of
+Equations.  Mom provides an auto-labelling facility for equations (see
+<a href="#autolabel">AUTOLABEL</a>),
+which, if enabled, overrides the <kbd>LABEL</kbd> argument.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'SHIFT_LABEL'</h5>
+
+<p>
+<kbd>SHIFT_LABEL</kbd> allows you to raise (<kbd>-</kbd>) or lower
+(<kbd>+</kbd>) the equation label.  It&#8217;s primary use is to
+center equation labels vertically on the equation rather than flush
+with the last line.  Assuming a three-line equation,
+<kbd>.EQ&nbsp;SHIFT_LABEL&nbsp;-1v</kbd> would raise the label by
+one line, thus centering it vertically on the equation.
+</p>
+
+<h5 class="docs" style="margin-top: 1em; text-transform: none">'TARGET'</h5>
+
+<p>
+<kbd>TARGET</kbd> followed by a unique name surrounded by
+double-quotes creates a PDF target for the equation so that it may
+be linked to from other places in the file (with PDF_LINK; see
+<a href="version-2.html#mom-pdf">Producing PDFs with groff and mom</a>).
+</p>
+
+<p>
+When
+<a href="#autolabel">autolabelling</a>
+is enabled and the document is processed with
+<a href="using.html#pdfmom" style="font-weight: bold">pdfmom</a>,
+the target name can be used to generate the target&#8217;s label
+number in running text if it is entered as a groff string, ie of
+the form <kbd>\*[name]</kbd>.  For example, if you create a target
+called &#8220;foo&#8221; for an equation whose autolabel number
+would be 3, entering
+<br/>
+<span class="pre-in-pp">
+  See
+  .PDF_LINK foo "Equation \*[foo]"
+</span>
+anywhere in running text would result in a pdf link that reads
+&#8220;Equation 3&#8221;.  If chapter numbers are being prefixed to
+labels, the same string in, say, chapter 5 would produce the pdf
+link &#8220;Equation 5.3&#8221;.
+</p>
+
+
+<div class="macro-id-overline" style="margin-top: .5em">
+<h4 id="en" class="docs" style="font-size: 100%; margin-top: .5em">The .EN macro</h4>
+</div>
+
+<p>
+A block of <b>eqn</b> code is terminated with <kbd>.EN</kbd>.
+</p>
+
+<p>
+If an equation needs to span multiple lines, possibly aligned
+with <b>eqn</b>&#8217;s <kbd>'mark'</kbd> and <kbd>'lineup'</kbd>
+directives, separate invocations of <kbd>.EQ/.EN</kbd> are required
+for each line, and the optional argument, <kbd>CONTINUED</kbd> (or
+<kbd>CONT</kbd>, or <kbd>...</kbd> [three dots, an ellipsis]), must
+be passed to <kbd>.EN</kbd>.
+</p>
+
+<p>
+If <kbd>-L</kbd> or <kbd>-I</kbd> is given to the first
+<kbd>.EQ</kbd> of a multi-line equation, they remain in effect
+until the final <kbd>.EN</kbd>, which does not have the
+<kbd>CONTINUED</kbd> argument.
+</p>
+
+<p>
+Mom does not treat equations as floats, therefore it is possible to
+begin an equation on one page and terminate it on the next.  If you
+wish to keep all lines of an equation together, you must wrap the
+equation, including all invocations of <kbd>.EQ/.EN</kbd>, inside
+a
+<a href="#floats-intro">float</a>.
+</p>
+
+<div class="rule-medium"><hr/></div>
+
+<h3 id="refer" class="docs">refer support</h3>
+
+<p>
+<b>refer</b> support is covered in the section
+<a href="refer.html">Bibliographies and references</a>.
+</p>
+
+<div class="rule-medium"><hr/></div>
+
+<h2 id="captions-and-labels" class="docs">Captions and labels</h2>
+
+<ul>
+  <li><a href="#autolabel">AUTOLABEL</a></li>
+  <li><a href="#caption-after-label">CAPTION_AFTER_LABEL</a></li>
+  <li><a href="#mla">MLA</a>&mdash;MLA-style captioning and labelling</li>
+  <li><a href="#captions-labels-sources">Set style parameters for captions, labels, and sources</a></li>
+</ul>
+
+<p>
+Mom includes facilities for adding captions and labels to figures,
+tables, equations, and pdf images, including auto-labelling.  If
+Lists of Figures, Tables, and Equations are desired, captions (if
+any) and labels (if any) are collected and output in the Lists with
+the appropriate page number.
+</p>
+
+<p>
+The distinction between a caption and a label is that labels are
+identifiers, e.g. &#8220;Fig. 1&#8221; or &#8220;Table 3&#8221;,
+while captions are descriptive or informative.  For most types of
+writing, it is usual to provide both.
+</p>
+
+<p>
+By default, mom sets captions above figures (i.e. <b>pic</b> output and
+pdf images) and tables.  This behaviour may be modified with the
+macro
+<a href="#caption-after-label">CAPTION_AFTER_LABEL</a>.
+Equations always have their captions set underneath.  All aspects of
+the text style for captions may be set with the macro
+<a href="#captions-labels-sources">CAPTIONS</a>.
+</p>
+
+<p>
+Labels for tables are set underneath the table unless the
+<a href="#mla">MLA</a>
+macro has been invoked, in which case the label and caption appear
+above the table, per MLA style, and the source for the table, if
+any, appears underneath.  Labels for figures are set underneath.
+Equation labels, by default, are set on the same baseline as the
+last line of the equation.  Like captions, all aspects of text style
+for labels may be established with a single macro
+<a href="#labels">LABELS</a>.
+Furthermore, mom can autolabel figures, tables, and equations, with
+or without a prefixed chapter number.
+</p>
+
+<div class="macro-id-overline">
+<h3 id="autolabel" class="macro-id">Autolabel</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>AUTOLABEL_EQUATIONS</b>
+<br/>
+Macro: <b>AUTOLABEL_IMAGES</b>
+<br/>
+Macro: <b>AUTOLABEL_PIC</b>
+<br/>
+Macro: <b>AUTOLABEL_TABLES</b>
+<br/>
+<kbd class="macro-args">Arguments:
+<br/>
+[ PREFIX "&lt;string&gt;"] [ SUFFIX "&lt;string&gt;"] [ PREFIX_CHAPTER [ &lt;n&gt; ] ]
+</kbd>
+</div>
+
+<p>
+<b>AUTOLABEL_&lt;type&gt;</b> takes care of labelling &lt;type&gt; by
+identifying each with a separate, incrementing numeric scheme, which
+is also collected for output in Lists of Figures, Equations, and
+Tables.
+</p>
+
+<p>
+Autolabelling may be disabled on-the-fly by giving any argument
+other than <kbd>PREFIX</kbd>, <kbd>SUFFIX</kbd>, or
+<kbd>PREFIX_CHAPTER</kbd> to the appropriate macro.  For example,
+</br>
+<span class="pre-in-pp">
+  .AUTOLABEL_IMAGES NO
+</span>
+would disable autolabelling of images.
+</p>
+
+<h4 class="docs" style="margin-top: -.5em">Prefixes and suffixes</h4>
+
+<p>
+By default, when <b>AUTOLABEL</b> is enabled, the label numbers are
+prefixed, and, in the case of equations, suffixed, with strings such
+that they appear for tables as &#8220;Table &lt;n&gt;&#8221;, for
+<b>pic</b> diagrams and pdf images as &#8220;Fig. &lt;n&gt;&#8221;,
+and for equations as &#8220;(&lt;n&gt;)&#8221;.
+</p>
+
+<p>
+You can use <kbd>PREFIX&nbsp;&lt;"string"&gt;</kbd> to change what
+comes before the automatic numbering.  For example, if you are
+including musical excerpts in your document, MLA style requires that
+they be labelled &#8220;Ex.&nbsp;&lt;n&gt;&#8221;.  Since musical
+excerpts are likely to be scanned images (in pdf format, don&#8217;t
+forget), you have to change the prefix string for pdf images:
+<br/>
+<span class="pre-in-pp">
+  .AUTOLABEL_IMAGES \
+   PREFIX "Ex. " \
+   SUFFIX ""
+</span>
+If you need a suffix after the automatic numbering, use
+<kbd>SUFFIX&nbsp;&lt;"string"&gt;</kbd>, like this:
+<br/>
+<span class="pre-in-pp">
+  .AUTOLABEL_IMAGES \
+   PREFIX "(Fig. " \
+   SUFFIX ")"
+</span>
+Note from the above that both arguments, <kbd>PREFIX</kbd> and
+<kbd>SUFFIX</kbd>, are required should you want either.  Two
+adjacent double-quotes leaves the string blank.
+</p>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Note:</span>
+In automatically formatted
+<a href="#lists-macros">&#8220;Lists of ...&#8221;</a>,
+label number prefixes are stripped when autolabelling is enabled.
+</p>
+</div>
+
+<h4 class="docs" style="margin-top: -.5em">Prefixing chapter numbers</h4>
+
+<p>
+If you would like mom to prefix chapter numbers to the label,
+pass <kbd>AUTOLABEL_&lt;type&gt;</kbd> the argument
+<kbd>PREFIX_CHAPTER</kbd>.
+</p>
+
+<p>
+If for some reason you need to specify the chapter number,
+you may do so by passing the number as an argument to
+<kbd>PREFIX_CHAPTER</kbd>.  Subsequent chapters or major sections
+will increment by one as expected.
+</p>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Note:</span>
+For the purposes of labelling, mom treats
+<a href="docprocessing.html#doctype">DOCTYPE&nbsp;DEFAULT</a>
+as if it were <b>DOCTYPE&nbsp;CHAPTER</b>, hence, with
+<kbd>PREFIX_CHAPTER</kbd>, each collated <b>DEFAULT</b>
+doctype's prefixed &#8220;chapter&#8221; number is incremented
+and the label number itself reset to &#8220;1&#8221;.  If
+you do not give <kbd>PREFIX_CHAPTER</kbd>, the label number
+is <i>not</i> reset automatically.  To reset it, invoke
+<kbd>.AUTOLABEL_&lt;type&gt;</kbd> after each
+<a href="docprocessing.html#collate">COLLATE</a>.
+</div>
+
+<div id="set-autolabel" class="box-macro-args" style="margin-top: .5em">
+Macro: <b>SET_AUTOLABEL</b> <kbd class="macro-args">FIG | TBL | PIC | EQN &lt;n&gt;</kbd>
+</div>
+
+<p>
+You may sometimes need to set or reset the autolabel number for a
+particular type of pre-processor or for PDF images.  This is likely
+to occur if you are using
+<a href="#float">FLOAT</a>
+in conjunction with the <kbd>TO_LIST</kbd> argument.
+</p>
+
+<p>
+For example, if your document has Figures (PDF images, pic diagrams)
+and you want your tables to be labelled as Figures as well, you have
+to wrap the tables inside a float and label the float manually as
+&#8220;Fig.&nbsp;n&#8221;, sending it to the List of Figures with
+<kbd>TO_LIST FIGURES</kbd>.
+</p>
+
+<p>
+Mom does not autolabel floats or assign them automatically
+to a list, so she doesn&#8217;t know you&#8217;ve interrupted the
+auto-incrementing label numbers.  Use SET_AUTOLABEL get her back on
+track.  The number you give as an argument after telling her which
+kind of label number to set is the one you want to appear next.
+<br/>
+<span class="pre-in-pp">
+  .SET_AUTOLABEL FIG 6
+</span>
+means the next autolabelled Figure will be &#8220;Fig. 6.&#8221;
+</p>
+
+<div class="macro-id-overline">
+<h3 id="caption-after-label" class="macro-id">Captions after labels</h3>
+</div>
+
+<div class="box-macro-args" style="margin-top: .5em">
+Macro: <b>CAPTION_AFTER_LABEL</b> <kbd class="macro-args">IMG | PIC | TBL | ALL [ &lt;anything&gt;</kbd> ]
+</kbd>
+</div>
+
+<p>
+By default, mom sets captions above figures (<b>pic</b> output
+and pdf images) and tables; labels are always underneath.
+</p>
+
+<p>
+<kbd>.CAPTION_AFTER_LABEL</kbd>, with one of the required arguments,
+instructs mom to attach captions directly to the appropriate
+labels, beginning on the same line.  Any argument after the first
+disables this behaviour, restoring caption placement to mom&#8217;s
+default.  For example,
+<br/>
+<span class="pre-in-pp">
+  .CAPTION_AFTER_LABEL ALL
+</span>
+would enable captions after labels globally, while a subsequent
+<br/>
+<span class="pre-in-pp">
+  .CAPTION_AFTER_LABEL IMG OFF
+</span>
+would disable captions after labels for pdf images only.
+<kbd>OFF</kbd> can be anything you like (<kbd>X</kbd>,
+<kbd>NO</kbd>, etc).
+</p>
+
+<p>
+If
+<a href="#mla">MLA</a>
+is enabled, there's no need to invoke <kbd>CAPTION_AFTER_LABEL</kbd>
+as this is implied.
+</p>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Note:</span>
+A separate invocation of <kbd>.CAPTION_AFTER_LABEL</kbd> is required
+for each one of the required first arguments.  You cannot, for
+example, do
+<br/>
+<span class="pre-in-pp">
+  .CAPTION_AFTER_LABEL IMG TBL
+</span>
+Rather, you must do
+<br/>
+<span class="pre-in-pp">
+  .CAPTION_AFTER_LABEL IMG
+  .CAPTION_AFTER_LABEL TBL
+</span>
+</p>
+</div>
+
+<div class="macro-id-overline">
+<h3 id="mla" class="macro-id">MLA-style captioning and labelling</h3>
+</div>
+
+<div class="box-macro-args" style="margin-top: .5em">
+Macro: <b>MLA</b> <kbd class="macro-args"> [ &lt;anything&gt;</kbd> ]
+</kbd>
+</div>
+
+<p>
+Modern Language Association style dictates that captions should
+always go after labels.  Furthermore, labels and captions for tables
+should go <i>above</i> the tables, with the source for the table, if
+any, underneath.
+</p>
+
+<p>
+Invoking <kbd>.MLA</kbd> by itself takes care of these details.  If
+you need to disable MLA-style captioning and labelling mid-document,
+<kbd>.MLA&nbsp;OFF</kbd> does the trick. <kbd>OFF</kbd> can be
+anything you like (<kbd>X</kbd>, <kbd>NO</kbd>, etc).
+</p>
+
+<div class="macro-id-overline" style="margin-top: 1em">
+<h3 id="captions-labels-sources" class="macro-id">Style parameters for captions, labels and sources</h3>
+</div>
+
+<div class="box-macro-args" style="margin-top: .5em">
+Macro: <b>CAPTIONS</b> <kbd class="macro-args">EQN | IMG | PIC | TBL | FLOATING | ALL</kbd>
+<br/>
+Macro: <b>LABELS</b> <kbd class="macro-args">EQN | IMG | PIC | TBL | FLOATING | ALL</kbd>
+<br/>
+Macro: <b>SOURCES</b> <kbd class="macro-args">TBL</kbd>
+<br/>
+<kbd class="macro-args">Style arguments:
+<br/>
+&nbsp;&nbsp;FAMILY &lt;family&gt; \
+<br/>
+&nbsp;&nbsp;FONT &lt;font&gt; \
+<br/>
+&nbsp;&nbsp;SIZE +|-&lt;size&gt; \
+<br/>
+&nbsp;&nbsp;AUTOLEAD &lt;value&gt; \
+<br/>
+&nbsp;&nbsp;COLOR &lt;color&gt; \
+<br/>
+&nbsp;&nbsp;QUAD LEFT | CENTER | RIGHT [ ON_LL ] \
+<br/>
+&nbsp;&nbsp;INDENT &lt;indent&gt; \
+<br/>
+&nbsp;&nbsp;ADJUST +|-&lt;vertical adjustment&gt;
+</kbd>
+</div>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Note:</span>
+Arguments may be broken into several lines using the
+&#8220;line-continued&#8221; backslash (<b>\</b>), as shown above.
+</p>
+</div>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Additional note:</span>
+Mom&#8217;s default style for labels, captions, and sources is
+the same as the style used for running text, with two exceptions:
+labels are set in bold, except for eqn which is roman medium, and
+the autolead value for all three is &#8220;2&#8221;, effectively
+tightening the lead.  Furthermore, they are quadded left (except
+eqn, which is quadded right.)
+</p>
+</div>
+
+<p>
+With the exception of <kbd>ADJUST</kbd> and <kbd>QUAD</kbd> (which
+requires a bit of explanation), the style arguments to <kbd>CAPTIONS</kbd>,
+<kbd>LABELS</kbd>, and <kbd>SOURCES</kbd> (which is only available
+for tables) behave identically to the 
+<a href="docelement.html#control-macro-args">arguments to control macros</a>.
+</p>
+
+<p>
+The first, required argument after <kbd>CAPTIONS</kbd>,
+<kbd>LABELS</kbd>, or <kbd>SOURCES</kbd> indicates the preprocessor
+type for which you are setting the parameters.  (For convenience
+PDF_IMAGE&mdash;argument <kbd>IMG</kbd>&mdash;is here treated as a
+preprocessor.)  <kbd>FLOATING</kbd> sets the style for the macros
+<a href="#caption">CAPTION</a>
+and
+<a href="#label">LABEL</a>,
+which are used to label floats, quotes, and blockquotes.
+</p>
+
+<p>
+An argument of <kbd>ALL</kbd> sets a unified style for all
+preprocessors, floats, quotes, and blockquotes.  If the
+<kbd>ALL</kbd> argument is given, arguments to subsequent
+invocations of <kbd>CAPTIONS</kbd>, <kbd>LABELS</kbd>, or
+<kbd>SOURCES</kbd> overwrite only the explicitly named style
+parameters.
+</p>
+
+<h4 class="docs">QUAD &mdash; quadding of labels, captions, and sources</h4>
+
+<h5 class="docs" style="text-transform: none">&bull;&nbsp;pic, tbl, pdf images</h5>
+
+<p>
+By default, figures (<b>pic</b> output and pdf images) and tables
+have their captions and labels set quad left.  Sources (for
+tables) are also set quad left.  Equations have their labels
+set quad right, and their captions centered.
+</p>
+
+<p>
+Regardless of the quad direction, captions, labels and sources
+are set on the width of the figure, table, or pdf image
+unless you pass the optional <kbd>ON_LL</kbd> argument to
+<kbd>QUAD&nbsp;&lt;direction&gt;</kbd>, in which case the prevailing
+document line length is used instead.
+</p>
+
+<h5 class="docs" style="text-transform: none">&bull;&nbsp;eqn</h5>
+
+<p>
+Equations behave differently.  By default, equation labels are
+set flush right with the page&#8217;s right margin regardless of
+equation positioning, which is, again by default, centered.  If the
+equation is positioned left, the label will appear at the right
+margin regardless of the direction you give to <kbd>QUAD</kbd>.  If
+the equation is indented with the <kbd>-I&nbsp;&lt;indent&gt;</kbd>
+option, a quad direction of <kbd>LEFT</kbd> is observed, but may
+overprint the last line of the equation.
+</p>
+
+<p>
+Note that there is no <kbd>CENTER</kbd> option for equation labels,
+and that captions are always quadded over the prevailing document
+line length.
+</p>
+
+<h5 class="docs" style="text-transform: none">&bull;&nbsp;quotes and blockquotes</h5>
+
+<p>
+Floating labels attached to <b>QUOTE</b>s are quadded on the
+prevailing document line length, and require the <kbd>INDENT</kbd>
+argument if you want to align them with the left and/or right edges
+the quote.
+</p>
+
+<p>
+Floating labels attached to <b>BLOCKQUOTE</b>s are always quadded on
+the indent and line length of the blockquote.
+</p>
+
+<h5 class="docs" style="text-transform: none">&bull;&nbsp;floats</h5>
+
+<p>
+Floating labels and captions attached to <b>FLOAT</b>s are always
+quadded over the prevailing document line length, and require the
+<kbd>INDENT</kbd> argument if you want to align them with the left
+and/or right edges of the float&#8217;s contents.
+</p>
+
+<h4 class="docs">INDENT</h4>
+
+<p>
+The <kbd>INDENT</kbd> argument may only be used if the label
+or caption type is <kbd>FLOATING</kbd>, and only applies to
+<b>FLOAT</b>s and <b>QUOTE</b>s, not <b>BLOCKQUOTE</b>s.
+</p>
+
+<p>
+It is not possible for mom to know the width of a float before
+setting a label or caption attached to a float.  She therefore sets
+it on the prevailing document line length.  While this isn&#8217;t
+much of an issue when the label or caption quad is <b>CENTER</b>,
+you may want to adjust the horizontal positioning when the quad is
+<b>LEFT</b> or <b>RIGHT</b>.
+</p>
+
+<p>
+<kbd>INDENT</kbd>, with a numeric value to which a
+<a href="definitions.html#unitofmeasure">unit of measure</a>
+is appended, allows you to indent a floating label or caption so
+it lines up with the left edge of a <b>FLOAT</b> or <b>QUOTE</b>.
+<kbd>INDENT&nbsp;RIGHT</kbd> (with a value) allows you to shorten the
+line length to the appropriate width.  If you need both a left and
+right indent, invoke <kbd>LABELS</kbd> or <kbd>CAPTIONS</kbd> twice,
+one instance containing <kbd>INDENT&nbsp;&lt;indent&gt;</kbd> and
+the other <kbd>INDENT&nbsp;RIGHT&nbsp;&lt;indent&gt;</kbd>.
+</p>
+
+<h4 class="docs">ADJUST</h4>
+
+<p>
+The <kbd>ADJUST</kbd> argument allows you to add(<kbd>+</kbd>) or
+subtract (<kbd>-</kbd>) vertical space between labels and captions
+and the output to which they are attached.  The argument requires a
+<a href="definitions.html#unitofmeasure">unit of measure</a>.
+For example, if you find that table labels are a bit too close to
+the table itself,
+<br/>
+<span class="pre-in-pp">
+  .LABELS TBL ADJUST +3p
+</span>
+would put three extra points of space between the bottoms of tables
+and the labels that appear beneath them.
+</p>
+
+<h2 id="lists-of" class="docs">Lists of Figures, Tables, and Equations</h2>
+
+<p>
+Besides a
+<a href="tables-of-contents.html">Table of Contents</a>,
+mom can generate Lists of Figures, Tables, and Equations.  Labels
+and captions are collected and concatenated, and output in lists
+with the appropriate page number, just like a Table of Contents.
+Including such lists in a document is as simple as adding whichever
+you need of
+<br/>
+<span class="pre-in-pp">
+  .LIST_OF_FIGURES
+  .LIST_OF_EQUATIONS
+  .LIST_OF_TABLES
+</span>
+to the end of your input file.
+</p>
+
+<p>
+Also like the Table of Contents, entries in the Lists' output are
+clickable PDF links when a document is viewed at the screen.
+</p>
+
+<h3 id="lists-placement" class="docs">Placement of Lists</h3>
+
+<p>
+Lists normally appear after the Table of Contents, and continue
+the page numbering scheme used for it.  By default, the Table of
+Contents begins on roman-numeral page &#8220;i&#8221;.
+</p>
+
+<p>
+If you are using mom&#8217;s
+<a href="tables-of-contents.html#auto-relocate-toc">AUTO_RELOCATE_TOC</a>
+feature, you have two options for placement of the Lists within the
+document.  If you want the Lists shifted to the top of the document
+along with the Table of Contents, invoke the Lists macros <i>after</i>
+<a href="tables-of-contents.html#toc"><kbd>.TOC</kbd></a>.
+If you prefer to have the Lists at the end of the document, invoke
+the Lists macros <i>before</i> <kbd>.TOC</kbd>.
+</p>
+
+<p>
+Lists shifted with the Table of Contents do not appear in the Table
+of Contents itself, but do appear as clickable links in the PDF
+outline typically available in the left panel of most PDF viewers.
+Lists that are not shifted with the Table of Contents appear in both
+the Table of Contents itself and the PDF outline.
+</p>
+
+<div class="macro-id-overline" style="margin-top: 1em">
+<h3 id="lists-macros" class="macro-id">Macros to generate Lists</h3>
+</div>
+
+<div class="box-macro-args" style="margin-top: .5em">
+Macro: <b>LIST_OF_EQUATIONS</b>
+<br/>
+Macro: <b>LIST_OF_FIGURES</b>
+<br/>
+Macro: <b>LIST_OF_TABLES</b>
+<br/>
+<kbd class="macro-args">Arguments:
+<br/>
+&nbsp;&nbsp;[ TITLE_STRING "&lt;string&gt;" ] [ START_PAGENUM &lt;page number&gt; ]
+</div>
+
+<p>
+The first optional argument to the <kbd>LIST_OF_&lt;type&gt;</kbd>
+macros allows you to change the title that appears at the top of the
+page.  This is useful not only for internationalization, or to meet
+the requirements of various style guides, but is also useful
+for, say, documents containing musical examples, which, per
+MLA-style, should be labelled &#8220;Example &#8221; or
+&#8220;Ex. &#8221;.  When it comes time to output the List of
+Figures (to which musical examples, usually scanned pdf images, belong),
+<br/>
+<span class="pre-in-pp">
+  LIST_OF_FIGURES TITLE_STRING "List of Examples"
+</span>
+ensures that the title of the List is correct.
+</p>
+
+<p>
+The second optional argument allows you to give a starting page
+number for a list in cases where mom&#8217;s pagination scheme does
+not provide the List with the starting page number you want.
+</p>
+<h3 id="formatting-lists" class="docs">Formatting and style parameters for Lists</h3>
+
+<p>
+Like the Table of Contents, nearly every aspect of Lists can be
+designed independently of a document&#8217;s overall style.  By
+default, Lists follow the formatting and style parameters of the
+Table of Contents, both mom&#8217;s defaults and any changes you may
+have made to the Table of Contents.
+</p>
+
+<p>
+If you wish to make changes to any aspect of Lists formatting
+or styling, the macro <kbd>LISTS_STYLE</kbd> provides all the
+tools necessary.  It is unlikely that you&#8217;ll want the
+formatting of the various list types to differ one from the other,
+so <kbd>LISTS_STYLE</kbd> applies to all Lists.  In the event that
+you do need to change some aspect of the formatting for different
+list types, simply invoke <kbd>LISTS_STYLE</kbd> immediately prior
+to each list whose formatting needs to be changed.
+</p>
+
+<div class="macro-id-overline" style="margin-top: 1em">
+<h3 id="lists-style" class="macro-id">Lists style</h3>
+</div>
+
+<div class="box-macro-args" style="margin-top: .5em">
+Macro: <b>LISTS_STYLE</b> <kbd class="macro-args">
+<br/>
+Arguments:
+<br/>
+&nbsp;&nbsp;FAMILY &lt;family&gt; \
+<br/>
+&nbsp;&nbsp;FONT &lt;font&gt; \
+<br/>
+&nbsp;&nbsp;PT_SIZE &lt;size&gt; \
+<br/>
+&nbsp;&nbsp;LEAD &lt;leading&gt; \
+<br/>
+&nbsp;&nbsp;TITLE_FAMILY &lt;family&gt; \
+<br/>
+&nbsp;&nbsp;TITLE_FONT &lt;font&gt; \
+<br/>
+&nbsp;&nbsp;TITLE_SIZE +|-&lt;size&gt; \
+<br/>
+&nbsp;&nbsp;TITLE_QUAD LEFT | CENTER | RIGHT \
+<br/>
+&nbsp;&nbsp;TOC_HEADER_UNDERSCORE default = none
+<br/>
+&nbsp;&nbsp;TITLE_COLOR &lt;color&gt; \
+<br/>
+&nbsp;&nbsp;PN_FAMILY &lt;family&gt; \
+<br/>
+&nbsp;&nbsp;PN_FONT &lt;font&gt; \
+<br/>
+&nbsp;&nbsp;PN_SIZE +|-&lt;size&gt; \
+<br/>
+&nbsp;&nbsp;EQN_PN_PADDING &lt;placeholders&gt; \
+<br/>
+&nbsp;&nbsp;FIG_PN_PADDING &lt;placeholders&gt; \
+<br/>
+&nbsp;&nbsp;TBL_PN_PADDING &lt;placeholders&gt; \
+<br/>
+&nbsp;&nbsp;PAGENUM_STYLE DIGIT | ROMAN | roman | ALPHA | alpha \
+<br/>
+&nbsp;&nbsp;NO_PAGINATION
+</kbd>
+</div>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Note:</span>
+Arguments may be broken into several lines using the
+&#8220;line-continued&#8221; backslash (<b>\</b>), as shown above.
+</p>
+</div>
+
+<p>
+<kbd>FAMILY</kbd> is the family for the entirety of Lists pages.
+</p>
+
+<p>
+<kbd>FONT</kbd> is the font for the entirety of Lists pages.
+</p>
+
+<p>
+<kbd>PT_SIZE</kbd> is the base point size for the entirety of Lists
+pages.
+</p>
+
+<p>
+<kbd>LEAD</kbd> is the base leading for the entirety of Lists pages.
+</p>
+
+<p>
+<kbd>TITLE_FAMILY</kbd> is the family for the Lists titles if you
+want it different from the family otherwise used for the Lists
+pages.
+</p>
+
+<p>
+<kbd>TITLE_FONT</kbd> is the font for the Lists titles if you want
+it different from the font otherwise used for the Lists pages.
+</p>
+
+<p>
+<kbd>TITLE_SIZE</kbd> tells mom by how much to increase
+(<kbd>+</kbd>) or decrease (<kbd>-</kbd>) the point size of the
+titles relative to the overall point size of Lists pages.
+</p>
+
+<p>
+<kbd>TITLE_QUAD</kbd> tells mom how to position the title
+horizontally.
+</p>
+
+<p>
+<kbd>TITLE_COLOR</kbd> sets the colour for the titles.  The colour
+must be pre-initialized with
+<a href="color.html#newcolor">NEWCOLOR</a>
+or
+<a href="color.html#xcolor">XCOLOR</a>.
+</p>
+
+<p>
+<kbd>PN_FAMILY</kbd> sets the family for entry pagenumbers.
+</p>
+
+<p>
+<kbd>PN_FONT</kbd> sets the font for entry pagenumbers.
+</p>
+
+<p>
+<kbd>PN_SIZE</kbd> tells mom by how much to increase (<kbd>+</kbd>)
+or decrease (<kbd>-</kbd>) the point size of entry pagenumbers
+relative to the overall point size of Lists pages.
+</p>
+
+<p>
+<kbd>EQN_PN_PADDING</kbd>, <kbd>FIG_PN_PADDING</kbd>, and
+<kbd>TBL_PN_PADDING</kbd> tells mom how many placeholders to reserve
+for the entry pagenumbers in their respective Lists.  If, for example,
+a document with both tables and figures runs to over a hundred
+pages, but there are no tables after page 99,
+<br/>
+<span class="pre-in-pp">
+  LISTS_STYLE FIG_PN_PADDING 3
+  LISTS_STYLE TBL_PN_PADDING 2
+</span>
+would prevent an unneeded, reserved placeholder from putting too
+much space between the leader and the entry pagenumber in the List of
+Tables.
+</p>
+
+<p>
+The padding in effect, unless you change it, is whatever was set for
+the Tables of Contents; mom&#8217;s default is &#8220;3&#8221;.
+</p>
+
+<p>
+<kbd>PAGENUM_STYLE</kbd> tells mom which pagination format to use
+for the page numbers of the Lists pages themselves.  By default,
+since Lists observe what is in effect for the Table of Contents, the
+pagination format is &#8220;roman&#8221;.  Please note that the
+starting page number for any of the Lists is given as an argument to
+the
+<a href="#lists-of">LISTS_0F_&lt;type&gt;</a>
+macro.
+</p>
+
+<p>
+<kbd>NO_PAGINATION</kbd> disables pagination of Lists pages.
+</p>
+
+<div class="rule-long"><hr/></div>
+
+<!-- Navigation links -->
+<table style="width: 100%; margin-top: 12px;">
+<tr>
+  <td style="width: 33%;"><a href="toc.html">Back to Table of Contents</a></td>
+  <td style="width: 20%; text-align: center;"><a href="#top">Top</a></td>
+  <td style="width: 46%; text-align: right;"><a href="headfootpage.html">Next: Page headers/footers, pagination</a></td>
+</tr>
+</table>
+
+</div>
+
+<div class="bottom-spacer"><br/></div>
+
+</body>
+</html>

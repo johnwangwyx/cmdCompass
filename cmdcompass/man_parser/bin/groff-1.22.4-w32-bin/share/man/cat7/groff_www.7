@@ -1,0 +1,311 @@
+GROFF_WWW(7)           Miscellaneous Information Manual           GROFF_WWW(7)
+
+
+
+NNAAMMEE
+       groff_www - groff macros for authoring web pages
+
+
+SSYYNNOOPPSSIISS
+       ggrrooffff --mm wwwwww [_o_p_t_i_o_n ...] [_i_n_p_u_t_-_f_i_l_e ...]
+
+DDEESSCCRRIIPPTTIIOONN
+       This manual page describes the GNU -mwww macro package, which is part
+       of the groff document formatting system.  The manual page is very a
+       basic guide, and the HTML device driver (ggrroohhttmmll) has been completely
+       rewritten but still remains as in an alpha state.  It has been included
+       into the distribution so that a lot of people have a chance to test it.
+       Note that this macro file is automatically called (via the _t_r_o_f_f_r_c
+       file) if you use --TThhttmmll or --TTxxhhttmmll.
+
+       To see the hyperlinks in action, please format this man page with the
+       ggrroohhttmmll device.
+
+       Here is a summary of the functions found in this macro set.
+
+       .JOBNAME     split output into multiple files
+       .HX          automatic heading level cut off
+       .BCL         specify colours on a web page
+       .BGIMG       specify background image
+       .URL         create a URL using two parameters
+       .FTP         create an FTP reference
+       .MTO         create an HTML email address
+       .TAG         generate an HTML name
+       .IMG         include an image file
+       .PIMG        include PNG image
+       .MPIMG       place PNG on the margin and wrap text around it
+       .HnS         begin heading
+       .HnE         end heading
+       .LK          emit automatically collected links.
+       .HR          produce a horizontal rule
+       .NHR         suppress automatic generation of rules.
+       .HTL         only generate HTML title
+       .HEAD        add data to <head> block
+       .ULS         unorder list begin
+       .ULE         unorder list end
+       .OLS         ordered list begin
+       .OLE         ordered list end
+       .DLS         definition list begin
+       .DLE         definition list end
+       .LI          insert a list item
+       .DC          generate a drop capital
+       .HTML        pass an HTML raw request to the device driver
+       .CDS         code example begin
+       .CDE         code example end
+       .ALN         place links on left of main text.
+       .LNS         start a new two-column table with links in the left.
+       .LNE         end the two-column table.
+       .LINKSTYLE   initialize default URL attributes.
+
+       Output of the ppiicc, eeqqnn, rreeffeerr, and ttbbll preprocessors is acceptable as
+       input.
+
+RREEQQUUEESSTTSS
+       ..JJOOBBNNAAMMEE ffiilleennaammee
+              Split output into multiple HTML files.  A file is split whenever
+              a .SH or .NH 1 is encountered.  Its argument is the file stem
+              name for future output files.  This option is equivalent to
+              ggrroohhttmmll's --jj option.
+
+       ..HHXX nn  Specify the cut off depth when generating links from section
+              headings.  For example, a parameter of 2 would cause ggrroohhttmmll to
+              generate a list of links for ..NNHH 11 and ..NNHH 22 but not for ..NNHH 33.
+              Whereas
+
+                     ..HHXX 00
+
+              tells ggrroohhttmmll that no heading links should be created at all.
+              Another method for turning automatic headings off is by issuing
+              the command-line switch --PP--ll to ggrrooffff.
+
+       ..BBCCLL ffoorreeggrroouunndd bbaacckkggrroouunndd aaccttiivvee nnoott--vviissiitteedd vviissiitteedd
+              This macro takes five parameters: foreground, background, active
+              hypertext link, hypertext link not yet visited, and visited
+              hypertext link colour.
+
+       ..BBGGIIMMGG iimmaaggeeffiillee
+              the only parameter to this macro is the background image file.
+
+       ..UURRLL uurrll [[ddeessccrriippttiioonn]] [[aafftteerr]]
+              generates a URL using either one, two or three arguments.  The
+              first parameter is the actual URL, the second is the name of the
+              link, and the third is optional stuff to be printed immediately
+              afterwards.  If ddeessccrriippttiioonn and aafftteerr are absent then the UURRLL
+              becomes the anchor text.  Hyphenation is disabled while printing
+              the actual URL; explicit breakpoints should be inserted with the
+              \\:: escape.  Here is how to encode foo <http://foo.org/>:
+
+                     ..UURRLL hhttttpp::////\\::ffoooo..\\::oorrgg// ffoooo ::
+
+              If this is processed by a device other than --TThhttmmll or --TTxxhhttmmll it
+              appears as:
+
+                     foo <http://foo.org>:
+
+              The URL macro can be of any type; for example we can reference
+              Eric Raymond's pic guide <pic.html> by:
+
+                     ..UURRLL ppiicc..hhttmmll ""EErriicc RRaayymmoonndd''ss ppiicc gguuiiddee""
+
+       ..MMTTOO aaddddrreessss [[ddeessccrriippttiioonn]] [[aafftteerr]]
+              Generate an email HTML reference.  The first argument is manda-
+              tory as the email address.  The optional second argument is the
+              text you see in your browser.  If an empty argument is given,
+              aaddddrreessss is used instead.  An optional third argument is stuff
+              printed immediately afterwards.  Hyphenation is disabled while
+              printing the actual email address.  For example, Joe User
+              <joe@user.org> can be achieved by the following macro:
+
+                     ..MMTTOO jjooee@@uusseerr..oorrgg ""JJooee UUsseerr""
+
+              Note that all the URLs actually are treated as consuming no tex-
+              tual space in groff.  This could be considered as a bug since it
+              causes some problems.  To circumvent this, wwwwww..ttmmaacc inserts a
+              zero-width character which expands to a harmless space (only if
+              run with --TThhttmmll or --TTxxhhttmmll).
+
+       ..FFTTPP uurrll [[ddeessccrriippttiioonn]] [[aafftteerr]]
+              indicates that data can be obtained via FTP.  The first argument
+              is the URL and the second is the browser text.  A third argu-
+              ment, similar to the macros above, is intended for stuff printed
+              immediately afterwards.  The second and the third parameter are
+              optional.  Hyphenation is disabled while printing the actual
+              URL.  As an example, here is the location of the GNU FTP server
+              <ftp://ftp.gnu.org/>.  The macro example above can be specified
+              as:
+
+                     ..FFTTPP ffttpp::////\\::ffttpp..ggnnuu..oorrgg// ""GGNNUU FFTTPP sseerrvveerr"" ..
+
+       ..TTAAGG nnaammee
+              Generates an HTML name tag from its argument.  This can then be
+              referenced using the URL <#URL> macro.  As you can see, you must
+              precede the tag name with ## since it is a local reference.  This
+              link was achieved via placing a TAG in the URL description
+              above; the source looks like this:
+
+                     ..TTPP
+                     ..BB UURRLL
+                     ggeenneerraatteess
+                     ..TTAAGG UURRLL
+                     aa UURRLL uussiinngg eeiitthheerr ttwwoo oorr tthhrreeee aarrgguummeennttss..
+                     ......
+
+       ..IIMMGG [[--RR||--LL||--CC]] ffiilleennaammee [[wwiiddtthh]] [[hheeiigghhtt]]
+              Include a picture into the document.  The first argument is the
+              horizontal location: right, left, or center (--RR, --LL, or --CC).
+              Alignment is centered by default (--CC).  The second argument is
+              the filename.  The optional third and fourth arguments are the
+              width and height.  If the width is absent it defaults to 1 inch.
+              If the height is absent it defaults to the width.  This maps
+              onto an HTML img tag.  If you are including a PNG image then it
+              is advisable to use the PPIIMMGG macro.
+
+       ..PPIIMMGG [[--RR||--LL||--CC]] ffiilleennaammee [[wwiiddtthh [[hheeiigghhtt]]]]
+              Include an image in PNG format.  This macro takes exactly the
+              same parameters as the IIMMGG macro; it has the advantage of work-
+              ing with PostScript and HTML devices also since it can automati-
+              cally convert the image into the EPS format, using the following
+              programs of the nneettppbbmm package: ppnnggttooppnnmm, ppnnmmccrroopp, and ppnnmmttooppss.
+              If the document isn't processed with --TThhttmmll or --TTxxhhttmmll it is
+              necessary to use the --UU option of groff.
+
+       ..MMPPIIMMGG [[--RR||--LL]] [[--GG ggaapp]] ffiilleennaammee [[wwiiddtthh [[hheeiigghhtt]]]]
+              Place a PNG image on the margin and wrap text around it.  The
+              first parameters are optional.  The alignment: left or right (--LL
+              or --RR) specifies the margin where the picture is placed at.  The
+              default alignment is left (--LL).  Optionally, --GG _g_a_p can be used
+              to arrange a gap between the picture and the text that wraps
+              around it.  The default gap width is zero.
+              The first non-optional argument is the filename.  The optional
+              following arguments are the width and height.  If the width is
+              absent it defaults to 1 inch.  If the height is absent it de-
+              faults to the width.  Example:
+
+                     ..MMPPIIMMGG --LL --GG 22cc ffoooo..ppnngg 33cc 11..55cc
+
+              The height and width may also be given as percentages.  The
+              PostScript device calculates the width from the ..ll register and
+              the height from the ..pp register.  For example:
+
+                     ..MMPPIIMMGG --LL --GG 22cc ffoooo..ppnngg 1155%%
+
+       ..HHnnSS nn Begin heading.  The numeric heading level _n is specified by the
+              first parameter.  Use this macro if your headings contain URL,
+              FTP or MTO macros.  Example:
+
+                     ..HHnnSS 11
+                     ..HHRR
+                     GGNNUU TTrrooffff
+                     ..UURRLL hhttttpp::////ggrrooffff..ffffiiii..oorrgg ((GGrrooffff))
+                     ---- aa
+                     ..UURRLL hhttttpp::////wwwwww..ggnnuu..oorrgg// GGNNUU
+                     pprroojjeecctt..
+                     HHoosstteedd bbyy
+                     ..UURRLL hhttttpp::////ffffiiii..oorrgg// FFFFIIII ..
+                     ..HHRR
+                     ..HHnnEE
+
+              In this case you might wish to disable automatic links to head-
+              ings.  This can be done via --PP--ll from the command line.
+
+       ..HHnnEE   End heading.
+
+       ..LLKK    Force grohtml to place the automatically generated links at this
+              position.  If this manual page has been processed with --TThhttmmll or
+              --TTxxhhttmmll those links can be seen right here.
+
+       ..HHRR    Generate a full-width horizontal rule for --TThhttmmll and --TTxxhhttmmll.
+              No effect for all other devices.
+
+       ..NNHHRR   Suppress generation of the top and bottom rules which grohtml
+              emits by default.
+
+       ..HHTTLL   Generate an HTML title only.  This differs from the TTLL macro of
+              the mmss macro package which generates both an HTML title and an
+              <H1> heading.  Use it to provide an HTML title as search engine
+              fodder but a graphic title in the document.  The macro termi-
+              nates when a space or break is seen (.sp, .br).
+
+       ..HHEEAADD  Add arbitrary HTML data to the <head> block.  Ignored if not
+              processed with --TThhttmmll or --TTxxhhttmmll.  Example:
+
+                     ..HHEEAADD ""<<lliinnkk \\
+                       rreell==""""iiccoonn"""" \\
+                       ttyyppee==""""iimmaaggee//ppnngg"""" \\
+                       hhrreeff==""""hhttttpp::////ffoooo..oorrgg////bbaarr..ppnngg""""//>>""
+
+       ..HHTTMMLL  All text after this macro is treated as raw HTML.  If the docu-
+              ment is processed without --TThhttmmll or --TTxxhhttmmll then the macro is
+              ignored.  Internally, this macro is used as a building block for
+              other higher-level macros.
+
+              For example, the BBGGIIMMGG macro is defined as
+
+                     ..ddee BBGGIIMMGG
+                     ..   HHTTMMLL <<bbooddyy bbaacckkggrroouunndd==\\\\$$11>>
+                     ....
+
+       ..DDCC ll tteexxtt [[ccoolloorr]]
+              Produce a drop capital.  The first parameter is the letter to be
+              dropped and enlarged, the second parameter tteexxtt is the adjoining
+              text whose height the first letter should not exceed.  The op-
+              tional third parameter is the color of the dropped letter.  It
+              defaults to black.
+
+       ..CCDDSS   Start displaying a code section in constant width font.
+
+       ..CCDDEE   End code display
+
+       ..AALLNN [[ccoolloorr]] [[ppeerrcceennttaaggee]]
+              Place section heading links automatically to the left of the
+              main text.  The color argument is optional and if present indi-
+              cates which HTML background color is to be used under the links.
+              The optional percentage indicates the amount of width to devote
+              to displaying the links.  The default values are #eeeeee and 30
+              for color and percentage width, respectively.  This macro should
+              only be called once at the beginning of the document.  After
+              calling this macro each section heading emits an HTML table con-
+              sisting of the links in the left and the section text on the
+              right.
+
+       ..LLNNSS   Start a new two-column table with links in the left column.
+              This can be called if the document has text before the first .SH
+              and if .ALN is used.  Typically this is called just before the
+              first paragraph and after the main title as it indicates that
+              text after this point should be positioned to the right of the
+              left-hand navigational links.
+
+       ..LLNNEE   End a two-column table.  This should be called at the end of the
+              document if .ALN was used.
+
+       ..LLIINNKKSSTTYYLLEE ccoolloorr [[ ffoonnttssttyyllee [[ ooppeennggllyypphh cclloosseeggllyypphh ]] ]]
+              Initialize default URL attributes to be used if this macro set
+              is not used with the HTML device.  The macro set initializes it-
+              self with the following call
+
+                     ..LLIINNKKSSTTYYLLEE bblluuee CCRR \\[[llaa]] \\[[rraa]]
+
+              but these values will be superseded by a user call to LINKSTYLE.
+
+SSEECCTTIIOONN HHEEAADDIINNGG LLIINNKKSS
+       By default ggrroohhttmmll generates links to all section headings and places
+       these at the top of the HTML document.  (See LINKS <#LK> for details of
+       how to switch this off or alter the position).
+
+LLIIMMIITTAATTIIOONNSS OOFF GGRROOHHTTMMLL
+       ttbbll information is currently rendered as a PNG image.
+
+FFIILLEESS
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_t_m_a_c_/_w_w_w_._t_m_a_c
+
+AAUUTTHHOORRSS
+       The _w_w_w macro package was written by Gaius Mulley <gaius@glam.ac.uk>,
+       with additions by Werner Lemberg <wl@gnu.org> and Bernd Warken
+       <groff-bernd.warken-72@web.de>.
+
+SSEEEE AALLSSOO
+       ggrrooffff(1), ttrrooffff(1), ggrroohhttmmll(1), nneettppbbmm(1)
+
+
+
+groff 1.22.4                     December 2018                    GROFF_WWW(7)

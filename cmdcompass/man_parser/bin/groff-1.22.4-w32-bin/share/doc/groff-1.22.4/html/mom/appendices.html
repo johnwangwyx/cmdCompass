@@ -1,0 +1,902 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is part of groff, the GNU roff type-setting system.
+
+Copyright (C) 2004-2018  Free Software Foundation, Inc.
+Written by Peter Schaffter (peter@schaffter.ca).
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with no
+Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
+Texts.
+
+A copy of the Free Documentation License is included as a file called
+FDL in the main directory of the groff source package.
+-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
+  <title>Mom -- Appendices</title>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+</head>
+
+<body style="background-color: #f5faff;">
+
+<!-- ==================================================================== -->
+
+<div id="top" class="page">
+
+<!-- Navigation links -->
+<table style="width: 100%;">
+<tr>
+  <td><a href="toc.html">Back to Table of Contents</a></td>
+</tr>
+</table>
+
+<h1 id="appendices" class="docs">Appendices</h1>
+
+<div style="width: 68%; margin: auto;">
+<ul class="no-enumerator">
+  <li><a href="#fonts">Adding fonts to groff</a>
+  <ul style="margin-left: -.5em; list-style-type: disc">
+    <li><a href="#extending">Extending groff families / adding new families and fonts</a>
+    <ul style="margin-left: -.5em; list-style-type: circle">
+      <li><a href="#traditional">The traditional approach</a></li>
+      <li><a href="#simpler">The simpler way with mom</a></li>
+    </ul></li>
+    <li><a href="#steps">Step-by-step instructions</a></li>
+    <li><a href="#install-font">Automate the whole process &ndash; the install-font script</a></li>
+  </ul></li>
+  <li><a href="#codenotes">Some reflections on mom</a></li>
+  <li><a href="#contact">Contact the author</a></li>
+</ul>
+</div>
+
+<div class="rule-medium"><hr/></div>
+
+<h2 id="fonts" class="docs">Adding fonts to groff</h2>
+
+<div id="small-note" class="box-tip">
+<p class="tip-top">
+<kbd>&lt;prefix&gt;</kbd>, in this section, refers
+to the directory in which groff is installed, typically
+<br/>
+<span class="pre-in-pp">
+  /usr/share/groff/
+</span>
+(for distro-specific, pre-compiled groff packages) or
+<br/>
+<span class="pre-in-pp">
+  /usr/local/share/groff/
+</span>
+(if you&#8217;ve built groff from source).
+<p class="tip-bottom">
+<kbd>&lt;version&gt;</kbd> refers to the groff version number, which
+can be found, if necessary, by typing
+<br/>
+<span class="pre-in-pp">
+  groff -v
+</span>
+at the command line.
+</p>
+</div>
+
+<p>
+Groff comes with a small library of 
+<a href="definitions.html#family">families</a>
+(see the
+<a href="typesetting.html#family">FAMILY</a>
+macro for a list).  The families have four
+<a href="definitions.html#font">fonts</a>
+associated with them.  These fonts are a combination of
+<a href="definitions.html#weight">weight</a>
+and
+<a href="definitions.html#shape">shape</a>:
+<br/>
+<span class="pre-in-pp">
+  R  (Roman, usually Medium weight),
+  I  (Italic, usually Medium weight),
+  B  (Bold, usually Roman shape) and
+  BI (Bold Italic)
+</span>
+If you work with mom a lot, sooner or later you&#8217;ll find that these
+families and their associated fonts aren&#8217;t sufficient.  You&#8217;ll
+want to supplement them, either with more fonts for the families
+already provided&mdash;<i>Damn!  I need Helvetica Bold Condensed
+Italic</i>&mdash;or with entire new families.
+</p>
+
+<h3 id="extending" class="docs">Extending groff families / adding new families and fonts</h3>
+
+<h4 id="traditional" class="docs">The traditional approach</h4>
+
+<p>
+The traditional approach to extending groff families has been
+to create new families for non-default weights and shapes (e.g.
+<b>Light</b>, which is a
+<a href="definitions.html#weight">weight</a>,
+or <b>Condensed</b>, which is a
+<a href="definitions.html#shape">shape</a>),
+then to associate them with groff&#8217;s predefined <b>R,
+I, B</b> and <b>BI</b> font styles.  An example of this
+can be seen in the groff PostScript font library itself, which is
+found in
+</br>
+<span class="pre-in-pp">
+  &lt;prefix&gt;/&lt;version&gt;/font/devps/
+</span>
+There&#8217;s one &#8220;family&#8221; for Helvetica (<b>HR</b>,
+<b>HI</b>, <b>HB</b>, <b>HBI</b>) and another for Helvetica Narrow
+(<b>HNR</b>, <b>HNI</b>, <b>HNB</b>, <b>HNBI</b>).
+</p>
+
+<p>
+The difficulty with this approach is that typographers tend to
+think of families as referring to the entire set of font weights
+and shapes associated with a family name.  For example, when
+a typesetter says &#8220;the Helvetica family&#8221;, s/he is
+including the weights Helvetica Thin, Helvetica Light, Helvetica
+Regular, Helvetica Bold, Helvetica Heavy, etc, and all their
+associated shapes (Roman, Italic, Condensed, Narrow, Extended,
+Outline, etc).
+</p>
+
+<p>
+Thus, intuitively, when a typesetter gives mom a
+<kbd>.FAMILY&nbsp;H</kbd> directive, s/he reasonably expects that
+any subsequent <kbd>.FT</kbd> directive will access the desired font
+from the Helvetica family&mdash;without the need to state explicitly
+both family and font to <kbd>.FT</kbd>, as it is explained one can
+do in the
+<a href="typesetting.html#family">FAMILY</a>
+and
+<a href="typesetting.html#font">FT</a>
+sections of these documents.
+</p>
+
+<p>
+If one had, say, Helvetica Light Roman and Helvetica Light Italic
+as well as Helvetica Light Condensed Roman and Helvetica Light
+Condensed Italic, the established groff approach would require two
+&#8220;partial&#8221; families, <b>HL</b> (for Helvetica Light)
+and <b>HLCD</b> (for Helvetica Light Condensed), with <b>R</b> and
+<b>I</b> fonts for both:
+</br>
+<span class="pre-in-pp">
+  HLR
+  HLI
+  HLCDR
+  HLCDI
+</span>
+Accessing these family/font combos routinely
+throughout a document would then require changing the family
+(with <kbd>.FAMILY</kbd>) and selecting the desired font
+(with <kbd>.FT&nbsp;R</kbd> or <kbd>.FT&nbsp;I</kbd>), or
+passing <kbd>.FT</kbd> the lengthy family+fontname (.e.g.
+<kbd>.FT&nbsp;HLCDI</kbd>).
+</p>
+
+<h4 id="simpler" class="docs">The simpler way with mom</h4>
+
+<p>
+Fortunately, groff provides a mechanism whereby it&#8217;s possible
+to extend the basic <b>R</b>, <b>I</b>, <b>B</b> and <b>BI</b> fonts
+(&#8220;styles&#8221; in groff-speak) so that one can, in fact,
+create extensive type families, and access all the fonts in them
+with <kbd>.ft</kbd> (groff) or <kbd>.FT</kbd> (mom).
+</p>
+
+<p>
+Mom uses this mechanism to offer, in addition to groff&#8217;s
+default font styles, the following:
+</p>
+
+<div class="examples-container" style="padding-bottom: 1em;">
+<div id="style-extensions" style="width: 50%; float: left;">
+<span class="pre" style="font-size: 85%">
+UL     =  Ultra Light
+ULI    =  Ultra Light Italic
+ULCD   =  Ultra Light Condensed
+ULCDI  =  Ultra Light Condensed Italic
+ULEX   =  Ultra Light Extended
+ULEXI  =  Ultra Light Extended Italic
+
+XL     =  Extra Light
+XLI    =  Extra Light Italic
+XLCD   =  Extra Light Condensed
+XLCDI  =  Extra Light Condensed Italic
+XLEX   =  Extra Light Extended
+XLEXI  =  Extra Light Extended Italic
+
+TH     =  Thin
+THI    =  Thin Italic
+THCD   =  Thin Condensed
+THCDI  =  Thin Condensed Italic
+THEX   =  Thin Extended
+THEXI  =  Thin Extended Italic
+
+L      =  Light Roman
+LI     =  Light Italic
+LCD    =  Light Condensed
+LCDI   =  Light Condensed Italic
+LEX    =  Light Extended
+LEXI   =  Light Extended Italic
+
+BK     =  Book Roman
+BKI    =  Book Italic
+BKCD   =  Book Condensed
+BKCDI  =  Book Condensed Italic
+BKEX   =  Book Extended
+BKEXI  =  Book Extended Italic
+
+CD     =  Medium Condensed
+CDI    =  Medium Condensed Italic
+EX     =  Medium Extended
+EXI    =  Medium Extended Italic
+
+DB     =  DemiBold Roman
+DBI    =  DemiBold Italic
+DBCD   =  DemiBold Condensed
+DBCDI  =  DemiBold Condensed Italic
+DBEX   =  DemiBold Extended
+DBEXI  =  DemiBold Extended Italic
+
+SB     =  SemiBold Roman
+SBI    =  SemiBold Italic
+SBCD   =  SemiBold Condensed
+SBCDI  =  SemiBold Condensed Italic
+SBEX   =  SemiBold Extended
+SBEXI  =  SemiBold Extended Italic
+</span>
+</div>
+<span class="pre" style="font-size: 85%">
+BCD    =  Bold Condensed
+BCDI   =  Bold Condensed Italic
+BEX    =  Bold Extended
+BEXI   =  Bold Extended Italic
+BO     =  Bold Outline
+
+XB     =  Extra Bold
+XBI    =  Extra Bold Italic
+XBCD   =  Extra Bold Condensed
+XBCDI  =  Extra Bold Condensed Italic
+XBEX   =  Extra Bold Extended
+XBEXI  =  Extra Bold Extended Italic
+
+UB     =  Ultra Bold
+UBI    =  Ultra Bold Italic
+UBCD   =  Ultra Bold Condensed
+UBCDI  =  Ultra Bold Condensed Italic
+UBEX   =  Ultra Bold Extended
+UBEXI  =  Ultra Bold Extended Italic
+
+HV     =  Heavy
+HVI    =  Heavy Italic
+HVCD   =  Heavy Condensed
+HVCDI  =  Heavy Condensed Italic
+HVEX   =  Heavy Extended
+HVEXI  =  Heavy Extended Italic
+
+BL     =  Black
+BLI    =  Black Italic
+BLCD   =  Black Condensed
+BLCDI  =  Black Condensed Italic
+BLEX   =  Black Extended
+BLEXI  =  Black Extended Italic
+BLO    =  Black Outline
+
+XBL    =  Extra Black
+XBLI   =  Extra Black Italic
+XBLCD  =  Extra Black
+XBLCDI =  Extra Black
+XBLEX  =  Extra Black Italic
+XBLEXI =  Extra Black Italic
+
+UBL    =  Ultra Black
+UBLI   =  Ultra Black Italic
+UBLCD  =  Ultra Black Condensed
+UBLCDI =  Ultra Black Condensed Italic
+UBLEX  =  Ultra Black Exteneded
+UBLEXI =  Ultra Black Extended Italic
+
+SC     =  Small Caps Roman
+SCI    =  Small Caps Italic
+SCDB   =  Small Caps Demibold
+SCDBI  =  Small Caps Demibold Italic
+SCSB   =  Small Caps Semibold
+SCSBI  =  Small Caps Semibold Italic
+</span>
+</div>
+
+<p style="clear: both;">
+Thus, with mom, if you&#8217;ve installed some extra
+Helvetica fonts and named them according to the convention
+<kbd>&lt;F&gt;&lt;S&gt;</kbd> (where <kbd>&lt;F&gt;</kbd> means
+family and <kbd>&lt;S&gt;</kbd> means font style), once having
+entered
+<br/>
+<span class="pre-in-pp" style="margin-bottom: -1em;">
+  .FAMILY H
+</span>
+you can access any of the extra Helvetica fonts simply by passing
+the correct argument to
+<a href="typesetting.html#font">FT</a>
+from the list, above.  For example, if you were working in Medium
+Roman (<kbd>.FT&nbsp;R</kbd>) and you needed Medium Condensed Italic
+for a while (assuming it&#8217;s installed), you&#8217;d just type
+<br/>
+<span class="pre-in-pp" style="margin-bottom: -1em;">
+  .FT CDI
+</span>
+to access the Medium Condensed Italic font from the Helvetica
+family.
+</p>
+
+<p>
+Mom&#8217;s list of font styles doesn&#8217;t pretend to be
+exhaustive.  The extension names are arbitrary and can be used in a
+flexible manner.  For example, if you create a family that has a
+Demibold font (<b>DB</b>) but no Bold font (<b>B</b>), you might
+find it more convenient to give the Demibold font the extension
+&#8220;<b>B</b>&#8221;.
+</p>
+
+<p id="register-style">
+You may, at needs, want to add to mom&#8217;s list of font styles.
+You can do this by editing the file, om.tmac (typical location:
+<kbd>&lt;prefix&gt;/&lt;version&gt;/tmac/om.tmac</kbd>).  Near the
+top, you&#8217;ll see lines of the form
+<br/>
+<span class="pre-in-pp">
+  .sty \n[.fp] XL      \" Extra Light
+  .sty \n[.fp] L       \" Light Roman
+  .sty \n[.fp] LI      \" Light Italic
+  .sty \n[.fp] LCD     \" Light Condensed Roman
+</span>
+Simply add your new font style by imitating what you see, above,
+and plugging in your new font style (having, of course, 
+added the font to groff, correctly named).
+directory; see
+<a href="#steps">Step-by-step instructions</a>).
+</p>
+
+<p>
+For example, if you already have some fonts from the Univers family
+installed and have called the family <b>Univers</b>, you might decide at
+some point to add the Bold Outline font (<b>UniversBO</b>).  In which
+case, you&#8217;d add
+<br/>
+<span class="pre-in-pp">
+  .sty \n[.fp] BO      \" Bold Outline
+</span>
+to the <kbd>.sty&nbsp;\n[.fp]&nbsp; &lt;font style&gt;</kbd> list
+in om.tmac.
+</p>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Note:</span>
+Mom&#8217;s font extensions are not &#8220;user-space&#8221;
+controllable via a macro.  If you&#8217;ve been using groff for
+a long time, and have already rolled your own solution to adding
+families and fonts to groff, you may find that mom&#8217;s font
+extensions conflict with your own scheme.  Should that be the case,
+comment out the <kbd>.sty&nbsp;\n[.fp] &lt;font style&gt;</kbd>
+lines found near the top of the <kbd>om.tmac</kbd> file.
+</p>
+</div>
+
+<div class="box-important">
+<p class="tip">
+<span class="important">Important:</span>
+Be careful that any styles you add do not conflict with
+<i>family</i> names that already exist.  &#8220;<b>C</b>&#8221;,
+for example, conflicts with the Courier family (<b>CR</b>,
+<b>CI</b>, <b>CB</b>, <b>CI</b>).  Were you to create a font
+style &#8220;<b>C</b>&#8221;, thinking that <kbd>.FT&nbsp;C</kbd>
+would give you access to font style once you&#8217;d given a
+<kbd>.FAMILY</kbd> directive, you&#8217;d get a nasty surprise:
+your type would come out in Courier Roman!
+</p>
+</div>
+
+<div class="rule-medium"><hr/></div>
+
+<h2 id="steps" class="docs">Step-by-step instructions</h2>
+
+<div>
+<ul class="no-enumerator" style="margin-left: -1.5em;">
+  <li><a href="#need">What you need before you start</a></li>
+  <li><a href="#preparation">Initial preparation</a></li>
+  <li><a href="#step-1">1. Acquire the font</a></li>
+  <li><a href="#step-2">2. Prepare to convert the font to the correct format</a>
+  <ul style="margin-left: -.5em">
+    <li><a href="#ttf">TTF fonts</a></li>
+    <li><a href="#type1">Type 1 fonts</a></li>
+  </ul></li>
+  <li><a href="#step-3">3. Convert the font and put it in the right place</a></li>
+  <li><a href="#step-4">4. Update the download file</a>
+  <ul style="margin-left: -.5em">
+    <li><a href="#internal">Get the internal font name</a></li>
+    <li><a href="#add">Add the font to the download file</a></li>
+    <li><a href="#gropdf-download">Updating the gropdf download file</a></li>
+  </ul></li>
+  <li><a href="#groff-font-names">Naming groff fonts</a>
+  <li><a href="#install-font">Automate the whole process &ndash; the install-font script</a>
+  </ul></li>
+</ul>
+</div>
+
+
+<p>
+There are a number of ways to approach making fonts available
+to groff.  These instructions aren&#8217;t meant to cover all
+possibilities, merely one.
+</p>
+
+<p>
+GNU/Linux distributions being what they are, directory locations
+may differ and the presence of some executables can&#8217;t be
+guaranteed.  I run a Debian-based system.  The instructions reflect
+that.  Users of other distros may have to interpret them according
+to the way their distro operates.
+</p>
+
+<h3 id="need" class="docs appendices">What you need before you start</h3>
+
+<ul style="margin-top: 1em; margin-left: -.5em;">
+  <li>groff, version 1.18 or higher<br/>
+      (Debian package: groff)
+  </li>
+  <li>ghostscript<br/>
+      (Debian package: ghostscript or ghostscript-x)
+  </li>
+  <li>fontforge<br/>
+      (Debian package: fontforge)
+  </li>
+</ul>
+
+<h3 id="preparation" class="docs appendices">Initial preparation (you only need do this once)</h3>
+
+<ol id="site-font" style="margin-left: -1em;">
+  <li>
+    Locate the groff directory,
+    <kbd>site-font</kbd>.  The exact location is
+    difficult to predict, owing to differences between distros and
+    whether you&#8217;re using a pre-packaged groff or have built
+    it from source.  Some typical locations are:
+    <br/>
+    <span class="pre-in-pp" style="margin-bottom: -2em;">
+      /usr/share/groff/
+      /usr/local/share/groff/
+      /etc/groff/
+    </span>
+    If you can&#8217;t find the site-font directory, locate
+    groff&#8217;s <kbd>site-tmac</kbd> directory, and, as root,
+    create site-font in the same directory.  Eg, if you find
+    site-tmac in <kbd>/usr/share/groff/</kbd>, create site-font in
+    <kbd>/usr/share/groff/</kbd>
+    <br/>
+    <span class="pre-in-pp" style="margin-bottom: -2em;">
+      sudo mkdir site-font
+    </span>
+  </li>
+  <li>
+    Create two files, generate-t42.pe and generate-pfa.pe,
+    as you see them below.  Place them in a convenient and
+    easily-remembered location, like your home directory.
+    <br/>
+    <span class="examples" style="font-size: 95%; display: block; margin-top: .5em;">generate-t42.pe</span>
+
+    <div class="examples-container" style="margin-top: 0; margin-bottom: -1em; padding-bottom: 1em;">
+<span class="pre">
+# generate-t42.pe
+
+Open($1);
+Generate($fontname + ".pfa");
+Generate($fontname + ".t42");
+</span>
+    </div>
+    <br/>
+    <span class="examples" style="font-size: 95%; display: block; margin-top: .5em;">generate-pfa.pe</span>
+    <div class="examples-container" style="margin-top: 0; padding-bottom: 1em;">
+<span class="pre">
+# generate-pfa.pe
+
+Open($1);
+Generate($fontname + ".pfa");
+</span>
+    </div>
+  </li>
+</ol>
+
+<h3 id="step-1" class="docs appendices">Step 1: Acquire the font</h3>
+
+<p class="top">
+The two most commonly available types of fonts are PostScript Type1
+(extension .pfb) and TrueType (extension .ttf).  Either can be made
+available to groff.  There are many websites holding collections of
+both.
+</p>
+
+<h3 id="step-2" class="docs appendices">Step 2: Prepare to convert the font to the correct format</h3>
+
+<p class="top">
+Change into the directory holding the new font.
+</p>
+
+<p>
+For convenience in the next step, make a symbolic link to 
+the file 'textmap':
+<br/>
+<span class="pre-in-pp">
+  ln -s &lt;prefix&gt;/&lt;version&gt;/font/devps/generate/textmap .
+</span>
+See
+<a href="#small-note">here</a>
+for an explanation of &lt;prefix&gt;
+and &lt;version&gt;.
+</p>
+
+<p>
+In addition, unless you're installing fonts from your home
+directory, make links to the files 'generate-t42.pe' and
+'generate-pfa.pe'.
+<br/>
+<span class="pre-in-pp">
+  ln -s $HOME/generate-t42.pe .
+  ln -s $HOME/generate-pfa.pe .
+</p>
+
+<h3 id="step-3" class="docs appendices">Step 3: Convert the font and put it in the right place</h3>
+
+<p class="top">
+TrueType fonts (.ttf) need to be converted to .t42.  Type 1 fonts
+(.pfb) need to be converted to .pfa.
+</p>
+
+<h4 id="ttf" class="docs" style="font-size: 90%; text-transform: uppercase;">&nbsp;&bullet;&nbsp;TTF Fonts</h4>
+
+<p class="top" style="margin-top: .5em;">
+For .ttf fonts, run
+<br/>
+<span class="pre-in-pp">
+  fontforge -script generate-t42.pe &lt;file&gt;.ttf
+</span>
+This will create three new files with the extensions .t42, .pfa, and
+.afm.  Next, run
+<br/>
+<span class="pre-in-pp">
+  afmtodit &lt;afm file&gt; textmap &lt;groff font&gt;
+</span>
+This will create a groff font with the name you give.  (See
+<a href="#groff-font-names">here</a>
+for advice on naming groff fonts.)
+</p>
+
+<p>
+Move the .t42 and groff font files to
+<kbd>&lt;prefix&gt;/site-font/devps/</kbd>.
+</p>
+
+<p>
+If you're running a recent version of groff that includes
+the native pdf device (gropdf), move the .pfa file to
+<kbd>&lt;prefix&gt;/&lt;version&gt;/font/devpdf/</kbd>.  If not, you
+may safely remove it.  You may also safely remove the .afm file.
+</p>
+
+<h4 id="type1" class="docs" style="font-size: 90%; text-transform: uppercase;">&nbsp;&bullet;&nbsp;Type1 Fonts</h4>
+
+<p class="top" style="margin-top: .5em;">
+For .pfb fonts, run
+<br/>
+<span class="pre-in-pp">
+  fontforge -script generate-pfa.pe &lt;file&gt;.ttf
+</span>
+This will create two new files with the extensions .pfa, and .afm.
+Next, run
+<br/>
+<span class="pre-in-pp">
+  afmtodit &lt;afm file&gt; textmap &lt;groff font&gt;
+</span>
+Move the .pfa and groff font files to
+<kbd>&lt;prefix&gt;/&lt;site-font&gt;/devps/</kbd>.
+(See
+<a href="#groff-font-names">here</a>
+for advice on naming groff fonts.)
+</p>
+
+<p>
+If you're running a recent version of groff that includes the
+native pdf device (gropdf), link the .pfa and groff font files,
+now in <kbd>&lt;prefix&gt;/&lt;site-font&gt;/devps/</kbd>,
+to the devpdf directory</kbd>.  Start by changing into the
+<kbd>&lt;prefix&gt;/&lt;version&gt;/font/devpdf/</kbd> directory,
+then:
+<br/>
+<span class="pre-in-pp">
+  ln -s &lt;prefix&gt;/&lt;version&gt;/font/devps/&lt;file&gt;.pfa .
+  ln -s &lt;prefix&gt;/&lt;version&gt;/font/devps/&lt;groff font&gt; .
+</span>
+You may safely remove the .afm file.
+</p>
+
+<h3 id="step-4" class="docs appendices">Step 4: Update the download file</h3>
+
+<h4 id="internal" class="docs" style="font-size: 90%; text-transform: uppercase;">&nbsp;&bullet;&nbsp;Get the internal font name</h4>
+
+<p class="top" style="margin-top: .5em;">
+Inspect your new groff font file.  Near the top, you will see a line
+of the form
+<br/>
+<span class="pre-in-pp">
+  internalname &lt;name&gt;
+</span>
+Usually, the internal name is helpfully descriptive, e.g.,
+<br/>
+<span class="pre-in-pp">
+  internalname Optima-Bold
+</span>
+Make a note of the internal name.
+</p>
+
+<h4 id="add" class="docs" style="font-size: 90%; text-transform: uppercase;">&nbsp;&bullet;&nbsp;Add the font to the download file</h4>
+
+<p class="top" style="margin-top: .5em;">
+Open the file <kbd>&lt;prefix&gt;/&lt;version&gt;/font/devps/download</kbd>.
+In it you will see lines of the form
+<br/>
+<span class="pre-in-pp">
+  Symbol-Slanted       symbolsl.pfa
+  ZapfDingbats-Reverse zapfdr.pfa
+  FreeEuro             freeeuro.pfa
+</span>
+where the spaces are the tab character from the keyboard, not
+literal spaces.  Thus,
+<br/>
+<span class="pre-in-pp">
+  Symbol-Slanted       symbolsl.pfa
+</span>
+is really
+<br/>
+<span class="pre-in-pp">
+  Symbol-Slanted&lt;tab&gt;symbolsl.pfa
+</span>
+</p>
+
+<p>
+The download file maps the internal names used by groff to the
+actual fonts.  To add your new font to the download file, append a
+line containing the internal name, followed by a tab (make sure your
+text editor is inserting the tab character, not spaces), followed by
+the .t42 or .pfa font to which the internal name refers.
+</p>
+
+<p>
+For example, if the internal name is Optima-Bold and the font is a
+.pfa file called Optima-Bold.pfa, your updated download file will
+contain
+<br/>
+<span class="pre-in-pp">
+  Optima-Bold&lt;tab&gt;Optima-Bold.pfa
+</span>
+</p>
+
+<h4 id="gropdf-download" class="docs" style="font-size: 90%; text-transform: uppercase;">&nbsp;&bullet;&nbsp;Updating the gropdf download file</h4>
+
+<p class="top" style="margin-top: .5em;">
+If you're running a recent version of groff that includes the
+native pdf device (gropdf), you must update its download file as
+well, which is found in <kbd>&lt;prefix&gt;/&lt;version&gt;/font/devpdf/</kbd>.
+The instructions are identical to those above, but with one important
+difference: all lines must begin with a tab character.  Thus, using
+our Optima example, your devpdf download line for the same font is
+<br/>
+<span class="pre-in-pp">
+  &lt;tab&gt;Optima-Bold&lt;tab&gt;Optima-Bold.pfa
+</span>
+</p>
+
+<h3 id="groff-font-names" class="docs appendices">Naming groff fonts</h3>
+ 
+<p class="top">
+For convenience when using mom, and to keep your font collection
+organized, choose meaningful groff font names following the scheme
+&lt;Family&gt;&lt;FONT&gt;, where Family is something
+like Optima or Univers or Clarendon, and FONT is either
+<br/>
+<span style="display: block; margin-left: 2em;">
+<kbd>R&nbsp;&nbsp;</kbd>(roman/regular)
+<br/>
+<kbd>I&nbsp;&nbsp;</kbd>(italic)
+<br/>
+<kbd>B&nbsp;&nbsp;</kbd>(bold)
+<br/>
+<kbd>BI&nbsp;</kbd>(bold italic)
+</span>
+or one of the 1&ndash;5 character fontstyles listed
+<a href="#style-extensions">here</a>.
+Thus, for the fonts Optima Light Italic and Optima Extra Black, your font names would be
+<br/>
+<span class="pre-in-pp">
+  OptimaLI
+  OptimaXBL
+</span>
+This scheme allows you to enter <kbd>.FAMILY&nbsp;Optima</kbd> to make
+Optima the current family, and <kbd>.FT&nbsp;LI</kbd> or <kbd>.FT&nbsp;XBL</kbd>
+when you need the fonts Light Italic or Extra Black.
+</p>
+
+<p>
+Groff font names are, in fact, arbitrary; you can call your fonts
+anything you like, provided the
+<a href="#internal">internal name</a>
+in the
+<a href="#add">download file</a>
+matches the internal name found in the groff font file.  When
+calling a font that does not follow the recommended naming convention,
+you must pass the full font name to <kbd>.FT</kbd> whenever you wish
+to use it.
+</p>
+
+<p>
+For example, the font, Goudy Stout, isn't really part of the
+Goudy family, and while "stout" describes it, Stout is not a
+recognized font style.  Therefore, its groff name could simply be
+GoudyStout, and whenever you needed it, you could call it with
+<kbd>.FT&nbsp;GoudyStout</kbd>.
+</p>
+
+<h3 id="install-font" class="docs appendices">Automate the whole process &ndash; the install-font script</h3>
+
+<p>
+A bash script to make the entire process of installing fonts a
+painless no-brainer has been posted online at
+<a href="http://www.schaffter.ca/mom/install-font">http://www.schaffter.ca/mom/install-font</a>.
+Be sure to make the script executable
+(<kbd>chmod 755 install-font</kbd>)
+after you download it, then type <kbd>./install-font -H</kbd> for
+usage.
+</p>
+
+<div class="rule-medium" style="margin-top: 2em;"><hr/></div>
+
+<!-- ===================================================================== -->
+
+<h2 id="codenotes" class="docs">Some reflections on mom</h2>
+
+<p>
+If, as Eric Raymond asserts, open source begins with a programmer
+scratching a personal itch, then mom can truly be called open
+source.
+</p>
+
+<p>
+Mom had her origins in a library of groff routines I wrote over
+the years to handle various aspects of typesetting and document
+processing that weren&#8217;t adequately covered by ms, me, mm, and
+friends.  Typically, I&#8217;d use the library to cobble together
+macro sets for new challenges as they came my way.
+</p>
+
+<p>
+As a writer living in a perpetual state of penury, all the computers
+I&#8217;ve ever owned have been hand-me-downs&mdash;several
+generations out-of-date and resource challenged.  Disk space has
+always been an issue, as has processor speed and available RAM.  One
+of the reasons I run GNU/Linux rather than the offering from Redmond
+is that it has helped enormously to get the most out of my poor
+little boxes.
+</p>
+
+<p>
+In Linux-land (all Unix variants, in fact), the choice of
+typesetting systems basically comes down to groff or TeX.  Both are
+wonderful&mdash;monumental achievements if you ask me&mdash;and both
+have their own particular strengths.  However, for people in my
+financial position (and there are millions of us around the globe,
+in both developed and developing countries), TeX and groff have one
+big difference: size.  TeX is huge.  Even its most ardent supporters
+agree it suffers from bloat, on top of being complex and unwieldy to
+manage.  Groff is tiny by comparison, occupying minimal disk space
+and having only a small memory footprint while at the same time
+being flexible and powerful, typographically speaking.  Back in the
+Jurassic Period, I ran it successfully on a 386 with 8 megs of RAM
+and a 250 meg hard disk.
+</p>
+
+<p>
+However, groff has always had a liability: it&#8217;s incredibly geeky.
+Owing to its very long history, it&mdash;and its power users
+&mdash;seem to have remained stuck in a time warp.  The canonical  macro packages
+still look as they did back in those decades when memory was exorbitantly
+expensive and every byte mattered.
+</p>
+
+<p>
+For some time now, groff users and macro writers have had the option
+to use &#8220;long&#8221; names for macros (i.e. longer than two
+letters, the original limit), yet have mostly chosen not to.  With
+long names, it&#8217;s possible to create macro sets that are
+humanly readable and easy to interpret, encouraging development and
+evolution.  What&#8217;s more, the macros themselves need not be
+terse, intimidating, and easily forgotten 1- or 2-letter commands
+inserted in the body of a document.  They can be sensible and
+helpful to everyone, groff newbies and old hands alike.
+</p>
+
+<p>
+Mom&#8217;s macro file, om.tmac, uses long names, aliases, and a
+host of other groff goodies that have become part of the whole groff
+picture.  The function of nearly every macro, number register and
+string can be infered simply from its name.  The file is heavily
+commented.  A consistent, if idiosyncratic, indenting style is used
+as well, significantly improving readability.  Anyone wanting to
+futz around with mom&#8217;s macros should be able to do so with a
+minimum of head scratching.
+</p>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Note:</span>
+The main macro file, <strong>om.tmac</strong>, is stripped of
+comments when groff is built from sources. <strong>om.tmac</strong>,
+in the sources themselves, still contains the comments, as do the
+tarballs posted on mom&#8217;s homepage.
+</p>
+</div>
+
+<div class="rule-medium"><hr/></div>
+
+<!-- ===================================================================== -->
+
+<h2 id="contact" class="docs">Contact the author</h2>
+
+<p>
+If you have any questions or comments about mom, suggestions to
+make, criticisms to offer, or bugs to report, use the groff mailing
+list (subscription information available
+<a href="http://www.gnu.org/software/groff/groff.html">here</a>)
+or contact me, Peter Schaffter,  directly at the following
+address:
+<br/>
+<span class="pre-in-pp">
+  &#112;&#101;&#116;&#101;&#114;&#64;&#115;&#99;&#104;&#97;&#102;&#102;&#116;&#101;&#114;&#46;&#99;&#97;
+</span>
+Please include the word &#8220;mom&#8221; or &#8220;groff&#8221; in
+the Subject line of any message sent to my personal address or you
+risk the wrath of my implacable spam filters.
+</p>
+
+<p>
+If you want to visit mom&#8217;s website, you&#8217;ll find a link
+to it at
+<br/>
+<span class="pre-in-pp">
+  http://www.schaffter.ca
+</span>
+The site contains links to some of my fiction, all of which was
+typeset with mom and groff.
+</p>
+
+<div class="rule-long"><hr/></div>
+
+<!-- Navigation links -->
+<table style="width: 100%; margin-top: 12px;">
+<tr>
+  <td style="width: 33%;"><a href="toc.html">Back to Table of Contents</a></td>
+  <td style="width: 100%; text-align: right;"><a href="#top">Top</a></td>
+</tr>
+</table>
+
+</div>
+
+<div class="bottom-spacer"><br/></div>
+
+</body>
+</html>

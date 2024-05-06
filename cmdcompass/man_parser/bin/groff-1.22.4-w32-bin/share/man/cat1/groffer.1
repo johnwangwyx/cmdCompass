@@ -1,0 +1,1418 @@
+GROFFER(1)                  General Commands Manual                 GROFFER(1)
+
+
+
+NNAAMMEE
+       groffer - display groff files and man pages on X and tty
+
+SSYYNNOOPPSSIISS
+       ggrrooffffeerr [_m_o_d_e_-_o_p_t_i_o_n ...] [_g_r_o_f_f_-_o_p_t_i_o_n ...] [_m_a_n_-_o_p_t_i_o_n ...] [_X_-_o_p_t_i_o_n
+               ...] [----] [_f_i_l_e_s_p_e_c ...]
+
+       ggrrooffffeerr --hh
+       ggrrooffffeerr ----hheellpp
+
+       ggrrooffffeerr --vv
+       ggrrooffffeerr ----vveerrssiioonn
+
+DDEESSCCRRIIPPTTIIOONN
+       The ggrrooffffeerr program is the easiest way to use ggrrooffff(1).  It can display
+       arbitrary  documents  written  in  the _g_r_o_f_f language, see ggrrooffff(7), or
+       other _r_o_f_f languages, see rrooffff(7), that are compatible to the  original
+       _t_r_o_f_f  language.   It finds and runs all necessary _g_r_o_f_f preprocessors,
+       such as cchheemm.
+
+       The ggrrooffffeerr program also includes many of the features for finding  and
+       displaying  the Unix manual pages (_m_a_n _p_a_g_e_s), such that it can be used
+       as a replacement for a mmaann(1) program.  Moreover, compressed files that
+       can be handled by ggzziipp(1) or bbzziipp22(1) are decompressed on-the-fly.
+
+       The  normal usage is quite simple by supplying a file name or name of a
+       _m_a_n _p_a_g_e without further options.  But the  option  handling  has  many
+       possibilities  for creating special behaviors.  This can be done either
+       in  configuration  files,   with   the   shell   environment   variable
+       _G_R_O_F_F_E_R___O_P_T, or on the command line.
+
+       The output can be generated and viewed in several different ways avail-
+       able for _g_r_o_f_f.  This includes the X Window System-based _g_r_o_f_f  program
+       ggxxddiittvviieeww(1),  each  _P_o_s_t_S_c_r_i_p_t,  _P_D_F,  or  _D_V_I  display program, a web
+       browser by generating _H_T_M_L or _X_H_T_M_L in _w_w_w _m_o_d_e, or several _t_e_x_t  _m_o_d_e_s
+       in text terminals.
+
+       Most  of the options that must be named when running ggrrooffff directly are
+       determined automatically for ggrrooffffeerr, due to the internal usage of  the
+       ggrroogg(1)  program.  But all parts can also be controlled manually by ar-
+       guments.
+
+       Several file names can be  specified  on  the  command-line  arguments.
+       They are transformed into a single document in the normal way of ggrrooffff.
+
+       Option  handling  is  done in GNU style.  Options and file names can be
+       mixed freely.  The option "----" closes the option handling, all  follow-
+       ing  arguments are treated as file names.  Long options can be abbrevi-
+       ated in several ways.
+
+OOPPTTIIOONN OOVVEERRVVIIEEWW
+       _b_r_e_a_k_i_n_g _o_p_t_i_o_n_s
+
+               [--hh | ----hheellpp] [--vv | ----vveerrssiioonn]
+
+       _g_r_o_f_f_e_r _m_o_d_e _o_p_t_i_o_n_s
+
+               [----aauuttoo] [----ddeeffaauulltt] [----ddeeffaauulltt--mmooddeess _m_o_d_e_1_,_m_o_d_e_2_,_._._.] [----ddvvii]
+               [----ggrrooffff] [----hhttmmll] [----llaattiinn11] [----mmooddee _d_i_s_p_l_a_y___m_o_d_e] [----ppddff]
+               [----ppddff22] [----ppss] [----ssoouurrccee] [----tteexxtt] [----ttoo--ssttddoouutt] [----ttttyy]
+               [----uuttff88] [----vviieewweerr _p_r_o_g] [----wwwwww] [----xxhhttmmll] [----xx | ----XX]
+
+       _o_p_t_i_o_n_s _r_e_l_a_t_e_d _t_o _g_r_o_f_f
+
+               [--TT | ----ddeevviiccee _d_e_v_i_c_e] [--ZZ | ----iinntteerrmmeeddiiaattee--oouuttppuutt | ----ddiittrrooffff]
+
+              All further ggrrooffff short options are accepted.
+
+       _o_p_t_i_o_n_s _f_o_r _m_a_n _p_a_g_e_s
+
+               [----aapprrooppooss] [----aapprrooppooss--ddaattaa] [----aapprrooppooss--ddeevveell]
+               [----aapprrooppooss--pprrooggss] [----mmaann] [----nnoo--mmaann] [----nnoo--ssppeecciiaall] [----wwhhaattiiss]
+
+       _l_o_n_g _o_p_t_i_o_n_s _t_a_k_e_n _o_v_e_r _f_r_o_m _G_N_U _m_a_n
+
+               [----aallll] [----aasscciiii] [----ddiittrrooffff] [----eexxtteennssiioonn _s_u_f_f_i_x]
+               [----llooccaallee _l_a_n_g_u_a_g_e] [----llooccaall--ffiillee] [----llooccaattiioonn | ----wwhheerree]
+               [----mmaannppaatthh _d_i_r_1_:_d_i_r_2_:_._._.] [----nnoo--llooccaattiioonn] [----ppaaggeerr _p_r_o_g_r_a_m]
+               [----sseeccttiioonnss _s_e_c_1_:_s_e_c_2_:_._._.] [----ssyysstteemmss _s_y_s_1_,_s_y_s_2_,_._._.]
+               [----ttrrooffff--ddeevviiccee _d_e_v_i_c_e]
+
+              Further long options of GNU mmaann are accepted as well.
+
+       _o_p_t_i_o_n_s _m_a_p_p_e_d _t_o _X _W_i_n_d_o_w _S_y_s_t_e_m _T_o_o_l_k_i_t _I_n_t_r_i_n_s_i_c_s _o_p_t_i_o_n_s
+
+               [----bbdd | ----bboorrddeerrccoolloorr _p_i_x_e_l_s] [----bbgg | ----bbaacckkggrroouunndd _c_o_l_o_r]
+               [----bbww | ----bboorrddeerrwwiiddtthh _p_i_x_e_l_s] [----ddiissppllaayy _X_-_d_i_s_p_l_a_y]
+               [----ffgg | ----ffoorreeggrroouunndd _c_o_l_o_r] [----ffnn | ----fftt | ----ffoonntt _f_o_n_t___n_a_m_e]
+               [----ggeeoommeettrryy _s_i_z_e___p_o_s] [----rreessoolluuttiioonn _v_a_l_u_e] [----rrvv]
+               [----ttiittllee _s_t_r_i_n_g] [----xxrrmm _X_-_r_e_s_o_u_r_c_e]
+
+       _o_p_t_i_o_n_s _f_o_r _d_e_v_e_l_o_p_m_e_n_t
+
+               [----ddeebbuugg] [----ddeebbuugg--ffiilleennaammeess] [----ddeebbuugg--ggrroogg] [----ddeebbuugg--kkeeeepp]
+               [----ddeebbuugg--ppaarraammss] [----ddeebbuugg--ttmmppddiirr] [----ddoo--nnootthhiinngg] [----pprriinntt _t_e_x_t]
+               [--VV]
+
+       _f_i_l_e_s_p_e_c _a_r_g_u_m_e_n_t_s
+
+              The _f_i_l_e_s_p_e_c parameters are all arguments that  are  neither  an
+              option nor an option argument.  They usually mean a file name or
+              a _m_a_n _p_a_g_e searching scheme.
+
+              In the following, the term _s_e_c_t_i_o_n___e_x_t_e_n_s_i_o_n is used.  It  means
+              a  word  that  consists of a _m_a_n _s_e_c_t_i_o_n that is optionally fol-
+              lowed by an _e_x_t_e_n_s_i_o_n.  The name of a _m_a_n _s_e_c_t_i_o_n  is  a  single
+              character  from [[11--99oonn]], the _e_x_t_e_n_s_i_o_n is some word.  The _e_x_t_e_n_-
+              _s_i_o_n is mostly lacking.
+
+              No _f_i_l_e_s_p_e_c parameters means standard input.
+
+              --         stands for standard input (can occur several times).
+
+              _f_i_l_e_n_a_m_e  the path name of an existing file.
+
+              mmaann::_n_a_m_e((_s_e_c_t_i_o_n___e_x_t_e_n_s_i_o_n))
+              mmaann::_n_a_m_e.._s_e_c_t_i_o_n___e_x_t_e_n_s_i_o_n
+              _n_a_m_e((_s_e_c_t_i_o_n___e_x_t_e_n_s_i_o_n))
+              _n_a_m_e.._s_e_c_t_i_o_n___e_x_t_e_n_s_i_o_n
+              _s_e_c_t_i_o_n___e_x_t_e_n_s_i_o_n _n_a_m_e
+                        search the man page _n_a_m_e in the section with  optional
+                        extension _s_e_c_t_i_o_n___e_x_t_e_n_s_i_o_n.
+
+              mmaann::_n_a_m_e  man page in the lowest _m_a_n _s_e_c_t_i_o_n that has _n_a_m_e.
+
+              _n_a_m_e      if  _n_a_m_e  is  not  an  existing  file  search  for the
+                        man page _n_a_m_e in the lowest man section.
+
+OOPPTTIIOONN DDEETTAAIILLSS
+       The ggrrooffffeerr program can usually be run with very few options.  But  for
+       special purposes, it supports many options.  These can be classified in
+       5 option classes.
+
+       All short options of ggrrooffffeerr are compatible with the short  options  of
+       ggrrooffff(1).   All  long  options  of ggrrooffffeerr are compatible with the long
+       options of mmaann(1).
+
+       Arguments for long option names can be  abbreviated  in  several  ways.
+       First, the argument is checked whether it can be prolonged as is.  Fur-
+       thermore, each minus sign -- is considered as a starting point for a new
+       abbreviation.  This leads to a set of multiple abbreviations for a sin-
+       gle argument.  For example, ----ddee--nn--ff can be used as an abbreviation for
+       ----ddeebbuugg--nnoott--ffuunncc, but ----ddee--nn works as well.  If the abbreviation of the
+       argument leads to several resulting options an error is raised.
+
+       These abbreviations  are  only  allowed  in  the  environment  variable
+       _G_R_O_F_F_E_R___O_P_T, but not in the configuration files.  In configuration, all
+       long options must be exact.
+
+   ggrrooffffeerr bbrreeaakkiinngg OOppttiioonnss
+       As soon as one of these options is found on the command line it is exe-
+       cuted,  printed  to  standard output, and the running ggrrooffffeerr is termi-
+       nated thereafter.  All other arguments are ignored.
+
+       --hh | ----hheellpp
+              Print help information with a short explanation  of  options  to
+              standard output.
+
+       --vv | ----vveerrssiioonn
+              Print version information to standard output.
+
+   ggrrooffffeerr MMooddee OOppttiioonnss
+       The  display  mode  and  the  viewer  programs  are determined by these
+       options.  If none of these mode and viewer options is specified ggrrooffffeerr
+       tries to find a suitable display mode automatically.  The default modes
+       are _m_o_d_e _p_d_f, _m_o_d_e _p_s, _m_o_d_e _h_t_m_l, _m_o_d_e _x_h_t_m_l, _m_o_d_e _x, and _m_o_d_e  _d_v_i  in
+       the  X  Window  System  with different viewers and _m_o_d_e _t_t_y with device
+       _u_t_f_8 under lleessss on a terminal; other modes are tested if  the  programs
+       for the main default mode do not exist.
+
+       In  the  X  Window  System,  many programs create their own window when
+       called.  ggrrooffffeerr can run these viewers as an independent program in the
+       background.   As  this  does  not work in text mode on a terminal (tty)
+       there must be a way to know which viewers  are  X  Window  System-based
+       graphical  programs.  The ggrrooffffeerr script has a small amount of informa-
+       tion on some viewer names.  If a viewer argument  of  the  command-line
+       chooses  an element that is recognized as an X Window System-based pro-
+       gram in this list, it is treated as a viewer that can run in the  back-
+       ground.  Unrecognized viewers are not run in the background.
+
+       For  each  mode, you are free to choose whatever viewer you want.  That
+       need not be some graphical viewer suitable for this mode.  There  is  a
+       chance  to  view the output source; for example, the combination of the
+       options ----mmooddee==ppss and ----vviieewweerr==lleessss shows the content of the _P_o_s_t_S_c_r_i_p_t
+       output, the source code, with the pager lleessss.
+
+       ----aauuttoo Equivalent to ----mmooddee==aauuttoo.
+
+       ----ddeeffaauulltt
+              Reset  all  configuration from previously processed command-line
+              options to the default values.  This is useful to wipe  out  all
+              former options of the configuration, in _G_R_O_F_F_E_R___O_P_T, and restart
+              option processing using only the rest of the command line.
+
+       ----ddeeffaauulltt--mmooddeess _m_o_d_e_1_,_m_o_d_e_2_,_._._.
+              Set the sequence of modes for _a_u_t_o _m_o_d_e to the  comma  separated
+              list  given  in  the argument.  See ----mmooddee for details on modes.
+              Display in the default manner; actually, this means to  try  the
+              modes _x, _p_s, and _t_t_y in this sequence.
+
+       ----ddvvii  Equivalent  to  ----mmooddee==ddvvii.   Known _D_V_I viewers for the X Window
+              System include xxddvvii(1) and ddvviillxx(1).
+
+       ----ggrrooffff
+              Equivalent to ----mmooddee==ggrrooffff.
+
+       ----hhttmmll Equivalent to ----mmooddee==hhttmmll.
+
+       ----mmooddee _v_a_l_u_e
+              Set the display mode.  The following mode values are recognized:
+
+              aauuttoo   Select the automatic determination of the  display  mode.
+                     The  sequence of modes that are tried can be set with the
+                     ----ddeeffaauulltt--mmooddeess  option.   Useful   for   restoring   the
+                     _d_e_f_a_u_l_t _m_o_d_e when a different mode was specified before.
+
+              ddvvii    Display  formatted  input  in  a  _D_V_I viewer program.  By
+                     default,  the  formatted  input  is  displayed  with  the
+                     xxddvvii(1) program.
+
+              ggrrooffff  After  the  file determination, switch ggrrooffffeerr to process
+                     the input like ggrrooffff(1)  would  do.   This  disables  the
+                     _g_r_o_f_f_e_r viewing features.
+
+              hhttmmll   Translate  the  input  into  HTML  format and display the
+                     result in a web browser program.  By default,  the  exis-
+                     tence  of  a sequence of standard web browsers is tested,
+                     starting with kkoonnqquueerroorr(1) and mmoozziillllaa(1).  The text HTML
+                     viewer  is  llyynnxx(1).   By  default,  the  existence  of a
+                     sequence of standard web  browsers  is  tested,  starting
+                     with  kkoonnqquueerroorr(1)  and mmoozziillllaa(1).  The text HTML viewer
+                     is llyynnxx(1).
+
+              ppddff    Transform _r_o_f_f _i_n_p_u_t _f_i_l_e_s into a _P_D_F _f_i_l_e by  using  the
+                     ggrrooffff  ((11)) device --TTppddff.  This is the default PPDDFF genera-
+                     tor.  The generated _P_D_F _f_i_l_e is displayed  with  suitable
+                     viewer programs, such as ookkuullaarr(1).
+
+              ppddff22   This  is  the  traditional _p_d_f _m_o_d_e.  Sometimes this mode
+                     produces more correct output than the default  PPDDFF  mmooddee.
+                     By  default,  the  input  is formatted by ggrrooffff using the
+                     PostScript device, then it is transformed  into  the  PDF
+                     file  format  using  ggss(1),  or ppss22ppddff(1).  If that's not
+                     possible, the  _P_o_s_t_S_c_r_i_p_t  _m_o_d_e  _(_p_s_)  is  used  instead.
+                     Finally it is displayed using different viewer programs.
+
+              ppss     Display  formatted  input in a PostScript viewer program.
+                     By default, the formatted input is displayed  in  one  of
+                     many viewer programs.
+
+              tteexxtt   Format in a _g_r_o_f_f _t_e_x_t _m_o_d_e and write the result to stan-
+                     dard output without a pager or viewer program.  The  text
+                     device, _l_a_t_i_n_1 by default, can be chosen with option --TT.
+
+              ttttyy    Format in a _g_r_o_f_f _t_e_x_t _m_o_d_e and write the result to stan-
+                     dard output using a text pager program, even when in  the
+                     X Window System.
+
+              wwwwww    Equivalent to ----mmooddee==hhttmmll.
+
+              xx      Display  the formatted input in a native _r_o_f_f viewer.  By
+                     default,  the  formatted  input  is  displayed  with  the
+                     ggxxddiittvviieeww(1)  program  being  distributed  together  with
+                     ggrrooffff.   But  the  legacy  X  Window  System  application
+                     xxddiittvviieeww(1)  can also be chosen with the option ----vviieewweerr.
+                     The default resolution is 7755ddppii, but 110000ddppii are also pos-
+                     sible.   The  default  _g_r_o_f_f device for the resolution of
+                     7755ddppii is XX7755--1122, for 110000ddppii it is XX110000.  The  correspond-
+                     ing  _g_r_o_f_f  _i_n_t_e_r_m_e_d_i_a_t_e  _o_u_t_p_u_t for the actual device is
+                     generated and the result is displayed.  For a  resolution
+                     of  110000ddppii, the default width of the geometry of the dis-
+                     play program is chosen to 885500ddppii.
+
+              XX      Equivalent to ----mmooddee==xx.
+
+              xxhhttmmll  Translate the input into _X_H_T_M_L format, which  is  an  _X_M_L
+                     version  of  _H_T_M_L.   Then  display  the  result  in a web
+                     browser program, mostly the known _H_T_M_L _v_i_e_w_e_r_s.
+
+              The following modes do not use  the  _g_r_o_f_f_e_r  viewing  features.
+              They are only interesting for advanced applications.
+
+              ggrrooffff  Generate device output with plain _g_r_o_f_f without using the
+                     special viewing features of _g_r_o_f_f_e_r.  If  no  device  was
+                     specified by option --TT the _g_r_o_f_f default ppss is assumed.
+
+              ssoouurrccee Output  the  roff  source code of the input files without
+                     further processing.
+
+       ----ppddff  Equivalent to ----mmooddee==ppddff.
+       ----ppddff22 Equivalent to ----mmooddee==ppddff22.
+
+       ----ppss   Equivalent to  ----mmooddee==ppss.   Common  PostScript  viewers  include
+              ookkuullaarr(1),  eevviinnccee(1),  ggvv(1),  gghhoossttvviieeww(1), and ggss(1), In each
+              case, arguments can be provided additionally.
+
+       ----ssoouurrccee
+              Equivalent to ----mmooddee==ssoouurrccee.
+
+       ----tteexxtt Equivalent to ----mmooddee==tteexxtt.
+
+       ----ttoo--ssttddoouutt
+              The file for the chosen mode is generated  and  its  content  is
+              printed to standard output.  It will not be displayed in graphi-
+              cal mode.
+
+       ----ttttyy  Equivalent to ----mmooddee==ttttyy.  The standard pager is lleessss(1).   This
+              option  is  equivalent  to  _m_a_n option ----ppaaggeerr==_p_r_o_g.  The option
+              argument can be a file name or  a  program  to  be  searched  in
+              _$_P_A_T_H; arguments can be provided additionally.
+
+       ----vviieewweerr _p_r_o_g
+              Choose  a viewer program for actual device or mode.  This can be
+              a file name or a program to be searched in _$_P_A_T_H; arguments  can
+              be provided additionally.
+
+       ----wwwwww  Equivalent to ----mmooddee==hhttmmll.
+
+       ----XX | ----xx
+              Equivalent   to   ----mmooddee==xx.    Suitable   viewer   programs  are
+              ggxxddiittvviieeww(1) which is the default and xxddiittvviieeww(1).
+
+       ----     Signals the end of option processing;  all  remaining  arguments
+              are interpreted as _f_i_l_e_s_p_e_c parameters.
+
+       Besides these, ggrrooffffeerr accepts all short options that are valid for the
+       ggrrooffff(1) program.  All non-ggrrooffffeerr options are sent unmodified via ggrroogg
+       to  ggrrooffff.  So postprocessors, macro packages, compatibility with _c_l_a_s_-
+       _s_i_c_a_l _t_r_o_f_f, and much more can be manually specified.
+
+   OOppttiioonnss rreellaatteedd ttoo ggrrooffff
+       All short options of ggrrooffffeerr are compatible with the short  options  of
+       ggrrooffff(1).   The  following  of  ggrrooffff options have either an additional
+       special meaning within ggrrooffffeerr or make sense for normal usage.
+
+       Because of the special outputting  behavior  of  the  ggrrooffff  option  --ZZ
+       ggrrooffffeerr  was designed to be switched into _g_r_o_f_f _m_o_d_e; the _g_r_o_f_f_e_r view-
+       ing features are disabled there.  The other ggrrooffff options do not switch
+       the mode, but allow to customize the formatting process.
+
+       ----aa    This   generates   an  ASCII  approximation  of  output  in  the
+              _t_e_x_t _m_o_d_e_s.  That could be important when  the  text  pager  has
+              problems with control sequences in _t_t_y _m_o_d_e.
+
+       ----mm _f_i_l_e
+              Add  _f_i_l_e as a _g_r_o_f_f macro file.  This is useful in case it can-
+              not be recognized automatically.
+
+       ----PP _o_p_t___o_r___a_r_g
+              Send the argument _o_p_t___o_r___a_r_g as an option or option argument  to
+              the actual ggrrooffff postprocessor.
+
+       ----TT _d_e_v_n_a_m_e | ----ddeevviiccee _d_e_v_n_a_m_e
+              This  option  determines ggrrooffff's output device.  The most impor-
+              tant devices are the text output devices for  referring  to  the
+              different character sets, such as aasscciiii, uuttff88, llaattiinn11, uuttff88, and
+              others.   Each  of  these  arguments  switches  ggrrooffffeerr  into  a
+              _t_e_x_t  _m_o_d_e  using this device, to _m_o_d_e _t_t_y if the actual mode is
+              not a _t_e_x_t _m_o_d_e.  The following _d_e_v_n_a_m_e arguments are mapped  to
+              the  corresponding  ggrrooffffeerr  ----mmooddee==_d_e_v_n_a_m_e  option:  ddvvii, hhttmmll,
+              xxhhttmmll, and ppss.  All XX** arguments are mapped  to  _m_o_d_e  _x.   Each
+              other _d_e_v_n_a_m_e argument switches to _m_o_d_e _g_r_o_f_f using this device.
+
+       ----XX    is  equivalent  to ggrrooffff --XX.  It displays the _g_r_o_f_f _i_n_t_e_r_m_e_d_i_a_t_e
+              _o_u_t_p_u_t with ggxxddiittvviieeww.  As the quality is  relatively  bad  this
+              option is deprecated; use ----XX instead because the _x _m_o_d_e uses an
+              _X* device for a better display.
+
+       --ZZ | ----iinntteerrmmeeddiiaattee--oouuttppuutt | ----ddiittrrooffff
+              Switch into _g_r_o_f_f _m_o_d_e and  format  the  input  with  the  _g_r_o_f_f
+              _i_n_t_e_r_m_e_d_i_a_t_e  _o_u_t_p_u_t  without  postprocessing; see ggrrooffff__oouutt(5).
+              This is equivalent to option ----ddiittrrooffff of _m_a_n, which can be used
+              as well.
+
+       All  other  ggrrooffff  options  are supported by ggrrooffffeerr, but they are just
+       transparently transferred  to  ggrrooffff  without  any  intervention.   The
+       options  that  are  not explicitly handled by ggrrooffffeerr are transparently
+       passed to ggrrooffff.  Therefore these transparent  options  are  not  docu-
+       mented  here,  but in ggrrooffff(1).  Due to the automatism in ggrrooffffeerr, none
+       of these ggrrooffff options should be needed, except for advanced usage.
+
+   OOppttiioonnss ffoorr mmaann ppaaggeess
+       ----aapprrooppooss
+              Start the aapprrooppooss(1) command or facility of mmaann(1) for searching
+              the  _f_i_l_e_s_p_e_c  arguments within all _m_a_n _p_a_g_e descriptions.  Each
+              _f_i_l_e_s_p_e_c argument is taken for search as it is; _s_e_c_t_i_o_n specific
+              parts  are  not  handled, such that 77 ggrrooffff searches for the two
+              arguments 77 and ggrrooffff, with a large  result;  for  the  _f_i_l_e_s_p_e_c
+              ggrrooffff..77  nothing  will be found.  The _l_a_n_g_u_a_g_e locale is handled
+              only when the called programs do support this; the  GNU  aapprrooppooss
+              and mmaann --kk do not.  The display differs from the aapprrooppooss program
+              by the following concepts:
+
+              * Construct a _g_r_o_f_f frame similar to a _m_a_n _p_a_g_e to the output of
+                aapprrooppooss,
+
+              * each _f_i_l_e_s_p_e_c argument is searched on its own.
+
+              * The restriction by ----sseeccttiioonnss is handled as well,
+
+              * wildcard  characters are allowed and handled without a further
+                option.
+
+       ----aapprrooppooss--ddaattaa
+              Show only the aapprrooppooss descriptions for data documents, these are
+              the  mmaann(7)  _s_e_c_t_i_o_n_s  _4, _5, and _7.  Direct _s_e_c_t_i_o_n declarations
+              are ignored, wildcards are accepted.
+
+       ----aapprrooppooss--ddeevveell
+              Show only the aapprrooppooss descriptions  for  development  documents,
+              these  are the mmaann(7) _s_e_c_t_i_o_n_s _2, _3, and _9.  Direct _s_e_c_t_i_o_n dec-
+              larations are ignored, wildcards are accepted.
+
+       ----aapprrooppooss--pprrooggss
+              Show only the aapprrooppooss descriptions for  documents  on  programs,
+              these  are the mmaann(7) _s_e_c_t_i_o_n_s _1, _6, and _8.  Direct _s_e_c_t_i_o_n dec-
+              larations are ignored, wildcards are accepted.
+
+       ----wwhhaattiiss
+              For each _f_i_l_e_s_p_e_c argument search  all  _m_a_n  _p_a_g_e_s  and  display
+              their  description -- or say that it is not a _m_a_n _p_a_g_e.  This is
+              written from anew, so it differs from _m_a_n's wwhhaattiiss output by the
+              following concepts
+
+              * each retrieved file name is added,
+
+              * local files are handled as well,
+
+              * the _l_a_n_g_u_a_g_e and _s_y_s_t_e_m locale is supported,
+
+              * the  display  is  framed by a _g_r_o_f_f output format similar to a
+                _m_a_n _p_a_g_e,
+
+              * wildcard characters are allowed without a further option.
+
+       The following options were added to ggrrooffffeerr for  choosing  whether  the
+       file  name  arguments  are interpreted as names for local files or as a
+       search pattern for _m_a_n _p_a_g_e_s.  The default  is  looking  up  for  local
+       files.
+
+       ----mmaann  Check the non-option command-line arguments (_f_i_l_e_s_p_e_c_s) first on
+              being _m_a_n _p_a_g_e_s, then whether they represent an  existing  file.
+              By default, a _f_i_l_e_s_p_e_c is first tested whether it is an existing
+              file.
+
+       ----nnoo--mmaann | ----llooccaall--ffiillee
+              Do not check for _m_a_n _p_a_g_e_s.  ----llooccaall--ffiillee is  the  corresponding
+              mmaann option.
+
+       ----nnoo--ssppeecciiaall
+              Disable former calls of ----aallll, ----aapprrooppooss**, and ----wwhhaattiiss.
+
+   LLoonngg ooppttiioonnss ttaakkeenn oovveerr ffrroomm GGNNUU mmaann
+       The  long options of ggrrooffffeerr were synchronized with the long options of
+       GNU mmaann.  All long options of GNU mmaann are recognized, but  not  all  of
+       these  options  are  important to ggrrooffffeerr, so most of them are just ig-
+       nored.  These ignored mmaann options are ----ccaattmmaann, ----ttrrooffff, and ----uuppddaattee.
+
+       In the following, the mmaann options  that  have  a  special  meaning  for
+       ggrrooffffeerr are documented.
+
+       If your system has GNU mmaann installed the full set of long and short op-
+       tions of the GNU mmaann program can be passed via the environment variable
+       _M_A_N_O_P_T; see mmaann(1).
+
+       ----aallll  In  searching _m_a_n _p_a_g_e_s, retrieve all suitable documents instead
+              of only one.
+
+       --77 | ----aasscciiii
+              In _t_e_x_t _m_o_d_e_s, display ASCII translation of  special  characters
+              for   critical   environment.    This  is  equivalent  to  ggrrooffff
+              --mmttttyy__cchhaarr; see ggrrooffff__ttmmaacc(5).
+
+       ----ddiittrrooffff
+              Produce  _g_r_o_f_f  _i_n_t_e_r_m_e_d_i_a_t_e  _o_u_t_p_u_t.   This  is  equivalent  to
+              ggrrooffffeerr --ZZ.
+
+       ----eexxtteennssiioonn _s_u_f_f_i_x
+              Restrict _m_a_n _p_a_g_e search to file names that have _s_u_f_f_i_x appended
+              to their  section  element.   For  example,  in  the  file  name
+              _/_u_s_r_/_s_h_a_r_e_/_m_a_n_/_m_a_n_3_/_t_e_r_m_i_n_f_o_._3_n_c_u_r_s_e_s_._g_z  the _m_a_n _p_a_g_e extension
+              is _n_c_u_r_s_e_s.
+
+       ----llooccaallee _l_a_n_g_u_a_g_e
+              Set the language for _m_a_n _p_a_g_e_s.  This has the same  effect,  but
+              overwrites _$_L_A_N_G.
+
+       ----llooccaattiioonn
+              Print the location of the retrieved files to standard error.
+
+       ----nnoo--llooccaattiioonn
+              Do  not  display  the location of retrieved files; this resets a
+              former call to ----llooccaattiioonn.  This was added by ggrrooffffeerr.
+
+       ----mmaannppaatthh _'_d_i_r_1_:_d_i_r_2_:_._._._'
+              Use the specified search path for retrieving _m_a_n  _p_a_g_e_s  instead
+              of  the  program  defaults.  If the argument is set to the empty
+              string "" the search for _m_a_n _p_a_g_e is disabled.
+
+       ----ppaaggeerr
+              Set the pager program in _t_t_y _m_o_d_e; default is lleessss.  This can be
+              set with ----vviieewweerr.
+
+       ----sseeccttiioonnss _s_e_c_1_:_s_e_c_2_:_._._.
+              Restrict searching for _m_a_n _p_a_g_e_s to the given _s_e_c_t_i_o_n_s, a colon-
+              separated list.
+
+       ----ssyysstteemmss _s_y_s_1_,_s_y_s_2_,_._._.
+              Search for _m_a_n _p_a_g_e_s for the given operating systems; the  argu-
+              ment _s_y_s_t_e_m_s is a comma-separated list.
+
+       ----wwhheerree
+              Equivalent to ----llooccaattiioonn.
+
+   XX WWiinnddooww SSyysstteemm TToooollkkiitt IInnttrriinnssiiccss OOppttiioonnss
+       The following long options were adapted from the corresponding X Window
+       System Toolkit Intrinsics options.  ggrrooffffeerr will pass them to the actu-
+       al viewer program if it is an X Window System program.  Otherwise these
+       options are ignored.
+
+       Unfortunately these options use the old style of  a  single  minus  for
+       long  options.  For ggrrooffffeerr that was changed to the standard with using
+       a double minus for long options, for example, ggrrooffffeerr uses  the  option
+       ----ffoonntt for the X Window System Toolkit Intrinsics option --ffoonntt.
+
+       See XX(7) and the manual _X _T_o_o_l_k_i_t _I_n_t_r_i_n_s_i_c_s _- _C _L_a_n_g_u_a_g_e _I_n_t_e_r_f_a_c_e for
+       more details on these options and their arguments.
+
+       ----bbaacckkggrroouunndd _c_o_l_o_r
+              Set the background color of the viewer window.
+
+       ----bbdd _p_i_x_e_l_s
+              This is equivalent to ----bboorrddeerrccoolloorr.
+
+       ----bbgg _c_o_l_o_r
+              This is equivalent to ----bbaacckkggrroouunndd.
+
+       ----bbww _p_i_x_e_l_s
+              This is equivalent to ----bboorrddeerrwwiiddtthh.
+
+       ----bboorrddeerrccoolloorr _p_i_x_e_l_s
+              Specifies the color of the border surrounding the viewer window.
+
+       ----bboorrddeerrwwiiddtthh _p_i_x_e_l_s
+              Specifies the width in pixels  of  the  border  surrounding  the
+              viewer window.
+
+       ----ddiissppllaayy _X_-_d_i_s_p_l_a_y
+              Set  the  X  Window  System  display on which the viewer program
+              shall be started.  See section "Display Names" in XX(7)  for  the
+              syntax of the argument.
+
+       ----ffoorreeggrroouunndd _c_o_l_o_r
+              Set the foreground color of the viewer window.
+
+       ----ffgg _c_o_l_o_r
+              This is equivalent to ----ffoorreeggrroouunndd.
+
+       ----ffnn _f_o_n_t___n_a_m_e
+              This is equivalent to ----ffoonntt.
+
+       ----ffoonntt _f_o_n_t___n_a_m_e
+              Set  the  font  used by the viewer window.  The argument is an X
+              Window System font name.
+
+       ----fftt _f_o_n_t___n_a_m_e
+              This is equivalent to ----ffoonntt.
+
+       ----ggeeoommeettrryy _s_i_z_e___p_o_s
+              Set the geometry of the display window, that means its size  and
+              its starting position.  See section "Geometry Specifications" in
+              XX(7) for the syntax of the argument.
+
+       ----rreessoolluuttiioonn _v_a_l_u_e
+              Set X Window System resolution in dpi (dots per  inch)  in  some
+              viewer  programs.  The only supported dpi values are 7755 and 110000.
+              Actually, the default resolution for ggrrooffffeerr is  set  to  7755ddppii.
+              The resolution also sets the default device in _m_o_d_e _x.
+
+       ----rrvv   Reverse foreground and background color of the viewer window.
+
+       ----ttiittllee _'_s_o_m_e _t_e_x_t_'
+              Set the title for the viewer window.
+
+       ----xxrrmm _'_r_e_s_o_u_r_c_e_'
+              Set the X Window System server resource to the given value.
+
+   OOppttiioonnss ffoorr DDeevveellooppmmeenntt
+       ----ddeebbuugg
+              Enable  all debugging options ----ddeebbuugg--_t_y_p_e.  The temporary files
+              are kept and not deleted, the ggrroogg output is printed,  the  name
+              of  the temporary directory is printed, the displayed file names
+              are printed, and the parameters are printed.
+
+       ----ddeebbuugg--ffiilleennaammeess
+              Print the names of the files and _m_a_n _p_a_g_e_s that are displayed by
+              ggrrooffffeerr.
+
+       ----ddeebbuugg--ggrroogg
+              Print the output of all ggrroogg commands.
+
+       ----ddeebbuugg--kkeeeepp
+              Enable two debugging informations.  Print the name of the tempo-
+              rary directory and keep the temporary files, do not delete  them
+              during the run of ggrrooffffeerr.
+
+       ----ddeebbuugg--ppaarraammss
+              Print  the parameters, as obtained from the configuration files,
+              from _G_R_O_F_F_E_R___O_P_T, and the command-line arguments.
+
+       ----ddeebbuugg--ttmmppddiirr
+              Print the name of the temporary directory.
+
+       ----ddoo--nnootthhiinngg
+              This is like ----vveerrssiioonn, but without the  output;  no  viewer  is
+              started.  This makes only sense in development.
+
+       ----pprriinntt==_t_e_x_t
+              Just print the argument to standard error.  This is good for pa-
+              rameter check.
+
+       --VV     This is an advanced option for debugging only.  Instead of  dis-
+              playing  the formatted input, a lot of _g_r_o_f_f_e_r specific informa-
+              tion is printed to standard output:
+
+              * the output file name in the temporary directory,
+
+              * the display mode of the actual ggrrooffffeerr run,
+
+              * the display program for viewing the output with its arguments,
+
+              * the active parameters from the config files, the arguments  in
+                _G_R_O_F_F_E_R___O_P_T, and the arguments of the command line,
+
+              * the pipeline that would be run by the ggrrooffff program, but with-
+                out executing it.
+
+       Other  useful  debugging  options  are  the   ggrrooffff   option   --ZZ   and
+       ----mmooddee==ggrrooffff.
+
+   FFiilleessppeecc AArrgguummeennttss
+       A _f_i_l_e_s_p_e_c parameter is an argument that is not an option or option ar-
+       gument.  In ggrrooffffeerr, _f_i_l_e_s_p_e_c parameters are a file name or a  template
+       for  searching  _m_a_n  _p_a_g_e_s.  These input sources are collected and com-
+       posed into a single output file such as ggrrooffff does.
+
+       The strange POSIX behavior to regard all  arguments  behind  the  first
+       non-option argument as _f_i_l_e_s_p_e_c arguments is ignored.  The GNU behavior
+       to recognize options even when mixed with _f_i_l_e_s_p_e_c  arguments  is  used
+       throughout.   But,  as usual, the double minus argument ---- ends the op-
+       tion handling and interprets all following arguments as _f_i_l_e_s_p_e_c  argu-
+       ments; so the POSIX behavior can be easily adopted.
+
+       The  options  ----aapprrooppooss** have a special handling of _f_i_l_e_s_p_e_c arguments.
+       Each argument is taken as a search scheme of its own.   Also  a  regexp
+       (regular expression) can be used in the filespec.  For example, ggrrooffffeerr
+       ----aapprrooppooss ''^^ggrroo..ff$$'' searches ggrrooffff in the _m_a_n _p_a_g_e name, while  ggrrooffffeerr
+       ----aapprrooppooss  ggrrooffff searches ggrrooffff somewhere in the name or description of
+       the _m_a_n _p_a_g_e_s.
+
+       All other parts of _g_r_o_f_f_e_r, such as the normal display  or  the  output
+       with  ----wwhhaattiiss  have  a different scheme for _f_i_l_e_s_p_e_c_s.  No regular ex-
+       pressions are used for the arguments.  The _f_i_l_e_s_p_e_c arguments are  han-
+       dled by the following scheme.
+
+       It  is  necessary  to know that on each system the _m_a_n _p_a_g_e_s are sorted
+       according to their content into several sections.   The  _c_l_a_s_s_i_c_a_l  _m_a_n
+       _s_e_c_t_i_o_n_s  have  a  single-character name, either a digit from 11 to 99 or
+       one of the characters nn or oo.
+
+       This can optionally be followed by a string, the  so-called  _e_x_t_e_n_s_i_o_n.
+       The  _e_x_t_e_n_s_i_o_n  allows  the  storage of several _m_a_n _p_a_g_e_s with the same
+       name in the same _s_e_c_t_i_o_n.  But the _e_x_t_e_n_s_i_o_n is only rarely used;  usu-
+       ally  it is omitted.  Then the _e_x_t_e_n_s_i_o_n_s are searched automatically by
+       alphabet.
+
+       In the following, we use the name _s_e_c_t_i_o_n___e_x_t_e_n_s_i_o_n  for  a  word  that
+       consists of a single character _s_e_c_t_i_o_n name or a _s_e_c_t_i_o_n character that
+       is followed by an _e_x_t_e_n_s_i_o_n.  Each _f_i_l_e_s_p_e_c parameter can have  one  of
+       the following forms in decreasing sequence.
+
+       * No  _f_i_l_e_s_p_e_c  parameters means that ggrrooffffeerr waits for standard input.
+         The minus option -- always stands for standard  input;  it  can  occur
+         several  times.   If  you want to look up a _m_a_n _p_a_g_e called -- use the
+         argument mmaann::--.
+
+       * Next a _f_i_l_e_s_p_e_c is tested whether it is the path name of an  existing
+         file.   Otherwise  it  is  assumed  to  be  a searching pattern for a
+         _m_a_n _p_a_g_e.
+
+       * mmaann::_n_a_m_e((_s_e_c_t_i_o_n___e_x_t_e_n_s_i_o_n))_,              mmaann::_n_a_m_e.._s_e_c_t_i_o_n___e_x_t_e_n_s_i_o_n_,
+         _n_a_m_e((_s_e_c_t_i_o_n___e_x_t_e_n_s_i_o_n))_,   or   _n_a_m_e.._s_e_c_t_i_o_n___e_x_t_e_n_s_i_o_n   search   the
+         man  page  _n_a_m_e  in   man   section   and   possibly   extension   of
+         _s_e_c_t_i_o_n___e_x_t_e_n_s_i_o_n.
+
+       * Now  mmaann::_n_a_m_e  searches for a _m_a_n _p_a_g_e in the lowest _m_a_n _s_e_c_t_i_o_n that
+         has a document called _n_a_m_e.
+
+       * _s_e_c_t_i_o_n___e_x_t_e_n_s_i_o_n _n_a_m_e is a pattern of 2  arguments  that  originates
+         from  a  strange  argument  parsing  of the mmaann program.  Again, this
+         searches the man page _n_a_m_e with _s_e_c_t_i_o_n___e_x_t_e_n_s_i_o_n, a combination of a
+         _s_e_c_t_i_o_n character optionally followed by an _e_x_t_e_n_s_i_o_n.
+
+       * We are left with the argument _n_a_m_e which is not an existing file.  So
+         this searches for the _m_a_n _p_a_g_e called _n_a_m_e in the lowest _m_a_n  _s_e_c_t_i_o_n
+         that has a document for this name.
+
+       Several  file  name arguments can be supplied.  They are mixed by ggrrooffff
+       into a single document.  Note that the set of option arguments must fit
+       to  all of these file arguments.  So they should have at least the same
+       style of the _g_r_o_f_f language.
+
+OOUUTTPPUUTT MMOODDEESS
+       By default, the ggrrooffffeerr program collects all input into a single  file,
+       formats it with the ggrrooffff program for a certain device, and then choos-
+       es a suitable viewer program.  The device and viewer process in ggrrooffffeerr
+       is  called a _m_o_d_e.  The mode and viewer of a running ggrrooffffeerr program is
+       selected automatically, but the user can also choose it  with  options.
+       The  modes are selected by option the arguments of ----mmooddee==_a_n_y_m_o_d_e.  Ad-
+       ditionally, each of this argument can be specified as an option of  its
+       own, such as aannyymmooddee.  Most of these modes have a viewer program, which
+       can be chosen by the option ----vviieewweerr.
+
+       Several different modes are offered: graphical modes for the  X  Window
+       System,  _t_e_x_t  _m_o_d_e_s, and some direct _g_r_o_f_f _m_o_d_e_s for debugging and de-
+       velopment.
+
+       By default, ggrrooffffeerr first  tries  whether  _x  _m_o_d_e  is  possible,  then
+       _p_s  _m_o_d_e,  and  finally  _t_t_y  _m_o_d_e.   This  mode  testing  sequence for
+       _a_u_t_o _m_o_d_e can be changed by specifying a comma separated list of  modes
+       with the option ----ddeeffaauulltt--mmooddeess..
+
+       The  searching for _m_a_n _p_a_g_e_s and the decompression of the input are ac-
+       tive in every mode.
+
+   GGrraapphhiiccaall DDiissppllaayy MMooddeess
+       The graphical display modes work mostly in the X Window System environ-
+       ment  (or similar implementations within other windowing environments).
+       The environment variable _D_I_S_P_L_A_Y and the option ----ddiissppllaayy are used  for
+       specifying the X Window System display to be used.  If this environment
+       variable is empty, ggrrooffffeerr assumes that the X Window System is not run-
+       ning  and changes to a _t_e_x_t _m_o_d_e.  You can change this automatic behav-
+       ior by the option ----ddeeffaauulltt--mmooddeess.
+
+       Known viewers for the graphical display modes and their standard X Win-
+       dow System viewer programs are
+
+       * in a PDF viewer (_p_d_f _m_o_d_e)
+
+       * in a web browser (_h_t_m_l, (_x_h_t_m_l, or _w_w_w _m_o_d_e)
+
+       * in a PostScript viewer (_p_s _m_o_d_e)
+
+       * X  Window System _r_o_f_f viewers such as ggxxddiittvviieeww(1) or xxddiittvviieeww(1) (in
+         _x _m_o_d_e)
+
+       * in a DVI viewer program (_d_v_i _m_o_d_e)
+
+       The _p_d_f _m_o_d_e has a major advantage -- it is the only graphical  display
+       mode  that  allows  searching for text within the viewer; this can be a
+       really important feature.  Unfortunately, it takes some time to  trans-
+       form  the  input into the PDF format, so it was not chosen as the major
+       mode.
+
+       These graphical viewers can be customized by options of  the  X  Window
+       System  Toolkit Intrinsics.  But the ggrrooffffeerr options use a leading dou-
+       ble minus instead of the single minus used by the X Window System Tool-
+       kit Intrinsics.
+
+   TTeexxtt mmooddeess
+       There are two modes for text output, _m_o_d_e _t_e_x_t for plain output without
+       a pager and _m_o_d_e _t_t_y for a text output on a text  terminal  using  some
+       pager program.
+
+       If  the  variable  _D_I_S_P_L_A_Y is not set or empty, ggrrooffffeerr assumes that it
+       should use _t_t_y _m_o_d_e.
+
+       In the actual implementation, the _g_r_o_f_f output device _l_a_t_i_n_1 is  chosen
+       for  _t_e_x_t  _m_o_d_e_s.   This  can  be  changed  by  specifying option --TT or
+       ----ddeevviiccee.
+
+       The pager to be used can be specified by one of the options ----ppaaggeerr and
+       ----vviieewweerr,  or by the environment variable _P_A_G_E_R.  If all of this is not
+       used the lleessss(1) program with the option --rr  for  correctly  displaying
+       control sequences is used as the default pager.
+
+   SSppeecciiaall MMooddeess ffoorr DDeebbuuggggiinngg aanndd DDeevveellooppmmeenntt
+       These modes use the _g_r_o_f_f_e_r file determination and decompression.  This
+       is combined into a single input file that is fed  directly  into  ggrrooffff
+       with  different strategy without the _g_r_o_f_f_e_r viewing facilities.  These
+       modes are regarded as advanced, they are useful for debugging  and  de-
+       velopment purposes.
+
+       The _s_o_u_r_c_e _m_o_d_e with option ----ssoouurrccee just displays the decompressed in-
+       put.
+
+       Option ----ttoo--ssttddoouutt does not display in a graphical mode.  It just  gen-
+       erates  the  file  for  the  chosen mode and then prints its content to
+       standard output.
+
+       The _g_r_o_f_f _m_o_d_e passes the input to ggrrooffff using only some  suitable  op-
+       tions provided to ggrrooffffeerr.  This enables the user to save the generated
+       output into a file or pipe it into another program.
+
+       In _g_r_o_f_f _m_o_d_e, the option --ZZ disables post-processing,  thus  producing
+       the  _g_r_o_f_f  _i_n_t_e_r_m_e_d_i_a_t_e _o_u_t_p_u_t.  In this mode, the input is formatted,
+       but not postprocessed; see ggrrooffff__oouutt(5) for details.
+
+       All ggrrooffff short options are supported by ggrrooffffeerr.
+
+MMAANN PPAAGGEE SSEEAARRCCHHIINNGG
+       The default behavior of ggrrooffffeerr is to first test whether a file parame-
+       ter  represents a local file; if it is not an existing file name, it is
+       assumed to represent the name of a _m_a_n _p_a_g_e.  The following options can
+       be  used  to  determine whether the arguments should be handled as file
+       name or _m_a_n _p_a_g_e arguments.
+
+       ----mmaann  forces to interpret all file parameters as _f_i_l_e_s_p_e_c_s for search-
+              ing _m_a_n _p_a_g_e_s.
+
+       ----nnoo--mmaann
+       ----llooccaall--ffiillee
+              disable the _m_a_n searching; so only local files are displayed.
+
+       If  neither a local file nor a _m_a_n _p_a_g_e was retrieved for some file pa-
+       rameter a warning is issued on standard error, but processing  is  con-
+       tinued.
+
+   SSeeaarrcchh AAllggoorriitthhmm
+       Let us now assume that a _m_a_n _p_a_g_e should be searched.  The ggrrooffffeerr pro-
+       gram provides a search facility for _m_a_n _p_a_g_e_s.  All long  options,  all
+       environment  variables, and most of the functionality of the GNU mmaann(1)
+       program were implemented.  The search algorithm shall  determine  which
+       file is displayed for a given _m_a_n _p_a_g_e.  The process can be modified by
+       options and environment variables.
+
+       The only _m_a_n action that is omitted in  ggrrooffffeerr  are  the  preformatted
+       _m_a_n  _p_a_g_e_s,  also  called _c_a_t _p_a_g_e_s.  With the excellent performance of
+       the actual computers, the preformatted _m_a_n _p_a_g_e_s aren't  necessary  any
+       longer.  Additionally, ggrrooffffeerr is a _r_o_f_f program; it wants to read _r_o_f_f
+       source files and format them itself.
+
+       The algorithm for retrieving the file for a _m_a_n _p_a_g_e needs first a  set
+       of  directories.   This  set starts with the so-called _m_a_n _p_a_t_h that is
+       modified later on by adding names of  _o_p_e_r_a_t_i_n_g  _s_y_s_t_e_m  and  _l_a_n_g_u_a_g_e.
+       This  arising set is used for adding the section directories which con-
+       tain the _m_a_n _p_a_g_e files.
+
+       The _m_a_n _p_a_t_h is a list of directories that are separated by colon.   It
+       is generated by the following methods.
+
+       * The environment variable _M_A_N_P_A_T_H can be set.
+
+       * It can be read from the arguments of the environment variable _M_A_N_O_P_T.
+
+       * The _m_a_n _p_a_t_h can be manually specified by using the option ----mmaannppaatthh.
+         An empty argument disables the _m_a_n _p_a_g_e searching.
+
+       * When no _m_a_n _p_a_t_h was set the mmaannppaatthh(1) program is tried to determine
+         one.
+
+       * If  this does not work a reasonable default path from _$_P_A_T_H is deter-
+         mined.
+
+       We now have a starting set of directories.  The  first  way  to  change
+       this  set  is  by adding names of _o_p_e_r_a_t_i_n_g _s_y_s_t_e_m_s.  This assumes that
+       _m_a_n _p_a_g_e_s for several _o_p_e_r_a_t_i_n_g _s_y_s_t_e_m_s are installed.  This is not al-
+       ways  true.   The  names of such _o_p_e_r_a_t_i_n_g _s_y_s_t_e_m_s can be provided by 3
+       methods.
+
+       * The environment variable _S_Y_S_T_E_M has the lowest precedence.
+
+       * This can be overridden by an option in _M_A_N_O_P_T.
+
+       * This again is overridden by the command-line option ----ssyysstteemmss.
+
+       Several names of _o_p_e_r_a_t_i_n_g _s_y_s_t_e_m_s can  be  given  by  appending  their
+       names, separated by a comma.
+
+       The  _m_a_n  _p_a_t_h is changed by appending each _s_y_s_t_e_m name as subdirectory
+       at the end of each directory of the set.  No directory of the _m_a_n  _p_a_t_h
+       set  is  kept.  But if no _s_y_s_t_e_m name is specified the _m_a_n _p_a_t_h is left
+       unchanged.
+
+       After this, the actual set of directories can be  changed  by  _l_a_n_g_u_a_g_e
+       information.  This assumes that there exist _m_a_n _p_a_g_e_s in different lan-
+       guages.  The wanted _l_a_n_g_u_a_g_e can be chosen by several methods.
+
+       * Environment variable _L_A_N_G.
+
+       * This is overridden by _L_C___M_E_S_S_A_G_E_S.
+
+       * This is overridden by _L_C___A_L_L.
+
+       * This can be overridden by providing an option in _M_A_N_O_P_T.
+
+       * All these environment variables are overridden  by  the  command-line
+         option ----llooccaallee.
+
+       The  _d_e_f_a_u_l_t _l_a_n_g_u_a_g_e can be specified by specifying one of the pseudo-
+       language parameters C or POSIX.  This is like deleting a formerly given
+       _l_a_n_g_u_a_g_e information.  The _m_a_n _p_a_g_e_s in the _d_e_f_a_u_l_t _l_a_n_g_u_a_g_e are usual-
+       ly in English.
+
+       Of course, the _l_a_n_g_u_a_g_e name is determined by mmaann.  In GNU mmaann,  it  is
+       specified in the POSIX 1003.1 based format:
+
+       _<_l_a_n_g_u_a_g_e_>[___<_t_e_r_r_i_t_o_r_y_>[.._<_c_h_a_r_a_c_t_e_r_-_s_e_t_>[,,_<_v_e_r_s_i_o_n_>]]],
+
+       but  the two-letter code in _<_l_a_n_g_u_a_g_e_> is sufficient for most purposes.
+       If for a complicated  _l_a_n_g_u_a_g_e  formulation  no  _m_a_n  _p_a_g_e_s  are  found
+       ggrrooffffeerr searches the country part consisting of these first two charac-
+       ters as well.
+
+       The actual directory set is copied thrice.  The _l_a_n_g_u_a_g_e  name  is  ap-
+       pended as subdirectory to each directory in the first copy of the actu-
+       al directory set (this is only done when a language information is giv-
+       en).   Then  the 2-letter abbreviation of the _l_a_n_g_u_a_g_e name is appended
+       as subdirectories to the second copy of the directory set (this is only
+       done  when the given language name has more than 2 letters).  The third
+       copy of the directory set is kept unchanged (if no _l_a_n_g_u_a_g_e information
+       is given this is the kept directory set).  These maximally 3 copies are
+       appended to get the new directory set.
+
+       We now have a complete set of directories to work  with.   In  each  of
+       these  directories,  the _m_a_n files are separated in _s_e_c_t_i_o_n_s.  The name
+       of a _s_e_c_t_i_o_n is represented by a single character, a  digit  between  _1
+       and _9, or the character _o or _n, in this order.
+
+       For each available _s_e_c_t_i_o_n, a subdirectory mmaann_<_s_e_c_t_i_o_n_> exists contain-
+       ing all _m_a_n files for this _s_e_c_t_i_o_n, where _<_s_e_c_t_i_o_n_> is a single charac-
+       ter  as described before.  Each _m_a_n file in a _s_e_c_t_i_o_n directory has the
+       form mmaann_<_s_e_c_t_i_o_n_>//_<_n_a_m_e_>.._<_s_e_c_t_i_o_n_>_[_<_e_x_t_e_n_s_i_o_n_>_]_[.._<_c_o_m_p_r_e_s_s_i_o_n_>_],  where
+       _<_e_x_t_e_n_s_i_o_n_>  and _<_c_o_m_p_r_e_s_s_i_o_n_> are optional.  _<_n_a_m_e_> is the name of the
+       _m_a_n _p_a_g_e that is also specified as filespec  argument  on  the  command
+       line.
+
+       The  _e_x_t_e_n_s_i_o_n is an addition to the section.  This postfix acts like a
+       subsection.  An _e_x_t_e_n_s_i_o_n occurs only in the file name, not in name  of
+       the _s_e_c_t_i_o_n subdirectory.  It can be specified on the command line.
+
+       On  the  other  hand, the _c_o_m_p_r_e_s_s_i_o_n is just an information on how the
+       file is compressed.  This is not important for the user, such  that  it
+       cannot be specified on the command line.
+
+       There are 4 methods to specify a _s_e_c_t_i_o_n on the command line:
+
+       * Environment variable _M_A_N_S_E_C_T
+
+       * Command line option ----sseeccttiioonnss
+
+       * Appendix to the _n_a_m_e argument in the form _<_n_a_m_e_>_._<_s_e_c_t_i_o_n_>
+
+       * Preargument before the _n_a_m_e argument in the form _<_s_e_c_t_i_o_n_> _<_n_a_m_e_>
+
+       It is also possible to specify several _s_e_c_t_i_o_n_s by appending the single
+       characters separated by colons.  One can imagine that this means to re-
+       strict  the  _m_a_n  _p_a_g_e search to only some _s_e_c_t_i_o_n_s.  The multiple _s_e_c_-
+       _t_i_o_n_s are only possible for _M_A_N_S_E_C_T and ----sseeccttiioonnss.
+
+       If no _s_e_c_t_i_o_n is specified all _s_e_c_t_i_o_n_s are searched one after the oth-
+       er  in  the given order, starting with _s_e_c_t_i_o_n _1, until a suitable file
+       is found.
+
+       There are 4 methods to specify an _e_x_t_e_n_s_i_o_n on the command  line.   But
+       it is not necessary to provide the whole extension name, some abbrevia-
+       tion is good enough in most cases.
+
+       * Environment variable _E_X_T_E_N_S_I_O_N
+
+       * Command line option ----eexxtteennssiioonn
+
+       * Appendix to the _<_n_a_m_e_>_._<_s_e_c_t_i_o_n_> argument in  the  form  _<_n_a_m_e_>_._<_s_e_c_-
+         _t_i_o_n_>_<_e_x_t_e_n_s_i_o_n_>
+
+       * Preargument before the _n_a_m_e argument in the form _<_s_e_c_t_i_o_n_>_<_e_x_t_e_n_s_i_o_n_>
+         _<_n_a_m_e_>
+
+       For further details on _m_a_n _p_a_g_e searching, see mmaann(1).
+
+   EExxaammpplleess ooff mmaann ffiilleess
+       //uussrr//sshhaarree//mmaann//mmaann11//ggrrooffff..11
+              This is an uncompressed file for the  _m_a_n  _p_a_g_e  groff  in  _s_e_c_-
+              _t_i_o_n _1.  It can be called by
+              _s_h_# groffer groff
+              No  _s_e_c_t_i_o_n  is  specified  here,  so  all  _s_e_c_t_i_o_n_s  should  be
+              searched, but as _s_e_c_t_i_o_n _1 is searched first this file  will  be
+              found  first.  The file name is composed of the following compo-
+              nents.  //uussrr//sshhaarree//mmaann// must be part of the _m_a_n _p_a_t_h; the subdi-
+              rectory  mmaann11//  and  the part ..11 stand for the _s_e_c_t_i_o_n; ggrrooffff is
+              the name of the _m_a_n _p_a_g_e.
+
+       //uussrr//llooccaall//sshhaarree//mmaann//mmaann77//ggrrooffff..77..ggzz
+              The  file  name  is  composed  of  the   following   components.
+              //uussrr//llooccaall//sshhaarree//mmaann must be part of the _m_a_n _p_a_t_h; the subdirec-
+              tory mmaann77// and the part ..77 stand for the _s_e_c_t_i_o_n; ggrrooffff  is  the
+              name  of  the _m_a_n _p_a_g_e; the final part ..ggzz stands for a compres-
+              sion with ggzziipp(1).  As the _s_e_c_t_i_o_n is not the first one it  must
+              be  specified as well.  This can be done by one of the following
+              commands.
+              _s_h_# groffer groff.7
+              _s_h_# groffer 7 groff
+              _s_h_# groffer --sections=7 groff
+
+       //uussrr//llooccaall//mmaann//mmaann11//ccttaaggss..11eemmaaccss2211..bbzz22
+              Here //uussrr//llooccaall//mmaann must be in _m_a_n _p_a_t_h; the subdirectory  mmaann11//
+              and  the  file name part ..11 stand for _s_e_c_t_i_o_n _1; the name of the
+              _m_a_n _p_a_g_e is ccttaaggss; the section has an extension eemmaaccss2211; and the
+              file  is  compressed  as  ..bbzz22  with  bbzziipp22(1).  The file can be
+              viewed with one of the following commands
+              _s_h_# groffer ctags.1e
+              _s_h_# groffer 1e ctags
+              _s_h_# groffer --extension=e --sections=1 ctags
+              where e works as an abbreviation for the extension emacs21.
+
+       //uussrr//mmaann//lliinnuuxx//ddee//mmaann77//mmaann..77..ZZ
+              The directory //uussrr//mmaann is now part of the _m_a_n _p_a_t_h;  then  there
+              is  a  subdirectory  for  an  _o_p_e_r_a_t_i_n_g _s_y_s_t_e_m name lliinnuuxx//; next
+              comes a subdirectory ddee// for the German  _l_a_n_g_u_a_g_e;  the  _s_e_c_t_i_o_n
+              names  mmaann77  and  ..77  are  known  so far; mmaann is the name of the
+              _m_a_n _p_a_g_e; and ..ZZ signifies the compression that can  be  handled
+              by  ggzziipp(1).  We want now show how to provide several values for
+              some options.  That is possible for _s_e_c_t_i_o_n_s and _o_p_e_r_a_t_i_n_g  _s_y_s_-
+              _t_e_m  names.   So  we use as _s_e_c_t_i_o_n_s _5 and _7 and as _s_y_s_t_e_m names
+              _l_i_n_u_x and _a_i_x.  The command is then
+
+              _s_h_# groffer --locale=de --sections=5:7 --systems=linux,aix man
+              _s_h_# LANG=de MANSECT=5:7 SYSTEM=linux,aix groffer man
+
+DDEECCOOMMPPRREESSSSIIOONN
+       The program has a decompression facility.  If standard input or a  file
+       that  was retrieved from the command line parameters is compressed with
+       a format that is supported by either ggzziipp(1) or bbzziipp22(1) it  is  decom-
+       pressed  on-the-fly.   This  includes the GNU ..ggzz, ..bbzz22, and the tradi-
+       tional ..ZZ compression.  The program displays the concatenation  of  all
+       decompressed  input  in  the sequence that was specified on the command
+       line.
+
+EENNVVIIRROONNMMEENNTT
+       The ggrrooffffeerr program supports many system variables,  most  of  them  by
+       courtesy  of other programs.  All environment variables of ggrrooffff(1) and
+       GNU mmaann(1) and some standard system variables are honored.
+
+   NNaattiivvee ggrrooffffeerr VVaarriiaabblleess
+       _G_R_O_F_F_E_R___O_P_T
+              Store options for a run of ggrrooffffeerr.  The  options  specified  in
+              this variable are overridden by the options given on the command
+              line.  The content of this variable is  run  through  the  shell
+              builtin  "eval",  so  arguments containing whitespace or special
+              shell characters should be quoted.  Do not forget to export this
+              variable, otherwise it does not exist during the run of ggrrooffffeerr.
+
+   SSyysstteemm VVaarriiaabblleess
+       The following variables have a special meaning for ggrrooffffeerr.
+
+       _D_I_S_P_L_A_Y
+              If set, this variable indicates that the X Window System is run-
+              ning.  Testing this variable decides  on  whether  graphical  or
+              text  output  is generated.  This variable should not be changed
+              by the user carelessly, but it can be used to start the  graphi-
+              cal  ggrrooffffeerr on a remote X Window System terminal.  For example,
+              depending on your system, ggrrooffffeerr can be started on  the  second
+              monitor by the command
+
+              _s_h_# DISPLAY=:0.1 groffer what.ever &
+
+       _L_C___A_L_L
+       _L_C___M_E_S_S_A_G_E_S
+       _L_A_N_G   If  one  of  these variables is set (in the above sequence), its
+              content is interpreted as the locale, the language to  be  used,
+              especially  when  retrieving  _m_a_n _p_a_g_e_s.  A locale name is typi-
+              cally  of  the  form  _l_a_n_g_u_a_g_e[___t_e_r_r_i_t_o_r_y[.._c_o_d_e_s_e_t[@@_m_o_d_i_f_i_e_r]]],
+              where  _l_a_n_g_u_a_g_e is an ISO 639 language code, _t_e_r_r_i_t_o_r_y is an ISO
+              3166 country code, and _c_o_d_e_s_e_t is a character  set  or  encoding
+              identifier  like ISO-8859-1 or UTF-8; see sseettllooccaallee(3).  The lo-
+              cale values C and POSIX stand for the default, i.e. the _m_a_n _p_a_g_e
+              directories  without a language prefix.  This is the same behav-
+              ior as when all 3 variables are unset.
+
+       _P_A_G_E_R  This variable can be used to set the pager for the  tty  output.
+              For  example,  to disable the use of a pager completely set this
+              variable to the ccaatt(1) program
+
+              _s_h_# PAGER=cat groffer anything
+
+
+       _P_A_T_H   All programs within the ggrrooffffeerr  script  are  called  without  a
+              fixed  path.   Thus this environment variable determines the set
+              of programs used within the run of ggrrooffffeerr.
+
+   GGrrooffff VVaarriiaabblleess
+       The ggrrooffffeerr program internally calls ggrrooffff, so  all  environment  vari-
+       ables  documented  in  ggrrooffff(1)  are  internally used within ggrrooffffeerr as
+       well.  The following variable has a direct meaning for the ggrrooffffeerr pro-
+       gram.
+
+       _G_R_O_F_F___T_M_P_D_I_R
+              If  the  value  of this variable is an existing, writable direc-
+              tory, ggrrooffffeerr uses it for storing its temporary files,  just  as
+              ggrrooffff  does.   See the ggrrooffff(1) man page for more details on the
+              location of temporary files.
+
+   MMaann VVaarriiaabblleess
+       Parts of the functionality of  the  mmaann  program  were  implemented  in
+       ggrrooffffeerr; support for all environment variables documented in mmaann(1) was
+       added to ggrrooffffeerr, but the meaning was slightly modified due to the dif-
+       ferent  approach  in  ggrrooffffeerr; but the user interface is the same.  The
+       mmaann environment variables can be overwritten by options  provided  with
+       _M_A_N_O_P_T, which in turn is overwritten by the command line.
+
+       _E_X_T_E_N_S_I_O_N
+              Restrict  the  search  for _m_a_n _p_a_g_e_s to files having this exten-
+              sion.  This is overridden by option ----eexxtteennssiioonn; see  there  for
+              details.
+
+       _M_A_N_O_P_T This  variable  contains options as a preset for mmaann(1).  As not
+              all of these are relevant for ggrrooffffeerr only the  essential  parts
+              of its value are extracted.  The options specified in this vari-
+              able overwrite the values of  the  other  environment  variables
+              that  are  specific to _m_a_n.  All options specified in this vari-
+              able are overridden by the options given on the command line.
+
+       _M_A_N_P_A_T_H
+              If set, this variable contains  the  directories  in  which  the
+              _m_a_n  _p_a_g_e  trees  are  stored.   This  is  overridden  by option
+              ----mmaannppaatthh.
+
+       _M_A_N_S_E_C_T
+              If this is a colon separated list of section names,  the  search
+              for  _m_a_n  _p_a_g_e_s  is  restricted to those manual sections in that
+              order.  This is overridden by option ----sseeccttiioonnss.
+
+       _S_Y_S_T_E_M If this is set to a comma separated  list  of  names  these  are
+              interpreted  as  _m_a_n _p_a_g_e trees for different operating systems.
+              This variable can be overwritten by option ----ssyysstteemmss; see  there
+              for details.
+
+       The  environment  variable _M_A_N_R_O_F_F_S_E_Q is ignored by ggrrooffffeerr because the
+       necessary preprocessors are determined automatically.
+
+CCOONNFFIIGGUURRAATTIIOONN FFIILLEESS
+       The ggrrooffffeerr program can be preconfigured by two configuration files.
+
+       //eettcc//ggrrooffff//ggrrooffffeerr..ccoonnff
+              System-wide configuration file for ggrrooffffeerr.
+
+       $$HHOOMMEE//..ggrrooffff//ggrrooffffeerr..ccoonnff
+              User-specific  configuration  file  for  ggrrooffffeerr,  where   _$_H_O_M_E
+              denotes  the  user's  home directory.  This file is called after
+              the system-wide configuration file to enable overriding  by  the
+              user.
+
+       Both  files  are  handled  for the configuration, but the configuration
+       file in //eettcc comes first; it is overwritten by the  configuration  file
+       in  the home directory; both configuration files are overwritten by the
+       environment variable _G_R_O_F_F_E_R___O_P_T; everything is overwritten by the com-
+       mand line arguments.
+
+       The  configuration  files  contain  options  that  should  be called as
+       default for every ggrrooffffeerr run.  These options are written in lines such
+       that  each  contains  either  a long option, a short option, or a short
+       option cluster; each with or without an argument.  So  each  line  with
+       configuration  information  starts  with  a minus character "--"; a line
+       with a long option starts with two minus characters "----", a line with a
+       short option or short option cluster starts with a single minus "--".
+
+       The  option  names  in  the configuration files may not be abbreviated,
+       they must be exact.
+
+       The argument for a long option can be separated from  the  option  name
+       either by an equal sign "==" or by whitespace, i.e. one or several space
+       or tab characters.  An argument for a  short  option  or  short  option
+       cluster  can  be  directly  appended to the option name or separated by
+       whitespace.  The end of an argument is the end of the line.  It is  not
+       allowed  to use a shell environment variable in an option name or argu-
+       ment.
+
+       It is not necessary to use quotes in an option or argument, except  for
+       empty arguments.  An empty argument can be provided by appending a pair
+       of quotes to the separating equal sign  or  whitespace;  with  a  short
+       option, the separator can be omitted as well.  For a long option with a
+       separating equal sign "==", the pair of quotes can be omitted, thus end-
+       ing  the  line with the separating equal sign.  All other quote charac-
+       ters are cancelled internally.
+
+       In the configuration files, arbitrary  whitespace  is  allowed  at  the
+       beginning  of  each line, it is just ignored.  Each whitespace within a
+       line is replaced by a single space character " " internally.
+
+       All lines of the configuration lines that do not  start  with  a  minus
+       character  are ignored, such that comments starting with "##" are possi-
+       ble.  So there are no shell commands in the configuration files.
+
+       As an example, consider the following configuration file  that  can  be
+       used either in //eettcc//ggrrooffff//ggrrooffffeerr..ccoonnff or ~~//..ggrrooffff//ggrrooffffeerr..ccoonnff ..
+
+       # groffer configuration file
+       #
+       # groffer options that are used in each call of groffer
+       --foreground=DarkBlue
+       --resolution=100
+       --viewer=gxditview -geometry 900x1200
+
+       The  lines  starting  with  ##  are just ignored, so they act as command
+       lines.  This configuration sets four ggrrooffffeerr options (the lines  start-
+       ing with "--").  This has the following effects:
+
+       * Use  a  text color of DDaarrkkBBlluuee in all viewers that support this, such
+         as ggxxddiittvviieeww.
+
+       * Use a resolution of 110000ddppii in all viewers that support this, such  as
+         ggxxddiittvviieeww.  By this, the default device in _x _m_o_d_e is set to XX110000.
+
+       * Force ggxxddiittvviieeww(1) as the _x_-_m_o_d_e viewer using the geometry option for
+         setting the width to 990000ppxx and the height to 11220000ppxx.   This  geometry
+         is suitable for a resolution of 110000ddppii.
+
+       * Use xxppddff(1) as the _p_d_f_-_m_o_d_e viewer with the argument --ZZ 115500.
+
+EEXXAAMMPPLLEESS
+       The  usage  of ggrrooffffeerr is very easy.  Usually, it is just called with a
+       file name or _m_a_n _p_a_g_e.  The  following  examples,  however,  show  that
+       ggrrooffffeerr has much more fancy capabilities.
+
+       _s_h_# groffer /usr/local/share/doc/groff/meintro.ms.gz
+
+       Decompress, format and display the compressed file mmeeiinnttrroo..mmss..ggzz in the
+       directory  //uussrr//llooccaall//sshhaarree//ddoocc//ggrrooffff,  using   the   standard   viewer
+       ggxxddiittvviieeww  as  graphical  viewer  when  in  the X Window System, or the
+       lleessss(1) pager program otherwise.
+
+       _s_h_# groffer groff
+
+       If the file ..//ggrrooffff exists use it as input.   Otherwise  interpret  the
+       argument  as a search for the _m_a_n _p_a_g_e named ggrrooffff in the smallest pos-
+       sible _m_a_n _s_e_c_t_i_o_n, being section 1 in this case.
+
+       _s_h_# groffer man:groff
+
+       search for the _m_a_n _p_a_g_e of ggrrooffff even when the file ..//ggrrooffff exists.
+
+       _s_h_# groffer groff.7
+       _s_h_# groffer 7 groff
+
+       search the _m_a_n _p_a_g_e of ggrrooffff in _m_a_n _s_e_c_t_i_o_n  77.   This  section  search
+       works only for a digit or a single character from a small set.
+
+       _s_h_# groffer fb.modes
+
+       If  the  file  ..//ffbb..mmooddeess does not exist interpret this as a search for
+       the _m_a_n _p_a_g_e of ffbb..mmooddeess.  As the extension _m_o_d_e_s is not a single char-
+       acter  in classical section style the argument is not split to a search
+       for ffbb.
+
+       _s_h_# groffer groff 'troff(1)' man:roff
+
+       The arguments that are not existing files are looked-up as the  follow-
+       ing  _m_a_n  _p_a_g_e_s:  ggrrooffff  (automatic search, should be found in _m_a_n sec-
+       tion 1), ttrrooffff (in section 1), and rrooffff (in the section with the lowest
+       number, being 7 in this case).  The quotes around _'_t_r_o_f_f_(_1_)_' are neces-
+       sary because the parentheses are  special  shell  characters;  escaping
+       them  with a backslash character _\_( and _\_) would be possible, too.  The
+       formatted files are concatenated and displayed in one piece.
+
+       _s_h_# LANG=de groffer --man --viewer=galeon ls
+
+       Retrieve the German _m_a_n _p_a_g_e (language _d_e) for the llss  program,  decom-
+       press it, format it to _h_t_m_l or _x_h_t_m_l format (_w_w_w _m_o_d_e) and view the re-
+       sult in the web browser ggaalleeoonn.  The option ----mmaann guarantees  that  the
+       _m_a_n  _p_a_g_e  is retrieved, even when a local file llss exists in the actual
+       directory.
+
+       _s_h_# groffer --source 'man:roff(7)'
+
+       Get the _m_a_n _p_a_g_e called _r_o_f_f in _m_a_n section 7, decompress it, and print
+       its unformatted content, its source code.
+
+       _s_h_# groffer --de-p --in --ap
+
+       This is a set of abbreviated arguments, it is determined as
+
+       _s_h_# groffer --debug-params --intermediate-output --apropos
+
+
+       _s_h_# cat file.gz | groffer -Z -mfoo
+
+       The  file  ffiillee..ggzz is sent to standard input, this is decompressed, and
+       then this is transported to the _g_r_o_f_f _i_n_t_e_r_m_e_d_i_a_t_e _o_u_t_p_u_t _m_o_d_e  without
+       post-processing  (ggrrooffff  option  --ZZ),  using  macro  package _f_o_o (ggrrooffff
+       option --mm).
+
+       _s_h_# echo '\f(CBWOW!' |
+       > groffer --x --bg red --fg yellow --geometry 200x100 -
+
+       Display the word WWOOWW!! in a small window in  constant-width  bold  font,
+       using color yellow on red background.
+
+CCOOMMPPAATTIIBBIILLIITTYY
+       The ggrrooffffeerr program is written in Perl, the Perl version during writing
+       was v5.8.8.
+
+       ggrrooffffeerr provides its own parser for command-line arguments that is com-
+       patible  to  both  POSIX  ggeettooppttss(1)  and GNU ggeettoopptt(1).  It can handle
+       option arguments and file names containing white space and a large  set
+       of  special  characters.   The  following standard types of options are
+       supported.
+
+       * The option consisting of a single minus -- refers to standard input.
+
+       * A single minus followed by characters refers to  a  single  character
+         option  or  a  combination  thereof;  for  example, the ggrrooffffeerr short
+         option combination --QQmmffoooo is equivalent to --QQ --mm ffoooo.
+
+       * Long options are options with names longer than one  character;  they
+         are always preceded by a double minus.  An option argument can either
+         go to the next command-line argument or be  appended  with  an  equal
+         sign  to  the  argument;  for  example,  ----lloonngg==aarrgg  is equivalent to
+         ----lloonngg aarrgg.
+
+       * An argument of ---- ends option parsing; all further command-line argu-
+         ments are interpreted as _f_i_l_e_s_p_e_c parameters, i.e. file names or con-
+         structs for searching _m_a_n _p_a_g_e_s).
+
+       * All command-line arguments that are neither options nor option  argu-
+         ments  are interpreted as _f_i_l_e_s_p_e_c parameters and stored until option
+         parsing has finished.  For example, the command line
+
+         _s_h_# groffer file1 -a -o arg file2
+
+         is equivalent to
+
+         _s_h_# groffer -a -o arg -- file1 file2
+
+
+       The free mixing of options and  _f_i_l_e_s_p_e_c  parameters  follows  the  GNU
+       principle.   That does not fulfill the strange option behavior of POSIX
+       that ends option processing as soon as the  first  non-option  argument
+       has  been  reached.   The end of option processing can be forced by the
+       option "----" anyway.
+
+AAUUTTHHOORRSS
+       ggrrooffffeerr was written by Bernd Warken <groff-bernd.warken-72@web.de>.
+
+SSEEEE AALLSSOO
+       ggrrooffff(1), ttrrooffff(1)
+              Details on the options and environment  variables  available  in
+              ggrrooffff; all of them can be used with ggrrooffffeerr.
+
+       ggrroogg(1)
+              This  program  tries  to  guess the necessary ggrrooffff command-line
+              options from the input and the ggrrooffffeerr options.
+
+       ggrrooffff(7)
+              Documentation of the _g_r_o_f_f language.
+
+       ggrrooffff__cchhaarr(7)
+              Documentation on the _g_r_o_f_f characters, special  characters,  and
+              glyphs..
+
+       ggrrooffff__ttmmaacc(5)
+              Documentation on the _g_r_o_f_f macro files.
+
+       ggrrooffff__oouutt(5)
+              Documentation on the _g_r_o_f_f _i_n_t_e_r_m_e_d_i_a_t_e _o_u_t_p_u_t before the run of
+              a _p_o_s_t_p_r_o_c_e_s_s_o_r.  (_d_i_t_r_o_f_f output).  This  can  be  run  by  the
+              ggrrooffff or ggrrooffffeerr option --ZZ.
+
+       mmaann(1) The  standard  program  to  display  _m_a_n _p_a_g_e_s.  The information
+              there is only useful if it is the _m_a_n _p_a_g_e for GNU mmaann.  Then it
+              documents  the  options  and environment variables that are sup-
+              ported by ggrrooffffeerr.
+
+       ggxxddiittvviieeww(1)
+       xxddiittvviieeww(1x)
+              Viewers for ggrrooffffeerr's _x _m_o_d_e.
+
+       kkppddff(1)
+       kkgghhoossttvviieeww(1)
+       eevviinnccee(1)
+       ggggvv(1)
+       ggvv(1)
+       gghhoossttvviieeww(1)
+       ggss(1)  Viewers for ggrrooffffeerr's _p_s _m_o_d_e.
+
+       kkppddff(1)
+       aaccrroorreeaadd(1)
+       eevviinnccee(1)
+       xxppddff(1)
+       ggppddff(1)
+       kkgghhoossttvviieeww(1)
+       ggggvv(1) Viewers for ggrrooffffeerr's _p_d_f _m_o_d_e.
+
+       kkddvvii(1), xxddvvii(1), ddvviillxx(1)
+              Viewers for ggrrooffffeerr's _d_v_i _m_o_d_e.
+
+       kkoonnqquueerroorr(1)
+       eeppiipphhaannyy(1)
+       ffiirreeffooxx(1)
+       mmoozziillllaa(1)
+       nneettssccaappee(1)
+       llyynnxx(1)
+              Web-browsers for ggrrooffffeerr's _h_t_m_l, _x_h_t_m_l, or _w_w_w _m_o_d_e.
+
+       lleessss(1)
+       mmoorree(1)
+              Standard pager program for the _t_t_y _m_o_d_e.
+
+       ggzziipp(1)
+       bbzziipp22(1)
+       xxzz(1)  The decompression programs supported by ggrrooffffeerr.
+
+
+
+groff 1.22.4                     December 2018                      GROFFER(1)

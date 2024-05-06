@@ -1,0 +1,527 @@
+'\" t
+.TH GROFF_ME 7 "December 2018" "groff 1.22.4"
+.SH NAME
+groff_me \- \(lqme\(rq macro package for formatting documents with GNU \
+roff
+.
+.
+.\" ====================================================================
+.\" Legal Terms
+.\" ====================================================================
+.\"
+.\" Copyright (C) 1980 The Regents of the University of California.
+.\" All rights reserved.
+.\"
+.\" Redistribution and use in source and binary forms are permitted
+.\" provided that the above copyright notice and this paragraph are
+.\" duplicated in all such forms and that any documentation,
+.\" advertising materials, and other materials related to such
+.\" distribution and use acknowledge that the software was developed
+.\" by the University of California, Berkeley.  The name of the
+.\" University may not be used to endorse or promote products derived
+.\" from this software without specific prior written permission.
+.\" THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR
+.\" IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
+.\" WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+.\"
+.\"	@(#)me.7	6.4 (Berkeley) 4/13/90
+.\"
+.\" Modified for groff by jjc@jclark.com
+.\" Changed to use TBL and eliminate low-level troff hackery by ESR
+.\" (this enables it to be lifted to structural markup).
+.
+.
+.\" ====================================================================
+.SH SYNOPSIS
+.\" ====================================================================
+.
+.SY "groff \-me"
+.RI [ option
+\&.\|.\|.\&]
+.RI [ input-file
+\&.\|.\|.\&]
+.YS
+.SY "groff \-m me"
+.RI [ option
+\&.\|.\|.\&]
+.RI [ input-file
+\&.\|.\|.\&]
+.YS
+.
+.
+.\" ====================================================================
+.SH DESCRIPTION
+.\" ====================================================================
+.
+The
+.I me
+package of macro definitions for the
+.I roff
+language provides a convenient facility for preparing technical papers
+in various formats.
+.
+This manual page describes the GNU version of the
+.I me
+macros, which is
+part of the
+.I groff
+document formatting system.
+.
+This version can be used with both GNU
+.I troff
+and Unix
+.IR troff .
+.
+.
+.PP
+Many
+.I roff
+requests are unsafe in conjunction with this package; however, the
+following requests may be used with impunity after the first
+.BR .pp :
+.TS
+l l.
+\fB.bp\fP	begin new page
+\fB.br\fP	break output line here
+\fB.sp\fP \fIn\fP	insert \fIn\fP spacing lines
+\fB.ls\fP \fIn\fP	(line spacing) \fIn\fP=1 single, \fIn\fP=2 double space
+\fB.na\fP	no alignment of right margin
+\fB.ce\fP \fIn\fP	center next \fIn\fP lines
+\fB.ul\fP \fIn\fP	underline next \fIn\fP lines
+.TE
+.PP
+.I Note:
+In contrast to its behavior with other macro packages and \(lqraw\(rq
+.IR roff ,
+when using the
+.I me
+package,
+the
+.B .sp
+request will
+.I not
+put space at the top of a page.
+.
+.
+.PP
+Output of the
+.IR pic ,
+.IR eqn ,
+.IR refer ,
+and
+.I tbl
+preprocessors
+is acceptable as input.
+.
+.
+.\" ====================================================================
+.SS Macro Reference
+.\" ====================================================================
+.
+Numeric arguments to macros are denoted with lowercase letters and
+string arguments with uppercase.
+.
+An optional macro argument such as
+.I x
+appears in brackets,
+.BI [ x \/\c
+.BR ] .
+.
+Note that arguments to macros generally must be quoted if they contain
+whitespace.
+.
+An exception is the argument to header and footer macros, which require
+some explanation.
+They take the form
+.RI \(lq c
+.I left c middle c right
+.IR c \(rq,
+with spaces added here for clarity.
+The strings
+.IR left ,
+.IR middle ,
+and
+.I right
+correspond to their page placement and can contain unprotected
+whitespace, but must not contain the (non-space) character
+.IR c ,
+which delimits them.
+For brevity, the table presents header and footer arguments as
+.IR clcmcrc .
+Popular choices for
+.I c
+are the ASCII apostrophe
+.RB \(lq \(aq \(rq
+and the ASCII double quote
+.RB \(lq \(dq \(rq.
+.
+.
+.PP
+This list is incomplete;
+some requests are too complex to summarize in a table, and some that
+are listed below accept additional arguments not shown.
+See the
+.I \-me Reference Manual
+for interesting details.
+.
+.
+.PP
+.na
+.TS
+l l l lx.
+Request	Initial	Causes	Explanation
+	Value	Break
+_
+\&.(c	\-	yes	T{
+Begin centered block.
+T}
+\&.(d	\-	no	T{
+Begin delayed text.
+T}
+\&.(f	\-	no	T{
+Begin footnote.
+T}
+\&.(l	\-	yes	Begin list.
+\&.(q	\-	yes	T{
+Begin major quote.
+T}
+\&.(x [\fIX\fP]	\-	no	T{
+Begin item in index (named
+.IR X ).
+T}
+\&.(z	\-	no	T{
+Begin floating keep.
+T}
+\&.)c	\-	yes	T{
+End centered block.
+T}
+\&.)d	\-	yes	T{
+End delayed text.
+T}
+\&.)f	\-	yes	T{
+End footnote.
+T}
+\&.)l	\-	yes	End list.
+\&.)q	\-	yes	T{
+End major quote.
+T}
+\&.)x	\-	yes	T{
+End index item.
+T}
+\&.)z	\-	yes	T{
+End floating keep.
+T}
+\&.++ \fIM\fP [\fIclcmcrc\fP]	\-	no	T{
+Define paper section as
+.IR M ,
+which must be one of
+.B C
+(chapter),
+.B A
+(appendix),
+.B P
+(preliminary, i.e., front matter or table of contents),
+.B AB
+(abstract),
+.B B
+(bibliography),
+.B RC
+(chapters renumbered from page one each chapter),
+or
+.B RA
+(appendix renumbered from page one)
+(and set page header to
+.IR clcmcrc ).
+T}
+\&.+c [\fIT\fP]	\-	yes	T{
+Begin chapter (or appendix, etc., as set by
+.BR .++ )
+(with title
+.IR T ).
+T}
+\&.1c	1	yes	T{
+One-column format on a new page.
+T}
+\&.2c	1	yes	T{
+Two-column format.
+T}
+\&.EN	\-	yes	T{
+Space after equation
+produced by
+.I eqn
+or
+.IR neqn .
+T}
+\&.EQ [\fIM\fP [\fIT\fP]]	\-	yes	T{
+Begin displayed equation (with indentation
+.IR M ,
+which must be one of
+.B C
+(centered, default),
+.B I
+(indented),
+or
+.B L
+(justified left) (and title
+.I T
+in right margin)).
+T}
+\&.GE	\-	yes	T{
+End \fIgremlin\fP picture.
+T}
+\&.GS	\-	yes	T{
+Begin \fIgremlin\fP picture.
+T}
+\&.PE	\-	yes	T{
+End \fIpic\fP picture.
+T}
+\&.PS	\-	yes	T{
+Begin \fIpic\fP picture.
+T}
+\&.TE	\-	yes	T{
+End
+.I tbl
+table.
+T}
+\&.TH	\-	yes	T{
+End heading of
+.I tbl
+table.
+T}
+\&.TS [\fBH\fP]	\-	yes	T{
+Begin
+.I tbl
+table; if
+.BR H ,
+table repeats heading on each page.
+T}
+\&.b [\fIX\fP [\fIY\fP]]	\-	no	T{
+Print
+.I X
+in bold (appending
+.I Y
+in the previous font); if no arguments, switch to bold.
+T}
+\&.ba \fIn\fP	0	yes	T{
+Augment the base indent (for regular text, like paragraphs)
+by
+.IR n .
+T}
+\&.bc	\-	yes	T{
+Begin new column.
+T}
+\&.bi [\fIX\fP [\fIY\fP]]	\-	no	T{
+Print
+.I X
+in bold italics (appending
+.I Y
+in the previous font); if no arguments, switch to bold italics.
+T}
+\&.bu	\-	yes	T{
+Begin bulleted paragraph.
+T}
+\&.bx [\fIX\fP [\fIY\fP]]	\-	no	T{
+Print \fIX\fP in a box (with Y appended).
+Renders reliably only in no-fill mode.
+T}
+\&.ef \fIclcmcrc\fP	""""	no	T{
+Set even-numbered page footer.
+T}
+\&.eh \fIclcmcrc\fP	""""	no	T{
+Set even-numbered page header.
+T}
+\&.fo \fIclcmcrc\fP	""""	no	T{
+Set page footer.
+T}
+\&.hx	\-	no	T{
+Suppress headers and footers on next page.
+T}
+\&.he \fIclcmcrc\fP	""""	no	T{
+Set page header.
+T}
+\&.hl	\-	yes	T{
+Draw a horizontal line.
+T}
+\&.i [\fIX\fP [\fIY\fP]]	\-	no	T{
+Print
+.I X
+in italics (appending
+.I Y
+in the previous font); if no arguments, switch to italics.
+T}
+\&.ip [\fIX\fP [\fIn\fP]]	\fIn\fP=5n	yes	T{
+Start indented paragraph (with hanging tag
+.I X
+(and indentation
+.IR n )).
+T}
+\&.lp	\-	yes	T{
+Begin paragraph with first line flush left.
+T}
+\&.np	1	yes	T{
+Start numbered paragraph.
+T}
+\&.of \fIclcmcrc\fP	""""	no	T{
+Set odd-numbered page footer.
+T}
+\&.oh \fIclcmcrc\fP	""""	no	T{
+Set odd-numbered page header.
+T}
+\&.pd	\-	yes	T{
+Print delayed text.
+T}
+\&.pp	\-	yes	T{
+Begin paragraph with indented first line.
+T}
+\&.r [\fIX\fP [\fIY\fP]]	\-	no	T{
+Print
+.I X
+in roman (appending
+.I Y
+in the previous font); if no arguments, switch to roman.
+T}
+\&.re	0.5i	no	T{
+Reset tabs to default values.
+T}
+\&.sh [\fIn\fP [\fIT\fP]]	\fIn\fP=1	yes	T{
+Start numbered section; print section number (set to
+.I n
+(and title
+.IR T ))
+in bold.
+T}
+\&.sk	\-	no	T{
+Leave the next page blank.
+Only one page is remembered ahead.
+T}
+\&.sm \fIX\fP [\fIY\fP]	\-	no	T{
+Print
+.I X
+in a smaller point size (appending
+.I Y
+at the previous size).
+T}
+\&.sz \fIn\fP	10p	no	T{
+Augment the point size by
+.I n
+points.
+T}
+\&.tp	\-	yes	T{
+Begin title page.
+T}
+\&.u \fIX\fP [\fIY\fP]	\-	no	T{
+Underline
+.I X
+(appending
+.I Y
+without underlining).
+Renders reliably only in no-fill mode.
+T}
+\&.uh [\fIT\fP]	\-	yes	T{
+Start unnumbered section (and print title
+.I T
+in bold).
+T}
+\&.xp [\fIX\fP]	\-	no	T{
+Print index (named
+.IR X ).
+T}
+.TE
+.
+.
+.\" ====================================================================
+.SH FILES
+.\" ====================================================================
+.
+.I d:/\:usr/\:share/\:groff/\:1.22.4/\:tmac/me.tmac
+(a wrapper file for
+.IR e.tmac )
+.br
+.I d:/\:usr/\:share/\:groff/\:1.22.4/\:tmac/e.tmac
+.
+.
+.\" ====================================================================
+.SH NOTES
+.\" ====================================================================
+.
+Early
+.I roff
+macro packages limited themselves to a single-letter namespace
+.RI ( mm ,
+.IR ms ,
+.IR mv ,
+.IR mn ,
+etc.).
+.
+.\" 'When I started writing the -me macros it began as something in my
+.\" private tree (I don't remember what I called it).  Then some other
+.\" folks on the INGRES project wanted to use it, but our system admin
+.\" at the time didn't want to dicker with the system namespace at the
+.\" behest of a mere undergraduate, so he didn't like anything that was
+.\" actually descriptive lest people think it was "official".  He
+.\" finally consented to "-meric" (which I always hated), since it was
+.\" obviously non-official.  By the time my macros became popular around
+.\" Berkeley it got shortened to "-me", much to my relief.
+.\"
+.\" Of course, if AT&T had been willing to let Berkeley have -ms then
+.\" most likely -me would never have happened at all.  Without a macro
+.\" package, nroff/troff is basically unusable; -me stepped into the
+.\" vacuum.' -- Eric Allman
+.\"
+.\" https://minnie.tuhs.org//pipermail/tuhs/2018-November/015412.html
+.
+The \(lqe\(rq in \(lqme\(rq stands for \(lqEric P.\& Allman\(rq,
+who wrote the macro package and the original technical papers
+documenting it while an undergraduate at the University of California.
+.
+.
+.\" ====================================================================
+.SH SEE ALSO
+.\" ====================================================================
+.
+.BR groff (1),
+.BR troff (1)
+.
+.
+.PP
+Two manuals are available in source and rendered form.
+.
+On your system,
+they may be compressed and/or available in additional formats.
+.
+.
+.TP
+.I d:/\:usr/\:share/\:doc/\:groff\-1.22.4/meintro.me
+.TQ
+.I d:/\:usr/\:share/\:doc/\:groff\-1.22.4/meintro.ps
+is
+.IR "Writing Papers with Groff Using \-me" ,
+by Eric P.\& Allman and James Clark.
+.
+.
+.TP
+.I d:/\:usr/\:share/\:doc/\:groff\-1.22.4/meref.me
+.TQ
+.I d:/\:usr/\:share/\:doc/\:groff\-1.22.4/meref.ps
+is the
+.IR "\-me Reference Manual" ,
+by Eric P.\& Allman and James Clark.
+.
+.
+.PP
+For preprocessors supported by
+.IR me ,
+see
+.BR eqn (1),
+.BR grn (1),
+.BR pic (1),
+.BR refer (1),
+and
+.BR tbl (1).
+.
+.
+.\" Local Variables:
+.\" mode: nroff
+.\" tab-with: 20
+.\" End:
+.\" vim: set filetype=nroff tabstop=20:

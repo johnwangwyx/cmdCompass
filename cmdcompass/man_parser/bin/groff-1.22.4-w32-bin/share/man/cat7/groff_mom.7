@@ -1,0 +1,1310 @@
+GROFF_MOM(7)           Miscellaneous Information Manual           GROFF_MOM(7)
+
+
+
+NNAAMMEE
+       groff_mom  -  groff  "mom"  macros; "mom" is a "roff" language, part of
+       "groff"
+
+SSYYNNOOPPSSIISS
+       ppddffmmoomm [--TTppss [_p_d_f_r_o_f_f_-_o_p_t_i_o_n ...]] [_g_r_o_f_f_-_o_p_t_i_o_n ...] _f_i_l_e ...
+
+       ggrrooffff --mmoomm [_o_p_t_i_o_n ...] _f_i_l_e ...
+       ggrrooffff --mm mmoomm [_o_p_t_i_o_n ...] _f_i_l_e ...
+
+CCAALLLLIINNGG MMOOMM
+       mmoomm is a macro set for ggrrooffff, designed primarily  to  format  documents
+       for _P_D_F and _P_o_s_t_S_c_r_i_p_t output.
+
+       mmoomm  provides  two  categories  of  macros: macros for typesetting, and
+       macros for document processing.  The typesetting macros provide  access
+       to  groff's typesetting capabilities in ways that are simpler to master
+       than groff's primitives.  The document processing macros provide highly
+       customizable  markup tags that allow the user to design and output pro-
+       fessional-looking documents with a minimum of typesetting intervention.
+
+       Files processed with ppddffmmoomm(1) with or without the -T_p_s option, produce
+       _P_D_F documents.  The documents include a _P_D_F outline that appears in the
+       `Contents' panel of document viewers, and may contain clickable  inter-
+       nal and external links.
+
+       When -T_p_s is absent, ggrrooffff''ss native _P_D_F driver, ggrrooppddff, is used to gen-
+       erate the output.  When given, the output is still _P_D_F, but  processing
+       is passed over to ppddffrrooffff, which uses ggrrooffff''ss PostScript driver, ggrrooppss.
+       Not all _P_D_F features are available when -T_p_s is given; its primary  use
+       is to allow processing of files with embedded _P_o_s_t_S_c_r_i_p_t images.
+
+       Files  processed  with ggrrooffff --mmoomm (or --mm _m_o_m) produce _P_o_s_t_S_c_r_i_p_t output
+       by default.
+
+       mmoomm comes with her own very complete documentation in _H_T_M_L  format.   A
+       separate _P_D_F _m_a_n_u_a_l, _P_r_o_d_u_c_i_n_g _P_D_F_s with groff and mmoomm, covers full mmoomm
+       or _P_D_F usage.
+
+FFIILLEESS
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_t_m_a_c_/_o_m_._t_m_a_c
+              - the main macro file
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_t_m_a_c_/_m_o_m_._t_m_a_c
+              - a wrapper file that calls om.tmac directly.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_d_o_c_/_g_r_o_f_f_-_1_._2_2_._4_/_h_t_m_l_/_m_o_m_/_t_o_c_._h_t_m_l
+              - entry point to the HTML documentation
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_d_o_c_/_g_r_o_f_f_-_1_._2_2_._4_/_p_d_f_/_m_o_m_-_p_d_f_._p_d_f
+              - the PDF manual, _P_r_o_d_u_c_i_n_g _P_D_F_s _w_i_t_h _g_r_o_f_f _a_n_d _m_o_m
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_d_o_c_/_g_r_o_f_f_-_1_._2_2_._4_/_e_x_a_m_p_l_e_s_/_m_o_m_/*_._m_o_m
+              - example files using mom
+
+DDOOCCUUMMEENNTTAATTIIOONN IINN AALLPPHHAABBEETTIICCAALL OORRDDEERR
+       This part of the man page contains information just as in groff(7), _m_o_m
+       _m_a_c_r_o_s and _m_o_m _e_s_c_a_p_e _s_e_q_u_e_n_c_e_s in alphabetical order.
+
+       The  logical  order of _m_o_m _m_a_c_r_o_s and _m_o_m _e_s_c_a_p_e _s_e_q_u_e_n_c_e_s is very well
+       documented in
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_d_o_c_/_g_r_o_f_f_-_1_._2_2_._4_/_h_t_m_l_/_m_o_m_/_t_o_c_._h_t_m_l
+              - entry point to the HTML documentation
+
+       That document is quite good for beginners, but other  users  should  be
+       happy to have some documentation in reference style.
+
+       So we restrict this part to the alphabetical order of macros and escape
+       sequences.  But, so far, we took all  documentation  details  from  the
+       _t_o_c_._h_t_m_l  file, just in a more useful alphabetical order.  So this part
+       of the man page is nothing new, but only a logical arrangement.
+
+QQUUIICCKK RREEFFEERREENNCCEE
+   QQuuiicckk RReeffeerreennccee ooff IInnlliinnee EEssccaappee SSeeqquueenncceess iinn aallpphhaabbeettiiccaall OOrrddeerr
+       \\**[[_<_c_o_l_o_r_n_a_m_e_>]]
+              begin using an initialized colour inline
+
+       \\**[[BBCCKK _n]]
+              move backwards in a line
+
+       \\**[[BBOOLLDDEERR]]
+              invoke pseudo bold inline (related to macro ..SSEETTBBOOLLDDEERR)
+
+       \\**[[BBOOLLDDEERRXX]]
+              off pseudo bold inline (related to macro ..SSEETTBBOOLLDDEERR)
+
+       \\**[[BBUU _n]]
+              move characters pairs closer together inline (related  to  macro
+              ..KKEERRNN)
+
+       \\**[[CCOONNDD]]
+              invoke pseudo condensing inline (related to macro ..CCOONNDDEENNSSEE)
+
+       \\**[[CCOONNDDXX]]
+              off pseudo condensing inline (related to macro ..CCOONNDDEENNSSEE)
+
+       \\**[[CCOONNDDSSUUPP]]...\\**[[CCOONNDDSSUUPPXX]]
+              pseudo-condensed superscript
+
+       \\**[[DDOOWWNN _n]]
+              temporarily move downwards in a line
+
+       \\**[[EENN--MMAARRKK]]
+              mark  initial line of a range of line numbers (for use with line
+              numbered endnotes)
+
+       \\**[[EEXXTT]]
+              invoke pseudo extending inline (related to macro ..EEXXTTEENNDD)
+
+       \\**[[EEXXTTXX]]
+              off pseudo condensing inline (related to macro ..EEXXTTEENNDD)
+
+       \\**[[EEXXTTSSUUPP]]...\\**[[EEXXTTSSUUPPXX]]
+              pseudo extended superscript
+
+       \\**[[FFUU _n]]
+              move characters pairs further apart  inline  (related  to  macro
+              ..KKEERRNN)
+
+       \\**[[FFWWDD _n]]
+              move forward in a line
+
+       \\**[[LLEEAADDEERR]]
+              insert leaders at the end of a line
+
+       \\**[[RRUULLEE]]
+              draw a full measure rule
+
+       \\**[[SSIIZZEE _n]]
+              change the point size inline (related to macro ..PPTT__SSIIZZEE)
+
+       \\**[[SSLLAANNTT]]
+              invoke pseudo italic inline (related to macro ..SSEETTSSLLAANNTT)
+
+       \\**[[SSLLAANNTTXX]]
+              off pseudo italic inline (related to macro ..SSEETTSSLLAANNTT)
+
+       \\**[[SSTT_<_n_>]]...\\**[[SSTT_<_n_>XX]]
+              string tabs (mark tab positions inline)
+
+       \\**[[SSUUPP]]...\\**[[SSUUPPXX]]
+              superscript
+
+       \\**[[TTBB++]]
+              inline escape for ..TTNN (_T_a_b _N_e_x_t)
+
+       \\**[[UULL]]...\\**[[UULLXX]]
+              invoke underlining inline (fixed width fonts only)
+
+       \\**[[UUPP _n]]
+              temporarily move upwards in a line
+
+   QQuuiicckk RReeffeerreennccee ooff MMaaccrrooss iinn aallpphhaabbeettiiccaall OOrrddeerr
+       ..AAUUTTOOLLEEAADD
+              set the linespacing relative to the point size
+
+       ..BB__MMAARRGGIINN
+              set a bottom margin
+
+       ..BBRR    break a justified line
+
+       ..CCEENNTTEERR
+              set line-by-line quad centre
+
+       ..CCOONNDDEENNSSEE
+              set the amount to pseudo condense
+
+       ..EELL    break a line without advancing on the page
+
+       ..EEXXTTEENNDD
+              set the amount to pseudo extend
+
+       ..FFAALLLLBBAACCKK__FFOONNTT
+              establish a fallback font (for missing fonts)
+
+       ..FFAAMM   alias to ..FFAAMMIILLYY
+
+       ..FFAAMMIILLYY _<_f_a_m_i_l_y_>
+              set the _f_a_m_i_l_y _t_y_p_e
+
+       ..FFTT    set the font style (roman, italic, etc.)
+
+       ..HHII [[ _<_m_e_a_s_u_r_e_> ]]
+              hanging indent
+
+       ..HHYY    automatic hyphenation on/off
+
+       ..HHYY__SSEETT
+              set automatic hyphenation parameters
+
+       ..IIBB [[ _<_l_e_f_t _m_e_a_s_u_r_e_> _<_r_i_g_h_t _m_e_a_s_u_r_e_> ]]
+              indent both
+
+       ..IIBBXX [[ CCLLEEAARR ]]
+              exit indent both
+
+       ..IILL [[ _<_m_e_a_s_u_r_e_> ]]
+              indent left
+
+       ..IILLXX [[ CCLLEEAARR ]]
+              exit indent left
+
+       ..IIQQ [[ CCLLEEAARR ]]
+              quit any/all indents
+
+       ..IIRR [[ _<_m_e_a_s_u_r_e_> ]]
+              indent right
+
+       ..IIRRXX [[ CCLLEEAARR ]]
+              exit indent right
+
+       ..JJUUSSTTIIFFYY
+              justify text to both margins
+
+       ..KKEERRNN  automatic character pair kerning on/off
+
+       ..LL__MMAARRGGIINN
+              set a left margin (page offset)
+
+       ..LLEEFFTT  set line-by-line quad left
+
+       ..LLLL    set a line length
+
+       ..LLSS    set a linespacing (leading)
+
+       ..PPAAGGEE  set explicit page dimensions and margins
+
+       ..PPAAGGEEWWIIDDTTHH
+              set a custom page width
+
+       ..PPAAGGEELLEENNGGTTHH
+              set a custom page length
+
+       ..PPAAPPEERR _<_p_a_p_e_r___t_y_p_e_>
+              set common paper sizes (letter, A4, etc)
+
+       ..PPTT__SSIIZZEE
+              set the point size
+
+       ..QQUUAADD  "justify" text left, centre, or right
+
+       ..RR__MMAARRGGIINN
+              set a right margin
+
+       ..RRIIGGHHTT set line-by-line quad right
+
+       ..SSEETTBBOOLLDDEERR
+              set the amount of emboldening
+
+       ..SSEETTSSLLAANNTT
+              set the degree of slant
+
+       ..SSPPRREEAADD
+              force justify a line
+
+       ..SSSS    set the sentence space size
+
+       ..TT__MMAARRGGIINN
+              set a top margin
+
+       ..TTII [[ _<_m_e_a_s_u_r_e_> ]]
+              temporary left indent
+
+       ..WWSS    set the minimum word space size
+
+DDOOCCUUMMEENNTTAATTIIOONN OOFF DDEETTAAIILLSS
+   DDeettaaiillss ooff IInnlliinnee EEssccaappee SSeeqquueenncceess iinn aallpphhaabbeettiiccaall OOrrddeerr
+       \\**[[_<_c_o_l_o_r_n_a_m_e_>]]
+              begin using an initialized colour inline
+
+       \\**[[BBCCKK _n]]
+              move wards in a line
+
+       \\**[[BBOOLLDDEERR]]
+       \\**[[BBOOLLDDEERRXX]]
+              Emboldening on/off
+
+              \\**[[BBOOLLDDEERR]]  begins emboldening type.  \\**[[BBOOLLDDEERRXX]] turns the fea-
+              ture off.  Both are inline escapes, therefore  they  should  not
+              appear  as separate lines, but rather be embedded in text lines,
+              like this:
+                     Not \\**[[BBOOLLDDEERR]]everything\\**[[BBOOLLDDEERRXX]] is as it seems.
+
+              Alternatively, if you wanted  the  whole  line  emboldened,  you
+              should do
+                     \\**[[BBOOLLDDEERR]]Not everything is as it seems.\\**[[BBOOLLDDEERRXX]]
+              Once  \\**[[BBOOLLDDEERR]]  is  invoked, it remains in effect until turned
+              off.
+
+              Note: If  you're  using  the  document  processing  macros  with
+              ..PPRRIINNTTSSTTYYLLEE TTYYPPEEWWRRIITTEE, mmoomm ignores \\**[[BBOOLLDDEERR]] requests.
+
+       \\**[[BBUU _n]]
+              move  characters  pairs closer together inline (related to macro
+              ..KKEERRNN)
+
+       \\**[[CCOONNDD]]
+       \\**[[CCOONNDDXX]]
+              Pseudo-condensing on/off
+
+              \\**[[CCOONNDD]] begins pseudo-condensing  type.   \\**[[CCOONNDDXX]]  turns  the
+              feature off.  Both are inline escapes, therefore they should not
+              appear as separate lines, but rather be embedded in text  lines,
+              like this:
+                     \\**[[CCOONNDD]]_N_o_t _e_v_e_r_y_t_h_i_n_g _i_s _a_s _i_t _s_e_e_m_s_.\\**[[CCOONNDDXX]]
+              \\**[[CCOONNDD]] remains in effect until you turn it off with \\**[[CCOONNDDXX]].
+
+              IMPORTANT:  You must turn \\**[[CCOONNDD]] off before making any changes
+              to the point size of your type, either via the ..PPTT__SSIIZZEE macro or
+              with the \\ss inline escape.  If you wish the new point size to be
+              pseudo-condensed, simply reinvoke \\**[[CCOONNDD]] afterwards.  Equally,
+              \\**[[CCOONNDD]]  must  be  turned off before changing the condense per-
+              centage with ..CCOONNDDEENNSSEE.
+
+              Note: If  you're  using  the  document  processing  macros  with
+              ..PPRRIINNTTSSTTYYLLEE TTYYPPEEWWRRIITTEE, mmoomm ignores \\**[[CCOONNDD]] requests.
+
+       \\**[[CCOONNDDSSUUPP]]...\\**[[CCOONNDDSSUUPPXX]]
+              pseudo-condensed superscript
+
+       \\**[[DDOOWWNN _n]]
+              temporarily move downwards in a line
+
+       \\**[[EENN--MMAARRKK]]
+              mark  initial line of a range of line numbers (for use with line
+              numbered endnotes)
+
+       \\**[[EEXXTT]]
+       \\**[[EEXXTTXX]]
+              Pseudo-extending on/off
+
+              \\**[[EEXXTT]] begins pseudo-extending type.  \\**[[EEXXTTXX]] turns  the  fea-
+              ture  off.   Both  are inline escapes, therefore they should not
+              appear as separate lines, but rather be embedded in text  lines,
+              like this:
+                     \\**[[EEXXTT]]_N_o_t _e_v_e_r_y_t_h_i_n_g _i_s _a_s _i_t _s_e_e_m_s_.\\**[[EEXXTTXX]]
+              \\**[[EEXXTT]] remains in effect until you turn it off with \\**[[EEXXTTXX]].
+
+              IMPORTANT:  You  must turn \\**[[EEXXTT]] off before making any changes
+              to the point size of your type, either via the ..PPTT__SSIIZZEE macro or
+              with the \\ss inline escape.  If you wish the new point size to be
+              _p_s_e_u_d_o_-_e_x_t_e_n_d_e_d, simply reinvoke \\**[[EEXXTT]]  afterwards.   Equally,
+              \\**[[EEXXTT]] must be turned off before changing the extend percentage
+              with ..EEXXTTEENNDD.
+
+              Note: If you are  using  the  document  processing  macros  with
+              ..PPRRIINNTTSSTTYYLLEE TTYYPPEEWWRRIITTEE, mmoomm ignores \\**[[EEXXTT]] requests.
+
+       \\**[[EEXXTTSSUUPP]]...\\**[[EEXXTTSSUUPPXX]]
+              pseudo extended superscript
+
+       \\**[[FFUU _n]]
+              move  characters  pairs  further  apart inline (related to macro
+              ..KKEERRNN)
+
+       \\**[[FFWWDD _n]]
+              move forward in a line
+
+       \\**[[LLEEAADDEERR]]
+              insert leaders at the end of a line
+
+       \\**[[RRUULLEE]]
+              draw a full measure rule
+
+       \\**[[SSIIZZEE _n]]
+              change the point size inline (related to macro ..PPTT__SSIIZZEE)
+
+       \\**[[SSLLAANNTT]]
+       \\**[[SSLLAANNTTXX]]
+              Pseudo italic on/off
+
+              \\**[[SSLLAANNTT]] begins _p_s_e_u_d_o_-_i_t_a_l_i_c_i_z_i_n_g _t_y_p_e.  \\**[[SSLLAANNTTXX]] turns  the
+              feature off.  Both are _i_n_l_i_n_e _e_s_c_a_p_e_s, therefore they should not
+              appear as separate lines, but rather be embedded in text  lines,
+              like this:
+                     Not \\**[[SSLLAANNTT]]everything\\**[[SSLLAANNTTXX]] is as it seems.
+
+              Alternatively,  if  you wanted the whole line _p_s_e_u_d_o_-_i_t_a_l_i_c_i_z_e_d,
+              you'd do
+                     \\**[[SSLLAANNTT]]Not everything is as it seems.\\**[[SSLLAANNTTXX]]
+
+              Once \\**[[SSLLAANNTT]] is invoked, it remains  in  effect  until  turned
+              off.
+
+              Note:  If  you're  using  the  document  processing  macros with
+              ..PPRRIINNTTSSTTYYLLEE TTYYPPEEWWRRIITTEE, mmoomm underlines pseudo-italics by default.
+              To    change    this    behaviour,   use   the   special   macro
+              ..SSLLAANNTT__MMEEAANNSS__SSLLAANNTT.
+
+       \\**[[SSTT_<_n_u_m_b_e_r_>]]...\\**[[SSTT_<_n_u_m_b_e_r_>XX]]
+              Mark positions of string tabs
+
+              The _q_u_a_d direction must  be  LLEEFFTT  or  JJUUSSTTIIFFYY  (see  ..QQUUAADD  and
+              ..JJUUSSTTIIFFYY) or the _n_o_-_f_i_l_l _m_o_d_e set to LLEEFFTT in order for these in-
+              lines to function properly.  Please see _I_M_P_O_R_T_A_N_T, below.
+
+              String tabs need to be marked off with inline escapes before be-
+              ing  set  up  with  the  ..SSTT  macro.  Any input line may contain
+              string tab markers.  _<_n_u_m_b_e_r_>, above, means the numeric  identi-
+              fier of the tab.
+
+              The following shows a sample input line with string tab markers.
+                     \\**[[SSTT11]]Now is the time\\**[[SSTT11XX]] for all \\**[[SSTT22]]good men\\**SSTT22XX]] to come to the aid of the party.
+
+              String  _t_a_b _1 begins at the start of the line and ends after the
+              word _t_i_m_e.  String _t_a_b _2 starts at _g_o_o_d and ends after _m_e_n.  _I_n_-
+              _l_i_n_e  _e_s_c_a_p_e_s  (e.g.  _f_o_n_t  or _p_o_i_n_t _s_i_z_e _c_h_a_n_g_e_s, or horizontal
+              movements, including padding) are taken into  account  when  mmoomm
+              determines the _p_o_s_i_t_i_o_n and _l_e_n_g_t_h of _s_t_r_i_n_g _t_a_b_s.
+
+              Up to nineteen string tabs may be marked (not necessarily all on
+              the same line, of course), and they must be numbered  between  1
+              and 19.
+
+              Once  string  tabs have been marked in input lines, they have to
+              be _s_e_t with ..SSTT, after which they may be called, by number, with
+              ..TTAABB.
+
+              Note: Lines with string tabs marked off in them are normal input
+              lines, i.e. they get printed, just like any input line.  If  you
+              want  to  set  up string tabs without the line printing, use the
+              ..SSIILLEENNTT macro.
+
+              _I_M_P_O_R_T_A_N_T_: Owing to the way  ggrrooffff  processes  input  lines  and
+              turns  them  into  output  lines,  it is not possible for mmoomm to
+              _g_u_e_s_s the correct starting position of string tabs marked off in
+              lines that are centered or set flush right.
+
+              Equally,  she  cannot  guess  the starting position if a line is
+              fully justified and broken with ..SSPPRREEAADD.
+
+              In other words, in order to use string tabs, LLEEFFTT  must  be  ac-
+              tive, or, if ..QQUUAADD LLEEFFTT or JJUUSSTTIIFFYY are active, the line on which
+              the _s_t_r_i_n_g _t_a_b_s are marked must be broken _m_a_n_u_a_l_l_y with ..BBRR (but
+              not ..SSPPRREEAADD).
+
+              To  circumvent  this behaviour, I recommend using the PPAADD to set
+              up string tabs in centered or flush right lines.  Say, for exam-
+              ple,  you  want  to use a _s_t_r_i_n_g _t_a_b to _u_n_d_e_r_s_c_o_r_e the text of a
+              centered line with a rule.  Rather than this,
+                     ..CCEENNTTEERR
+                     \\**[[SSTT11]]AA lliinnee ooff tteexxtt\\**[[SSTT11XX]]\\cc
+                     ..EELL
+                     ..SSTT 11
+                     ..TTAABB 11
+                     ..PPTT__SSIIZZEE 2244
+                     ..AALLDD 33pp
+                     \\**[[RRUULLEE]]
+                     ..RRLLDD 33pp
+                     ..TTQQ
+              you should do:
+                     ..QQUUAADD CCEENNTTEERR
+                     ..PPAADD ""##\\**[[SSTT11]]AA lliinnee ooff tteexxtt\\**[[SSTT11XX]]##""
+                     ..EELL
+                     ..SSTT 11
+                     ..TTAABB 11
+                     ..PPTT__SSIIZZEE 2244
+                     ..AALLDD 33pp
+                     \\**[[RRUULLEE]] \\"" NNoottee tthhaatt yyoouu ccaann''tt uussee \\**[[UUPP]] oorr \\**[[DDOOWWNN]] wwiitthh \\**[[RRUULLEE]]
+                     ..RRLLDD 33pp
+                     ..TTQQ
+
+       \\**[[SSUUPP]]...\\**[[SSUUPPXX]]
+              superscript
+
+       \\**[[TTBB++]]
+              Inline escape for ..TTNN (_T_a_b _N_e_x_t)
+
+       \\**[[UULL]]...\\**[[UULLXX]]
+              invoke underlining inline (fixed width fonts only)
+
+       \\**[[UUPP _n]]
+              temporarily move upwards in a line
+
+   DDeettaaiillss ooff MMaaccrrooss iinn aallpphhaabbeettiiccaall OOrrddeerr
+       ..AAUUTTOOLLEEAADD
+              set the linespacing relative to the point size
+
+       ..BB__MMAARRGGIINN _<_b_o_t_t_o_m _m_a_r_g_i_n_>
+              Bottom Margin
+
+              Requires a unit of measure
+
+              ..BB__MMAARRGGIINN sets a nominal position at the bottom of the page  be-
+              yond which you don't want your type to go.  When the bottom mar-
+              gin is reached, mmoomm starts a new  page.   ..BB__MMAARRGGIINN  rreeqquuiirreess  aa
+              uunniitt ooff mmeeaassuurree..  Decimal fractions are allowed.  To set a nomi-
+              nal bottom margin of 3/4 inch, enter
+                     ..BB__MMAARRGGIINN ..7755ii
+
+              Obviously, if you haven't spaced the type on your pages so  that
+              the  last  lines fall perfectly at the bottom margin, the margin
+              will vary from page to page.  Usually, but not always, the  last
+              line of type that fits on a page before the bottom margin causes
+              mom to start a new page.
+
+              Occasionally, owing to a peculiarity in  _g_r_o_f_f,  an  extra  line
+              will  fall below the nominal bottom margin.  If you're using the
+              document processing macros, this is unlikely to happen; the doc-
+              ument  processing macros are very hard-nosed about aligning bot-
+              tom margins.
+
+              Note: The meaning of ..BB__MMAARRGGIINN is slightly different when you're
+              using the document processing macros.
+
+       ..FFAALLLLBBAACCKK__FFOONNTT _<_f_a_l_l_b_a_c_k _f_o_n_t_> [[ AABBOORRTT || WWAARRNN ]]
+              Fallback Font
+
+              In  the event that you pass an invalid argument to ..FFAAMMIILLYY (i.e.
+              a non-existent _f_a_m_i_l_y), mmoomm, by default, uses the _f_a_l_l_b_a_c_k _f_o_n_t,
+              CCoouurriieerr  MMeeddiiuumm RRoommaann (CCRR), in order to continue processing your
+              file.
+
+              If you'd prefer another _f_a_l_l_b_a_c_k _f_o_n_t, pass  ..FFAALLLLBBAACCKK__FFOONNTT  the
+              full  _f_a_m_i_l_y_+_f_o_n_t  _n_a_m_e of the _f_o_n_t you'd like.  For example, if
+              you'd rather the _f_a_l_l_b_a_c_k _f_o_n_t were TTiimmeess RRoommaann MMeeddiiuumm RRoommaann,
+                     ..FFAALLLLBBAACCKK__FFOONNTT TTRR
+              would do the trick.
+
+              MMoomm issues a warning whenever a _f_o_n_t _s_t_y_l_e _s_e_t with ..FFTT does not
+              exist,  either  because  you haven't registered the style or be-
+              cause the _f_o_n_t _s_t_y_l_e does not exist in the  current  _f_a_m_i_l_y  _s_e_t
+              with  ..FFAAMMIILLYY.  By default, mmoomm then aborts, which allows you to
+              correct the problem.
+
+              If you'd prefer that mmoomm not abort on  non-existent  _f_o_n_t_s,  but
+              rather  continue  processing using a _f_a_l_l_b_a_c_k _f_o_n_t, you can pass
+              ..FFAALLLLBBAACCKK__FFOONNTT the argument WWAARRNN, either by itself, or  in  con-
+              junction with your chosen _f_a_l_l_b_a_c_k _f_o_n_t..
+
+              Some examples of invoking ..FFAALLLLBBAACCKK__FFOONNTT:
+
+              ..FFAALLLLBBAACCKK__FFOONNTT WWAARRNN
+                     mmoomm  will  issue  a  warning whenever you try to access a
+                     non-existent _f_o_n_t but will continue processing your  file
+                     with the default _f_a_l_l_b_a_c_k _f_o_n_t, CCoouurriieerr MMeeddiiuumm RRoommaann.
+
+              ..FFAALLLLBBAACCKK__FFOONNTT TTRR WWAARRNN
+                     mmoomm  will  issue  a  warning whenever you try to access a
+                     non-existent _f_o_n_t but will continue processing your  file
+                     with  a  _f_a_l_l_b_a_c_k _f_o_n_t of TTiimmeess RRoommaann MMeeddiiuumm RRoommaann; addi-
+                     tionally, TTRR will be the _f_a_l_l_b_a_c_k _f_o_n_t whenever  you  try
+                     to access a _f_a_m_i_l_y that does not exist.
+
+              ..FFAALLLLBBAACCKK__FFOONNTT TTRR AABBOORRTT
+                     mmoomm  will abort whenever you try to access a non-existent
+                     ffoonntt, and will use the _f_a_l_l_b_a_c_k _f_o_n_t TTRR whenever you  try
+                     to  access  a  _f_a_m_i_l_y  that does not exist.  If, for some
+                     reason,  you  want  to  revert  to  AABBOORRTT,   just   enter
+                     ""..FFAALLLLBBAACCKK__FFOONNTT  AABBOORRTT""  and mmoomm will once again abort on
+                     _f_o_n_t _e_r_r_o_r_s.
+
+       ..FFAAMM _<_f_a_m_i_l_y_>
+              Type Family, alias of ..FFAAMMIILLYY
+
+       ..FFAAMMIILLYY _<_f_a_m_i_l_y_>
+              Type Family, alias ..FFAAMM
+
+              ..FFAAMMIILLYY takes one argument: the name of  the  _f_a_m_i_l_y  you  want.
+              _G_r_o_f_f  comes with a small set of basic families, each identified
+              by a 1-, 2- or 3-letter mnemonic.  The standard families are:
+                     AA   == AAvvaanntt GGaarrddee
+                     BBMM  == BBooookkmmaann
+                     HH   == HHeellvveettiiccaa
+                     HHNN  == HHeellvveettiiccaa NNaarrrrooww
+                     NN   == NNeeww CCeennttuurryy SScchhoooollbbooookk
+                     PP   == PPaallaattiinnoo
+                     TT   == TTiimmeess RRoommaann
+                     ZZCCMM == ZZaappff CChhaanncceerryy
+
+              The argument you pass to ..FFAAMMIILLYY  is  the  identifier  at  left,
+              above.  For example, if you want HHeellvveettiiccaa, enter
+                     ..FFAAMMIILLYY HH
+
+              Note: The font macro (..FFTT) lets you specify both the type _f_a_m_i_l_y
+              and the desired font with a single macro.  While  this  saves  a
+              few  keystrokes,  I  recommend using ..FFAAMMIILLYY ffoorr _f_a_m_i_l_y, and ..FFTT
+              ffoorr _f_o_n_t, except where doing so is genuinely inconvenient.  ZZCCMM,
+              for example, only exists in one style: IIttaalliicc (II).
+
+              Therefore,
+                     ..FFTT ZZCCMMII
+              makes  more  sense  than setting the _f_a_m_i_l_y to ZZCCMM, then setting
+              the _f_o_n_t to _I.
+
+              Additional note: If you are running a  version  of  groff  lower
+              than 1.19.2, you must follow all ..FFAAMMIILLYY requests with a ..FFTT re-
+              quest, otherwise mmoomm will set all type up to the  next  ..FFTT  re-
+              quest in the fallback font.
+
+              If  you  are running a version of groff greater than or equal to
+              1.19.2, when you invoke the ..FFAAMMIILLYY  macro,  mmoomm  _r_e_m_e_m_b_e_r_s  the
+              font  style  ((Roman,,  IIttaalliicc, etc) currently in use (if the font
+              style exists in the new _f_a_m_i_l_y) and will  continue  to  use  the
+              same font style in the new family.  For example:
+                     ..FFAAMMIILLYY BBMM _\_" _B_o_o_k_m_a_n _f_a_m_i_l_y
+                     ..FFTT II _\_" _M_e_d_i_u_m _I_t_a_l_i_c
+                     _<_s_o_m_e _t_e_x_t_> _\_" _B_o_o_k_m_a_n _M_e_d_i_u_m _I_t_a_l_i_c
+                     ..FFAAMMIILLYY HH _\_" _H_e_l_v_e_t_i_c_a _f_a_m_i_l_y
+                     _<_m_o_r_e _t_e_x_t_> _\_" _H_e_l_v_e_t_i_c_a _M_e_d_i_u_m _I_t_a_l_i_c
+
+              However, if the font style does not exist in the new family, mmoomm
+              will set all subsequent type in the fallback font  (by  default,
+              CCoouurriieerr  MMeeddiiuumm RRoommaann) until she encounters a ..FFTT request that's
+              valid for the _f_a_m_i_l_y.
+
+              For example, assuming you don't have the font  MMeeddiiuumm  CCoonnddeennsseedd
+              RRoommaann (mmoomm extension _C_D) in the _H_e_l_v_e_t_i_c_a _f_a_m_i_l_y:
+                     ..FFAAMMIILLYY UUNN _\_" _U_n_i_v_e_r_s _f_a_m_i_l_y
+                     ..FFTT CCDD _\_" _M_e_d_i_u_m _C_o_n_d_e_n_s_e_d
+                     _<_s_o_m_e _t_e_x_t_> _\_" _U_n_i_v_e_r_s _M_e_d_i_u_m _C_o_n_d_e_n_s_e_d
+                     ..FFAAMMIILLYY HH _\_" _H_e_l_v_e_t_i_c_a _f_a_m_i_l_y
+                     _<_m_o_r_e _t_e_x_t_> _\_" _C_o_u_r_i_e_r _M_e_d_i_u_m _R_o_m_a_n_!
+
+              In  the  above example, you must follow ..FFAAMMIILLYY HH with a ..FFTT re-
+              quest that's valid for HHeellvveettiiccaa.
+
+              Please see the Appendices, _A_d_d_i_n_g _f_o_n_t_s _t_o _g_r_o_f_f,  for  informa-
+              tion  on adding fonts and families to groff, as well as to see a
+              list of the extensions mmoomm provides to _g_r_o_f_f's basic RR, II, BB, BBII
+              styles.
+
+              Suggestion: When adding _f_a_m_i_l_i_e_s _t_o _g_r_o_f_f, I recommend following
+              the established standard for the naming families and fonts.  For
+              example, if you add the GGaarraammoonndd family, name the font files
+                     GGAARRAAMMOONNDDRR
+                     GGAARRAAMMOONNDDII
+                     GGAARRAAMMOONNDDBB
+                     GGAARRAAMMOONNDDBBII
+              GGAARRAAMMOONNDD  tthheenn bbeeccoommeess aa vvaalliidd _f_a_m_i_l_y _n_a_m_e you can pass to ..FFAAMM--
+              IILLYY.  (You could, of course, shorten GGAARRAAMMOONNDD to just GG, or GGDD.)
+              RR,  II,  BB, and BBII after GGAARRAAMMOONNDD are the _r_o_m_a_n, _i_t_a_l_i_c, _b_o_l_d and
+              _b_o_l_d_-_i_t_a_l_i_c fonts respectively.
+
+       ..FFOONNTT RR || BB || BBII || _<_a_n_y _o_t_h_e_r _v_a_l_i_d _f_o_n_t _s_t_y_l_e_>
+              Alias to ..FFTT
+
+       ..FFTT RR || BB || BBII || _<_a_n_y _o_t_h_e_r _v_a_l_i_d _f_o_n_t _s_t_y_l_e_>
+              Set font
+
+              By default, _g_r_o_f_f permits ..FFTT to take one of four possible argu-
+              ments specifying the desired font:
+                     RR == ((MMeeddiiuumm)) RRoommaann
+                     II == ((MMeeddiiuumm)) IIttaalliicc
+                     BB == BBoolldd ((RRoommaann))
+                     BBII == BBoolldd IIttaalliicc
+
+              For example, if your _f_a_m_i_l_y is HHeellvveettiiccaa, entering
+                     ..FFTT BB
+              will  give  you  the  _H_e_l_v_e_t_i_c_a  _b_o_l_d _f_o_n_t.  If your _f_a_m_i_l_y were
+              PPaallaattiinnoo, you'd get the _P_a_l_a_t_i_n_o _b_o_l_d _f_o_n_t.
+
+              MMoomm considerably extends the range of arguments you can pass  to
+              ..FFTT,  making  it more convenient to add and access fonts of dif-
+              fering weights and shapes within the same family.
+
+              Have a look here for a list of the  weight/style  arguments  mmoomm
+              allows.   Be  aware,  though, that you must have the fonts, cor-
+              rectly installed and named, in order to use the arguments.  (See
+              _A_d_d_i_n_g _f_o_n_t_s _t_o _g_r_o_f_f for instructions and information.)  Please
+              also read the _A_D_D_I_T_I_O_N_A_L _N_O_T_E found in the  description  of  the
+              ..FFAAMMIILLYY macro.
+
+              How  mmoomm  reacts  to an invalid argument to ..FFTT depends on which
+              version of groff you're using.  If your _g_r_o_f_f _v_e_r_s_i_o_n is greater
+              than or equal to 1.19.2, mmoomm will issue a warning and, depending
+              on how you've set up the fallback font, either continue process-
+              ing  using  the fallback font, or abort (allowing you to correct
+              the problem).  If your _g_r_o_f_f _v_e_r_s_i_o_n is less  than  1.19.2,  mmoomm
+              will  silently  continue  processing,  using either the fallback
+              font or the font that was in effect prior  to  the  invalid  ..FFTT
+              call.
+
+              ..FFTT  will  also  accept,  as an argument, a full _f_a_m_i_l_y and _f_o_n_t
+              _n_a_m_e.
+
+              For example,
+                     ..FFTT HHBB
+              will set subsequent type in _H_e_l_v_e_t_i_c_a _B_o_l_d.
+
+              However, I strongly recommend keeping _f_a_m_i_l_y and  _f_o_n_t  separate
+              except where doing so is genuinely inconvenient.
+
+              For inline control of _f_o_n_t_s, see _I_n_l_i_n_e _E_s_c_a_p_e_s, font control.
+
+       ..HHII [[ _<_m_e_a_s_u_r_e_> ]]
+              Hanging  indent -- the optional argument requires a unit of mea-
+              sure.
+
+              A hanging indent looks like this:
+                       TThhee tthhoouussaanndd iinnjjuurriieess ooff FFoorrttuunnaattoo II hhaadd bboorrnnee aass bbeesstt II
+                         ccoouulldd,, bbuutt wwhheenn hhee vveennttuurreedd uuppoonn iinnssuulltt,, II vvoowweedd
+                         rreevveennggee..  YYoouu wwhhoo ssoo wweellll kknnooww tthhee nnaattuurree ooff mmyy ssoouull
+                         wwiillll nnoott ssuuppppoossee,, hhoowweevveerr,, tthhaatt II ggaavvee uutttteerraannccee ttoo aa
+                         tthhrreeaatt,, aatt lleennggtthh II wwoouulldd bbee aavveennggeedd......
+              The first line of text _h_a_n_g_s outside the _l_e_f_t _m_a_r_g_i_n.
+
+              In order to use _h_a_n_g_i_n_g _i_n_d_e_n_t_s, you must first have a _l_e_f_t  _i_n_-
+              _d_e_n_t  active  (set  with  either ..IILL or ..IIBB).  MMoomm will not hang
+              text outside the _l_e_f_t _m_a_r_g_i_n _s_e_t with ..LL__MMAARRGGIINN or  outside  the
+              _l_e_f_t _m_a_r_g_i_n of a _t_a_b.
+
+              The  first  time you invoke ..HHII, you must give it a mmeeaassuurree.  If
+              you want the first line of a paragraph to _h_a_n_g _b_y, say, _1  _p_i_c_a,
+              do
+                     ..IILL 11PP
+                     ..HHII 11PP
+              Subsequent  invocations  of  ..HHII  do not require you to supply a
+              _m_e_a_s_u_r_e; mmoomm keeps track of the last measure you gave it.
+
+              Generally speaking, you should invoke ..HHII immediately  prior  to
+              the  line  you  want  hung (i.e. without any intervening control
+              lines).  And because  _h_a_n_g_i_n_g  _i_n_d_e_n_t_s  affect  only  one  line,
+              there's no need to turn them off.
+
+              _I_M_P_O_R_T_A_N_T_:  Unlike  IILL, IIRR and IIBB, measures given to ..HHII are NOT
+              additive.  Each time you pass a measure to ..HHII ,, the measure  is
+              treated  literally.   _R_e_c_i_p_e_:  A numbered list using _h_a_n_g_i_n_g _i_n_-
+              _d_e_n_t_s
+
+              _N_o_t_e_: mmoomm has macros for setting lists.  This recipe  exists  to
+              demonstrate the use of _h_a_n_g_i_n_g _i_n_d_e_n_t_s only.
+                     ..PPAAGGEE 88..55ii 1111ii 11ii 11ii 11ii 11ii
+                     ..FFAAMMIILLYY  TT
+                     ..FFTT      RR
+                     ..PPTT__SSIIZZEE 1122
+                     ..LLSS      1144
+                     ..JJUUSSTTIIFFYY
+                     ..KKEERRNN
+                     ..SSSS 00
+                     ..IILL \\ww''\\00\\00..''
+                     ..HHII \\ww''\\00\\00..''
+                     11..\\00TThhee mmoosstt iimmppoorrttaanntt ppooiinntt ttoo bbee ccoonnssiiddeerreedd iiss wwhheetthheerr tthhee
+                     aannsswweerr ttoo tthhee mmeeaanniinngg ooff LLiiffee,, tthhee UUnniivveerrssee,, aanndd EEvveerryytthhiinngg
+                     rreeaallllyy iiss 4422..  WWee hhaavvee nnoo--oonnee''ss wwoorrdd oonn tthhee ssuubbjjeecctt eexxcceepptt
+                     MMrr.. AAddaammss''..
+                     ..HHII
+                     2.\0If the answer to the meaning of Life, the Universe,
+                     and Everything is indeed 42, what impact does this have on
+                     the politics of representation?  42 is, after all not a
+                     prime number.  Are we to infer that prime numbers don't
+                     deserve equal rights and equal access in the universe?
+                     ..HHII
+                     3.\0If 42 is deemed non-exclusionary, how do we present it
+                     as the answer and, at the same time, forestall debate on its
+                     exclusionary implications?
+
+              First, we invoke a left indent with a measure equal to the width
+              of 2 figures spaces plus a period (using the \w inline  escape).
+              At  this point, the left indent is active; text afterwards would
+              normally be indented.  However, we invoke a  hanging  indent  of
+              exactly  the  same  width, which hangs the first line (and first
+              line only!) to the left of the indent by the same  distance  (in
+              this case, that means "out to the left margin").  Because we be-
+              gin the first line with a number, a period, and a figure  space,
+              the  actual text (_T_h_e _m_o_s_t _i_m_p_o_r_t_a_n_t _p_o_i_n_t_._._.) starts at exactly
+              the same spot as the indented lines that follow.
+
+              Notice that subsequent invocations of ..HHII don't require  a  _m_e_a_-
+              _s_u_r_e to be given.
+
+              Paste the example above into a file and preview it with
+                     ppddffmmoomm ffiilleennaammee..mmoomm || ppss22ppddff -- ffiilleennaammee..ppddff
+              to see hanging indents in action.
+
+       ..IIBB [[ _<_l_e_f_t _m_e_a_s_u_r_e_> _<_r_i_g_h_t _m_e_a_s_u_r_e_> ]]
+              Indent both -- the optional argument requires a unit of measure
+
+              ..IIBB allows you to set or invoke a left and a right indent at the
+              same time.
+
+              At its first invocation, you must supply a measure for both  in-
+              dents;  at subsequent invocations when you wish to supply a mea-
+              sure, both must be given again.  As with ..IILL and ..IIRR,  the  mea-
+              sures  are  added  to the values previously passed to the macro.
+              Hence, if you wish to change just one of the  values,  you  must
+              give an argument of zero to the other.
+
+              _A  _w_o_r_d  _o_f _a_d_v_i_c_e_: If you need to manipulate left and right in-
+              dents separately, use a combination of ..IILL and  ..IIRR  instead  of
+              ..IIBB.  You'll save yourself a lot of grief.
+
+              A  _m_i_n_u_s _s_i_g_n may be prepended to the arguments to subtract from
+              their current values.  The \w inline escape may be used to spec-
+              ify text-dependent measures, in which case no unit of measure is
+              required.  For example,
+                     ..IIBB \\ww''mmaarrggaarriinnee'' \\ww''jjeelllloo''
+              left indents text by the width of the word _m_a_r_g_a_r_i_n_e  and  right
+              indents by the width of _j_e_l_l_o.
+
+              Like  ..IILL  and ..IIRR, ..IIBB with no argument indents by its last ac-
+              tive values.  See the brief explanation of how mom  handles  in-
+              dents for more details.
+
+              _N_o_t_e_:  Calling  a  _t_a_b (with ..TTAABB <<nn>>) automatically cancels any
+              active indents.
+
+              _A_d_d_i_t_i_o_n_a_l _n_o_t_e_: Invoking ..IIBB automatically turns  off  ..IILL  and
+              ..IIRR.
+
+       ..IILL [[ _<_m_e_a_s_u_r_e_> ]]
+              Indent left -- the optional argument requires a unit of measure
+
+              ..IILL  indents text from the left margin of the page, or if you're
+              in a _t_a_b, from the left edge of the _t_a_b.  Once  _I_L  is  on,  the
+              _l_e_f_t  _i_n_d_e_n_t  is  applied  uniformly to every subsequent line of
+              text, even if you change the line length.
+
+              The first time you invoke ..IILL, you must give it a measure.  Sub-
+              sequent  invocations with a measure add to the previous measure.
+              A minus sign may be prepended to the argument to  subtract  from
+              the  current measure.  The \\ww inline escape may be used to spec-
+              ify a text-dependent measure, in which case no unit  of  measure
+              is required.  For example,
+                     ..IILL \\ww''mmaarrggaarriinnee''
+              indents text by the width of the word _m_a_r_g_a_r_i_n_e.
+
+              With no argument, ..IILL indents by its last active value.  See the
+              brief explanation of how mmoomm handles indents for more details.
+
+              _N_o_t_e_: Calling a _t_a_b (with ..TTAABB <<nn>>)  automatically  cancels  any
+              active indents.
+
+              _A_d_d_i_t_i_o_n_a_l _n_o_t_e_: Invoking ..IILL automatically turns off IIBB.
+
+       ..IIQQ [[ _<_m_e_a_s_u_r_e_> ]]
+              IQ -- quit any/all indents
+
+              _I_M_P_O_R_T_A_N_T  _N_O_T_E_: The original macro for quitting all indents was
+              ..IIXX.  This usage has been deprecated in favour of IIQQ.  ..IIXX  will
+              continue  to  behave  as before, but mmoomm will issue a warning to
+              _s_t_d_e_r_r indicating that you should update your documents.
+
+              As a consequence of this change, ..IILLXX, ..IIRRXX  and  ..IIBBXX  may  now
+              also  be invoked as ..IILLQQ, ..IIRRQQ and ..IIBBQQ.  Both forms are accept-
+              able.
+
+              Without an argument, the macros to quit indents  merely  restore
+              your  original  margins and line length.  The measures stored in
+              the indent macros themselves are saved  so  you  can  call  them
+              again without having to supply a measure.
+
+              If  you  pass these macros the optional argument CCLLEEAARR, they not
+              only restore your original left margin and line length, but also
+              clear any values associated with a particular indent style.  The
+              next time you need an indent of the same style, you have to sup-
+              ply a measure again.
+
+              ..IIQQ CCLLEEAARR, as you'd suspect, quits and clears the values for all
+              indent styles at once.
+
+       ..IIRR [[ _<_m_e_a_s_u_r_e_> ]]
+              Indent right -- the optional argument requires a unit of measure
+
+              ..IIRR indents text from the _r_i_g_h_t _m_a_r_g_i_n of the page, or if you're
+              in a _t_a_b, from the end of the _t_a_b.
+
+              The first time you invoke ..IIRR, you must give it a measure.  Sub-
+              sequent invocations with a measure add to  the  previous  indent
+              measure.   A _m_i_n_u_s _s_i_g_n may be prepended to the argument to sub-
+              tract from the current indent measure.  The \w inline escape may
+              be  used  to  specify a text-dependent measure, in which case no
+              _u_n_i_t _o_f _m_e_a_s_u_r_e is required.  For example,
+                     ..IIRR \\ww''jjeelllloo''
+              indents text by the width of the word _j_e_l_l_o.
+
+              With no argument, ..IIRR indents by its last active value.  See the
+              brief explanation of how mmoomm handles indents for more details.
+
+              _N_o_t_e_:  Calling  a  _t_a_b (with ..TTAABB <<nn>>) automatically cancels any
+              active indents.
+
+              _A_d_d_i_t_i_o_n_a_l _n_o_t_e_: Invoking ..IIRR automatically turns off IIBB.
+
+       ..LL__MMAARRGGIINN _<_l_e_f_t _m_a_r_g_i_n_>
+              Left Margin
+
+              L_MARGIN establishes the distance from  the  left  edge  of  the
+              printer  sheet  at which you want your type to start.  It may be
+              used any time, and remains in  effect  until  you  enter  a  new
+              value.
+
+              Left  indents and tabs are calculated from the value you pass to
+              ..LL__MMAARRGGIINN, hence it's always a good idea  to  invoke  it  before
+              starting  any  serious  typesetting.   A  unit of measure is re-
+              quired.  Decimal fractions are allowed.  Therefore, to  set  the
+              left margin at 3 picas (1/2 inch), you'd enter either
+                     ..LL__MMAARRGGIINN 33PP
+              or
+                     ..LL__MMAARRGGIINN ..55ii
+
+              If you use the macros ..PPAAGGEE, ..PPAAGGEEWWIIDDTTHH or ..PPAAPPEERR without invok-
+              ing ..LL__MMAARRGGIINN (either before or afterwards),  mmoomm  automatically
+              sets ..LL__MMAARRGGIINN to _1 _i_n_c_h.
+
+              Note:  ..LL__MMAARRGGIINN  behaves in a special way when you're using the
+              document processing macros.
+
+       ..MMCCOO   Begin multi-column setting.
+
+              ..MMCCOO (_M_u_l_t_i_-_C_o_l_u_m_n _O_n) is the _m_a_c_r_o you use to begin  _m_u_l_t_i_-_c_o_l_-
+              _u_m_n  _s_e_t_t_i_n_g.   It marks the current baseline as the top of your
+              columns, for use later with ..MMCCRR.  See the introduction to  col-
+              umns for an explanation of _m_u_l_t_i_-_c_o_l_u_m_n_s and some sample input.
+
+              _N_o_t_e_:  Do  not confuse ..MMCCOO with the ..CCOOLLUUMMNNSS macro in the docu-
+              ment processing macros.
+
+       ..MMCCRR   Once you've turned _m_u_l_t_i_-_c_o_l_u_m_n_s on (with ..MMCCOO),  ..MMCCRR,  at  any
+              time, returns you to the _t_o_p _o_f _y_o_u_r _c_o_l_u_m_n_s.
+
+       ..MMCCXX [[ _<_d_i_s_t_a_n_c_e _t_o _a_d_v_a_n_c_e _b_e_l_o_w _l_o_n_g_e_s_t _c_o_l_u_m_n_> ]]
+              Optional argument requires a unit of measure.
+
+              ..MMCCXX  takes you out of any _t_a_b you were in (by silently invoking
+              ..TTQQ) and advances to the bottom of the longest column.
+
+              Without an argument, ..MMCCXX advances _1 _l_i_n_e_s_p_a_c_e below the longest
+              column.
+
+              Linespace, in this instance, is the leading in effect at the mo-
+              ment ..MMCCXX is invoked.
+
+              If you pass the _<_d_i_s_t_a_n_c_e_> argument to ..MMCCXX, it advances _1 _l_i_n_e_-
+              _s_p_a_c_e  below  the  longest  column (see above) _P_L_U_S the distance
+              specified by the argument.  The argument requires a unit of mea-
+              sure;  therefore,  to advance an extra 6 points below where ..MMCCXX
+              would normally place you, you'd enter
+                     ..MMCCXX 66pp
+
+              _N_o_t_e_: If you wish to advance a precise distance below the  base-
+              line  of  the  longest  column,  use  ..MMCCXX with an argument of 00
+              (zero; no _u_n_i_t _o_f _m_e_a_s_u_r_e required) in conjunction with the ..AALLDD
+              macro, like this:
+                     ..MMCCXX 00
+                     ..AALLDD 2244pp
+              The  above advances to precisely _2_4 _p_o_i_n_t_s below the baseline of
+              the longest column.
+
+       ..NNEEWWPPAAGGEE
+
+              Whenever you want to start a new page, use ..NNEEWWPPAAGGEE,  by  itself
+              with  no  argument.   MMoomm  will finish up processing the current
+              page and move you to the top of a new one (subject  to  the  top
+              margin set with ..TT__MMAARRGGIINN).
+
+       ..PPAAGGEE _<_w_i_d_t_h_> [[ _<_l_e_n_g_t_h_> [[ _<_l_m_> [[ _<_r_m_> [[ _<_t_m_> [[ _<_b_m_> ]] ]] ]] ]] ]]
+
+              All arguments require a unit of measure
+
+              _I_M_P_O_R_T_A_N_T_: If you're using the document processing macros, ..PPAAGGEE
+              must come after ..SSTTAARRTT.  Otherwise, it should go at the top of a
+              document,  prior  to  any text.  And remember, when you're using
+              the document processing macros, top  margin  and  bottom  margin
+              mean  something  slightly  different than when you're using just
+              the typesetting macros (see Top and bottom margins  in  document
+              processing).
+
+              ..PPAAGGEE  lets you establish paper dimensions and page margins with
+              a single macro.  The only required argument is page width.   The
+              rest  are  optional, but they must appear in order and you can't
+              skip over any.  _<_l_m_>, _<_r_m_>, _<_t_m_> and _<_b_m_>  refer  to  the  left,
+              right, top and bottom margins respectively.
+
+              Assuming  your  page  dimensions are 11 inches by 17 inches, and
+              that's all you want to set, enter
+                     ..PPAAGGEE 1111ii 1177ii
+              If you want to set the left margin as well, say, at 1 inch, PPAAGGEE
+              would look like this:
+                     ..PPAAGGEE 1111ii 1177ii 11ii
+
+              Now  suppose  you also want to set the top margin, say, at 1-1/2
+              inches.  _<_t_m_> comes after _<_r_m_> in the  optional  arguments,  but
+              you can't skip over any arguments, therefore to set the top mar-
+              gin, you must also give a right margin.  The ..PPAAGGEE  macro  would
+              look like this:
+                     ..PPAAGGEE 1111ii 1177ii 11ii 11ii 11..55ii
+                                      ||   ||
+                     rreeqquuiirreedd rriigghhtt------++   ++------ttoopp mmaarrggiinn
+                             mmaarrggiinn
+
+              Clearly,  ..PPAAGGEE  is  best used when you want a convenient way to
+              tell mmoomm just the dimensions of your printer  sheet  (width  and
+              length),  or when you want to tell her everything about the page
+              (dimensions and all the margins), for example
+                     ..PPAAGGEE 88..55ii 1111ii 4455pp 4455pp 4455pp 4455pp
+              This sets up an 81/2 by 11 inch page with margins of  45  points
+              (5/8-inch) all around.
+
+              Additionally,  if  you  invoke ..PPAAGGEE with a top margin argument,
+              any macros you invoke after ..PPAAGGEE will almost certainly move the
+              baseline  of  the  first line of text down by one linespace.  To
+              compensate, do
+                     ..RRLLDD 11vv
+              immediately before entering any text, or, if it's feasible, make
+              ..PPAAGGEE the last macro you invoke prior to entering text.
+
+              Please  read the _I_m_p_o_r_t_a_n_t _n_o_t_e on page dimensions and papersize
+              for information on ensuring groff respects your ..PPAAGGEE dimensions
+              and margins.
+
+       ..PPAAGGEELLEENNGGTTHH _<_l_e_n_g_t_h _o_f _p_r_i_n_t_e_r _s_h_e_e_t_>
+              tells  mmoomm  how  long your printer sheet is.  It works just like
+              ..PPAAGGEEWWIIDDTTHH.
+
+              Therefore, to tell mmoomm your printer sheet is 11 inches long, you
+              enter
+                     ..PPAAGGEELLEENNGGTTHH 1111ii
+              Please  read the important note on page dimensions and papersize
+              for information on ensuring groff respects your _P_A_G_E_L_E_N_G_T_H.
+
+       ..PPAAGGEEWWIIDDTTHH _<_w_i_d_t_h _o_f _p_r_i_n_t_e_r _s_h_e_e_t_>
+
+              The argument to ..PPAAGGEEWWIIDDTTHH is the width of your printer sheet.
+
+              ..PPAAGGEEWWIIDDTTHH requires a unit of measure.   Decimal  fractions  are
+              allowed.   Hence,  to  tell  mmoomm  that the width of your printer
+              sheet is 81/2 inches, you enter
+                     .PAGEWIDTH 8.5i
+
+              Please read the Important note on page dimensions and  papersize
+              for information on ensuring groff respects your _P_A_G_E_W_I_D_T_H.
+
+       ..PPAAPPEERR _<_p_a_p_e_r _t_y_p_e_>
+              provides  a  convenient  way to set the page dimensions for some
+              common printer sheet sizes.  The argument _<_p_a_p_e_r  _t_y_p_e_>  can  be
+              one  of:  LLEETTTTEERR,  LLEEGGAALL,  SSTTAATTEEMMEENNTT,  TTAABBLLOOIIDD,  LLEEDDGGEERR,  FFOOLLIIOO,
+              QQUUAARRTTOO, EEXXEECCUUTTIIVVEE, 1100xx1144, AA33, AA44, AA55, BB44, BB55.
+
+       ..PPRRIINNTTSSTTYYLLEE
+
+       ..PPTT__SSIIZZEE _<_s_i_z_e _o_f _t_y_p_e _i_n _p_o_i_n_t_s_>
+              Point size of type, does not require a _u_n_i_t _o_f _m_e_a_s_u_r_e.
+
+              ..PPTT__SSIIZZEE (_P_o_i_n_t _S_i_z_e) takes one argument: the _s_i_z_e  _o_f  _t_y_p_e  in
+              _p_o_i_n_t_s.   Unlike  most  other  macros that establish the _s_i_z_e or
+              _m_e_a_s_u_r_e of something, ..PPTT__SSIIZZEE does not require that you  supply
+              a  _u_n_i_t  _o_f  _m_e_a_s_u_r_e since it's a near universal convention that
+              _t_y_p_e _s_i_z_e is measured in _p_o_i_n_t_s.  Therefore, to change the  _t_y_p_e
+              _s_i_z_e to, say, _1_1 _p_o_i_n_t_s, enter
+                     ..PPTT__SSIIZZEE 1111
+              _P_o_i_n_t _s_i_z_e_s may be _f_r_a_c_t_i_o_n_a_l (e.g. _1_0_._2_5 or _1_2_._5).
+
+              You  can  prepend  a  _p_l_u_s  or  a  _m_i_n_u_s _s_i_g_n to the argument to
+              ..PPTT__SSIIZZEE, in which case the _p_o_i_n_t _s_i_z_e will be changed by _+ or _-
+              the  original value.  For example, if the _p_o_i_n_t _s_i_z_e is _1_2 _, and
+              you want _1_4 _, you can do
+                     ..PPTT__SSIIZZEE ++22
+              then later reset it to _1_2 with
+                     ..PPTT__SSIIZZEE --22
+              The _s_i_z_e _o_f _t_y_p_e can also be changed inline.
+
+              _N_o_t_e_: It is unfortunate that the ppiicc  preprocessor  has  already
+              taken the name, PS, and thus _m_o_m's macro for setting _p_o_i_n_t _s_i_z_e_s
+              can't use it.  However, if you aren't using ppiicc, you might  want
+              to alias ..PPTT__SSIIZZEE as ..PPSS, since there'd be no conflict.  For ex-
+              ample
+                     ..AALLIIAASS PPSS PPTT__SSIIZZEE
+              would allow you to set _p_o_i_n_t _s_i_z_e_s with ..PPSS.
+
+       ..RR__MMAARRGGIINN _<_r_i_g_h_t _m_a_r_g_i_n_>
+              Right Margin
+
+              Requires a unit of measure.
+
+              IMPORTANT:  ..RR__MMAARRGGIINN,  if  used,  must   come   after   ..PPAAPPEERR,
+              ..PPAAGGEEWWIIDDTTHH,  ..LL__MMAARRGGIINN,  and/or  ..PPAAGGEE  (if a right margin isn't
+              given to PAGE).  The reason is that  ..RR__MMAARRGGIINN  calculates  line
+              length from the overall page dimensions and the left margin.
+
+              Obviously,  it can't make the calculation if it doesn't know the
+              page width and the left margin.
+
+              ..RR__MMAARRGGIINN establishes the amount of space you want  between  the
+              end  of  typeset  lines  and  the right hand edge of the printer
+              sheet.  In other words, it sets the line length.  ..RR__MMAARRGGIINN  re-
+              quires a unit of measure.  Decimal fractions are allowed.
+
+              The  line  length  macro (LL) can be used in place of ..RR__MMAARRGGIINN.
+              In either case, the last one invoked sets the line length.   The
+              choice of which to use is up to you.  In some instances, you may
+              find it easier to think of a section of type as having  a  right
+              margin.  In others, giving a line length may make more sense.
+
+              For  example,  if  you're setting a page of type you know should
+              have 6-pica margins left and right, it makes sense  to  enter  a
+              left and right margin, like this:
+                     ..LL__MMAARRGGIINN 66PP
+                     ..RR__MMAARRGGIINN 66PP
+
+              That  way,  you  don't  have to worry about calculating the line
+              length.  On the other hand, if you know the line  length  for  a
+              patch of type should be 17 picas and 3 points, entering the line
+              length with LL is much easier than calculating the right margin,
+              e.g.
+                     ..LLLL 1177PP++33pp
+
+              If  you use the macros ..PPAAGGEE, ..PPAAGGEEWWIIDDTTHH or PPAAPPEERR without invok-
+              ing ..RR__MMAARRGGIINN afterwards, mmoomm automatically sets ..RR__MMAARRGGIINN to  _1
+              _i_n_c_h.   If  you set a line length after these macros (with ..LLLL),
+              the line length calculated by ..RR__MMAARRGGIINN is, of course,  overrid-
+              den.
+
+              Note:  ..RR__MMAARRGGIINN  behaves in a special way when you're using the
+              document processing macros.
+
+       ..SSTT _<_t_a_b _n_u_m_b_e_r_> LL || RR || CC || JJ [[ QQUUAADD ]]
+
+              After _s_t_r_i_n_g _t_a_b_s have been marked off on  an  input  line  (see
+              \\**[[SSTT]]......\\**[[SSTTXX]]),  you need to _s_e_t them by giving them a direc-
+              tion and, optionally, the QQUUAADD argument.
+
+              In this respect, ..SSTT is like ..TTAABB__SSEETT except that you don't have
+              to  give  ..SSTT  an  indent or a line length (that's already taken
+              care of, inline, by \\**[[SSTT]]......\\**[[SSTTXX]]).
+
+              If you want string _t_a_b _1 to be lleefftt, enter
+                     ..SSTT 11 LL
+              If you want it to be _l_e_f_t and _f_i_l_l_e_d, enter
+                     ..SSTT 11 LL QQUUAADD
+              If you want it to be justified, enter
+                     ..SSTT 11 JJ
+
+       ..TTAABB _<_t_a_b _n_u_m_b_e_r_>
+              After _t_a_b_s have been defined (either with ..TTAABB__SSEETT or ..SSTT), ..TTAABB
+              moves to whatever _t_a_b _n_u_m_b_e_r you pass it as an argument.
+
+              For example,
+                     ..TTAABB 33
+              moves you to _t_a_b _3.
+
+              Note:  ..TTAABB  breaks  the  line preceding it and advances 1 line-
+              space.  Hence,
+                     ..TTAABB 11
+                     AA lliinnee ooff tteexxtt iinn ttaabb 11..
+                     ..TTAABB 22
+                     AA lliinnee ooff tteexxtt iinn ttaabb 22..
+              produces, on output
+                     AA lliinnee ooff tteexxtt iinn ttaabb 11..
+                                                  AA lliinnee ooff tteexxtt iinn ttaabb 22..
+
+              If you want the tabs to line up, use ..TTNN  (_T_a_b  _N_e_x_t)  or,  more
+              conveniently, the inline escape \*[TB+]:
+                     ..TTAABB 11
+                     AA lliinnee ooff tteexxtt iinn ttaabb 11..\\**[[TTBB++]]
+                     AA lliinnee ooff tteexxtt iinn ttaabb 22..
+              which produces
+                     AA lliinnee ooff tteexxtt iinn ttaabb 11..   AA lliinnee ooff tteexxtt iinn ttaabb 22..
+
+              If the text in your tabs runs to several lines, and you want the
+              first lines of each tab to align, you must use the  multi-column
+              macros.
+
+              _A_d_d_i_t_i_o_n_a_l  _n_o_t_e_:  Any  indents in effect prior to calling a tab
+              are automatically turned off by TTAABB.  If you were  happily  zip-
+              ping  down the page with a left indent of _2 _p_i_c_a_s turned on, and
+              you call a _t_a_b whose indent from the left  margin  is  _6  _p_i_c_a_s,
+              your  new distance from the _l_e_f_t _m_a_r_g_i_n will be _6 _p_i_c_a_s, not I 6
+              picas plus the 2 pica indent.
+
+              _T_a_b_s are not by nature columnar, which is to  say  that  if  the
+              text  inside  a  _t_a_b  runs to several lines, calling another _t_a_b
+              does not automatically move to the baseline of the first line in
+              the _p_r_e_v_i_o_u_s _t_a_b.  To demonstrate:
+                     TTAABB 11
+                     CCaarrrroottss
+                     PPoottaattooeess
+                     BBrrooccccoollii
+                     ..TTAABB 22
+                     $$11..9999//55 llbbss
+                     $$00..2255//llbb
+                     $$00..9999//bbuunncchh
+              produces, on output
+                     CCaarrrroottss
+                     PPoottaattooeess
+                     BBrrooccccoollii
+                                 $$11..9999//55 llbbss
+                                 $$00..2255//llbb
+                                 $$00..9999//bbuunncchh
+
+       ..TTBB _<_t_a_b _n_u_m_b_e_r_>
+              Alias to ..TTAABB
+
+       ..TTII [[ _<_m_e_a_s_u_r_e_> ]]
+              Temporary  left  indent -- the optional argument requires a _u_n_i_t
+              _o_f _m_e_a_s_u_r_e
+
+              A temporary indent is one that applies only to the first line of
+              text  that comes after it.  Its chief use is indenting the first
+              line of paragraphs.  (MMoomm''ss ..PPPP macro, for example, uses a  _t_e_m_-
+              _p_o_r_a_r_y _i_n_d_e_n_t.)
+
+              The  first  time you invoke ..TTII, you must give it a measure.  If
+              you want to _i_n_d_e_n_t the first line of a paragraph by, say, 2 ems,
+              do
+                     ..TTII 22mm
+
+              Subsequent  invocations  of  ..TTII  do not require you to supply a
+              measure; mmoomm keeps track of the last measure you gave it.
+
+              Because _t_e_m_p_o_r_a_r_y _i_n_d_e_n_t_s are temporary, there's no need to turn
+              them off.
+
+              _I_M_P_O_R_T_A_N_T_: Unlike ..IILL, ..IIRR and IIBB, measures given to ..TTII are NOT
+              additive.  In the following example, the second ""..TTII 22PP"" is  ex-
+              actly _2 _p_i_c_a_s.
+                     ..TTII 11PP
+                     TThhee bbeeggiinnnniinngg ooff aa ppaarraaggrraapphh......
+                     ..TTII 22PP
+                     TThhee bbeeggiinnnniinngg ooff aannootthheerr ppaarraaggrraapphh......
+
+       ..TTNN    Tab Next
+
+              Inline escape \\**[[TTBB++]]
+
+              TTNN  moves  over  to  the  _n_e_x_t _t_a_b in numeric sequence (_t_a_b _n_+_1)
+              without advancing on the page.  See the _N_O_T_E in the  description
+              of the ..TTAABB macro for an example of how TTNN works.
+
+              In  _t_a_b_s that aren't given the QQUUAADD argument when they're set up
+              with ..TTAABB__SSEETT or SSTT, you must terminate the line  preceding  ..TTNN
+              with  the  \\cc inline escape.  Conversely, if you did give a QQUUAADD
+              argument to ..TTAABB__SSEETT or SSTT, the \\cc mmuusstt nnoott bbee uusseedd..
+
+              If you find remembering whether to put in the \\cc bothersome, you
+              may prefer to use the inline escape alternative to ..TTNN, \\**[[TTBB++]],
+              which works consistently regardless of the fill mode.
+
+              _N_o_t_e_: You must put text in the input line immediately after ..TTNN.
+              Stacking of ..TTNN's is not allowed.  In other words, you cannot do
+                     ..TTAABB 11
+                     SSoommee tteexxtt\\cc
+                     ..TTNN
+                     SSoommee mmoorree tteexxtt\\cc
+                     ..TTNN
+                     ..TTNN
+                     YYeett mmoorree tteexxtt
+              The above example, assuming _t_a_b_s numbered from _1 to _4, should be
+              entered
+                     ..TTAABB 11
+                     SSoommee tteexxtt\\cc
+                     ..TTNN
+                     SSoommee mmoorree tteexxtt\\cc
+                     ..TTNN
+                     \\&&\\cc
+                     ..TTNN
+                     YYeett mmoorree tteexxtt
+              \& is a zero-width, non-printing character that _g_r_o_f_f recognizes
+              as  valid input, hence meets the requirement for input text fol-
+              lowing ..TTNN.
+
+       ..TTQQ    TTQQ takes you out of whatever _t_a_b you were in, advances  _1  _l_i_n_e_-
+              _s_p_a_c_e, and restores the _l_e_f_t _m_a_r_g_i_n, _l_i_n_e _l_e_n_g_t_h, _q_u_a_d _d_i_r_e_c_t_i_o_n
+              and _f_i_l_l _m_o_d_e that were in effect prior to invoking any _t_a_b_s.
+
+       ..TT__MMAARRGGIINN _<_t_o_p _m_a_r_g_i_n_>
+              Top margin
+
+              Requires a unit of measure
+
+              ..TT__MMAARRGGIINN establishes the distance from the top of  the  printer
+              sheet  at which you want your type to start.  It requires a unit
+              of measure, and decimal fractions are allowed.   To  set  a  top
+              margin of 21/2 centimetres, you'd enter
+                     ..TT__MMAARRGGIINN 22..55cc
+              ..TT__MMAARRGGIINN  calculates the vertical position of the first line of
+              type on a page by treating the top edge of the printer sheet  as
+              a baseline.  Therefore,
+                     ..TT__MMAARRGGIINN 11..55ii
+              puts  the baseline of the first line of type 11/2 inches beneath
+              the top of the page.
+
+              Note: ..TT__MMAARRGGIINN means something slightly different  when  you're
+              using  the  document processing macros.  See Top and bottom mar-
+              gins in document processing for an explanation.
+
+              IMPORTANT: ..TT__MMAARRGGIINN does two things:  it  establishes  the  top
+              margin  for  pages that come after it and it moves to that posi-
+              tion on the current page.  Therefore, ..TT__MMAARRGGIINN should  only  be
+              used at the top of a file (prior to entering text) or after NEW-
+              PAGE, like this:
+                     ..NNEEWWPPAAGGEE
+                     ..TT__MMAARRGGIINN 66PP
+                     _<_t_e_x_t_>
+
+AAUUTTHHOORRSS
+       _m_o_m was written by Peter Schaffter <peter@schaffter.ca>.   PDF  support
+       was  provided  by Deri James <deri@chuzzlewit.demon.co.uk>.  The alpha-
+       betical documentation of macros and escape sequences in this  man  page
+       were written by the _m_o_m team.
+
+SSEEEE AALLSSOO
+       ggrrooffff(1), ggrrooffff__mmoomm(7),
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_d_o_c_/_g_r_o_f_f_-_1_._2_2_._4_/_h_t_m_l_/_m_o_m_/_t_o_c_._h_t_m_l
+              - entry point to the HTML documentation
+
+       <http://www.schaffter.ca/mom/momdoc/toc.html>
+              - HTML documentation online
+
+       <http://www.schaffter.ca/mom/>
+              - the mom macros homepage
+
+
+
+groff 1.22.4                     December 2018                    GROFF_MOM(7)

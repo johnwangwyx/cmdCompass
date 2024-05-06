@@ -1,0 +1,199 @@
+GROLBP(1)                   General Commands Manual                  GROLBP(1)
+
+
+
+NNAAMMEE
+       grolbp  - groff driver for Canon CAPSL printers (LBP-4 and LBP-8 series
+       laser printers)
+
+SSYYNNOOPPSSIISS
+       ggrroollbbpp [--ll] [--cc _n_u_m_-_c_o_p_i_e_s] [--FF _f_o_n_t_-_d_i_r_e_c_t_o_r_y] [--oo _o_r_i_e_n_t_a_t_i_o_n]
+              [--pp _p_a_p_e_r_-_s_i_z_e] [--ww _w_i_d_t_h] [_f_i_l_e ...]
+       ggrroollbbpp [----ccooppiieess==_n_u_m_-_c_o_p_i_e_s] [----ffoonnttddiirr==_f_o_n_t_-_d_i_r_e_c_t_o_r_y] [----llaannddssccaappee]
+              [----lliinneewwiiddtthh==_w_i_d_t_h] [----oorriieennttaattiioonn==_o_r_i_e_n_t_a_t_i_o_n]
+              [----ppaappeerrssiizzee==_p_a_p_e_r_-_s_i_z_e] [_f_i_l_e ...]
+
+       ggrroollbbpp --hh
+       ggrroollbbpp ----hheellpp
+
+       ggrroollbbpp --vv
+       ggrroollbbpp ----vveerrssiioonn
+
+DDEESSCCRRIIPPTTIIOONN
+       ggrroollbbpp is a driver for ggrrooffff that produces output in CAPSL and VDM for-
+       mat suitable for Canon LBP-4 and LBP-8 printers.
+
+       For compatibility with ggrroolljj44(1) there is an additional drawing command
+       available:
+
+       \\DD''RR _d_h _d_v''
+              Draw  a rule (i.e., a solid black rectangle), with one corner at
+              the current position, and the diagonally opposite corner at  the
+              current position +(_d_h,_d_v).
+
+OOPPTTIIOONNSS
+       Note  that  there can be whitespace between a one-letter option and its
+       argument; on the other hand, there must be whitespace and/or  an  equal
+       sign (`=') between a long-name option and its argument.
+
+       --cc _n_u_m_-_c_o_p_i_e_s
+       ----ccooppiieess==_n_u_m_-_c_o_p_i_e_s
+              Print _n_u_m_-_c_o_p_i_e_s copies of each page.
+
+       --FF _f_o_n_t_-_d_i_r_e_c_t_o_r_y
+       ----ffoonnttddiirr==_f_o_n_t_-_d_i_r_e_c_t_o_r_y
+              Prepend  directory font-directory_/_d_e_vname to the search path for
+              font and device description files;  _n_a_m_e  is  the  name  of  the
+              device, usually llbbpp.
+
+       --hh
+       ----hheellpp Print a short help text.
+
+       --ll
+       ----llaannddssccaappee
+              Print the document with a landscape orientation.
+
+       --oo _o_r_i_e_n_t_a_t_i_o_n
+       ----oorriieennttaattiioonn==_o_r_i_e_n_t_a_t_i_o_n
+              Print  the  document with _o_r_i_e_n_t_a_t_i_o_n orientation, which must be
+              `portrait' or `landscape'.
+
+       --pp _p_a_p_e_r_-_s_i_z_e
+       ----ppaappeerrssiizzee==_p_a_p_e_r_-_s_i_z_e
+              Set the paper size to _p_a_p_e_r_-_s_i_z_e, which must be  a  valid  paper
+              size description as indicated in section "Paper Sizes", below.
+
+       --vv
+       ----vveerrssiioonn
+              Print the version number.
+
+       --ww _w_i_d_t_h
+       ----lliinneewwiiddtthh==_w_i_d_t_h
+              Set  the  default  line thickness to _w_i_d_t_h thousandths of an em.
+              If this option isn't specified, the line thickness  defaults  to
+              0.04 em.
+
+TTYYPPEEFFAACCEESS
+       The  driver  supports  the Dutch, Swiss and Swiss-Narrow scalable type-
+       faces, each one in the Regular, Bold, Italic  and  Bold-Italic  styles.
+       Additionally, the Courier and Elite monospaced typefaces at the sizes 8
+       and 12 points (for Courier) resp. 8 and 10 points (for Elite) are  sup-
+       ported, each one in the Regular, Bold and Italic styles.
+
+       The  following  chart  summarizes  the font names you can use to access
+       these fonts:
+
+          +----------------+-----------+--------+----------+--------------+
+          |   Typeface     |  Regular  |  Bold  |  Italic  |  Bold-Italic |
+          +----------------+-----------+--------+----------+--------------+
+          | DDuuttcchh          |    TR     |   TB   |    TI    |      TBI     |
+          +----------------+-----------+--------+----------+--------------+
+          | SSwwiissss          |    HR     |   HB   |    HI    |      HBI     |
+          +----------------+-----------+--------+----------+--------------+
+          | SSwwiissss NNaarrrrooww   |    HNR    |  HNB   |   HNI    |     HNBI     |
+          +----------------+-----------+--------+----------+--------------+
+          | CCoouurriieerr        |    CR     |   CB   |    CI    |              |
+          +----------------+-----------+--------+----------+--------------+
+          | EElliittee          |    ER     |   EB   |    EI    |              |
+          +----------------+-----------+--------+----------+--------------+
+PPAAPPEERR SSIIZZEESS
+       The paper size can be set in the _D_E_S_C file or with command-line options
+       to  ggrroollbbpp.  If the paper size is specified both ways, the command-line
+       options take precedence over  the  contents  of  the  _D_E_S_C  file  (this
+       applies to the page orientation too).
+
+       See ggrrooffff__ffoonntt(5) how to set the paper dimensions in the _D_E_S_C file.
+
+       To set the paper size in the command line, add
+
+         --pp _p_a_p_e_r_-_s_i_z_e
+
+       or
+
+         ----ppaappeerrssiizzee==_p_a_p_e_r_-_s_i_z_e
+
+       to  the other ggrroollbbpp options, where _p_a_p_e_r_-_s_i_z_e is in the same format as
+       in the _D_E_S_C file.
+
+       If no paper size is specified in the _D_E_S_C file or the command  line,  a
+       default size of A4 is used.
+
+PPAAGGEE OORRIIEENNTTAATTIIOONN
+       As with the page size, the orientation of the printed page (ppoorrttrraaiitt or
+       llaannddssccaappee) can be set in the _D_E_S_C file or  with  command-line  options.
+       It is also case insensitive.
+
+       To set the orientation in the _D_E_S_C file, insert a line with the follow-
+       ing content:
+
+         oorriieennttaattiioonn [ppoorrttrraaiitt|llaannddssccaappee]
+
+       Only the first valid orientation command in the _D_E_S_C file is used.
+
+       To set the page orientation with command-line options you can  use  the
+       --oo  or ----oorriieennttaattiioonn option with the same parameters (ppoorrttrraaiitt or llaanndd--
+       ssccaappee) as in the _D_E_S_C file.  Or you can use the --ll option to force  the
+       pages to be printed in landscape.
+
+FFOONNTT FFIILLEE FFOORRMMAATT
+       In  addition  to  the usual commands described in ggrrooffff__ffoonntt(5), ggrroollbbpp
+       provides the command _l_b_p_n_a_m_e which sets  the  font  name  sent  to  the
+       printer when requesting this font.  The syntax of this command is:
+
+         llbbppnnaammee _p_r_i_n_t_e_r___f_o_n_t___n_a_m_e
+
+       +o      For bitmapped fonts, _p_r_i_n_t_e_r___f_o_n_t___n_a_m_e has the form
+
+                N<_b_a_s_e___f_o_n_t_n_a_m_e><_f_o_n_t___s_t_y_l_e>
+
+              _b_a_s_e___f_o_n_t_n_a_m_e  is  the  font  name as it appears in the printers
+              font listings without the first letter, up to (but  not  includ-
+              ing)  the font size.  _f_o_n_t___s_t_y_l_e can be one of the letters RR, II,
+              or BB, indicating the font styles Roman, Italic and Bold  respec-
+              tively.
+
+              For  instance,  if  the  printer's  _f_o_n_t  _l_i_s_t_i_n_g  _A  shows font
+              `Nelite12I.ISO_USA',  the  corresponding  entry  in   the   font
+              description file is
+
+                llbbppnnaammee NNeelliitteeII
+
+              Note  that  you may need to modify ggrroollbbpp to add support for new
+              bitmapped fonts, since the available font names and  font  sizes
+              of bitmapped fonts (as documented above) are hard-coded into the
+              program.
+
+       +o      For scalable fonts, _p_r_i_n_t_e_r___f_o_n_t___n_a_m_e is identical to  the  font
+              name as it appears in the printer's _f_o_n_t _l_i_s_t_i_n_g _A.
+
+              For  instance,  to  select the `Swiss' font in bold style, which
+              appears in the printer's _f_o_n_t _l_i_s_t_i_n_g  _A  as  `Swiss-Bold',  the
+              required llbbppnnaammee command line is
+
+                llbbppnnaammee SSwwiissss--BBoolldd
+
+
+       The argument of llbbppnnaammee is case sensitive.
+
+EENNVVIIRROONNMMEENNTT
+       _G_R_O_F_F___F_O_N_T___P_A_T_H
+              A  list of directories in which to search for the _d_e_vname direc-
+              tory  in  addition  to  the  default  ones.   See  ttrrooffff(1)  and
+              ggrrooffff__ffoonntt(5) for more details.
+
+FFIILLEESS
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_v_l_b_p_/_D_E_S_C
+              Device description file.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_v_l_b_p_/F
+              Font description file for font _F.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_t_m_a_c_/_l_b_p_._t_m_a_c
+              Macros for use with ggrroollbbpp.
+
+SSEEEE AALLSSOO
+       ggrrooffff(1), ttrrooffff(1), ggrrooffff__oouutt(5), ggrrooffff__ffoonntt(5), ggrrooffff__cchhaarr(7)
+
+
+
+groff 1.22.4                     December 2018                       GROLBP(1)

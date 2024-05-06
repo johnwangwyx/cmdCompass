@@ -1,0 +1,578 @@
+GROPS(1)                    General Commands Manual                   GROPS(1)
+
+
+
+NNAAMMEE
+       grops - PostScript driver for groff
+
+SSYYNNOOPPSSIISS
+       ggrrooppss [--ggllmmvv] [--bb _n] [--cc _n] [--FF _d_i_r] [--II _d_i_r] [--pp _p_a_p_e_r_s_i_z_e]
+             [--PP _p_r_o_l_o_g_u_e] [--ww _n] [_f_i_l_e ...]
+
+DDEESSCCRRIIPPTTIIOONN
+       ggrrooppss translates the output of GNU ttrrooffff to PostScript.  Normally ggrrooppss
+       should  be  invoked  by  using  the  groff  command with a --TTppss option.
+       (Actually, this is the default for groff.)   If  no  files  are  given,
+       ggrrooppss  reads  the standard input.  A filename of -- also causes ggrrooppss to
+       read the standard input.  PostScript output is written to the  standard
+       output.   When  ggrrooppss  is  run  by ggrrooffff options can be passed to ggrrooppss
+       using ggrrooffff's --PP option.
+
+       Note that ggrrooppss doesn't produce a valid document structure  (conforming
+       to  the  Document  Structuring Convention) if called with multiple file
+       arguments.  To print such concatenated output it is necessary to  deac-
+       tivate  DSC handling in the printing program or previewer.  See section
+       "Font Installation" below for a guide how to install fonts for ggrrooppss.
+
+OOPPTTIIOONNSS
+       Whitespace is permitted between a command-line option and its argument.
+
+       --bb_n    Provide workarounds for older  printers,  broken  spoolers,  and
+              previewers.   Normally  ggrrooppss produces output at PostScript Lan-
+              guageLevel 2 that conforms to the Document  Structuring  Conven-
+              tions  version 3.0.  Some older printers, spoolers, and preview-
+              ers can't handle such output.  The  value  of  _n  controls  what
+              ggrrooppss  does  to  make its output acceptable to such programs.  A
+              value of 0 causes grops not to employ any workarounds.
+
+              Add 1 if no %%%%BBeeggiinnDDooccuummeennttSSeettuupp and %%%%EEnnddDDooccuummeennttSSeettuupp comments
+              should  be generated; this is needed for early versions of Tran-
+              Script that get confused by  anything  between  the  %%%%EEnnddPPrroolloogg
+              comment and the first %%%%PPaaggee comment.
+
+              Add  2  if  lines  in included files beginning with %%!! should be
+              stripped out; this is needed for Sun's pageview previewer.
+
+              Add 4 if %%%%PPaaggee, %%%%TTrraaiilleerr and %%%%EEnnddPPrroolloogg  comments  should  be
+              stripped out of included files; this is needed for spoolers that
+              don't understand the %%%%BBeeggiinnDDooccuummeenntt and %%%%EEnnddDDooccuummeenntt comments.
+
+              Add 8 if the first line of the PostScript output should be %%!!PPSS--
+              AAddoobbee--22..00  rather than %%!!PPSS--AAddoobbee--33..00; this is needed when using
+              Sun's Newsprint with a printer that requires page reversal.
+
+              Add 16 if no media size information should be  included  in  the
+              document  (this  is,  neither  use  %%%%DDooccuummeennttMMeeddiiaa nor the sseett--
+              ppaaggeeddeevviiccee PostScript command).  This was the behaviour of groff
+              version  1.18.1  and  earlier;  it  is needed for older printers
+              which don't understand PostScript LanguageLevel 2.  It  is  also
+              necessary  if the output is further processed to get an encapsu-
+              lated PS (EPS) file - see below.
+
+              The default value can be specified by a
+
+                     bbrrookkeenn _n
+
+              command in the _D_E_S_C file.  Otherwise the default value is 0.
+
+       --cc_n    Print _n copies of each page.
+
+       --FF_d_i_r  Prepend directory dir_/_d_e_vname to the search path  for  prologue,
+              font,  and  device  description  files;  _n_a_m_e is the name of the
+              device, usually ppss.
+
+       --gg     Guess the page length.   This  generates  PostScript  code  that
+              guesses  the  page  length.   The  guess  is correct only if the
+              imageable area is vertically centered on the page.  This  option
+              allows  you  to  generate  documents that can be printed both on
+              letter (8.5x11) paper and on A4 paper without change.
+
+       --II_d_i_r  This option may be used to add a directory to  the  search  path
+              for  files on the command line and files named in \\XX''ppss:: iimmppoorrtt''
+              and \\XX''ppss:: ffiillee'' escapes.  The search path is  initialized  with
+              the  current  directory.  This option may be specified more than
+              once; the directories are then searched in the  order  specified
+              (but  before  the  current  directory).  If you want to make the
+              current directory be read before other directories, add  --II..  at
+              the appropriate place.
+
+              No directory search is performed for files with an absolute file
+              name.
+
+       --ll     Print the document in landscape format.
+
+       --mm     Turn manual feed on for the document.
+
+       --pp_p_a_p_e_r_-_s_i_z_e
+              Set physical dimension of output  medium.   This  overrides  the
+              ppaappeerrssiizzee,  ppaappeerrlleennggtthh,  and  ppaappeerrwwiiddtthh  commands  in the _D_E_S_C
+              file; it accepts the same arguments as  the  ppaappeerrssiizzee  command.
+              See ggrrooffff__ffoonntt ((55)) for details.
+
+       --PP_p_r_o_l_o_g_u_e_-_f_i_l_e
+              Use  the  file  _p_r_o_l_o_g_u_e_-_f_i_l_e (in the font path) as the prologue
+              instead of the default  prologue  file  pprroolloogguuee.   This  option
+              overrides the environment variable _G_R_O_P_S___P_R_O_L_O_G_U_E_.
+
+       --ww_n    Lines  should  be drawn using a thickness of _n thousandths of an
+              em.  If this option is not given, the line thickness defaults to
+              0.04 em.
+
+       --vv     Print the version number.
+
+UUSSAAGGEE
+       The  input  to ggrrooppss must be in the format output by ttrrooffff(1).  This is
+       described in ggrrooffff__oouutt(5).
+
+       In addition, the device and font description files for the device  used
+       must  meet certain requirements: The resolution must be an integer mul-
+       tiple of 72 times the ssiizzeessccaallee.  The ppss device uses  a  resolution  of
+       72000 and a sizescale of 1000.
+
+       The  device  description  file  must  contain  a  valid paper size; see
+       ggrrooffff__ffoonntt(5) for more information.
+
+       Each font description file must contain a command
+
+              iinntteerrnnaallnnaammee _p_s_n_a_m_e
+
+       which says that the PostScript name of the font is _p_s_n_a_m_e.  It may also
+       contain a command
+
+              eennccooddiinngg _e_n_c___f_i_l_e
+
+       which  says  that  the  PostScript  font  should be reencoded using the
+       encoding described in _e_n_c___f_i_l_e; this file should consist of a  sequence
+       of lines of the form:
+
+              _p_s_c_h_a_r _c_o_d_e
+
+       where  _p_s_c_h_a_r  is the PostScript name of the character, and _c_o_d_e is its
+       position in the encoding expressed as a decimal integer;  valid  values
+       are  in  the range 0 to 255.  Lines starting with ## and blank lines are
+       ignored.  The code for each character given in the font file must  cor-
+       respond  to the code for the character in encoding file, or to the code
+       in the default encoding for the font if the PostScript font is  not  to
+       be  reencoded.   This  code  can be used with the \\NN escape sequence in
+       ttrrooffff to select the character, even if the character does  not  have  a
+       groff  name.   Every character in the font file must exist in the Post-
+       Script font, and the widths given in  the  font  file  must  match  the
+       widths  used  in  the  PostScript font.  ggrrooppss assumes that a character
+       with a groff name of ssppaaccee is blank (makes no marks on  the  page);  it
+       can make use of such a character to generate more efficient and compact
+       PostScript output.
+
+       Note that ggrrooppss is able to display all glyphs in a PostScript font, not
+       only 256.  _e_n_c___f_i_l_e (or the default encoding if no encoding file speci-
+       fied) just defines the order of glyphs for the  first  256  characters;
+       all  other  glyphs  are accessed with additional encoding vectors which
+       ggrrooppss produces on the fly.
+
+       ggrrooppss can automatically include the  downloadable  fonts  necessary  to
+       print  the document.  Such fonts must be in PFA format.  Use ppffbbttooppss(1)
+       to convert a Type 1 font in PFB format.  Any downloadable  fonts  which
+       should,  when required, be included by ggrrooppss must be listed in the file
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_v_p_s_/_d_o_w_n_l_o_a_d; this should  consist  of
+       lines of the form
+
+              _f_o_n_t _f_i_l_e_n_a_m_e
+
+       where _f_o_n_t is the PostScript name of the font, and _f_i_l_e_n_a_m_e is the name
+       of the file containing the font; lines beginning with ## and blank lines
+       are  ignored;  fields  may  be separated by tabs or spaces; _f_i_l_e_n_a_m_e is
+       searched for using the same mechanism that is used for groff font  met-
+       ric  files.   The  _d_o_w_n_l_o_a_d file itself is also searched for using this
+       mechanism; currently, only the first found file in  the  font  path  is
+       used.
+
+       If  the  file  containing a downloadable font or imported document con-
+       forms to the Adobe Document Structuring Conventions, then ggrrooppss  inter-
+       prets  any  comments  in  the files sufficiently to ensure that its own
+       output is conforming.  It also supplies any needed font resources  that
+       are  listed  in the _d_o_w_n_l_o_a_d file as well as any needed file resources.
+       It is also able to handle inter-resource  dependencies.   For  example,
+       suppose  that  you have a downloadable font called Garamond, and also a
+       downloadable font called Garamond-Outline  which  depends  on  Garamond
+       (typically  it would be defined to copy Garamond's font dictionary, and
+       change the PaintType), then it is  necessary  for  Garamond  to  appear
+       before Garamond-Outline in the PostScript document.  ggrrooppss handles this
+       automatically provided that the downloadable font  file  for  Garamond-
+       Outline  indicates  its dependence on Garamond by means of the Document
+       Structuring Conventions, for example by beginning  with  the  following
+       lines
+
+              %%!!PPSS--AAddoobbee--33..00 RReessoouurrccee--FFoonntt
+              %%%%DDooccuummeennttNNeeeeddeeddRReessoouurrcceess:: ffoonntt GGaarraammoonndd
+              %%%%EEnnddCCoommmmeennttss
+              %%%%IInncclluuddeeRReessoouurrccee:: ffoonntt GGaarraammoonndd
+
+       In this case both Garamond and Garamond-Outline would need to be listed
+       in the _d_o_w_n_l_o_a_d file.  A downloadable font should not include  its  own
+       name in a %%%%DDooccuummeennttSSuupppplliieeddRReessoouurrcceess comment.
+
+       ggrrooppss  does  not  interpret  %%%%DDooccuummeennttFFoonnttss comments.  The %%%%DDooccuummeenntt--
+       NNeeeeddeeddRReessoouurrcceess,    %%%%DDooccuummeennttSSuupppplliieeddRReessoouurrcceess,     %%%%IInncclluuddeeRReessoouurrccee,
+       %%%%BBeeggiinnRReessoouurrccee,  and  %%%%EEnnddRReessoouurrccee  comments  (or  possibly  the  old
+       %%%%DDooccuummeennttNNeeeeddeeddFFoonnttss, %%%%DDooccuummeennttSSuupppplliieeddFFoonnttss, %%%%IInncclluuddeeFFoonntt, %%%%BBeeggiinn--
+       FFoonntt, and %%%%EEnnddFFoonntt comments) should be used.
+
+       In the default setup there are styles called RR, II, BB, and BBII mounted at
+       font positions 1 to 4.  The fonts are grouped into families AA,  BBMM,  CC,
+       HH, HHNN, NN, PP, and TT having members in each of these styles:
+
+              AARR     AvantGarde-Book
+              AAII     AvantGarde-BookOblique
+              AABB     AvantGarde-Demi
+              AABBII    AvantGarde-DemiOblique
+              BBMMRR    Bookman-Light
+              BBMMII    Bookman-LightItalic
+              BBMMBB    Bookman-Demi
+              BBMMBBII   Bookman-DemiItalic
+              CCRR     Courier
+              CCII     Courier-Oblique
+              CCBB     Courier-Bold
+              CCBBII    Courier-BoldOblique
+              HHRR     Helvetica
+              HHII     Helvetica-Oblique
+              HHBB     Helvetica-Bold
+              HHBBII    Helvetica-BoldOblique
+              HHNNRR    Helvetica-Narrow
+              HHNNII    Helvetica-Narrow-Oblique
+              HHNNBB    Helvetica-Narrow-Bold
+              HHNNBBII   Helvetica-Narrow-BoldOblique
+              NNRR     NewCenturySchlbk-Roman
+              NNII     NewCenturySchlbk-Italic
+              NNBB     NewCenturySchlbk-Bold
+              NNBBII    NewCenturySchlbk-BoldItalic
+              PPRR     Palatino-Roman
+              PPII     Palatino-Italic
+              PPBB     Palatino-Bold
+              PPBBII    Palatino-BoldItalic
+              TTRR     Times-Roman
+              TTII     Times-Italic
+              TTBB     Times-Bold
+              TTBBII    Times-BoldItalic
+
+       There is also the following font which is not a member of a family:
+
+              ZZCCMMII   ZapfChancery-MediumItalic
+
+       There  are also some special fonts called SS for the PS Symbol font, and
+       SSSS, containing slanted lowercase Greek letters taken  from  PS  Symbol.
+       Zapf  Dingbats  is available as ZZDD, and a reversed version of ZapfDing-
+       bats (with symbols pointing in the opposite direction) is available  as
+       ZZDDRR;  most  characters  in these fonts are unnamed and must be accessed
+       using \\NN.
+
+       The default color for \\mm and \\MM is black; for  colors  defined  in  the
+       `rgb'  color  space  sseettrrggbbccoolloorr is used, for `cmy' and `cmyk' sseettccmmyykk--
+       ccoolloorr, and for `gray' sseettggrraayy.  Note that sseettccmmyykkccoolloorr is a  PostScript
+       LanguageLevel 2 command and thus not available on some older printers.
+
+       ggrrooppss  understands  various  X  commands  produced  using the \\XX escape
+       sequence; ggrrooppss only interprets commands that begin with a ppss:: tag.
+
+       \\XX''ppss:: eexxeecc _c_o_d_e''
+              This executes the arbitrary PostScript commands  in  _c_o_d_e.   The
+              PostScript currentpoint is set to the position of the \\XX command
+              before executing _c_o_d_e.  The origin is at the top left corner  of
+              the  page,  and  y coordinates increase down the page.  A proce-
+              dure uu is defined that converts groff units  to  the  coordinate
+              system  in  effect (provided the user doesn't change the scale).
+              For example,
+
+                     ..nnrr xx 11ii
+                     \\XX''ppss:: eexxeecc \\nnxx uu 00 rrlliinneettoo ssttrrookkee''
+
+              draws a horizontal line one inch long.  _c_o_d_e may make changes to
+              the  graphics  state, but any changes persist only to the end of
+              the page.  A dictionary containing the definitions specified  by
+              the  ddeeff  and  mmddeeff  is on top of the dictionary stack.  If your
+              code adds definitions to this dictionary,  you  should  allocate
+              space  for  them  using  \\XX''ppss mmddeeff _n''.  Any definitions persist
+              only until the end of the  page.   If  you  use  the  \\YY  escape
+              sequence  with  an  argument that names a macro, _c_o_d_e can extend
+              over multiple lines.  For example,
+
+                     ..nnrr xx 11ii
+                     ..ddee yy
+                     ppss:: eexxeecc
+                     \\nnxx uu 00 rrlliinneettoo
+                     ssttrrookkee
+                     ....
+                     \\YYyy
+
+              is another way to draw a horizontal line one  inch  long.   Note
+              the single backslash before `nx' - the only reason to use a num-
+              ber register while defining the macro `y' is to convert a  user-
+              specified  dimension  `1i'  to internal groff units which are in
+              turn converted to PS units with the uu procedure.
+
+              ggrrooppss wraps user-specified PostScript code  into  a  dictionary,
+              nothing  more.   In  particular,  it  doesn't  start and end the
+              inserted code with ssaavvee and rreessttoorree, respectively.  This must be
+              supplied by the user, if necessary.
+
+       \\XX''ppss:: ffiillee _n_a_m_e''
+              This  is the same as the eexxeecc command except that the PostScript
+              code is read from file _n_a_m_e.
+
+       \\XX''ppss:: ddeeff _c_o_d_e''
+              Place a PostScript definition contained in _c_o_d_e in the prologue.
+              There  should  be  at  most one definition per \\XX command.  Long
+              definitions can be split over several \\XX commands; all the  _c_o_d_e
+              arguments are simply joined together separated by newlines.  The
+              definitions are placed in a dictionary  which  is  automatically
+              pushed on the dictionary stack when an eexxeecc command is executed.
+              If you use the \\YY escape sequence with an argument that names  a
+              macro, _c_o_d_e can extend over multiple lines.
+
+       \\XX''ppss:: mmddeeff _n _c_o_d_e''
+              Like  ddeeff,  except  that  _c_o_d_e  may contain up to _n definitions.
+              ggrrooppss needs to know how many definitions _c_o_d_e contains  so  that
+              it  can  create  an appropriately sized PostScript dictionary to
+              contain them.
+
+       \\XX''ppss:: iimmppoorrtt _f_i_l_e _l_l_x _l_l_y _u_r_x _u_r_y _w_i_d_t_h [ _h_e_i_g_h_t ]''
+              Import a PostScript graphic from _f_i_l_e.  The arguments _l_l_x,  _l_l_y,
+              _u_r_x, and _u_r_y give the bounding box of the graphic in the default
+              PostScript coordinate system; they should all be  integers;  _l_l_x
+              and  _l_l_y are the x and y coordinates of the lower left corner of
+              the graphic; _u_r_x and _u_r_y are the x  and  y  coordinates  of  the
+              upper right corner of the graphic; _w_i_d_t_h and _h_e_i_g_h_t are integers
+              that give the desired width and height in  groff  units  of  the
+              graphic.
+
+              The  graphic  is scaled so that it has this width and height and
+              translated so that the lower  left  corner  of  the  graphic  is
+              located  at  the  position  associated  with \\XX command.  If the
+              height argument is omitted it is scaled uniformly in the  x  and
+              y directions so that it has the specified width.
+
+              Note  that the contents of the \\XX command are not interpreted by
+              ttrrooffff; so vertical space for the graphic  is  not  automatically
+              added,  and  the  _w_i_d_t_h  and _h_e_i_g_h_t arguments are not allowed to
+              have attached scaling indicators.
+
+              If the PostScript file complies with the Adobe  Document  Struc-
+              turing  Conventions  and  contains a %%%%BBoouunnddiinnggBBooxx comment, then
+              the bounding box can  be  automatically  extracted  from  within
+              groff by using the ppssbbbb request.
+
+              See  ggrrooffff__ttmmaacc(5)  for  a  description of the PPSSPPIICC macro which
+              provides a convenient  high-level  interface  for  inclusion  of
+              PostScript graphics.
+
+       \\XX''ppss:: iinnvviiss''
+       \\XX''ppss:: eennddiinnvviiss''
+              No  output  is  generated for text and drawing commands that are
+              bracketed with these \\XX commands.  These commands  are  intended
+              for  use  when  output from ttrrooffff is previewed before being pro-
+              cessed with ggrrooppss; if the previewer is unable to display certain
+              characters or other constructs, then other substitute characters
+              or constructs can be used for previewing by bracketing them with
+              these \\XX commands.
+
+              For  example,  ggxxddiittvviieeww  is  not  able to display a proper \\((eemm
+              character because the standard X11 fonts do not provide it; this
+              problem can be overcome by executing the following request
+
+                     ..cchhaarr \\((eemm \\XX''ppss:: iinnvviiss''\\
+                     \\ZZ''\\vv''--..2255mm''\\hh''..0055mm''\\DD''ll ..99mm 00''\\hh''..0055mm''''\\
+                     \\XX''ppss:: eennddiinnvviiss''\\((eemm
+
+              In  this case, ggxxddiittvviieeww is unable to display the \\((eemm character
+              and draws the line, whereas ggrrooppss prints the \\((eemm character  and
+              ignores the line (this code is already in file XXppss..ttmmaacc which is
+              loaded if a  document  intended  for  ggrrooppss  is  previewed  with
+              ggxxddiittvviieeww).
+
+       If  a  PostScript  procedure BBPPhhooookk has been defined via a `ppss:: ddeeff' or
+       `ppss:: mmddeeff' device command, it is executed at  the  beginning  of  every
+       page  (before  anything is drawn or written by groff).  For example, to
+       underlay the page contents with the word `DRAFT'  in  light  gray,  you
+       might use
+
+              ..ddee XXXX
+              ppss:: ddeeff
+              //BBPPhhooookk
+              {{ ggssaavvee ..99 sseettggrraayy cclliippppaatthh ppaatthhbbbbooxx eexxcchh 22 ccooppyy
+                ..55 mmuull eexxcchh ..55 mmuull ttrraannssllaattee aattaann rroottaattee ppoopp ppoopp
+                //NNeewwCCeennttuurryySScchhllbbkk--RRoommaann ffiinnddffoonntt 220000 ssccaalleeffoonntt sseettffoonntt
+                ((DDRRAAFFTT)) dduupp ssttrriinnggwwiiddtthh ppoopp --..55 mmuull --7700 mmoovveettoo sshhooww
+                ggrreessttoorree }}
+              ddeeff
+              ....
+              ..ddeevviicceemm XXXX
+
+       Or,  to  cause  lines and polygons to be drawn with square linecaps and
+       mitered linejoins instead of the round linecaps and linejoins  normally
+       used by ggrrooppss, use
+
+              ..ddee XXXX
+              ppss:: ddeeff
+              //BBPPhhooookk {{ 22 sseettlliinneeccaapp 00 sseettlliinneejjooiinn }} ddeeff
+              ....
+              ..ddeevviicceemm XXXX
+
+       (square linecaps, as opposed to butt linecaps (0 setlinecap), give true
+       corners in boxed tables even though the lines are drawn unconnected).
+
+   EEnnccaappssuullaatteedd PPoossttSSccrriipptt
+       ggrrooppss itself doesn't emit bounding box information.  With the  help  of
+       Ghostscript  the following simple script, ggrrooffff22eeppss, produces an encap-
+       sulated PS file.
+
+              ##!! //bbiinn//sshh
+              ggrrooffff --PP--bb1166 $$11 >> $$11..ppss
+              ggss --ddNNOOPPAAUUSSEE --ssDDEEVVIICCEE==bbbbooxx ---- $$11..ppss 22>> $$11..bbbbooxx
+              sseedd --ee ""//^^%%%%OOrriieennttaattiioonn//rr $$11..bbbbooxx"" \\
+                  --ee ""//^^%%!!PPSS--AAddoobbee--33..00//ss//$$// EEPPSSFF--33..00//"" $$11..ppss >> $$11..eeppss
+              rrmm $$11..ppss $$11..bbbbooxx
+
+       Just say
+
+              ggrrooffff22eeppss ffoooo
+
+       to convert file ffoooo to ffoooo..eeppss.
+
+   TTrruueeTTyyppee aanndd ootthheerr ffoonntt ffoorrmmaattss
+       TrueType fonts can be used with ggrrooppss if converted  first  to  TTyyppee  4422
+       format,  a special PostScript wrapper equivalent to the PFA format men-
+       tioned in ppffbbttooppss(1).  There are several different methods to  generate
+       a  type42  wrapper  and  most  of  them involve the use of a PostScript
+       interpreter such as Ghostscript - see ggss(1).
+
+       Yet,  the  easiest  method  involves  the  use   of   the   application
+       ttttffttoott4422(1).  This program uses ffrreeeettyyppee(3) (version 1.3.1) to generate
+       type42 font wrappers and well-formed AFM files that can be fed  to  the
+       aaffmmttooddiitt(1)  script  to create appropriate metric files.  The resulting
+       font wrappers should be added to the _d_o_w_n_l_o_a_d  file.   ttttffttoott4422  source
+       code  can  be  downloaded  from  ftp://www.giga.or.at/pub/nih/ttftot42/
+       <ftp://www.giga.or.at/pub/nih/ttftot42/>.
+
+       Another solution for creating type42  wrappers  is  to  use  FontForge,
+       available from http://fontforge.sf.net <http://fontforge.sf.net>.  This
+       font editor can convert most outline font formats.
+
+FFOONNTT IINNSSTTAALLLLAATTIIOONN
+       This section gives a summary of the above explanations; it can serve as
+       a step-by-step font installation guide for ggrrooppss.
+
+        +o  Convert your font to something groff understands.  This is either a
+           PostScript Type 1 font in PFA format or a PostScript Type 42  font,
+           together with an AFM file.
+
+           The very first characters in a PFA file look like this:
+
+                  %%!!PPSS--AAddoobbeeFFoonntt--11..00::
+
+           A  PFB file has this also in the first line, but the string is pre-
+           ceded with some binary bytes.
+
+           The very first characters in a Type 42 font file look like this:
+
+                  %%!!PPSS--TTrruueeTTyyppeeFFoonntt
+
+           This is a wrapper format for TrueType fonts.  Old PS printers might
+           not  support  it (this is, they don't have a built-in TrueType font
+           interpreter).
+
+           If your font is in PFB format (such fonts normally have _._p_f_b as the
+           file  extension),  you might use groff's ppffbbttooppss(1) program to con-
+           vert it to PFA.  For TrueType fonts,  try  ttttffttoott4422  or  ffoonnttffoorrggee.
+           For  all  other  font  formats use ffoonnttffoorrggee which can convert most
+           outline font formats.
+
+        +o  Convert the AFM file to a groff  font  description  file  with  the
+           aaffmmttooddiitt(1) program.  An example call is
+
+                  afmtodit Foo-Bar-Bold.afm textmap FBB
+
+           which  converts  the metric file _F_o_o_-_B_a_r_-_B_o_l_d_._a_f_m to the groff font
+           _F_B_B.  If you have a font family  which  comes  with  normal,  bold,
+           italic, and bold italic faces, it is recommended to use the letters
+           RR, BB, II, and BBII, respectively, as postfixes in the groff font names
+           to  make groff's `.fam' request work.  An example is groff's built-
+           in Times-Roman font: The font family name is TT, and the groff  font
+           names are TTRR, TTBB, TTII, and TTBBII.
+
+        +o  Install  both  the  groff font description files and the fonts in a
+           _d_e_v_p_s subdirectory of the font path which groff finds.  See section
+           "Environment"  in  ttrrooffff(1)  for the actual value of the font path.
+           Note that groff doesn't use the AFM files (but it is a good idea to
+           store them anyway).
+
+        +o  Register  all  fonts which must be downloaded to the printer in the
+           _d_e_v_p_s_/_d_o_w_n_l_o_a_d file.  Only the first occurrence of this file in the
+           font  path  is  read.   This means that you should copy the default
+           _d_o_w_n_l_o_a_d file to the first directory in your font path and add your
+           fonts  there.   To continue the above example we assume that the PS
+           font name for _F_o_o_-_B_a_r_-_B_o_l_d_._p_f_a is `XY-Foo-Bar-Bold'  (the  PS  font
+           name is stored in the iinntteerrnnaallnnaammee field in the _F_B_B file), thus the
+           following line should be added to _d_o_w_n_l_o_a_d.
+
+                  XXYY--FFoooo--BBaarr--BBoolldd FFoooo--BBaarr--BBoolldd..ppffaa
+
+OOLLDD FFOONNTTSS
+       groff versions 1.19.2 and earlier contain a slightly different  set  of
+       the  35  Adobe  core  fonts;  the  difference is mainly the lack of the
+       `Euro' glyph and a reduced set of kerning pairs.  For backwards compat-
+       ibility, these old fonts are installed also in the
+
+              _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_o_l_d_f_o_n_t_/_d_e_v_p_s
+
+       directory.
+
+       To  use  them,  make sure that ggrrooppss finds the fonts before the default
+       system fonts (with the same names): Either add command-line  option  --FF
+       to ggrrooppss
+
+              ggrrooffff --TTppss --PP--FF --PPdd:://uussrr//sshhaarree//ggrrooffff//11..2222..44//oollddffoonntt ......
+
+       or add the directory to groff's font path environment variable
+
+              GGRROOFFFF__FFOONNTT__PPAATTHH==dd:://uussrr//sshhaarree//ggrrooffff//11..2222..44//oollddffoonntt
+
+EENNVVIIRROONNMMEENNTT
+       _G_R_O_P_S___P_R_O_L_O_G_U_E
+              If this is set to _f_o_o, then ggrrooppss uses the file _f_o_o (in the font
+              path) instead of the default prologue file pprroolloogguuee.  The option
+              --PP overrides this environment variable.
+
+       _G_R_O_F_F___F_O_N_T___P_A_T_H
+              A  list of directories in which to search for the _d_e_vname direc-
+              tory  in  addition  to  the  default  ones.   See  ttrrooffff(1)  and
+              ggrrooffff__ffoonntt(5) for more details.
+
+       _S_O_U_R_C_E___D_A_T_E___E_P_O_C_H
+              A  timestamp  (expressed as seconds since the Unix epoch) to use
+              as the creation timestamp in place of the current time.
+
+FFIILLEESS
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_v_p_s_/_D_E_S_C
+              Device description file.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_v_p_s_/F
+              Font description file for font _F.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_v_p_s_/_d_o_w_n_l_o_a_d
+              List of downloadable fonts.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_v_p_s_/_t_e_x_t_._e_n_c
+              Encoding used for text fonts.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_t_m_a_c_/_p_s_._t_m_a_c
+              Macros for use with ggrrooppss; automatically loaded by ttrrooffffrrcc
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_t_m_a_c_/_p_s_p_i_c_._t_m_a_c
+              Definition of PPSSPPIICC macro, automatically loaded by _p_s_._t_m_a_c.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_t_m_a_c_/_p_s_o_l_d_._t_m_a_c
+              Macros to disable use of characters not present in  older  Post-
+              Script printers (e.g., `eth' or `thorn').
+
+       _/_t_m_p_/_g_r_o_p_sXXXXXX
+              Temporary  file.   See  ggrrooffff(1)  for details on the location of
+              temporary files.
+
+SSEEEE AALLSSOO
+       aaffmmttooddiitt(1),    ggrrooffff(1),    ttrrooffff(1),    ppffbbttooppss(1),     ggrrooffff__oouutt(5),
+       ggrrooffff__ffoonntt(5), ggrrooffff__cchhaarr(7), ggrrooffff__ttmmaacc(5)
+
+       PostScript  Language  Document  Structuring  Conventions  Specification
+       <http://partners.adobe.com/public/developer/en/ps/5001.DSC_Spec.pdf>
+
+
+
+groff 1.22.4                     December 2018                        GROPS(1)

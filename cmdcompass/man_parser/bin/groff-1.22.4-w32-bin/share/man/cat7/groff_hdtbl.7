@@ -1,0 +1,490 @@
+GROFF_HDTBL(7)         Miscellaneous Information Manual         GROFF_HDTBL(7)
+
+
+
+NNAAMMEE
+       groff_hdtbl - Heidelberger table macros for GNU roff
+
+DDEESSCCRRIIPPTTIIOONN
+       The  hhddttbbll  macros consist of four base and three optional macros, con-
+       trolled by about twenty arguments.  The syntax is simple and similar to
+       the HHTTMMLL table model and nearly as flexible: You can write sequences of
+       tokens (macro calls with their arguments and content  data),  separated
+       by  blanks  and  beginning with a macro call, into the same line to get
+       compact and cleanly arrranged input.  An advantage of hhddttbbll is that the
+       tables  are constructed without calling a preprocessor; this means that
+       ggrrooffff's full macro capabilities are available.  On the other hand,  ta-
+       ble  processing  with  hhddttbbll  is much slower than using the ttbbll(1) pre-
+       processor.  A further advantage is that the HTML-like syntax  of  hhddttbbll
+       will be easily converted to HTML; this is not implemented yet.
+
+UUSSAAGGEE
+       In  this and the next section, we present examples to help users under-
+       stand the basic workflow of hhddttbbll.  First of all,  you  must  load  the
+       _h_d_t_b_l_._t_m_a_c  file.  As with nearly all other groff macro packages, there
+       are two possibilities to do so: Either add the line
+
+              .mso hdtbl.tmac
+
+       to your _r_o_f_f file before using any macros of the hhddttbbll package, or  add
+       the option
+
+              -m hdtbl
+
+       to  the  command line of groff (before the document file which contains
+       hhddttbbll macros).  Then you can include on or more tables  in  your  docu-
+       ment,  where  each one must be started and ended with the .TBL and .ETB
+       macros, respectively.
+
+       In this man page, we approximate the result of each example in the  _t_t_y
+       format to be as generic as possible since hhddttbbll currently only supports
+       the PS and PDF output devices.
+
+       The simplest well-formed table consists of just  single  calls  to  the
+       four  base  table macros in the right order.  Here we construct a table
+       with only one cell.
+
+              .TBL
+              .TR
+              .TD
+              _c_o_n_t_e_n_t_s _o_f _t_h_e _t_a_b_l_e _c_e_l_l
+              .ETB
+
+       A _t_t_y representation is
+
+              +------------------------------------------------------+
+              | contents-of-the-table-cell                           |
+              +------------------------------------------------------+
+
+       Equivalent to the above is the following notation.
+
+              .TBL .TR .TD "_c_o_n_t_e_n_t_s _o_f _t_h_e _t_a_b_l_e _c_e_l_l" .ETB
+
+       By default, the formatted table is inserted into the  surrounding  text
+       at  the  place  of  its definition.  If the vertical space isn't suffi-
+       cient, it is placed at the top of the next page.  Tables  can  also  be
+       stored for later insertion.
+
+       Using `_r_o_w_-_n_u_m_b_e_r*_c_o_l_u_m_n_-_n_u_m_b_e_r' as the data for the table cells, a ta-
+       ble with two rows and two columns can be written as
+
+              .TBL cols=2
+              .  TR .TD 1*1 .TD 1*2
+              .  TR .TD 2*1 .TD 2*2
+              .ETB
+
+       A _t_t_y representation is
+
+              +--------------------------+---------------------------+
+              | 1*1                      | 1*2                       |
+              +--------------------------+---------------------------+
+              | 2*1                      | 2*2                       |
+              +--------------------------+---------------------------+
+
+       Here we see a difference from HTML tables: The number of  columns  must
+       be  explicitly specified using the `cols=_m' argument (or indirectly via
+       the `width' argument, see below).
+
+       The contents of a table cell is arbitrary; for example, it can  be  an-
+       other  table,  without restriction to the nesting depth.  A given table
+       layout can be either constructed with suitably nested  tables  or  with
+       proper  arguments  to .TD and .TH, controlling column and row spanning.
+       Note, however, that this table
+
+              .TBL
+              .  TR
+              .    TD
+              .      nop 1*1 1*2
+              .  TR
+              .    TD
+              .      TBL cols=2 border=
+              .        TR
+              .          TD
+              .            nop 2*1
+              .          TD
+              .            nop 2*2
+              .      ETB
+              .ETB
+
+       and this table
+
+              .TBL cols=2
+              .  TR
+              .    TD colspan=2
+              .      nop 1*1 1*2
+              .  TR
+              .    TD
+              .      nop 2*1
+              .    TD
+              .      nop 2*2
+              .ETB
+
+       are similar but not identical (the use of .nop is  purely  cosmetic  to
+       get proper indentation).
+
+       The first table looks like
+
+              +------------------------------------------------------+
+              | 1*1 1*2                                              |
+              +------------------------------------------------------+
+              |                                                      |
+              | 2*1                         2*2                      |
+              |                                                      |
+              +------------------------------------------------------+
+
+       and the second one like
+
+              +------------------------------------------------------+
+              | 1*1 1*2                                              |
+              +---------------------------+--------------------------+
+              | 2*1                       | 2*2                      |
+              +---------------------------+--------------------------+
+
+       Here the latter table in a more compact form.
+
+              .TBL cols=2 .TR ".TD colspan=2" 1*1 1*2
+              .            TR .TD 2*1 .TD 2*2 .ETB
+
+       If  a macro has one or more arguments (see below), and it is not start-
+       ing a line, everything belonging to this macro including the macro  it-
+       self must be enclosed in double quotes.
+
+MMAACCRROOSS AANNDD AARRGGUUMMEENNTTSS
+       The  order  of macro calls and other tokens follows the HTML model.  In
+       the following list, valid predecessors  and  successors  of  all  hhddttbbll
+       macros are given, together with the possible arguments.
+
+       Macro arguments are separated by blanks.  The order of arguments is ar-
+       bitrary; they are of the form
+
+              key=_v_a_l_u_e
+
+       or
+
+              key='_v_a_l_u_e_1 [_v_a_l_u_e_2 [...]]'
+
+       with the only exception of the optional argument  of  the  macro  .ETB,
+       which is the string `hold'.  Another possible form is
+
+              "key=_v_a_l_u_e_1 [_v_a_l_u_e_2 [...]]"
+
+       However,  this  is limited to the case where the macro is the first one
+       in the line and not already enclosed in double quotes.
+
+       Argument values specified below as _c are colors predefined by ggrrooffff  or
+       colors  defined  by the user with the .defcolor request.  Argument val-
+       ues _d are decimal numbers with or without decimal point.  Argument val-
+       ues _m are natural numbers.  Argument values _n are numerical values with
+       the usual ggrrooffff scaling indicators.  Some of the arguments are specific
+       to one or two macros, but most of them can be specified with .TBL, .TR,
+       .TD, and .TH.  These common arguments are explained in the next subsec-
+       tion.
+
+       Most  of the argument default values can be changed by the user by set-
+       ting corresponding default registers or strings, as listed below.
+
+       ..TTBBLL [_a_r_g_s]
+              Begin a new table.
+
+              pprreeddeecceessssoorr:: .TD, .TH, .ETB, cell contents
+              ssuucccceessssoorr:: .CPTN, .TR
+              aarrgguummeennttss::
+                     border=[_n]
+                            Thickness   of   the   surrounding   box   border.
+                            `border='  (no  value) means neither a surrounding
+                            box border nor any horizontal or vertical  separa-
+                            tor  lines  between  the  table  rows  and  cells.
+                            `border=0' suppresses the surrounding box  border,
+                            but still allows separator lines between cells and
+                            rows.
+                            DDeeffaauulltt:: `border=.1n' (register `t*b').
+                     bc=_c   Border color.
+                            DDeeffaauulltt:: `bc=red4' (string `t*bc').
+                     cols=_m Number of table columns.  This argument is  neces-
+                            sary  if  more than one column is in the table and
+                            no `width' arguments are present.
+                            DDeeffaauulltt:: `cols=1' (register `t*cols').
+                     cpd=_n  Cell padding, i.e., the extra  space  between  the
+                            cell space border and the cell contents.
+                            DDeeffaauulltt:: `cpd=.5n' (register `t*cpd').
+                     csp=_n  Cell  spacing,  i.e.,  the extra space between the
+                            table border or vertical or horizontal  lines  be-
+                            tween cells and the cellspace.
+                            DDeeffaauulltt:: `csp=.5n' (register `t*csp').
+                     tal=l|c|r
+                            Horizontal alignment of the table, if it is small-
+                            er than the line width.  `tal=l': left  alignment.
+                            `tal=c':   centered   alignment.   `tal=r':  right
+                            alignment.
+                            DDeeffaauulltt:: `tal=l' (register `t*tal').
+                     width='_w_1 [_w_2 [...]]'
+                            Widths of table cells.  _w_1,  _w_2,  ...  are  either
+                            numbers  of  type  _n  or  natural numbers with the
+                            pseudo-scaling indicator  `%',  with  the  meaning
+                            "percent  of  the  actual  line  length (or column
+                            length for inner tables, respectively)".  If there
+                            are less width values than table columns, the last
+                            width value is used for the remaining cells.   The
+                            argument
+
+                                   width='1.5i 10%'
+
+                            for  example  indicates  that  the first column is
+                            1.5 inches wide; the remaining columns  take  1/10
+                            of the column length each.
+                            DDeeffaauulltt::  The  table  width  equals the outer line
+                            length or column length; the  columns  have  equal
+                            widths.
+                     height=_n
+                            Height  of  the table.  If the table with its con-
+                            tents is lower than _n, the last row  is  stretched
+                            to this value.
+
+       ..CCPPTTNN [_a_r_g_s]
+              Text of caption.
+
+              The (optionally numbered) table caption.  .CPTN is optional.
+
+              pprreeddeecceessssoorr:: .TBL
+              ssuucccceessssoorr:: .TR
+              aarrgguummeennttss::
+                     val=t|b
+                            Vertical alignment of the table caption.  `val=t':
+                            The caption is placed above the  table.   `val=b':
+                            The caption is placed below the table.
+                            DDeeffaauulltt:: `val=t' (string `t*cptn').
+
+       ..TTRR [_a_r_g_s]
+              Begin a new table row.
+
+              pprreeddeecceessssoorr:: .TBL, .CPTN, .TD, .TH, .ETB, cell contents
+              ssuucccceessssoorr:: .TD, .TH
+              aarrgguummeennttss::
+                     height=_n
+                            The  height  of  the row.  If a cell in the row is
+                            higher than _n, this value  is  ignored;  otherwise
+                            the row height is stretched to _n.
+
+       ..TTDD [_a_r_g_s [_c_e_l_l _c_o_n_t_e_n_t_s]]
+              Begin a table data cell.
+       ..TTHH [_a_r_g_s [_c_e_l_l _c_o_n_t_e_n_t_s]]
+              Begin a table header cell.
+
+              Arguments  and cell contents can be mixed.  The macro .TH is not
+              really necessary and differs from .TD only in three default set-
+              tings,  similar  to the <TH> and <TD> HTML tags: The contents of
+              .TH is horizontally and vertically centered and typeset in bold-
+              face.
+
+              pprreeddeecceessssoorr:: .TR, .TD, .TH, .ETB, cell contents
+              ssuucccceessssoorr:: .TD, .TH, .TR, .ETB, cell contents
+              aarrgguummeennttss::
+                     colspan=_m
+                            The width of this cell is the sum of the widths of
+                            the _m cells above and below this row.
+                     rowspan=_m
+                            The height of this cell is the sum of the  heights
+                            of the _m cells left and right of this column.
+
+                            RReemmaarrkk:: Overlapping of column and row spanning, as
+                            in the following table fragment  (the  overlapping
+                            happens  in the second cell in the second row), is
+                            invalid and causes incorrect results.
+
+                                   .TR .TD 1*1 ".TD 1*2 rowspan=2" .TD 1*3
+                                   .TR ".TD 2*1 colspan=2"         .TD 2*3
+
+                     A working example for headers and cells with ccoollssppaann is
+
+                            .TBL cols=3
+                            .  TR ".TH colspan=2" header1+2 .TH header3
+                            .  TR .TD 1*1 .TD 1*2 .TD 1*3
+                            .  TR .TD 2*1 ".TD colspan=2" 2*2+3
+                            .ETB
+
+                     This looks like
+
+                            +------------------------------+---------------+
+                            |          header1+2           |    header3    |
+                            +--------------+---------------+---------------+
+                            | 1*1          | 1*2           | 1*3           |
+                            +--------------+---------------+---------------+
+                            | 2*1          | 2*2+3                         |
+                            +--------------+-------------------------------+
+
+                     A working example with rroowwssppaann is
+
+                            .TBL cols=3
+                            .  TR
+                            .  TD 1*1
+                            .  TD rowspan=2 1+2*2
+                            .  TD 1*3
+                            .
+                            .  TR
+                            .  TD 2*1
+                            .  TD 2*3
+                            .ETB
+
+                     which looks like
+
+                            +--------------+---------------+---------------+
+                            | 1*1          | 1+2*2         | 1*3           |
+                            +--------------+               +---------------+
+                            | 2*1          |               | 2*3           |
+                            +--------------+---------------+---------------+
+
+       ..EETTBB [hhoolldd]
+              End of the table.
+
+              This macro finishes a table.  It causes one of the following ac-
+              tions.
+
+              +o  If  the  argument `hold' is given, the table is held until it
+                 is freed by calling the macro .t*free, which in  turn  prints
+                 the  table  immediately, either at the current position or at
+                 the top of the next page if its height is larger than the re-
+                 maining space on the page.
+
+              +o  Otherwise, if the table is higher than the remaining space on
+                 the page, it is printed at the top of the next page.
+
+              +o  If neither of the two above constraints hold,  the  table  is
+                 printed immediately at the place of its definition.
+
+              pprreeddeecceessssoorr:: .TD, .TH, .ETB, cell contents
+              ssuucccceessssoorr:: .TBL, .TR, .TD, .TH, .ETB, cell contents
+              aarrgguummeennttss::
+                     hold   Prevent  the  table from being printed until it is
+                            freed by calling the macro .t*free.  This argument
+                            is ignored for inner (nested) tables.
+
+       ..tt**ffrreeee [_n]
+              Free  the  next  held table or _n held tables.  Call this utility
+              macro to print tables which are held by using the  `hold'  argu-
+              ment of the .ETB macro.
+
+   AArrgguummeennttss ccoommmmoonn ttoo ..TTBBLL,, ..TTRR,, ..TTDD,, aanndd ..TTHH
+       The  arguments described in this section can be specified with the .TBL
+       and .TR macros, but they are eventually passed on to the  table  cells.
+       If  omitted, the defaults take place, which the user can change by set-
+       ting the corresponding default registers or strings, as documented  be-
+       low.   Setting  an  argument with the .TBL macro has the same effect as
+       setting it for all rows in the table.  Setting an argument with  a  .TR
+       macro has the same effect as setting it for all the .TH or .TD macro in
+       this row.
+
+       bgc=[_c]
+              The background color of the table cells.  This includes the area
+              specified with the `csp' argument.  The argument `bgc=' (no val-
+              ue) suppresses a background color;  this  makes  the  background
+              transparent.
+              DDeeffaauulltt:: `bgc=bisque' (string `t*bgc').
+       fgc=_c  The foreground color of the cell contents.
+              DDeeffaauulltt:: `fgc=red4' (string `t*fgc').
+       ff=_n_a_m_e
+              The  font  family  for the table.  _n_a_m_e is one of the groff font
+              families, for example A for the AvantGarde fonts or HN for  Hel-
+              vetica-Narrow.
+              DDeeffaauulltt:: The font family found before the table (string `t*ff').
+       fst=_s_t_y_l_e
+              The  font style for the table.  One of R, B, I, or BI for roman,
+              bboolldd, _i_t_a_l_i_c, or _bb_oo_ll_dd _ii_tt_aa_ll_ii_cc, respectively.  As with rrooffff's  .ft
+              request the `fst' argument can be used to specify the font fami-
+              ly and font style together, for example  `fst=HNBI'  instead  of
+              `ff=HN' and `fst=BI'.
+              DDeeffaauulltt::  The  font  style in use right before the table (string
+              `t*fst').
+       fsz='_d_1 [_d_2]'
+              A decimal or fractional factor _d_1, by which the point  size  for
+              the table is changed, and _d_2, by which the vertical line spacing
+              is changed.  If _d_2 is omitted, value _d_1 is taken for both.
+              DDeeffaauulltt:: `fsz='1.0 1.0'' (string `t*fsz').
+       hal=l|c|b|r
+              Horizontal  alignment  of  the  cell  contents  in  the   table.
+              `hal=l': left alignment.  `hal=c': centered alignment.  `hal=b':
+              both (left and right) alignment.  `hal=r': right alignment.
+              DDeeffaauulltt:: `hal=b' (string `t*hal').
+       val=t|m|b
+              Vertical alignment of the cell contents in the table  for  cells
+              lower than the current row.  `val=t': alignment below the top of
+              the cell.   `val=m':  alignment  in  the  middle  of  the  cell.
+              `val=b': alignment above the cell bottom.
+              DDeeffaauulltt:: `val=t' (string `t*val').
+       hl=[s|d]
+              Horizontal  line between the rows.  If specified with .TD or .TH
+              this is a separator line to the cell below.  `hl='  (no  value):
+              no  separator line.  `hl=s': a single separator line between the
+              rows.  `hl=d': a double separator line.
+
+              The thickness of the separator lines is the half of  the  border
+              thickness,  but  at  least 0.1 inches.  The distance between the
+              double lines is equal to the line thickness.
+
+              RReemmaarrkk:: Together with `border=0' for proper formatting the value
+              of  `csp' must be at least .05 inches for single separator lines
+              and .15 inches for double separator lines.
+              DDeeffaauulltt:: `hl=s' (string `t*hl').
+       vl=[s|d]
+              Vertical separator line between the cells.   If  specified  with
+              .TD  or  .TH  this is a separator line to the cell on the right.
+              `vl=s': a single separator line between the  cells.   `vl=d':  a
+              double separator line.  `vl=' (no value): no vertical cell sepa-
+              rator lines.  For more information see the documentation of  the
+              `hl' argument above.
+              DDeeffaauulltt:: `vl=s' (string `t*vl').
+
+HHDDTTBBLL CCUUSSTTOOMMIIZZAATTIIOONN
+       Before creating the first table, you should configure default values to
+       minimize the markup needed in each table.  The following  example  sets
+       up defaults suitable for typical papers:
+
+              .ds t*bgc white\" background color
+              .ds t*fgc black\" foreground color
+              .ds t*bc black\"  border color
+              .nr t*cpd 0.1n\"  cell padding
+
+       The  file  eexxaammpplleess//ccoommmmoonn..rrooffff  provides  another example setup in the
+       "minimal Page setup" section.
+
+       A table which does not fit on a partially filled page is printed  auto-
+       matically  on the top of the next page if you append the little utility
+       macro t*hm to the page header macro of your document's main macro pack-
+       age.  For example, say
+
+              .am pg@top
+              .  t*hm
+              ..
+
+       if you use the mmss macro package.
+
+       The  macro  t*EM  checks  for  held or kept tables, and for missing ETB
+       macros (table not closed).  You can append  this  macro  to  the  "end"
+       macro of your document's main macro package.  For example:
+
+              .am pg@end-text
+              .  t*EM
+              ..
+
+       If you use the mmss macro package.
+
+BBUUGGSS AANNDD SSUUGGGGEESSTTIIOONNSS
+       Please send your commments to the groff mailing list <groff@gnu.org> or
+       directly to the author.
+
+AAUUTTHHOORRSS
+       The  hhddttbbll   macro   package   was   written   by   Joachim   Walsdorff
+       <Joachim.Walsdorff@urz.uni-heidelberg.de>.
+
+SSEEEE AALLSSOO
+       ggrrooffff(1)
+              provides an overview of GNU _r_o_f_f and details how to invoke _g_r_o_f_f
+              at the command line.
+
+       ggrrooffff(7)
+              summarizes the _r_o_f_f language and GNU extensions to it.
+
+       ttbbll(1) describes the traditional _r_o_f_f preprocessor for tables.
+
+
+
+groff 1.22.4                     November 2018                  GROFF_HDTBL(7)

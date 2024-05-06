@@ -1,0 +1,255 @@
+.TH NROFF 1 "November 2018" "groff 1.22.4"
+.SH NAME
+nroff \- use groff to format documents for TTY devices
+.
+.
+.\" ====================================================================
+.\" Legal Terms
+.\" ====================================================================
+.\"
+.\" Copyright (C) 1989-2018 Free Software Foundation, Inc.
+.\"
+.\" Permission is granted to make and distribute verbatim copies of this
+.\" manual provided the copyright notice and this permission notice are
+.\" preserved on all copies.
+.\"
+.\" Permission is granted to copy and distribute modified versions of
+.\" this manual under the conditions for verbatim copying, provided that
+.\" the entire resulting derived work is distributed under the terms of
+.\" a permission notice identical to this one.
+.\"
+.\" Permission is granted to copy and distribute translations of this
+.\" manual into another language, under the above conditions for
+.\" modified versions, except that this permission notice may be
+.\" included in translations approved by the Free Software Foundation
+.\" instead of in the original English.
+.
+.
+.\" ====================================================================
+.SH SYNOPSIS
+.\" ====================================================================
+.
+.SY nroff
+.RB [ \-CchipStUv ]
+[\c
+.BI \-d cs\c
+]
+[\c
+.BI \-M dir\c
+]
+[\c
+.BI \-m name\c
+]
+[\c
+.BI \-n num\c
+]
+[\c
+.BI \-o list\c
+]
+[\c
+.BI \-r cn\c
+]
+[\c
+.BI \-T name\c
+]
+[\c
+.BI \-W warning\c
+]
+[\c
+.BI \-w warning\c
+]
+.RI [ file
+\&.\|.\|.\&]
+.YS
+.
+.SY nroff
+.B \-\-help
+.YS
+.
+.SY nroff
+.B \-v
+.SY nroff
+.B \-\-version
+.YS
+.
+.\" ====================================================================
+.SH DESCRIPTION
+.\" ====================================================================
+.
+.I nroff
+formats documents written in the
+.IR roff (7)
+language for typewriter-like devices such as terminal emulators.
+.
+.P
+GNU
+.I nroff
+emulates the traditional Unix
+.I nroff
+command using
+.IR groff (1).
+.
+.I nroff
+generates output via
+.IR grotty (1),
+.IR groff 's
+TTY output device,
+which needs to know the character encoding scheme used by the terminal.
+.
+Consequently,
+acceptable arguments to the
+.B \-T
+option are
+.BR ascii ,
+.BR latin1 ,
+.BR utf8 ,
+and
+.BR cp1047 ;
+any others are ignored.
+.
+If neither the
+.I \%GROFF_TYPESETTER
+environment variable nor the
+.B \-T
+command-line option (which overrides the environment variable)
+specifies a (valid) device,
+.I nroff
+consults the locale to select an appropriate output device.
+.
+It first tries the
+.IR locale (1)
+program,
+then checks several locale-related environment variables;
+see \(lqENVIRONMENT\(rq, below.
+.
+If all of the foregoing fail,
+.B \-Tascii
+is implied.
+.
+.
+.P
+Whitespace is not permitted between an option and its argument.
+.
+The
+.B \-h
+and
+.B \-c
+options
+are equivalent to
+.IR grotty 's
+options
+.B \-h
+(using tabs in the output) and
+.B \-c
+(using the old output scheme instead of SGR escape sequences).
+.
+The
+.BR \-d ,
+.BR \-C ,
+.BR \-i ,
+.BR \-M ,
+.BR \-m ,
+.BR \-n ,
+.BR \-o ,
+.BR \-r ,
+.BR \-w ,
+and
+.B \-W
+options have the effect described in
+.IR troff (1).
+.
+In addition,
+.I nroff
+ignores
+.BR \-e ,
+.BR \-q ,
+and
+.B \-s
+(which are not implemented in
+.IR troff ).
+.
+The options
+.B \-p
+(pic),
+.B \-t
+(tbl),
+.B \-S
+(safer), and
+.B \-U
+(unsafe) are passed to
+.IR groff .
+.
+.B \-v
+and
+.B \-\-version
+show version information,
+while
+.B \-\-help
+displays a usage message;
+all exit afterward.
+.
+.
+.\" ====================================================================
+.SH ENVIRONMENT
+.\" ====================================================================
+.
+.TP
+.I GROFF_TYPESETTER
+specifies the default output device for
+.IR groff .
+.
+.
+.TP
+.I GROFF_BIN_PATH
+is a colon-separated list of directories in which to search for the
+.I groff
+executable before searching in
+.IR PATH .
+.
+If unset,
+.I d:/\:usr/\:bin
+is used.
+.
+.
+.TP
+.I LC_ALL
+.TQ
+.I LC_CTYPE
+.TQ
+.I LANG
+.TQ
+.I LESSCHARSET
+are pattern-matched in this order for standard character encodings
+supported by
+.I groff
+in the event no
+.B \-T
+option is given and
+.I GROFF_TYPESETTER
+is unset.
+.
+.
+.\" ====================================================================
+.SH NOTES
+.\" ====================================================================
+.
+Character definitions in the file
+.I d:/\:usr/\:share/\:groff/\:1.22.4/\:tmac/\:tty\-char.tmac
+are loaded to replace unrepresentable glyphs.
+.
+.
+.\" ====================================================================
+.SH "SEE ALSO"
+.\" ====================================================================
+.
+.IR groff (1),
+.IR troff (1),
+.IR grotty (1),
+.IR locale (1),
+.IR roff (7)
+.
+.
+.\" Local Variables:
+.\" mode: nroff
+.\" End:
+.\" vim: set filetype=groff:

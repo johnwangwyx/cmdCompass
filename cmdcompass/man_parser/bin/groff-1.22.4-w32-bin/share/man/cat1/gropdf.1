@@ -1,0 +1,519 @@
+GROPDF(1)                   General Commands Manual                  GROPDF(1)
+
+
+
+NNAAMMEE
+       gropdf - PDF driver for groff
+
+SSYYNNOOPPSSIISS
+       ggrrooppddff [--ddeellss] [--FF _d_i_r] [--II _d_i_r] [--pp _p_a_p_e_r_-_s_i_z_e] [--uu [_c_m_a_p_f_i_l_e]]
+              [--yy _f_o_u_n_d_r_y] [_f_i_l_e ...]
+
+       ggrrooppddff --vv
+       ggrrooppddff ----vveerrssiioonn
+
+DDEESSCCRRIIPPTTIIOONN
+       ggrrooppddff translates the output of GNU  ttrrooffff  to  PDF.   Normally  ggrrooppddff
+       should  be  invoked by using the groff command with a --TTppddff option.  If
+       no files are given, ggrrooppddff reads the standard input.  A filename  of  --
+       also  causes  ggrrooppddff to read the standard input.  PDF output is written
+       to the standard output.  When ggrrooppddff is run by  ggrrooffff  options  can  be
+       passed to ggrrooppddff using ggrrooffff's --PP option.
+
+       See  section "Font Installation" below for a guide how to install fonts
+       for ggrrooppddff.
+
+OOPPTTIIOONNSS
+       Whitespace is permitted between a command-line option and its argument.
+
+       --dd     Include debug information as comments within the PDF.  Also pro-
+              duces an uncompressed PDF.
+
+       --ee     Forces ggrrooppddff to embed _a_l_l fonts (even the 14 base PDF fonts).
+
+       --FF _d_i_r Prepend  directory  _d_i_r/dev_n_a_m_e to the search path for font, and
+              device description files; _n_a_m_e is the name of the  device,  usu-
+              ally ppddff.
+
+       --II _d_i_r This  option  may  be used to add a directory to the search path
+              for files named in \\XX''ppddff:: ppddffppiicc'' escape.  The  current  direc-
+              tory  is  always  searched  first.  This option may be specified
+              more than once; the directories are then searched in  the  order
+              specified.
+
+              No directory search is performed for files with an absolute file
+              name.
+
+       --ll     Orient the document in landscape format.
+
+       --pp _p_a_p_e_r_-_s_i_z_e
+              Set physical dimension of output  medium.   This  overrides  the
+              ppaappeerrssiizzee,  ppaappeerrlleennggtthh,  and  ppaappeerrwwiiddtthh  commands  in the _D_E_S_C
+              file; it accepts the same arguments as  the  ppaappeerrssiizzee  command.
+              See ggrrooffff__ffoonntt(5) for details.
+
+       --ss     Append  a  comment  line  to end of PDF showing statistics, i.e.
+              number of pages in  document.   Ghostscript's  ppss22ppddff  complains
+              about this line if it is included, but works anyway.
+
+       --uu       [_c_m_a_p_f_i_l_e]  GGrrooppddff normally includes a ToUnicode CMap with any
+              font created using _t_e_x_t_._e_n_c as the encoding file, this makes  it
+              easier  to  search  for  words which contain ligatures.  You can
+              include your own CMap by specifying a _c_m_a_p_f_i_l_e or have  no  CMap
+              at all by omitting the argument.
+
+       --vv
+       ----vveerrssiioonn
+              Print the version number and exit.
+
+       --yy _f_o_u_n_d_r_y
+              Set the foundry to use for selecting fonts of the same name.
+
+UUSSAAGGEE
+       The  input to ggrrooppddff must be in the format output by ttrrooffff(1).  This is
+       described in ggrrooffff__oouutt(5).
+
+       In addition, the device and font description files for the device  used
+       must  meet certain requirements: The resolution must be an integer mul-
+       tiple of 72 times the ssiizzeessccaallee.  The ppddff device uses a  resolution  of
+       72000 and a sizescale of 1000.
+
+       The  device  description  file  must  contain  a  valid paper size; see
+       ggrrooffff__ffoonntt(5) for more information.  ggrrooppddff uses the same Type 1  Adobe
+       PostScript fonts as the ggrrooppss device driver.  Although the PDF Standard
+       allows the use of other font types (like TrueType) this  implementation
+       only  accepts  the Type 1 PostScript font.  Fewer Type 1 fonts are sup-
+       ported natively in PDF documents than the standard 35  fonts  supported
+       by  ggrrooppss  and all PostScript printers, but all the fonts are available
+       since any which aren't supported natively are automatically embedded in
+       the PDF.
+
+       ggrrooppddff supports the concept of foundries, that is different versions of
+       basically the same font.  During install a _F_o_u_n_d_r_y file controls  where
+       fonts  are  found and builds ggrrooffff fonts from the files it discovers on
+       your system.
+
+       Each font description file must contain a command
+
+              iinntteerrnnaallnnaammee _p_s_n_a_m_e
+
+       which says that the PostScript name  of  the  font  is  _p_s_n_a_m_e.   Lines
+       starting with ## and blank lines are ignored.  The code for each charac-
+       ter given in the font file must correspond to the code in  the  default
+       encoding  for  the  font.   This  code  can  be used with the \\NN escape
+       sequence in ttrrooffff to select the character, even if the  character  does
+       not  have a groff name.  Every character in the font file must exist in
+       the PostScript font, and the widths given in the font file  must  match
+       the widths used in the PostScript font.
+
+       Note that ggrrooppddff is currently only able to display the first 256 glyphs
+       in any font.  This restriction will be lifted in a later version.
+
+       ggrrooppddff can automatically include the downloadable  fonts  necessary  to
+       print the document.  Fonts may be in PFA or PFB format.
+
+       Any  downloadable  fonts  which  should,  when required, be included by
+       ggrrooppddff  must  be  listed   in   the   file   _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/
+       _f_o_n_t_/_d_e_v_p_d_f_/_d_o_w_n_l_o_a_d; this should consist of lines of the form
+
+              _f_o_u_n_d_r_y _f_o_n_t _f_i_l_e_n_a_m_e
+
+       where  _f_o_u_n_d_r_y  is  the  foundry name or blank for the default foundry.
+       _f_o_n_t is the PostScript name of the font, and _f_i_l_e_n_a_m_e is  the  name  of
+       the  file  containing  the font; lines beginning with ## and blank lines
+       are ignored; fields must be separated by tabs (spaces are nnoott allowed);
+       _f_i_l_e_n_a_m_e  is  searched  for  using  the same mechanism that is used for
+       groff font metric files.  The _d_o_w_n_l_o_a_d file itself is also searched for
+       using  this mechanism; currently, only the first found file in the font
+       path is used.  Foundry names are usually a single  character  (such  as
+       `U'  for  the  URW  Foundry)  or  blank  for the default foundry.  This
+       default uses the same fonts as gghhoossttssccrriipptt uses when it embeds fonts in
+       a PDF file.
+
+       In the default setup there are styles called RR, II, BB, and BBII mounted at
+       font positions 1 to 4.  The fonts are grouped into families AA,  BBMM,  CC,
+       HH, HHNN, NN, PP, and TT having members in each of these styles:
+
+              AARR     AvantGarde-Book
+              AAII     AvantGarde-BookOblique
+              AABB     AvantGarde-Demi
+              AABBII    AvantGarde-DemiOblique
+              BBMMRR    Bookman-Light
+              BBMMII    Bookman-LightItalic
+              BBMMBB    Bookman-Demi
+              BBMMBBII   Bookman-DemiItalic
+              CCRR     Courier
+              CCII     Courier-Oblique
+              CCBB     Courier-Bold
+              CCBBII    Courier-BoldOblique
+              HHRR     Helvetica
+              HHII     Helvetica-Oblique
+              HHBB     Helvetica-Bold
+              HHBBII    Helvetica-BoldOblique
+              HHNNRR    Helvetica-Narrow
+              HHNNII    Helvetica-Narrow-Oblique
+              HHNNBB    Helvetica-Narrow-Bold
+              HHNNBBII   Helvetica-Narrow-BoldOblique
+              NNRR     NewCenturySchlbk-Roman
+              NNII     NewCenturySchlbk-Italic
+              NNBB     NewCenturySchlbk-Bold
+              NNBBII    NewCenturySchlbk-BoldItalic
+              PPRR     Palatino-Roman
+              PPII     Palatino-Italic
+              PPBB     Palatino-Bold
+              PPBBII    Palatino-BoldItalic
+              TTRR     Times-Roman
+              TTII     Times-Italic
+              TTBB     Times-Bold
+              TTBBII    Times-BoldItalic
+
+       There is also the following font which is not a member of a family:
+
+              ZZCCMMII   ZapfChancery-MediumItalic
+
+       There are also some special fonts called SS for the PS Symbol font.  The
+       lower case greek characters are automatically  slanted  (to  match  the
+       SymbolSlanted  font  (SS)  available  to PostScript).  Zapf Dingbats is
+       available as ZZDD, the "hand pointing left" glyph  (\[lh])  is  available
+       since  it  has  been  defined  using  the \X'pdf: xrev' extension which
+       reverses the direction of letters within words.
+
+       The default color for \\mm and \\MM is black.
+
+       ggrrooppddff understands some of the X commands produced using the \\XX  escape
+       sequences  supported  by  ggrrooppss..   Specifically,  the following is sup-
+       ported.
+
+       \\XX''ppss:: iinnvviiss''
+              Suppress output.
+
+       \\XX''ppss:: eennddiinnvviiss''
+              Stop suppressing output.
+
+       \\XX''ppss:: eexxeecc ggssaavvee ccuurrrreennttppooiinntt 22 ccooppyy ttrraannssllaattee _n rroottaattee nneegg  eexxcchh  nneegg
+       eexxcchh ttrraannssllaattee''
+              where  _n is the angle of rotation.  This is to support the _a_l_i_g_n
+              command in ggppiicc.
+
+       \\XX''ppss:: eexxeecc ggrreessttoorree''
+              Again used by ggppiicc to restore after rotation.
+
+       \\XX''ppss:: eexxeecc _n sseettlliinneejjooiinn''
+              where _n can be one of the following values.
+
+              0 = Miter join
+              1 = Round join
+              2 = Bevel join
+
+       \\XX''ppss:: eexxeecc _n sseettlliinneeccaapp''
+              where _n can be one of the following values.
+
+              0 = Butt cap
+              1 = Round cap, and
+              2 = Projecting square cap
+
+       \\XX''ppss:: ...... ppddffmmaarrkk''
+              All the _p_d_f_m_a_r_k macros installed by using _-_m _p_d_f_m_a_r_k or _-_m _m_s_p_d_f
+              (see  documentation  in  _p_d_f_m_a_r_k_._p_d_f).  A subset of these macros
+              are installed automatically when you use --TTppddff so you should not
+              need  to  use `-m pdfmark' for using most of the PDF functional-
+              ity.
+
+       ggrrooppddff  also  supports  a  subset  of  the   commands   introduced   in
+       present.tmac.  Specifically it supports:-
+
+              PAUSE
+              BLOCKS
+              BLOCKE
+
+       Which  allows  you to create presentation type PDFs.  Many of the other
+       commands are already available in other macro packages.
+
+       These commands are implemented with ggrrooffff X commands:-
+
+       \\XX''ppss:: eexxeecc %%%%%%%%PPAAUUSSEE
+              The section before this is treated as a block and is  introduced
+              using  the  current  BLOCK transition setting (see `pdf: transi-
+              tion' below).  This command can be introduced  using  the  macro
+              ..ppddffppaauussee.
+
+       \\XX''ppss:: eexxeecc %%%%%%%%BBEEGGIINNOONNCCEE
+              Any  text  following  this  command (up to %%%%ENDONCE) is shown
+              only once, the next %%%%PAUSE will remove it.   If  producing  a
+              non   presentation   pdf,   i.e.   ignoring   the   pauses,  see
+              _G_R_O_P_D_F___N_O_S_L_I_D_E below, this text is ignored.
+
+       \\XX''ppss:: eexxeecc %%%%%%%%EENNDDOONNCCEE
+              This terminates the block defined by %%%%BEGINONCE.   This  pair
+              of commands is what implements the .BLOCKS Once/.BLOCKE commands
+              in present.tmac.
+
+       The mmoomm macro set already has integration with these extensions so  you
+       can build slides with mmoomm.
+
+       If you use present.tmac with ggrrooppddff there is no need to run the program
+       pprreesseennttppss(1) since the output will already be a presentation pdf.
+
+       All other ppss:: tags are silently ignored.
+
+       One \\XX special used by the DVI driver is also recognised:
+
+       \\XX''ppaappeerrssiizzee==_p_a_p_e_r_-_s_i_z_e''
+              where the _p_a_p_e_r_-_s_i_z_e parameter is the same as the ppaappeerrssiizzee com-
+              mand.   See  ggrrooffff__ffoonntt(5) for details.  This means that you can
+              alter the page size at will within the PDF file being created by
+              ggrrooppddff.   If  you  do  want to change the paper size, it must be
+              done before you start creating the page.
+
+       In addition, ggrrooppddff supports its own suite of ppddff:: tags.  The following
+       tags are supported:
+
+       \\XX''ppddff:: ppddffppiicc _f_i_l_e _a_l_i_g_n_m_e_n_t _w_i_d_t_h _h_e_i_g_h_t _l_i_n_e_-_l_e_n_g_t_h''
+              Place an image of the specified _w_i_d_t_h containing the PDF drawing
+              from file _f_i_l_e of desired _w_i_d_t_h and _h_e_i_g_h_t (if _h_e_i_g_h_t is missing
+              or  zero  then it is scaled proportionally).  If _a_l_i_g_n_m_e_n_t is --LL
+              the drawing is left aligned.  If it is --CC  or  --RR  a  _l_i_n_e_l_e_n_g_t_h
+              greater  than  the width of the drawing is required as well.  If
+              _w_i_d_t_h is specified as zero then the width is scaled  in  propor-
+              tion to the height.
+
+       \\XX''ppddff:: xxrreevv''
+              This  toggles  a  flag  which reverses the direction of printing
+              _l_e_t_t_e_r _b_y _l_e_t_t_e_r, i.e., each separate letter  is  reversed,  not
+              the  entire word.  This is useful for reversing the direction of
+              glyphs in the Dingbats  font.   To  return  to  normal  printing
+              repeat the command again.
+
+       \\XX''ppddff:: mmaarrkkssttaarrtt _/_A_N_N _d_e_f_i_n_i_t_i_o_n''
+              The  macros which support PDF Bookmarks use this call internally
+              to start the definition of  bookmark  hotspot  (user  will  have
+              called  `.pdfhref  L'  with  the text which will become the `hot
+              spot' region).  Normally this is never used except  from  within
+              the pdfmark macros.
+
+       \\XX''ppddff:: mmaarrkkeenndd''
+              The  macros which support PDF Bookmarks use this call internally
+              to stop the definition  of  bookmark  hotspot  (user  will  have
+              called  `.pdfhref  L'  with  the text which will become the `hot
+              spot' region).  Normally this is never used except  from  within
+              the pdfmark macros.
+
+       \\XX''ppddff:: mmaarrkkssuussppeenndd''
+       \\XX''ppddff:: mmaarrkkrreessttaarrtt''
+              If you are using page traps to produce headings, footings, etc.,
+              you need to use these in case a `hot spot' crosses a page bound-
+              ary,  otherwise  any text output by the heading or footing macro
+              will be marked as part of the `hot spot'.  To stop this  happen-
+              ing  just  place  `.pdfmarksuspend' and `.pdfmarkrestart' at the
+              start and end of the page trap macro, respectively.  (These  are
+              just  convenience  macros  which emit the \X code.  These macros
+              must only be used within page traps.)
+
+       \\XX''ppddff:: ttrraannssiittiioonn''feature mode  duration  dimension  motion  direction
+       scale bool
+              where
+
+              _f_e_a_t_u_r_e  can  be  either  SLIDE  or BLOCK.  When it is SLIDE the
+              transition is used when a new slide is introduced to the screen,
+              if  BLOCK then this transition is used for the individual blocks
+              which make up the slide.
+              _m_o_d_e is the transition type between slides:-
+
+                     SSpplliitt - Two lines sweep across the screen, revealing  the
+                     new page.  The lines may be either horizontal or vertical
+                     and may move inward from the edges of the page or outward
+                     from the center, as specified by the _d_i_m_e_n_s_i_o_n and _m_o_t_i_o_n
+                     entries, respectively.
+                     BBlliinnddss - Multiple lines, evenly spaced across the screen,
+                     synchronously  sweep  in the same direction to reveal the
+                     new page.  The lines may be either horizontal  or  verti-
+                     cal, as specified by the _d_i_m_e_n_s_i_o_n
+                      entry.   Horizontal  lines move downward; vertical lines
+                     move to the right.
+                     BBooxx - A rectangular box sweeps inward from the  edges  of
+                     the  page or outward from the center, as specified by the
+                     _m_o_t_i_o_n entry, revealing the new page.
+                     WWiippee - A single line sweeps across the  screen  from  one
+                     edge  to  the  other  in  the  direction specified by the
+                     _d_i_r_e_c_t_i_o_n entry, revealing the new page.
+                     DDiissssoollvvee - The old page dissolves gradually to reveal the
+                     new one.
+                     GGlliitttteerr  -  Similar  to  Dissolve, except that the effect
+                     sweeps across the page in a wide  band  moving  from  one
+                     side  of  the screen to the other in the direction speci-
+                     fied by the _d_i_r_e_c_t_i_o_n entry.
+                     RR - The new page simply replaces the old one with no spe-
+                     cial  transition  effect;  the  _d_i_r_e_c_t_i_o_n  entry shall be
+                     ignored.
+                     FFllyy - (PDF 1.5) Changes are flown out or in (as specified
+                     by  _m_o_t_i_o_n),  in the direction specified by _d_i_r_e_c_t_i_o_n, to
+                     or from a location that is offscreen except  when  _d_i_r_e_c_-
+                     _t_i_o_n is NNoonnee.
+                     PPuusshh - (PDF 1.5) The old page slides off the screen while
+                     the new page slides in, pushing the old page out  in  the
+                     direction specified by _d_i_r_e_c_t_i_o_n.
+                     CCoovveerr - (PDF 1.5) The new page slides on to the screen in
+                     the direction specified by _d_i_r_e_c_t_i_o_n,  covering  the  old
+                     page.
+                     UUnnccoovveerr - (PDF 1.5) The old page slides off the screen in
+                     the direction specified by _d_i_r_e_c_t_i_o_n, uncovering the  new
+                     page in the direction specified by _d_i_r_e_c_t_i_o_n.
+                     FFaaddee  -  (PDF 1.5) The new page gradually becomes visible
+                     through the old one.
+
+              _d_u_r_a_t_i_o_n is the length of the transition in seconds (default 1).
+
+              _d_i_m_e_n_s_i_o_n (Optional; SSpplliitt and BBlliinnddss  transition  styles  only)
+              The  dimension  in  which  the specified transition effect shall
+              occur: HH Horizontal, or VV Vertical.
+
+              _m_o_t_i_o_n (Optional; SSpplliitt, BBooxx and FFllyy transition styles only) The
+              direction  of  motion  for  the  specified  transition effect: II
+              Inward from the edges of the page, or OO Outward from the  center
+              of the page.
+
+              _d_i_r_e_c_t_i_o_n (Optional; WWiippee, GGlliitttteerr, FFllyy, CCoovveerr, UUnnccoovveerr and PPuusshh
+              transition styles only) The direction  in  which  the  specified
+              transition  effect  shall  moves,  expressed in degrees counter-
+              clockwise starting from a left-to-right direction.  If the value
+              is  a number, it shall be one of: 00 = Left to right, 9900 = Bottom
+              to top (Wipe only), 118800 = Right to left (Wipe only), 227700  =  Top
+              to  bottom,  331155  =  Top-left to bottom-right (Glitter only) The
+              value can be NNoonnee, which is relevant only for the FFllyy transition
+              when the value of _s_c_a_l_e is not 1.0.
+
+              _s_c_a_l_e  (Optional; PDF 1.5; FFllyy transition style only) The start-
+              ing or ending scale at which the changes  shall  be  drawn.   If
+              _m_o_t_i_o_n  specifies an inward transition, the scale of the changes
+              drawn shall progress from _s_c_a_l_e to 1.0 over the  course  of  the
+              transition.   If  _m_o_t_i_o_n  specifies  an  outward transition, the
+              scale of the changes drawn shall progress from 1.0 to _s_c_a_l_e over
+              the course of the transition
+
+              _b_o_o_l (Optional; PDF 1.5; FFllyy transition style only) If ttrruuee, the
+              area that shall be flown in is rectangular and opaque.
+
+              This command can be used by  calling  the  macro  ..ppddffttrraannssiittiioonn
+              using the parameters described above.  Any of the parameters may
+              be replaced with a "." which signifies the parameter retains its
+              previous   value,  also  any  trailing  missing  parameters  are
+              ignored.
+
+              NNoottee:: not all PDF Readers support any or all these transitions.
+
+   IImmppoorrttiinngg ggrraapphhiiccss
+       ggrrooppddff only supports importing other PDF files as graphics.   But  that
+       PDF  file  may  contain any of the graphic formats supported by the PDF
+       standard (such as JPEG, PNG, GIF, etc.).  So any application which out-
+       puts  PDF  can be used as an embedded file in ggrrooppddff.  The PDF file you
+       wish to insert must be a single page and  the  drawing  must  just  fit
+       inside  the  media size of the PDF file.  So, in iinnkkssccaappee(1) or ggiimmpp(1)
+       (for example) make sure the canvas size just fits the image.
+
+       The PDF parser used in ggrrooppddff has not been rigorously tested  with  all
+       possible  applications  which  produce PDFs.  If you find a single page
+       PDF which fails to import properly, it is worth running it through  the
+       ppddffttkk(1) program by issuing the command:
+
+              ppddffttkk _o_l_d_f_i_l_e_._p_d_f oouuttppuutt _n_e_w_f_i_l_e_._p_d_f
+
+       You may find that _n_e_w_f_i_l_e_._p_d_f will now load successfully.
+
+   TTrruueeTTyyppee aanndd ootthheerr ffoonntt ffoorrmmaattss
+       ggrrooppddff  does  not  support  any other fonts except Adobe Type 1 (PFA or
+       PFB).
+
+FFOONNTT IINNSSTTAALLLLAATTIIOONN
+       This section gives a summary of the above explanations; it can serve as
+       a step-by-step font installation guide for ggrrooppddff.
+
+        +o  Convert your font to something groff understands.  This is either a
+           PostScript Type 1 font in either PFA or PFB, together with  an  AFM
+           file.
+
+           The very first line in a PFA/PFB file contains this:
+
+                  %%!!PPSS--AAddoobbeeFFoonntt--11..00::
+
+           A  PFB file has this also in the first line, but the string is pre-
+           ceded with some binary bytes.
+
+        +o  Convert the AFM file to a groff  font  description  file  with  the
+           aaffmmttooddiitt(1) program.  An example call is
+
+                  afmtodit Foo-Bar-Bold.afm map/textmap FBB
+
+           which converts the metric file `Foo-Bar-Bold.afm' to the groff font
+           `FBB'.  If you have a font family which comes  with  normal,  bold,
+           italic, and bold italic faces, it is recommended to use the letters
+           RR, BB, II, and BBII, respectively, as postfixes in the groff font names
+           to  make groff's `.fam' request work.  An example is groff's built-
+           in Times-Roman font: The font family name is TT, and the groff  font
+           names are TTRR, TTBB, TTII, and TTBBII.
+
+        +o  Install  both  the  groff font description files and the fonts in a
+           `devpdf' subdirectory of the font path which groff finds.  See sec-
+           tion  "Environment"  in  ttrrooffff(1)  for the actual value of the font
+           path.  Note that groff doesn't use the AFM files (but it is a  good
+           idea to store them anyway).
+
+        +o  Register  all  fonts which must be downloaded to the printer in the
+           _d_e_v_p_d_f_/_d_o_w_n_l_o_a_d file.  Only the first occurrence of  this  file  in
+           the font path is read.  This means that you should copy the default
+           _d_o_w_n_l_o_a_d file to the first directory in your font path and add your
+           fonts  there.   To continue the above example we assume that the PS
+           font name for Foo-Bar-Bold.pfa is `XY-Foo-Bar-Bold'  (the  PS  font
+           name  is  stored  in  the  iinntteerrnnaallnnaammee  field in the _F_B_B file) and
+           belongs to foundry `F' thus the following line should be  added  to
+           _d_o_w_n_l_o_a_d:
+
+                  FF XXYY--FFoooo--BBaarr--BBoolldd FFoooo--BBaarr--BBoolldd..ppffaa
+
+           Use a tab character to separate the fields, and the `foundry' field
+           should be null for the default foundry.
+
+EENNVVIIRROONNMMEENNTT
+       _G_R_O_F_F___F_O_N_T___P_A_T_H
+              A list of directories in which to search for the _d_e_vname  direc-
+              tory in addition to the default ones.  If, in the _d_o_w_n_l_o_a_d file,
+              the font file has been specified with a full path,  no  directo-
+              ries  are  searched.   See  ttrrooffff(1)  and ggrrooffff__ffoonntt(5) for more
+              details.
+
+       _G_R_O_P_D_F___N_O_S_L_I_D_E
+              If this is set true, ggrrooppddff will ignore all commands which  pro-
+              duce a presentation pdf, and produce a normal pdf instead.
+
+       _S_O_U_R_C_E___D_A_T_E___E_P_O_C_H
+              A  timestamp  (expressed as seconds since the Unix epoch) to use
+              as the creation timestamp in place of the current time.
+
+FFIILLEESS
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_v_p_d_f_/_D_E_S_C
+              Device description file.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_v_p_d_f_/F
+              Font description file for font _F.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_v_p_d_f_/U-F
+              Font description file for font _F (using foundry  _U  rather  than
+              the default foundry).
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_v_p_d_f_/_d_o_w_n_l_o_a_d
+              List of downloadable fonts.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_v_p_d_f_/_F_o_u_n_d_r_y
+              A Perl script used during install to locate suitable fonts.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_v_p_d_f_/_e_n_c_/_t_e_x_t_._e_n_c
+              Encoding used for text fonts.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_t_m_a_c_/_p_d_f_._t_m_a_c
+              Macros for use with ggrrooppddff; automatically loaded by ttrrooffffrrcc.
+
+SSEEEE AALLSSOO
+       aaffmmttooddiitt(1), ggrrooffff(1), ttrrooffff(1), ggrrooffff__ffoonntt(5), ggrrooffff__oouutt(5)
+
+
+
+groff 1.22.4                     December 2018                       GROPDF(1)

@@ -1,0 +1,285 @@
+TROFF(1)                    General Commands Manual                   TROFF(1)
+
+
+
+NNAAMMEE
+       troff - the troff processor of the groff text formatting system
+
+SSYYNNOOPPSSIISS
+       ttrrooffff [--aabbcciivvzzCCEERRUU] [--dd _c_s] [--ff _f_a_m] [--FF _d_i_r] [--II _d_i_r] [--mm _n_a_m_e]
+             [--MM _d_i_r] [--nn _n_u_m] [--oo _l_i_s_t] [--rr _c_n] [--TT _n_a_m_e] [--ww _n_a_m_e] [--WW _n_a_m_e]
+             [_f_i_l_e ...]
+
+DDEESSCCRRIIPPTTIIOONN
+       This manual page describes the GNU version of ttrrooffff.  It is part of the
+       groff document formatting system.  It is functionally  compatible  with
+       Unix  troff,  but  has  many extensions, see ggrrooffff__ddiiffff(7).  Usually it
+       should be invoked using the ggrrooffff(1) command which will also  run  pre-
+       processors  and  postprocessors  in  the appropriate order and with the
+       appropriate options.
+
+OOPPTTIIOONNSS
+       Whitespace is permitted between a command-line option and its argument.
+
+       --aa     Generate an ASCII approximation of the typeset output.
+
+       --bb     Print a backtrace with each  warning  or  error  message.   This
+              backtrace  should  help  track down the cause of the error.  The
+              line numbers given in the backtrace may not always  be  correct,
+              for  ttrrooffff's  idea  of  line  numbers  gets confused by aass or aamm
+              requests.
+
+       --cc     Disable color output (always disabled in compatibility mode).
+
+       --CC     Enable compatibility mode.
+
+       --dd_c_s
+       --dd_n_a_m_e==_s
+              Define _c or _n_a_m_e to be a string _s; _c must be a one letter name.
+
+       --EE     Inhibit all error messages of ttrrooffff.   Note  that  this  doesn't
+              affect messages output to standard error by macro packages using
+              the ttmm or ttmm11 requests.
+
+       --ff_f_a_m  Use _f_a_m as the default font family.
+
+       --FF_d_i_r  Search in directory (or directory path) _d_i_r  for  subdirectories
+              _d_e_vname  (_n_a_m_e is the name of the device) and there for the _D_E_S_C
+              file and font files.  _d_i_r  is  scanned  before  all  other  font
+              directories.
+
+       --ii     Read  the  standard  input  after all the named input files have
+              been processed.
+
+       --II_d_i_r  This option may be used to add a directory to  the  search  path
+              for  files  (both  those  on the command line and those named in
+              ..ppssbbbb requests).  The search path is initialized with  the  cur-
+              rent  directory.   This  option may be specified more than once;
+              the directories are then searched in the  order  specified  (but
+              before  the current directory).  If you want to make the current
+              directory be read before  other  directories,  add  --II..  at  the
+              appropriate place.
+
+              No directory search is performed for files with an absolute file
+              name.
+
+       --mm_n_a_m_e Read in the file name_._t_m_a_c.  If it isn't  found,  try  _t_m_a_c_.name
+              instead.   It  will  be  first searched for in directories given
+              with the --MM command-line option, then in  directories  given  in
+              the  _G_R_O_F_F___T_M_A_C___P_A_T_H  environment  variable, then in the current
+              directory (only if in unsafe mode), the home directory,  _d_:_/_u_s_r_/
+              _l_i_b_/_g_r_o_f_f_/_s_i_t_e_-_t_m_a_c,  _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_s_i_t_e_-_t_m_a_c,  and _d_:_/_u_s_r_/
+              _s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_t_m_a_c.
+
+       --MM_d_i_r  Search directory (or directory path) _d_i_r for macro files.   This
+              is scanned before all other macro directories.
+
+       --nn_n_u_m  Number the first page _n_u_m.
+
+       --oo_l_i_s_t Output  only  pages  in _l_i_s_t, which is a comma-separated list of
+              page ranges; _n means print page _n, _m--_n means  print  every  page
+              between  _m  and  _n,  --_n means print every page up to _n, _n-- means
+              print every page from _n.  ttrrooffff will  exit  after  printing  the
+              last page in the list.
+
+       --rr_c_n
+       --rr_n_a_m_e==_n
+              Set  number  register  _c or _n_a_m_e to _n; _c must be a one character
+              name; _n can be any troff numeric expression.
+
+       --RR     Don't load _t_r_o_f_f_r_c and _t_r_o_f_f_r_c_-_e_n_d.
+
+       --TT_n_a_m_e Prepare output for device _n_a_m_e, rather than the default ppss;  see
+              ggrrooffff(1) for a more detailed description.
+
+       --UU     Unsafe  mode.   This  will  enable the following requests: ooppeenn,
+              ooppeennaa, ppssoo, ssyy, and ppii.  For security reasons, these potentially
+              dangerous requests are disabled otherwise.  It will also add the
+              current directory to the macro search path.
+
+       --vv     Print the version number.
+
+       --ww_n_a_m_e Enable warning _n_a_m_e.  Available warnings are described  in  sec-
+              tion  "Warnings"  below.   To enable most useful warnings use --ww
+              aallll.  To enable absolutely all warnings use --ww ww instead.   Mul-
+              tiple --ww options are allowed.
+
+       --WW_n_a_m_e Inhibit warning _n_a_m_e.  Multiple --WW options are allowed.
+
+       --zz     Suppress formatted output.
+
+WWAARRNNIINNGGSS
+       The  warnings that can be given by ttrrooffff are divided into the following
+       categories.  The name associated with each warning is used  by  the  --ww
+       and  --WW  options;  the  number  is used by the wwaarrnn request, and by the
+       ..wwaarrnn register; it is always a power of 2 to allow bitwise composition.
+
+                +---------------------+-----------------------------+
+                |Bit   Code   Warning | Bit    Code       Warning   |
+                +---------------------+-----------------------------+
+                |  0      _1   cchhaarr    |  10      _1_0_2_4   rreegg         |
+                |  1      _2   nnuummbbeerr  |  11      _2_0_4_8   ttaabb         |
+                |  2      _4   bbrreeaakk   |  12      _4_0_9_6   rriigghhtt--bbrraaccee |
+                |  3      _8   ddeelliimm   |  13      _8_1_9_2   mmiissssiinngg     |
+                |  4     _1_6   eell      |  14     _1_6_3_8_4   iinnppuutt       |
+                |  5     _3_2   ssccaallee   |  15     _3_2_7_6_8   eessccaappee      |
+                |  6     _6_4   rraannggee   |  16     _6_5_5_3_6   ssppaaccee       |
+                |  7    _1_2_8   ssyynnttaaxx  |  17    _1_3_1_0_7_2   ffoonntt        |
+                |  8    _2_5_6   ddii      |  18    _2_6_2_1_4_4   iigg          |
+                |  9    _5_1_2   mmaacc     |  19    _5_2_4_2_8_8   ccoolloorr       |
+                |                     |  20   _1_0_4_8_5_7_6   ffiillee        |
+                +---------------------+-----------------------------+
+       bbrreeaakk           4   In fill mode, lines which could not  be  broken  so
+                           that  their  length  was less than the line length.
+                           This is enabled by default.
+
+       cchhaarr            1   Non-existent  characters.   This  is   enabled   by
+                           default.
+
+       ccoolloorr      524288   Color-related warnings.
+
+       ddeelliimm           8   Missing or mismatched closing delimiters.
+
+       ddii            256   Use  of  ddii or ddaa without an argument when there is
+                           no current diversion.
+
+       eell             16   Use of the eell request with no matching iiee request.
+
+       eessccaappee      32768   Unrecognized escape sequences.   When  an  unrecog-
+                           nized  escape  sequence  is encountered, the escape
+                           character is ignored.
+
+       ffiillee      1048576   Indicates a  missing  file  for  the  mmssoo  request.
+                           Enabled by default.
+
+       ffoonntt       131072   Non-existent fonts.  This is enabled by default.
+
+       iigg         262144   Invalid   escapes  in  text  ignored  with  the  iigg
+                           request.  These are conditions that are errors when
+                           they do not occur in ignored text.
+
+       iinnppuutt       16384   Invalid input characters.
+
+       mmaacc           512   Use  of  undefined  strings, macros and diversions.
+                           When an undefined string,  macro  or  diversion  is
+                           used,  that  string  is  automatically  defined  as
+                           empty.  So, in most cases, at most one warning will
+                           be given for each name.
+
+       mmiissssiinngg      8192   Requests that are missing non-optional arguments.
+
+       nnuummbbeerr          2   Invalid  numeric  expressions.   This is enabled by
+                           default.
+
+       rraannggee          64   Out of range arguments.
+
+       rreegg          1024   Use of undefined number registers.  When  an  unde-
+                           fined  number  register  is  used, that register is
+                           automatically defined to have a value of 0.  So, in
+                           most  cases,  at most one warning will be given for
+                           use of a particular name.
+
+       rriigghhtt--bbrraaccee  4096   Use of \\}} where a number was expected.
+
+       ssccaallee          32   Meaningless scaling indicators.
+
+       ssppaaccee       65536   Missing space between a request or  macro  and  its
+                           argument.  This warning will be given when an unde-
+                           fined name longer than two  characters  is  encoun-
+                           tered,  and  the  first  two characters of the name
+                           make a defined name.  The request or macro will not
+                           be  invoked.   When this warning is given, no macro
+                           is  automatically  defined.   This  is  enabled  by
+                           default.  This warning will never occur in compati-
+                           bility mode.
+
+       ssyynnttaaxx        128   Dubious syntax in numeric expressions.
+
+       ttaabb          2048   Inappropriate use of a tab character.   Either  use
+                           of  a tab character where a number was expected, or
+                           use of tab character in an unquoted macro argument.
+
+       There are also names that can be used to refer to groups of warnings:
+
+       aallll    All warnings except ddii, mmaacc, and rreegg.  It is intended that  this
+              covers all warnings that are useful with traditional macro pack-
+              ages.
+
+       ww      All warnings.
+
+EENNVVIIRROONNMMEENNTT
+       _G_R_O_F_F___T_M_A_C___P_A_T_H
+              A colon separated list of directories in  which  to  search  for
+              macro files.  ttrrooffff will scan directories given in the --MM option
+              before these, and in standard directories (current directory  if
+              in  unsafe mode, home directory, _d_:_/_u_s_r_/_l_i_b_/_g_r_o_f_f_/_s_i_t_e_-_t_m_a_c, _d_:_/
+              _u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_s_i_t_e_-_t_m_a_c, _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_t_m_a_c) after
+              these.
+
+       _G_R_O_F_F___T_Y_P_E_S_E_T_T_E_R
+              Default device.
+
+       _G_R_O_F_F___F_O_N_T___P_A_T_H
+              A colon separated list of directories in which to search for the
+              _d_e_vname directory.  ttrrooffff will scan directories given in the  --FF
+              option  before these, and in standard directories (_d_:_/_u_s_r_/_s_h_a_r_e_/
+              _g_r_o_f_f_/_s_i_t_e_-_f_o_n_t, _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t,  _/_u_s_r_/_l_i_b_/_f_o_n_t)
+              after these.
+
+FFIILLEESS
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_t_m_a_c_/_t_r_o_f_f_r_c
+              Initialization file (called before any other macro package).
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_t_m_a_c_/_t_r_o_f_f_r_c_-_e_n_d
+              Initialization file (called after any other macro package).
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_t_m_a_c_/name_._t_m_a_c
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_t_m_a_c_/_t_m_a_c_.name
+              Macro files
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_vname_/_D_E_S_C
+              Device description file for device _n_a_m_e.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_vname_/F
+              Font file for font _F of device _n_a_m_e.
+
+       Note  that _t_r_o_f_f_r_c and _t_r_o_f_f_r_c_-_e_n_d are searched for neither in the cur-
+       rent nor the home directory by default for security  reasons  (even  if
+       the  --UU  option  is  given).   Use  the  --MM  command-line option or the
+       _G_R_O_F_F___T_M_A_C___P_A_T_H environment variable to add these  directories  to  the
+       search path if necessary.
+
+AAUUTTHHOORRSS
+       The GNU version of _t_r_o_f_f was originally written by James Clark; he also
+       wrote the original version of this  document,  which  was  modified  by
+       Werner  Lemberg  <wl@gnu.org>  and Bernd Warken <groff-bernd.warken-72@
+       web.de>.
+
+SSEEEE AALLSSOO
+       ggrrooffff(1)
+              The main program of the _g_r_o_f_f system, a wrapper around _t_r_o_f_f.
+
+       ggrrooffff(7)
+              A description of the _g_r_o_f_f language, including a short but  com-
+              plete  reference  of  all  predefined  requests,  registers, and
+              escapes of plain _g_r_o_f_f.  From the command line, this  is  called
+              by
+
+                     mmaann 77 ggrrooffff
+
+       ggrrooffff__ddiiffff(7)
+              The  differences  of  the _g_r_o_f_f language and the _c_l_a_s_s_i_c_a_l _t_r_o_f_f
+              language.  Currently, this is the most actual  document  of  the
+              _g_r_o_f_f system.
+
+       rrooffff(7)
+              An  overview over _g_r_o_f_f and other _r_o_f_f systems, including point-
+              ers to further related documentation.
+
+       _G_r_o_f_f_: _T_h_e _G_N_U _I_m_p_l_e_m_e_n_t_a_t_i_o_n _o_f _t_r_o_f_f, by Trent A. Fisher  and  Werner
+       Lemberg,  is the primary _g_r_o_f_f manual.  You can browse it interactively
+       with "info groff".
+
+
+
+groff 1.22.4                     December 2018                        TROFF(1)

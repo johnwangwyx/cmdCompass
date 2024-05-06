@@ -1,0 +1,532 @@
+ROFF(7)                Miscellaneous Information Manual                ROFF(7)
+
+
+
+NNAAMMEE
+       roff - concepts and history of roff typesetting
+
+DDEESSCCRRIIPPTTIIOONN
+       _r_o_f_f  is  the general name for a set of text formatting programs, known
+       under names like ttrrooffff, nnrrooffff, ddiittrrooffff, ggrrooffff, etc.  A _r_o_f_f system con-
+       sists  of  an extensible text formatting language and a set of programs
+       for printing and converting to other text formats.  Unix-like operating
+       systems distribute a _r_o_f_f system as a core package.
+
+       The  most  common _r_o_f_f system today is the free software implementation
+       GNU _r_o_f_f, ggrrooffff(1).  _g_r_o_f_f implements the look-and-feel and functional-
+       ity of its ancestors, with many extensions.
+
+       The  ancestry of _r_o_f_f is described in section "History" below.  In this
+       document, the term _r_o_f_f always refers to the general class of roff pro-
+       grams, not to the rrooffff command provided in early Unix systems.
+
+       In spite of its age, _r_o_f_f is in wide use today, for example, the manual
+       pages on Unix systems (_m_a_n _p_a_g_e_s), many software books, system documen-
+       tation,  standards,  and  corporate documents are written in roff.  The
+       _r_o_f_f output for text devices is still unmatched, and its graphical out-
+       put  has  the  same  quality as other free type-setting programs and is
+       better than some of the commercial systems.
+
+       _r_o_f_f is used to format Unix _m_a_n_u_a_l _p_a_g_e_s, (or _m_a_n _p_a_g_e_s), the  standard
+       documentation system on many Unix-derived operating systems.
+
+       This document describes the history of the development of the _r_o_f_f _s_y_s_-
+       _t_e_m; some usage aspects common to all _r_o_f_f  versions,  details  on  the
+       _r_o_f_f pipeline, which is usually hidden behind front-ends like ggrrooffff(1);
+       a general overview of the formatting language; some  tips  for  editing
+       _r_o_f_f files; and many pointers to further readings.
+
+HHIISSTTOORRYY
+       Document formatting by computer dates back to the 1960s.  The _r_o_f_f sys-
+       tem itself is intimately connected to the Unix  operating  system,  but
+       its roots go back to the earlier operating systems CTSS and Multics.
+
+   TThhee PPrreeddeecceessssoorr RRUUNNOOFFFF
+       rrooffff's ancestor RRUUNNOOFFFF was written in the MAD language by _J_e_r_r_y _S_a_l_t_z_e_r
+       for the _C_o_m_p_a_t_i_b_l_e _T_i_m_e _S_h_a_r_i_n_g _S_y_s_t_e_m _(_C_T_S_S_), a project of the  Massa-
+       chusetts  Institute  of  Technology  (MIT), in 1963 and 1964--note that
+       CTSS commands were all uppercase.
+
+       In 1965, MIT's Project MAC  teamed  with  Bell  Telephone  Laboratories
+       (BTL)  and  General  Electric  to  begin  the  _M_u_l_t_i_c_s  system <http://
+       www.multicians.org>.  A command called rruunnooffff was written  for  Multics
+       in  the late 60s in the BCPL language, by _B_o_b _M_o_r_r_i_s, _D_o_u_g _M_c_I_l_r_o_y, and
+       other members of the Multics team.
+
+       Like its CTSS ancestor, Multics rruunnooffff formatted an input file consist-
+       ing  of  text  and command lines; commands began with a period and were
+       two letters.  Output from these commands was to terminal  devices  such
+       as  IBM  Selectric  terminals.   Multics rruunnooffff had additional features
+       added, such as the ability to do two-pass  formatting;  it  became  the
+       main format for Multics documentation and text processing.
+
+       BCPL  and  rruunnooffff  were ported to the GCOS system at Bell Labs when BTL
+       left the development of Multics.
+
+       There is a free archive about _h_i_s_t_o_r_i_c_a_l _R_U_N_O_F_F documents.  You can get
+       it anonymously by the shell command
+              $git clone https://github.com/bwarken/RUNOFF_historical.git
+
+       As  well,  there  is  a new project for writing a program that can read
+       _R_U_N_O_F_F _f_i_l_e_s _, but it does not yet work so far.  You can get  an  early
+       version anonymously by the shell command
+              $git clone https://github.com/bwarken/runoff.git
+
+   TThhee CCllaassssiiccaall nnrrooffff//ttrrooffff SSyysstteemm
+       At BTL, there was a need to drive the _G_r_a_p_h_i_c _S_y_s_t_e_m_s _C_A_T typesetter, a
+       graphical output device from a PDP-11 computer running Unix.  As rruunnooffff
+       was too limited for this task it was further developed into a more pow-
+       erful text formatting system by _J_o_s_e_p_h _F_.  _O_s_s_a_n_n_a,  who  already  pro-
+       grammed several runoff ports.
+
+       The  name  _r_u_n_o_f_f was shortened to _r_o_f_f.  The greatly enlarged language
+       of Ossanna's version already included all elements of a full _r_o_f_f  _s_y_s_-
+       _t_e_m.   All  modern  _r_o_f_f systems try to implement compatibility to this
+       system.  So Joe Ossanna can be called the father of all _r_o_f_f systems.
+
+       This first _r_o_f_f _s_y_s_t_e_m had three formatter programs.
+
+       ttrrooffff  (_t_y_p_e_s_e_t_t_e_r _r_o_f_f) generated a graphical output for the _C_A_T type-
+              setter as its only device.
+
+       nnrrooffff  produced text output suitable for terminals and line printers.
+
+       rrooffff   was  the  reimplementation of the former rruunnooffff program with its
+              limited features; this program was abandoned in later  versions.
+              Today, the name _r_o_f_f is used to refer to a _t_r_o_f_f_/_n_r_o_f_f system as
+              a whole.
+
+       Ossanna's first version was written in the PDP-11 assembly language and
+       released  in  1973.   _B_r_i_a_n  _K_e_r_n_i_g_h_a_n  joined  the _r_o_f_f development by
+       rewriting it in the C programming language.  The C version was released
+       in 1975.
+
+       The  syntax  of the formatting language of the nnrrooffff/ttrrooffff programs was
+       documented in the famous _T_r_o_f_f _U_s_e_r_'_s _M_a_n_u_a_l  [CSTR  #54],  first  pub-
+       lished  in  1976, with further revisions up to 1992 by Brian Kernighan.
+       This document is the specification of the _c_l_a_s_s_i_c_a_l _t_r_o_f_f.   All  later
+       _r_o_f_f systems tried to establish compatibility with this specification.
+
+       After Ossanna's death in 1977, Kernighan went on with developing _t_r_o_f_f.
+       In the late 1970s, Kernighan equipped _t_r_o_f_f with a general interface to
+       support  more devices, the intermediate output format, and the postpro-
+       cessor system.  This completed the structure of a _r_o_f_f _s_y_s_t_e_m as it  is
+       still  in  use  today;  see section "Using Roff" below.  In 1979, these
+       novelties were described in the paper [CSTR #97].  This new _t_r_o_f_f  ver-
+       sion  is  the  basis  for  all  existing newer troff systems, including
+       _g_r_o_f_f.  On some systems, this _d_e_v_i_c_e _i_n_d_e_p_e_n_d_e_n_t _t_r_o_f_f got a binary  of
+       its  own, called ddiittrrooffff(7).  All modern ttrrooffff programs already provide
+       the full ddiittrrooffff capabilities automatically.
+
+   AAvvaaiillaabbiilliittyy
+       The source code of both the ancient Unix and  classical  _t_r_o_f_f  weren't
+       available  for two decades.  Nowadays, it is accessible again (on-line)
+       for non-commercial use; see SSEEEE AALLSSOO, below.
+
+   ggrrooffff ---- ffrreeee GGNNUU rrooffff
+       The most important free _r_o_f_f project  was  the  GNU  implementation  of
+       _t_r_o_f_f, written from scratch by _J_a_m_e_s _C_l_a_r_k and put under the GNU Public
+       License <http://www.gnu.org/copyleft>.  It was called _g_r_o_f_f (GNU _r_o_f_f).
+       See ggrrooffff(1) for an overview.
+
+       The  _g_r_o_f_f system is still actively developed.  It is compatible to the
+       classical _t_r_o_f_f, but many extensions were added.  It is the first  _r_o_f_f
+       system  that  is available on almost all operating systems -- and it is
+       free.  This makes _g_r_o_f_f the de facto _r_o_f_f standard today.
+
+   FFrreeee HHeeiirrlloooomm rrooffff
+       An alternative is  _G_u_n_n_a_r  _R_i_t_t_e_r_'_s  _H_e_i_r_l_o_o_m  _r_o_f_f  _p_r_o_j_e_c_t  <https://
+       github.com/n-t-roff/heirloom-doctools>  project, started in 2005, which
+       provides enhanced versions of the various roff tools found in the Open-
+       Solaris  and  Plan  9  operating  systems, now available under free li-
+       censes.  You can get this package with the shell command:
+              $ git clone https://github.com/n-t-roff/heirloom-doctools
+
+       Moreover, one finds there the _O_r_i_g_i_n_a_l _D_o_c_u_m_e_n_t_e_r_'_s  _W_o_r_k_b_e_n_c_h  _R_e_l_e_a_s_e
+       _3_._3 <https://github.com/n-t-roff/DWB3.3>.
+
+UUSSIINNGG RROOFFFF
+       Most  people won't even notice that they are actually using _r_o_f_f.  When
+       you read a system manual page (man page) _r_o_f_f is working in  the  back-
+       ground.  But using _r_o_f_f explicitly isn't difficult either.
+
+       Some _r_o_f_f implementations provide wrapper programs that make it easy to
+       use the _r_o_f_f system on the shell command line.  For  example,  the  GNU
+       _r_o_f_f implementation ggrrooffff(1) provides command-line options to avoid the
+       long command pipes of classical _t_r_o_f_f; a program ggrroogg(1) tries to guess
+       from  the  document  which arguments should be used for a run of ggrrooffff;
+       people who do not like specifying command-line options should  try  the
+       ggrrooffffeerr(1)  program  for  graphically  displaying  _g_r_o_f_f  files and man
+       pages.
+
+   TThhee rrooffff PPiippee
+       Each _r_o_f_f system consists of preprocessors,  _r_o_f_f  formatter  programs,
+       and  a  set  of device postprocessors.  This concept makes heavy use of
+       the _p_i_p_i_n_g mechanism, that is, a series of programs is called one after
+       the  other,  where  the output of each program in the queue is taken as
+       the input for the next program.
+
+              cat _f_i_l_e | ... | _p_r_e_p_r_o_c | ... | troff _o_p_t_i_o_n_s | _p_o_s_t_p_r_o_c
+
+       The preprocessors generate _r_o_f_f code that is fed into a _r_o_f_f  formatter
+       (e.g.  ttrrooffff),  which in turn generates _i_n_t_e_r_m_e_d_i_a_t_e _o_u_t_p_u_t that is fed
+       into a device postprocessor program for printing or final output.
+
+       All of these parts use programming languages of their  own;  each  lan-
+       guage  is  totally  unrelated to the other parts.  Moreover, _r_o_f_f macro
+       packages that were tailored for special purposes can be included.
+
+       Most _r_o_f_f documents use the macros of  some  package,  intermixed  with
+       code  for one or more preprocessors, spiced with some elements from the
+       plain _r_o_f_f language.  The full power of the _r_o_f_f formatting language is
+       seldom needed by users; only programmers of macro packages need to know
+       about the gory details.
+
+   PPrreepprroocceessssoorrss
+       A _r_o_f_f preprocessor is any program that generates output that syntacti-
+       cally obeys the rules of the _r_o_f_f formatting language.  Each preproces-
+       sor defines a language of its own that is  translated  into  _r_o_f_f  code
+       when run through the preprocessor program.  Parts written in these lan-
+       guages may be included within a _r_o_f_f document; they are  identified  by
+       special  _r_o_f_f  requests  or  macros.  Each document that is enhanced by
+       preprocessor code must be run through all  corresponding  preprocessors
+       before  it  is fed into the actual _r_o_f_f formatter program, for the for-
+       matter just ignores all alien code.  The preprocessor programs  extract
+       and transform only the document parts that are determined for them.
+
+       There  are  a  lot  of free and commercial _r_o_f_f preprocessors.  Some of
+       them aren't available on each system, but there is a small set of  pre-
+       processors that are considered as an integral part of each _r_o_f_f system.
+       The classical preprocessors are
+
+              ttbbll      for tables.
+              eeqqnn      for mathematical formulae.
+              ppiicc      for drawing diagrams.
+              rreeffeerr    for bibliographic references.
+              ssooeelliimm   for including macro files from standard locations.
+              cchheemm     for drawing chemical formulae.
+
+       Other known preprocessors that are not available on all systems include
+
+              ggrraapp   for constructing graphical elements.
+              ggrrnn    for including ggrreemmlliinn(1) pictures.
+
+   FFoorrmmaatttteerr PPrrooggrraammss
+       A _r_o_f_f _f_o_r_m_a_t_t_e_r is a program that parses documents written in the _r_o_f_f
+       formatting language or uses some of the _r_o_f_f macro packages.  It gener-
+       ates _i_n_t_e_r_m_e_d_i_a_t_e _o_u_t_p_u_t, which is intended to be fed into a single de-
+       vice  postprocessor  that must be specified by a command-line option to
+       the formatter program.  The documents must have been  run  through  all
+       necessary preprocessors before.
+
+       The  output  produced by a _r_o_f_f formatter is represented in yet another
+       language, the _i_n_t_e_r_m_e_d_i_a_t_e _o_u_t_p_u_t _f_o_r_m_a_t or _t_r_o_f_f  _o_u_t_p_u_t.   This  lan-
+       guage  was  first  specified  in [CSTR #97]; its GNU extension is docu-
+       mented in ggrrooffff__oouutt(5).  The intermediate output language is a kind  of
+       assembly language compared to the high-level _r_o_f_f language.  The gener-
+       ated intermediate output is optimized for a  special  device,  but  the
+       language is the same for every device.
+
+       The  _r_o_f_f  formatter  is the heart of the _r_o_f_f system.  The traditional
+       _r_o_f_f had two formatters, nnrrooffff for text devices and ttrrooffff for graphical
+       devices.
+
+       Often,  the  name _t_r_o_f_f is used as a general term to refer to both for-
+       matters.
+
+   DDeevviicceess aanndd PPoossttpprroocceessssoorrss
+       Devices are hardware interfaces like printers, text or graphical termi-
+       nals,  etc., or software interfaces such as a conversion into a differ-
+       ent text or graphical format.
+
+       A _r_o_f_f postprocessor is a program that transforms _t_r_o_f_f output  into  a
+       form  suitable  for a special device.  The _r_o_f_f postprocessors are like
+       device drivers for the output target.
+
+       For each device there is a postprocessor program that fits  the  device
+       optimally.   The postprocessor parses the generated intermediate output
+       and generates device-specific code that is sent directly to the device.
+
+       The names of the devices and the postprocessor programs are  not  fixed
+       because  they  greatly depend on the software and hardware abilities of
+       the actual computer.  For example, the classical devices  mentioned  in
+       [CSTR  #54]  have  greatly  changed since the classical times.  The old
+       hardware doesn't exist any longer and  the  old  graphical  conversions
+       were quite imprecise when compared to their modern counterparts.
+
+       For  example, the PostScript device _p_o_s_t in classical _t_r_o_f_f had a reso-
+       lution of 720 units per inch, while _g_r_o_f_f's _p_s device has 72000, a  re-
+       finement of factor 100.
+
+       Today  the  operating  systems provide device drivers for most printer-
+       like hardware, so it isn't necessary to write a special hardware  post-
+       processor for each printer.
+
+RROOFFFF PPRROOGGRRAAMMMMIINNGG
+       Documents using _r_o_f_f are normal text files decorated by _r_o_f_f formatting
+       elements.  The _r_o_f_f formatting language is quite powerful; it is almost
+       a  full  programming language and provides elements to enlarge the lan-
+       guage.  With these, it became possible to develop macro  packages  that
+       are  tailored  for  special applications.  Such macro packages are much
+       handier than plain _r_o_f_f.  So most people will choose  a  macro  package
+       without worrying about the internals of the _r_o_f_f language.
+
+   MMaaccrroo PPaacckkaaggeess
+       Macro  packages are collections of macros that are suitable to format a
+       special kind of documents in a convenient way.  This greatly eases  the
+       usage  of  _r_o_f_f.  The macro definitions of a package are kept in a file
+       called _n_a_m_e..ttmmaacc (classically ttmmaacc.._n_a_m_e).  All tmac files are stored in
+       one or more directories at standardized positions.  Details on the nam-
+       ing of macro packages and their placement is found in ggrrooffff__ttmmaacc(5).
+
+       A macro package that is to be used in a document can  be  announced  to
+       the formatter by the command-line option --mm, see ttrrooffff(1), or it can be
+       specified within a document using the file inclusion  requests  of  the
+       _r_o_f_f language, see ggrrooffff(7).
+
+       Famous classical macro packages are _m_a_n for traditional man pages, _m_d_o_c
+       for BSD-style manual pages; the macro sets  for  books,  articles,  and
+       letters  are  _m_e (probably from the first name of its creator _E_r_i_c All-
+       man), _m_s (from _M_a_n_u_s_c_r_i_p_t _M_a_c_r_o_s), and _m_m (from _M_e_m_o_r_a_n_d_u_m _M_a_c_r_o_s).
+
+   TThhee rrooffff FFoorrmmaattttiinngg LLaanngguuaaggee
+       The classical _r_o_f_f formatting  language  is  documented  in  the  _T_r_o_f_f
+       _U_s_e_r_'_s _M_a_n_u_a_l [CSTR #54].  The _r_o_f_f language is a full programming lan-
+       guage providing  requests,  definition  of  macros,  escape  sequences,
+       string variables, number or size registers, and flow controls.
+
+       _R_e_q_u_e_s_t_s  are  the  predefined basic formatting commands similar to the
+       commands at the shell prompt.  The user can  define  request-like  ele-
+       ments using predefined _r_o_f_f elements.  These are then called _m_a_c_r_o_s.  A
+       document writer will not note any difference in usage for  requests  or
+       macros; both are written on a line on their own starting with a dot.
+
+       _E_s_c_a_p_e _s_e_q_u_e_n_c_e_s are _r_o_f_f elements starting with a backslash `\\'.  They
+       can be inserted anywhere, also in the midst of text in  a  line.   They
+       are used to implement various features, including the insertion of non-
+       ASCII characters with \\((, font changes with \\ff, in-line  comments  with
+       \\"",  the escaping of special control characters like \\\\, and many other
+       features.
+
+       _S_t_r_i_n_g_s are variables that can store a string.  A string is  stored  by
+       the  ..ddss  request.   The stored string can be retrieved later by the \\**
+       escape sequence.
+
+       _R_e_g_i_s_t_e_r_s store numbers and sizes.  A register can be set with the  re-
+       quest ..nnrr and its value can be retrieved by the escape sequence \\nn.
+
+FFIILLEE NNAAMMEE EEXXTTEENNSSIIOONNSS
+       Manual  pages (man pages) take the section number as a file name exten-
+       sion, e.g., the filename for this document is _r_o_f_f_._7, i.e., it is  kept
+       in section 7 of the man pages.
+
+       The  classical  macro  packages  take the package name as an extension,
+       e.g. _f_i_l_e_.mmee for a document using the _m_e macro package, _f_i_l_e_.mmmm for _m_m,
+       _f_i_l_e_.mmss for _m_s, _f_i_l_e_.ppiicc for _p_i_c files, etc.
+
+       But  there  is  no  general  naming  scheme  for _r_o_f_f documents, though
+       _f_i_l_e_.ttrr for _t_r_o_f_f _f_i_l_e is seen now and then.  Maybe there should  be  a
+       standardization for the filename extensions of _r_o_f_f files.
+
+       File  name extensions can be very handy in conjunction with the lleessss(1)
+       pager.  It provides the possibility to feed all input into  a  command-
+       line pipe that is specified in the shell environment variable LLEESSSSOOPPEENN.
+       This process is not well documented, so here an example:
+
+              LESSOPEN='|lesspipe %s'
+
+       where lleessssppiippee is either a system supplied command or a shell script of
+       your own.
+
+       More  details  for  _f_i_l_e  _n_a_m_e  _e_x_t_e_n_s_i_o_n_s  can be found at ggrrooffff__ffiillee--
+       nnaammeess(5).
+
+EEDDIITTIINNGG RROOFFFF
+       All _r_o_f_f formatters provide automated line breaks  and  horizontal  and
+       vertical spacing.  In order to not disturb this, the following tips can
+       be helpful.
+
+       +o      Never include empty or blank lines in a _r_o_f_f document.  Instead,
+              use  the  empty  request  (a line consisting of a dot only) or a
+              line comment ..\\"" if a structuring element is needed.
+
+       +o      Never start a line with whitespace because this can lead to  un-
+              expected  behavior.  Indented paragraphs can be constructed in a
+              controlled way by _r_o_f_f requests.
+
+       +o      Start each sentence on a line of its own, for the spacing  after
+              a  dot is handled differently depending on whether it terminates
+              an abbreviation or a sentence.  To distinguish both cases, do  a
+              line break after each sentence.
+
+       +o      To  additionally  use the auto-fill mode in Emacs, it is best to
+              insert an empty _r_o_f_f request (a line consisting of a  dot  only)
+              after each sentence.
+
+       The  following  example  shows  judicious line breaking in a _r_o_f_f input
+       file.
+
+              This is an example of a
+              .I roff
+              document that you can type into your text editor.
+              .
+              This is the next sentence in the same paragraph.
+              .
+              This is a longer sentence stretching over several input lines;
+              abbreviations like cf. are easily identified because the dot is
+              not followed by a line break.
+              .
+              In the output, this sentence continues the same paragraph.
+
+   EEddiittiinngg wwiitthh EEmmaaccss
+       The best program for editing a _r_o_f_f document is Emacs (or XEmacs);  see
+       eemmaaccss(1).   It provides an _n_r_o_f_f mode that is suitable for all kinds of
+       _r_o_f_f dialects.  This mode can be activated by the following methods.
+
+       When editing a file within Emacs the mode can be changed by typing `_M_-_x
+       _n_r_o_f_f_-_m_o_d_e',  where  MM--xx  means  to hold down the MMeettaa key (or AAlltt) and
+       press the xx key at the same time.
+
+       But it is also possible to have the mode  automatically  selected  when
+       the file is loaded into the editor.
+
+       +o      The  most  general  method is to include the following 3 comment
+              lines at the end of the file.
+
+                     .\" Local Variables:
+                     .\" mode: nroff
+                     .\" End:
+
+       +o      There is a set of file name extensions, e.g. the man pages  that
+              trigger the automatic activation of the _n_r_o_f_f mode.
+
+       +o      Theoretically, it is possible to write the sequence
+
+                     .\" -*- nroff -*-
+
+              as  the  first  line  of a file to have it started in _n_r_o_f_f mode
+              when loaded.  Unfortunately, some applications such as  the  mmaann
+              program are confused by this; so this is deprecated.
+
+   EEddiittiinngg wwiitthh VViimm
+       Besides  Emacs,  some other editors provide _n_r_o_f_f style files too, e.g.
+       vviimm(1), an extension of the vvii(1) program.  Vim's highlighting  can  be
+       made  to  recognize  _r_o_f_f files by setting the _f_i_l_e_t_y_p_e option in a Vim
+       _m_o_d_e_l_i_n_e.  For this feature to work, your copy of  vviimm  must  be  built
+       with  support  for, and configured to enable, several features; consult
+       the editor's online help topics "auto-setting", "filetype",  and  "syn-
+       tax".   Then put the following at the end of your _r_o_f_f files, after any
+       Emacs configuration:
+
+                     .\" vim: set filetype=groff:
+
+       Replace "groff" in the above with "nroff" if you want highlighing  that
+       does _n_o_t recognize many of the GNU extensions to _r_o_f_f, such as request,
+       register, and string names longer than two characters.
+
+AAUUTTHHOORRSS
+       This document  was  written  by  Bernd  Warken  <groff-bernd.warken-72@
+       web.de>.
+
+SSEEEE AALLSSOO
+       There  is a lot of documentation on _r_o_f_f.  The original papers on clas-
+       sical _t_r_o_f_f are still available, and all aspects  of  _g_r_o_f_f  are  docu-
+       mented in great detail.
+
+   IInntteerrnneett ssiitteess
+       History of Unix Manpages
+              The  history  page  <http://manpages.bsd.lv/history.html> of the
+              mdocml project provides an overview of _r_o_f_f  development  up  to
+              date,  with  links to original documentation and comments of the
+              original authors.
+
+       troff.org
+              The historical troff  site  <http://www.troff.org>  provides  an
+              overview and pointers to the historical aspects of _r_o_f_f.
+
+       Multics
+              The  Multics  site <http://www.multicians.org> contains a lot of
+              information on the MIT projects, CTSS, Multics, early Unix,  in-
+              cluding  _r_u_n_o_f_f;  especially  useful are a glossary and the many
+              links to ancient documents.
+
+       Unix Archive
+              The Ancient Unixes Archive  <http://www.tuhs.org/Archive/>  pro-
+              vides  the  source  code and some binaries of the ancient Unixes
+              (including the source code of _t_r_o_f_f and its documentation)  that
+              were  made public by Caldera since 2001, e.g. of the famous Unix
+              version 7 for PDP-11 at the Unix V7  site  <http://www.tuhs.org/
+              Archive/PDP-11/Trees/V7>.
+
+       Developers at AT&T Bell Labs
+              Bell  Labs Computing and Mathematical Sciences Research <http://
+              www.bell-labs.com/> provides a search facility for tracking  in-
+              formation on the early developers.
+
+       Plan 9 The Plan 9 operating system <http://plan9.bell-labs.com> by AT&T
+              Bell Labs.
+
+       runoff Jerry  Saltzer's  home   page   <http://web.mit.edu/Saltzer/www/
+              publications/pubs.html>  stores some documents using the ancient
+              RUNOFF formatting language.
+
+       CSTR Papers
+              The   Bell   Labs   (now   Alcatel)    CSTR    site    <https://
+              www.alcatel-lucent.com/bell-labs-journals>  stores  the original
+              _t_r_o_f_f manuals (CSTR #54, #97, #114, #116, #122) and famous  his-
+              torical documents on programming.
+
+       GNU _r_o_f_f
+              The  groff web site <http://www.gnu.org/software/groff> provides
+              the free _r_o_f_f implementation _g_r_o_f_f, the actual standard _r_o_f_f.
+
+   HHiissttoorriiccaall rrooffff DDooccuummeennttaattiioonn
+       Many classical ttrrooffff documents are still available  on-line.   The  two
+       main manuals of the _t_r_o_f_f language are
+
+       [CSTR #54]
+              J.  F. Ossanna, _N_r_o_f_f_/_T_r_o_f_f _U_s_e_r_'_s _M_a_n_u_a_l <http://www.troff.org/
+              54.pdf>; Bell Labs, 1976; revised by Brian Kernighan, 1992.
+
+       [CSTR #97]
+              Brian  Kernighan,  _A   _T_y_p_e_s_e_t_t_e_r_-_i_n_d_e_p_e_n_d_e_n_t   _T_R_O_F_F   <http://
+              cm.bell-labs.com/cm/cs/cstr/97.ps.gz>,  Bell Labs, 1981, revised
+              March 1982.
+
+       The "little language" _r_o_f_f papers are
+
+       [CSTR #114]
+              Jon L. Bentley and Brian W. Kernighan, _G_R_A_P  _-  _A  _L_a_n_g_u_a_g_e  _f_o_r
+              _T_y_p_e_s_e_t_t_i_n_g      _G_r_a_p_h_s     <http://cm.bell-labs.com/cm/cs/cstr/
+              114.ps.gz>; Bell Labs, August 1984.
+
+       [CSTR #116]
+              Brian W. Kernighan, _P_I_C _- _A _G_r_a_p_h_i_c_s  _L_a_n_g_u_a_g_e  _f_o_r  _T_y_p_e_s_e_t_t_i_n_g
+              <http://cm.bell-labs.com/cm/cs/cstr/116.ps.gz>;  Bell  Labs, De-
+              cember 1984.
+
+       [CSTR #122]
+              J. L. Bentley, L. W. Jelinski, and B. W.  Kernighan,  _C_H_E_M  _-  _A
+              _P_r_o_g_r_a_m  _f_o_r  _T_y_p_e_s_e_t_t_i_n_g _C_h_e_m_i_c_a_l _S_t_r_u_c_t_u_r_e _D_i_a_g_r_a_m_s_, _C_o_m_p_u_t_e_r_s
+              _a_n_d  _C_h_e_m_i_s_t_r_y   <http://cm.bell-labs.com/cm/cs/cstr/122.ps.gz>;
+              Bell Labs, April 1986.
+
+       You  can  get an archive with most _c_l_a_s_s_i_c_a_l _r_o_f_f _d_o_c_u_m_e_n_t_a_t_i_o_n as rea-
+       sonable _P_D_F _f_i_l_e_s at _g_i_t_h_u_b using the _s_h_e_l_l _c_o_m_m_a_n_d
+              $ git clone https://github.com/bwarken/roff_classical.git
+
+   MMaannuuaall PPaaggeess
+       Due to its complex structure, a full _r_o_f_f system has  many  man  pages,
+       each  describing  a  single aspect of _r_o_f_f.  Unfortunately, there is no
+       general naming scheme for the documentation among  the  different  _r_o_f_f
+       implementations.
+
+       In  _g_r_o_f_f, the man page ggrrooffff(1) contains a survey of all documentation
+       available in _g_r_o_f_f.
+
+       On other systems, you are on your own, but ttrrooffff(1)  might  be  a  good
+       starting point.
+
+
+
+groff 1.22.4                     December 2018                         ROFF(7)

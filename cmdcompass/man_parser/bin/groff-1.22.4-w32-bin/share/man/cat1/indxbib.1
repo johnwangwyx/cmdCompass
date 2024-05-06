@@ -1,0 +1,98 @@
+INDXBIB(1)                  General Commands Manual                 INDXBIB(1)
+
+
+
+NNAAMMEE
+       indxbib - make inverted index for bibliographic databases
+
+SSYYNNOOPPSSIISS
+       iinnddxxbbiibb [--ww] [--cc _f_i_l_e] [--dd _d_i_r] [--ff _f_i_l_e] [--hh _n] [--ii _s_t_r_i_n_g] [--kk _n]
+               [--ll _n] [--nn _n] [--oo _f_i_l_e] [--tt _n] [_f_i_l_e_n_a_m_e ...]
+
+       iinnddxxbbiibb ----hheellpp
+
+       iinnddxxbbiibb --vv
+       iinnddxxbbiibb ----vveerrssiioonn
+
+DDEESSCCRRIIPPTTIIOONN
+       iinnddxxbbiibb makes an inverted index  for  the  bibliographic  databases  in
+       _f_i_l_e_n_a_m_e...   for  use  with  rreeffeerr(1),  llooookkbbiibb(1), and llkkbbiibb(1).  The
+       index will be named filename_._i; the index is  written  to  a  temporary
+       file  which  is then renamed to this.  If no filenames are given on the
+       command line because the --ff option has been used, and no --oo  option  is
+       given, the index will be named _I_n_d_._i.
+
+       Bibliographic  databases  are  divided  into  records  by  blank lines.
+       Within a record, each fields starts with a %% character at the beginning
+       of  a  line.  Fields have a one letter name which follows the %% charac-
+       ter.
+
+       The values set by the --cc, --nn, --ll, and --tt  options  are  stored  in  the
+       index; when the index is searched, keys will be discarded and truncated
+       in a manner appropriate to these options; the  original  keys  will  be
+       used  for verifying that any record found using the index actually con-
+       tains the keys.  This means that a user  of  an  index  need  not  know
+       whether  these options were used in the creation of the index, provided
+       that not all the keys to be searched for would have been discarded dur-
+       ing  indexing  and that the user supplies at least the part of each key
+       that would have remained after being truncated  during  indexing.   The
+       value set by the --ii option is also stored in the index and will be used
+       in verifying records found using the index.
+
+OOPPTTIIOONNSS
+       Whitespace is permitted between a command-line option and its argument.
+
+       --vv     Print the version number.
+
+       --ww     Index whole files.  Each file is a separate record.
+
+       --cc_f_i_l_e Read the list of common words from _f_i_l_e instead of _d_:_/_u_s_r_/_s_h_a_r_e_/
+              _g_r_o_f_f_/_1_._2_2_._4_/_e_i_g_n.
+
+       --dd_d_i_r  Use  _d_i_r  as  the  pathname  of the current working directory to
+              store in the index, instead of the path printed by ppwwdd(1).  Usu-
+              ally  _d_i_r  will  be a symbolic link that points to the directory
+              printed by ppwwdd(1).
+
+       --ff_f_i_l_e Read the files to be indexed from _f_i_l_e.  If  _f_i_l_e  is  --,  files
+              will  be  read  from  the  standard input.  The --ff option can be
+              given at most once.
+
+       --ii_s_t_r_i_n_g
+              Don't index the contents of fields whose names  are  in  _s_t_r_i_n_g.
+              Initially _s_t_r_i_n_g is XXYYZZ.
+
+       --hh_n    Use  the  first prime greater than or equal to _n for the size of
+              the hash table.  Larger values of _n will usually make  searching
+              faster, but will make the index larger and iinnddxxbbiibb use more mem-
+              ory.  Initially _n is 997.
+
+       --kk_n    Use at most _n keys per input record.  Initially _n is 100.
+
+       --ll_n    Discard keys that are shorter than _n.  Initially _n is 3.
+
+       --nn_n    Discard the _n most common words.  Initially _n is 100.
+
+       --oo_b_a_s_e_n_a_m_e
+              The index should be named basename_._i.
+
+       --tt_n    Truncate keys to _n.  Initially _n is 6.
+
+FFIILLEESS
+       filename_._i
+              Index.
+
+       _I_n_d_._i  Default index name.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_e_i_g_n
+              List of common words.
+
+       _i_n_d_x_b_i_bXXXXXX
+              Temporary file.
+
+SSEEEE AALLSSOO
+       rreeffeerr(1), llkkbbiibb(1), llooookkbbiibb(1)
+
+
+
+groff 1.22.4                     December 2018                      INDXBIB(1)

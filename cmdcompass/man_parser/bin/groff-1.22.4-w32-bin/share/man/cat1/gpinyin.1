@@ -1,0 +1,122 @@
+GPINYIN(1)                  General Commands Manual                 GPINYIN(1)
+
+
+
+NNAAMMEE
+       gpinyin - use Hanyu Pinyin Chinese in roff
+
+SSYYNNOOPPSSIISS
+       ggppiinnyyiinn [_i_n_p_u_t_-_f_i_l_e ...]
+
+       ggppiinnyyiinn --hh
+       ggppiinnyyiinn ----hheellpp
+
+       ggppiinnyyiinn --vv
+       ggppiinnyyiinn ----vveerrssiioonn
+
+DDEESSCCRRIIPPTTIIOONN
+       ggppiinnyyiinn  is  a  preprocessor  for  ggrrooffff(1) that facilitates use of the
+       Hanyu Pinyin ggrrooffff(7) files.  Pinyin is a method for writing  the  Chi‐
+       nese  language  with the Latin alphabet.  The Chinese language consists
+       of more than four hundred syllables, each with one  of  five  different
+       tones.   In  Pinyin,  a syllable is written in the Latin alphabet and a
+       numeric tone indicator can be appended to each syllable.
+
+       Each _i_n_p_u_t_-_f_i_l_e is a file name or the  hyphen-minus  character  “-”  to
+       indicate  that  standard  input should be read.  As usual, the argument
+       “--” can be used in order to  force  interpretation  of  all  remaining
+       arguments as file names, even if an _i_n_p_u_t_-_f_i_l_e argument begins with the
+       hyphen-minus character.
+
+   PPiinnyyiinn SSeeccttiioonnss
+       Pinyin sections in _g_r_o_f_f files are enclosed  by  two  ..ppiinnyyiinn  requests
+       with different arguments.  The starting request is
+              .pinyin start
+       or
+              .pinyin begin
+       and the ending request is
+              .pinyin stop
+       or
+              .pinyin end
+       .
+
+   SSyyllllaabblleess
+       The  spoken  Chinese  language  is  based  on  about 411 _s_y_l_l_a_b_l_e_s; see
+       ⟨http://en.wikipedia.org/wiki/Pinyin_table⟩.
+
+       In Pinyin, each syllable consists of one to six letters from the  Latin
+       alphabet;  these  letters  comprise  the fifty-two upper- and lowercase
+       letters from the ASCII character set, plus the letter “U” with dieresis
+       (umlaut)  in  both  cases—in  other  words,  the  members  of  the  set
+       “[a–zA–ZüÜ]”.
+
+       In _g_r_o_f_f input, all ASCII letters are written as  themselves.   The  “u
+       with  dieresis”  can  be  written as “\[:u]” in lowercase or “\[:U]” in
+       uppercase.  Within ..ppiinnyyiinn sections, _g_p_i_n_y_i_n supports the form “ue” for
+       lowercase and the forms “Ue” and “UE” for uppercase.
+
+   TToonneess
+       Each  syllable  has  exactly  one of five _t_o_n_e_s.  The fifth tone is not
+       explicitly written at all, but each of the first through  fourth  tones
+       is  indicated with a diacritic above a specific vowel within the sylla‐
+       ble.
+
+       In a _g_p_i_n_y_i_n source file, these tones are written by adding  a  numeral
+       in  the  range  0 to 5 after the syllable.  The tone numbers 1 to 4 are
+       transformed into accents above vowels in the output.  The tone  numbers
+       0 and 5 are synonymous.
+
+       The following table summarizes the tones.  Some output devices will not
+       be able to render every output example.
+
+       Tone     Description      Diacritic   Example Input   Example Output
+       ─────────────────────────────────────────────────────────────────────
+       first    flat             ¯           ma1             mā
+       second   rising           ´           ma2             má
+       third    falling-rising   ˇ           ma3             mǎ
+       fourth   falling          `           ma4             mà
+       fifth    neutral          (none)      ma0             ma
+                                             ma5
+
+       The neutral tone number can be omitted from a word-final syllable,  but
+       not otherwise.
+
+OOPPTTIIOONNSS
+       --hh
+       ----hheellpp Print usage information and exit.
+
+       --vv
+       ----vveerrssiioonn
+              Print version information and exit.
+
+AAUUTTHHOORRSS
+       ggppiinnyyiinn was written by Bernd Warken ⟨<groff-bernd.warken-72@web.de>⟩.
+
+SSEEEE AALLSSOO
+       Useful documents on the World Wide Web related to Pinyin include
+           “Pinyin” (Wikipedia) ⟨http://en.wikipedia.org/wiki/Pinyin⟩,
+           “Pinyin     table”    (Wikipedia)    ⟨http://en.wikipedia.org/wiki/
+           Pinyin_table⟩,
+           _P_i_n_y_i_n _t_o _U_n_i_c_o_d_e ⟨http://www.foolsworkshop.com/ptou/index.html⟩,
+           _O_n_-_l_i_n_e _C_h_i_n_e_s_e _T_o_o_l_s ⟨http://www.mandarintools.com/⟩,
+           _P_i_n_y_i_n_._i_n_f_o_:  _a  _g_u_i_d_e  _t_o  _t_h_e  _w_r_i_t_i_n_g  _o_f  _M_a_n_d_a_r_i_n  _C_h_i_n_e_s_e  _i_n
+           _r_o_m_a_n_i_z_a_t_i_o_n ⟨http://www.pinyin.info/index.html⟩,
+           “Where    do   the   tone   marks   go?”   (Pinyin.info)   ⟨http://
+           www.pinyin.info/rules/where.html⟩,
+           pinyin.txt  from  the  CJK   macro   package   for   TeX   ⟨http://
+           git.savannah.gnu.org/gitweb/?p=cjk.git;a=blob_plain;f=doc/
+           pinyin.txt;hb=HEAD⟩,
+       and
+           pinyin.sty  from  the  CJK   macro   package   for   TeX   ⟨http://
+           git.savannah.gnu.org/gitweb/?p=cjk.git;a=blob_plain;f=texinput/p
+           inyin.sty;hb=HEAD⟩.
+
+       ggrrooffff(1), ggrroogg(1), and ggrrooffffeerr(1) explain how to view _r_o_f_f documents.
+
+       ggrrooffff(7) and ggrrooffff__cchhaarr(7) are comprehensive  references  covering  the
+       language  elements  of  GNU  _r_o_f_f  and  the available glyph repertoire,
+       respectively.
+
+
+
+groff 1.22.4                     November 2018                      GPINYIN(1)

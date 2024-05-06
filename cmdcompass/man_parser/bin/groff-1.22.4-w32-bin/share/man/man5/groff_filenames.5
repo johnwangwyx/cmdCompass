@@ -1,0 +1,656 @@
+.TH GROFF_FILENAMES 5 "November 2018" "groff 1.22.4"
+.SH NAME
+groff_filenames \- filename extensions for roff and groff
+.
+.\" ad l
+.\" ====================================================================
+.\" Legal Terms
+.\" ====================================================================
+.\"
+.\" Copyright (C) 2013-2018 Free Software Foundation, Inc.
+.\"
+.\" This file is part of groff, a free software project.  You can
+.\" redistribute it and/or modify it under the terms of the GNU General
+.\" Public License version 2 (GPL2) as published by the Free Software
+.\" Foundation (FSF).
+.\"
+.\" The license text can be found in the internet at
+.\" <http://www.gnu.org/licenses>.
+.
+.
+.\" ====================================================================
+.SH DESCRIPTION
+.\" ====================================================================
+.
+Since the evolution of
+.I roff
+in the 1970s, a whole bunch of filename extensions for
+.I roff
+files were used.
+.
+.
+.P
+The
+.I roff
+extensions refer to preprocessors or macro packages.
+.
+These extensions are fixed in all
+.IR Unix \-like
+operating systems.
+.
+.
+.P
+Later on,
+.B groff
+added some more extensions.
+.
+This
+.I man page
+is about these filename extensions.
+.
+.
+.\" ====================================================================
+.SH COMPRESSION OF ROFF FILES
+.\" ====================================================================
+.
+Each
+.I roff
+file can be optionally
+.IR compressed .
+.
+That means that the
+.I total filename
+ends with a
+.IR "compressor name" .
+.
+So the whole filename has the structure
+.IR <name> . <extension>[ . <compression>] .
+.
+.
+.P
+Best-known are the
+.I compressor extensions
+.BR .Z ,
+.BR .gz ,
+and
+.BR .bzip2 .
+.
+Relatively new is
+.BR .xz .
+.
+.
+.P
+From now on, we will ignore the
+.I compressions
+and only comment the structure
+.IB <name> . <extension>\fR.\fP
+.
+.
+.\" ====================================================================
+.SH MAN PAGES
+.\" ====================================================================
+.
+The
+.I Unix manual pages
+are widely called
+.IR "man pages" .
+.
+The
+.I man page
+style is the best known part of the
+.I roff
+language.
+.
+.
+.P
+The extensions for
+.I man
+should be better documented.
+.
+So this is documented here.
+.
+.
+.P
+Files written in the
+.I man
+language use the following extension:
+.BI *. <section>[<group>] \fR.\fP
+.
+.
+.\" ====================================================================
+.SS Man page Sections
+.\" ====================================================================
+.
+The traditional
+.I man page <section>
+is a digit from
+.B 1
+to
+.BR 8 .
+.
+.
+.TP
+.IB <name> .1
+.TQ
+.IB <name> .2
+.TQ
+.IB <name> .3
+.TQ
+.IB <name> .4
+.TQ
+.IB <name> .5
+.TQ
+.IB <name> .6
+.TQ
+.IB <name> .7
+.TQ
+.IB <name> .8
+Classic man page
+.IR sections .
+.
+.
+.P
+.\" NOTE: There was once a feeble attempt in this direction, but it
+.\" hasn't been true in any sense for a long time.
+.\"Linux added the section number
+.\".B 9
+.\"for kernel man pages.
+.\".
+.\".
+.\".TP
+.\".IB <name> .9
+.\".I Linux
+.\"kernel man pages
+.\".
+.\".
+.P
+In older commercial
+.I Unix
+systems, the 3 characters
+.BR l ,
+.BR n ,
+and
+.B o
+were also used as
+.I section
+names.
+.
+This is today
+.IR deprecated ,
+but there are still documents in this format.
+.
+.
+.TP
+.IB <name> .l
+.TQ
+.IB <name> .n
+.TQ
+.IB <name> .o
+.I Deprecated
+man page sections, which stood for \[lq]local\[rq], \[lq]new\[rq], and
+\[lq]old\[rq], respectively.
+.
+.
+.\" ====================================================================
+.SS Man page Group Extensions
+.\" ====================================================================
+.
+The
+.I <group>
+extension in
+.BI . <section>[<group>]
+is optional, but it can be any string of word characters.
+.
+Usually programmers use a group name that is already used, e.g.\&
+.B x
+for
+X Window System
+documents or
+.B tcl
+to refer to the
+.I Tcl
+programming language.
+.
+.
+.P
+Examples:
+.
+.
+.TP
+.B groff.1
+is the man page for
+.B groff
+in
+.I section
+.B 1
+without a
+.I group
+.
+.
+.TP
+.B xargs.1posix.gz
+is the man page for the program
+.B xargs
+in
+.I section
+.B 1
+and
+.I group
+.BR posix ;
+moreover it is
+.I compressed
+with
+.B gz
+.RB ( gzip ).
+.
+.
+.TP
+.B config.5ssl
+.I "OpenSSL CONF"
+library configuration files from
+.I section
+.B 5
+with
+.I group
+.BR ssl .
+.
+.
+.TP
+.B dpkg\-reconfigure.8cdebconf
+man page for the program
+.B dpkg\-reconfigure
+in
+.I section
+.B 8
+and
+.I group
+.BR cdebconf .
+.
+.
+.\" ====================================================================
+.SS Source of man pages
+.\" ====================================================================
+.
+There are 2
+.I roff
+languages for writing man pages:
+.B man
+and
+.BR mdoc .
+.
+.
+.P
+The names of these 2 styles are taken as
+.I extensions
+for the source code files of man pages in the
+.I groff
+package.
+.
+.
+.TP
+.IB <name> .man
+.I traditional
+Unix-like man page format within groff source files.
+.
+.
+.TP
+.IB <name> . n
+A temporary man page file produced from a
+.IB name .man
+man page by a run of
+.B make
+within the
+.B groff
+source package.
+.
+.
+.TP
+.IB <name> .mdoc
+Man page format in BSD.
+.
+.
+.TP
+.IB <name> .1b
+Man page format in
+.IR "heirloom roff ".
+.
+.
+.TP
+.IB <name> .mandoc
+Files using this extension recognize both man page formats in
+.B groff
+and other processors.
+.
+.
+.\" ====================================================================
+.SH TRADITIONAL TROFF EXTENSIONS
+.\" ====================================================================
+.
+.\" ====================================================================
+.SS Files Using Macro Packages
+.\" ====================================================================
+.
+The
+.I "classical roff"
+languages were interpreted by the traditional
+.B "troff"
+and
+.B "nroff"
+programs.
+.
+.
+.P
+There were several
+.I roff
+languages, each represented by a
+.IR "macro-package" .
+.
+Each of these provided a suitable file name
+.IR extension :
+.
+.
+.TP
+.IB <name> .me
+.I roff
+file using the
+.B me
+.IR "macro package" .
+.
+.
+.TP
+.IB <name> .mm
+.I roff
+file using the
+.B mm
+.I macro package
+.
+.
+.TP
+.IB <name> .ms
+.I roff
+file using the
+.B ms
+.I macro package
+.
+.
+.P
+All of these classical
+.I roff
+languages and their extensions are still very active in
+.BR groff .
+.
+.
+.\" ====================================================================
+.SS Source Code for Macro Packages (TMAC Files)
+.\" ====================================================================
+.
+In traditional
+.I roff
+the source code for the macro packages was stored in
+.I TMAC
+files.
+.
+Their file names have the form:
+.
+.
+.TP
+.BI tmac. <package> \fR,\fP
+.I <package>
+is the name of the macro package without the leading
+.B m
+character, which is reintegrated by the option
+.BR -m .
+.
+.
+.P
+For example,
+.B tmac.an
+is the source for the
+.B man
+macro package.
+.
+.
+.P
+In the
+.B groff
+source, more suitable file names were integrated, see later on.
+.
+.
+.\" ====================================================================
+.SS Preprocessors
+.\" ====================================================================
+.
+Moreover, the following
+.I preprocessors
+were used as filename extension:
+.
+.
+.TP
+.IB <name> .chem
+for the integration of chemical formulas
+.
+.
+.TP
+.IB <name> .eqn
+for the mathematical use of equations
+.
+.
+.TP
+.IB <name> .pic
+graphical tool
+.
+.
+.TP
+.IB <name> .tbl
+for tables with
+.I tbl
+.
+.
+.TP
+.IB <name> .ref
+for files using the
+.B prefer
+.I preprocessor
+.
+.
+.\" ====================================================================
+.SS Classical Roff Files
+.\" ====================================================================
+.
+.TP
+.IB <name> .t
+.TQ
+.IB <name> .tr
+for files using the
+.I roff
+language of any kind
+.
+.
+.\" ====================================================================
+.SH NEW GROFF EXTENSIONS
+.\" ====================================================================
+.
+.I "GNU roff"
+.B groff
+is the actual
+.I roff
+standard, both for classical
+.I roff
+and new extensions.
+.
+So even the used new extensions in the source code should be regarded
+as actual standard.
+.
+The following extensions are used instead of classical
+.B .t
+or
+.BR .tr :
+.
+.
+.TP
+.IB <name> .groff
+.TQ
+.IB <name> .roff
+general ending for files using the
+.I groff language
+.
+.
+.\" ====================================================================
+.SS Source Code for Macro Packages (TMAC Files)
+.\" ====================================================================
+.
+As the classical form
+.BI tmac. <package_without_m> \fR,\fP
+of the
+.I TMAC
+file names is quite strange,
+.
+.I groff
+added the following structures:
+.
+.
+.TP
+.IB <package_without_m> .tmac
+.TQ
+.BI m <package> .tmac
+.TQ
+.BI groff_m <package> .tmac
+.
+.
+.\" ====================================================================
+.SS Files Using new Macro Packages
+.\" ====================================================================
+.
+.I Groff
+uses the following new macro packages:
+.
+.
+.TP
+.IB <name> .mmse
+file with swedish
+.B mm
+.I macros
+for
+.B groff
+.
+.
+.TP
+.IB <name> .mom
+files written in the
+.I "groff macro package"
+.B mom
+.
+.
+.TP
+.IB <name> .www
+files written in
+.BR HTML -like
+.I groff
+.IR macros .
+.
+.
+.\" ====================================================================
+.SS Preprocessors and Postprocessors
+.\" ====================================================================
+.
+.TP
+.IB <name> .hdtbl
+Heidelberger tables, an alternative to the preprocessor
+.IR tbl .
+.
+See
+.BR groff_hdtbl (7).
+.
+.
+.TP
+.IB <name> .grap
+files written for the graphical
+.B grap
+processor.
+.
+.
+.TP
+.IB <name> .grn
+for including
+.BR gremlin (1),
+pictures, see
+.BR grn (1).
+.
+.
+.TP
+.IB <name> .pdfroff
+transform this file with
+.B pdfroff
+of the
+.I groff
+system
+.
+.
+.\" ====================================================================
+.SH AUTHORS
+.\" ====================================================================
+This document was written by
+.MT groff\-bernd.warken\-72@\:web.de
+Bernd Warken
+.ME .
+.
+.
+.\" ====================================================================
+.SH "SEE ALSO"
+.\" ====================================================================
+.
+.
+.TP
+History and future
+.BR roff (7),
+.BR man\-pages (7),
+.BR groff_diff (7),
+.BR groff (7)
+.
+.
+.TP
+.I Compression
+.BR uncompress (1posix),
+.BR gzip2 (1),
+.BR bzip2 (1),
+.BR xz (1)
+.
+.
+.P
+A man page of the naming form
+.IB name ( n )
+can be read in text mode by
+.RS
+.EX
+.BI man " n name"
+.EE
+.RE
+or in graphical mode (PDF) by
+.RS
+.EX
+.BI groffer " n name"
+.EE
+.RE
+.
+.
+.P
+.UR https://\:github.com/\:n\-t\-roff/\:heirloom\-doctools
+.I Gunnar Ritter's Heirloom roff project
+.UE .
+.
+You can get this package with the shell command:
+.RS
+.EX
+\(Do \fBgit clone https://github.com/n\-t\-roff/heirloom\-doctools\fP
+.EE
+.RE
+.
+.
+.\" ====================================================================
+.\" Emacs settings
+.\" ====================================================================
+.
+.\" Local Variables:
+.\" mode: nroff
+.\" End:
+.\" vim: set filetype=groff:

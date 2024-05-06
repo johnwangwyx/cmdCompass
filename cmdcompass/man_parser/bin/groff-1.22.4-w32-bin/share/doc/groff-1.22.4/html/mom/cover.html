@@ -1,0 +1,844 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is part of groff, the GNU roff type-setting system.
+
+Copyright (C) 2004-2018  Free Software Foundation, Inc.
+Written by Peter Schaffter (peter@schaffter.ca).
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with no
+Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
+Texts.
+
+A copy of the Free Documentation License is included as a file called
+FDL in the main directory of the groff source package.
+-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
+  <title>Mom -- Document processing, creating cover pages</title>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+</head>
+
+<body style="background-color: #f5faff;">
+
+<!-- ==================================================================== -->
+
+<div id="top" class="page">
+
+<!-- Navigation links -->
+<table style="width: 100%;">
+<tr>
+  <td><a href="toc.html">Back to Table of Contents</a></td>
+  <td style="text-align: right;"><a href="tables-of-contents.html#top">Next: Tables of contents</a></td>
+</tr>
+</table>
+
+<h1 class="docs">Creating cover pages</h1>
+
+<div style="width: 66%; margin: auto;">
+<ul class="no-enumerator">
+  <li><a href="#cover-intro">Introduction to cover pages</a>
+  <ul style="margin-left: -.5em; list-style-type: disc;">
+    <li><a href="#important-note">Important note</a></li>
+    <li><a href="#desc">Description of cover pages</a></li>
+    <li><a href="#pagination">Headers/footers/pagination</a>
+      <ul style="margin-left: -1.25em; list-style-type: circle;">
+        <li><a href="#pagination">DOC_COVERS_COUNT_PAGES</a></li>
+        <li><a href="#pagination">COVERS_COUNT_PAGES</a></li>
+      </ul>
+    </li>
+    <li><a href="#design">Designing your own cover pages</a></li>
+    <li><a href="#persistence">Persistence of data and formatting</a></li>
+  </ul></li>
+  <li><a href="#index-covers">Doc-cover and cover macros</a>
+  <ul style="margin-left: -.5em; list-style-type: disc;">
+    <li><a href="#cover">DOC_COVER / COVER</a>
+    <ul style="margin-left: -1.25em; list-style-type: circle;">
+      <li><a href="#cover-args">The argument list: saying what goes on doc-cover and cover pages</a></li>
+      <li><a href="#meanings">What the arguments mean</a></li>
+      <li><a href="#chapter">How the CHAPTER argument and friends work</a></li>
+    </ul></li>
+    <li><a href="#covertext">DOC_COVERTEXT / COVERTEXT</a>
+      <ul style="margin-left: -1.25em; list-style-type: circle;">
+        <li><a href="#placement">Placement</a></li>
+      </ul>
+    </li>
+    <li><a href="#coverimage">DOC_COVER_IMAGE / COVER_IMAGE</a>
+      <ul style="margin-left: -1.25em; list-style-type: circle;">
+        <li><a href="#positioning">Positioning of doc-cover and cover images</a></li>
+      </ul>
+    </li>
+  </ul></li>
+  <li><a href="#on-off">Enabling/disabling automatic generation of cover pages</a></li>
+  <li><a href="#cover-control">Control macros for covers and doc-covers</a></li>
+</ul>
+</div>
+
+<div class="rule-medium"><hr/></div>
+
+<h2 id="cover-intro" class="docs">Introduction to cover pages</h2>
+
+<p>
+Though identical in treatment, mom provides two kinds of cover
+pages: document cover pages (&#8221;doc-covers&#8221;), and section
+cover pages (which I shall refer to simply as cover pages).
+</p>
+
+<p>
+A doc-cover is what you&#8217;d most likely use at the start of a
+collated document, where you might want the name of the complete
+document, the author(s) and the copyright line to appear.  Another
+place you might use a doc-cover is for a novel, where you want the
+title of the novel, not the chapter title or chapter number, as the
+first cover page.
+</p>
+
+<p>
+A cover is what you&#8217;d use for pages that separate sections
+of a collated document, ie title pages.  A cover page (but not a
+doc-cover) in a collated document could, for example, simply read:
+&#8221;PART 1&#8221;.
+</p>
+
+<p>
+In non-collated documents (say, an essay) you can use either a cover
+or doc-cover to generate the cover sheet.
+</p>
+
+<p>
+In addition, nothing prevents you from generating both a doc-cover
+and a cover for every document in a collated document.  Or you can
+selectively disable the automatic generation of either doc-covers or
+covers in a collated document on-the-fly.
+</p>
+
+<div id="important-note" class="box-important">
+<p class="tip">
+<span class="important">Important note:</span>
+Automatic generation of covers or doc-covers after the first one(s)
+only takes place if you are working with collated documents.  Mom
+provides no mechanism for saying &#8221;print a section cover
+here even though I'm still working on the same (non-collated)
+document.&#8221;
+</p>
+</div>
+
+<h3 id="desc" class="docs">Description of cover pages</h3>
+
+<p>
+By default, mom typesets covers and doc-covers  identically to
+<a href="definitions.html#docheader">docheaders</a>
+(see
+<a href="docprocessing.html#docheader-control">How to change the look of docheaders</a>
+for a description of what a docheader looks like).  The only
+differences are
+</p>
+<ul style="margin-top: -.5em;  margin-bottom: -.5em;">
+  <li>the position on the page where the information is output</li>
+  <li>the (optional) addition of copyright and miscellaneous information</li>
+  <li>there&#8217;s no running text underneath, although you can add text
+      to a cover or doc-cover (for example, an Abstract) with
+      <a href="#covertext">COVERTEXT</a>
+   </li>
+</ul>
+
+<p>
+You tell mom what you want to appear on cover pages through the
+arguments you pass to
+<a href="#cover">DOC_COVER</a>
+and/or
+<a href="#cover">COVER</a>.
+Provided you have already given mom the appropriate reference macros
+(e.g.,
+<a href="docprocessing.html#title">TITLE</a>
+or
+<a href="docprocessing.html#author">AUTHOR</a>),
+she will output covers and doc-covers identically to how she
+would output docheaders containing the same information.
+</p>
+
+<p>
+By default, mom starts covers and doc-covers one-third of the way
+down the page.  This can be changed through the use of the control
+macros DOC_COVER_START_POS / COVER_START_POS (or DOC_COVER_ADVANCE /
+COVER_ADVANCE).
+</p>
+
+<p>
+If you request copyright information (and have already given mom the
+reference macro
+<a href="docprocessing.html#copyright">COPYRIGHT</a>)
+she sets it, by default, in a smaller
+<a href="definitions.html#ps">point size</a>
+in the bottom right hand corner of the cover or doc-cover.  The
+position, as well as all of the standard typesetting parameters, can be
+altered via control macros.
+</p>
+
+<p>
+Similarly, if you request miscellaneous information (and have
+already given mom the reference macro
+<a href="docprocessing.html#misc">MISC</a>)
+she sets it, by default, in a smaller point size in the bottom left
+hand corner of the cover or doc-cover.  As with the copyright, the
+position and type specs can be altered via control macros.
+</p>
+
+<h3 id="pagination" class="docs">Headers/footers/pagination</h3>
+
+<p>
+Mom does not set any
+<a href="definitions.html#header">headers</a>
+or
+<a href="definitions.html#footer">footers</a>
+on cover pages.  Neither does she set any page numbers.  From
+the point of view of pagination, covers and doc-covers are by
+default considered &#8221;null&#8221; pages.  If you wish them to
+be included in the pagination scheme (even though no page numbers
+appear), you must tell mom that&#8217;s what you want by invoking
+<br/>
+<span class="pre-in-pp">
+  .DOC_COVERS_COUNT_PAGES
+</span>
+or
+<br/>
+<span class="pre-in-pp">
+  .COVERS_COUNT_PAGES
+</span>
+</p>
+
+<h3 id="design" class="docs">Designing your own cover pages</h3>
+
+<p>
+Finally, if you want to design your own cover page(s), you can
+typeset them by hand inside a
+<a href="#covertext">COVERTEXT</a>
+block using mom&#8217;s typesetting macros to format the text.
+</p>
+
+<h3 id="persistence" class="docs">Persistence of data and formatting</h3>
+
+<p>
+Doc-cover and cover data&mdash;that is to say, the strings passed to
+reference macros that appear on doc-cover and cover
+pages&mdash;does not persist after
+<a href="docprocessing.html#start">START</a>,
+however the formatting of the various parts (TITLE, AUTHOR,
+COPYRIGHT, etc.) does.
+</p>
+
+<div class="macro-list-container">
+<h3 id="index-covers" class="macro-list">Cover and document cover macros</h3>
+<ul class="macro-list">
+  <li><a href="#cover">DOC_COVER and COVER</a>
+  <ul style="margin-left: -.5em; list-style-type: disc;">
+    <li><a href="#cover-args">The arguments: saying what goes on doc-cover and cover pages</a></li>
+  </ul></li>
+  <li><a href="#covertext">DOC_COVERTEXT / COVERTEXT</a></li>
+  <li><a href="#coverimage">DOC_COVER_IMAGE / COVER_IMAGE</a></li>
+  <li><a href="#on-off">Enabling/disabling automatic generation of cover pages</a>
+  <ul style="margin-left: -.5em; list-style-type: disc;">
+    <li><a href="#doc-covers">DOC_COVERS</a></li>
+    <li><a href="#covers">COVERS</a></li>
+  </ul></li>
+  <li><a href="#cover-control">Control macros for doc-covers and covers</a></li>
+</ul>
+</div>
+
+<!-- -COVER- -->
+
+<div class="macro-id-overline">
+<h3 id="cover" class="macro-id">DOC_COVER and COVER</h3>
+</div>
+
+<div id="doc-cover" class="box-macro-args">
+Macro: <b>DOC_COVER</b> <kbd class="macro-args">(see argument list, below)</kbd>
+</div>
+
+<div class="box-macro-args" style="margin-top: 1em;">
+Macro: <b>COVER</b> <kbd class="macro-args">(see argument list, below)</kbd>
+</div>
+
+<p>
+DOC_COVER and COVER behave identically.  The reason mom provides
+two macros for cover page generation is so that you can have two
+different kinds of covers with different information on each.
+</p>
+
+<p>
+Imagine, for a moment, you&#8217;ve written a document comprised of
+three sections.  When you
+<a href="rectoverso.html#collate">COLLATE</a>
+the document for output, you could use DOC_COVER to generate a cover
+page that contained the name of the entire document, your (the
+author&#8217;s) name, and perhaps the copyright date.  Subsequently,
+you could use COVER, after each <kbd>.COLLATE</kbd> but before each
+<kbd><a href="docprocessing.html#start">.START</a></kbd>,
+to generate a cover page (title page, cover sheet) containing
+just the name of the section, for example, &#8220;Part 1&#8221;.
+</p>
+
+<p>
+The arguments to <kbd>DOC_COVER</kbd> and <kbd>COVER</kbd> tell mom
+what you&#8217;d like on cover pages.  You may give as many or as
+few arguments as you need, in any order.  A very common setup would
+be:
+<br/>
+<span class="pre-in-pp">
+  .COVER TITLE AUTHOR COPYRIGHT
+</span>
+</p>
+
+<h4 id="cover-args" class="docs" style="margin-top: -1em;">The argument list</h4>
+
+<p style="margin-top: 1em">
+The arguments to <kbd>COVER</kbd> and <kbd>DOC_COVER</kbd> tell mom
+what you want on the cover page:
+<br/>
+<span class="pre-in-pp">
+  TITLE | DOCTITLE | DOC_COVERTITLE | COVERTITLE
+  CHAPTER | CHAPTER_TITLE | CHAPTER+TITLE
+  SUBTITLE
+  AUTHOR
+  DOCTYPE
+  DOC_COVERTEXT | COVERTEXT
+  DOC_COVER_IMAGE | COVER_IMAGE
+  COPYRIGHT
+  MISC
+  PDF_OUTLINE_LABEL "&lt;label&gt;"
+  BLANKPAGE
+</span>
+</p>
+
+<h4 id="meanings" class="docs" style="margin-top: -1em;">What the arguments mean</h4>
+
+<dl>
+  <dt class="params">TITLE</dt>
+    <dd class="cover-args">&ndash; the string(s) you gave to
+      <a href="docprocessing.html#title">TITLE</a>
+    </dd>
+  <dt class="params">DOCTITLE</dt>
+    <dd class="cover-args">&ndash; the string(s) you gave to
+      <a href="docprocessing.html#doc-title">DOCTITLE</a>
+    </dd>
+  <dt class="params">DOC_COVERTITLE / COVERTITLE</dt>
+    <dd class="cover-args">&ndash; the string(s) you gave to
+      <a href="docprocessing.html#doc-covertitle">DOC_COVERTITLE</a>
+      or
+      <a href="docprocessing.html#covertitle">COVERTITLE</a>
+    </dd>
+  <dt class="params">CHAPTER, CHAPTER_TITLE, CHAPTER+TITLE</dt>
+    <dd class="cover-args">&ndash; see below,
+      <a href="#chapter">How the CHAPTER argument and friends work</a>
+    </dd>
+  <dt class="params">SUBTITLE</dt>
+    <dd class="cover-args">&ndash; the string(s) you gave to
+      <a href="docprocessing.html#subtitle">SUBTITLE</a>
+    </dd>
+  <dt class="params">AUTHOR</dt>
+    <dd class="cover-args">&ndash; the string(s) you gave to
+      <a href="docprocessing.html#author">AUTHOR</a>
+    </dd>
+  <dt class="params">DOCTYPE</dt>
+    <dd class="cover-args">&ndash; the string you gave to
+      <a href="docprocessing.html#doctype">DOCTYPE NAMED</a>
+    </dd>
+  <dt class="params">DOC_COVERTEXT / COVERTEXT</dt>
+    <dd class="cover-args">&ndash; the block of type you entered for
+      <a href="#covertext">DOC_COVERTEXT</a>
+      or
+      <a href="#covertext">COVERTEXT</a>
+    </dd>
+  <dt class="params">DOC_COVER_IMAGE / COVER_IMAGE</dt>
+    <dd class="cover-args">&ndash; the image file you gave to
+      <a href="#covertext">DOC_COVER_IMAGE</a>
+      or
+      <a href="#covertext">COVER_IMAGE</a>
+    </dd>
+  <dt class="params">COPYRIGHT</dt>
+    <dd class="cover-args">&ndash; the string you gave to
+      <a href="docprocessing.html#copyright">COPYRIGHT</a>
+    </dd>
+  <dt class="params">MISC</dt>
+    <dd class="cover-args">&ndash; the string(s) you gave to
+      <a href="docprocessing.html#misc">MISC</a>
+    </dd>
+  <dt class="params">PDF_OUTLINE_LABEL &lt;label&gt;</dt>
+    <dd class="cover-args">
+      <span style="display:block; margin-left: 1em">
+      By default, mom identifies doc-covers in the outline panel of PDF
+      viewers with the prepended label, &#8220;Cover:&#8221;, and covers
+      with the label &#8220;Title Page:&#8221;.  If you would like
+      to change the label, give the <kbd>PDF_OUTLINE_LABEL</kbd>
+      argument to DOC_COVER or COVER along with the new label, in
+      quotation marks, as in this example:
+      <br/>
+      <kbd>&nbsp;&nbsp;.COVER TITLE AUTHOR COPYRIGHT PDF_LABEL "Cover Sheet: "</kbd>
+      </span>
+    </dd>
+  <dt class="params">BLANKPAGE</dt>
+    <dd class="cover-args">
+      <span style="display:block; margin-left: 1em">
+      If the final argument to DOC_COVER or COVER is <kbd>BLANKPAGE</kbd>,
+      mom will insert a blank page after the doc-cover or cover.  This is
+      particularly useful if you intend to print your document two-sided,
+      since, in two-sided printing, there may be instances where you do
+      not want text on the reverse side of cover or title pages
+      </span>
+      <span style="display:block; margin-left: 1em; margin-top: .5em">
+      If you enable
+      <a href="#pagination">DOC_COVERS_COUNT_PAGES</a>
+      and/or
+      <a href="#pagination">COVERS_COUNT_PAGES</a>,
+      the blank page will be taken into account in the pagination
+      scheme, though no page number appears on it.  Otherwise, blank
+      pages are invisible to mom's pagination.
+      </span>
+    </dd>
+<dl/>
+
+<p>
+Please note that in all cases, if you have passed
+a reference macro one of the optional arguments
+<kbd>DOC_COVER</kbd> or <kbd>COVER</kbd> (e.g.
+<kbd>.TITLE&nbsp;DOC_COVER&nbsp;"Title"</kbd>), mom will print the
+appropriate string on the appropriate cover page.  Thus,
+<br/>
+<span class="pre-in-pp">
+  .TITLE DOC_COVER "Collected Essays"
+  .TITLE COVER "1985-2015"
+  .TITLE "Neo-liberalism: Who Did They Think They Were Fooling?"
+  .DOC_COVER TITLE
+  .COVER TITLE
+</span>
+will print &#8220;Collected Essays&#8221; on the doc-cover page,
+&#8220;1985-2015&#8221; on the cover page, and, assuming the
+docheader hasn&#8217;t been disabled, &#8220;Neo-liberalism: Who
+Did They Think They Were Fooling?&#8221; as the title in the
+docheader.
+</p>
+
+<p>
+Note that
+<br/>
+<span class="pre-in-pp">
+  .DOC_COVERTITLE "Collected Essays"
+  .COVERTITLE "1985-2015"
+  .TITLE "Neo-liberalism: Who Did They Think They Were Fooling?"
+  .DOC_COVER DOC_COVERTITLE
+  .COVER COVERTITLE
+</span>
+could be used to accomplish the same thing.
+</p>
+
+<h5 id="chapter" class="docs" style="margin-top: 0; text-transform: none;">How the CHAPTER argument and friends work</h5>
+
+<p style="margin-top: .75em">
+<span style="display: block; margin-bottom: -1.25em; font-weight: bold;">&bull;&nbsp;CHAPTER</span>
+<br/>
+The <kbd>CHAPTER</kbd> argument will print the
+<a href="docprocessing.html#chapter-string">CHAPTER_STRING</a>
+concatenated with the chapter number you gave to
+<a href="docprocessing.html#chapter">CHAPTER</a>.
+For example, assuming a vanilla setup for your chapter:
+<br/>
+<span class="pre-in-pp" style="color: #64614a;">
+  .CHAPTER 1
+  .CHAPTER_TITLE "The Bonny Blue Yonder"
+  <span style="color: #941614;">.COVER CHAPTER</span>  \" (or <span style="color: #941614;">.DOC_COVER CHAPTER</span>)
+</span>
+will print (and only print)
+<br/>
+<span class="pre-in-pp">
+  Chapter 1
+</span>
+</p>
+
+<p style="margin-top: -1em;">
+<span style="display: block; margin-bottom: -1.25em; font-weight: bold;">&bull;&nbsp;CHAPTER_TITLE</span>
+<br/>
+The <kbd>CHAPTER_TITLE</kbd> argument will print the chapter title
+you gave to
+<a href="docprocessing.html#chapter-title">CHAPTER_TITLE</a>.
+For example, assuming a vanilla setup for your chapter:
+<br/>
+<span class="pre-in-pp" style="color: #64614a;">
+  .CHAPTER 1
+  .CHAPTER_TITLE "The Bonny Blue Yonder"
+  <span style="color: #941614;">.COVER CHAPTER_TITLE</span>  \"(or <span style="color: #941614;">.DOC_COVER CHAPTER_TITLE</span>)
+</span>
+will print (and only print)
+<br/>
+<span class="pre-in-pp">
+    The Bonny Blue Yonder
+</span>
+</p>
+
+<p style="margin-top: -1em;">
+<span style="display: block; margin-bottom: -1.25em; font-weight: bold;">&bull;&nbsp;CHAPTER+TITLE</span>
+<br/>
+The <kbd>CHAPTER+TITLE</kbd> argument will print both the
+concatenated chapter string+number and the chapter title.  For
+example, assuming a vanilla setup for your chapter:
+<br/>
+<span class="pre-in-pp" style="color: #64614a;">
+  .CHAPTER 1
+  .CHAPTER_TITLE "The Bonny Blue Yonder"
+  <span style="color: #941614;">.COVER CHAPTER+TITLE</span> \"(or <span style="color: #941614;">.DOC_COVER CHAPTER+TITLE</span>)
+</span>
+will print
+<br/>
+<span class="pre-in-pp">
+        Chapter 1
+  The Bonny Blue Yonder
+</span>
+</p>
+
+<div class="macro-id-overline">
+<h3 id="covertext" class="macro-id">DOC_COVERTEXT and COVERTEXT</h3>
+</div>
+
+<div class="box-macro-args">
+Macro: <b>DOC_COVERTEXT</b> <kbd class="macro-args">&lt;toggle&gt;</kbd>
+</div>
+<div class="box-macro-args" style="margin-top: 1em;">
+Macro: <b>COVERTEXT</b> <kbd class="macro-args">&lt;toggle&gt;</kbd>
+</div>
+
+<p class="requires">
+&bull;&nbsp;Must come after
+<a href="#printstyle"><span class="normal">PRINTSTYLE</span></a>
+</p>
+
+<p>
+<kbd>DOC_COVERTEXT</kbd> and <kbd>COVERTEXT</kbd> allow you to add
+text to doc-covers and covers in addition to, or instead of, what is
+generated by mom from the arguments you give to
+<a href="#doccover">DOC_COVER</a>
+and
+<a href="#doccover">COVER</a>.
+</p>
+
+<p>
+Invoke <kbd>.DOC_COVERTEXT</kbd> or <kbd>.COVERTEXT</kbd> on a line
+by itself, follow it with the text and formatting you desire, and
+terminate the text block with <kbd>.DOC_COVERTEXT&nbsp;OFF</kbd> or
+<kbd>COVERTEXT&nbsp;OFF</kbd> (or <kbd>QUIT, END, DONE</kbd>, etc.).
+</p>
+
+<p>
+By default, cover text is set over the full line length of the
+document, using the style parameters of
+<a href="definitions.html#running">running text</a>.
+Therefore, as noted, these macros must come after PRINTSTYLE
+and any global style changes (margins, family, size, leading,
+etc.).  Formatting within a cover text block must be done
+&#8220;manually&#8221; with mom&#8217;s typesetting macros;
+<a href="docelement.html#pp">PP</a>
+is the only allowed document element tag.
+</p>
+
+<h4 id="placement" class="docs">Placement</h4>
+
+<p>
+If you do not instruct mom to put anything on doc-cover or cover
+pages except <kbd>DOC_COVERTEXT</kbd> or <kbd>COVERTEXT</kbd>, the
+cover text will begin at the document&#8217;s top margin.  You must
+use
+<a href="typesetting.html#space">SP</a>
+or
+<a href="typesetting.html#ald">ALD</a>
+to move it further down the page.  Equally, if only
+<kbd>COPYRIGHT</kbd> and/or <kbd>MISC</kbd> are to go on the pages,
+cover text begins at the top margin.  In all other cases, cover text
+begins below the last element on the page (excluding COPYRIGHT or
+MISC), separated by a blank line.
+</p>
+
+<p>
+<kbd>DOC_COVERTEXT</kbd> and <kbd>COVERTEXT</kbd> are particularly
+useful for putting abstracts on cover pages, as technical reports
+often require.
+</p>
+
+<p>
+Here's a simple recipe for setting an abstract:
+<br/>
+<span class="pre-in-pp">
+  .COVERTEXT
+  .FT BI
+  .PT_SIZE 14
+  .LS 14
+  .CENTER
+  Abstract
+  .SP .5v
+  .FT R
+  .PT_SIZE 12
+  .IB 6P
+  .JUSTIFY
+  Text of Abstract...
+  .COVERTEXT OFF
+</span>
+Assuming you have told mom to put the title and author on the
+cover page, the abstract will appear beneath the author with a
+14-point bold-italic title, centered, with the text of the abstract
+medium-roman and justified, indented 6 picas from both margins.
+</p>
+
+<div class="macro-id-overline">
+<h3 id="coverimage" class="macro-id">DOC_COVER_IMAGE and COVER_IMAGE</h3>
+</div>
+
+<div id="coverimage" class="box-macro-args">
+Macro: <b>DOC_COVER_IMAGE</b> <kbd class="macro-args">&lt;image&gt; &lt;width&gt; &lt;height&gt; [ -L | -C | -R | -I &lt;indent&gt; &lt;Y-pos&gt; [ &lt;X-pos&gt; ] ]</kbd>
+</div>
+
+<div id="coverimage" class="box-macro-args" style="margin-top: 1em;">
+Macro: <b>COVER_IMAGE</b> <kbd class="macro-args">&lt;image&gt; &lt;width&gt; &lt;height&gt; [ -L | -C | -R | -I &lt;indent&gt; &lt;Y-pos&gt; [ &lt;X-pos&gt; ] ]</kbd> 
+</div>
+
+<p>
+There are times you need a full page image on a cover, for example
+the jacket of a book.  Equally, there are times when you need a small
+image on the cover, perhaps a company logo.
+</p>
+
+<p>
+DOC_COVER_IMAGE and COVER_IMAGE take the same arguments
+as PDF_IMAGE, and in the same order.  Consult
+<a href="images.html#pdf-image">PDF_IMAGE</a>
+for a desciption.
+</p>
+
+<p>
+Two additional arguments allow you to place images using x-y
+coordinates.  Please note that if you use x-y coordinates for
+positioning, <b>Y-pos</b> comes before <b>X-pos</b> in the order of
+arguments.
+</p>
+
+<p>
+Like PDF_IMAGE, the image file must be in PDF format.  Mom
+apologizes, but PostScript images are not supported for inclusion on
+covers.  See
+<a href="images.html#pdf">Image conversion and file processing</a>
+for instructions on converting various image types to PDF, and
+<a href="images.html#bounding-box">here</a>
+for instructions on obtaining image dimensions.
+</p>
+
+<h4 id="positioning" class="docs">Positioning of doc-cover and cover images</h4>
+
+<p>
+With no arguments other than <kbd>&lt;file name&gt;</kbd>,
+<kbd>&lt;width&gt;</kbd>, and <kbd>&lt;height&gt;</kbd>,
+DOC_COVER_IMAGE and COVER_IMAGE place images flush with the top
+left corner of the printer sheet.  This allows placing full-page
+background images on covers.  For example, assuming a US-letter page
+size,
+<br/>
+<span class="pre-in-pp">
+  .DOC_COVER_IMAGE image.pdf 612p 792p
+  .DOC_COVER TITLE AUTHOR DOC_COVER_IMAGE
+</span>
+will fill the doc-cover page with &#8220;image.pdf&#8221; and set
+the title and author in their usual locations.
+</p>
+
+<p>
+For smaller images, the horizontal position is established
+with one of the <kbd>-L</kbd>, <kbd>-C</kbd>, <kbd>-R</kbd>, or
+<kbd>-I&nbsp;&lt;indent&gt;</kbd> arguments, just like
+<a href="images.html#pdf-image">PDF_IMAGE</a>.
+You may instead use the <kbd>X-pos</kbd> argument, provided that it
+is preceded by a <kbd>Y-pos</kbd> argument.  The values given to
+<kbd>-I</kbd>, <kbd>Y-pos</kbd> and <kbd>X-pos</kbd> must have a
+<a href="definitions.html#unitofmeasure">unit of measure</a>
+appended to them.
+</p>
+
+<p>
+Vertical positioning of smaller images requires the <kbd>Y-pos</kbd>
+argument (which is why it precedes <kbd>X-pos</kbd> in the order of
+arguments) otherwise the image will be flush with the top edge of
+the printer sheet
+</p>
+
+<p>
+The positioning of images does not effect the placement of type on
+doc-cover and cover pages.
+</p>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Tip:</span>
+The combination of
+<a href="#covertext">COVERTEXT</a>
+and COVER_IMAGE make it possible to design covers entirely to your
+own specifications.
+</p>
+</div>
+
+<div class="macro-id-overline" style="margin-top: .5em">
+<h3 id="on-off" class="macro-id">Enabling/disabling automatic generation of cover pages</h3>
+</div>
+
+<div id="covers" class="box-macro-args" style="margin-top: .5em">
+Macro: <b>COVERS</b> <kbd class="macro-args">&lt;toggle&gt;</kbd>
+</div>
+
+<div id="doc-covers" class="box-macro-args" style="margin-top: 1em;">
+Macro: <b>DOC_COVERS</b> <kbd class="macro-args">&lt;toggle&gt;</kbd>
+</div>
+
+<p>
+By default, if you give mom a
+<a href="#cover">COVER</a>
+or
+<a href="#doc-cover">DOC_COVER</a>
+directive, she will print the cover or doc-cover.  In a document
+that contains sections, articles or chapters formerly treated as
+&#8221;one-off&#8217;s&#8221; but now being
+<a href="rectoverso.html#collate-intro">collated</a>,
+such behaviour may not be desirable.
+</p>
+
+<p>
+Mom lets you selectively enable or disable the generation of covers
+and/or doc-covers with the toggle macros, COVERS and DOC_COVERS.
+Because they&#8217;re toggle macros, simply invoking them by
+themselves enables automatic cover or doc-cover generation, while
+invoking them with any argument at all (<kbd>OFF, QUIT, X</kbd>,
+etc) disables cover or doc-cover generation. </p>
+
+<div class="box-tip">
+<p class="tip">
+<span class="note">Note:</span>
+You must place these macros prior to any instance of
+<a href="docprocessing.html#start">START</a>.
+Since they&#8217;re &#8221;on&#8221; by default, there&#8217;s no
+need to use them if you want covers.  However, if you don&#8217;t,
+especially in the kind of scenario described above, the best place
+to put them (most likely with an <kbd>OFF, NO, X</kbd>, etc. argument),
+is immediately after the first invocation of START.  By doing so,
+you ensure they meet the requirement of preceding all subsequent
+instances of START.
+</p>
+</div>
+
+<div class="rule-short"><hr/></div>
+
+<h2 id="cover-control" class="macro-group">Control macros for doc-covers and covers</h2>
+
+<p>
+The default typographic appearance of the items on a doc-cover or
+cover is identical to that of the items in a
+<a href="definitions.html#docheader">docheader</a>.
+(See
+<a href="docprocessing.html#docheader-desc">Docheader description</a>
+for a description of the defaults.)
+</p>
+
+<p>
+<a href="docprocessing.html#copyright">COPYRIGHT</a>
+and
+<a href="docprocessing.html#misc">MISC</a>,
+which do not appear in docheaders, have the following default
+characteristics:
+</p>
+<ul style="margin-top: -.5em; margin-bottom: -.5em;">
+  <li>the COPYRIGHT line is set flush with the document&#8217;s right
+      and bottom margins, 2
+      <a href="definitions.html#ps">point sizes</a>
+      smaller than the size of
+      <a href="definitions.html#running">running text</a>
+  </li>
+  <li>MISC lines are set flush with the document&#8217;s left and bottom
+      margins, in the same family, font and point size as the
+      copyright line.
+  </li>
+</ul>
+
+<p>
+The defaults for the entirety of doc-covers and covers, and all the
+elements thereon, can be changed with control macros whose defaults
+and arguments are identical to the corresponding
+<a href="docprocessing.html#index-docheader-control">Control macros for docheaders</a>
+(q.v.)  The only difference is the name by which you invoke them.  Wherever
+<kbd>DOCHEADER</kbd> is used for overall changes, replace it
+with <kbd>DOC_COVER</kbd> or <kbd>COVER</kbd>.  For part-by-part
+changes, prepend <kbd>DOC_COVER_</kbd> or <kbd>COVER_</kbd> to the
+part/parameter.
+</p>
+
+<p>
+Thus, to change the overall family, color, leading, quad and
+starting position of a doc-cover, you&#8217;d do
+<br/>
+<span class="pre-in-pp">
+  .DOC_COVER_FAMILY  H
+  .DOC_COVER_COLOR   blue
+  .DOC_COVER_LEAD    +2
+  .DOC_COVER_QUAD    L
+  .DOC_COVER_ADVANCE 3i \" or .DOC_COVER_START_POS 3i
+</span>
+To change the style parameters for selected parts of a cover, you
+might do something like this:
+<br/>
+<span class="pre-in-pp">
+  .COVER_TITLE_FONT B
+  .COVER_TITLE_SIZE +4
+  .COVER_SUBTITLE_FONT I
+  .COVER_AUTHOR_FONT R
+  .COVER_AUTHOR_SPACE_BEFORE 6p
+  .COVER_DOCTYPE_COLOR red
+  .COVER_MISC_SIZE -1
+  .COVER_MISC_LEAD 12
+  .COVER_COPYRIGHT_SIZE -2
+  .COVER_COPYRIGHT_QUAD L
+  .COVER_MISC_QUAD R
+</span>
+Note in the above example that _COPYRIGHT_QUAD and _MISC_QUAD set
+both the horizontal position on the page and the quad direction,
+either L (or LEFT) or R (or RIGHT), and have no corresponding
+docheader control macro.
+</p>
+
+<div class="box-tip">
+<p class="tip-top">
+<span class="note">Tip:</span>
+As with the docheader control macros, <kbd>DOC_COVER_</kbd> and
+<kbd>COVER_</kbd> part/parameter style changes may be
+<a href="docprocessing.html#grouping">grouped</a>,
+for example
+</br>
+<span class="pre-in-pp">
+  .DOC_COVER_TITLE_STYLE \
+  FAMILY A \
+  FONT B \
+  SIZE +4 \
+  CAPS
+</span>
+</p>
+</div>
+
+<!-- Navigation links -->
+<table style="width: 100%; margin-top: 12px;">
+<tr>
+  <td style="width: 33%;"><a href="toc.html">Back to Table of Contents</a></td>
+  <td style="width: 33%; text-align: center;"><a href="#top">Top</a></td>
+  <td style="width: 33%; text-align: right;"><a href="tables-of-contents.html">Next: Tables of contents</a></td>
+</tr>
+</table>
+
+</div>
+
+<div class="bottom-spacer"><br/></div>
+
+</body>
+</html>

@@ -1,0 +1,713 @@
+.\" -*- mode: text; coding: utf-8; -*-
+\#
+\# Copyright (C) 2004-2018 Free Software Foundation, Inc.
+\#
+\# Copying and distribution of this file, with or without modification,
+\# are permitted in any medium without royalty provided the copyright
+\# notice and this notice are preserved.
+\#
+\# This file contains three greeked documents collated together:
+\#
+\#   i) two pages of a novelist's outline
+\#  ii) two pages of a chapter using COPYSTYLE DRAFT
+\# iii) three pages of an academic paper, set in two columns
+\#
+\# Mom's defaults are used throughout, except for iii), which
+\# demonstrates some of the ways you can design your own documents.
+\#
+\# Since the text throughout is greeked, and groff doesn't know how
+\# to hyphenate all that pseudo-latinate nonsense, I've inserted
+\# discretionary hyphens (\%) into a large number of the words.
+\# Normally, this isn't necessary.
+\#
+\# The PRINTSTYLE is TYPESET.  If you'd like to see what mom does
+\# with the documents when the PRINTSTYLE is TYPEWRITE, change
+\# PRINTSTYLE TYPESET, below, to PRINTSTYLE TYPEWRITE and re-run with
+\#
+\#  pdfmom -Tps sample_docs.mom > sample_docs.pdf 
+\#
+\# ===================================================================
+\#
+\# First, a sample NAMED document--in this case, an outline.
+\# A novelist wouldn't normally write an outline with numbered
+\# subheads and paraheads.  I've turned the feature on merely to
+\# demonstrate it.
+\#
+\# Information for the cover pages
+\#
+\# Title, subtitle and copyright for the document cover.
+\#
+.TITLE DOC_COVER \
+  "Sample mom documents"
+.SUBTITLE DOC_COVER \
+  "Three types of mom documents" \
+  "assembled and collated" \
+  "by mom's author"
+.COPYRIGHT DOC_COVER \
+  "2015 Peter Schaffter"
+\#
+\# What appears in the pdf viewer's window title
+\#
+.PDF_TITLE "Sample mom documents"
+\#
+\# Reference macros (metadata) for the first section of the collated
+\# document.
+\#
+.TITLE     "Lake Attica's Shores"
+.SUBTITLE  "A Romance Novel"
+.AUTHOR    "Rosemary Winspeare"
+.COPYRIGHT "2015 Alma Podborski"
+\#
+\# What to put on the cover for the whole document (in mom-speak,
+\# the "doc cover").  The title, subtitle, and author are what were
+\# given to TITLE DOC_COVER, SUBTITLE DOC_COVER, and COPYRIGHT
+\# DOC_COVER.
+\#
+.DOC_COVER TITLE SUBTITLE COPYRIGHT
+\#
+\# What to put on the first document's title page (in mom-speak, the
+\# "cover").  In this case, we're using the metadata from TITLE,
+\# SUBTITLE, AUTHOR and COPYRIGHT, which will also be used to
+\# generate the docheader (minus the copyright).
+\#
+.COVER TITLE AUTHOR DOCTYPE COPYRIGHT
+\#
+\# Docstyle macros (templates)
+\#
+.DOCTYPE    NAMED "Outline"
+.PRINTSTYLE TYPESET
+.PAPER      LETTER
+\#
+\# Here we style the covers a bit.
+\#
+.DOC_COVER_TITLE_STYLE \
+  SIZE +8 \
+  SMALLCAPS \
+  UNDERLINE 1 3p 
+.DOC_COVER_SUBTITLE_STYLE \
+  FONT I \
+  SIZE +2 \
+  LEAD 18 \
+  SPACE .75v
+.DOC_COVER_COPYRIGHT_SIZE -.5
+\#
+.COVER_TITLE_SIZE +5
+.COVER_ATTRIBUTE_STYLE \
+  SIZE +2 \
+  SPACE .25v
+.COVER_AUTHOR_STYLE \
+  SIZE +2 \
+  LEAD 18
+.COVER_DOCTYPE_STYLE \
+  SIZE +4 \
+  UNDERLINE DOUBLE 1
+.COVER_COPYRIGHT_SIZE -.5
+\#
+\# Here we style the docheader a bit.
+\#
+.SUBTITLE_SPACE .25v
+.DOCTYPE_UNDERLINE 1 2p
+\#
+\# Styles for nested heading levels
+\#
+\# The first two instances of level-1 headings will be paragraph heads
+\# so we set the paragraph head style here, then change it when
+\# level-1 headings become main heads.
+\#
+.HEADING_STYLE 1 \
+  FONT BI \
+  SIZE +.75
+.HEADING_STYLE 2 \
+  FONT B \
+  SIZE +.5 \
+  BASELINE_ADJUST \n[.v]/8 \" ie 1/8 the leading
+\#
+.AUTO_RELOCATE_TOC \" Move table of contents to the top of the doc
+.SPACE_TOC_ITEMS   \" Prettify TOC spacing
+\#
+\# Begin the document
+\#
+.START
+\#
+.PP
+.HEADING 1 PARAHEAD "A note on the setting"
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+nonumy eirmod tempor invidunt ut labore et do\%lo\%re magna ali\%quyam erat,
+sed diam voluptua. Stet clita kasd gubergren, no sea takimata sanctus est.
+At vero eos et accusam et justo duo do\%lo\%re et ea rebum.
+.PP
+Stet clita kasd gubergren, no sea takimata sanctus est.  Lorem ipsum
+dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+tempor invidunt ut labore et do\%lo\%re magna ali\%quyam erat, sed diam
+voluptua.
+.PP
+Consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt
+ut labore et do\%lo\%re magna ali\%quyam erat, sed diam voluptua.  At
+vero, eos et accusam et justo duo do\%lo\%res et ea rebum.  Consetetur
+sadipscing elitr, sed diam nonumy.
+.LINEBREAK
+.PP
+.HEADING 1 PARAHEAD "About historical personnages"
+At vero eos et accusam et justo duo do\%lo\%res et ea rebum.  Stet clita
+kasd gubergren, no sea takimata sanctus est.  Tempor invidunt ut
+labore et do\%lo\%re magna ali\%quyam erat, sed diam voluptua.
+.PP
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+nonumy eirmod tempor invidunt ut labore et do\%lo\%re magna ali\%quyam erat,
+sed diam voluptua.  Consetetur sadipscing elitr, sed diam nonumy
+eirmod tempor invidunt ut labore et do\%lo\%re magna.  Tempor invidunt
+ut labore et do\%lo\%re magna ali\%quyam erat, sed diam voluptua.
+\#
+\# Change level-1 style and add numbering to levels 1 and 2
+\#
+.HEADING_STYLE 1 \
+  FONT B \
+  SIZE +1.5 \
+  CAPS \
+  UNDERSCORE .5 2p \
+  QUAD C \
+  NO_SPACE_AFTER \
+  BASELINE_ADJUST +0 \
+  NUMBER
+.HEADING_STYLE 2 NUMBER
+\#
+.HEADING 1 "Part One"
+.HEADING 2 "Chapter 1"
+.PP
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
+sed diam nonumy eirmod tempor invidunt ut labore et do\%lo\%re magna
+ali\%quyam erat, sed diam voluptua.  At vero eos et accusam et
+justo duo do\%lo\%res et ea rebum.
+.PP
+At vero eos et accusam et justo duo do\%lo\%res et ea rebum.  Stet clita
+kasd gubergren, no sea takimata sanctus est.  Lorem ipsum dolor sit
+amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+invidunt ut labore et do\%lo\%re magna ali\%quyam erat, sed diam voluptua.
+Stet clita kasd gubergren, no sea takimata sanctus est.
+.HEADING 2 "Chapter 2"
+.PP
+Stet clita kasd gubergren, no sea takimata sanctus est.  Lorem ipsum
+dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+tempor invidunt ut labore et do\%lo\%re magna ali\%quyam erat, sed diam
+voluptua.  At vero eos et accusam et justo duo do\%lo\%res et ea rebum.
+.PP
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
+sed diam nonumy eirmod tempor invidunt.  Ut labore et do\%lo\%re magna
+ali\%quyam erat, sed diam voluptua at vero.
+.HEADING 2 "Chapter 3"
+.PP
+Eos et accusam et justo duo do\%lo\%res et ea rebum.  Stet clita kasd
+gubergren, no sea takimata sanctus est lorem ipsum dolor sit amet.
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+nonumy eirmod tempor invidunt ut labore et do\%lo\%re magna ali\%quyam erat,
+sed diam voluptua.  At vero eos et accusam et justo duo do\%lo\%res et
+ea rebum.
+.HEADING 1 "Part Two"
+.HEADING 2 "Chapter 4"
+.PP
+Stet clita kasd gubergren, no sea takimata sanctus est
+lorem ipsum dolor sit amet.  Lorem ipsum dolor sit amet, consetetur
+sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore
+et do\%lo\%re magna ali\%quyam erat, sed diam voluptua.
+.PP
+At vero eos et accusam et justo duo do\%lo\%res et ea rebum.  Stet clita
+kasd gubergren, no sea takimata sanctus est lorem ipsum dolor sit amet.
+.PP
+Nonumy eirmod tempor invidunt ut labore et do\%lo\%re magna ali\%quyam erat,
+sed diam voluptua.  At vero eos et accusam et justo duo do\%lo\%res et
+ea rebum.  Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
+sed diam nonumy eirmod tempor invidunt ut labore et do\%lo\%re magna
+ali\%quyam erat, sed diam voluptua.  At vero eos et accusam et justo
+duo do\%lo\%res et ea rebum.  Stet clita kasd gubergren, no sea takimata
+sanctus est lorem ipsum dolor sit amet.  Consetetur sadipscing elitr,
+sed diam nonumy eirmod tempor invidunt.
+.HEADING 2 "Chapter 5"
+.PP
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
+diam nonumy eirmod tempor invidunt ut labore et do\%lo\%re magna
+ali\%quyam erat, sed diam voluptua.  At vero eos et accusam et
+justo duo do\%lo\%res et ea rebum.  Stet clita kasd gubergren,
+no sea takimata sanctus est lorem ipsum dolor sit amet.
+.PP
+Consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt
+ut labore et do\%lo\%re magna ali\%quyam erat, sed diam voluptua.  At vero
+eos et accusam et justo duo do\%lo\%res et ea rebum.  Stet clita kasd
+gubergren, no sea takimata sanctus.
+.PP
+At vero eos et accusam et justo duo do\%lo\%res et ea rebum.  Stet clita
+kasd gubergren.  Sea takimata sanctus est lorem ipsum dolor
+sit amet.  Accusam et justo duo do\%lo\%res et ea rebum.  Diam
+nonumy eirmod tempor invidunt ut labore et do\%lo\%re magna.
+.RIGHT
+\*[BD]\&...end of sample outline\c
+.EL
+.COLLATE
+\#
+\# The '\c /.EL' keeps mom from depositing a line break which,
+\# because "...end of sample outline" falls exactly on the last
+\# baseline of the page, would spring the page trap that sets a
+\# header at the top of the next page.  Since the next page is a
+\# title page, we don't want that.  Normally, this isn't required,
+\# although using it routinely before COLLATE is a good habit.
+\#
+\# Notice, too, the use of "\&" before "..."  Whenever an input line
+\# begins with either a period, an apostrophe or a space, you must
+\# precede it with \&, otherwise the line will disappear, even when,
+\# as here, there's an inline escape beforehand.
+\#
+\# =====================================================================
+\#
+\# Next, a document composed of two pages of a chapter, set in DRAFT
+\# style, showing the use of the EPIGRAPH BLOCK macro and the QUOTE
+\# macro.
+\#
+\# You'll notice that the starting page number of this "draft" is 1 (in
+\# roman numerals).  COPYSTYLE DRAFT always numbers the first page of a
+\# document 1.
+\#
+.TITLE         "Lake Attica's Shores"
+.SUBTITLE      "A Romance Novel"
+.AUTHOR        "Rosemary Winspeare"
+.CHAPTER        1
+.CHAPTER_TITLE "The Bonny Blue Yonder"
+.DRAFT          1
+.REVISION       2
+.MISC          "Draft 1, 2nd revision"
+\#
+.DOCTYPE    CHAPTER
+.COPYSTYLE  DRAFT
+\#
+.EPIGRAPH_FONT I       \" Epigraphs are normally set in roman
+.DRAFT_WITH_PAGENUMBER \" Draft/revision info usually goes in the header
+\#
+\# Style the title page
+\#
+.COVER_CHAPTER_SIZE +6
+.COVER_CHAPTER_TITLE_STYLE \
+  SIZE +5 \
+  SPACE .25v
+.COVER_MISC_SIZE -.25
+\#
+\# What goes on the title page
+\#
+.COVER CHAPTER+TITLE MISC
+\#
+\# Begin the document
+\#
+.CHAPTER_SIZE +3.5
+.CHAPTER_TITLE_SIZE +5
+.CHAPTER_TITLE_SPACE +3p
+.START
+.EPIGRAPH BLOCK
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+nonumy eirmod tempor invidunt ut labore et do\%lo\%re magna ali\%quyam erat,
+sed diam voluptua.
+.RIGHT
+\#
+\# If running PRINTSTYLE TYPEWRITE, this adds space before
+\# attribution ("Joseph E. Blough")
+\#
+.if \n[#PRINT_STYLE]=1 .sp
+\#
+\*[ROM]\[em]Joseph E. Blough
+.EPIGRAPH OFF
+.PP
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+nonumy eirmod tempor invidunt ut labore et do\%lo\%re magna ali\%quyam erat,
+sed diam voluptua.  At vero eos et accusam et justo duo do\%lo\%res et
+ea rebum.  Stet clita kasd gubergren, no sea takimata sanctus est.
+At vero eos et accusam et justo duo do\%lo\%res et ea rebum.  Lorem ipsum
+dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+tempor invidunt ut labore et do\%lo\%re magna ali\%quyam erat, sed diam
+voluptua.  At vero eos et accusam et justo duo do\%lo\%res et ea rebum.
+Stet clita kasd gubergren, no sea takimata sanctus est.  At vero eos
+et accusam et justo duo do\%lo\%res et ea rebum.
+.PP
+Stet clita kasd gubergren, no sea takimata sanctus est.  Lorem ipsum
+dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+tempor invidunt.
+.PP
+"Consetetur sadipscing elitr," dixit ea.
+.PP
+"Sed diam nonumy eirmod tempor invidunt ut labore," dixit eum.
+.PP
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+nonumy eirmod tempor invidunt ut labore et do\%lo\%re magna ali\%quyam erat,
+sed diam voluptua.  Consetetur sadipscing elitr, sed diam nonumy
+eirmod tempor invidunt ut labore et do\%lo\%re magna.
+.PP
+"Lorem ipsum dolor sit amet," dixit ea.
+.PP
+"At vero eos et accusam et justo duo do\%lo\%res et ea rebum.  Stet clita
+kasd gubergren, no sea takimata sanctus est," dixit eum.  "Sed diam
+nonumy eirmod tempor invidunt ut labore et do\%lo\%re magna ali\%quyam erat,
+sed diam voluptua."
+.PP
+Consetetur sadipscing elitr, sed diam nonumy eirmod tempor:
+.QUOTE
+Invidunt ut labore et do\%lo\%re
+Magna ali\%quyam erat sed diam
+Voluptua stet clita kasd gubergren
+No sea takimata sanctus est.
+.QUOTE OFF
+.PP
+Justo duo do\%lo\%res et ea rebum.  Stet clita kasd gubergren, no
+sea takimata sanctus est.  Lorem ipsum dolor sit amet, consetetur
+sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore
+et do\%lo\%re magna ali\%quyam erat, sed diam voluptua.
+.PP
+"Stet clita kasd gubergren," dixit ea.
+.PP
+"No sea takimata sanctus est," dixit eum.
+.PP
+Nonumy eirmod tempor invidunt ut labore et do\%lo\%re magna.  Aliquyam erat
+sed diam voluptua.  At vero eos et accusam et justo, duo do\%lo\%res et
+ea rebum.
+.PP
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+nonumy eirmod tempor invidunt.  Ut labore et do\%lo\%re magna ali\%quyam
+erat, sed diam voluptua at vero.  Stet clita kasd gubergren, no sea
+takimata sanctus est.  Consetetur sadipscing elitr, sed diam nonumy
+eirmod tempor invidunt ut labore et do\%lo\%re magna.
+.PP
+Invidunt ut labore et do\%lo\%re magna ali\%quyam erat, sed diam voluptua.
+At vero eos et accusam et justo duo do\%lo\%res et ea rebum.  Stet clita
+kasd gubergren, no sea takimata sanctus est.  At vero eos et accusam et
+justo duo do\%lo\%res et ea rebum.  Lorem ipsum dolor sit amet, consetetur
+sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore
+et do\%lo\%re magna ali\%quyam erat, sed diam voluptua.  At vero eos et
+accusam et justo duo do\%lo\%res et ea rebum.  Stet clita kasd gubergren,
+no sea takimata sanctus est.  At vero eos et accusam et justo duo
+do\%lo\%res et ea rebum.
+.RIGHT
+\*[BD]\&...end of sample chapter\c
+.EL
+.COLLATE
+\#
+\# =====================================================================
+\#
+\# Finally, a sample journal article, set in two columns with a
+\# 1.5-pica gutter between them.  This example also uses QUOTES,
+\# BLOCKQUOTES and FOOTNOTES. In addition, it's set RECTO_VERSO,
+\# with differing left and right margins that alternate from page to
+\# page.  (The header also flips from right to left, which you can
+\# see on the 2nd and 3rd pages).
+\#
+\# The primary purpose of this sample is to demonstrate how to
+\# create a stylesheet, along with some of the control macros that
+\# can be used.
+\#
+\# Style the title page
+\#
+.COVER_TITLE_CAPS
+.COVER_ATTRIBUTE_SPACE .5v
+.COVER_AUTHOR_STYLE \
+  SIZE    +1.5 \
+  LEAD 14 \
+  SPACE .25v
+.COVER_MISC_STYLE \
+  QUAD L \
+  SIZE +0
+.COVER_COPYRIGHT_SIZE +0
+\#
+\# What goes on the title page
+\#
+.COVER TITLE AUTHOR COPYRIGHT MISC
+\#
+.DOCTYPE    DEFAULT
+.COPYSTYLE  FINAL
+\#
+.TITLE     "Control Equals Chaos"
+.SUBTITLE  "\*[ALD1]The Psychological and Auditory \
+Impact of Serial vs. Aleatoric Music\*[RLD1]"
+.AUTHOR    "Joe Chang" "and" "Brad Hegel Connors"
+.COPYRIGHT "2015 J. Chang, B.H. Connors
+.MISC      "Submitted June 3, 2015" "\*[IT]Piano Quarterly\*[PREV]"
+\#
+\# Style the docheader
+\#
+.TITLE_CAPS
+.ATTRIBUTE_SPACE .33
+.AUTHOR_SIZE   +1
+.SUBTITLE_SIZE +2
+\#
+.L_MARGIN   6P
+.R_MARGIN   4P+6p
+.PT_SIZE    10
+.AUTOLEAD   1.5
+\#
+.RECTO_VERSO
+.PAGENUM   1
+\#
+.HEADER_LEFT  "Chang, Connors"  \" Because we have two authors
+.HEADER_SIZE  +1
+\#
+.DOCHEADER_ADVANCE 1.75i
+.DOCHEADER_LEAD    +2p
+\#
+\# When PRINTSTYLE is TYPESET, these indents need to be smaller than
+\# the default
+\#
+.if \n[#PRINT_STYLE]=2 \{\
+. PARA_INDENT  1P
+. QUOTE_INDENT 2
+. BLOCKQUOTE_INDENT 2
+.\}
+\#
+\# Style heading 1
+\#
+.HEADING_STYLE 1 \
+  QUAD L \
+  SIZE +0 \
+  NO_NUMBER \
+  NO_CAPS \
+  NO_UNDERSCORE \
+  NO_SPACE_AFTER \
+  BASELINE_ADJUST \n[.v]/8 \" ie 1/8 of the leading
+\#
+\# Style the blockquotes
+\#
+.BLOCKQUOTE_STYLE \
+  FAMILY   H \
+  SIZE     -2 \
+  AUTOLEAD 2
+\#
+.COLUMNS 2 1P+6p \" Set in two columns
+\#
+\# Being the document
+\#
+.START
+.PP
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr.  Sed diam
+nonumy eirmod tempor invidunt ut labore et do\%lo\%re magna.  Ali\%quyam
+erat, sed diam voluptua.
+.PP
+At vero eos et accusam et justo duo do\%lo\%res et ea rebum.  Stet clita
+kasd gubergren no sea takimata.  Sanctus est, lorem ipsum dolor sit
+amet.  Consetetur sadipscing elitr, sed diam nonumy.  Eirmod tempor
+invidunt ut labore et do\%lo\%re magna ali\%quyam erat.  Sed diam voluptua
+at vero eos et accusam et justo.
+\#
+.BLOCKQUOTE
+Stet clita kasd gubergren, no sea takimata sanctus est lorem.
+Ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+eirmod tempor.  Invidunt ut labore et do\%lo\%re magna ali\%quyam erat,
+sed diam voluptua at vero.  Eos et accusam et justo duo do\%lo\%res et
+ea rebum stet clita.\c
+.FOOTNOTE  \" Note the use of \c, above, to keep the word and footnote marker together.
+Clita ipsum dolor sit amet, consetetur sadipscing elitr.
+.FOOTNOTE OFF
+.BLOCKQUOTE OFF
+\#
+.PP
+Duo do\%lo\%res et ea rebum, stet clita kasd gubergren.  No sea takimata
+sanctus est lorem ipsum dolor sit amet, consetetur sadipscing elitr.
+Sed diam nonumy eirmod tempor invidunt ut labore et do\%lo\%re magna
+ali\%quyam.  Erat sed diam voluptua at.  Vero eos et accusam et justo
+duo do\%lo\%res et ea rebum stet.  Clita kasd gubergren no sea takimata
+sanctus est.
+.PP
+Nonumy eirmod tempor invidunt, ut labore et do\%lo\%re magna ali\%quyam
+erat?  At vero eos et accusam et justo duo do\%lo\%res et ea.  Rebum stet
+clita kasd gubergren no sea takimata sanctus.  Est lorem ipsum dolor
+sit amet.  Sadipscing\c
+.FOOTNOTE
+Sadipscing diam nonumy eirmod tempor invidunt ut labore et do\%lo\%re magna
+ali\%quyam erat, sed diam voluptua.
+.FOOTNOTE OFF
+ elitr sed diam nonumy eirmod tempor invidunt.  Ut labore et do\%lo\%re
+magna ali\%quyam erat, sed diam voluptua.  At vero eos et accusam et
+justo duo do\%lo\%res et ea rebum.  Stet clita kasd gubergren no sea.
+\#
+.HEADING 1 "Schoenberg \[em]" "The Origins of Serial Pitch Organization"
+\#
+.PP
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+nonumy eirmod tempor invidunt ut labore et do\%lo\%re magna ali\%quyam erat,
+sed diam voluptua.  At vero eos et accusam et justo duo do\%lo\%res et ea
+rebum.  Stet clita kasd gubergren, no sea takimata sanctus est lorem.
+Ipsum dolor sit amet consetetur sadipscing.  Elitr, sed diam nonumy,
+eirmod tempor invidunt ut labore et do\%lo\%re magna.  Ali\%quyam erat sed
+diam voluptua, at vero eos.  Et accusam et justo duo do\%lo\%res et ea
+rebum stet clita kasd gubergren lorem ipsum.  Dolor sit amet
+consetetur, sadipscing elitr, sed diam.  Nonumy eirmod tempor invidunt
+ut labore et do\%lo\%re.  Magna ali\%quyam erat sed diam voluptua at vero.
+Eos et accusam et justo duo do\%lo\%res et ea rebum stet clita kasd.
+Gubergren no sea takimata sanctus est.
+.PP
+Amet consetetur sadipscing elitr sed diam nonumy eirmod.  Tempor
+invidunt ut labore.  Et dolor\%e magna ali\%quyam erat, sed diam voluptua,
+at vero.  Eos et accusam et justo duo do\%lo\%res et ea rebum.  Stet clita
+kasd gubergren sed diam voluptua.
+.PP
+No sea takimata\c
+.FOOTNOTE
+Takimata sadipscing elitr, sed diam nonumy eirmod tempor invidunt
+ut labore et do\%lo\%re magna ali\%quyam erat, sed diam voluptua.
+.FOOTNOTE OFF
+ sanctus est lorem. Ipsum dolor sit amet, consetetur
+sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore
+et do\%lo\%re magna ali\%quyam erat, sed diam voluptua.  At vero eos et
+accusam et justo duo do\%lo\%res et ea rebum amet.  Consetetur sadipscing
+elitr sed diam nonumy eirmod tempor invidunt ut labore, et do\%lo\%re
+magna ali\%quyam erat.  Sed diam voluptua, at vero, eos et accusam et
+justo duo do\%lo\%res et ea rebum qua certiore.
+\#
+.HEADING 1 "Messiaen to Stockhausen \[em]" "The Quest for Absolute Control"
+\#
+.PP
+Vero eos et accusam et justo duo do\%lo\%res et ea rebum amet:
+\#
+.QUOTE
+Eirmod tempor invidunt
+Ut labore et do\%lo\%re magna ali\%quyam erat
+Sed diam voluptua
+At vero eos et accusam et justo duo do\%lo\%res.
+.QUOTE OFF
+\#
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr
+sed diam.  Nonumy eirmod tempor invidunt ut labore et do\%lo\%re magna.
+Aliquyam erat, sed diam voluptua at vero eos et accusam.  Et
+justo duo do\%lo\%res et rebum.
+.PP
+Elitr sed diam nonumy eirmod tempor.  Invidunt ut labore et do\%lo\%re
+magna ali\%quyam erat sed.  Diam voluptua at vero eos et accusam et
+justo duo do\%lo\%res et ea rebum.
+\#
+.BLOCKQUOTE
+Sanctus est lorem ipsum dolor sit amet, consetetur sadipscing.  Elitr,
+sed diam nonumy eirmod tempor, invidunt ut labore et do\%lo\%re magna
+ali\%quyam.  Erat sed diam voluptua, at vero eos et accusam et justo
+rebum amet.  Consetetur sadipsc\%ing elitr sed diam nonumy eirmod
+sed diam nonumy, eirmod tempor.  Invidunt tempor invidunt ut labore.\c
+.FOOTNOTE
+Labore diam nonumy eirmod tempor, invidunt ut labore et do\%lo\%re
+magna ali\%quyam.  Erat sed diam voluptua, at vero eos et accusam et
+justo.
+.FOOTNOTE OFF
+ Et do\%lo\%re et magna ali\%quyam erat, sed diam voluptua, at vero.
+Eos et accusam et justo duo.
+.BLOCKQUOTE OFF
+\#
+.PP
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr.  Sed diam
+nonumy eirmod tempor invidunt ut labore et do\%lo\%re magna.
+.PP
+Nonumy eirmod tempor invidunt, ut labore et do\%lo\%re magna ali\%quyam
+erat?  At vero eos et accusam et justo duo do\%lo\%res et ea.  Rebum stet
+clita kasd gubergren no sea takimata sanctus.  Est lorem ipsum dolor
+sit amet.  Sadipscing elitr sed diam nonumy eirmod tempor invidunt.
+Ut labore et do\%lo\%re magna ali\%quyam erat, sed diam voluptua.
+At vero eos et accusam et justo duo do\%lo\%res et ea rebum.
+Stet clita kasd gubergren no sea.  Ali\%quyam erat, sed diam voluptua.
+\#
+.HEADING 1 "John Cage \[em]" "Leaving It All to Chance"
+\#
+.PP
+Sit amet, consetetur sadipscing elitr, sed diam nonumy.  Eirmod tempor
+invidunt ut labore et do\%lo\%re magna.  Ali\%quyam erat, sed diam
+voluptua at vero.  Eos et accusam et justo duo dolores et ea rebum.
+Stet clita kasd gubergren, no sea taki\%mata sanctus est.
+.PP
+Consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt
+ut labore et do\%lo\%re magna ali\%quyam erat, sed diam voluptua.  At vero
+eos et accusam et justo duo do\%lo\%res et ea rebum.  Stet clita kasd
+gubergren, no sea takimata sanctus est lorem.  Ipsum dolor sit amet,
+consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt
+ut labore et do\%lo\%re magna ali\%quyam erat, sed diam voluptua.  At vero
+eos et accusam et justo duo do\%lo\%res et ea rebum.
+.PP
+Stet clita kasd gubergren.  No sea takimata sanctus est lorem ipsum
+dolor sit.  Amet consetetur sadipscing elitr, sed diam nonumy eirmod
+tempor.  Invidunt ut labore et do\%lo\%re magna ali\%quyam erat, sed diam
+voluptua, at vero.  Eos et accusam et justo duo do\%lo\%res et ea rebum.
+Stet clita kasd gubergren, no sea takimata.  Sanctus est lorem ipsum
+dolor sit amet consetetur.  Sadipscing elitr sed diam nonumy eirmod
+tempor invidunt.  Ut labore et do\%lo\%re magna ali\%quyam erat, sed diam
+voluptua.  At vero eos et accusam et justo duo do\%lo\%res et ea rebum.
+\#
+.BLOCKQUOTE
+.PP
+Stet clita kasd gubergren no sea.  Takimata sanctus est lorem ipsum
+dolor sit amet.  Consetetur sadipscing elitr sed diam nonumy eirmod
+tempor invidunt ut labore et do\%lo\%re.  Magna ali\%quyam\c
+.FOOTNOTE
+Aliquyam nonumy eirmod tempor invidunt ut labore.
+.FOOTNOTE OFF
+ erat, sed diam
+voluptua at vero eos et accusam.  Et justo duo do\%lo\%res et ea rebum,
+stet clita kasd gubergren, no sea takimata.
+.PP
+Takimata lorem ipsum dolor sit amet consetetur sadipscing elitr.
+Sed diam, nonumy eirmod tempor, invidunt ut labore et do\%lo\%re magna.
+Aliquyam erat sed diam voluptua.  At vero eos et accusam et
+justo.\c
+.FOOTNOTE
+Justo vero eos et accusam et justo duo.
+.FOOTNOTE OFF
+.BLOCKQUOTE OFF
+\#
+.PP
+Duo do\%lo\%res et ea rebum, stet clita kasd gubergren, no sea takimata
+sanctus.  Est lorem ipsum.  Dolor sit amet, consetetur sadipscing elitr,
+sed diam nonumy.  Eirmod tempor invidunt ut labore et do\%lo\%re magna
+ali\%quyam erat, sed diam voluptua.  At vero eos et accusam.
+.PP
+Et justo duo do\%lo\%res et ea rebum stet clita kasd.  Gubergren
+no sea takimata sanctus est.  Lorem ipsum dolor sit amet, consetetur
+sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore
+et dolore magna ali\%quyam erat, sed diam voluptua.  At vero eos et
+accusam et justo duo dolores et ea rebum.  Stet clita kasd gubergren,
+no sea takimata sanctus est.
+\#
+.HEADING 1 "Beyond Cage \[em]" "Catching the Midnight Train"
+\#
+.PP
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr.  Sed diam
+nonumy eirmod tempor invidunt ut labore et do\%lo\%re magna.  Ali\%quyam
+erat, sed diam voluptua.
+.PP
+At vero eos et accusam et justo duo do\%lo\%res et ea rebum.  Stet clita
+kasd gubergren no sea takimata.  Sanctus est, lorem ipsum dolor sit
+amet.  Consetetur sadipscing elitr, sed diam nonumy.  Eirmod tempor
+invidunt ut labore et do\%lo\%re magna ali\%quyam erat.  Sed diam voluptua
+at vero eos et accusam et justo.
+.PP
+Duo do\%lo\%res et ea rebum, stet clita kasd gubergren.  No sea takimata
+sanctus est lorem ipsum dolor sit amet, consetetur sadipscing elitr.
+Sed diam nonumy eirmod tempor invidunt ut labore et do\%lo\%re magna
+ali\%quyam.  Erat sed diam voluptua at.  Vero eos et accusam et justo
+duo do\%lo\%res et ea rebum stet.  Clita kasd gubergren no sea takimata
+sanctus est.
+.PP
+Nonumy eirmod tempor invidunt, ut labore et do\%lo\%re magna ali\%quyam
+erat?  At vero eos et accusam et justo duo do\%lo\%res et ea.  Rebum stet
+clita kasd gubergren no sea takimata sanctus.  Est lorem ipsum dolor
+amet.  Sadipscing\c
+.FOOTNOTE
+Sadipscing diam nonumy eirmod tempor invidunt ut labore et do\%lo\%re magna
+ali\%quyam erat, sed diam voluptua.
+.FOOTNOTE OFF
+ elitr sed diam nonumy eirmod tempor invidunt.  Ut labore et do\%lo\%re
+magna ali\%quyam erat, sed diam voluptua.  At vero eos et accusam et
+justo duo do\%lo\%res et ea rebum.  Stet clita kasd gubergren no sea
+takimata lorem.  Ipsum dolor sit amet, consetetur sadipscing elitr.
+Sed diam nonumy eirmod tempor invidunt ut labore et do\%lo\%re magna.
+Ali\%quyam erat, sed diam voluptua.  At vero eos et accusam et justo
+duo do\%lo\%res et ea rebum.  Stet clita kasd gubergren, no sea
+takimata sanctus est.
+.PP
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
+diam nonumy eirmod tempor invidunt ut labore et do\%lo\%re magna
+ali\%quyam erat, sed diam voluptua.  At vero eos et accusam et justo
+duo do\%lo\%res et ea rebum.  Stet clita kasd gubergren, no sea
+takimata sanctus est.
+.RIGHT
+\*[BD]\&...end of sample article\*[PREV]
+.FINIS
+.TOC_RV_SWITCH
+.TOC
+.\" Local Variables:
+.\" mode: nroff
+.\" End:
+.\" vim: filetype=groff:

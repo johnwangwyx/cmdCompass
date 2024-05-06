@@ -1,0 +1,88 @@
+SOELIM(1)                   General Commands Manual                  SOELIM(1)
+
+
+
+NNAAMMEE
+       soelim - interpret .so requests in groff input
+
+SSYYNNOOPPSSIISS
+       ssooeelliimm [--CCrrttvv] [--II _d_i_r] [_f_i_l_e ...]
+
+DDEESSCCRRIIPPTTIIOONN
+       ssooeelliimm reads _f_i_l_e_s and replaces lines of the form
+
+              ..ssoo _f_i_l_e
+
+       by  the contents of _f_i_l_e.  It is useful if files included with ..ssoo need
+       to be preprocessed.  Normally, ssooeelliimm should be  invoked  with  the  --ss
+       option of ggrrooffff.
+
+       To  embed  `\' in the file name, write `\\' or `\e'.  To embed a space,
+       write `\ '.  Any other escape sequence in _f_i_l_e makes ssooeelliimm ignore  the
+       whole line.
+
+       Note  that  there must be no whitespace between the leading dot and the
+       two characters `s' and `o'.  Otherwise, only ggrrooffff interprets  the  ..ssoo
+       request (and ssooeelliimm ignores it).
+
+OOPPTTIIOONNSS
+       Whitespace is permitted between a command-line option and its argument.
+
+       --CC     Recognize ..ssoo even when followed by a character other than space
+              or newline.
+
+       --II_d_i_r  This option may be used to add a directory to  the  search  path
+              for files (both those on the command line and those named in ..ssoo
+              requests).  The search path  is  initialized  with  the  current
+              directory.   This  option  may  be specified more than once; the
+              directories are then searched in the order specified (but before
+              the  current directory).  If you want to make the current direc-
+              tory be read before other directories, add --II.. at the  appropri-
+              ate place.
+
+              No directory search is performed for files with an absolute file
+              name.
+
+       --rr     Do not add ..llff requests (for general use, with non-groff files).
+
+       --tt     Don't emit ..llff requests but TeX  comment  lines  (starting  with
+              `%') giving the current file and line number.
+
+       --vv     Print the version number.
+
+UUSSAAGGEE
+       The normal processing sequence of groff is this:
+
+                 input        sourced
+                 file          file
+                   |             |
+                   v             v
+               preprocessor -> troff -> postprocessor
+                                             |
+                                             v
+                                          output
+                                           file
+
+       That  is,  files  sourced with ..ssoo are normally read _o_n_l_y by ttrrooffff (the
+       actual formatter).  ssooeelliimm is _n_o_t required for ttrrooffff to source files.
+
+       If a file to be sourced should also be preprocessed, it must already be
+       read  _b_e_f_o_r_e  the  input file passes through the preprocessor.  This is
+       handled by ssooeelliimm:
+
+                 input
+                 file
+                   |
+                   v
+                 soelim -> preprocessor -> troff -> postprocessor
+                   ^                                     |
+                   |                                     v
+                sourced                               output
+                 file                                  file
+
+SSEEEE AALLSSOO
+       ggrrooffff(1)
+
+
+
+groff 1.22.4                     November 2018                       SOELIM(1)

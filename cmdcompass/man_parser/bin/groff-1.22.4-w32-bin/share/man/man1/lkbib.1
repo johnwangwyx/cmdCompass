@@ -1,0 +1,166 @@
+.TH LKBIB 1 "November 2018" "groff 1.22.4"
+.SH NAME
+lkbib \- search bibliographic databases
+.
+.
+.\" ====================================================================
+.\" Legal Terms
+.\" ====================================================================
+.\"
+.\" Copyright (C) 1989-2018 Free Software Foundation, Inc.
+.\"
+.\" Permission is granted to make and distribute verbatim copies of this
+.\" manual provided the copyright notice and this permission notice are
+.\" preserved on all copies.
+.\"
+.\" Permission is granted to copy and distribute modified versions of
+.\" this manual under the conditions for verbatim copying, provided that
+.\" the entire resulting derived work is distributed under the terms of
+.\" a permission notice identical to this one.
+.\"
+.\" Permission is granted to copy and distribute translations of this
+.\" manual into another language, under the above conditions for
+.\" modified versions, except that this permission notice may be
+.\" included in translations approved by the Free Software Foundation
+.\" instead of in the original English.
+.
+.
+.\" ====================================================================
+.SH SYNOPSIS
+.\" ====================================================================
+.
+.SY lkbib
+.OP \-n
+.OP \-i fields
+.OP \-p filename
+.OP \-t n
+.I key
+\&.\|.\|.\&
+.YS
+.
+.SY lkbib
+.B \-\-help
+.YS
+.
+.SY lkbib
+.B \-v
+.SY lkbib
+.B \-\-version
+.YS
+.
+.
+.\" ====================================================================
+.SH DESCRIPTION
+.\" ====================================================================
+.
+.I lkbib
+searches bibliographic databases for references that contain the keys
+.I key
+\&.\|.\|.\& and prints any references found on the standard output.
+.
+.I lkbib
+will search any databases given by
+.B \-p
+options, and then a default database.
+.
+The default database is taken from the
+.I \%REFER
+environment variable if it is set,
+otherwise it is
+.IR /usr/\:dict/\:papers/\:Ind .
+.
+For each database
+.I filename
+to be searched,
+if an index
+.RI filename .i
+created by
+.IR indxbib (1)
+exists, then it will be searched instead;
+each index can cover multiple databases.
+.
+.
+.\" ====================================================================
+.SH OPTIONS
+.\" ====================================================================
+.
+Whitespace is permitted between a command-line option and its argument.
+.
+.
+.TP
+.B \-\-help
+Display a usage message and exit.
+.
+.
+.TP
+.BI \-i string
+When searching files for which no index exists,
+ignore the contents of fields whose names are in
+.IR string .
+.
+.
+.TP
+.BI \-p filename
+Search
+.IR filename .
+.
+Multiple
+.B \-p
+options can be used.
+.
+.
+.TP
+.BI \-t n
+Only require the first
+.I n
+characters of keys to be given.
+.
+Initially
+.I n
+is\~6.
+.
+.
+.TP
+.B \-v
+.TQ
+.B \-\-version
+Display version information and exit.
+.
+.
+.\" ====================================================================
+.SH ENVIRONMENT
+.\" ====================================================================
+.
+.TP
+.I REFER
+Default database.
+.
+.
+.\" ====================================================================
+.SH FILES
+.\" ====================================================================
+.
+.TP
+.I /usr/\:dict/\:papers/\:Ind
+Default database to be used if the
+.I \%REFER
+environment variable is not set.
+.
+.
+.TP
+.RI filename .i
+Index files.
+.
+.
+.\" ====================================================================
+.SH "SEE ALSO"
+.\" ====================================================================
+.IR refer (1),
+.IR lookbib (1),
+.IR indxbib (1)
+.
+.
+.\" Local Variables:
+.\" mode: nroff
+.\" End:
+.\" vim: set filetype=groff:

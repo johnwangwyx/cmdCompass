@@ -1,0 +1,159 @@
+HPFTODIT(1)                 General Commands Manual                HPFTODIT(1)
+
+
+
+NNAAMMEE
+       hpftodit - create font description files for use with groff -Tlj4
+
+SSYYNNOOPPSSIISS
+       hhppffttooddiitt [--aaqqss] [--ii _n] _t_f_m_-_f_i_l_e _m_a_p_-_f_i_l_e _o_u_t_p_u_t_-_f_o_n_t
+
+       hhppffttooddiitt --dd _t_f_m_-_f_i_l_e [_m_a_p_-_f_i_l_e]
+
+       hhppffttooddiitt ----hheellpp
+
+       hhppffttooddiitt --vv
+       hhppffttooddiitt ----vveerrssiioonn
+
+DDEESSCCRRIIPPTTIIOONN
+       hhppffttooddiitt   creates   a   font  file  for  use  with  a  Hewlett-Packard
+       LaserJet 4-series (or newer) printer with ggrrooffff --TTlljj44, using data  from
+       an  HP  tagged font metric (TFM) file.  _t_f_m_-_f_i_l_e is the name of the TFM
+       file for the font; Intellifont and TrueType TFM  files  are  supported,
+       but  symbol set TFM files are not.  _m_a_p_-_f_i_l_e is a file giving the _g_r_o_f_f
+       names for characters in  the  font;  this  file  should  consist  of  a
+       sequence of lines of the form:
+              _m _u _c_1 _c_2 ... [# _c_o_m_m_e_n_t]
+       where _m is a decimal integer giving the MSL (Master Symbol List) number
+       of the character, _u is a hexadecimal integer giving the  Unicode  value
+       of the character, and _c_1, _c_2, ...  are the _g_r_o_f_f names of the character
+       (see ggrrooffff__cchhaarr(7) for a list).  The values can  be  separated  by  any
+       whitespace;  the  Unicode value must use uppercase digits A-F, and must
+       be without a leading `00xx', `uu', or `UU++'.  Unicode values  corresponding
+       to composite glyphs are decomposed; e.g., `uu0000CC00' becomes `uu00004411__00330000'.
+       The name for a glyph without a _g_r_o_f_f name may be given as uu_X_X_X_X if  the
+       glyph corresponds to a Unicode value, or as an unnamed glyph `------'.  If
+       the given Unicode value is in the Private Use Area (0xE000-0xF8FF), the
+       glyph  is  included  as  an  unnamed glyph.  Refer to ggrrooffff__ddiiffff(1) for
+       additional information about unnamed glyphs and how to access them.
+
+       Blank lines and lines beginning with `##' are ignored.  A `##'  following
+       one or more _g_r_o_f_f names begins a comment.  Because `##' is a valid _g_r_o_f_f
+       name, it must appear first in a list of _g_r_o_f_f names  if  a  comment  is
+       included, e.g.,
+              33   00002233   ##   ## nnuummbbeerr ssiiggnn
+       or
+              33   00002233   ## sshh   ## nnuummbbeerr ssiiggnn
+       rather than
+              33   00002233   sshh ##   ## nnuummbbeerr ssiiggnn
+       which will treat the first `##' as the beginning of the comment.
+
+       The  _g_r_o_f_f  font  file is written to the specified _o_u_t_p_u_t_-_f_o_n_t; if this
+       operand is `--', the font file is written to the standard output.
+
+       The --ss option should be given if the font is special (a font  is  "spe-
+       cial"  if  _g_r_o_f_f  should search it whenever a character is not found in
+       the current font).  If the font is special, it should be listed in  the
+       ffoonnttss  command in the DESC file; if it is not special, there is no need
+       to list it, since _g_r_o_f_f can automatically  mount  it  when  it's  first
+       used.
+
+       If  the  --ii  option  is  used,  hhppffttooddiitt automatically will generate an
+       italic correction, a left italic correction and a subscript  correction
+       for  each  character (the significance of these parameters is explained
+       in ggrrooffff__ffoonntt(5)).
+
+OOPPTTIIOONNSS
+       --aa     Include characters in the TFM file that are not included in _m_a_p_-
+              _f_i_l_e.   A  glyph  with  corresponding Unicode value is given the
+              name u_X_X_X_X; a glyph without a Unicode value is  included  as  an
+              unnamed  glyph  `---'.  A glyph with a Unicode value in the Pri-
+              vate Use Area (0xE000-0xF8FF) also is  included  as  an  unnamed
+              glyph.
+
+              This  option provides a simple means of adding Unicode-named and
+              unnamed glyphs to a font without including them in the map file,
+              but  it affords little control over which glyphs are placed in a
+              regular font and which are placed in a special font.  The  pres-
+              ence or absence of the --ss option has some effect on which glyphs
+              are included: without the --ss option, only the "text" symbol sets
+              are  searched  for matching glyphs; with the --ss option, only the
+              "mathematical" symbol sets are searched.  Nonetheless, restrict-
+              ing  the  symbol sets searched isn't very selective--many glyphs
+              are placed in both regular and special fonts.  Normally, the  --aa
+              option should be used only as a last resort.
+
+       --dd     Dump information about the TFM file to the standard output; this
+              option can be useful for ensuring that a TFM file  is  a  proper
+              match  for  a  font,  and  that the contents of the TFM file are
+              suitable.  The information includes the values of important  TFM
+              tags,  and a listing (by MSL number for Intellifont TFM files or
+              by Unicode value for TrueType TFM files) of the glyphs  included
+              in  the  TFM file.  The unit of measure `DU' for some tags indi-
+              cates design units; there are  8782  design  units  per  em  for
+              Intellifont  fonts,  and  2048  design units per em for TrueType
+              fonts.  Note that the accessibility of a glyph  depends  on  its
+              inclusion  in  a symbol set; some TFM files list many glyphs but
+              only a few symbol sets.
+
+              The glyph listing includes the glyph index within the TFM  file,
+              the  MSL or Unicode value, and the symbol set and character code
+              that will be used to print the glyph.   If  _m_a_p_-_f_i_l_e  is  given,
+              _g_r_o_f_f  names  are  given for matching glyphs.  If only the glyph
+              index and MSL or Unicode value are given,  the  glyph  does  not
+              appear in any supported symbol set and cannot be printed.
+
+              With  the  --dd  option,  _m_a_p_-_f_i_l_e is optional, and _o_u_t_p_u_t_-_f_o_n_t is
+              ignored if given.
+
+       --qq     Suppress warnings about characters in the map file that were not
+              found  in  the  TFM  file.  Warnings never are given for unnamed
+              glyphs or by glyphs named by their Unicode values.  This  option
+              is  useful  when  sending the output of hhppffttooddiitt to the standard
+              output.
+
+       --vv     Print the hhppffttooddiitt version number and exit.
+
+       --ss     The font is special.  This option adds the  ssppeecciiaall  command  to
+              the font file, and affects the order in which HP symbol sets are
+              searched for each glyph.  Without the --ss option, the "text" sets
+              are searched before the "mathematical" symbol sets.  With the --ss
+              option, the search order is reversed.
+
+       --ii_n    Generate an italic correction for each  character  so  that  the
+              character's  width  plus  the  character's  italic correction is
+              equal to _n thousandths of an em plus the  amount  by  which  the
+              right  edge  of  the character's bounding is to the right of the
+              character's origin.  If this would result in a  negative  italic
+              correction, use a zero italic correction instead.
+
+              Also generate a subscript correction equal to the product of the
+              tangent of the slant of the font and four fifths of the x-height
+              of  the  font.   If  this would result in a subscript correction
+              greater than the italic correction, use a  subscript  correction
+              equal to the italic correction instead.
+
+              Also  generate a left italic correction for each character equal
+              to _n thousandths of an em plus the amount by which the left edge
+              of  the  character's  bounding box is to the left of the charac-
+              ter's origin.  The left italic correction may be negative.
+
+              This option normally is  needed  only  with  italic  or  oblique
+              fonts; a value of 50 (0.05 em) usually is a reasonable choice.
+
+FFIILLEESS
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_v_l_j_4_/_D_E_S_C
+              device description file
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_v_l_j_4_/F
+              Font description file for font _F
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_v_l_j_4_/_g_e_n_e_r_a_t_e_/*_._m_a_p
+              symbol mapping files
+
+SSEEEE AALLSSOO
+       ggrrooffff(1), ggrrooffff__ddiiffff(1), ggrroolljj44(1), ggrrooffff__ffoonntt(5), lljj44__ffoonntt(5)
+
+
+
+groff 1.22.4                     November 2018                     HPFTODIT(1)

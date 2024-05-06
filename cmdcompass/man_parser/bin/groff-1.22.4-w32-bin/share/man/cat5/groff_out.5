@@ -1,0 +1,779 @@
+GROFF_OUT(5)                  File Formats Manual                 GROFF_OUT(5)
+
+
+
+NNAAMMEE
+       groff_out - groff intermediate output format
+
+DDEESSCCRRIIPPTTIIOONN
+       This  manual  page  describes the _i_n_t_e_r_m_e_d_i_a_t_e _o_u_t_p_u_t format of the GNU
+       rrooffff(7) text processing system ggrrooffff(1).  This output is produced by  a
+       run  of  the GNU ttrrooffff(1) program.  It contains already all device-spe-
+       cific information, but it is not yet fed into  a  device  postprocessor
+       program.
+
+       As  the  GNU  _r_o_f_f processor ggrrooffff(1) is a wrapper program around ttrrooffff
+       that automatically calls a postprocessor, this output does not show  up
+       normally.   This is why it is called _i_n_t_e_r_m_e_d_i_a_t_e within the _g_r_o_f_f _s_y_s_-
+       _t_e_m.  The ggrrooffff program provides the option --ZZ to inhibit  postprocess-
+       ing,  such  that  the  produced _i_n_t_e_r_m_e_d_i_a_t_e _o_u_t_p_u_t is sent to standard
+       output just like calling ttrrooffff manually.
+
+       In this document, the term _t_r_o_f_f _o_u_t_p_u_t describes what is output by the
+       GNU  ttrrooffff  program,  while  _i_n_t_e_r_m_e_d_i_a_t_e _o_u_t_p_u_t refers to the language
+       that is accepted by the parser that prepares this output for the  post-
+       processors.   This parser is smarter on whitespace and implements obso-
+       lete elements for compatibility, otherwise both formats are  the  same.
+       Both formats can be viewed directly with ggxxddiittvviieeww(1).
+
+       The  main  purpose  of the _i_n_t_e_r_m_e_d_i_a_t_e _o_u_t_p_u_t concept is to facilitate
+       the development of postprocessors by  providing  a  common  programming
+       interface  for  all devices.  It has a language of its own that is com-
+       pletely different from the ggrrooffff(7) language.  While the _g_r_o_f_f language
+       is  a high-level programming language for text processing, the _i_n_t_e_r_m_e_-
+       _d_i_a_t_e _o_u_t_p_u_t language is a kind  of  low-level  assembler  language  by
+       specifying all positions on the page for writing and drawing.
+
+       The pre-_g_r_o_f_f _r_o_f_f versions are denoted as _c_l_a_s_s_i_c_a_l _t_r_o_f_f.  The _i_n_t_e_r_-
+       _m_e_d_i_a_t_e _o_u_t_p_u_t produced by ggrrooffff is fairly  readable,  while  _c_l_a_s_s_i_c_a_l
+       _t_r_o_f_f  output was hard to understand because of strange habits that are
+       still supported, but not used any longer by _G_N_U _t_r_o_f_f.
+
+LLAANNGGUUAAGGEE CCOONNCCEEPPTTSS
+       During the run of ttrrooffff, the _r_o_f_f input is cracked down to the informa-
+       tion on what has to be printed at what position on the intended device.
+       So the language of the _i_n_t_e_r_m_e_d_i_a_t_e _o_u_t_p_u_t format can be  quite  small.
+       Its only elements are commands with or without arguments.  In this doc-
+       ument, the term "command" always refers to the _i_n_t_e_r_m_e_d_i_a_t_e _o_u_t_p_u_t lan-
+       guage,  never to the _r_o_f_f language used for document formatting.  There
+       are commands for positioning and text writing,  for  drawing,  and  for
+       device controlling.
+
+   SSeeppaarraattiioonn
+       _C_l_a_s_s_i_c_a_l  _t_r_o_f_f  _o_u_t_p_u_t  had  strange requirements on whitespace.  The
+       ggrrooffff output parser, however, is smart about whitespace  by  making  it
+       maximally  optional.   The whitespace characters, i.e., the _t_a_b, _s_p_a_c_e,
+       and _n_e_w_l_i_n_e characters, always have a syntactical  meaning.   They  are
+       never  printable  because  spacing  within the output is always done by
+       positioning commands.
+
+       Any sequence of _s_p_a_c_e or _t_a_b characters is treated as a single  _s_y_n_t_a_c_-
+       _t_i_c_a_l _s_p_a_c_e.  It separates commands and arguments, but is only required
+       when there would occur a clashing between  the  command  code  and  the
+       arguments  without  the  space.  Most often, this happens when variable
+       length command names, arguments, argument lists,  or  command  clusters
+       meet.   Commands  and  arguments with a known, fixed length need not be
+       separated by _s_y_n_t_a_c_t_i_c_a_l _s_p_a_c_e.
+
+       A line break is a syntactical element, too.  Every command argument can
+       be  followed  by whitespace, a comment, or a newline character.  Thus a
+       _s_y_n_t_a_c_t_i_c_a_l _l_i_n_e _b_r_e_a_k is defined to consist  of  optional  _s_y_n_t_a_c_t_i_c_a_l
+       _s_p_a_c_e  that  is optionally followed by a comment, and a newline charac-
+       ter.
+
+       The normal commands, those for positioning and text, consist of a  sin-
+       gle letter taking a fixed number of arguments.  For historical reasons,
+       the parser allows stacking of such commands on the same line, but  for-
+       tunately, in _g_r_o_f_f _i_n_t_e_r_m_e_d_i_a_t_e _o_u_t_p_u_t, every command with at least one
+       argument is followed by a line break, thus  providing  excellent  read-
+       ability.
+
+       The  other commands -- those for drawing and device controlling -- have
+       a more complicated structure; some recognize long  command  names,  and
+       some take a variable number of arguments.  So all DD and xx commands were
+       designed to request a _s_y_n_t_a_c_t_i_c_a_l _l_i_n_e _b_r_e_a_k after their last argument.
+       Only  one  command, `xx XX' has an argument that can stretch over several
+       lines, all other commands must have all of their arguments on the  same
+       line  as  the  command,  i.e., the arguments may not be split by a line
+       break.
+
+       Empty lines, i.e., lines containing only space and/or  a  comment,  can
+       occur everywhere.  They are just ignored.
+
+   AArrgguummeenntt UUnniittss
+       Some commands take integer arguments that are assumed to represent val-
+       ues in a measurement unit, but the letter for the  corresponding  _s_c_a_l_e
+       _i_n_d_i_c_a_t_o_r  is  not  written  with  the  output  command  arguments; see
+       ggrrooffff(7) and _G_r_o_f_f_: _T_h_e _G_N_U _I_m_p_l_e_m_e_n_t_a_t_i_o_n _o_f _t_r_o_f_f, the _g_r_o_f_f  Texinfo
+       manual, for more on this topic.  Most commands assume the scale indica-
+       tor uu, the basic unit of the device, some use zz, the _s_c_a_l_e_d _p_o_i_n_t  _u_n_i_t
+       of  the  device,  while others, such as the color commands expect plain
+       integers.  Note that these scale indicators are relative to the  chosen
+       device.   They  are defined by the parameters specified in the device's
+       _D_E_S_C file; see ggrrooffff__ffoonntt(5).
+
+       Note that single characters can have the eighth bit  set,  as  can  the
+       names  of fonts and special characters (this is, glyphs).  The names of
+       glyphs and fonts can be of arbitrary length.  A glyph  that  is  to  be
+       printed will always be in the current font.
+
+       A string argument is always terminated by the next whitespace character
+       (space, tab, or newline); an embedded ## character is regarded  as  part
+       of the argument, not as the beginning of a comment command.  An integer
+       argument is already terminated by the next non-digit  character,  which
+       then  is  regarded  as the first character of the next argument or com-
+       mand.
+
+   DDooccuummeenntt PPaarrttss
+       A correct _i_n_t_e_r_m_e_d_i_a_t_e _o_u_t_p_u_t document consists of two parts, the  _p_r_o_-
+       _l_o_g_u_e and the _b_o_d_y.
+
+       The  task of the _p_r_o_l_o_g_u_e is to set the general device parameters using
+       three exactly specified commands.  The _g_r_o_f_f _p_r_o_l_o_g_u_e is guaranteed  to
+       consist of the following three lines (in that order):
+
+              xx TT _d_e_v_i_c_e
+              xx rreess _n _h _v
+              xx iinniitt
+
+       with  the  arguments set as outlined in subsection "Device Control Com-
+       mands" below.  However, the parser for the _i_n_t_e_r_m_e_d_i_a_t_e  _o_u_t_p_u_t  format
+       is able to swallow additional whitespace and comments as well.
+
+       The _b_o_d_y is the main section for processing the document data.  Syntac-
+       tically, it is a sequence of any commands different from the ones  used
+       in  the _p_r_o_l_o_g_u_e.  Processing is terminated as soon as the first xx ssttoopp
+       command is encountered; the last line of any _g_r_o_f_f _i_n_t_e_r_m_e_d_i_a_t_e  _o_u_t_p_u_t
+       always contains such a command.
+
+       Semantically,  the  _b_o_d_y  is page oriented.  A new page is started by a
+       pp command.  Positioning, writing, and drawing commands are always  done
+       within  the  current page, so they cannot occur before the first pp com-
+       mand.  Absolute positioning (by the HH and VV commands) is done  relative
+       to the current page, all other positioning is done relative to the cur-
+       rent location within this page.
+
+CCOOMMMMAANNDD RREEFFEERREENNCCEE
+       This section describes all _i_n_t_e_r_m_e_d_i_a_t_e _o_u_t_p_u_t commands, the  classical
+       commands as well as the _g_r_o_f_f extensions.
+
+   CCoommmmeenntt CCoommmmaanndd
+       ##_a_n_y_t_h_i_n_g<<eenndd--ooff--lliinnee>>
+              A comment.  Ignore any characters from the ## character up to the
+              next newline character.
+
+       This command is the only possibility for commenting in the _i_n_t_e_r_m_e_d_i_a_t_e
+       _o_u_t_p_u_t.   Each  comment can be preceded by arbitrary _s_y_n_t_a_c_t_i_c_a_l _s_p_a_c_e;
+       every command can be terminated by a comment.
+
+   SSiimmppllee CCoommmmaannddss
+       The commands in this subsection have a command  code  consisting  of  a
+       single character, taking a fixed number of arguments.  Most of them are
+       commands for positioning and text writing.  These  commands  are  smart
+       about  whitespace.   Optionally,  _s_y_n_t_a_c_t_i_c_a_l  _s_p_a_c_e  can  be  inserted
+       before, after, and between the command letter and its  arguments.   All
+       of  these  commands  are stackable, i.e., they can be preceded by other
+       simple commands or followed by arbitrary other  commands  on  the  same
+       line.   A separating _s_y_n_t_a_c_t_i_c_a_l _s_p_a_c_e is only necessary when two inte-
+       ger arguments would clash or if the  preceding  argument  ends  with  a
+       string argument.
+
+       CC _x_x_x<white-space>
+              Print  a glyph (special character) named _x_x_x.  The trailing _s_y_n_-
+              _t_a_c_t_i_c_a_l _s_p_a_c_e or _l_i_n_e _b_r_e_a_k is necessary to allow  glyph  names
+              of  arbitrary length.  The glyph is printed at the current print
+              position; the glyph's size is read  from  the  font  file.   The
+              print position is not changed.
+
+       cc _c    Print glyph with single-letter name _c at the current print posi-
+              tion; the glyph's size is read from the font  file.   The  print
+              position is not changed.
+
+       ff _n    Set font to font number _n (a non-negative integer).
+
+       HH _n    Move  right  to the absolute vertical position _n (a non-negative
+              integer in basic units uu) relative to left edge of current page.
+
+       hh _n    Move _n (a non-negative integer) basic units  uu  horizontally  to
+              the  right.   [CSTR  #54] allows negative values for _n also, but
+              _g_r_o_f_f doesn't use this.
+
+       mm _c_o_l_o_r_-_s_c_h_e_m_e [_c_o_m_p_o_n_e_n_t _._._.]
+              Set the color for text (glyphs), line drawing, and  the  outline
+              of  graphic objects using different color schemes; the analogous
+              command for the filling color of graphic  objects  is  DDFF.   The
+              color  components  are  specified as integer arguments between 0
+              and 65536.  The number of color  components  and  their  meaning
+              vary for the different color schemes.  These commands are gener-
+              ated by the _g_r_o_f_f escape sequence  \\mm.   No  position  changing.
+              These commands are a _g_r_o_f_f extension.
+
+              mmcc _c_y_a_n _m_a_g_e_n_t_a _y_e_l_l_o_w
+                     Set  color using the CMY color scheme, having the 3 color
+                     components cyan, magenta, and yellow.
+
+              mmdd     Set color to the  default  color  value  (black  in  most
+                     cases).  No component arguments.
+
+              mmgg _g_r_a_y
+                     Set  color to the shade of gray given by the argument, an
+                     integer between 0 (black) and 65536 (white).
+
+              mmkk _c_y_a_n _m_a_g_e_n_t_a _y_e_l_l_o_w _b_l_a_c_k
+                     Set color using the CMYK color scheme, having the 4 color
+                     components cyan, magenta, yellow, and black.
+
+              mmrr _r_e_d _g_r_e_e_n _b_l_u_e
+                     Set  color using the RGB color scheme, having the 3 color
+                     components red, green, and blue.
+
+       NN _n    Print glyph with index _n (an integer, normally non-negative)  of
+              the  current  font.   The  print  position  is  not changed.  If
+              --TT hhttmmll or --TT xxhhttmmll is used, negative values are emitted also to
+              indicate  an  unbreakable  space with given width.  For example,
+              NN --119933 represents an unbreakable space  which  has  a  width  of
+              193u.  This command is a _g_r_o_f_f extension.
+
+       nn _b _a  Inform the device about a line break, but no positioning is done
+              by this command.  In _c_l_a_s_s_i_c_a_l _t_r_o_f_f, the  integer  arguments  _b
+              and _a informed about the space before and after the current line
+              to make the _i_n_t_e_r_m_e_d_i_a_t_e _o_u_t_p_u_t more human readable without per-
+              forming  any  action.  In _g_r_o_f_f, they are just ignored, but they
+              must be provided for compatibility reasons.
+
+       pp _n    Begin a new page in the outprint.  The page number is set to  _n.
+              This  page is completely independent of pages formerly processed
+              even if those have the same page number.  The vertical  position
+              on  the  outprint  is  automatically set to 0.  All positioning,
+              writing, and drawing is always done relative to  a  page,  so  a
+              pp command must be issued before any of these commands.
+
+       ss _n    Set point size to _n scaled points (this is unit zz in GNU ttrrooffff).
+              _C_l_a_s_s_i_c_a_l _t_r_o_f_f used the unit _p_o_i_n_t_s (pp)  instead;  see  section
+              "Compatibility" below.
+
+       tt _x_y_z_._._.<white-space>
+       tt _x_y_z_._._. _d_u_m_m_y_-_a_r_g<white-space>
+              Print  a  word,  i.e.,  a  sequence of glyphs with single-letter
+              names _x, _y, _z, etc., terminated by a space character or  a  line
+              break;  an  optional  second  integer  argument is ignored (this
+              allows the formatter to generate an even number  of  arguments).
+              The  first  glyph should be printed at the current position, the
+              current horizontal position should  then  be  increased  by  the
+              width  of the first glyph, and so on for each glyph.  The widths
+              of the glyph are read from the font file, scaled for the current
+              point  size, and rounded to a multiple of the horizontal resolu-
+              tion.  Special characters (glyphs with names longer than a  sin-
+              gle letter) cannot be printed using this command; use the CC com-
+              mand for those glyphs.  This command is a _g_r_o_f_f extension; it is
+              only used for devices whose _D_E_S_C file contains the ttccoommmmaanndd key-
+              word; see ggrrooffff__ffoonntt(5).
+
+       uu _n _x_y_z_._._.<white-space>
+              Print word with track kerning.  This is the same as the  tt  com-
+              mand except that after printing each glyph, the current horizon-
+              tal position is increased by the sum of the width of that  glyph
+              and  _n  (an  integer in basic units uu).  This command is a _g_r_o_f_f
+              extension; it is only used for devices whose _D_E_S_C file  contains
+              the ttccoommmmaanndd keyword; see ggrrooffff__ffoonntt(5).
+
+       VV _n    Move  down  to  the absolute vertical position _n (a non-negative
+              integer in basic units uu) relative  to  upper  edge  of  current
+              page.
+
+       vv _n    Move  _n  basic  units  uu  down  (_n  is  a non-negative integer).
+              [CSTR #54] allows negative values for _n also, but _g_r_o_f_f  doesn't
+              use this.
+
+       ww      Informs  about  a  paddable  whitespace to increase readability.
+              The spacing itself must be performed explicitly by a  move  com-
+              mand.
+
+   GGrraapphhiiccss CCoommmmaannddss
+       Each graphics or drawing command in the _i_n_t_e_r_m_e_d_i_a_t_e _o_u_t_p_u_t starts with
+       the letter DD followed by one or two characters that specify  a  subcom-
+       mand;  this  is followed by a fixed or variable number of integer argu-
+       ments that are separated by a single space character.  A DD command  may
+       not  be followed by another command on the same line (apart from a com-
+       ment), so each DD command is terminated by a _s_y_n_t_a_c_t_i_c_a_l _l_i_n_e _b_r_e_a_k.
+
+       ttrrooffff output follows the classical spacing rules (no space between com-
+       mand and subcommand, all arguments are preceded by a single space char-
+       acter), but the parser allows optional space between the  command  let-
+       ters and makes the space before the first argument optional.  As usual,
+       each space can be any sequence of tab and space characters.
+
+       Some graphics commands can take a variable  number  of  arguments.   In
+       this  case,  they  are  integers  representing a size measured in basic
+       units uu.  The _h arguments stand for horizontal distances where positive
+       means  right,  negative  left.  The _v arguments stand for vertical dis-
+       tances where positive means down, negative up.  All these distances are
+       offsets relative to the current location.
+
+       Unless  indicated otherwise, each graphics command directly corresponds
+       to a similar _g_r_o_f_f \\DD escape sequence; see ggrrooffff(7).
+
+       Unknown DD commands are assumed to be  device-specific.   Its  arguments
+       are  parsed as strings; the whole information is then sent to the post-
+       processor.
+
+       In the following command reference,  the  syntax  element  _<_l_i_n_e_-_b_r_e_a_k_>
+       means  a  _s_y_n_t_a_c_t_i_c_a_l  _l_i_n_e _b_r_e_a_k as defined in subsection "Separation"
+       above.
+
+       DD~~ _h_1 _v_1 _h_2 _v_2 ... _h_n _v_n<line-break>
+              Draw B-spline from current position to offset (_h_1, _v_1), then  to
+              offset  (_h_2, _v_2)  if  given,  etc., up to (_h_n, _v_n). This command
+              takes a variable number of argument pairs; the current  position
+              is moved to the terminal point of the drawn curve.
+
+       DDaa _h_1 _v_1 _h_2 _v_2<line-break>
+              Draw  arc from current position to (_h_1, _v_1)+(_h_2, _v_2) with center
+              at (_h_1, _v_1); then move the current position to the  final  point
+              of the arc.
+
+       DDCC _d<line-break>
+       DDCC _d _d_u_m_m_y_-_a_r_g<line-break>
+              Draw a solid circle using the current fill color with diameter _d
+              (integer in basic units uu) with leftmost point  at  the  current
+              position;  then move the current position to the rightmost point
+              of the circle.  An optional second integer argument  is  ignored
+              (this  allows  the formatter to generate an even number of argu-
+              ments).  This command is a _g_r_o_f_f extension.
+
+       DDcc _d<line-break>
+              Draw circle line with diameter _d (integer in basic units uu) with
+              leftmost  point  at  the current position; then move the current
+              position to the rightmost point of the circle.
+
+       DDEE _h _v<line-break>
+              Draw a solid ellipse in the current fill color with a horizontal
+              diameter  of  _h  and  a vertical diameter of _v (both integers in
+              basic units uu) with the leftmost point at the current  position;
+              then  move  to the rightmost point of the ellipse.  This command
+              is a _g_r_o_f_f extension.
+
+       DDee _h _v<line-break>
+              Draw an outlined ellipse with a horizontal diameter of _h  and  a
+              vertical diameter of _v (both integers in basic units uu) with the
+              leftmost point at current position; then move to  the  rightmost
+              point of the ellipse.
+
+       DDFF _c_o_l_o_r_-_s_c_h_e_m_e [_c_o_m_p_o_n_e_n_t _._._.]<line-break>
+              Set  fill  color for solid drawing objects using different color
+              schemes; the analogous command for setting the  color  of  text,
+              line  graphics,  and  the  outline of graphic objects is mm.  The
+              color components are specified as integer  arguments  between  0
+              and  65536.   The  number  of color components and their meaning
+              vary for the different color schemes.  These commands are gener-
+              ated  by  the  _g_r_o_f_f escape sequences \\DD''FF ...''  and \\MM (with no
+              other corresponding graphics commands).  No  position  changing.
+              This command is a _g_r_o_f_f extension.
+
+              DDFFcc _c_y_a_n _m_a_g_e_n_t_a _y_e_l_l_o_w<line-break>
+                     Set  fill  color  for solid drawing objects using the CMY
+                     color  scheme,  having  the  3  color  components   cyan,
+                     magenta, and yellow.
+
+              DDFFdd <line-break>
+                     Set  fill  color for solid drawing objects to the default
+                     fill color value (black in  most  cases).   No  component
+                     arguments.
+
+              DDFFgg _g_r_a_y<line-break>
+                     Set  fill color for solid drawing objects to the shade of
+                     gray given by the argument, an integer between 0  (black)
+                     and 65536 (white).
+
+              DDFFkk _c_y_a_n _m_a_g_e_n_t_a _y_e_l_l_o_w _b_l_a_c_k<line-break>
+                     Set  fill  color for solid drawing objects using the CMYK
+                     color  scheme,  having  the  4  color  components   cyan,
+                     magenta, yellow, and black.
+
+              DDFFrr _r_e_d _g_r_e_e_n _b_l_u_e<line-break>
+                     Set  fill  color  for solid drawing objects using the RGB
+                     color scheme, having the 3 color components  red,  green,
+                     and blue.
+
+       DDff _n<line-break>
+              The argument _n must be an integer in the range -32767 to 32767.
+
+              0<=_n<=1000
+                     Set  the  color  for  filling  solid drawing objects to a
+                     shade of gray, where 0 corresponds to solid  white,  1000
+                     (the  default)  to  solid black, and values in between to
+                     intermediate shades of gray; this is obsoleted by command
+                     DDFFgg.
+
+              _n<0 or _n>1000
+                     Set  the  filling  color  to  the color that is currently
+                     being used for the text and the outline, see  command  mm.
+                     For example, the command sequence
+
+                            mg 0 0 65536
+                            Df -1
+
+                     sets all colors to blue.
+
+              No position changing.  This command is a _g_r_o_f_f extension.
+
+       DDll _h _v<line-break>
+              Draw  line  from  current position to offset (_h, _v) (integers in
+              basic units uu); then set current position  to  the  end  of  the
+              drawn line.
+
+       DDpp _h_1 _v_1 _h_2 _v_2 ... _h_n _v_n<line-break>
+              Draw  a  polygon  line from current position to offset (_h_1, _v_1),
+              from there to offset (_h_2, _v_2), etc., up to offset (_h_n, _v_n),  and
+              from  there  back to the starting position.  For historical rea-
+              sons, the position is changed by adding the sum of all arguments
+              with  odd  index  to the actual horizontal position and the even
+              ones to the vertical position.  Although this doesn't make sense
+              it  is  kept  for compatibility.  This command is a _g_r_o_f_f exten-
+              sion.
+
+       DDPP _h_1 _v_1 _h_2 _v_2 ... _h_n _v_n<line-break>
+              The same macro as the corresponding DDpp  command  with  the  same
+              arguments,  but  draws a solid polygon in the current fill color
+              rather than an outlined polygon.  The position is changed in the
+              same way as with DDpp.  This command is a _g_r_o_f_f extension.
+
+       DDtt _n<line-break>
+              Set  the  current  line  thickness  to  _n  (an  integer in basic
+              units uu) if _n>0; if  _n=0  select  the  smallest  available  line
+              thickness;  if  _n<0  set  the line thickness proportional to the
+              point size (this is the default before the first DDtt command  was
+              specified).   For historical reasons, the horizontal position is
+              changed by adding the argument to the  actual  horizontal  posi-
+              tion, while the vertical position is not changed.  Although this
+              doesn't make sense it is kept for compatibility.   This  command
+              is a _g_r_o_f_f extension.
+
+   DDeevviiccee CCoonnttrrooll CCoommmmaannddss
+       Each  device  control  command  starts  with the letter xx followed by a
+       space character (optional or arbitrary space/tab in _g_r_o_f_f) and  a  sub-
+       command  letter  or  word; each argument (if any) must be preceded by a
+       _s_y_n_t_a_c_t_i_c_a_l _s_p_a_c_e.  All xx commands are terminated by a _s_y_n_t_a_c_t_i_c_a_l _l_i_n_e
+       _b_r_e_a_k;  no device control command can be followed by another command on
+       the same line (except a comment).
+
+       The subcommand is basically a single letter, but to increase  readabil-
+       ity,  it can be written as a word, i.e., an arbitrary sequence of char-
+       acters terminated by the next tab, space, or  newline  character.   All
+       characters  of  the  subcommand  word but the first are simply ignored.
+       For example, ttrrooffff outputs the initialization command xx ii as xx iinniitt and
+       the  resolution command xx rr as xx rreess.  But writings like xx ii__lliikkee__ggrrooffff
+       and xx rrooffff__iiss__ggrrooffff are accepted as well to mean the same commands.
+
+       In the following, the syntax element _<_l_i_n_e_-_b_r_e_a_k_> means  a  _s_y_n_t_a_c_t_i_c_a_l
+       _l_i_n_e _b_r_e_a_k as defined in subsection "Separation" above.
+
+       xxFF _n_a_m_e<line-break>
+              (_F_i_l_e_n_a_m_e control command)
+              Use  _n_a_m_e  as  the  intended  name for the current file in error
+              reports.  This is useful for remembering the original file  name
+              when ggrrooffff uses an internal piping mechanism.  The input file is
+              not changed by this command.  This command is a _g_r_o_f_f extension.
+
+       xxff _n _s<line-break>
+              (_f_o_n_t control command)
+              Mount font position _n (a non-negative integer) with font named _s
+              (a text word); see ggrrooffff__ffoonntt(5).
+
+       xxHH _n<line-break>
+              (_H_e_i_g_h_t control command)
+              Set  character  height  to  _n  (a  positive  integer  in  scaled
+              points zz).  _C_l_a_s_s_i_c_a_l _t_r_o_f_f used the unit  points  (pp)  instead;
+              see section "Compatibility" below.
+
+       xxii <line-break>
+              (_i_n_i_t control command)
+              Initialize device.  This is the third command of the _p_r_o_l_o_g_u_e.
+
+       xxpp <line-break>
+              (_p_a_u_s_e control command)
+              Parsed  but  ignored.   The  classical documentation reads _p_a_u_s_e
+              _d_e_v_i_c_e_, _c_a_n _b_e _r_e_s_t_a_r_t_e_d.
+
+       xxrr _n _h _v<line-break>
+              (_r_e_s_o_l_u_t_i_o_n control command)
+              Resolution is _n, while _h is the minimal horizontal motion, and _v
+              the minimal vertical motion possible with this device; all argu-
+              ments are positive integers in basic units uu per inch.  This  is
+              the second command of the _p_r_o_l_o_g_u_e.
+
+       xxSS _n<line-break>
+              (_S_l_a_n_t control command)
+              Set slant to _n degrees (an integer in basic units uu).
+
+       xxss <line-break>
+              (_s_t_o_p control command)
+              Terminates  the  processing  of  the current file; issued as the
+              last command of any _i_n_t_e_r_m_e_d_i_a_t_e _t_r_o_f_f _o_u_t_p_u_t.
+
+       xxtt <line-break>
+              (_t_r_a_i_l_e_r control command)
+              Generate trailer information, if any.  In ggrrooffff, this  is  actu-
+              ally just ignored.
+
+       xxTT _x_x_x<line-break>
+              (_T_y_p_e_s_e_t_t_e_r control command)
+              Set  name  of device to word _x_x_x, a sequence of characters ended
+              by the next whitespace character.   The  possible  device  names
+              coincide with those from the groff --TT option.  This is the first
+              command of the _p_r_o_l_o_g_u_e.
+
+       xxuu _n<line-break>
+              (_u_n_d_e_r_l_i_n_e control command)
+              Configure underlining of spaces.  If _n is 1,  start  underlining
+              of  spaces;  if  _n  is  0,  stop underlining of spaces.  This is
+              needed for the ccuu request in nnrrooffff mode and  is  ignored  other-
+              wise.  This command is a _g_r_o_f_f extension.
+
+       xxXX _a_n_y_t_h_i_n_g<line-break>
+              (_X_-_e_s_c_a_p_e control command)
+              Send  string  _a_n_y_t_h_i_n_g uninterpreted to the device.  If the line
+              following this command starts with a ++ character  this  line  is
+              interpreted  as a continuation line in the following sense.  The
+              ++ is ignored, but a newline character is  sent  instead  to  the
+              device,  the  rest  of the line is sent uninterpreted.  The same
+              applies to all following lines until the first  character  of  a
+              line  is  not  a  ++ character.  This command is generated by the
+              _g_r_o_f_f escape sequence \\XX.   The  line-continuing  feature  is  a
+              _g_r_o_f_f extension.
+
+   OObbssoolleettee CCoommmmaanndd
+       In _c_l_a_s_s_i_c_a_l _t_r_o_f_f output, emitting a single glyph was mostly done by a
+       very strange command that combined a horizontal move and  the  printing
+       of  a  glyph.   It  didn't have a command code, but is represented by a
+       3-character argument consisting of exactly 2 digits and a character.
+
+       _d_d_c    Move right _d_d (exactly two decimal digits) basic units  uu,  then
+              print glyph with single-letter name _c.
+
+              In  _g_r_o_f_f,  arbitrary  _s_y_n_t_a_c_t_i_c_a_l  _s_p_a_c_e around and within this
+              command is allowed to be added.  Only when a  preceding  command
+              on the same line ends with an argument of variable length a sep-
+              arating space is obligatory.  In _c_l_a_s_s_i_c_a_l _t_r_o_f_f, large clusters
+              of  these  and  other commands were used, mostly without spaces;
+              this made such output almost unreadable.
+
+       For modern high-resolution devices, this command does  not  make  sense
+       because the width of the glyphs can become much larger than two decimal
+       digits.  In ggrrooffff, this is only used for the devices XX7755, XX7755--1122, XX110000,
+       and  XX110000--1122.  For other devices, the commands tt and uu provide a better
+       functionality.
+
+PPOOSSTTPPRROOCCEESSSSIINNGG
+       The _r_o_f_f postprocessors are programs that have the  task  to  translate
+       the  _i_n_t_e_r_m_e_d_i_a_t_e  _o_u_t_p_u_t  into  actions  that are sent to a device.  A
+       device can be some piece of hardware such as a printer, or  a  software
+       file  format suitable for graphical or text processing.  The _g_r_o_f_f sys-
+       tem provides powerful means that make the programming of such  postpro-
+       cessors an easy task.
+
+       There  is  a  library  function that parses the _i_n_t_e_r_m_e_d_i_a_t_e _o_u_t_p_u_t and
+       sends the information obtained to the device via  methods  of  a  class
+       with a common interface for each device.  So a _g_r_o_f_f postprocessor must
+       only redefine the methods of this class.  For details, see  the  refer-
+       ence in section "Files" below.
+
+EEXXAAMMPPLLEESS
+       This  section  presents the _i_n_t_e_r_m_e_d_i_a_t_e _o_u_t_p_u_t generated from the same
+       input for three different devices.  The  input  is  the  sentence  _h_e_l_l
+       _w_o_r_l_d fed into ggrrooffff on the command line.
+
+       +o High-resolution device _p_s
+
+         sshheellll>> echo "hell world" | groff -Z -T ps
+
+         xx TT ppss
+         xx rreess 7722000000 11 11
+         xx iinniitt
+         pp11
+         xx ffoonntt 55 TTRR
+         ff55
+         ss1100000000
+         VV1122000000
+         HH7722000000
+         tthheellll
+         wwhh22550000
+         ttww
+         HH9966662200
+         ttoorrlldd
+         nn1122000000 00
+         xx ttrraaiilleerr
+         VV779922000000
+         xx ssttoopp
+
+       This  output can be fed into the postprocessor ggrrooppss(1) to get its rep-
+       resentation as a PostScript file, or ggrrooppddff(1) to  output  directly  to
+       PDF.
+
+       +o Low-resolution device _l_a_t_i_n_1
+
+         This  is  similar to the high-resolution device except that the posi-
+         tioning is done at a minor scale.  Some comments (lines starting with
+         _#)  were added for clarification; they were not generated by the for-
+         matter.
+
+         sshheellll>> "hell world" | groff -Z -T latin1
+
+         _# _p_r_o_l_o_g_u_e
+         xx TT llaattiinn11
+         xx rreess 224400 2244 4400
+         xx iinniitt
+         _# _b_e_g_i_n _a _n_e_w _p_a_g_e
+         pp11
+         _# _f_o_n_t _s_e_t_u_p
+         xx ffoonntt 11 RR
+         ff11
+         ss1100
+         _# _i_n_i_t_i_a_l _p_o_s_i_t_i_o_n_i_n_g _o_n _t_h_e _p_a_g_e
+         VV4400
+         HH00
+         _# _w_r_i_t_e _t_e_x_t _`_h_e_l_l_'
+         tthheellll
+         _# _i_n_f_o_r_m _a_b_o_u_t _a _s_p_a_c_e_, _a_n_d _d_o _i_t _b_y _a _h_o_r_i_z_o_n_t_a_l _j_u_m_p
+         wwhh2244
+         _# _w_r_i_t_e _t_e_x_t _`_w_o_r_l_d_'
+         ttwwoorrlldd
+         _# _a_n_n_o_u_n_c_e _l_i_n_e _b_r_e_a_k_, _b_u_t _d_o _n_o_t_h_i_n_g _b_e_c_a_u_s_e _._._.
+         nn4400 00
+         _# _._._. _t_h_e _e_n_d _o_f _t_h_e _d_o_c_u_m_e_n_t _h_a_s _b_e_e_n _r_e_a_c_h_e_d
+         xx ttrraaiilleerr
+         VV22664400
+         xx ssttoopp
+
+       This output can be fed into the postprocessor ggrroottttyy(1) to get  a  for-
+       matted text document.
+
+       +o Classical style output
+
+         As  a  computer  monitor has a very low resolution compared to modern
+         printers the _i_n_t_e_r_m_e_d_i_a_t_e _o_u_t_p_u_t for the X devices can use the  jump-
+         and-write command with its 2-digit displacements.
+
+         sshheellll>> "hell world" | groff -Z -T X100
+
+         xx TT XX110000
+         xx rreess 110000 11 11
+         xx iinniitt
+         pp11
+         xx ffoonntt 55 TTRR
+         ff55
+         ss1100
+         VV1166
+         HH110000
+         _# _w_r_i_t_e _t_e_x_t _w_i_t_h _o_l_d_-_s_t_y_l_e _j_u_m_p_-_a_n_d_-_w_r_i_t_e _c_o_m_m_a_n_d
+         cchh0077ee0077ll0033llww0066ww1111oo0077rr0055ll0033ddhh77
+         nn1166 00
+         xx ttrraaiilleerr
+         VV11110000
+         xx ssttoopp
+
+       This   output  can  be  fed  into  the  postprocessor  xxddiittvviieeww(1x)  or
+       ggxxddiittvviieeww(1) for displaying in X.
+
+       Due to the obsolete jump-and-write command, the text  clusters  in  the
+       classical output are almost unreadable.
+
+CCOOMMPPAATTIIBBIILLIITTYY
+       The _i_n_t_e_r_m_e_d_i_a_t_e _o_u_t_p_u_t language of the _c_l_a_s_s_i_c_a_l _t_r_o_f_f was first docu-
+       mented in [CSTR #97] .  The _g_r_o_f_f _i_n_t_e_r_m_e_d_i_a_t_e _o_u_t_p_u_t format is compat-
+       ible with this specification except for the following features.
+
+       +o The classical quasi device independence is not yet implemented.
+
+       +o The  old  hardware was very different from what we use today.  So the
+         _g_r_o_f_f devices are also fundamentally different from the ones in _c_l_a_s_-
+         _s_i_c_a_l _t_r_o_f_f.  For example, the classical PostScript device was called
+         _p_o_s_t and had a resolution of 720 units per  inch,  while  _g_r_o_f_f's  _p_s
+         device  has  a  resolution of 72000 units per inch.  Maybe, by imple-
+         menting some rescaling  mechanism  similar  to  the  classical  quasi
+         device independence, these could be integrated into modern _g_r_o_f_f.
+
+       +o The B-spline command DD~~ is correctly handled by the _i_n_t_e_r_m_e_d_i_a_t_e _o_u_t_-
+         _p_u_t parser, but the drawing routines aren't implemented  in  some  of
+         the postprocessor programs.
+
+       +o The  argument  of the commands ss and xx HH has the implicit unit scaled
+         point zz in _g_r_o_f_f, while _c_l_a_s_s_i_c_a_l _t_r_o_f_f had point (pp).  This isn't an
+         incompatibility,  but a compatible extension, for both units coincide
+         for all devices without a _s_i_z_e_s_c_a_l_e parameter, including all  classi-
+         cal  and  the  _g_r_o_f_f  text  devices.   The  few  _g_r_o_f_f devices with a
+         sizescale parameter either did not exist, had a  different  name,  or
+         seem to have had a different resolution.  So conflicts with classical
+         devices are very unlikely.
+
+       +o The position changing after the commands DDpp, DDPP, and DDtt is illogical,
+         but as old versions of groff used this feature it is kept for compat-
+         ibility reasons.
+
+       The differences between _g_r_o_f_f and _c_l_a_s_s_i_c_a_l  _t_r_o_f_f  are  documented  in
+       ggrrooffff__ddiiffff(7).
+
+FFIILLEESS
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_vname_/_D_E_S_C
+              Device description file for device _n_a_m_e.
+
+       _s_r_c_/_l_i_b_s_/_l_i_b_d_r_i_v_e_r_/_i_n_p_u_t_._c_p_p
+              Defines  the  parser and postprocessor for the _i_n_t_e_r_m_e_d_i_a_t_e _o_u_t_-
+              _p_u_t.  It is located relative to the top directory of  the  _g_r_o_f_f
+              source tree.  This parser is the definitive specification of the
+              _g_r_o_f_f _i_n_t_e_r_m_e_d_i_a_t_e _o_u_t_p_u_t format.
+
+AAUUTTHHOORRSS
+       James Clark wrote an early version of this  document,  which  described
+       only the differences between ddiittrrooffff(7)'s output format and that of GNU
+       _r_o_f_f.  The present version was completely rewritten in  2001  by  Bernd
+       Warken <groff-bernd.warken-72@web.de>.
+
+SSEEEE AALLSSOO
+       A  reference  like ggrrooffff(7) refers to a manual page; here ggrrooffff in sec-
+       tion _7 of the man page documentation system.  To read the example, look
+       up section 7 in your desktop help system or call from the shell prompt
+
+              sshheellll>> man 7 groff
+
+       For more details, see mmaann(1).
+
+       ggrrooffff(1)
+              option --ZZ and further readings on groff.
+
+       ggrrooffff(7)
+              for  details  of  the _g_r_o_f_f language such as numerical units and
+              escape sequences.
+
+       ggrrooffff__ffoonntt(5)
+              for details on the device scaling parameters of the _D_E_S_C file.
+
+       ttrrooffff(1)
+              generates the device-independent intermediate output.
+
+       rrooffff(7)
+              for historical aspects and the general structure  of  roff  sys-
+              tems.
+
+       ggrrooffff__ddiiffff(7)
+              The  differences  between  the  intermediate output in groff and
+              classical troff.
+
+       ggxxddiittvviieeww(1)
+              Viewer for the _i_n_t_e_r_m_e_d_i_a_t_e _o_u_t_p_u_t.
+
+       ggrrooddvvii(1), ggrroohhttmmll(1), ggrroollbbpp(1), ggrroolljj44(1), ggrrooppss(1), ggrroottttyy(1)
+              the groff postprocessor programs.
+
+       _G_r_o_f_f_: _T_h_e _G_N_U _I_m_p_l_e_m_e_n_t_a_t_i_o_n _o_f _t_r_o_f_f, by Trent A. Fisher  and  Werner
+       Lemberg,  is the primary _g_r_o_f_f manual.  You can browse it interactively
+       with "info groff".
+
+       The _c_l_a_s_s_i_c_a_l _t_r_o_f_f _o_u_t_p_u_t _l_a_n_g_u_a_g_e is described in two AT&T Bell  Labs
+       CSTR  documents  available  on-line  at  Bell  Labs  CSTR site <http://
+       cm.bell-labs.com/cm/cs/cstr.html>.
+
+       [CSTR #97]
+              _A _T_y_p_e_s_e_t_t_e_r_-_i_n_d_e_p_e_n_d_e_n_t _T_R_O_F_F by _B_r_i_a_n _K_e_r_n_i_g_h_a_n is the  origi-
+              nal and most comprehensive documentation on the output language;
+              see CSTR #97 <http://cm.bell-labs.com/cm/cs/cstr/97.ps.gz>.
+
+       [CSTR #54]
+              The 1992 revision of the _N_r_o_f_f_/_T_r_o_f_f  _U_s_e_r_'_s  _M_a_n_u_a_l  by  _J_.  _F_.
+              _O_s_s_a_n_n_a and _B_r_i_a_n _K_e_r_n_i_g_h_a_n isn't as comprehensive as [CSTR #97]
+              regarding  the  output   language;   see   CSTR   #54   <http://
+              cm.bell-labs.com/cm/cs/cstr/54.ps.gz>.
+
+
+
+groff 1.22.4                     December 2018                    GROFF_OUT(5)

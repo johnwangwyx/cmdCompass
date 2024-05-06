@@ -1,0 +1,175 @@
+.TH GRAP2GRAPH 1 "November 2018" "groff 1.22.4"
+.SH NAME
+grap2graph \- convert a GRAP diagram into a cropped image
+.
+.
+.\" ====================================================================
+.\" Legal Terms
+.\" ====================================================================
+.\"
+.\" This documentation is released to the public domain.
+.
+.
+.\" ====================================================================
+.SH SYNOPSIS
+.\" ====================================================================
+.
+.SY grap2graph
+.OP \-unsafe
+.OP \-format output-format
+.RI [ convert-arguments ]
+.YS
+.
+.SY grap2graph
+.B \-\-help
+.YS
+.
+.SY grap2graph
+.B \-v
+.SY grap2graph
+.B \-\-version
+.YS
+.
+.
+.\" ====================================================================
+.SH DESCRIPTION
+.\" ====================================================================
+.
+.I grap2graph
+reads a
+.IR grap (1)
+program from the standard input and writes an image file,
+by default in Portable Network Graphics (PNG) format,
+to the standard output.
+.
+.
+.PP
+The input GRAP code should
+.I not
+be wrapped with the
+.B \&.G1
+and
+.B \&.G2
+macros that normally guard it within
+.IR groff (1)
+documents.
+.
+.
+.\" FIXME: How old?  This text hasn't been touched since 2008 at latest.
+.\" Older versions of
+.\" .I \%convert
+.\" will produce a black-on-white graphic; newer ones may produce a
+.\" black-on-transparent graphic.
+.
+.PP
+Arguments not recognized by
+.I grap2graph
+are passed to the ImageMagick or GraphicsMagick program
+.IR \%convert (1).
+.
+.
+By specifying these, you can give your image a border,
+.\" Transparent backgrounds are the default in 2018.
+.\" force the background transparent,
+set the image's pixel density,
+or perform other useful transformations.
+.
+.
+.PP
+The output image is clipped using
+.IR \%convert 's
+.B \-trim
+option to the smallest possible bounding box that contains all the black
+pixels.
+.
+.
+.\" ====================================================================
+.SH OPTIONS
+.\" ====================================================================
+.
+.TP
+.BI "\-format " output-format
+Write the image in
+.IR output-format ,
+which must be understood by
+.IR \%convert ;
+the default is PNG.
+.
+.
+.TP
+.B \-\-help
+Display a usage message and exit.
+.
+.
+.TP
+.B \-unsafe
+Run
+.I groff
+in
+.I unsafe
+mode, enabling the PIC command
+.B sh
+to execute arbitrary Unix shell commands.
+.
+The
+.I groff
+default is to forbid this.
+.
+.
+.TP
+.B \-v
+.TQ
+.B \-\-version
+Display version information and exit.
+.
+.
+.\" ====================================================================
+.SH ENVIRONMENT
+.\" ====================================================================
+.
+.TP
+.I \%GROFF_TMPDIR
+.TQ
+.I \%TMPDIR
+.TQ
+.I TMP
+.TQ
+.I TEMP
+These environment variables are searched in the given order to determine
+the directory where temporary files will be created.
+.
+If none are set,
+.I /tmp
+is used.
+.
+.
+.\" ====================================================================
+.SH AUTHORS
+.\" ====================================================================
+.
+.B grap2graph
+was written by
+.MT esr@\:thyrsus.com
+Eric S.\& Raymond
+.ME ,
+based on a recipe for
+.IR pic2graph (1),
+by W.\& Richard Stevens.
+.
+.
+.\" ====================================================================
+.SH "SEE ALSO"
+.\" ====================================================================
+.
+.IR pic2graph (1),
+.IR eqn2graph (1),
+.IR grap (1),
+.IR pic (1),
+.IR groff (1),
+.IR \%convert (1)
+.
+.
+.\" Local Variables:
+.\" mode: nroff
+.\" End:
+.\" vim: set filetype=groff:

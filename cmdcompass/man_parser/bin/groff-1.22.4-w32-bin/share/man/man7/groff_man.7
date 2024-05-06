@@ -1,0 +1,2613 @@
+'\" t
+.TH GROFF_MAN 7 "December 2018" "groff 1.22.4"
+.SH NAME
+groff_man \- GNU roff macro package for formatting man pages
+.
+.
+.\" Save and disable compatibility mode (for, e.g., Solaris 10/11).
+.do nr groff_man_C \n[.C]
+.cp 0
+.
+.
+.\" ====================================================================
+.\" Legal Terms
+.\" ====================================================================
+.\"
+.\" Copyright (C) 1999-2018 Free Software Foundation, Inc.
+.\"
+.\" Permission is granted to make and distribute verbatim copies of this
+.\" manual provided the copyright notice and this permission notice are
+.\" preserved on all copies.
+.\"
+.\" Permission is granted to copy and distribute modified versions of
+.\" this manual under the conditions for verbatim copying, provided that
+.\" the entire resulting derived work is distributed under the terms of
+.\" a permission notice identical to this one.
+.\"
+.\" Permission is granted to copy and distribute translations of this
+.\" manual into another language, under the above conditions for
+.\" modified versions, except that this permission notice may be
+.\" included in translations approved by the Free Software Foundation
+.\" instead of in the original English.
+.
+.
+.\" ====================================================================
+.SH SYNOPSIS
+.\" ====================================================================
+.
+.SY "groff \-man"
+.RI [ option
+\&.\|.\|.\&]
+.RI [ input-file
+\&.\|.\|.\&]
+.SY "groff \-m man"
+.RI [ option
+\&.\|.\|.\&]
+.RI [ input-file
+\&.\|.\|.\&]
+.YS
+.
+.
+.\" ====================================================================
+.SH DESCRIPTION
+.\" ====================================================================
+.
+The
+.I man
+macro package for
+.I groff
+is used to produce manual pages
+.\" We use an unbreakable space \~ here to keep the phrase intact for
+.\" its introduction; in subsequent discussion, that is not important.
+(\(lqman\~pages\(rq)
+like the one you are reading.
+.
+GNU
+.IR roff 's
+implementation was written by James Clark.
+.
+.
+.PP
+This document presents the macros thematically to aid learners;
+for those needing only a quick reference,
+the following table lists them alphabetically,
+with cross-references to appropriate subsections below.
+.
+.
+.PP
+.TS
+l l l.
+Macro	Meaning	Subsection
+.T&
+lB l l.
+_
+\&.B	Bold	Font style macros
+\&.BI	Bold, italic alternating	Font style macros
+\&.BR	Bold, roman alternating	Font style macros
+\&.EE	Example end	Document structure macros
+\&.EX	Example begin	Document structure macros
+\&.I	Italic	Font style macros
+\&.IB	Italic, bold alternating	Font style macros
+\&.IP	Indented paragraph	Paragraph macros
+\&.IR	Italic, roman alternating	Font style macros
+\&.LP	(Left) paragraph	Paragraph macros
+\&.ME	Mail-to end	Hyperlink and email macros
+\&.MT	Mail-to start	Hyperlink and email macros
+\&.OP	(Command-line) option	Command synopsis macros
+\&.P	Paragraph	Paragraph macros
+\&.PP	Paragraph	Paragraph macros
+\&.RB	Roman, bold alternating	Font style macros
+\&.RE	Relative-indent end	Document structure macros
+\&.RI	Roman, italic alternating	Font style macros
+\&.RS	Relative-indent start	Document structure macros
+\&.SB	Small bold	Font style macros
+\&.SH	Section heading	Document structure macros
+\&.SM	Small	Font style macros
+\&.SS	Subection heading	Document structure macros
+\&.SY	Synopsis start	Command synopsis macros
+\&.TH	Title heading	Document structure macros
+\&.TP	Tagged paragraph	Paragraph macros
+\&.TQ	Tagged paragraph continuation	Paragraph macros
+\&.UE	URL end	Hyperlink and email macros
+\&.UR	URL start	Hyperlink and email macros
+\&.YS	Synopsis end	Command synopsis macros
+.TE
+.
+.
+.PP
+Macros whose use we discourage
+.RB ( .AT ,
+.BR .BT ,
+.BR .DT ,
+.BR .HP ,
+.BR .PD ,
+.BR .PT ,
+and
+.BR .UC )
+are described in subsection \(lqDeprecated features\(rq, below.
+.
+.
+.\" ====================================================================
+.SS "Macro reference preliminaries"
+.\" ====================================================================
+.
+Each macro is described in a tagged paragraph.
+.
+Closely related macros,
+such as
+.B .EX
+and
+.BR .EE ,
+are grouped together.
+.
+.
+.PP
+Optional macro arguments are indicated by surrounding them with square
+brackets.
+.
+If a macro accepts multiple arguments,
+arguments containing whitespace must be double-quoted ("one two"),
+to be interpreted correctly.
+.
+Most macro arguments are strings that will be output as text;
+exceptions are noted.
+.
+.
+.PP
+Bear in mind that
+.I groff
+is fundamentally a programming system for typesetting.
+.
+Consequently,
+the verb \(lqto set\(rq is frequently used below in the sense \(lqto
+typeset\(rq.
+.
+.
+.\" ====================================================================
+.SS "Document structure macros"
+.\" ====================================================================
+.
+The highest level of organization of a man page is determined by this
+group of macros.
+.
+.B .TH
+(title heading) identifies the document as a man page and defines
+information enabling its indexing by
+.IR mandb (8)
+or a similar tool.
+.
+.
+Sections
+.RB ( .SH ),
+one of which is mandatory and many of which are standardized,
+facilitate quick location of relevant material by the reader and aid
+the man page writer to discuss all essential aspects of the topic.
+.
+Subsections
+.RB ( .SS )
+are optional and permit sections that grow long to develop in a
+controlled way.
+.
+Many technical discussions require examples;
+lengthy ones,
+especially those reflecting multiple lines of input to or output from
+the system,
+are usefully bracketed by
+.B .EX
+and
+.BR .EE .
+.
+When none of the foregoing meets a structural demand,
+a section of the discussion can be manually indented within
+.B .RS
+and
+.B .RE
+macros.
+.
+.
+.TP
+.BI .TH " title section"\c
+.RI " [" footer-middle ]\c
+.RI " [" footer-outside ]\c
+.RI " [" header-middle ]
+Define the title of the man page as
+.I title
+and the section as
+.IR section .
+.
+See
+.IR man (1)
+for details on the section numbers and suffixes applicable to your
+system.
+.
+.I title
+and
+.I section
+are positioned together at the left and right in the header line
+(with
+.I section
+in parentheses immediately appended to
+.IR title ).
+.
+.I footer-middle
+is centered in the footer line.
+.
+.I footer-outside
+is positioned at the left in the footer line (or at the left on
+even pages and at the right on odd pages if double-sided printing is
+active).
+.
+.I header-middle
+is centered in the header line.
+.
+If
+.I section
+is a simple integer between 1 and\~9 (inclusive),
+or is exactly \(lq3p\(rq,
+there is no need to specify
+.IR header-middle ;
+the macro package will supply text for it.
+.
+.
+.IP
+For HTML output, headers and footers are completely suppressed.
+.
+.
+.IP
+Additionally, this macro starts a new page; the page number is reset
+to\~1
+(unless the
+.B \-rC1
+option is given on the command line).
+.
+This feature is intended only for formatting multiple man pages.
+.
+.
+.IP
+A man page should contain exactly one
+.B .TH
+call at or near the beginning of the file,
+prior to any other macro calls.
+.
+.
+.IP
+By convention,
+.I footer-middle
+is the most recent modification date of the man page source document,
+and
+.I footer-outside
+is the name and version or release of the project providing it.
+.
+.
+.TP
+.BR .SH " ["\c
+.IR heading-text ]
+Set
+.I heading-text
+as a section heading flush left.
+.
+The text following
+.B .SH
+up to the end of the line,
+or the text on the next input line if
+.B .SH
+is given no arguments,
+is set in bold
+(or the font specified by the string register
+.BR HF )
+slightly larger than the base font size.
+.
+Additionally,
+the left margin and indentation affecting subsequent text are reset to
+their default values.
+.
+Text on input lines after
+.I heading-text
+is set as a normal paragraph
+.RB ( .PP ).
+.
+.
+.IP
+The content of
+.I heading-text
+and ordering of sections has been standardized by common practice,
+as has much of the layout of material within sections.
+.
+For example,
+a section called \(lqName\(rq or \(lqNAME\(rq must exist,
+must be the first section after the
+.B .TH
+call,
+and must contain only a line of the form
+.RS \" Invisibly move left margin to current .IP indent.
+.RS \" Now indent further, visibly.
+.IR page-topic [\c
+.BR , " \&.\|.\|.\&]"
+.B \e\-\ \c
+.I summary-description
+.RE \" Move left margin back to .IP indentation.
+for a man page to be properly indexed.
+.
+See
+.IR man (7)
+for the conventions prevailing on your system.
+.RE \" Move left margin back to standard position.
+.
+.
+.TP
+.BR .SS " ["\c
+.IR subheading-text ]
+Set
+.I subheading-text
+as a subsection heading indented (by default) partway between a section
+heading and a normally-indented paragraph
+.RB ( .PP ).
+.
+The text following
+.B .SS
+up to the end of the line,
+or the text on the next input line if
+.B .SS
+is given no arguments,
+is set in bold
+(or the font specified by the string register
+.BR HF )
+at the base font size.
+.
+Additionally,
+the left margin and indentation affecting subsequent text are reset to
+their default values.
+.
+Text on input lines after
+.I subheading-text
+is set as a normal paragraph
+.RB ( .PP ).
+.
+.
+.TP
+.B .EX
+.TQ
+.B .EE
+Begin and end example.
+.
+After
+.BR .EX ,
+filling and hyphenation are disabled and a constant-width (monospaced)
+font is selected.
+.
+Calling
+.B .EE
+enables filling and restores the previous hyphenation setting and font.
+.
+.
+.\" BEGIN EXAMPLE (TODO: move to tutorial/style guide when we have it)
+.IP
+Example regions are useful for formatting code,
+shell sessions,
+and text file contents.
+.
+.
+.\" END EXAMPLE (TODO: move to tutorial/style guide when we have it)
+.IP
+These macros are defined on many (but not all) legacy Unix systems
+running classic
+.IR troff .
+.
+To be certain your page will be portable to those systems, copy
+their definitions from the
+.I \%an\-ext.tmac
+file of a
+.I groff
+installation.
+.
+.
+.TP
+.BR .RS " ["\c
+.IR indent ]
+Move the left margin to the right by the value
+.IR indent ,
+if specified,
+and by a default amount otherwise;
+see subsection \(lqHorizontal and vertical spacing\(rq below.
+.
+Calls to
+.B .RS
+can be nested;
+each call increments by\~1 the indentation level used by
+.BR .RE .
+.
+The indentation level prior to any
+.B .RS
+calls is\~1.
+.
+.
+.TP
+.BR .RE " ["\c
+.IR level ]
+Move the left margin back to that corresponding to indentation level
+.IR level .
+.
+If no argument is given, move the left margin one level back.
+.
+.
+.\" ====================================================================
+.SS "Paragraph macros"
+.\" ====================================================================
+.
+A typical paragraph
+.RB ( .PP )
+is set at the current left margin,
+which by default is indented from the left margin of the output device.
+.
+In man pages and other technical literature,
+definition lists are frequently encountered;
+these can be set as \(lqtagged paragraphs\(rq
+.RB ( .TP
+and
+.BR .TQ ),
+which have one or more leading tags followed by a paragraph that has an
+additional left indent.
+.
+The indented paragraph
+.RB ( .IP )
+macro is useful to continue the indented content of a narrative started
+with
+.BR .TP ,
+or to present an itemized or ordered list.
+.
+.
+.TP
+.B .LP
+.TQ
+.B .PP
+.TQ
+.B .P
+Begin a new paragraph;
+these macros are synonymous.
+.
+They break the output line at the current position,
+followed by a vertical space downward by a default amount
+(which can be changed by the deprecated
+.B .PD
+macro).
+.
+The font size and style are reset to defaults;
+see subsection \(lqFont style macros\(rq below.
+.
+Finally, the left margin and indentation are reset to default values.
+.
+.
+.TP
+.BR .TP " ["\c
+.IR indent ]
+Set a tagged, indented paragraph.
+.
+The input line following this macro,
+known as the
+.IR tag ,
+is printed at the current left margin.
+.
+Subsequent text is indented by
+.IR indent ,
+if specified,
+and by a default amount otherwise;
+see subsection \(lqHorizontal and vertical spacing\(rq below.
+.
+.
+.IP
+If the tag is not as wide as the indentation,
+the paragraph starts on the same line as the tag,
+at the applicable indentation,
+and continues on the following lines.
+.
+Otherwise,
+the descriptive part of the paragraph begins on the line following the
+tag,
+entirely indented.
+.
+The line containing the tag can include a macro call,
+for instance to set the tag in bold with
+.BR .B .
+.
+.
+.IP
+.B .TP
+was used to write the first paragraph of this description of
+.BR .TP ,
+and
+.B .IP
+the subsequent ones.
+.
+.
+.TP
+.B .TQ
+Set an additional tag for a paragraph tagged with
+.BR .TP .
+.
+The pending output line is broken.
+.
+The tag on the input line following this macro and subsequent lines are
+handled as with
+.BR .TP .
+.
+.
+.IP
+This macro is not defined on legacy Unix systems running classic
+.IR troff .
+.
+To be certain your page will be portable to those systems,
+copy its definition from the
+.I \%an\-ext.tmac
+file of a
+.I groff
+installation.
+.
+.
+.IP
+The descriptions of
+.BR .LP ,
+.BR .PP ,
+and
+.B .P
+above were written using
+.B .TP
+and
+.BR .TQ .
+.
+.
+.TP
+.BR .IP " ["\c
+.IR tag "] "\c
+.RI [ indent ]
+Set an indented paragraph with an optional tag.
+.
+The
+.I tag
+and
+.I indent
+arguments,
+if present,
+are handled as with
+.BR .TP ,
+with the exception that the
+.I tag
+argument to
+.B .IP
+cannot include a macro call.
+.
+.
+.\" BEGIN EXAMPLE (TODO: move to tutorial/style guide when we have it)
+.IP
+Two convenient use cases for
+.B .IP
+are
+.
+.
+.RS \" Invisibly move left margin to current .IP indent.
+.RS \" Now indent further, visibly.
+.IP (1) 4n
+to start a new paragraph with the same indentation as the previous
+.B .IP
+or
+.B .TP
+paragraph,
+if no
+.I indent
+argument is given;
+and
+.
+.
+.IP (2)
+to set a paragraph with a short
+.I tag
+that is not semantically important,
+such as a bullet (\(bu)\(emobtained with the \(oq\e(bu\(cq character
+escape\(emor list enumerator,
+as seen in this very paragraph.
+.RE \" Move left margin back to .IP indentation.
+.RE \" Move left margin back to standard position.
+.
+.
+.\" END EXAMPLE (TODO: move to tutorial/style guide when we have it)
+.\" ====================================================================
+.SS "Command synopsis macros"
+.\" ====================================================================
+.
+Command synopses are a staple of section\~1 and\~8 man pages.
+.
+These macros aid you to construct one that has the classical Unix
+appearance.
+.
+Furthermore,
+some tools are able to interpret these macros semantically and treat
+them appropriately for localization and/or presentation.
+.
+A command synopsis is wrapped in
+.BR .SY / .YS
+calls,
+with command-line options of some formats indicated by
+.BR .OP .
+.
+.
+.PP
+These macros are not defined on legacy Unix systems running classic
+.IR troff .
+.
+To be certain your page will be portable to those systems, copy
+their definitions from the
+.I \%an\-ext.tmac
+file of a
+.I groff
+installation.
+.
+.
+.TP
+.BI .SY " command"
+Begin synopsis.
+.
+Hyphenation is turned off.
+.
+The
+.I command
+argument is set in bold.
+.
+The output line is filled as normal,
+but if a break is required,
+subsequent output lines are indented by the width of
+.I command
+plus a space.
+.
+.
+.TP
+.BI .OP " option-name"\/\c
+.RI " [" option-argument ]
+Indicate an optional command parameter called
+.IR option-name ,
+which is set in bold.
+.
+If the option takes an argument, specify
+.I option-argument
+using a noun, abbreviation, or hyphenated noun phrase.
+.
+If present,
+.I option-argument
+is preceded by a space and set in italics.
+.
+Square brackets (in roman) surround both arguments.
+.
+.
+.TP
+.B .YS
+End synopsis.
+.
+Restore indentation and hyphenation to previous values.
+.
+.
+.PP
+Multiple
+.B .SY/.YS
+blocks can be specified,
+for instance to distinguish differing modes of operation of a complex
+command like
+.IR tar (1);
+each will be separated by a paragraph space.
+.
+.
+.PP
+.B .SY
+can also be repeated multiple times before a closing
+.BR .YS ,
+which is useful to indicate synonymous ways of invoking a particular
+mode of operation.
+.
+.
+.\" BEGIN EXAMPLE (TODO: move to tutorial/style guide when we have it)
+.PP
+For example,
+.
+.
+.IP
+.\" from src/roff/groff/groff.1.man
+.EX
+\&.SY groff
+\&.OP \e\-abcegiklpstzCEGNRSUVXZ
+\&.OP \e\-d cs
+\&.OP \e\-f fam
+\&.OP \e\-F dir
+\&.OP \e\-I dir
+\&.OP \e\-K arg
+\&.OP \e\-L arg
+\&.OP \e\-m name
+\&.OP \e\-M dir
+\&.OP \e\-n num
+\&.OP \e\-o list
+\&.OP \e\-P arg
+\&.OP \e\-r cn
+\&.OP \e\-T dev
+\&.OP \e\-w name
+\&.OP \e\-W name
+\&.RI [ file
+\e&.\e|.\e|.\e&]
+\&.YS
+\&.
+\&.SY groff
+\&.B \e\-h
+\&.SY groff
+\&.B \e\-\e\-help
+\&.YS
+.
+.
+.IP
+
+.EE
+.
+.
+.PP
+produces the following output.
+.
+.
+.RS
+.PP
+.SY groff
+.OP \-abcegiklpstzCEGNRSUVXZ
+.OP \-d cs
+.OP \-f fam
+.OP \-F dir
+.OP \-I dir
+.OP \-K arg
+.OP \-L arg
+.OP \-m name
+.OP \-M dir
+.OP \-n num
+.OP \-o list
+.OP \-P arg
+.OP \-r cn
+.OP \-T dev
+.OP \-w name
+.OP \-W name
+.RI [ file
+\&.\|.\|.\&]
+.YS
+.
+.SY groff
+.B \-h
+.SY groff
+.B \-\-help
+.YS
+.RE
+.
+.
+.PP
+Several features of the above example are of note.
+.\" END EXAMPLE (TODO: move to tutorial/style guide when we have it)
+.\" TODO: Some of the normative discussion below can go there, too.
+.
+.
+.IP \(bu
+The empty request (.),
+which does nothing,
+is used for vertical spacing in the input file for readability by the
+document maintainer.
+.
+Do not put empty lines in a
+.I roff
+source document.
+.
+.
+.IP \(bu
+The command and option names are presented in
+.B bold
+to cue the user that they should be input literally.
+.
+.
+.IP \(bu
+Option dashes are specified with the \(oq\e\-\(cq escape sequence;
+this is an important practice to make them clearly visible and to
+facilitate cut-and-paste from the rendered man page to a shell prompt or
+text file.
+.
+.
+.IP \(bu
+Option arguments and command operands are presented in
+.I italics
+(underlined on some output devices, such as terminals and emulators),
+to cue the user that they must be replaced with appropriate text.
+.
+.
+.IP \(bu
+Symbols that are neither to be typed literally nor simply replaced
+appear in the roman style;
+brackets surround optional arguments,
+and an ellipsis indicates that the previous syntactical element may be
+repeated arbitrarily.
+.
+.
+.IP
+Some man pages use a brace-and-pipe notation such as
+.RB \(lq{ \-\-diff | \-\-compare }\(rq
+to indicate that one and only one of the \(oq|\(cq-separated items
+within the braces must be input.
+.
+If this braced construct is furthermore surrounded by square brackets,
+it means that at most one of the items is accepted.
+.
+.
+.IP
+Authors of man pages should note the use of the zero-width space
+escape sequence \(oq\e&\(cq on both sides of the ellipsis;
+this is a good practice to avoid surprises in the event the ellipsis
+gets refilled in your text editor.
+.
+See \(lqPortability\(rq, below.
+.
+The morbidly curious may consult
+.IR groff (7)
+regarding the narrow-space escape sequence \(oq\e|\(cq.
+.
+.
+.\" ====================================================================
+.SS "Hyperlink and email macros"
+.\" ====================================================================
+.
+Email addresses are bracketed with
+.BR .MT / .ME
+and URL hyperlinks with
+.BR .UR / .UE .
+.
+.
+.PP
+These macros are not defined on legacy Unix systems running classic
+.IR troff .
+.
+To be certain your page will be portable to those systems, copy
+their definitions from the
+.I \%an\-ext.tmac
+file of a
+.I groff
+installation.
+.
+.
+.TP
+.BI .MT " address"
+.TQ
+.BR .ME " ["\c
+.IR punctuation ]
+Identify
+.I address
+as an RFC 6068
+.I addr-spec
+for a \(lqmailto:\(rq URI with the text between the two macro
+calls as the link text.
+.
+A
+.I punctuation
+argument to
+.B .ME
+is placed at the end of the link text without intervening space.
+.
+Note that
+.I address
+may not be visible in the output text,
+particularly if the man page is being viewed as HTML.
+.
+On a device that is not a browser,
+.I address
+is set in angle brackets after the link text and before
+.IR punctuation .
+.
+.
+.\" BEGIN EXAMPLE (TODO: move to tutorial/style guide when we have it)
+.IP
+When rendered by
+.I groff
+to a TTY or PostScript output device,
+.RS
+.IP
+.EX
+Contact
+\&.MT fred.foonly@\e:fubar.net
+Fred Foonly
+\&.ME
+for more information.
+.EE
+.RE
+.
+.
+.IP
+displays as: \(lqContact Fred Foonly
+\(lafred.foonly@\:fubar.net\(ra for more information.\(rq.
+.
+.
+.IP
+The use of \(oq\e:\(cq to insert hyphenless discretionary breaks is a
+.I groff
+extension and can be omitted.
+.
+.
+.\" END EXAMPLE (TODO: move to tutorial/style guide when we have it)
+.TP
+.BI .UR " URL"
+.TQ
+.BR .UE " ["\c
+.IR punctuation ]
+Identify
+.I URL
+as an RFC 3986 URI hyperlink with the text between the two macro calls
+as the link text.
+.
+A
+.I punctuation
+argument to
+.B .UE
+is placed at the end of the link text without intervening space.
+.
+Note that
+.I URL
+may not be visible in the output text,
+particularly if the man page is being viewed as HTML.
+.
+On a device that is not a browser,
+.I URL
+is set in angle brackets after the link text and before
+.IR punctuation .
+.
+.
+.\" BEGIN EXAMPLE (TODO: move to tutorial/style guide when we have it)
+.IP
+When rendered by
+.I groff
+to a TTY or PostScript output device,
+.RS
+.IP
+.EX
+The GNU Project of the Free Software Foundation hosts the
+\&.UR https://\e:www.gnu.org/\e:software/\e:groff/
+Groff home page
+\&.UE .
+.EE
+.RE
+.
+.
+.IP
+displays as: \(lqThe GNU Project of the Free Software Foundation hosts
+the Groff home page
+\(lahttps://\:www.gnu.org/\:software/\:groff/\(ra.\(rq.
+.
+.
+.IP
+The use of \(oq\e:\(cq to insert hyphenless discretionary breaks is a
+.I groff
+extension and can be omitted.
+.
+.
+.\" END EXAMPLE (TODO: move to tutorial/style guide when we have it)
+.\" ====================================================================
+.SS "Font style macros"
+.\" ====================================================================
+.
+The
+.I man
+macro package is limited in its font styling options,
+offering only
+.BR bold \~( .B ),
+.I italic\c
+.RB \~( .I ),
+and roman (the default).
+.
+Italic text is usually set underscored instead on terminals and other
+classical
+.IR nroff -style
+output devices.
+.
+The
+.B .SM
+and
+.B .SB
+macros set text in roman or bold, respectively, at a smaller point size;
+these differ visually from regular-sized roman or bold text only on
+.IR troff -style
+output devices.
+.
+The foregoing macros cause word breaks before and after their arguments,
+but it is often necessary to set text in different styles without
+intervening whitespace.
+.
+The macros
+.BR .BI ,
+.BR .BR ,
+.BR .IB ,
+.BR .IR ,
+.BR .RB ,
+and
+.BR .RI ,
+where \(oqB\(cq, \(oqI\(cq, and \(oqR\(cq indicate bold, italic, and
+roman, respectively,
+set their odd- and even-numbered arguments in alternating styles,
+with no whitespace separating them.
+.
+.
+.PP
+Because font styles are presentational rather than semantic,
+conflicting traditions have arisen regarding which font styles should be
+used to mark file or path names,
+environment variables,
+in-line literals,
+and even man page cross-references.
+.
+.
+.PP
+The default font size and family (for
+.I troff
+output devices)
+is 10-point Times.
+.
+The default style is roman.
+.
+.
+.TP
+.BR .B \~[\c
+.IR text ]
+Set
+.I text
+in bold.
+.
+If the macro is given no arguments,
+the text of the next input line is set in bold.
+.
+.
+.\" BEGIN USAGE (TODO: move to tutorial/style guide when we have it)
+.IP
+Use bold
+for literal portions of syntax synopses,
+for command-line options in running text,
+and for literals that are major topics of the subject under discussion;
+for example,
+this page uses bold for macro and register names.
+.
+In
+.BR .EX / .EE
+examples of interactive I/O (such as a shell session),
+set only the user-typed input in bold.
+.
+.
+.
+.\" END USAGE (TODO: move to tutorial/style guide when we have it)
+.TP
+.BR .I \~[\c
+.IR text ]
+Set
+.I text
+in italics.
+.
+If the macro is given no arguments,
+the text of the next input line is set in italics.
+.
+.
+.\" BEGIN USAGE (TODO: move to tutorial/style guide when we have it)
+.IP
+Use italics
+for file and path names,
+for environment variables,
+for enumeration or preprocessor constants in C,
+for variable (user-determined) portions of syntax synopses,
+for the first occurrence only of a technical concept being introduced,
+for names of works of software
+(including commands and functions,
+.\" The following is an interesting exception that seems to have arisen
+.\" organically and nearly universally.
+but excluding names of operating systems or their kernels),
+and anywhere a parameter requiring replacement by the user is
+encountered.
+.
+An exception involves variable text in a context that is already marked
+up in italics,
+such as file or path names with variable components;
+in such cases,
+follow the convention of mathematical typography:
+set the file or path name in italics as usual
+(see
+.B .IR
+below),
+but use roman for the variable part,
+and italics again in running roman text when referring to the variable
+material.
+.
+.
+.\" END USAGE (TODO: move to tutorial/style guide when we have it)
+.TP
+.BR .SM \~[\c
+.IR text ]
+Set
+.I text
+one point size smaller than the default size.
+.
+If the macro is given no arguments,
+the text of the next input line is set smaller.
+.
+.
+.IP
+.IR Note :
+.IR nroff -style
+output devices,
+such as terminals,
+will render
+.I text
+at the normal font size instead.
+.
+Do not rely upon
+.B .SM
+to communicate semantic information distinct from using roman style at
+the normal size;
+it will be hidden from readers using such devices.
+.
+.
+.TP
+.BR .SB \~[\c
+.IR text ]
+Set
+.I text
+in bold,
+one point size smaller than the default size.
+.
+If the macro is given no arguments,
+the text of the next input line is set smaller and in bold.
+.
+.
+.IP
+.IR Note :
+.IR nroff -style
+output devices,
+such as terminals,
+will render
+.I text
+in bold at the normal font size instead.
+.
+Do not rely upon
+.B .SB
+to communicate semantic information distinct from using bold style at
+the normal size;
+it will be hidden from readers using such devices.
+.
+.
+.\" BEGIN USAGE (TODO: move to tutorial/style guide when we have it)
+.PP
+Note what is
+.I not
+prescribed for setting in bold or italics above:
+elements of \(lqsynopsis language\(rq such as ellipses and brackets
+around options;
+proper names and adjectives;
+titles of anything other than works of literature or software;
+identifiers for standards documents or technical reports such as
+CSTR\~#54,
+RFC\~1918,
+Unicode\~11.0,
+or
+POSIX.1-2017;
+acronyms;
+and occurrences after the first of a technical term or piece of jargon.
+.
+Again,
+the names of operating systems and their kernels are,
+by practically universal convention,
+set in roman.
+.
+.
+.PP
+Be frugal with the use of italics for emphasis,
+and particularly with the use of bold.
+.
+Brief runs of literal text,
+such as references to individual characters or short strings,
+including section and subsection headings of man pages,
+are suitable objects for quotation;
+see the
+\(oq\e(lq\(cq,
+\(oq\e(rq\(cq,
+\(oq\e(oq\(cq,
+and
+\(oq\e(cq\(cq
+escapes in subsection \(lqPortability\(rq below.
+.
+.
+.\" END USAGE (TODO: move to tutorial/style guide when we have it)
+.PP
+Unlike the above font style macros,
+the font alternation macros below accept only arguments on the same
+line as the macro call.
+.
+If whitespace is required within one of the arguments,
+first consider whether the same result could be achieved with as much
+clarity by using the single-style macros on separate input lines.
+.
+When it cannot,
+double-quote an argument with one or more embedded space characters.
+.
+Setting all three different styles within one whitespace-delimited word
+presents challenges;
+it is possible with the \(oq\ec\(cq and/or \(oq\ef\(cq escapes,
+but see subsection \(lqPortability\(rq below for caveats.
+.
+.
+.TP
+.BI .BI " bold-text italic-text"\c
+\~\&.\|.\|.\&
+Set each argument in bold and italics, alternately.
+.
+.
+.\" BEGIN EXAMPLE (TODO: move to tutorial/style guide when we have it)
+.RS
+.IP
+.\" from src/roff/troff/troff.1.man
+.EX
+\&.BI \e\-r name = n
+.EE
+.RE
+.
+.
+.\" END EXAMPLE (TODO: move to tutorial/style guide when we have it)
+.TP
+.BI .BR " bold-text roman-text"\c
+\~\&.\|.\|.\&
+Set each argument in bold and roman, alternately.
+.
+.
+.\" BEGIN EXAMPLE (TODO: move to tutorial/style guide when we have it)
+.RS
+.IP
+.\" from tmac/groff_ms.7.man
+.EX
+Any such change becomes effective with the first use of
+\&.BR .NH ,
+\&.I after
+the new alias is defined.
+.EE
+.RE
+.
+.
+.\" END EXAMPLE (TODO: move to tutorial/style guide when we have it)
+.TP
+.BI .IB " italic-text bold-text"\c
+\~\&.\|.\|.\&
+Set each argument in italics and bold, alternately.
+.
+.
+.\" BEGIN EXAMPLE (TODO: move to tutorial/style guide when we have it)
+.RS
+.IP
+.\" from man/groff_tmac.5.man
+.EX
+All macro package files must be named
+\&.IB name .tmac
+to fully use the
+\&.I tmac
+mechanism.
+.EE
+.RE
+.
+.
+.\" END EXAMPLE (TODO: move to tutorial/style guide when we have it)
+.TP
+.BI .IR " italic-text roman-text"\c
+\~\&.\|.\|.\&
+Set each argument in italics and roman, alternately.
+.
+.
+.\" BEGIN EXAMPLE (TODO: move to tutorial/style guide when we have it)
+.RS
+.IP
+.\" from man/groff_out.5.man
+.EX
+This is the first command of the
+\&.IR prologue .
+.EE
+.RE
+.
+.
+.\" END EXAMPLE (TODO: move to tutorial/style guide when we have it)
+.TP
+.BI .RB " roman-text bold-text"\c
+\~\&.\|.\|.\&
+Set each argument in roman and bold, alternately.
+.
+.
+.\" BEGIN EXAMPLE (TODO: move to tutorial/style guide when we have it)
+.RS
+.IP
+.\" from src/preproc/eqn/eqn.1.man
+.EX
+Also, the statement
+\&.RB \e(oq "delim on" \e(cq
+is not handled specially.
+.RE
+.EE
+.
+.
+.\" END EXAMPLE (TODO: move to tutorial/style guide when we have it)
+.TP
+.BI .RI " roman-text italic-text"\c
+\~\&.\|.\|.\&
+Set each argument in roman and italics, alternately.
+.
+.
+.\" BEGIN EXAMPLE (TODO: move to tutorial/style guide when we have it)
+.RS
+.IP
+.\" from contrib/mm/groff_mm.7.man
+.EX
+\&.RI [ file
+\e&.\e|.\e|.\e&]
+.EE
+.RE
+.
+.
+.\" END EXAMPLE (TODO: move to tutorial/style guide when we have it)
+.\" ====================================================================
+.SS "Horizontal and vertical spacing"
+.\" ====================================================================
+.
+The
+.I indent
+argument accepted by
+.BR .RS ,
+.BR .IP ,
+.BR .TP ,
+and the deprecated
+.B .HP
+is a number plus an optional scaling indicator.
+.
+If no scaling indicator is given,
+the
+.I man
+package assumes \(oqn\(cq;
+that is,
+the width of a letter \(lqn\(rq in the font current when the macro is
+called.
+.
+See section \(lqNumerical Expressions\(rq in
+.IR groff (7)
+for further details.
+.
+An indent specified in a call to
+.BR .IP ,
+.BR .TP ,
+or the deprecated
+.B .HP
+persists until
+(1) another of these macros is called with an explicit indent
+argument,
+or (2)
+.BR .SH ,
+.BR .SS ,
+or
+.B .PP
+or its synonyms is called;
+these clear the indent entirely.
+.
+.
+.PP
+Indents set by
+.B .RS
+move the left margin and persist until
+.BR .RS ,
+.BR .RE ,
+.BR .SH ,
+or
+.B .SS
+is called.
+.
+.
+The default indentation,
+exhibited by ordinary
+.B .PP
+paragraphs not within an
+.BR .RS / .RE
+relative indent,
+is 7.2n in
+.I troff
+mode and 7n in
+.I nroff
+mode.
+.
+The HTML output device is an exception;
+it ignores indentation completely.
+.
+This same indentation is used again (additively) for the defaults of
+.BR .IP ,
+.BR .TP ,
+.BR .RS ,
+and the deprecated
+.BR .HP .
+.
+Section headings
+.RB ( .SH )
+are set flush with the left margin of the output device,
+and subsection headings
+.RB ( .SS )
+are indented 3n.
+.
+.
+.PP
+Resist the temptation to mock up tabular or multi-column output with
+ASCII tab characters or the indentation arguments to
+.BR .IP ,
+.BR .TP ,
+.BR .RS ,
+or the deprecated
+.BR .HP ;
+the result may not render comprehensibly on an output device you fail to
+check,
+or which is developed in the future.
+.
+The table preprocessor
+.IR tbl (1)
+can likely meet your needs.
+.
+.
+.PP
+The following macros cause a line break with the
+insertion of vertical space:
+.BR .SH ,
+.BR .SS ,
+.BR .TP ,
+.BR .TQ ,
+.B .PP
+(and its synonyms),
+.BR .IP ,
+and the deprecated
+.BR .HP .
+.
+The default inter-section and inter-paragraph spacing is 1\~line in
+.I nroff
+mode,
+and 0.4v in
+.I troff
+mode.
+.
+(The deprecated macro
+.B .PD
+can change this vertical spacing,
+but its use is discouraged.)
+.
+The macros
+.BR .RS ,
+.BR .RE ,
+.BR .EX ,
+and
+.B .EE
+also cause a break but no insertion of vertical space.
+.
+.
+.\" ====================================================================
+.SS "Number registers"
+.\" ====================================================================
+.
+Number registers are described in section \(lqOptions\(rq below.
+.
+.
+.\" ====================================================================
+.SS "String registers"
+.\" ====================================================================
+.
+The following strings are defined.
+.
+.
+.TP
+.B \e*R
+expands to the character escape for the \(lqregistered sign\(rq glyph,
+\(oq\e(rg\(cq,
+if available,
+and \(lq(Reg.)\(rq otherwise.
+.
+.
+.
+.TP
+.B \e*S
+expands to an escape setting the font size to the document default.
+.
+.
+.TP
+.B \e*(HF
+expands to the font identifier used to print headings and subheadings.
+.
+The default is \(oqB\(cq.
+.
+.
+.TP
+.B \e*(lq
+.TQ
+.B \e*(rq
+expand to the character escapes for left and right double-quotation
+marks,
+\(oq\e(lq\(cq and \(oq\e(rq\(cq, respectively.
+.
+.
+.TP
+.B \e*(Tm
+expands to the character escape for the \(lqtrade mark sign\(rq glyph,
+\(oq\e(tm\(cq,
+if available,
+and \(lq(TM)\(rq otherwise.
+.
+.
+.\" ====================================================================
+.SS "Interaction with preprocessors"
+.\" ====================================================================
+.
+When a preprocessor like
+.I tbl
+or
+.I eqn
+is needed,
+a hint can be given to the man page formatter by making the first line
+of a man page look like this:
+.
+.
+.PP
+.RS
+.BI "\(aq\e\(dq " word
+.RE
+.
+.
+.PP
+Note that the line starts with an apostrophe (\(aq),
+not a dot,
+and that a single space character follows the double quote.
+The
+.I word
+consists of one letter for each needed preprocessor:
+\(oqe\(cq for
+.IR eqn ,
+\(oqr\(cq for
+.IR refer ,
+and
+\(oqt\(cq for
+.IR tbl .
+.
+Modern implementations of the
+.I man
+program interpret this first line and automatically call the right
+preprocessor(s).
+.
+.
+.PP
+The usual
+.I tbl
+and
+.I eqn
+macros for table and equation inclusion,
+.BR .TS ,
+.BR .T& ,
+.BR .TE ,
+.BR .EQ ,
+and
+.BR .EN ,
+may be used freely.
+.
+Note that
+.I nroff
+output devices are extremely limited in presentation of mathematical
+equations.
+.
+.
+.\" TODO BEGIN: move subsection to tutorial/style guide when we have it
+.\" ====================================================================
+.SS Portability
+.\" ====================================================================
+.
+The two major syntactical categories of
+.I roff
+languages are requests and escapes.
+.
+Since the
+.I man
+macros are implemented in terms of
+.I groff
+requests and escapes,
+one can,
+in principle,
+supplement the functionality of
+.I man
+with these lower-level elements where necessary.
+.
+.
+.PP
+Note,
+however,
+that using raw
+.I groff
+requests is likely to make your page render poorly on the class of
+viewers that transform it to HTML.
+.
+Some requests make implicit assumptions about things like character
+and page sizes that may not hold in an HTML environment;
+also,
+many of these viewers don't interpret the full
+.I groff
+vocabulary,
+a problem that can lead to portions of your text being silently dropped.
+.
+.
+.PP
+For portability to modern viewers,
+it is best to write your page entirely with the macros described in this
+page
+(except for the ones identified as deprecated,
+which should be avoided).
+.
+The macros we have described as extensions
+.RB ( .EX / .EE ,
+.BR .SY / .OP / .YS ,
+.BR .UR / .UE ,
+and
+.BR .MT / .ME )
+should be used with caution, as they may not yet be built in to
+some viewer that is important to your audience.
+.
+If in doubt, copy the implementation into your page\(emafter the
+.B .TH
+call and the \(lqName\(rq section,
+to accommodate timid
+.I mandb
+implementations.
+.
+.
+.PP
+Similar caveats apply to escapes.
+.
+Some escape sequences are however required for correct typesetting
+even in man pages and usually do not cause portability problems:
+.
+.
+.TP
+.B \e\(dq
+Comment.
+.
+Everything after the double-quote to the end of the input line is
+ignored.
+.
+Whole-line comments are frequently placed immediately after the empty
+request \(oq.\(cq.
+.
+.
+.TP
+.BI \e newline
+Join the next input line to the current one.
+.
+Except for the update of the input line counter (used for diagnostic
+messages and related purposes),
+a series of lines ending in backslash-newline is transparent to
+.IR groff .
+.
+Use this escape to break excessively input long lines for document
+maintenance.
+.
+.
+.TP
+.B \e\(ti
+Adjustable, non-breaking space character.
+.
+Use this escape to prevent a break inside a short phrase or between a
+numerical quantity and its corresponding unit(s).
+.
+.
+.RS
+.IP
+.EX
+Before starting the motor, set the output speed to\e\(ti1.
+There are 1,024\e\(tibytes in 1\e\(tikiB.
+CSTR\e\(ti#8 documents the B language.
+.EE
+.RE
+.
+.
+.TP
+.B \e&
+Zero-width space.
+.
+Append to an input line to prevent an end-of-sentence punctuation
+sequence from being recognized as such, or insert at the beginning of an
+input line to prevent a dot or apostrophe from being interpreted as the
+beginning of a
+.I roff
+request.
+.
+.
+.TP
+.B \e(aq
+ASCII apostrophe.
+.
+Use for syntax elements of programming languages because some
+output devices might replace unescaped apostrophes with right single
+quotation marks.
+.
+.
+.TP
+.B \e(oq
+Opening single quotation mark.
+.
+.TQ
+.B \e(cq
+Closing single quotation mark.
+.
+.
+.IP
+Use these for paired directional single quotes, \(oqlike this\(cq.
+.
+.
+.TP
+.B \e(dq
+ASCII double-quote.
+.
+Sometimes needed after macro calls to prevent the interpretation of the
+ASCII quotation mark character \(oq\(dq\(cq as the beginning or end
+of a macro argument.
+.
+.
+.TP
+.B \e(lq
+Left double quotation mark.
+.
+.TQ
+.B \e(rq
+Right double quotation mark.
+.
+.
+.IP
+Use these for paired directional double quotes, \(lqlike this\(rq.
+.
+.
+.TP
+.B \e(em
+Em-dash.
+.
+Use for an interruption in a sentence\(emsuch as this one.
+.
+.
+.TP
+.B \e(en
+En-dash.
+.
+Use to separate the two ends of a range,
+in particular between numbers,
+for example: the digits 1\(en9.
+.
+.
+.TP
+.B \e(ga
+ASCII grave accent.
+.
+Use for syntax elements of programming languages,
+for example shell command substitutions,
+because some output devices might replace unescaped grave accents with
+left single quotation marks.
+.
+.
+.TP
+.B \e(ha
+ASCII circumflex accent.
+.
+Use for syntax elements of programming languages because some output
+devices might replace unescaped circumflex accents with non-ASCII glyphs
+like the Unicode U+02C6 modifier letter circumflex.
+.
+.
+.TP
+.B \e(ti
+ASCII tilde.
+.
+Use for syntax elements of programming languages because some output
+devices might replace unescaped tildes with non-ASCII glyphs like the
+Unicode U+02DC small tilde.
+.
+.
+.TP
+.B \e\-
+Minus sign.
+.
+Also use this to display syntax elements that require the ASCII
+hyphen-minus character,
+for example command-line options and C language operators.
+.
+The unescaped \(oq\-\(cq input character is not appropriate for
+these cases because it may render as a hyphen on some output devices.
+.
+.
+.TP
+.B \ec
+.
+If this escape sequence occurs at the end of an input line, no white
+space is inserted between the last glyph on it and the first glyph
+resulting from the next input line.
+.
+This is occasionally useful when three different fonts are needed
+in a single word.
+.
+.
+.RS
+.IP
+.\" contrib/pdfmark/pdfroff.1.man
+.EX
+Normally, the final output file should be named
+\&.IB file .pdf\ec
+\e&.
+.EE
+.RE
+.
+.
+.IP
+Note that when using this trick with the
+.B .BI
+or
+.B .RI
+macros, you will need to manually add an italic correction escape
+\(oq\e/\(cq before the \(oq\ec\(cq due to way macros expand their
+arguments.
+.
+.
+.RS
+.IP
+.\" from contrib/mom/groff_mom.7.man
+.EX
+Files processed with
+\&.B groff \e\-mom
+(or
+\&.BI "\e\-m " mom\e/\ec
+) produce PostScript output by default.
+.EE
+.RE
+.
+.
+.IP
+Alternatively,
+and perhaps with better portability,
+the \(oq\ef\(cq font escape sequence can be used;
+see below.
+.
+Using \(oq\ec\(cq to include the output from more than one input line
+into the next-line argument of a
+.B .TP
+macro will render incorrectly with
+.I groff
+1.22.3,
+.I mandoc
+1.14.1,
+older versions of these programs,
+and perhaps with some other formatters.
+.
+.
+.TP
+.B \ee
+Widely used in man pages to represent a backslash output glyph.
+.
+It works reliably as long as the
+.B .ec
+request is not used,
+which should never happen in man pages,
+and it is slightly more portable than the more exact \(oq\e(rs\(cq
+(\(lqreverse solidus\(rq) escape sequence.
+.
+.
+.TP
+.BR \efB ,\  \efI ,\  \efR ,\  \efP
+Switch to bold, italic, roman, or back to the previous font,
+respectively.
+.
+Either these or \(oq\ec\(cq is needed when three different fonts are
+required in a single whitespace-delimited word.
+.
+.
+.RS
+.IP
+.\" second example from contrib/pdfmark/pdfroff.1.man
+.EX
+\&.RB [ \e\-\e\-reference\e\-dictionary=\efI\e,name\e/\efP ]
+.IP
+\&.RB [ \e\-\e\-reference\e\-dictionary=\ec
+\&.IR name ]
+.EE
+.RE
+.
+.
+.IP
+Font escapes may be more portable than \(oq\ec\(cq.
+.
+As shown above,
+it is up to you to account for italic corrections with \(oq\e/\(cq and
+\(oq\e,\(cq, which are themselves
+.I groff
+extensions,
+if desired and if supported by your implementation.
+.
+.
+.IP
+Note that
+\(oq\efP\(cq reliably returns to the style in use immediately preceding
+the previous \(oq\ef\(cq escape only if no
+sectioning,
+paragraph,
+or font face macro calls have intervened.
+.
+.
+.IP
+As long as only two fonts are needed in any single whitespace-delimited
+word,
+font alternation macros like
+.B .BI
+usually result in more readable source code than \(oq\ef\(cq escapes do.
+.
+.
+.PP
+For maximum portability, escape sequences and special characters
+not listed above are better avoided in man pages.
+.
+.
+.\" TODO END: move subsection to tutorial/style guide when we have it
+.\" ====================================================================
+.SS "Deprecated features"
+.\" ====================================================================
+.
+Use of the following is discouraged.
+.
+.
+.TP
+.BR .AT " ["\c
+.IR system " [" release ]]
+Alter the footer for use with AT&T man pages,
+overriding any definition of the
+.I footer-outside
+argument to
+.BR .TH .
+.
+This macro exists only for compatibility; don't use it.
+.
+.
+.IP
+The first argument
+.I system
+can be:
+.
+.
+.RS \" Invisibly move left margin to current .IP indent.
+.RS \" Now indent further, visibly.
+.TP
+3
+7th edition
+.I (default)
+.
+.
+.TP
+4
+System III
+.
+.
+.TP
+5
+System V
+.RE \" Move left margin back to .IP indentation.
+.RE \" Move left margin back to standard position.
+.
+.
+.IP
+The optional second argument
+.I release
+specifies the release number,
+such as in \(lqSystem V Release 3\(rq.
+.
+.
+.TP
+.B .BT
+Set the page footer.
+.
+Redefine this macro to get control of the footer.
+.
+.
+.TP
+.B .DT
+Set tabs every 0.5\~inches.
+.
+Since this macro is always called during a
+.B .TH
+macro, it makes sense to call it only if the tab positions have been
+changed.
+.
+.
+.IP
+Use of this presentation-level macro is deprecated.
+.
+It translates poorly to HTML, under which exact whitespace control
+and tabbing are not readily available.
+.
+Thus, information or distinctions that you use
+.B .DT
+to express are likely to be lost.
+.
+If you feel tempted to use it, you should probably be composing a
+table using
+.IR tbl (1)
+markup instead.
+.
+.
+.TP
+.BR .HP " ["\c
+.IR indent ]
+Set up a paragraph with a hanging left indentation.
+.
+The
+.I indent
+argument,
+if present,
+is handled as with
+.BR .TP .
+.
+.
+.IP
+Use of this presentation-level macro is deprecated.
+.
+While it is universally portable to legacy Unix systems, a hanging
+indentation cannot be expressed naturally under HTML, and many
+HTML-based manual viewers simply interpret it as a starter for a
+normal paragraph.
+.
+Thus, any information or distinction you tried to express with the
+indentation may be lost.
+.
+.
+.TP
+.BR .PD " ["\c
+.IR vertical-space ]
+Define the vertical space between paragraphs or (sub)sections.
+.
+The optional argument
+.I vertical-space
+specifies the amount of space;
+the default scaling is \(oqv\(cq).
+.
+Without an argument,
+the spacing is reset to its default value;
+see \(lqHorizontal and vertical spacing\(rq above.
+.
+.
+.IP
+Use of this presentation-level macro is deprecated.
+.
+It translates poorly to HTML, under which exact control of
+inter-paragraph spacing is not readily available.
+.
+Thus, information or distinctions that you use
+.B .PD
+to express are likely to be lost.
+.
+.
+.TP
+.B .PT
+Set the page header.
+.
+Redefine this macro to get control of the header.
+.
+.
+.TP
+.BR .UC " ["\c
+.IR version ]
+Alter the footer for use with BSD man pages,
+overriding any definition of the
+.I footer-outside
+argument to
+.BR .TH .
+.
+This macro exists only for compatibility; don't use it.
+.
+.
+.IP
+The argument
+.I version
+can be:
+.
+.
+.RS \" Invisibly move left margin to current .IP indent.
+.RS \" Now indent further, visibly.
+.TP
+3
+3rd Berkeley Distribution
+.I (default)
+.
+.
+.TP
+4
+4th Berkeley Distribution
+.
+.
+.TP
+5
+4.2 Berkeley Distribution
+.
+.
+.TP
+6
+4.3 Berkeley Distribution
+.
+.
+.TP
+7
+4.4 Berkeley Distribution
+.RE \" Move left margin back to .IP indentation.
+.RE \" Move left margin back to standard position.
+.
+.
+.\" ====================================================================
+.SS "History"
+.\" ====================================================================
+.
+According to its own
+.IR man (7)
+page,
+Version 7 Unix (1979) supported all of the macros described in this page
+not listed as GNU extensions,
+except
+.BR .P ,
+.BR .SB ,
+.BR .SS ,
+and the deprecated
+.BR .AT ,
+.BR .BT ,
+.BR .PT ,
+and
+.BR .UC .
+.
+The only string registers defined were
+.B R
+and
+.BR S ;
+no number registers were documented.
+.
+.
+.\" ====================================================================
+.SH OPTIONS
+.\" ====================================================================
+.
+The following
+.I groff
+options set number registers recognized and used by the
+.I man
+macro package.
+.
+.
+.TP
+.B \-rcR=1
+Continuous rendering.
+.
+Create a single,
+very long page instead of multiple pages.
+.
+This is the default in
+.I nroff
+mode.
+.
+Use
+.B \-rcR=0
+to disable it.
+.
+.
+.TP
+.B \-rC1
+Number pages continuously.
+.
+If more than one man page is given on the command line, number the
+pages continuously, rather than starting each at\~1.
+.
+.
+.TP
+.B \-rD1
+Enable double-sided printing.
+.
+Footers for even and odd pages are formatted differently;
+see the description of
+.B .TH
+in \(lqDocument structure macros\(rq,
+above.
+.
+.
+.TP
+.BI \-rFT= footer-distance
+Set distance of the footer,
+relative to the bottom of the page if negative or relative to the top if
+positive,
+to
+.IR footer-distance .
+.
+The default is \-0.5i.
+.
+.
+.TP
+.BI \-rHY= flags
+Set hyphenation flags.
+.
+Permissible values of
+.I flags
+are documented in section \(lqHyphenation\(rq of
+.IR groff (7).
+.
+The default is\~4 if continuous rendering is enabled
+.RB ( \-rcR=1
+above),
+and\~6 otherwise.
+.
+.
+.TP
+.BI \-rIN= indent
+Set the body text indentation (for normal paragraphs) to
+.IR indent .
+.
+See \(lqHorizontal and vertical spacing\(rq above for the default
+indentation value.
+.
+For
+.IR nroff ,
+.I indent
+should always be an integer multiple of unit \(oqn\(cq to get consistent
+indentation.
+.
+.
+.TP
+.BI \-rLL= line-length
+Set line length.
+.
+If this option is not given, the line length is set to respect any
+value set by a prior \(lq.ll\(rq request (which
+.I must
+be in effect when the
+.B .TH
+macro is invoked),
+if this differs from the built-in default for the formatter;
+otherwise it defaults to 78n in
+.I nroff
+mode and 6.5i in
+.I troff
+mode.
+.
+.
+.IP
+Note that the use of a \(lq.ll\(rq request to initialize the line
+length is supported for backward compatibility with some versions of
+the
+.I man
+program;
+direct initialization of the
+.B LL
+register should
+.I always
+be preferred to the use of such a request.
+.
+In particular, note that a \(lq.ll\~65n\(rq request does
+.I not
+preserve the normal
+.I nroff
+default line length
+(the
+.I man
+default initialization to 78n prevails),
+whereas the
+.B \-rLL=65n
+option,
+or an equivalent \(lq.nr\~LL\~65n\(rq request preceding the use of the
+.B .TH
+macro,
+.I does
+set a line length of 65n.
+.
+.
+.TP
+.BI \-rLT= title-length
+Set title length.
+.
+If this option is not given, the title length defaults to the line
+length.
+.
+.
+.TP
+.BI \-rP n
+Start enumeration of pages at
+.I n
+rather than\~1.
+.
+.
+.TP
+.BI \-rS point-size
+Use
+.I point-size
+as the base document font size.
+.
+Acceptable values are 10, 11, or 12.
+.
+See subsection \(lqFont style macros\(rq above for the default.
+.
+.
+.TP
+.BI \-rSN= subsection-indent
+Set subsection indentation to
+.IR subsection-indent .
+.
+See \(lqHorizontal and vertical spacing\(rq above for the default
+indentation value.
+.
+.
+.TP
+.BI \-rX p
+After
+.RI page " p" ,
+number pages as
+.IR p a,
+.IR p b,
+.IR p c,
+and so forth.
+.
+For example, the option
+.B \-rX2
+produces the following page
+numbers: 1, 2, 2a, 2b, 2c, and so on.
+.
+.
+.\" ====================================================================
+.SH FILES
+.\" ====================================================================
+.
+.TP
+.I d:/\:usr/\:share/\:groff/\:1.22.4/\:tmac/\:man.tmac
+.TQ
+.I d:/\:usr/\:share/\:groff/\:1.22.4/\:tmac/\:an.tmac
+These are wrapper files to call
+.IR andoc.tmac .
+.
+.
+.TP
+.I d:/\:usr/\:share/\:groff/\:1.22.4/\:tmac/\:andoc.tmac
+This brief
+.I groff
+program detects whether the
+.I man
+or
+.I mdoc
+macro package is being used by a document and loads the correct macro
+definitions,
+taking advantage of the fact that pages using them must call
+.B .TH
+or
+.BR .Dd ,
+respectively,
+as their first macro.
+.
+Because the wrappers above load this file,
+a
+.I man
+program or user typing,
+for example,
+\(lqgroff \-man page.1\(rq,
+need not know which package the file
+.I page.1
+uses.
+.
+Multiple man pages, in either format, can be handled.
+.
+.
+.TP
+.I d:/\:usr/\:share/\:groff/\:1.22.4/\:tmac/\:an\-old.tmac
+Most
+.I man
+macros are contained in this file.
+.
+It also loads the GNU extensions from
+.I an\-ext.tmac
+(see below).
+.
+.
+.TP
+.I d:/\:usr/\:share/\:groff/\:1.22.4/\:tmac/\:an\-ext.tmac
+The extension macro definitions for
+.BR .SY ,
+.BR .OP ,
+.BR .YS ,
+.BR .TQ ,
+.BR .EX / .EE ,
+.BR .UR / .UE ,
+and
+.BR .MT / .ME
+are contained in this file,
+which is written in classic
+.I troff
+and permissively licensed\(emnot copylefted.
+.
+Man page authors concerned about portability to legacy Unix systems are
+encouraged to copy these definitions into their pages,
+and maintainers of
+.I troff
+implementations or work-alike systems that format man pages are
+encouraged to re-use them.
+.
+.
+.IP
+Note that the definitions for these macros are read after the call of
+.BR .TH ,
+so they will replace any macros of the same names preceding it in your
+file.
+.
+If you use your own implementations of these macros,
+they must be defined after calling
+.B .TH
+to have any effect.
+.
+.
+.TP
+.I d:/\:usr/\:share/\:groff/\:site\-tmac/\:man.local
+Local changes and customizations should be put into this file.
+.
+.
+.\" ====================================================================
+.SH NOTES
+.\" ====================================================================
+.
+Some tips on troubleshooting your man pages follow.
+.
+.
+.TP
+.RB \(bu " .RS" " doesn't indent relative to my indented paragraph"
+The
+.B .RS
+macro sets the indentation relative to the amount of a
+.I normal
+paragraph
+.RB ( .PP
+and its synonyms).
+.
+The same default indentation amount is used for
+.BR .RS ,
+.BR .IP ,
+.BR .TP ,
+and the deprecated
+.BR .HP .
+.
+If you need to start an indent relative to an indented paragraph,
+call
+.B .RS
+repeatedly until an acceptable indentation is achieved,
+or give
+.B .RS
+an indentation argument that is at least as much as the paragraph's
+indentation amount relative to an adjacent
+.B .PP
+paragraph.
+.
+See \(lqHorizontal and vertical spacing\(rq above for the values.
+.
+.
+.TP
+.RB \(bu " .RE" " doesn't reset the indent to the expected level"
+.TQ
+\(bu warning: scale indicator invalid in this context
+.TQ
+\(bu warning: number register \(aqan\-saved\-margin\c
+.IR n "\(aq not defined"
+.TQ
+\(bu warning: number register 'an\-saved\-prevailing\-indent\c
+.IR n "\(aq not defined"
+The
+.B .RS
+macro takes an indentation
+.I amount
+as an argument;
+the
+.B .RE
+macro's argument is a specific indentation
+.IR level .
+.B .RE\~1
+goes to the level before any
+.B .RS
+macros were called,
+.B .RE\~2
+goes to the level of the first
+.B .RS
+call you made,
+and so forth.
+.
+If you desire symmetry in your macro calls,
+simply issue one
+.B .RE
+without an argument
+for each
+.B .RS
+that precedes it.
+.
+.
+.IP
+After calls to the
+.B .SH
+and
+.B .SS
+sectioning macros,
+all relative indents are cleared and calls to
+.B .RE
+have no effect.
+.
+.
+.\" ====================================================================
+.SH AUTHORS
+.\" ====================================================================
+.
+The GNU version of the
+.I man
+macro package was written by James Clark and contributors.
+.
+The extension macros were written by
+.MT wl@\:gnu.org
+Werner Lemberg
+.ME
+and
+.MT esr@\:thyrsus.com
+Eric S.\& Raymond
+.ME .
+.
+.
+.PP
+This document was originally written for the Debian GNU/Linux system by
+.MT sgk@\:debian.org
+Susan G.\& Kleinmann
+.ME .
+.
+It was corrected and updated by Werner Lemberg and G.\& Branden
+Robinson.
+.
+The extension macros were documented by Eric S.\& Raymond;
+he also originated the portability section,
+to which Ingo Schwarze contributed most of the material on escape
+sequences.
+.
+.
+.\" ====================================================================
+.SH "SEE ALSO"
+.\" ====================================================================
+.
+.IR "Groff: The GNU Implementation of troff" ,
+by Trent A.\& Fisher and Werner Lemberg,
+is the main
+.I groff
+documentation.
+.
+You can browse it interactively with \(lqinfo groff\(rq.
+.
+.
+.PP
+.IR tbl (1),
+.IR eqn (1),
+and
+.IR refer (1)
+are preprocessors used with man pages.
+.
+.
+.PP
+.IR man (1)
+describes the man page formatter on your system.
+.
+.
+.PP
+.IR groff_mdoc (7)
+describes the
+.I groff
+version of the BSD-originated alternative macro package for man pages.
+.
+.
+.PP
+.IR groff (7),
+.IR groff_char (7),
+.IR man (7)
+.
+.
+.\" Restore compatibility mode (for, e.g., Solaris 10/11).
+.cp \n[groff_man_C]
+.
+.
+.\" ====================================================================
+.\" ### Emacs settings:
+.\" Local Variables:
+.\" mode: nroff
+.\" fill-column: 72
+.\" End:
+.\" vim: set filetype=groff textwidth=72:

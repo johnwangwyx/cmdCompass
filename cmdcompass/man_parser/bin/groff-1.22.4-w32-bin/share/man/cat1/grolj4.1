@@ -1,0 +1,102 @@
+GROLJ4(1)                   General Commands Manual                  GROLJ4(1)
+
+
+
+NNAAMMEE
+       grolj4 - groff driver for HP LaserJet 4 family
+
+SSYYNNOOPPSSIISS
+       ggrroolljj44 [--ll] [--cc _n_u_m_-_c_o_p_i_e_s] [--dd [_n]] [--FF _f_o_n_t_-_d_i_r_e_c_t_o_r_y] [--pp _p_a_p_e_r_-
+              _s_i_z_e] [--ww _l_i_n_e_-_w_i_d_t_h] [_f_i_l_e ...]
+
+       ggrroolljj44 ----hheellpp
+
+       ggrroolljj44 --vv
+       ggrroolljj44 ----vveerrssiioonn
+
+DDEESSCCRRIIPPTTIIOONN
+       ggrroolljj44 is a driver for ggrrooffff that produces output in PCL5 format  suit-
+       able for an HP LaserJet 4 printer.
+
+       There is an additional drawing command available:
+
+       \\DD''RR _d_h _d_v''
+              Draw a rule (solid black rectangle), with one corner at the cur-
+              rent position, and the diagonally opposite corner at the current
+              position  +(_d_h,_d_v).   Afterwards the current position will be at
+              the opposite corner.  This generates a PCL fill  rectangle  com-
+              mand,  and  so  will work on printers that do not support HPGL/2
+              unlike the other \\DD commands.
+
+OOPPTTIIOONNSS
+       Whitespace is permitted between a command-line option and its argument.
+
+       --cc _n_u_m_-_c_o_p_i_e_s
+              Print _n_u_m_-_c_o_p_i_e_s copies of each page.
+
+       --ll     Print the document with a landscape orientation.
+
+       --dd      [_n] Use duplex mode _n: 1 is long-side binding; 2 is  short-side
+              binding; default is 1.
+
+       --pp _p_a_p_e_r_-_s_i_z_e
+              Set  the  paper size to _p_a_p_e_r_-_s_i_z_e, which must be one of letter,
+              legal, executive, a4, com10, monarch, c5, b5, dl.
+
+       --vv
+       ----vveerrssiioonn
+              Print the version number.
+
+       --ww _l_i_n_e_-_w_i_d_t_h
+              Set the default line thickness to _l_i_n_e_-_w_i_d_t_h thousandths  of  an
+              em.  If this option isn't specified, the line thickness defaults
+              to 0.04 em.
+
+       --FF _f_o_n_t_-_d_i_r_e_c_t_o_r_y
+              Prepend directory _f_o_n_t_-_d_i_r_e_c_t_o_r_y/dev_n_a_m_e to the search path  for
+              font  and  device  description  files;  _n_a_m_e  is the name of the
+              device, usually lljj44.
+
+       The following four commands are  available  additionally  in  the  font
+       description files:
+
+       ppccllwweeiigghhtt _N
+              The integer value _N must be in the range -7 to +7; default is 0.
+
+       ppccllssttyyllee _N
+              The  integer  value  _N  must be in the range 0 to 32767; default
+              is 0.
+
+       ppccllpprrooppoorrttiioonnaall _N
+              A boolean flag which can be either 0 or 1; default is 0.
+
+       ppccllttyyppeeffaaccee _N
+              The integer value _N must be in the range  0  to  65535;  default
+              is 0.
+
+EENNVVIIRROONNMMEENNTT
+       _G_R_O_F_F___F_O_N_T___P_A_T_H
+              A  list of directories in which to search for the _d_e_vname direc-
+              tory  in  addition  to  the  default  ones.   See  ttrrooffff(1)  and
+              ggrrooffff__ffoonntt(5) for more details.
+
+FFIILLEESS
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_v_l_j_4_/_D_E_S_C
+              Device description file.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_v_l_j_4_/F
+              Font description file for font _F.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_t_m_a_c_/_l_j_4_._t_m_a_c
+              Macros for use with ggrroolljj44.
+
+BBUUGGSS
+       Small dots.
+
+SSEEEE AALLSSOO
+       lljj44__ffoonntt(5),    ggrrooffff(1),    ttrrooffff(1),   ggrrooffff__oouutt(5),   ggrrooffff__ffoonntt(5),
+       ggrrooffff__cchhaarr(7)
+
+
+
+groff 1.22.4                     December 2018                       GROLJ4(1)

@@ -1,0 +1,260 @@
+.TH GDIFFMK 1 "December 2018" "groff 1.22.4"
+.SH NAME
+gdiffmk \- mark differences between groff/nroff/troff files
+.
+.
+.\" ====================================================================
+.\" Legal Terms
+.\" ====================================================================
+.\"
+.\" Copyright (C) 2004-2018 Free Software Foundation, Inc.
+.\"
+.\" This file is part of gdiffmk, which is part of groff, the GNU roff
+.\" type-setting system.
+.\"
+.\" This program is free software: you can redistribute it and/or modify
+.\" it under the terms of the GNU General Public License as published by
+.\" the Free Software Foundation, either version 3 of the License, or
+.\" (at your option) any later version.
+.\"
+.\" This program is distributed in the hope that it will be useful, but
+.\" WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+.\" General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public License
+.\" along with this program.  If not, see
+.\" <http://www.gnu.org/licenses/>.
+.
+.
+.\" ====================================================================
+.SH SYNOPSIS
+.\" ====================================================================
+.
+.SY gdiffmk
+.OP \-a addmark
+.OP \-c changemark
+.OP \-d deletemark
+.RB [ \-D
+.RB [ \-B ]
+.RB [ \-M
+.IR "mark1 mark2" ]]
+.OP \-x diffcmd
+.OP \-\-
+.I file1
+.I file2
+.RI [ output ]
+.YS
+.
+.SY gdiffmk
+.B \-\-help
+.YS
+.
+.SY gdiffmk
+.B \-\-version
+.YS
+.
+.\" ====================================================================
+.SH DESCRIPTION
+.\" ====================================================================
+.
+.B gdiffmk
+compares two
+.BR groff (1),
+.BR nroff (1),
+or
+.BR troff (1)
+documents,
+.I file1
+and
+.IR file2 ,
+and creates an output which is
+.I file2
+with added \[lq]margin character\[rq] (.mc) commands that indicate the
+differences.
+.
+.
+.LP
+If the
+.I output
+filename is present,
+the output is written there.
+.
+If it is
+.B \-
+or absent the output is written to the standard output.
+.
+.
+.LP
+If the
+.I file1
+or
+.I file2
+argument is
+.B \-
+the standard input is read for that input.
+.
+Clearly both cannot be
+.BR \- .
+.
+.
+.LP
+Note that the output is not necessarily compatible with all macro packages
+and all preprocessors.
+.
+See section \(lqBugs\(rq below.
+.
+.
+.\" ====================================================================
+.SH OPTIONS
+.\" ====================================================================
+.
+.TP
+.BI \-a addmark
+Use the
+.I addmark
+for source lines not in
+.I file1
+but present in
+.IR file2 .
+.
+Default:
+.BR + .
+.
+.TP
+.B \-B
+By default, the deleted texts marked by the
+.B \-D
+option end
+with an added troff break command,
+.BR .br ,
+to ensure that the deletions are marked properly.
+.
+This is the only way to guarantee that deletions and small
+changes get flagged.
+.
+This option directs the program not to insert these breaks; it makes
+no sense to use it without
+.BR \-D .
+.
+.TP
+.BI \-c changemark
+Use the
+.I changemark
+for changed source lines.
+.
+Default:
+.BR | .
+.
+.TP
+.BI \-d deletemark
+Use the
+.I deletemark
+for deleted source lines.
+.
+Default:
+.BR * .
+.
+.TP
+.B \-D
+Show the deleted portions from changed and deleted text.
+.
+Default delimiting marks:
+.BR "[[" " \&.\|.\|.\& " "]]" .
+.
+.TP
+.BI \-M "mark1 mark2"
+Change the delimiting marks for the
+.B \-D
+option.
+.
+It makes no sense to use this option without
+.BR \-D .
+.
+.TP
+.BI \-x diffcmd
+Use the
+.I diffcmd
+command to perform the comparison of
+.I file1
+and
+.IR file2 .
+.
+In particular,
+.I diffcmd
+should accept the GNU
+.B diff
+.BI \-D name
+option.
+.
+Default:
+.BR diff (1).
+.
+.TP
+.B \-\-
+All the following arguments are treated as file names,
+even if they begin with
+.BR \- .
+.
+.TP
+.B \-\-help
+Print a usage message on standard error output and exit.
+.
+.TP
+.B \-\-version
+Print version information on the standard output and exit.
+.
+.
+.\" ====================================================================
+.SH BUGS
+.\" ====================================================================
+.
+The output is not necessarily compatible with all macro packages
+and all preprocessors.
+.
+A workaround that is often successful against preprocessor problems is
+to run
+.B gdiffmk
+on the output of all the preprocessors instead of the input source.
+.
+.
+.LP
+.B gdiffmk
+relies on the
+.BI \-D name
+option of GNU
+.BR diff (1)
+to make a merged \[lq]#ifdef\[rq] output format.
+.
+It hasn't been tested whether other versions of
+.BR diff (1)
+do support this option.
+.
+See also the
+.BI \-x diffcmd
+option.
+.
+.
+.\" ====================================================================
+.SH AUTHORS
+.\" ====================================================================
+.B gdiffmk
+was written and is maintained by
+.MT MBianchi@\:Foveal.com
+Mike Bianchi
+.ME .
+.
+.
+.\" ====================================================================
+.SH "SEE ALSO"
+.\" ====================================================================
+.
+.BR groff (1),
+.BR nroff (1),
+.BR gtroff (1),
+.BR diff (1)
+.
+.\" Local Variables:
+.\" mode: nroff
+.\" End:
+.\" vim: set filetype=groff:

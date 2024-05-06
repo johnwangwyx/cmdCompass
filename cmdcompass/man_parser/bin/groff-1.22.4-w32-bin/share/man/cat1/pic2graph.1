@@ -1,0 +1,77 @@
+PIC2GRAPH(1)                General Commands Manual               PIC2GRAPH(1)
+
+
+
+NNAAMMEE
+       pic2graph - convert a PIC diagram into a cropped image
+
+SSYYNNOOPPSSIISS
+       ppiicc22ggrraapphh [--uunnssaaffee] [--ffoorrmmaatt _o_u_t_p_u_t_-_f_o_r_m_a_t] [--eeqqnn _d_e_l_i_m_i_t_e_r_s] [_c_o_n_v_e_r_t_-
+                 _a_r_g_u_m_e_n_t_s]
+
+       ppiicc22ggrraapphh ----hheellpp
+
+       ppiicc22ggrraapphh --vv
+       ppiicc22ggrraapphh ----vveerrssiioonn
+
+DDEESSCCRRIIPPTTIIOONN
+       _p_i_c_2_g_r_a_p_h reads a _p_i_c(1) program from the standard input and writes  an
+       image  file,  by  default in Portable Network Graphics (PNG) format, to
+       the standard output.  It furthermore translates _e_q_n(1)  constructs,  so
+       it can be used for generating images of mathematical formulae.
+
+       The  input  PIC  code should _n_o_t be wrapped with the ..PPSS and ..PPEE macros
+       that normally guard it within _g_r_o_f_f(1) documents.
+
+       Arguments not recognized by _p_i_c_2_g_r_a_p_h are passed to the ImageMagick  or
+       GraphicsMagick  program  _c_o_n_v_e_r_t(1).  By specifying these, you can give
+       your image a border, set the image's pixel density,  or  perform  other
+       useful transformations.
+
+       The  output image is clipped using _c_o_n_v_e_r_t's --ttrriimm option to the small-
+       est possible bounding box that contains all the black pixels.
+
+OOPPTTIIOONNSS
+       --eeqqnn _d_e_l_i_m_i_t_e_r_s
+              Use _d_e_l_i_m_i_t_e_r_s  as  the  opening  and  closing  characters  that
+              delimit  _e_q_n  directives; the default is "$$".  The option argu-
+              ment _d_e_l_i_m_i_t_e_r_s should be a two-character string, but  an  empty
+              string  ("")  is accepted as a directive to disable _e_q_n process-
+              ing.
+
+       --ffoorrmmaatt _o_u_t_p_u_t_-_f_o_r_m_a_t
+              Write the image in _o_u_t_p_u_t_-_f_o_r_m_a_t, which must  be  understood  by
+              _c_o_n_v_e_r_t; the default is PNG.
+
+       ----hheellpp Display a usage message and exit.
+
+       --uunnssaaffee
+              Run _g_r_o_f_f in _u_n_s_a_f_e mode, enabling the PIC command sshh to execute
+              arbitrary Unix shell commands.  The _g_r_o_f_f default is  to  forbid
+              this.
+
+       --vv
+       ----vveerrssiioonn
+              Display version information and exit.
+
+EENNVVIIRROONNMMEENNTT
+       _G_R_O_F_F___T_M_P_D_I_R
+       _T_M_P_D_I_R
+       _T_M_P
+       _T_E_M_P   These  environment  variables are searched in the given order to
+              determine the directory where temporary files will  be  created.
+              If none are set, _/_t_m_p is used.
+
+AAUUTTHHOORRSS
+       _p_i_c_2_g_r_a_p_h  was written by Eric S. Raymond <esr@thyrsus.com>, based on a
+       recipe by W. Richard Stevens.
+
+SSEEEE AALLSSOO
+       W. Richard Stevens, _T_u_r_n_i_n_g _P_I_C _i_n_t_o _H_T_M_L <http://www.kohala.com/start/
+       troff/pic2html.html>
+
+       _e_q_n_2_g_r_a_p_h(1), _g_r_a_p_2_g_r_a_p_h(1), _p_i_c(1), _e_q_n(1), _g_r_o_f_f(1), _c_o_n_v_e_r_t(1)
+
+
+
+groff 1.22.4                     November 2018                    PIC2GRAPH(1)

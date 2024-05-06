@@ -1,0 +1,190 @@
+GROFF_ME(7)            Miscellaneous Information Manual            GROFF_ME(7)
+
+
+
+NNAAMMEE
+       groff_me - "me" macro package for formatting documents with GNU roff
+
+SSYYNNOOPPSSIISS
+       ggrrooffff --mmee [_o_p_t_i_o_n ...] [_i_n_p_u_t_-_f_i_l_e ...]
+
+       ggrrooffff --mm mmee [_o_p_t_i_o_n ...] [_i_n_p_u_t_-_f_i_l_e ...]
+
+DDEESSCCRRIIPPTTIIOONN
+       The  _m_e  package  of macro definitions for the _r_o_f_f language provides a
+       convenient facility for preparing technical papers in various  formats.
+       This  manual  page describes the GNU version of the _m_e macros, which is
+       part of the _g_r_o_f_f document formatting system.  This version can be used
+       with both GNU _t_r_o_f_f and Unix _t_r_o_f_f.
+
+       Many  _r_o_f_f  requests  are unsafe in conjunction with this package; how-
+       ever, the following requests may be used with impunity after the  first
+       ..pppp:
+
+       ..bbpp     begin new page
+       ..bbrr     break output line here
+       ..sspp _n   insert _n spacing lines
+       ..llss _n   (line spacing) _n=1 single, _n=2 double space
+       ..nnaa     no alignment of right margin
+       ..ccee _n   center next _n lines
+       ..uull _n   underline next _n lines
+
+       _N_o_t_e_:  In  contrast to its behavior with other macro packages and "raw"
+       _r_o_f_f, when using the _m_e package, the ..sspp request will _n_o_t put space  at
+       the top of a page.
+
+       Output  of  the _p_i_c, _e_q_n, _r_e_f_e_r, and _t_b_l preprocessors is acceptable as
+       input.
+
+   MMaaccrroo RReeffeerreennccee
+       Numeric arguments to macros are  denoted  with  lowercase  letters  and
+       string  arguments with uppercase.  An optional macro argument such as _x
+       appears in brackets, [[_x]].  Note that arguments to macros generally must
+       be  quoted if they contain whitespace.  An exception is the argument to
+       header and footer macros, which require some  explanation.   They  take
+       the  form "_c _l_e_f_t _c _m_i_d_d_l_e _c _r_i_g_h_t _c", with spaces added here for clar-
+       ity.  The strings _l_e_f_t, _m_i_d_d_l_e, and  _r_i_g_h_t  correspond  to  their  page
+       placement  and can contain unprotected whitespace, but must not contain
+       the (non-space) character _c, which delimits them.  For brevity, the ta-
+       ble  presents  header and footer arguments as _c_l_c_m_c_r_c.  Popular choices
+       for _c are the ASCII apostrophe "''" and the ASCII double quote """".
+
+       This list is incomplete; some requests are too complex to summarize  in
+       a table, and some that are listed below accept additional arguments not
+       shown.  See the _-_m_e _R_e_f_e_r_e_n_c_e _M_a_n_u_a_l for interesting details.
+
+       Request           Initial   Causes   Explanation
+                         Value     Break
+       ------------------------------------------------------------------------
+       .(c               -         yes      Begin centered block.
+       .(d               -         no       Begin delayed text.
+       .(f               -         no       Begin footnote.
+       .(l               -         yes      Begin list.
+       .(q               -         yes      Begin major quote.
+       .(x [_X]           -         no       Begin item in index (named _X).
+       .(z               -         no       Begin floating keep.
+
+       .)c               -         yes      End centered block.
+       .)d               -         yes      End delayed text.
+       .)f               -         yes      End footnote.
+       .)l               -         yes      End list.
+       .)q               -         yes      End major quote.
+       .)x               -         yes      End index item.
+       .)z               -         yes      End floating keep.
+       .++ _M [_c_l_c_m_c_r_c]   -         no       Define paper section as _M, which
+                                            must be one of CC (chapter), AA (ap-
+                                            pendix), PP (preliminary, i.e.,
+                                            front matter or table of con-
+                                            tents), AABB (abstract), BB (bibliog-
+                                            raphy), RRCC (chapters renumbered
+                                            from page one each chapter), or RRAA
+                                            (appendix renumbered from page
+                                            one) (and set page header to _c_l_c_m_-
+                                            _c_r_c).
+       .+c [_T]           -         yes      Begin chapter (or appendix, etc.,
+                                            as set by ..++++) (with title _T).
+       .1c               1         yes      One-column format on a new page.
+       .2c               1         yes      Two-column format.
+       .EN               -         yes      Space after equation produced by
+                                            _e_q_n or _n_e_q_n.
+       .EQ [_M [_T]]       -         yes      Begin displayed equation (with in-
+                                            dentation _M, which must be one of
+                                            CC (centered, default), II (in-
+                                            dented), or LL (justified left)
+                                            (and title _T in right margin)).
+       .GE               -         yes      End _g_r_e_m_l_i_n picture.
+       .GS               -         yes      Begin _g_r_e_m_l_i_n picture.
+       .PE               -         yes      End _p_i_c picture.
+       .PS               -         yes      Begin _p_i_c picture.
+       .TE               -         yes      End _t_b_l table.
+       .TH               -         yes      End heading of _t_b_l table.
+       .TS [HH]           -         yes      Begin _t_b_l table; if HH, table re-
+                                            peats heading on each page.
+       .b [_X [_Y]]        -         no       Print _X in bold (appending _Y in
+                                            the previous font); if no argu-
+                                            ments, switch to bold.
+       .ba _n             0         yes      Augment the base indent (for regu-
+                                            lar text, like paragraphs) by _n.
+       .bc               -         yes      Begin new column.
+       .bi [_X [_Y]]       -         no       Print _X in bold italics (appending
+                                            _Y in the previous font); if no ar-
+                                            guments, switch to bold italics.
+       .bu               -         yes      Begin bulleted paragraph.
+       .bx [_X [_Y]]       -         no       Print _X in a box (with Y ap-
+                                            pended).  Renders reliably only in
+                                            no-fill mode.
+       .ef _c_l_c_m_c_r_c       """"      no       Set even-numbered page footer.
+       .eh _c_l_c_m_c_r_c       """"      no       Set even-numbered page header.
+       .fo _c_l_c_m_c_r_c       """"      no       Set page footer.
+       .hx               -         no       Suppress headers and footers on
+                                            next page.
+       .he _c_l_c_m_c_r_c       """"      no       Set page header.
+       .hl               -         yes      Draw a horizontal line.
+       .i [_X [_Y]]        -         no       Print _X in italics (appending _Y in
+                                            the previous font); if no argu-
+                                            ments, switch to italics.
+       .ip [_X [_n]]       _n=5n      yes      Start indented paragraph (with
+                                            hanging tag _X (and indentation
+                                            _n)).
+       .lp               -         yes      Begin paragraph with first line
+                                            flush left.
+       .np               1         yes      Start numbered paragraph.
+
+       .of _c_l_c_m_c_r_c       """"      no       Set odd-numbered page footer.
+       .oh _c_l_c_m_c_r_c       """"      no       Set odd-numbered page header.
+       .pd               -         yes      Print delayed text.
+       .pp               -         yes      Begin paragraph with indented
+                                            first line.
+       .r [_X [_Y]]        -         no       Print _X in roman (appending _Y in
+                                            the previous font); if no argu-
+                                            ments, switch to roman.
+       .re               0.5i      no       Reset tabs to default values.
+       .sh [_n [_T]]       _n=1       yes      Start numbered section; print sec-
+                                            tion number (set to _n (and title
+                                            _T)) in bold.
+       .sk               -         no       Leave the next page blank.  Only
+                                            one page is remembered ahead.
+       .sm _X [_Y]         -         no       Print _X in a smaller point size
+                                            (appending _Y at the previous
+                                            size).
+       .sz _n             10p       no       Augment the point size by _n
+                                            points.
+       .tp               -         yes      Begin title page.
+       .u _X [_Y]          -         no       Underline _X (appending _Y without
+                                            underlining).  Renders reliably
+                                            only in no-fill mode.
+       .uh [_T]           -         yes      Start unnumbered section (and
+                                            print title _T in bold).
+       .xp [_X]           -         no       Print index (named _X).
+
+FFIILLEESS
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_t_m_a_c_/_m_e_._t_m_a_c (a wrapper file for _e_._t_m_a_c)
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_t_m_a_c_/_e_._t_m_a_c
+
+NNOOTTEESS
+       Early _r_o_f_f macro packages limited themselves to a single-letter name-
+       space (_m_m, _m_s, _m_v, _m_n, etc.).  The "e" in "me" stands for "Eric P. All-
+       man", who wrote the macro package and the original technical papers
+       documenting it while an undergraduate at the University of California.
+
+SSEEEE AALLSSOO
+       ggrrooffff(1), ttrrooffff(1)
+
+       Two manuals are available in source and rendered form.  On your system,
+       they may be compressed and/or available in additional formats.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_d_o_c_/_g_r_o_f_f_-_1_._2_2_._4_/_m_e_i_n_t_r_o_._m_e
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_d_o_c_/_g_r_o_f_f_-_1_._2_2_._4_/_m_e_i_n_t_r_o_._p_s
+              is _W_r_i_t_i_n_g _P_a_p_e_r_s _w_i_t_h _G_r_o_f_f _U_s_i_n_g _-_m_e, by Eric P. Allman and
+              James Clark.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_d_o_c_/_g_r_o_f_f_-_1_._2_2_._4_/_m_e_r_e_f_._m_e
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_d_o_c_/_g_r_o_f_f_-_1_._2_2_._4_/_m_e_r_e_f_._p_s
+              is the _-_m_e _R_e_f_e_r_e_n_c_e _M_a_n_u_a_l, by Eric P. Allman and James Clark.
+
+       For preprocessors supported by _m_e, see eeqqnn(1), ggrrnn(1), ppiicc(1), rree--
+       ffeerr(1), and ttbbll(1).
+
+
+
+groff 1.22.4                     December 2018                     GROFF_ME(7)

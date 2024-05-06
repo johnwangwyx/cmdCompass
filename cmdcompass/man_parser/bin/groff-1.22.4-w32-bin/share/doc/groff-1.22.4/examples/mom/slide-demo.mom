@@ -1,0 +1,396 @@
+.\" -*- mode: text; coding: utf-8; -*-
+.
+.\"----------------------------------------------------------------
+.\" Make first slide black.  Remove if printing to save ink.
+.po 0
+.ll 11i
+.DBX SOLID 0 \n[.l]u \n[.p]u
+.\"----------------------------------------------------------------
+.
+.\"----------------------------------------------------------------
+.\" Macro for code blocks
+.de CODE_BLOCK
+. ie \\n[.$] \{\
+.   CODE off
+.   QUOTE off
+.   CENTER_BLOCK off
+. \}
+. el \{\
+.   CENTER_BLOCK
+.   QUOTE
+.   CODE
+. \}
+..
+.\"----------------------------------------------------------------
+.
+.TITLE "Creating slide presentations with gropdf/mom"
+.PDF_TITLE "\*[$TITLE]"
+.
+.DOCTYPE SLIDES \
+  ASPECT 16:9 \
+  HEADER "Header left" "\*[$TITLE]" "Header right" \
+  FOOTER "" "" "\*S[+2]\*[SLIDE#]\*S[-2]" \
+  TRANSITION "Box 1 . O" \
+  PAUSE "Wipe 1"
+.
+.PARA_SPACE .75v
+.SS +3
+.HYPHENATION off
+.
+.NEWCOLOR darkred #aa0000
+.NEWCOLOR darkred1 #900000
+.NEWCOLOR blue1 #00007b
+.NEWCOLOR blue2 #00006f
+.NEWCOLOR code-grey GRAY 0.3
+.XCOLOR cyan4
+.XCOLOR green4
+.
+.HEADER_COLOR      darkred1
+.HEADER_RULE_COLOR blue1
+.FOOTER_RULE       off
+.
+.COVER_STYLE \
+  LEAD +8 \
+  COLOR white
+.HEADING_STYLE 1 \
+  COLOR blue2
+.CODE_STYLE \
+  FONT B \
+  SIZE 115 \
+  COLOR code-grey
+.QUOTE_STYLE \
+  QUAD LEFT
+.CONDENSE 90
+.
+.PDF_IMAGE_FRAME "" 1 blue1
+.
+.COVERTITLE \
+  "Creating slide presentations" \
+  "with" \
+  "gropdf and mom"
+.
+.COVER_START_POS 15P
+.COVER COVERTITLE
+.
+.STRING hand \*[darkred]\[rh]\*[black]
+.
+.START
+.
+.ADD_SPACE 9p
+.IB 8P
+.
+.HEADING 1 "PDF slides"
+.SP .5v
+.
+.PP
+PDF slides are a subset of mom's document processing macros
+formatted for presentation mode when viewed in a PDF reader.  In
+most respects, they behave identically to the default document type
+described in mom's html documentation\*[HANG .]
+.BR
+Differences in the formatting include\*[HANG :]
+.
+.PAUSE
+.LEFT
+.LIST
+.ITEM .2v
+the choice between two aspect ratios, 4:3 or 16:9
+.LIST USER \*[hand]
+.ITEM
+both fit on A4 or US letter paper sizes when printed
+.
+.PAUSE
+.LIST BACK
+.ITEM .2v
+type is set centered by default
+.LIST USER \*[hand]
+.ITEM
+this may be changed to left, right, or justified
+.
+.PAUSE
+.LIST BACK
+.ITEM .2v
+headers and/or footers must be explicitly instantiated
+.LIST USER \*[hand]
+.ITEM
+the left, centre, and right parts must be supplied
+by the user
+.
+.PAUSE
+.LIST BACK
+.ITEM .2v
+slide numbering (pagination) is disabled
+.LIST  USER \*[hand]
+.ITEM
+if slide numbering is desired, it must be put in the left,
+centre, or right part of a header or footer definition
+.QUIT_LISTS
+.
+.NEWSLIDE
+.
+.ADD_SPACE 9p
+.IB 2P
+.
+.DOC_QUAD CENTER
+.
+.HEADING 1 "Pauses and transitions"
+.SP .5v
+.
+.PP
+Slides made with mom take advantage of the pause and slide
+transition features provided in presentation mode by most
+contemporary PDF readers.
+.PAUSE
+.PP
+Pauses and transitions are dynamic and engaging, holding the
+viewer's attention while increasing the impact of the content.
+.PAUSE
+.PP
+With pauses, material on a slide can be revealed progressively
+with
+.BR
+a mouse click or by hitting
+.
+.LIST
+.ITEM .5v
+Next
+.ITEM 2p
+PgDown
+.ITEM 2p
+Spacebar
+.LIST off
+.
+.PAUSE
+.PP
+The manner in which new material is revealed and new slides
+are displayed can be tailored separately for effects like Fade,
+Dissolve, Wipe and others, and can be changed on the fly.
+.
+.NEWSLIDE
+.
+.PP
+Mom slides begin with the macro DOCTYPE SLIDES, where you choose
+the aspect ratio and transition effects, and set up headers and
+footers\*[HANG .]
+.PAUSE
+.PP
+You may find it convenient to provide a title for the slide
+presentation, as the top of the .mom file for these slides
+demonstrates\*[HANG :]
+.
+.SP -1v
+.CODE_BLOCK
+\*[COND]\&.TITLE "Creating slide presentations with gropdf/mom"
+\&.PDF_TITLE "\\*[$TITLE]"
+\&.\\"
+\&.DOCTYPE SLIDES \\
+ ASPECT 16:9 \\
+ HEADER "Header left" "\\*[$TITLE]" "Header right" \\
+ FOOTER "" "" "\\*S[+2]\\*[SLIDE#]\\*S[-2]" \\
+ TRANSITION "Box 1 . O" \\
+ PAUSE "Wipe 1"\*[CONDX]
+.CODE_BLOCK off
+.SP -.5v
+.
+.PAUSE
+.PP
+Afterwards, you may make any changes you like to the layout and
+style, then enter START.  Unlike other mom documents, PRINTSTYLE is
+not required\*[HANG .]
+.
+.NEWSLIDE
+.
+.ADD_SPACE 9p
+.IB -1P+6p
+.
+.HEADING 1 \
+  "The \s[-2]PAUSE\s[0] and \s[-2]NEWSLIDE\s[0] macros"
+.SP .5v
+.
+.PP
+Whenever you want a pause before revealing the next material on a
+slide, enter the macro PAUSE on a line by itself.  If you want a
+reveal effect that's different from the current one, you may pass
+PAUSE the parameters of the new effect\*[HANG :]
+.
+.SP -1v
+.PAUSE
+.
+.CODE_BLOCK
+\&.PAUSE "Dissolve .4"
+.CODE_BLOCK off
+.
+.PAUSE "Dissolve .4"
+Notice that this material dissolves in, whereas before, new material
+appeared from left to right.  \*[BU6]The new effect stays in force
+until you change it again\*[HANG .]
+.PAUSE "Wipe 1"
+.PP
+New slides are introduced with NEWSLIDE. \*[bu6]Transition effects
+and parameters may be given to NEWSLIDE\*[HANG :]
+.SP -1v
+.
+.CODE_BLOCK
+\&.NEWSLIDE "Blinds .5"
+.CODE_BLOCK off
+.
+.PAUSE
+The next slide in this presentation will appear with the Blinds
+effect\*[HANG .]
+.BR
+Consult man gropdf\c
+\*[FU2]\*[UP 1p](\*[DOWN 1p]\*[BU2]1\*[UP 1p]\*[BU1])\*[DOWN 1p]
+for all the pause/transition effects and their
+parameters.\*[BU6]\*[UP 2p]\s[-2]*\s[0]
+.SP 4p
+.FT I
+.PT_SIZE -2
+*Note that not all PDF \*[BU6]viewers support every effect\*[HANG .]
+.FT R
+.PT_SIZE +2
+.
+.NEWSLIDE "Blinds .5"
+.
+.ADD_SPACE 9p
+.
+.HEADING 1 "Macros and preprocessors"
+.SP .5v
+.
+.PP
+Slides can make full use of all mom's document processing and
+typesetting macros, including preprocessors and image insertion\*[HANG .]
+.
+.IBX CLEAR
+.LS -4
+.
+.PAD "\
+\*[FWD 4P+6p]\*[ST1]#\*[ST1X]\
+\*[FWD 1P]\*[ST2]#\*[ST2X]\
+\*[FWD 3P+6p]\*[ST3]#\*[ST3X]\
+\*[FWD 3P]\*[ST4]#\*[ST4X]\*[FWD 2P]"
+.
+.ST 1 L
+.ST 2 L
+.ST 3 L
+.ST 4 L
+.
+.PAUSE "Fade .5"
+.
+.TAB 1
+.PT_SIZE -1.5
+\*[BD]\*[blue2]\*[DOWN 6p]tbl
+.mk
+.PT_SIZE -1
+.COLOR blue2
+.TS H BOXED
+tab(^) allbox;
+c c
+n n.
+\*[darkred]\s[-.5]\*[DOWN .5p]Year^Mean Temp.\s[0]\*[blue2]
+_
+.TH
+\*[cyan4]\fB2015^28.3\*[blue2]
+\*[cyan4]1998^28.3\*[blue2]
+\*[cyan4]1997^28.3\*[blue2]
+\*[cyan4]2010^28.1\*[blue2]
+\*[cyan4]2002^28.1\*[blue2]
+\*[cyan4]2005^28.0\*[blue2]
+\*[cyan4]2014^27.9\*[blue2]
+\*[cyan4]2009^27.9\*[blue2]
+.TE
+.
+.rt
+.PAUSE
+.
+.TN
+.PT_SIZE +1
+\*[FWD 10p]\*[DOWN 6p]pic
+.COLOR green4
+.SP 3p
+.PS 2
+A: ellipse wid 0.5 ht 0.5
+  arrow color "green4" up 0.2 from A.n
+  arrow color "green4" up 0.2 right 0.2 from A.ne
+  arrow color "green4" right 0.2 from A.e
+  arrow color "green4" down 0.2 right 0.2 from A.se
+  arrow color "green4" down 0.2 from A.s
+  arrow color "green4" down 0.2 left 0.2 from A.sw
+  arrow color "green4" left 0.2 from A.w
+  arrow color "green4" up 0.2 left 0.2 from A.nw
+.PE
+.
+.rt
+.PAUSE
+.
+.TN
+.COLOR blue2
+\*[FWD 1p]\*[DOWN 6p]eqn
+.FAMILY T
+.PT_SIZE +3
+.LS
+.COLOR code-grey
+.SP 4P
+.EQ
+f sub X (x) ^=^ left {
+  rpile { 0 above 2x above 0 }
+  ~~lpile { x < 0 above 0 <= x <= 1 above x > 1 }
+.EN
+.
+.rt
+.PAUSE
+.
+.TN
+.FAMILY H
+.PT_SIZE -3
+.COLOR blue2
+\*[DOWN 6p]pdf image\*[black]\*[PREV]
+.SP 2P+6p
+.PDF_IMAGE -L penguin.pdf 81p 96p FRAME
+.TQ
+.
+.NEWSLIDE "Box 1 . O"
+.ADD_SPACE 9p
+.IB 10P
+.PT_SIZE +1.5
+.
+.HEADING 1 "Printing handouts"
+.SP .5v
+.
+.CODE_STYLE \
+  COLOR BLACK \
+  SIZE 120
+.PP
+Because slides contain pauses, they need a little help on their
+way to the printer or they stop printing at the first pause\*[HANG .]
+.PAUSE "Wipe 1"
+.PP
+Setting GROPDF_NOSLIDE=1 before invoking 
+\[oq]\*[FU4]\*[CODE]\*[COND]pdfmom\*[CONDX]\*[CODE off]\*[FU4]\[cq]
+or
+\[oq]\*[FU2]\*[CODE]\*[COND]groff\~-Tpdf\*[CONDX]\*[CODE off]\*[FU6]\[cq]
+disables the pauses\*[HANG :]
+.
+.SP -1v
+.
+.CODE_STYLE \
+  COLOR code-grey \
+  SIZE 110
+.CODE_BLOCK
+\*[COND]GROPDF_NOSLIDE=1 pdfmom <options> slide-file.mom\*[CONDX]
+.CODE_BLOCK off
+.
+.PAUSE
+The output may be piped directly to a printer or saved to a file\*[HANG .]
+.PAUSE
+.PP
+See mom's html documentation and the gropdf\c
+\*[FU2]\*[UP 1p](\*[DOWN 1p]\*[BU2]1\*[UP 1p]\*[BU1])\*[DOWN 1p]
+manpage for complete information concerning slide usage\*[HANG .]
+.
+.SP 9p
+.CENTER_BLOCK
+.nr dcl-ind -1 1
+.while \n[dcl-ind]<4 \{\
+. DCL SOLID \n+[dcl-ind]P 9p 9p blue2
+.\}
+.CENTER_BLOCK off

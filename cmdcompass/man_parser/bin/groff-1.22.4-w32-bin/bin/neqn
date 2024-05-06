@@ -1,0 +1,36 @@
+#! /bin/sh
+# Copyright (C) 2014-2018 Free Software Foundation, Inc.
+#
+# This file is part of groff.
+# 
+# groff is free software; you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free
+# Software Foundation, either version 2 of the License (GPL2).
+# 
+# groff is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+# for more details.
+# 
+# The GPL2 license text is available in the internet at
+# <http://www.gnu.org/licenses/gpl-2.0.txt>.
+
+# Provision of this shell script should not be taken to imply that use of
+# GNU eqn with groff -Tascii|-Tlatin1|-Tutf8|-Tcp1047 is supported.
+# (The value required is dependent on the user's choice of shell,
+#  and its associated POSIX emulation capabilities.)
+
+case "$OSTYPE" in
+  msys)
+    GROFF_RUNTIME=${GROFF_BIN_PATH="/d/usr/bin"}":" ;;
+  cygwin)
+    : ${GROFF_BIN_PATH="`cygpath -w 'd:/usr/bin'`"}
+    GROFF_RUNTIME=`cygpath "$GROFF_BIN_PATH"`":" ;;
+  *)
+    GROFF_RUNTIME=${GROFF_BIN_PATH="d:/usr/bin"}";" ;;
+esac
+PATH="$GROFF_RUNTIME$PATH"
+export PATH
+exec eqn -Tascii ${1+"$@"}
+
+# eof

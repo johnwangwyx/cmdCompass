@@ -1,0 +1,316 @@
+GRN(1)                      General Commands Manual                     GRN(1)
+
+
+
+NNAAMMEE
+       grn - groff preprocessor for gremlin files
+
+SSYYNNOOPPSSIISS
+       ggrrnn [--CCvv] [--TT _d_e_v] [--MM _d_i_r] [--FF _d_i_r] [_f_i_l_e ...]
+
+DDEESSCCRRIIPPTTIIOONN
+       _g_r_n  is  a  preprocessor for including _g_r_e_m_l_i_n pictures in _g_r_o_f_f input.
+       _g_r_n writes to standard output, processing only input lines between  two
+       that  start  with  ..GGSS  and ..GGEE.  Those lines must contain _g_r_n commands
+       (see below).  These commands request a _g_r_e_m_l_i_n file, and the picture in
+       that  file  is converted and placed in the _t_r_o_f_f input stream.  The ..GGSS
+       request may be followed by a C, L, or R to center, left, or right  jus-
+       tify  the  whole _g_r_e_m_l_i_n picture (default justification is center).  If
+       no _f_i_l_e is mentioned, the standard input is read.  At the  end  of  the
+       picture, the position on the page is the bottom of the _g_r_e_m_l_i_n picture.
+       If the _g_r_n entry is ended with ..GGFF instead of ..GGEE, the position is left
+       at the top of the picture.
+
+       Please  note  that currently only the -me macro package has support for
+       ..GGSS, ..GGEE, and ..GGFF.
+
+OOPPTTIIOONNSS
+       Whitespace is permitted between a command-line option and its argument.
+
+       --TT_d_e_v  Prepare output for printer _d_e_v.  The default device is ppss.   See
+              ggrrooffff(1) for acceptable devices.
+
+       --MM_d_i_r  Prepend  _d_i_r  to the default search path for _g_r_e_m_l_i_n files.  The
+              default path is (in that order) the current directory, the  home
+              directory,    _d_:_/_u_s_r_/_l_i_b_/_g_r_o_f_f_/_s_i_t_e_-_t_m_a_c,    _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/
+              _s_i_t_e_-_t_m_a_c, and _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_t_m_a_c.
+
+       --FF_d_i_r  Search _d_i_r for subdirectories _d_e_vname (_n_a_m_e is the name  of  the
+              device)  for  the  _D_E_S_C file before the default font directories
+              _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_s_i_t_e_-_f_o_n_t,    _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t,
+              and _/_u_s_r_/_l_i_b_/_f_o_n_t.
+
+       --CC     Recognize  ..GGSS and ..GGEE (and ..GGFF) even when followed by a charac-
+              ter other than space or newline.
+
+       --vv     Print the version number.
+
+GGRRNN CCOOMMMMAANNDDSS
+       Each input line between ..GGSS and ..GGEE may have one _g_r_n command.  Commands
+       consist  of  one  or  two  strings  separated by white space, the first
+       string being the command and the second its operand.  Commands  may  be
+       upper or lower case and abbreviated down to one character.
+
+       Commands  that  affect  a  picture's  environment  (those listed before
+       ddeeffaauulltt, see below) are only in effect for  the  current  picture:  The
+       environment  is  reinitialized to the defaults at the start of the next
+       picture.  The commands are as follows:
+
+       11 _N
+       22 _N
+       33 _N
+       44 _N    Set _g_r_e_m_l_i_n's text size number 1 (2, 3, or 4) to _N points.   The
+              default is 12 (16, 24, and 36, respectively).
+
+       rroommaann _f
+       iittaalliiccss _f
+       bboolldd _f
+       ssppeecciiaall _f
+              Set the roman (italics, bold, or special) font to _t_r_o_f_f's font _f
+              (either a name or number).  The default  is  R  (I,  B,  and  S,
+              respectively).
+
+       ll _f
+       ssttiippppllee _f
+              Set the stipple font to _t_r_o_f_f's stipple font _f (name or number).
+              The command ssttiippppllee may be abbreviated down as far as  `st'  (to
+              avoid confusion with ssppeecciiaall).  There is _n_o default for stipples
+              (unless one is set by the default command), and it is invalid to
+              include  a  _g_r_e_m_l_i_n  picture  with polygons without specifying a
+              stipple font.
+
+       xx _N
+       ssccaallee _N
+              Magnify the picture (in addition to any  default  magnification)
+              by  _N,  a  floating  point number larger than zero.  The command
+              ssccaallee may be abbreviated down to `sc'.
+
+       nnaarrrrooww _N
+       mmeeddiiuumm _N
+       tthhiicckk _N
+              Set the thickness of _g_r_e_m_l_i_n's narrow (medium and thick, respec-
+              tively)  lines  to  _N times 0.15pt (this value can be changed at
+              compile time).  The default is 1.0 (3.0 and 5.0,  respectively),
+              which  corresponds  to 0.15pt (0.45pt and 0.75pt, respectively).
+              A thickness value of zero selects the  smallest  available  line
+              thickness.   Negative values cause the line thickness to be pro-
+              portional to the current point size.
+
+       ppooiinnttssccaallee _<_o_f_f_/_o_n_>
+              Scale text to  match  the  picture.   Gremlin  text  is  usually
+              printed  in  the point size specified with the commands 11, 22, 33,
+              or 44, regardless of any scaling factors in the picture.  Setting
+              ppooiinnttssccaallee  will cause the point sizes to scale with the picture
+              (within _t_r_o_f_f's limitations, of course).  An operand of anything
+              but _o_f_f will turn text scaling on.
+
+       ddeeffaauulltt
+              Reset  the  picture  environment defaults to the settings in the
+              current picture.  This is meant to be used as a global parameter
+              setting  mechanism at the beginning of the _t_r_o_f_f input file, but
+              can be used at any time to reset the default settings.
+
+       wwiiddtthh _N
+              Forces the picture to be _N  inches  wide.   This  overrides  any
+              scaling  factors  present  in  the  same  picture.  `wwiiddtthh _0' is
+              ignored.
+
+       hheeiigghhtt _N
+              Forces picture to be _N inches  high,  overriding  other  scaling
+              factors.  If both `width' and `height' are specified the tighter
+              constraint will determine the scale of the picture.  HHeeiigghhtt  and
+              wwiiddtthh commands are not saved with a ddeeffaauulltt command.  They will,
+              however, affect point size scaling if that option is set.
+
+       ffiillee _n_a_m_e
+              Get picture from _g_r_e_m_l_i_n file _n_a_m_e located the current directory
+              (or  in the library directory; see the --MM option above).  If two
+              ffiillee commands are given, the second one overrides the first.  If
+              _n_a_m_e  doesn't exist, an error message is reported and processing
+              continues from the ..GGEE line.
+
+NNOOTTEESS AABBOOUUTT GGRROOFFFF
+       Since _g_r_n is a preprocessor, it doesn't  know  about  current  indents,
+       point  sizes,  margins,  number registers, etc.  Consequently, no _t_r_o_f_f
+       input can be placed between the ..GGSS and ..GGEE requests.  However, _g_r_e_m_l_i_n
+       text  is  now processed by _t_r_o_f_f, so anything valid in a single line of
+       _t_r_o_f_f input is valid in a line of _g_r_e_m_l_i_n text (barring `.'  directives
+       at  the  beginning  of a line).  Thus, it is possible to have equations
+       within a _g_r_e_m_l_i_n figure by including in the _g_r_e_m_l_i_n  file  _e_q_n  expres-
+       sions enclosed by previously defined delimiters (e.g. _$_$).
+
+       When  using  _g_r_n  along with other preprocessors, it is best to run _t_b_l
+       before _g_r_n, _p_i_c, and/or _i_d_e_a_l to avoid  overworking  _t_b_l.   _E_q_n  should
+       always be run last.
+
+       A  picture  is  considered  an entity, but that doesn't stop _t_r_o_f_f from
+       trying to break it up if it falls off the end of a page.   Placing  the
+       picture between `keeps' in -me macros will ensure proper placement.
+
+       _g_r_n  uses  _t_r_o_f_f's number registers gg11 through gg99 and sets registers gg11
+       and gg22 to the width and height of the _g_r_e_m_l_i_n figure (in device  units)
+       before  entering the ..GGSS request (this is for those who want to rewrite
+       these macros).
+
+GGRREEMMLLIINN FFIILLEE FFOORRMMAATT
+       There exist two distinct _g_r_e_m_l_i_n file formats, the original format from
+       the  _A_E_D  graphic  terminal  version,  and  the _S_U_N or _X_1_1 version.  An
+       extension to the _S_U_N/_X_1_1 version allowing reference points  with  nega-
+       tive  coordinates is nnoott compatible with the _A_E_D version.  As long as a
+       _g_r_e_m_l_i_n file does not contain negative coordinates, either format  will
+       be  read correctly by either version of _g_r_e_m_l_i_n or _g_r_n.  The other dif-
+       ference from _S_U_N/_X_1_1 format is the use of  names  for  picture  objects
+       (e.g., POLYGON, CURVE) instead of numbers.  Files representing the same
+       picture are shown in Table 1 in each format.
+
+
+                        sungremlinfile        gremlinfile
+                        0 240.00 128.00       0 240.00 128.00
+                        CENTCENT              2
+                        240.00 128.00         240.00 128.00
+                        185.00 120.00         185.00 120.00
+                        240.00 120.00         240.00 120.00
+                        296.00 120.00         296.00 120.00
+                        *                     -1.00 -1.00
+                        2 3                   2 3
+                        10 A Triangle         10 A Triangle
+                        POLYGON               6
+                        224.00 416.00         224.00 416.00
+                        96.00 160.00          96.00 160.00
+                        384.00 160.00         384.00 160.00
+                        *                     -1.00 -1.00
+                        5 1                   5 1
+                        0                     0
+                        -1                    -1
+
+                               Table 1.  File examples
+
+
+       +o      The first line of each _g_r_e_m_l_i_n file contains either  the  string
+              ggrreemmlliinnffiillee (_A_E_D version) or ssuunnggrreemmlliinnffiillee (_S_U_N/_X_1_1)
+
+       +o      The second line of the file contains an orientation, and xx and yy
+              values for a positioning point, separated by spaces.  The orien-
+              tation,  either  00  or  11, is ignored by the _S_U_N/_X_1_1 version.  00
+              means that _g_r_e_m_l_i_n will  display  things  in  horizontal  format
+              (drawing  area  wider than it is tall, with menu across top).  11
+              means that _g_r_e_m_l_i_n will display things in vertical format (draw-
+              ing area taller than it is wide, with menu on left side).  xx and
+              yy are floating point values giving a  positioning  point  to  be
+              used  when  this  file  is read into another file.  The stuff on
+              this line really isn't all that important; a value  of  "1  0.00
+              0.00" is suggested.
+
+       +o      The rest of the file consists of zero or more element specifica-
+              tions.  After the last element specification is a line  contain-
+              ing the string "-1".
+
+       +o      Lines longer than 127 characters are chopped to this limit.
+
+EELLEEMMEENNTT SSPPEECCIIFFIICCAATTIIOONNSS
+       +o      The  first line of each element contains a single decimal number
+              giving the type of the element (_A_E_D version) or its  ASCII  name
+              (_S_U_N/_X_1_1 version).  See Table 2.
+
+
+                      _g_r_e_m_l_i_n File Format - Object Type Specification
+
+                  _A_E_D Number   _S_U_N/_X_1_1 Name           Description
+                       0       BOTLEFT        bottom-left-justified text
+                       1       BOTRIGHT       bottom-right-justified text
+                       2       CENTCENT       center-justified text
+                       3       VECTOR         vector
+                       4       ARC            arc
+                       5       CURVE          curve
+                       6       POLYGON        polygon
+                       7       BSPLINE        b-spline
+                       8       BEZIER         Bzier
+                      10       TOPLEFT        top-left-justified text
+                      11       TOPCENT        top-center-justified text
+                      12       TOPRIGHT       top-right-justified text
+                      13       CENTLEFT       left-center-justified text
+                      14       CENTRIGHT      right-center-justified text
+                      15       BOTCENT        bottom-center-justified text
+
+                                          Table 2.
+                            Type Specifications in _g_r_e_m_l_i_n Files
+
+
+       +o      After  the  object  type  comes a variable number of lines, each
+              specifying a point used to display the element.  Each line  con-
+              tains  an x-coordinate and a y-coordinate in floating point for-
+              mat, separated by spaces.  The list of points is terminated by a
+              line containing the string "-1.0 -1.0" (_A_E_D version) or a single
+              asterisk, "*" (_S_U_N/_X_1_1 version).
+
+       +o      After the points comes a line  containing  two  decimal  values,
+              giving the brush and size for the element.  The brush determines
+              the style in which things are drawn.   For  vectors,  arcs,  and
+              curves there are six valid brush values:
+
+
+                              1 -       thin dotted lines
+                              2 -       thin dot-dashed lines
+                              3 -       thick solid lines
+                              4 -       thin dashed lines
+                              5 -       thin solid lines
+                              6 -       medium solid lines
+
+              For polygons, one more value, 0, is valid.  It specifies a poly-
+              gon with an invisible border.  For text,  the  brush  selects  a
+              font as follows:
+
+
+                            1 -       roman (R font in groff)
+                            2 -       italics (I font in groff)
+                            3 -       bold (B font in groff)
+                            4 -       special (S font in groff)
+
+              If you're using _g_r_n to run your pictures through _g_r_o_f_f, the font
+              is really just a starting font: The text string can contain for-
+              matting  sequences  like "\fI" or "\d" which may change the font
+              (as well as do many other things).  For text, the size field  is
+              a  decimal  value  between  1 and 4.  It selects the size of the
+              font in which the text will be drawn.  For polygons,  this  size
+              field  is  interpreted  as  a stipple number to fill the polygon
+              with.  The number is used to index into a stipple font at  print
+              time.
+
+       +o      The  last  line  of each element contains a decimal number and a
+              string of characters, separated by a single space.   The  number
+              is  a  count  of  the  number of characters in the string.  This
+              information is only used for text  elements,  and  contains  the
+              text  string.   There  can be spaces inside the text.  For arcs,
+              curves, and vectors, this  line  of  the  element  contains  the
+              string "0".
+
+NNOOTTEESS OONN CCOOOORRDDIINNAATTEESS
+       _g_r_e_m_l_i_n  was  designed  for  _A_E_Ds,  and its coordinates reflect the _A_E_D
+       coordinate space.  For vertical pictures, x-values range  116  to  511,
+       and  y-values  from  0 to 483.  For horizontal pictures, x-values range
+       from 0 to 511 and y-values range from 0 to 367.  Although  you  needn't
+       absolutely stick to this range, you'll get best results if you at least
+       stay in this vicinity.  Also, point lists are terminated by a point  of
+       (-1,  -1),  so  you  shouldn't  ever use negative coordinates.  _g_r_e_m_l_i_n
+       writes out coordinates using format "%f1.2"; it's probably a good  idea
+       to use the same format if you want to modify the _g_r_n code.
+
+NNOOTTEESS OONN SSUUNN//XX1111 CCOOOORRDDIINNAATTEESS
+       There  is  no  longer a restriction on the range of coordinates used to
+       create objects in the _S_U_N/_X_1_1 version of _g_r_e_m_l_i_n.  However, files  with
+       negative coordinates wwiillll cause problems if displayed on the _A_E_D.
+
+FFIILLEESS
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_vname_/_D_E_S_C
+              Device description file for device _n_a_m_e.
+
+AAUUTTHHOORRSS
+       David  Slattengren  and Barry Roitblat wrote the original Berkeley _g_r_n.
+       Daniel Senderowicz and Werner Lemberg modified it for _g_r_o_f_f.
+
+SSEEEE AALLSSOO
+       ggrreemmlliinn(1), ggrrooffff(1), ppiicc(1), iiddeeaall(1)
+
+
+
+groff 1.22.4                     December 2018                          GRN(1)

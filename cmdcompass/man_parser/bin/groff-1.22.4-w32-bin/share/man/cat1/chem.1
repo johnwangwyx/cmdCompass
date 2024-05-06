@@ -1,0 +1,352 @@
+CHEM(1)                     General Commands Manual                    CHEM(1)
+
+
+
+NNAAMMEE
+       chem - groff preprocessor for producing chemical structure diagrams
+
+SSYYNNOOPPSSIISS
+       cchheemm [----] [_f_i_l_e_s_p_e_c ...]
+
+       cchheemm --hh
+       cchheemm ----hheellpp
+
+       cchheemm --vv
+       cchheemm ----vveerrssiioonn
+
+DDEESSCCRRIIPPTTIIOONN
+       _c_h_e_m  produces  chemical  structure  diagrams.  Today's version is best
+       suited for organic chemistry (bonds, rings).  The  cchheemm  program  is  a
+       ggrrooffff  preprocessor  like  eeqqnn, ppiicc, ttbbll, etc.  It generates _p_i_c output
+       such that all _c_h_e_m parts are translated into diagrams of the  _p_i_c  lan-
+       guage.
+
+       A  _f_i_l_e_s_p_e_c  argument  is  either  a file name of an existing file or a
+       minus character --, meaning standard input.  If no argument is specified
+       then  standard  input  is taken automatically.  --hh and ----hheellpp display a
+       usage message, whereas --vv and ----vveerrssiioonn  display  version  information;
+       all exit.
+
+       The  program  cchheemm  originates  from  the Perl source file _c_h_e_m_._p_l.  It
+       tells ppiicc to include a copy of the macro file _c_h_e_m_._p_i_c.   Moreover  the
+       _g_r_o_f_f source file _p_i_c_._t_m_a_c is loaded.
+
+       In a style reminiscent of _e_q_n and _p_i_c, the _c_h_e_m diagrams are written in
+       a special language.
+
+       A set of _c_h_e_m lines looks like this
+
+              ..ccssttaarrtt
+              _c_h_e_m _d_a_t_a
+              ..cceenndd
+
+       Lines containing the keywords ..ccssttaarrtt and ..cceenndd start and end the input
+       for  cchheemm,  respectively.  In _p_i_c context, i.e., after the call of ..PPSS,
+       _c_h_e_m input can optionally be started by the line bbeeggiinn cchheemm  and  ended
+       by the line with the single word eenndd instead.
+
+       Anything  outside  these initialization lines is copied through without
+       modification; all data between the initialization  lines  is  converted
+       into _p_i_c commands to draw the diagram.
+
+       As an example,
+
+              ..ccssttaarrtt
+              CCHH33
+              bboonndd
+              CCHH33
+              ..cceenndd
+
+       prints two CCHH33 groups with a bond between them.
+
+       To actually view this, you must run cchheemm followed by ggrrooffffeerr:
+
+              cchheemm [[ffiillee ......]] || ggrrooffffeerr
+
+       If  you want to create just ggrrooffff output, you must run cchheemm followed by
+       ggrrooffff with the option --pp for the activation of ppiicc:
+
+              cchheemm [[ffiillee ......]] || ggrrooffff --pp ......
+
+TTHHEE LLAANNGGUUAAGGEE
+       The _c_h_e_m input language is rather small.  It provides rings of  several
+       styles  and  a  way  to glue them together as desired, bonds of several
+       styles, moieties (e.g., CC, NNHH33, ..., and strings.
+
+   SSeettttiinngg VVaarriiaabblleess
+       There are some variables that can be set by  commands.   Such  commands
+       have two possible forms, either
+
+              _v_a_r_i_a_b_l_e _v_a_l_u_e
+
+       or
+
+              _v_a_r_i_a_b_l_e == _v_a_l_u_e
+
+       This  sets the given _v_a_r_i_a_b_l_e to the argument _v_a_l_u_e.  If more arguments
+       are given only the last argument is  taken,  all  other  arguments  are
+       ignored.
+
+       There are only a few variables to be set by these commands:
+
+       tteexxtthhtt _a_r_g
+              Set the height of the text to _a_r_g; default is 0.16.
+
+       ccwwiidd _a_r_g
+              Set the character width to _a_r_g; default is 0.12.
+
+       ddbb _a_r_g Set the bond length to _a_r_g; default is 0.2.
+
+       ssiizzee _a_r_g
+              Scale  the  diagram to make it look plausible at point size _a_r_g;
+              default is 10 point.
+
+   BBoonnddss
+       This
+
+              bboonndd [_d_i_r_e_c_t_i_o_n] [_l_e_n_g_t_h _n] [ffrroomm _N_a_m_e|_p_i_c_s_t_u_f_f]
+
+       draws a single bond in direction from nearest corner of _N_a_m_e.  bboonndd can
+       also  be ddoouubbllee bboonndd, ffrroonntt bboonndd, bbaacckk bboonndd, etc.  (We will get back to
+       _N_a_m_e soon.)
+
+       _d_i_r_e_c_t_i_o_n is the angle in degrees  (0  up,  positive  clockwise)  or  a
+       direction  word  like uupp, ddoowwnn, ssww (= southwest), etc.  If no direction
+       is specified, the bond goes in the current direction (usually  that  of
+       the last bond).
+
+       Normally  the  bond  begins  at  the  last  object placed;  this can be
+       changed by naming a ffrroomm place.  For instance, to make a  simple  alkyl
+       chain:
+
+              CCHH33
+              bboonndd                (this one goes right from the CH3)
+              CC                   (at the right end of the bond)
+              ddoouubbllee bboonndd uupp      (from the C)
+              OO                   (at the end of the double bond)
+              bboonndd rriigghhtt ffrroomm CC
+              CCHH33
+
+       A  length  in  inches  may be specified to override the default length.
+       Other _p_i_c commands can be tacked on to the end of a  bond  command,  to
+       created dotted or dashed bonds or to specify a ttoo place.
+
+   RRiinnggss
+       There are lots of rings, but only 5 and 6-sided rings get much support.
+       rriinngg by itself is a 6-sided ring; bbeennzzeennee is the benzene  ring  with  a
+       circle inside.  aarroommaattiicc puts a circle into any kind of ring.
+
+              rriinngg [ppooiinnttiinngg (uupp|rriigghhtt|lleefftt|ddoowwnn)] [aarroommaattiicc] [ppuutt MMooll aatt _n]
+                   [ddoouubbllee _i,_j _k,_l ... [_p_i_c_s_t_u_f_f]
+
+       The vertices of a ring are numbered 1, 2,  ...  from  the  vertex  that
+       points  in the natural compass direction.  So for a hexagonal ring with
+       the point at the top, the top vertex is 1, while  if  the  ring  has  a
+       point at the east side, that is vertex 1.  This is expressed as
+
+              RR11:: rriinngg ppooiinnttiinngg uupp
+              RR22:: rriinngg ppooiinnttiinngg rriigghhtt
+
+       The  ring  vertices  are  named ..VV11, ..., ..VV_n, with ..VV11 in the pointing
+       direction.  So the corners of RR11 are RR11..VV11  (the  _t_o_p),  RR11..VV22,  RR11..VV33,
+       RR11..VV44 (the _b_o_t_t_o_m), etc., whereas for RR22, RR22..VV11 is the rightmost vertex
+       and RR22..VV44 the leftmost.  These vertex names  are  used  for  connecting
+       bonds or other rings.  For example,
+
+              RR11:: bbeennzzeennee ppooiinnttiinngg rriigghhtt
+              RR22:: bbeennzzeennee ppooiinnttiinngg rriigghhtt wwiitthh ..VV66 aatt RR11..VV22
+
+       creates two benzene rings connected along a side.
+
+       Interior  double  bonds  are  specified as ddoouubbllee _n_1,,_n_2 _n_3,,_n_4 ...; each
+       number pair adds an interior bond.  So the alternate form of a  benzene
+       ring is
+
+              rriinngg ddoouubbllee 11,,22 33,,44 55,,66
+
+       Heterocycles  (rings  with something other than carbon at a vertex) are
+       written as ppuutt _X aatt _V, as in
+
+              RR:: rriinngg ppuutt NN aatt 11 ppuutt OO aatt 22
+
+       In this heterocycle, RR..NN and RR..OO become synonyms for RR..VV11 and RR..VV22.
+
+       There are two 5-sided rings.  rriinngg55 is  pentagonal  with  a  side  that
+       matches  the  6-sided ring; it has four natural directions.  A ffllaattrriinngg
+       is a 5-sided ring created by chopping one corner of a 6-sided  ring  so
+       that it exactly matches the 6-sided rings.
+
+       The description of a ring has to fit on a single line.
+
+   MMooiieettiieess aanndd SSttrriinnggss
+       A  moiety  is  a  string of characters beginning with a capital letter,
+       such as N(C2H5)2.  Numbers are converted  to  subscripts  (unless  they
+       appear  to be fractional values, as in N2.5H).  The name of a moiety is
+       determined from the moiety after special characters have been  stripped
+       out: e.g., N(C2H5)2) has the name NC2H52.
+
+       Moieties  can  be  specified in two kinds.  Normally a moiety is placed
+       right after the last thing mentioned, separated  by  a  semicolon  sur-
+       rounded by spaces, e.g.,
+
+              BB11:: bboonndd ;; OOHH
+
+       Here the moiety is OOHH; it is set after a bond.
+
+       As  the  second  kind a moiety can be positioned as the first word in a
+       _p_i_c-like command, e.g.,
+
+              CCHH33 aatt CC ++ ((00..55,,00..55))
+
+       Here the moiety is CCHH33.  It is placed at a position relative  to  CC,  a
+       moiety used earlier in the chemical structure.
+
+       So  moiety  names  can be specified as _c_h_e_m positions everywhere in the
+       _c_h_e_m code.  Beneath their printing moieties are names for places.
+
+       The moiety BBPP is special.  It is not printed but just serves as a  mark
+       to be referred to in later _c_h_e_m commands.  For example,
+
+              bboonndd ;; BBPP
+
+       sets a mark at the end of the bond.  This can be used then for specify-
+       ing a place.  The name BBPP is derived  from  _b_r_a_n_c_h  _p_o_i_n_t  (i.e.,  line
+       crossing).
+
+       A string within double quotes "" is interpreted as a part of a _c_h_e_m com-
+       mand.  It represents a string  that  should  be  printed  (without  the
+       quotes).   Text within quotes "..." is treated more or less like a moi-
+       ety except that no changes are made to the quoted part.
+
+   NNaammeess
+       In the alkyl chain above, notice that the carbon atom CC was  used  both
+       to draw something and as the name for a place.  A moiety always defines
+       a name for a place;  you can use your own names for places instead, and
+       indeed, for rings you will have to.  A name is just
+
+              _N_a_m_e:: ...
+
+       _N_a_m_e  is  often  the  name of a moiety like CCHH33, but it need not to be.
+       Any name that begins with a capital letter and which contains only let-
+       ters and numbers is valid:
+
+              FFiirrsstt:: bboonndd
+                     bboonndd 3300 ffrroomm FFiirrsstt
+
+   MMiisscceellllaanneeoouuss
+       The specific construction
+
+              bboonndd ... ;; mmooiieettyy
+
+       is equivalent to
+
+              bboonndd
+              mmooiieettyy
+
+       Otherwise,  each item has to be on a separate line (and only one line).
+       Note that there must be whitespace after the semicolon which  separates
+       the commands.
+
+       A  period character .. or a single quote '' in the first column of a line
+       signals a _t_r_o_f_f command, which is copied through as-is.
+
+       A line whose first non-blank character  is  a  hash  character  (##)  is
+       treated as a comment and thus ignored.  However, hash characters within
+       a word are kept.
+
+       A line whose first word is ppiicc is copied through as-is after  the  word
+       ppiicc has been removed.
+
+       The command
+
+              ssiizzee _n
+
+       scales  the  diagram to make it look plausible at point size _n (default
+       is 10 point).
+
+       Anything else is assumed to be _p_i_c code, which is copied through with a
+       label.
+
+       Since  cchheemm is a ppiicc preprocessor, it is possible to include _p_i_c state-
+       ments in the middle of a diagram to draw things  not  provided  for  by
+       _c_h_e_m  itself.   Such  _p_i_c statements should be included in _c_h_e_m code by
+       adding ppiicc as the first word of this line for clarity.
+
+       The following _p_i_c commands are accepted as _c_h_e_m  commands,  so  no  ppiicc
+       command word is needed:
+
+              ddeeffiinnee Start the definition of _p_i_c macro within _c_h_e_m.
+
+              [[      Start a block composite.
+
+              ]]      End a block composite.
+
+              {{      Start a macro definition block.
+
+              }}      End a macro definition block.
+
+       The  macro  names  from  ddeeffiinnee statements are stored and their call is
+       accepted as a _c_h_e_m command as well.
+
+   WWIISSHH LLIISSTT
+       This TODO list was collected by Brian Kernighan.
+
+       Error checking is minimal; errors are usually detected and reported  in
+       an oblique fashion by _p_i_c.
+
+       There is no library or file inclusion mechanism, and there is no short-
+       hand for repetitive structures.
+
+       The extension mechanism is to create _p_i_c macros, but these  are  tricky
+       to get right and don't have all the properties of built-in objects.
+
+       There  is  no  in-line chemistry yet (e.g., analogous to the $...$ con-
+       struct of eqn).
+
+       There is no way to control entry point for bonds on groups.  Normally a
+       bond connects to the carbon atom if entering from the top or bottom and
+       otherwise to the nearest corner.
+
+       Bonds from substituted atoms on heterocycles do not join at the  proper
+       place without adding a bit of _p_i_c.
+
+       There is no decent primitive for brackets.
+
+       Text (quoted strings) doesn't work very well.
+
+       A squiggle bond is needed.
+
+FFIILLEESS
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_p_i_c_/_c_h_e_m_._p_i_c
+              A collection of _p_i_c macros needed by cchheemm.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_t_m_a_c_/_p_i_c_._t_m_a_c
+              A macro file which redefines ..PPSS and ..PPEE to center _p_i_c diagrams.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_d_o_c_/_g_r_o_f_f_-_1_._2_2_._4_/_e_x_a_m_p_l_e_s_/_c_h_e_m_/*_._c_h_e_m
+              Example files for _c_h_e_m.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_d_o_c_/_g_r_o_f_f_-_1_._2_2_._4_/_e_x_a_m_p_l_e_s_/_c_h_e_m_/_1_2_2_/*_._c_h_e_m
+              Example  files  from the classical _c_h_e_m article _C_H_E_M _- _A _P_r_o_g_r_a_m
+              _f_o_r _T_y_p_e_s_e_t_t_i_n_g _C_h_e_m_i_c_a_l _S_t_r_u_c_t_u_r_e _D_i_a_g_r_a_m_s [CSTR #122].
+
+AAUUTTHHOORRSS
+       The   GNU   version   of   cchheemm   was   written   by    Bernd    Warken
+       <groff-bernd.warken-72@web.de>.   It  is  based on the documentation of
+       Brian  Kernighan's  original  _a_w_k   version   of   _c_h_e_m   at   <http://
+       cm.bell-labs.com/cm/cs/who/bwk/index.html>.
+
+SSEEEE AALLSSOO
+       ggrrooffff(1), ppiicc(1), ggrrooffffeerr(1).
+
+       You   can   still   get   the   original   chem   awk  source  <http://
+       cm.bell-labs.com/netlib/typesetting/chem.gz>.  Its RREEAADDMMEE file was used
+       for this manual page.
+
+       The  other  classical  document  on  _c_h_e_m  is  _C_H_E_M  _-  _A  _P_r_o_g_r_a_m  _f_o_r
+       _T_y_p_e_s_e_t_t_i_n_g  _C_h_e_m_i_c_a_l   _S_t_r_u_c_t_u_r_e   _D_i_a_g_r_a_m_s   [CSTR   #122]   <http://
+       cm.bell-labs.com/cm/cs/cstr/122.ps.gz>.
+
+
+
+groff 1.22.4                     November 2018                         CHEM(1)

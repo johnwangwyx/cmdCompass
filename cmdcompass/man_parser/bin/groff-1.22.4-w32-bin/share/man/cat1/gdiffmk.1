@@ -1,0 +1,87 @@
+GDIFFMK(1)                  General Commands Manual                 GDIFFMK(1)
+
+
+
+NNAAMMEE
+       gdiffmk - mark differences between groff/nroff/troff files
+
+SSYYNNOOPPSSIISS
+       ggddiiffffmmkk [--aa _a_d_d_m_a_r_k] [--cc _c_h_a_n_g_e_m_a_r_k] [--dd _d_e_l_e_t_e_m_a_r_k] [--DD [--BB] [--MM _m_a_r_k_1
+               _m_a_r_k_2]] [--xx _d_i_f_f_c_m_d] [----] _f_i_l_e_1 _f_i_l_e_2 [_o_u_t_p_u_t]
+
+       ggddiiffffmmkk ----hheellpp
+
+       ggddiiffffmmkk ----vveerrssiioonn
+
+DDEESSCCRRIIPPTTIIOONN
+       ggddiiffffmmkk compares two ggrrooffff(1), nnrrooffff(1), or ttrrooffff(1)  documents,  _f_i_l_e_1
+       and  _f_i_l_e_2,  and  creates  an  output which is _f_i_l_e_2 with added "margin
+       character" (.mc) commands that indicate the differences.
+
+       If the _o_u_t_p_u_t filename is present, the output is written there.  If  it
+       is -- or absent the output is written to the standard output.
+
+       If the _f_i_l_e_1 or _f_i_l_e_2 argument is -- the standard input is read for that
+       input.  Clearly both cannot be --.
+
+       Note that the output is not necessarily compatible with all macro pack-
+       ages and all preprocessors.  See section "Bugs" below.
+
+OOPPTTIIOONNSS
+       --aa_a_d_d_m_a_r_k
+              Use  the  _a_d_d_m_a_r_k  for  source lines not in _f_i_l_e_1 but present in
+              _f_i_l_e_2.  Default: ++.
+
+       --BB     By default, the deleted texts marked by the --DD option  end  with
+              an  added troff break command, ..bbrr, to ensure that the deletions
+              are marked properly.  This is the only  way  to  guarantee  that
+              deletions  and  small  changes get flagged.  This option directs
+              the program not to insert these breaks; it makes no sense to use
+              it without --DD.
+
+       --cc_c_h_a_n_g_e_m_a_r_k
+              Use the _c_h_a_n_g_e_m_a_r_k for changed source lines.  Default: ||.
+
+       --dd_d_e_l_e_t_e_m_a_r_k
+              Use the _d_e_l_e_t_e_m_a_r_k for deleted source lines.  Default: **.
+
+       --DD     Show  the  deleted  portions  from  changed  and  deleted  text.
+              Default delimiting marks: [[[[ ... ]]]].
+
+       --MM_m_a_r_k_1 _m_a_r_k_2
+              Change the delimiting marks for the  --DD  option.   It  makes  no
+              sense to use this option without --DD.
+
+       --xx_d_i_f_f_c_m_d
+              Use  the  _d_i_f_f_c_m_d command to perform the comparison of _f_i_l_e_1 and
+              _f_i_l_e_2.  In particular, _d_i_f_f_c_m_d should accept the GNU ddiiffff --DD_n_a_m_e
+              option.  Default: ddiiffff(1).
+
+       ----     All  the  following arguments are treated as file names, even if
+              they begin with --.
+
+       ----hheellpp Print a usage message on standard error output and exit.
+
+       ----vveerrssiioonn
+              Print version information on the standard output and exit.
+
+BBUUGGSS
+       The output is not necessarily compatible with all  macro  packages  and
+       all  preprocessors.  A workaround that is often successful against pre-
+       processor problems is to run ggddiiffffmmkk on the  output  of  all  the  pre-
+       processors instead of the input source.
+
+       ggddiiffffmmkk  relies  on  the  --DD_n_a_m_e option of GNU ddiiffff(1) to make a merged
+       "#ifdef" output format.  It hasn't been tested whether  other  versions
+       of ddiiffff(1) do support this option.  See also the --xx_d_i_f_f_c_m_d option.
+
+AAUUTTHHOORRSS
+       ggddiiffffmmkk  was  written  and  is  maintained  by  Mike Bianchi <MBianchi@
+       Foveal.com>.
+
+SSEEEE AALLSSOO
+       ggrrooffff(1), nnrrooffff(1), ggttrrooffff(1), ddiiffff(1)
+
+
+
+groff 1.22.4                     December 2018                      GDIFFMK(1)

@@ -6,11 +6,12 @@ import shutil
 import arpy
 import re
 from sqlitedict import SqliteDict
+from  cmdcompass.man_parser.html_coverter import convert_man_pages
 
 ARCH = "binary-amd64"
 DEB_PACKAGE_URL = f"https://ftp.debian.org/debian/dists/Debian12.5/main/{ARCH}/Packages.gz"
 UNPACKING_DIR = "./data/man_pages/tmp"
-MAN_PAGE_DIR = "./data/man_pages"
+MAN_PAGE_DIR = "./data/man_pages/man"
 KV_DB_PATH = "./man_parser/man_pages_kv.db"
 DEB_DOWNLOAD_LINK = "http://ftp.ca.debian.org/debian"
 
@@ -60,6 +61,8 @@ def extract_gz(file_path):
 def move_and_clean_man_pages(extract_to, man_dest_folder):
     print(f"Scanning and moving man pages from {extract_to} to {man_dest_folder}")
     man_page_regex = re.compile(r'(usr\\share\\man\\|usr\\man\\|usr\\X11R6\\man\\|usr\\local\\man/|opt\\man\\)')
+
+    pages_found = []
     
     # Ensure destination folder exists
     if not os.path.exists(man_dest_folder):
@@ -74,6 +77,7 @@ def move_and_clean_man_pages(extract_to, man_dest_folder):
                     src_file = os.path.join(root, file)
                     # Remove the .gz extension for the destination file
                     dst_file = os.path.join(man_dest_folder, file[:-3])  # Strip '.gz' from filename
+                    pages_found.append(dst_file)
      
                     if not os.path.exists(dst_file):
                         # Decompress and move
@@ -88,6 +92,7 @@ def move_and_clean_man_pages(extract_to, man_dest_folder):
     # Clean up the entire extracted directory structure
     shutil.rmtree(extract_to)
     print(f"Cleaned up extraction directory {extract_to}")
+    return pages_found
 
 def download_and_process_package(package_name):
     # Ensure destination folders exist
@@ -101,7 +106,9 @@ def download_and_process_package(package_name):
             deb_path = download_file(full_link)
             extract_to = os.path.join(UNPACKING_DIR, os.path.basename(deb_path).replace('.deb', ''))
             extract_deb(deb_path, extract_to)
-            move_and_clean_man_pages(extract_to, MAN_PAGE_DIR)
+            pages_found = move_and_clean_man_pages(extract_to, MAN_PAGE_DIR)
+            for man_page in pages_found:
+                convert_man_pages(man_page)
             os.remove(deb_path)  # Remove the .deb file to free up space
         else:
             raise ValueError(f"No download link found for package name: {package_name}")

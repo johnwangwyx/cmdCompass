@@ -1,0 +1,1479 @@
+GROFF(7)               Miscellaneous Information Manual               GROFF(7)
+
+
+
+NNAAMMEE
+       groff - a short reference for the GNU roff language
+
+DDEESSCCRRIIPPTTIIOONN
+       The  name  _g_r_o_f_f  stands for _G_N_U _r_o_f_f and is the free implementation of
+       the roff type-setting system.  See rrooffff(7) for a survey and  the  back‐
+       ground of the groff system.
+
+       This  document  provides  only short descriptions of roff language ele‐
+       ments.  _G_r_o_f_f_: _T_h_e _G_N_U _I_m_p_l_e_m_e_n_t_a_t_i_o_n _o_f _t_r_o_f_f, by Trent A. Fisher  and
+       Werner Lemberg, is the primary _g_r_o_f_f manual, and is written in Texinfo.
+       You can browse it interactively with “info groff”.
+
+       Historically, the _r_o_f_f _l_a_n_g_u_a_g_e was called _t_r_o_f_f.  _g_r_o_f_f is  compatible
+       with  the  classical system and provides proper extensions.  So in GNU,
+       the terms _r_o_f_f, _t_r_o_f_f, and _g_r_o_f_f _l_a_n_g_u_a_g_e could be  used  as  synonyms.
+       However  _t_r_o_f_f  slightly  tends to refer more to the classical aspects,
+       whereas _g_r_o_f_f emphasizes the GNU extensions, and _r_o_f_f  is  the  general
+       term for the language.
+
+       The  general syntax for writing groff documents is relatively easy, but
+       writing extensions to the roff language can be a bit harder.
+
+       The roff language is line-oriented.  There are only two kinds of lines,
+       control  lines  and text lines.  The control lines start with a control
+       character, by default a period “..”  or a single quote  “''”;  all  other
+       lines are text lines.
+
+       CCoonnttrrooll lliinneess represent commands, optionally with arguments.  They have
+       the following syntax.  The leading control character can be followed by
+       a command name; arguments, if any, are separated by spaces (but not tab
+       characters) from the command name and among themselves, for example,
+
+              .command_name arg1 arg2
+
+       For indentation, any number of space or tab characters can be  inserted
+       between  the  leading  control  character and the command name, but the
+       control character must be on the first position of the line.
+
+       TTeexxtt lliinneess represent the parts that is printed.  They can  be  modified
+       by  escape  sequences, which are recognized by a leading backslash ‘\\’.
+       These are in-line or even in-word  formatting  elements  or  functions.
+       Some of these take arguments separated by single quotes “''”, others are
+       regulated by a length encoding introduced by an open parenthesis ‘((’ or
+       enclosed in brackets ‘[[’ and ‘]]’.
+
+       The  roff  language  provides flexible instruments for writing language
+       extension, such as macros.  When interpreting  macro  definitions,  the
+       roff system enters a special operating mode, called the ccooppyy mmooddee.
+
+       The  copy  mode behaviour can be quite tricky, but there are some rules
+       that ensure a safe usage.
+
+       1.     Printable backslashes must be denoted as \\ee.  To  be  more  pre‐
+              cise,  \\ee  represents  the  current  escape character.  To get a
+              backslash glyph, use \\((rrss or \\[[rrss]].
+
+       2.     Double all backslashes.
+
+       3.     Begin all text lines with the special non-spacing character \\&&.
+
+       This does not produce the most efficient code, but it should work as  a
+       first measure.  For better strategies, see the _g_r_o_f_f Texinfo manual and
+       ggrrooffff__ttmmaacc(5).
+
+       Reading roff source files is easier, just reduce all double backslashes
+       to a single one in all macro definitions.
+
+GGRROOFFFF EELLEEMMEENNTTSS
+       The  roff  language elements add formatting information to a text file.
+       The fundamental elements are predefined  commands  and  variables  that
+       make roff a full-blown programming language.
+
+       There  are  two  kinds  of roff commands, possibly with arguments.  RRee‐‐
+       qquueessttss are written on a line of their own starting with a dot ‘..’  or a
+       “''”, whereas EEssccaappee sseeqquueenncceess are in-line functions and in-word format‐
+       ting elements starting with a backslash ‘\\’.
+
+       The user can define her own formatting commands using the  ddee  request.
+       These  commands  are  called mmaaccrrooss, but they are used exactly like re‐
+       quests.  Macro packages are pre-defined sets of macros written  in  the
+       groff language.  A user's possibilities to create escape sequences her‐
+       self is very limited, only special characters can be mapped.
+
+       The groff language provides several kinds of variables  with  different
+       interfaces.   There  are pre-defined variables, but the user can define
+       her own variables as well.
+
+       SSttrriinngg variables store character sequences.  They are set with  the  ddss
+       request  and  retrieved  by  the \\** escape sequences.  Strings can have
+       variables.
+
+       RReeggiisstteerr variables can store numerical values,  numbers  with  a  scale
+       unit,  and  occasionally string-like objects.  They are set with the nnrr
+       request and retrieved by the \\nn escape sequences.
+
+       EEnnvviirroonnmmeennttss allow the user to temporarily store global formatting  pa‐
+       rameters  like  line  length, font size, etc. for later reuse.  This is
+       done by the eevv request.
+
+       FFoonnttss are identified either by a name or by an  internal  number.   The
+       current font is chosen by the fftt request or by the \\ff escape sequences.
+       Each device has special fonts, but the following  fonts  are  available
+       for all devices.  RR is the standard font Roman.  BB is its bboolldd counter‐
+       part.  The _i_t_a_l_i_c font is called II and is available everywhere, but  on
+       text  devices  it  is  displayed  as an underlined Roman font.  For the
+       graphical output devices, there exist constant-width pendants of  these
+       fonts,  CCRR,  CCII,  and  CCBB.  On text devices, all glyphs have a constant
+       width anyway.
+
+       GGllyypphhss are visual representation forms of cchhaarraacctteerrss.   In  groff,  the
+       distinction  between  those  two  elements is not always obvious (and a
+       full discussion is beyond the scope of this man page).  A first approx‐
+       imation  is  that  glyphs have a specific size and colour and are taken
+       from a specific font; they can't be modified any more – characters  are
+       the  input,  and  glyphs are the output.  As soon as an output line has
+       been generated, it no longer contains characters but glyphs.   In  this
+       man page, we use either ‘glyph’ or ‘character’, whatever is more appro‐
+       priate.
+
+       Moreover, there are some advanced roff elements.   A  ddiivveerrssiioonn  stores
+       (formatted)   information   into   a   macro   for  later  usage.   See
+       ggrrooffff__ttmmaacc(5) for more details.  A ttrraapp is a positional condition  like
+       a certain number of lines from page top or in a diversion or in the in‐
+       put.  Some action can be prescribed to be run  automatically  when  the
+       condition is met.
+
+       More  detailed  information and examples can be found in the _g_r_o_f_f Tex‐
+       info manual.
+
+CCOONNTTRROOLL CCHHAARRAACCTTEERRSS
+       There is a small set of characters that have a special controlling task
+       in certain conditions.
+
+       ..      A  dot  is  only special at the beginning of a line or after the
+              condition in the requests iiff, iiee, eell, and wwhhiillee.   There  it  is
+              the  control character that introduces a request (or macro).  By
+              using the cccc request, the control character can be set to a dif‐
+              ferent character, making the dot ‘..’  a non-special character.
+
+              In  all other positions, it just means a dot character.  In text
+              paragraphs, it is advantageous to start each sentence at a  line
+              of its own.
+
+       ''      The single quote has two controlling tasks.  At the beginning of
+              a line and in the conditional requests it  is  the  non-breaking
+              control character.  That means that it introduces a request like
+              the dot, but with the  additional  property  that  this  request
+              doesn't  cause  a  linebreak.  By using the cc22 request, the non-
+              break control character can be set to a different character.
+
+              As a second task, it is the most commonly used argument  separa‐
+              tor in some functional escape sequences (but any pair of charac‐
+              ters not part of the argument do work).  In all other positions,
+              it denotes the single quote or apostrophe character.  Groff pro‐
+              vides a printable representation with the \\((ccqq escape sequence.
+
+       ""      The double quote is used to enclose arguments in macros (but not
+              in  requests and strings).  In the ddss and aass requests, a leading
+              double quote in the argument is stripped off, making  everything
+              else  afterwards  the  string  to  be  defined (enabling leading
+              whitespace).  The escaped double quote \\"" introduces a  comment.
+              Otherwise, it is not special.  Groff provides a printable repre‐
+              sentation with the \\((ddqq escape sequence.
+
+       \\      The backslash usually introduces an escape sequence (this can be
+              changed  with  the eecc request).  A printed version of the escape
+              character is the \\ee escape; a backslash glyph can be obtained by
+              \\((rrss.
+
+       ((      The  open  parenthesis  is only special in escape sequences when
+              introducing an escape name or argument consisting of exactly two
+              characters.   In groff, this behaviour can be replaced by the [[]]
+              construct.
+
+       [[      The opening bracket is only special in groff  escape  sequences;
+              there  it is used to introduce a long escape name or long escape
+              argument.  Otherwise, it is non-special, e.g. in macro calls.
+
+       ]]      The closing bracket is only special in groff  escape  sequences;
+              there  it terminates a long escape name or long escape argument.
+              Otherwise, it is non-special.
+
+       _s_p_a_c_e  Space characters are only functional characters.  They  separate
+              the arguments in requests, macros, and strings, and the words in
+              text lines.  They are subject to groff's horizontal spacing cal‐
+              culations.   To get a defined space width, escape sequences like
+              ‘\\ ’ (this is the escape character followed by a space), \\||, \\^^,
+              or \\hh should be used.
+
+       _n_e_w_l_i_n_e
+              In  text  paragraphs,  newlines mostly behave like space charac‐
+              ters.  Continuation lines can be specified by  an  escaped  new‐
+              line,  i.e., by specifying a backslash ‘\\’ as the last character
+              of a line.
+
+       _t_a_b    If a tab character occurs during text the  interpreter  makes  a
+              horizontal  jump to the next pre-defined tab position.  There is
+              a sophisticated interface for handling tab positions.
+
+NNUUMMEERRIICCAALL EEXXPPRREESSSSIIOONNSS
+       A nnuummeerriiccaall vvaalluuee is a signed or unsigned  integer  or  float  with  or
+       without  an  appended scaling indicator.  A ssccaalliinngg iinnddiiccaattoorr is a one-
+       character abbreviation for a unit of measurement.  A number followed by
+       a scaling indicator signifies a size value.  By default, numerical val‐
+       ues do not have a scaling indicator, i.e., they are normal numbers.
+
+       The _r_o_f_f language defines the following scaling indicators.
+
+              cc         centimeter
+              ii         inch
+              PP         pica = 1/6 inch
+              pp         point = 1/72 inch
+              mm         em = the font size in points (approx. width of  letter
+                        ‘m’)
+              MM         100th of an em
+              nn         en = em/2
+              uu         Basic unit for actual output device
+              vv         Vertical line space in basic units
+              ss         scaled point = 1/_s_i_z_e_s_c_a_l_e of a point (defined in font
+                        _D_E_S_C file)
+              ff         Scale by 65536.
+
+       NNuummeerriiccaall eexxpprreessssiioonnss are combinations of the numerical values  defined
+       above  with  the  following  arithmetical  operators already defined in
+       classical troff.
+
+              ++         Addition
+              --         Subtraction
+              **         Multiplication
+              //         Division
+              %%         Modulo
+              ==         Equals
+              ====        Equals
+              <<         Less than
+              >>         Greater than
+              <<==        Less or equal
+              >>==        Greater or equal
+              &&         Logical and
+              ::         Logical or
+              !!         Logical not
+              ((         Grouping of expressions
+              ))         Close current grouping
+
+       Moreover, _g_r_o_f_f added the following  operators  for  numerical  expres‐
+       sions:
+
+              _e_1>>??_e_2    The maximum of _e_1 and _e_2.
+              _e_1<<??_e_2    The minimum of _e_1 and _e_2.
+              ((_c;;_e))     Evaluate _e using _c as the default scaling indicator.
+
+       For details see the _g_r_o_f_f Texinfo manual.
+
+CCOONNDDIITTIIOONNSS
+       CCoonnddiittiioonnss occur in tests raised by the iiff, iiee, and the wwhhiillee requests.
+       The following table characterizes the different types of conditions.
+
+              _N         A numerical expression _N yields true if its  value  is
+                        greater than 0.
+              !!_N        True if the value of _N is 0 (see below).
+              ''_s_1''_s_2''   True if string _s_1 is identical to string _s_2.
+              !!''_s_1''_s_2''  True  if  string _s_1 is not identical to string _s_2 (see
+                        below).
+              cc_c_h       True if there is a glyph _c_h available.
+              dd_n_a_m_e     True if there is a string, macro,  diversion,  or  re‐
+                        quest called _n_a_m_e.
+              ee         Current page number is even.
+              oo         Current page number is odd.
+              mm_n_a_m_e     True if there is a color called _n_a_m_e.
+              nn         Formatter is nnrrooffff.
+              rr_r_e_g      True if there is a register named _r_e_g.
+              tt         Formatter is ttrrooffff.
+              FF_f_o_n_t     True if there exists a font named _f_o_n_t.
+              SS_s_t_y_l_e    True if a style named _s_t_y_l_e has been registered.
+
+       Note  that  the  !!  operator may only appear at the beginning of an ex‐
+       pression, and negates the entire expression.  This  maintains  bug-com‐
+       patibility with AT&T _t_r_o_f_f.
+
+RREEQQUUEESSTTSS
+       This  section  provides  a short reference for the predefined requests.
+       In groff, request, macro, and string names can be arbitrarily long.  No
+       bracketing or marking of long names is needed.
+
+       Most  requests take one or more arguments.  The arguments are separated
+       by space characters (no tabs!); there is no inherent  limit  for  their
+       length or number.
+
+       Some  requests have optional arguments with a different behaviour.  Not
+       all of these details are outlined here.  Refer  to  the  _g_r_o_f_f  Texinfo
+       manual and ggrrooffff__ddiiffff(7) for all details.
+
+       In  the following request specifications, most argument names were cho‐
+       sen to be descriptive.  Only the following denotations need  clarifica‐
+       tion.
+
+              _c         denotes a single character.
+              _f_o_n_t      a  font either specified as a font name or a font num‐
+                        ber.
+              _a_n_y_t_h_i_n_g  all characters up to the end of the line or within  \\{{
+                        and \\}}.
+              _n         is a numerical expression that evaluates to an integer
+                        value.
+              _N         is an arbitrary numerical expression,  signed  or  un‐
+                        signed.
+              _±_N        has  three  meanings  depending on its sign, described
+                        below.
+
+       If an expression defined as _±_N starts with a  ‘++’  sign  the  resulting
+       value  of the expression is added to an already existing value inherent
+       to the related request, e.g. adding to a number register.  If  the  ex‐
+       pression  starts  with  a ‘--’ the value of the expression is subtracted
+       from the request value.
+
+       Without a sign, _N replaces the existing value directly.   To  assign  a
+       negative  number  either  prepend  0  or enclose the negative number in
+       parentheses.
+
+   RReeqquueesstt SShhoorrtt RReeffeerreennccee
+       ..         Empty line, ignored.  Useful for structuring documents.
+       ..\\"" _a_n_y_t_h_i_n_g
+                 Complete line is a comment.
+       ..aabb _s_t_r_i_n_g
+                 Print _s_t_r_i_n_g on standard error, exit program.
+       ..aadd       Begin line adjustment for  output  lines  in  current  adjust
+                 mode.
+       ..aadd _c     Start line adjustment in mode _c (_c=l,r,c,b,n).
+       ..aaff _r_e_g_i_s_t_e_r _c
+                 Assign format _c to _r_e_g_i_s_t_e_r (_c=l,i,I,a,A).
+       ..aallnn _a_l_i_a_s _r_e_g_i_s_t_e_r
+                 Create alias name for _r_e_g_i_s_t_e_r.
+       ..aallss _a_l_i_a_s _o_b_j_e_c_t
+                 Create  alias  name  for request, string, macro, or diversion
+                 _o_b_j_e_c_t.
+       ..aamm _m_a_c_r_o Append to _m_a_c_r_o until .... is encountered.
+       ..aamm _m_a_c_r_o _e_n_d
+                 Append to _m_a_c_r_o until .._e_n_d is called.
+       ..aamm11 _m_a_c_r_o
+                 Same as ..aamm but with compatibility mode switched  off  during
+                 macro expansion.
+       ..aamm11 _m_a_c_r_o _e_n_d
+                 Same  as  ..aamm but with compatibility mode switched off during
+                 macro expansion.
+       ..aammii _m_a_c_r_o
+                 Append to a macro whose name is contained in the string  reg‐
+                 ister _m_a_c_r_o until .... is encountered.
+       ..aammii _m_a_c_r_o _e_n_d
+                 Append  to a macro indirectly.  _m_a_c_r_o and _e_n_d are string reg‐
+                 isters whose contents are interpolated for the macro name and
+                 the end macro, respectively.
+       ..aammii11 _m_a_c_r_o
+                 Same  as ..aammii but with compatibility mode switched off during
+                 macro expansion.
+       ..aammii11 _m_a_c_r_o _e_n_d
+                 Same as ..aammii but with compatibility mode switched off  during
+                 macro expansion.
+       ..aass _s_t_r_i_n_g_v_a_r _a_n_y_t_h_i_n_g
+                 Append _a_n_y_t_h_i_n_g to _s_t_r_i_n_g_v_a_r.
+       ..aass11 _s_t_r_i_n_g_v_a_r _a_n_y_t_h_i_n_g
+                 Same  as  ..aass but with compatibility mode switched off during
+                 string expansion.
+       ..aasscciiiiffyy _d_i_v_e_r_s_i_o_n
+                 Unformat ASCII characters, spaces, and some escape  sequences
+                 in _d_i_v_e_r_s_i_o_n.
+       ..bbaacckkttrraaccee
+                 Print a backtrace of the input on stderr.
+       ..bbdd _f_o_n_t _N
+                 Embolden _f_o_n_t by _N-1 units.
+       ..bbdd _S _f_o_n_t _N
+                 Embolden Special Font _S when current font is _f_o_n_t.
+       ..bbllmm      Unset the blank line macro.
+       ..bbllmm _m_a_c_r_o
+                 Set the blank line macro to _m_a_c_r_o.
+       ..bbooxx      End current diversion.
+       ..bbooxx _m_a_c_r_o
+                 Divert to _m_a_c_r_o, omitting a partially filled line.
+       ..bbooxxaa     End current diversion.
+       ..bbooxxaa _m_a_c_r_o
+                 Divert and append to _m_a_c_r_o, omitting a partially filled line.
+       ..bbpp       Eject current page and begin new page.
+       ..bbpp _±_N    Eject current page; next page number _±_N.
+       ..bbrr       Line break.
+       ..bbrrpp      Break output line; adjust if applicable.
+       ..bbrreeaakk    Break out of a while loop.
+       ..cc22       Reset no-break control character to “''”.
+       ..cc22 _c     Set no-break control character to _c.
+       ..cccc       Reset control character to ‘..’.
+       ..cccc _c     Set control character to _c.
+       ..ccee       Center the next input line.
+       ..ccee _N     Center following _N input lines.
+       ..ccff _f_i_l_e_n_a_m_e
+                 Copy  contents  of  file _f_i_l_e_n_a_m_e unprocessed to stdout or to
+                 the diversion.
+       ..ccffllaaggss _m_o_d_e _c_1 _c_2 ...
+                 Treat characters _c_1, _c_2, ... according to _m_o_d_e number.
+       ..cchh _t_r_a_p _N
+                 Change _t_r_a_p location to _N.
+       ..cchhaarr _c _a_n_y_t_h_i_n_g
+                 Define entity _c as string _a_n_y_t_h_i_n_g.
+       ..cchhoopp _o_b_j_e_c_t
+                 Chop the last character off macro, string, or  diversion  _o_b_‐
+                 _j_e_c_t.
+       ..ccllaassss _n_a_m_e _c_1 _c_2 ...
+                 Assign  a set of characters, character ranges, or classes _c_1,
+                 _c_2, ... to _n_a_m_e.
+       ..cclloossee _s_t_r_e_a_m
+                 Close the _s_t_r_e_a_m.
+       ..ccoolloorr    Enable colors.
+       ..ccoolloorr _N  If _N is zero disable colors, otherwise enable them.
+       ..ccoommppoossiittee _f_r_o_m _t_o
+                 Map glyph name _f_r_o_m to glyph name  _t_o  while  constructing  a
+                 composite glyph name.
+       ..ccoonnttiinnuuee Finish the current iteration of a while loop.
+       ..ccpp       Enable compatibility mode.
+       ..ccpp _N     If _N is zero disable compatibility mode, otherwise enable it.
+       ..ccss _f_o_n_t _N _M
+                 Set  constant  character width mode for _f_o_n_t to _N/36 ems with
+                 em _M.
+       ..ccuu _N     Continuous underline in nroff, like ..uull in troff.
+       ..ddaa       End current diversion.
+       ..ddaa _m_a_c_r_o Divert and append to _m_a_c_r_o.
+       ..ddee _m_a_c_r_o Define or redefine _m_a_c_r_o until .... is encountered.
+       ..ddee _m_a_c_r_o _e_n_d
+                 Define or redefine _m_a_c_r_o until .._e_n_d is called.
+       ..ddee11 _m_a_c_r_o
+                 Same as ..ddee but with compatibility mode switched  off  during
+                 macro expansion.
+       ..ddee11 _m_a_c_r_o _e_n_d
+                 Same  as  ..ddee but with compatibility mode switched off during
+                 macro expansion.
+       ..ddeeffccoolloorr _c_o_l_o_r _s_c_h_e_m_e _c_o_m_p_o_n_e_n_t
+                 Define or redefine a color with name _c_o_l_o_r.   _s_c_h_e_m_e  can  be
+                 rrggbb,  ccyymm, ccyymmkk, ggrraayy, or ggrreeyy.  _c_o_m_p_o_n_e_n_t can be single com‐
+                 ponents specified as fractions in the range 0 to  1  (default
+                 scaling  indicator  ff),  as a string of two-digit hexadecimal
+                 color components with a leading ##, or as a  string  of  four-
+                 digit  hexadecimal  components with two leading ##.  The color
+                 ddeeffaauulltt can't be redefined.
+       ..ddeeii _m_a_c_r_o
+                 Define or redefine a macro whose name  is  contained  in  the
+                 string register _m_a_c_r_o until .... is encountered.
+       ..ddeeii _m_a_c_r_o _e_n_d
+                 Define  or  redefine  a  macro indirectly.  _m_a_c_r_o and _e_n_d are
+                 string registers whose  contents  are  interpolated  for  the
+                 macro name and the end macro, respectively.
+       ..ddeeii11 _m_a_c_r_o
+                 Same  as ..ddeeii but with compatibility mode switched off during
+                 macro expansion.
+       ..ddeeii11 _m_a_c_r_o _e_n_d
+                 Same as ..ddeeii but with compatibility mode switched off  during
+                 macro expansion.
+       ..ddeevviiccee _a_n_y_t_h_i_n_g
+                 Write _a_n_y_t_h_i_n_g to the intermediate output as a device control
+                 function.
+       ..ddeevviicceemm _n_a_m_e
+                 Write contents of macro or string _n_a_m_e uninterpreted  to  the
+                 intermediate output as a device control function.
+       ..ddii       End current diversion.
+       ..ddii _m_a_c_r_o Divert to _m_a_c_r_o.  See ggrrooffff__ttmmaacc(5) for more details.
+       ..ddoo _n_a_m_e  Interpret .._n_a_m_e with compatibility mode disabled.
+       ..ddss _s_t_r_i_n_g_v_a_r _a_n_y_t_h_i_n_g
+                 Set _s_t_r_i_n_g_v_a_r to _a_n_y_t_h_i_n_g.
+       ..ddss11 _s_t_r_i_n_g_v_a_r _a_n_y_t_h_i_n_g
+                 Same  as  ..ddss but with compatibility mode switched off during
+                 string expansion.
+       ..ddtt _N _t_r_a_p
+                 Set diversion trap to position  _N  (default  scaling  indica‐
+                 tor vv).
+       ..eecc       Reset escape character to ‘\\’.
+       ..eecc _c     Set escape character to _c.
+       ..eeccrr      Restore escape character saved with ..eeccss.
+       ..eeccss      Save current escape character.
+       ..eell _a_n_y_t_h_i_n_g
+                 Else part for if-else (..iiee) request.
+       ..eemm _m_a_c_r_o The _m_a_c_r_o is run after the end of input.
+       ..eeoo       Turn off escape character mechanism.
+       ..eevv       Switch to previous environment and pop it off the stack.
+       ..eevv _e_n_v   Push  down  environment  number  or name _e_n_v to the stack and
+                 switch to it.
+       ..eevvcc _e_n_v  Copy the contents of environment _e_n_v to the current  environ‐
+                 ment.  No pushing or popping.
+       ..eexx       Exit from roff processing.
+       ..ffaamm      Return to previous font family.
+       ..ffaamm _n_a_m_e Set the current font family to _n_a_m_e.
+       ..ffcc       Disable field mechanism.
+       ..ffcc _a     Set field delimiter to _a and pad glyph to space.
+       ..ffcc _a _b   Set field delimiter to _a and pad glyph to _b.
+       ..ffcchhaarr _c _a_n_y_t_h_i_n_g
+                 Define fallback character (or glyph) _c as string _a_n_y_t_h_i_n_g.
+       ..ffccoolloorr   Set fill color to previous fill color.
+       ..ffccoolloorr _c Set fill color to _c.
+       ..ffii       Fill output lines.
+       ..ffll       Flush output buffer.
+       ..ffpp _n _f_o_n_t
+                 Mount _f_o_n_t on position _n.
+       ..ffpp _n _i_n_t_e_r_n_a_l _e_x_t_e_r_n_a_l
+                 Mount  font with long _e_x_t_e_r_n_a_l name to short _i_n_t_e_r_n_a_l name on
+                 position _n.
+       ..ffsscchhaarr _f _c _a_n_y_t_h_i_n_g
+                 Define fallback character (or glyph) _c for font _f  as  string
+                 _a_n_y_t_h_i_n_g.
+       ..ffssppeecciiaall _f_o_n_t
+                 Reset list of special fonts for _f_o_n_t to be empty.
+       ..ffssppeecciiaall _f_o_n_t _s_1 _s_2 ...
+                 When the current font is _f_o_n_t, then the fonts _s_1, _s_2, ... are
+                 special.
+       ..fftt       Return to previous font.  Same as \\ or \\.
+       ..fftt _f_o_n_t  Change to font name or number _f_o_n_t; same as  \\ff[[_f_o_n_t]]  escape
+                 sequence.
+       ..ffttrr _f_o_n_t_1 _f_o_n_t_2
+                 Translate _f_o_n_t_1 to _f_o_n_t_2.
+       ..ffzzoooomm _f_o_n_t
+                 Don't magnify _f_o_n_t.
+       ..ffzzoooomm _f_o_n_t _z_o_o_m
+                 Set zoom factor for _f_o_n_t (in multiples of 1/1000th).
+       ..ggccoolloorr   Set glyph color to previous glyph color.
+       ..ggccoolloorr _c Set glyph color to _c.
+       ..hhcc       Remove additional hyphenation indicator character.
+       ..hhcc _c     Set up additional hyphenation indicator character _c.
+       ..hhccooddee _c_1 _c_o_d_e_1 [_c_2 _c_o_d_e_2] ...
+                 Set the hyphenation code of character _c_1 to _c_o_d_e_1, that of _c_2
+                 to _c_o_d_e_2, etc.
+       ..hhllaa _l_a_n_g Set the current hyphenation language to _l_a_n_g.
+       ..hhllmm _n    Set the maximum number of consecutive hyphenated lines to _n.
+       ..hhppff _f_i_l_e Read hyphenation patterns from _f_i_l_e.
+       ..hhppffaa _f_i_l_e
+                 Append hyphenation patterns from _f_i_l_e.
+       ..hhppffccooddee _a _b _c _d ...
+                 Set input mapping for ..hhppff.
+       ..hhww _w_o_r_d_s List of _w_o_r_d_s with exceptional hyphenation.
+       ..hhyy _N     Switch to hyphenation mode _N.
+       ..hhyymm _n    Set the hyphenation margin  to  _n  (default  scaling  indica‐
+                 tor mm).
+       ..hhyyss _n    Set the hyphenation space to _n.
+       ..iiee _c_o_n_d _a_n_y_t_h_i_n_g
+                 If _c_o_n_d then _a_n_y_t_h_i_n_g else goto ..eell.
+       ..iiff _c_o_n_d _a_n_y_t_h_i_n_g
+                 If _c_o_n_d then _a_n_y_t_h_i_n_g; otherwise do nothing.
+       ..iigg       Ignore text until .... is encountered.
+       ..iigg _e_n_d   Ignore text until .._e_n_d is called.
+       ..iinn       Change to previous indentation value.
+       ..iinn _±_N    Change  indentation  according to _±_N (default scaling indica‐
+                 tor mm).
+       ..iitt _N _t_r_a_p
+                 Set an input-line count trap for the next _N lines.
+       ..iittcc _N _t_r_a_p
+                 Same as ..iitt but don't count lines interrupted with \\cc.
+       ..kkeerrnn     Enable pairwise kerning.
+       ..kkeerrnn _n   If _n is zero, disable pairwise kerning, otherwise enable it.
+       ..llcc       Remove leader repetition glyph.
+       ..llcc _c     Set leader repetition glyph to _c.
+       ..lleennggtthh _r_e_g_i_s_t_e_r _a_n_y_t_h_i_n_g
+                 Write the length of the string _a_n_y_t_h_i_n_g to _r_e_g_i_s_t_e_r.
+       ..lliinneettaabbss Enable line-tabs mode (i.e., calculate tab positions relative
+                 to output line).
+       ..lliinneettaabbss _n
+                 If _n is zero, disable line-tabs mode, otherwise enable it.
+       ..llff _N     Set input line number to _N.
+       ..llff _N _f_i_l_e
+                 Set input line number to _N and filename to _f_i_l_e.
+       ..llgg _N     Ligature mode on if _N>0.
+       ..llll       Change to previous line length.
+       ..llll _±_N    Set line length according to _±_N (default length 6.5ii, default
+                 scaling indicator mm).
+       ..llssmm      Unset the leading spaces macro.
+       ..llssmm _m_a_c_r_o
+                 Set the leading spaces macro to _m_a_c_r_o.
+       ..llss       Change to the previous value of additional intra-line skip.
+       ..llss _N     Set additional intra-line skip value to _N,  i.e.,  _N-1  blank
+                 lines are inserted after each text output line.
+       ..lltt _±_N    Length of title (default scaling indicator mm).
+       ..mmcc       Margin glyph off.
+       ..mmcc _c     Print  glyph  _c  after each text line at actual distance from
+                 right margin.
+       ..mmcc _c _N   Set margin glyph to _c and distance to  _N  from  right  margin
+                 (default scaling indicator mm).
+       ..mmkk [_r_e_g_i_s_t_e_r]
+                 Mark current vertical position in _r_e_g_i_s_t_e_r, or in an internal
+                 register used by ..rrtt if no argument.
+       ..mmssoo _f_i_l_e The same as ..ssoo except that _f_i_l_e is searched in the tmac  di‐
+                 rectories.
+       ..nnaa       No output-line adjusting.
+       ..nnee       Need a one-line vertical space.
+       ..nnee _N     Need _N vertical space (default scaling indicator vv).
+       ..nnff       No filling or adjusting of output lines.
+       ..nnhh       No hyphenation.
+       ..nnmm       Number mode off.
+       ..nnmm _±_N [_M [_S [_I]]]
+                 In  line  number mode, set number, multiple, spacing, and in‐
+                 dentation.
+       ..nnnn       Do not number next line.
+       ..nnnn _N     Do not number next _N lines.
+       ..nnoopp _a_n_y_t_h_i_n_g
+                 Always process _a_n_y_t_h_i_n_g.
+       ..nnrr _r_e_g_i_s_t_e_r _±_N [_M]
+                 Define or modify _r_e_g_i_s_t_e_r using _±_N with auto-increment _M.
+       ..nnrrooffff    Make the built-in conditions nn true and tt false.
+       ..nnss       Turn on no-space mode.
+       ..nnxx       Immediately jump to end of current file.
+       ..nnxx _f_i_l_e_n_a_m_e
+                 Immediately continue processing with file _f_i_l_e.
+       ..ooppeenn _s_t_r_e_a_m _f_i_l_e_n_a_m_e
+                 Open _f_i_l_e_n_a_m_e for writing  and  associate  the  stream  named
+                 _s_t_r_e_a_m with it.
+       ..ooppeennaa _s_t_r_e_a_m _f_i_l_e_n_a_m_e
+                 Like ..ooppeenn but append to it.
+       ..ooss       Output vertical distance that was saved by the ssvv request.
+       ..oouuttppuutt _s_t_r_i_n_g
+                 Emit _s_t_r_i_n_g directly to intermediate output, allowing leading
+                 whitespace if _s_t_r_i_n_g starts with "" (which is stripped off).
+       ..ppcc       Reset page number character to ‘%%’.
+       ..ppcc _c     Page number character.
+       ..ppeevv      Print the current environment and  each  defined  environment
+                 state to stderr.
+       ..ppii _p_r_o_g_r_a_m
+                 Pipe output to _p_r_o_g_r_a_m (nroff only).
+       ..ppll       Set  page  length to default 11ii.  The current page length is
+                 stored in register ..pp.
+       ..ppll _±_N    Change page length to _±_N (default scaling indicator vv).
+       ..ppmm       Print macro names and sizes (number of blocks of 128 bytes).
+       ..ppmm _t     Print only total of sizes of  macros  (number  of  128  bytes
+                 blocks).
+       ..ppnn _±_N    Next page number _N.
+       ..ppnnrr      Print  the names and contents of all currently defined number
+                 registers on stderr.
+       ..ppoo       Change to previous page offset.  The current page  offset  is
+                 available in register ..oo.
+       ..ppoo _±_N    Page offset _N.
+       ..ppss       Return to previous point size.
+       ..ppss _±_N    Point size; same as \\ss[[_±_N]].
+       ..ppssbbbb _f_i_l_e_n_a_m_e
+                 Get the bounding box of a PostScript image _f_i_l_e_n_a_m_e.
+       ..ppssoo _c_o_m_m_a_n_d
+                 This behaves like the ssoo request except that input comes from
+                 the standard output of _c_o_m_m_a_n_d.
+       ..ppttrr      Print the names and positions of all traps (not including in‐
+                 put line traps and diversion traps) on stderr.
+       ..ppvvss      Change to previous post-vertical line spacing.
+       ..ppvvss _±_N   Change  post-vertical  line  spacing according to _±_N (default
+                 scaling indicator pp).
+       ..rrcchhaarr _c_1 _c_2 ...
+                 Remove the definitions of entities _c_1, _c_2, ...
+       ..rrdd _p_r_o_m_p_t
+                 Read insertion.
+       ..rreettuurrnn   Return from a macro.
+       ..rreettuurrnn _a_n_y_t_h_i_n_g
+                 Return twice, namely from the macro at the current level  and
+                 from the macro one level higher.
+       ..rrffsscchhaarr _f _c_1 _c_2 ...
+                 Remove the definitions of entities _c_1, _c_2, ... for font _f.
+       ..rrjj _n     Right justify the next _n input lines.
+       ..rrmm _n_a_m_e  Remove request, macro, diversion, or string _n_a_m_e.
+       ..rrnn _o_l_d _n_e_w
+                 Rename request, macro, diversion, or string _o_l_d to _n_e_w.
+       ..rrnnnn _r_e_g_1 _r_e_g_2
+                 Rename register _r_e_g_1 to _r_e_g_2.
+       ..rrrr _r_e_g_i_s_t_e_r
+                 Remove _r_e_g_i_s_t_e_r.
+       ..rrss       Restore spacing; turn no-space mode off.
+       ..rrtt       Return  _(_u_p_w_a_r_d  _o_n_l_y_)  to vertical position marked by ..mmkk on
+                 the current page.
+       ..rrtt _±_N    Return _(_u_p_w_a_r_d _o_n_l_y_) to specified distance from  the  top  of
+                 the page (default scaling indicator vv).
+       ..sscchhaarr _c _a_n_y_t_h_i_n_g
+                 Define  global fallback character (or glyph) _c as string _a_n_y_‐
+                 _t_h_i_n_g.
+       ..sshhcc      Reset soft hyphen glyph to \\((hhyy.
+       ..sshhcc _c    Set the soft hyphen glyph to _c.
+       ..sshhiifftt _n  In a macro, shift the arguments by _n positions.
+       ..ssiizzeess _s_1 _s_2 ... _sn [00]
+                 Set available font sizes similar to the ssiizzeess  command  in  a
+                 _D_E_S_C file.
+       ..ssoo _f_i_l_e_n_a_m_e
+                 Include source file.
+       ..sspp       Skip one line vertically.
+       ..sspp _N     Space  vertical  distance _N up or down according to sign of _N
+                 (default scaling indicator vv).
+       ..ssppeecciiaall  Reset global list of special fonts to be empty.
+       ..ssppeecciiaall _s_1 _s_2 ...
+                 Fonts _s_1, _s_2, etc. are special and are  searched  for  glyphs
+                 not in the current font.
+       ..sspprreeaaddwwaarrnn
+                 Toggle  the  spread  warning  on and off without changing its
+                 value.
+       ..sspprreeaaddwwaarrnn _l_i_m_i_t
+                 Emit a warning if each space in an output line is widened  by
+                 _l_i_m_i_t or more (default scaling indicator mm).
+       ..ssss _N     Set  space  glyph size to _N/12 of the space width in the cur‐
+                 rent font.
+       ..ssss _N _M   Set space glyph size to _N/12 and sentence space size  set  to
+                 _M/12 of the space width in the current font.
+       ..ssttyy _n _s_t_y_l_e
+                 Associate _s_t_y_l_e with font position _n.
+       ..ssuubbssttrriinngg _x_x _n_1 _n_2
+                 Replace the string named _x_x with the substring defined by the
+                 indices _n_1 and _n_2.
+       ..ssvv       Save 1 v of vertical space.
+       ..ssvv _N     Save the vertical distance _N for later output with ooss request
+                 (default scaling indicator vv).
+       ..ssyy _c_o_m_m_a_n_d_-_l_i_n_e
+                 Execute program _c_o_m_m_a_n_d_-_l_i_n_e.
+       ..ttaa _T _N   Set  tabs  after  every position that is a multiple of _N (de‐
+                 fault scaling indicator mm).
+       ..ttaa _n_1 _n_2 ... _nn TT _r_1 _r_2 ... _rn
+                 Set tabs at positions _n_1, _n_2,  ...,  _nn,  then  set  tabs  at
+                 _nn+_m×_rn+_r_1  through _nn+_m×_rn+_rn, where _m increments from 0, 1,
+                 2, ... to infinity.
+       ..ttcc       Remove tab repetition glyph.
+       ..ttcc _c     Set tab repetition glyph to _c.
+       ..ttii _±_N    Temporary indent next line (default scaling indicator mm).
+       ..ttkkff _f_o_n_t _s_1 _n_1 _s_2 _n_2
+                 Enable track kerning for _f_o_n_t.
+       ..ttll ’’_l_e_f_t’’_c_e_n_t_e_r’’_r_i_g_h_t’’
+                 Three-part title.
+       ..ttmm _a_n_y_t_h_i_n_g
+                 Print _a_n_y_t_h_i_n_g on stderr.
+       ..ttmm11 _a_n_y_t_h_i_n_g
+                 Print _a_n_y_t_h_i_n_g on stderr, allowing leading whitespace if _a_n_y_‐
+                 _t_h_i_n_g starts with "" (which is stripped off).
+       ..ttmmcc _a_n_y_t_h_i_n_g
+                 Similar to ..ttmm11 without emitting a final newline.
+       ..ttrr _a_b_c_d...
+                 Translate _a to _b, _c to _d, etc. on output.
+       ..ttrrff _f_i_l_e_n_a_m_e
+                 Transparently output the contents of file _f_i_l_e_n_a_m_e.
+       ..ttrriinn _a_b_c_d...
+                 This  is  the  same as the ttrr request except that the aasscciiiiffyy
+                 request uses the character code (if any) before the character
+                 translation.
+       ..ttrrnntt _a_b_c_d...
+                 This  is  the same as the ttrr request except that the transla‐
+                 tions do not apply to text that is  transparently  throughput
+                 into a diversion with \\!!.
+       ..ttrrooffff    Make the built-in conditions tt true and nn false.
+       ..uuff _f_o_n_t  Set underline font to _f_o_n_t (to be switched to by ..uull).
+       ..uull _N     Underline (italicize in troff) _N input lines.
+       ..uunnffoorrmmaatt _d_i_v_e_r_s_i_o_n
+                 Unformat  space  characters and tabs in _d_i_v_e_r_s_i_o_n, preserving
+                 font information.
+       ..vvpptt _n    Enable vertical position traps if _n is non-zero, disable them
+                 otherwise.
+       ..vvss       Change to previous vertical base line spacing.
+       ..vvss _±_N    Set vertical base line spacing to _±_N (default scaling indica‐
+                 tor pp).
+       ..wwaarrnn _n   Set warnings code to _n.
+       ..wwaarrnnssccaallee _s_i
+                 Set scaling indicator used in warnings to _s_i.
+       ..wwhh _N     Remove (first) trap at position _N.
+       ..wwhh _N _t_r_a_p
+                 Set location trap; negative means from page bottom.
+       ..wwhhiillee _c_o_n_d _a_n_y_t_h_i_n_g
+                 While condition _c_o_n_d is true, accept _a_n_y_t_h_i_n_g as input.
+       ..wwrriittee _s_t_r_e_a_m _a_n_y_t_h_i_n_g
+                 Write _a_n_y_t_h_i_n_g to the stream named _s_t_r_e_a_m.
+       ..wwrriitteecc _s_t_r_e_a_m _a_n_y_t_h_i_n_g
+                 Similar to ..wwrriittee without emitting a final newline.
+       ..wwrriitteemm _s_t_r_e_a_m _x_x
+                 Write contents of macro or string  _x_x  to  the  stream  named
+                 _s_t_r_e_a_m.
+
+       Besides  these  standard  groff  requests, there might be further macro
+       calls.  They can originate from a macro package  (see  rrooffff(7)  for  an
+       overview) or from a preprocessor.
+
+       Preprocessor macros are easy to recognize.  They enclose their code be‐
+       tween a pair of characteristic macros.
+
+                  ┌─────────────┬─────────────────┬────────────────┐
+                  │preprocessor │   start macro   │    end macro   │
+                  ├─────────────┼─────────────────┼────────────────┤
+                  │    cchheemm     │     ..ccssttaarrtt     │     ..cceenndd      │
+                  │    eeqqnn      │       ..EEQQ       │      ..EENN       │
+                  │    ggrraapp     │       ..GG11       │      ..GG22       │
+                  │    ggrrnn      │       ..GGSS       │      ..GGEE       │
+                  │   iiddeeaall     │       ..IISS       │      ..IIEE       │
+                  │             │                 │      ..IIFF       │
+                  │    ppiicc      │       ..PPSS       │      ..PPEE       │
+                  │   rreeffeerr     │       ..RR11       │      ..RR22       │
+                  │   ssooeelliimm    │      _n_o_n_e       │      _n_o_n_e      │
+                  │    ttbbll      │       ..TTSS       │      ..TTEE       │
+                  ├─────────────┼─────────────────┼────────────────┤
+                  │ gglliillyyppoonndd   │ ..lliillyyppoonndd ssttaarrtt │ ..lliillyyppoonndd ssttoopp │
+                  │   ggppeerrll     │   ..PPeerrll ssttaarrtt   │   ..PPeerrll ssttoopp   │
+                  │  ggppiinnyyiinn    │  ..ppiinnyyiinn ssttaarrtt  │  ..ppiinnyyiinn ssttoopp  │
+                  └─────────────┴─────────────────┴────────────────┘
+       Note that the ‘ideal’ preprocessor is not available in groff yet.
+
+EESSCCAAPPEE SSEEQQUUEENNCCEESS
+       Escape sequences are in-line language elements usually introduced by  a
+       backslash  ‘\\’  and  followed  by an escape name and sometimes by a re‐
+       quired argument.  Input processing is continued directly after the  es‐
+       caped  character  or  the  argument  (without an intervening separation
+       character).  So there must be a way to determine the end of the  escape
+       name and the end of the argument.
+
+       This  is  done by enclosing names (escape name and arguments consisting
+       of a variable name) by a pair of brackets [[_n_a_m_e]] and constant arguments
+       (number  expressions  and  characters) by apostrophes (ASCII 0x27) like
+       ’’_c_o_n_s_t_a_n_t’’.
+
+       There are abbreviations for short names.   Two-character  escape  names
+       can be specified by an opening parenthesis like \\((xy or \\**((xy without a
+       closing counterpart.  And all one-character names  different  from  the
+       special  characters ‘[[’ and ‘((’ can even be specified without a marker,
+       for example \\nnc or \\$$c.
+
+       Constant arguments of length 1 can omit the  marker  apostrophes,  too,
+       but there is no two-character analogue.
+
+       While  one-character escape sequences are mainly used for in-line func‐
+       tions and system-related tasks, the two-letter names following  the  \\((
+       construct  are  glyphs  predefined by the roff system; these are called
+       ‘Special Characters’ in the classical documentation.  Escapes sequences
+       of the form \\[[_n_a_m_e]] denote glyphs too.
+
+   SSiinnggllee--CChhaarraacctteerr EEssccaappeess
+       \\""     Start of a comment.  Everything up to the end of the line is ig‐
+              nored.
+       \\##     Everything up to and including  the  next  newline  is  ignored.
+              This  is  interpreted in copy mode.  This is like \\"" except that
+              the terminating newline is ignored as well.
+       \\**_s    The string stored in  the  string  variable  with  one-character
+              name _s.
+       \\**((_s_t  The string stored in the string variable with two-character name
+              _s_t.
+       \\**[[_s_t_r_i_n_g]]
+              The string stored in the string variable with name _s_t_r_i_n_g  (with
+              arbitrary length).
+       \\**[[_s_t_r_i_n_g_v_a_r _a_r_g_1 _a_r_g_2 ...]]
+              The  string  stored in the string variable with arbitrarily long
+              name _s_t_r_i_n_g_v_a_r, taking _a_r_g_1, _a_r_g_2, ... as arguments.
+       \\$$00    The name by which the current macro was invoked.   The  aallss  re‐
+              quest can make a macro have more than one name.
+       \\$$_x    Macro  or string argument with one-digit number _x in the range 1
+              to 9.
+       \\$$((_x_y  Macro or string argument with two-digit number _x_y  (larger  than
+              zero).
+       \\$$[[_n_e_x_p]]
+              Macro  or  string argument with number _n_e_x_p, where _n_e_x_p is a nu‐
+              merical expression evaluating to an integer ≥1.
+       \\$$**    In a macro or string, the concatenation  of  all  the  arguments
+              separated by spaces.
+       \\$$@@    In  a  macro  or  string, the concatenation of all the arguments
+              with each surrounded by double quotes, and separated by spaces.
+       \\$$^^    In a macro, the representation of all parameters as if they were
+              an argument to the ddss request.
+       \\\\     reduces  to  a single backslash; useful to delay its interpreta‐
+              tion as escape character in copy mode.  For  a  printable  back‐
+              slash,  use \\ee, or even better \\[[rrss]], to be independent from the
+              current escape character.
+       \\´´     The acute accent ´; same as \\((aaaa.  Unescaped: apostrophe,  right
+              quotation mark, single quote (ASCII 0x27).
+       \\``     The  grave accent `; same as \\((ggaa.  Unescaped: left quote, back‐
+              quote (ASCII 0x60).
+       \\--     The - (minus) sign in the current font.
+       \\__     The same as \\((uull, the underline character.
+       \\..     The same as a dot (‘.’).  Necessary in nested macro  definitions
+              so that ‘\\..’ expands to ‘..’.
+       \\%%     Default optional hyphenation character.
+       \\!!     Transparent line indicator.
+       \\??_a_n_y_t_h_i_n_g??
+              In a diversion, this transparently embeds _a_n_y_t_h_i_n_g in the diver‐
+              sion.  _a_n_y_t_h_i_n_g is read in copy mode.  See also the  escape  se‐
+              quences \\!!  and \\??.
+       \\_s_p_a_c_e Unpaddable space size space glyph (no line break).
+       \\00     Digit-width space.
+       \\||     1/6 em narrow space glyph; zero width in nroff.
+       \\^^     1/12 em half-narrow space glyph; zero width in nroff.
+       \\&&     Non-printable, zero-width glyph.
+       \\))     Like  \\&&  except  that it behaves like a glyph declared with the
+              ccffllaaggss request to be transparent for the purposes of end-of-sen‐
+              tence recognition.
+       \\//     Increases  the  width of the preceding glyph so that the spacing
+              between that glyph and the following glyph  is  correct  if  the
+              following glyph is a roman glyph.
+       \\,,     Modifies  the spacing of the following glyph so that the spacing
+              between that glyph and the preceding glyph  is  correct  if  the
+              preceding glyph is a roman glyph.
+       \\~~     Unbreakable  space that stretches like a normal inter-word space
+              when a line is adjusted.
+       \\::     Inserts a zero-width break point (similar to \\%%  but  without  a
+              soft hyphen character).
+       \\_n_e_w_l_i_n_e
+              Ignored newline, for continuation lines.
+       \\{{     Begin conditional input.
+       \\}}     End conditional input.
+       \\((_s_c   A glyph with two-character name _s_c; see section “Special Charac‐
+              ters” below.
+       \\[[_n_a_m_e]]
+              A glyph with name _n_a_m_e (of arbitrary length).
+       \\[[_c_o_m_p_1 _c_o_m_p_2 ...]]
+              A composite glyph with components _c_o_m_p_1, _c_o_m_p_2, ...
+       \\aa     Non-interpreted leader character.
+       \\AA’’_a_n_y_t_h_i_n_g’’
+              If _a_n_y_t_h_i_n_g is acceptable as a name of a string,  macro,  diver‐
+              sion,  register,  environment  or font it expands to 1, and to 0
+              otherwise.
+       \\bb’’_a_b_c...’’
+              Bracket building function.
+       \\BB’’_a_n_y_t_h_i_n_g’’
+              If _a_n_y_t_h_i_n_g is acceptable as a valid numeric expression  it  ex‐
+              pands to 1, and to 0 otherwise.
+       \\cc     Continue  output  line  at next input line.  Anything after this
+              escape on the same line is ignored except  \\RR  (which  works  as
+              usual).   Anything before \\cc on the same line is appended to the
+              current partial output line.  The next non-command line after  a
+              line interrupted with \\cc counts as a new input line.
+       \\CC’’_g_l_y_p_h’’
+              The  glyph  called  _g_l_y_p_h;  same  as \\[[_g_l_y_p_h]], but compatible to
+              other roff versions.
+       \\dd     Forward (down) 1/2 em (1/2 line in nroff).
+       \\DD’’_c_h_a_r_s_e_q’’
+              Draw a graphical element defined by the characters  in  _c_h_a_r_s_e_q;
+              see the _g_r_o_f_f Texinfo manual for details.
+       \\ee     Printable version of the current escape character.
+       \\EE     Equivalent  to  an  escape  character, but is not interpreted in
+              copy mode.
+       \\ff_F    Change to font with one-character name or one-digit number _F.
+       \\ffPP    Switch back to previous font.
+       \\ff((_f_o  Change to font with two-character name or two-digit number _f_o.
+       \\ff[[_f_o_n_t]]
+              Change to font with arbitrarily long name or  number  expression
+              _f_o_n_t.
+       \\ff[[]]   Switch back to previous font.
+       \\FF_f    Change to font family with one-character name _f.
+       \\FF((_f_m  Change to font family with two-character name _f_m.
+       \\FF[[_f_a_m]]
+              Change to font family with arbitrarily long name _f_a_m.
+       \\FF[[]]   Switch back to previous font family.
+       \\gg_r    Return format of register with one-character name _r suitable for
+              aaff request.
+       \\gg((_r_g  Return format of register with two-character  name  _r_g  suitable
+              for aaff request.
+       \\gg[[_r_e_g]]
+              Return  format  of register with arbitrarily long name _r_e_g suit‐
+              able for aaff request.
+       \\hh’’_N’’  Local horizontal motion; move right _N (left if negative).
+       \\HH’’_N’’  Set height of current font to _N.
+       \\kk_r    Mark horizontal input place in one-character register _r.
+       \\kk((_r_g  Mark horizontal input place in two-character register _r_g.
+       \\kk[[_r_e_g]]
+              Mark horizontal input place in register  with  arbitrarily  long
+              name _r_e_g.
+       \\ll’’_N_c’’ Horizontal line drawing function (optionally using character _c).
+       \\LL’’_N_c’’ Vertical line drawing function (optionally using character _c).
+       \\mm_c    Change to color with one-character name _c.
+       \\mm((_c_l  Change to color with two-character name _c_l.
+       \\mm[[_c_o_l_o_r]]
+              Change to color with arbitrarily long name _c_o_l_o_r.
+       \\mm[[]]   Switch back to previous color.
+       \\MM_c    Change filling color for closed drawn objects to color with one-
+              character name _c.
+       \\MM((_c_l  Change filling color for closed drawn objects to color with two-
+              character name _c_l.
+       \\MM[[_c_o_l_o_r]]
+              Change  filling color for closed drawn objects to color with ar‐
+              bitrarily long name _c_o_l_o_r.
+       \\MM[[]]   Switch to previous fill color.
+       \\nn_r    The numerical value stored in the  register  variable  with  the
+              one-character name _r.
+       \\nn((_r_e  The  numerical  value  stored  in the register variable with the
+              two-character name _r_e.
+       \\nn[[_r_e_g]]
+              The numerical value stored in the register variable  with  arbi‐
+              trarily long name _r_e_g.
+       \\NN’’_n’’  Typeset  the glyph with index _n in the current font.  No special
+              fonts are searched.  Useful for adding  (named)  entities  to  a
+              document using the cchhaarr request and friends.
+       \\oo’’_a_b_c...’’
+              Overstrike glyphs _a, _b, _c, etc.
+       \\OO00    Disable glyph output.  Mainly for internal use.
+       \\OO11    Enable glyph output.  Mainly for internal use.
+       \\pp     Break output line at next word boundary; adjust if applicable.
+       \\rr     Reverse 1 em vertical motion (reverse line in nroff).
+       \\RR’’_n_a_m_e _±_n’’
+              The same as ..nnrr _n_a_m_e _±_n.
+       \\ss_±_N   Set/increase/decrease the point size to/by _N scaled points; _N is
+              a one-digit number in the range 1 to 9.  Same as ppss request.
+       \\ss((_±_N
+       \\ss±±((_N  Set/increase/decrease the point size to/by _N scaled points; _N is
+              a two-digit number ≥1.  Same as ppss request.
+       \\ss[[_±_N]]
+       \\ss±±[[_N]]
+       \\ss’’_±_N’’
+       \\ss±±’’_N’’ Set/increase/decrease  the  point  size  to/by  _N scaled points.
+              Same as ppss request.
+       \\SS’’_N’’  Slant output by _N degrees.
+       \\tt     Non-interpreted horizontal tab.
+       \\uu     Reverse (up) 1/2 em vertical motion (1/2 line in nroff).
+       \\vv’’_N’’  Local vertical motion; move down _N (up if negative).
+       \\VV_e    The contents of  the  environment  variable  with  one-character
+              name _e.
+       \\VV((_e_v  The contents of the environment variable with two-character name
+              _e_v.
+       \\VV[[_e_n_v]]
+              The contents of the environment variable with  arbitrarily  long
+              name _e_n_v.
+       \\ww’’_s_t_r_i_n_g’’
+              The width of the glyph sequence _s_t_r_i_n_g.
+       \\xx’’_N’’  Extra line-space function (negative before, positive after).
+       \\XX’’_s_t_r_i_n_g’’
+              Output _s_t_r_i_n_g as device control function.
+       \\YY_n    Output  string variable or macro with one-character name _n unin‐
+              terpreted as device control function.
+       \\YY((_n_m  Output string variable or macro with two-character name _n_m unin‐
+              terpreted as device control function.
+       \\YY[[_n_a_m_e]]
+              Output  string variable or macro with arbitrarily long name _n_a_m_e
+              uninterpreted as device control function.
+       \\zz_c    Print _c with zero width (without spacing).
+       \\ZZ’’_a_n_y_t_h_i_n_g’’
+              Print _a_n_y_t_h_i_n_g and then restore the horizontal and vertical  po‐
+              sition; _a_n_y_t_h_i_n_g may not contain tabs or leaders.
+
+       The  escape  sequences \\ee, \\.., \\"", \\$$, \\**, \\aa, \\nn, \\tt, \\gg, and \\_n_e_w_l_i_n_e
+       are interpreted in copy mode.
+
+       Escape sequences starting with \\(( or \\[[ do not represent single charac‐
+       ter escape sequences, but introduce escape names with two or more char‐
+       acters.
+
+       If a backslash is followed by a character that does  not  constitute  a
+       defined  escape  sequence,  the  backslash  is silently ignored and the
+       character maps to itself.
+
+   SSppeecciiaall CChhaarraacctteerrss
+       [Note: ‘Special Characters’ is a misnomer; those entities are  (output)
+       glyphs, not (input) characters.]
+
+       Common  special  characters  are  predefined by escape sequences of the
+       form \\((_x_y with characters _x and _y.  In _g_r_o_f_f, it is  also  possible  to
+       use the writing \\[[_x_y]] as well.
+
+       Some  of these special characters exist in the usual font while most of
+       them are only available in the special font.  Below you can see a small
+       selection of the most important glyphs; a complete list can be found in
+       ggrrooffff__cchhaarr(7).
+
+              \\((DDoo   Dollar $$
+              \\((EEuu   Euro €€
+              \\((PPoo   British pound sterling ££
+              \\((aaqq   Apostrophe quote ''
+              \\((bbuu   Bullet sign ••
+              \\((ccoo   Copyright ©©
+              \\((ccqq   Single closing quote (right) ’’
+              \\((cctt   Cent ¢¢
+              \\((dddd   Double dagger ‡‡
+              \\((ddee   Degree °°
+              \\((ddgg   Dagger ††
+              \\((ddqq   Double quote (ASCII 34) ""
+              \\((eemm   Em-dash ——
+              \\((eenn   En-dash ––
+              \\((hhyy   Hyphen ‐‐
+              \\((llqq   Double quote left ““
+              \\((ooqq   Single opening quote (left) ‘‘
+              \\((rrgg   Registered sign ®®
+              \\((rrqq   Double quote right ””
+              \\((rrss   Printable backslash character \\
+              \\((sscc   Section sign §§
+              \\((ttmm   Trademark symbol ™™
+              \\((uull   Underline character __
+              \\((====   Identical ≡≡
+              \\((>>==   Larger or equal ≥≥
+              \\((<<==   Less or equal ≤≤
+              \\((!!==   Not equal ≠≠
+              \\((-->>   Right arrow →→
+              \\((<<--   Left arrow ←←
+              \\((++--   Plus-minus sign ±±
+
+   UUnniiccooddee CChhaarraacctteerrss
+       The extended escape uu allows the inclusion  of  all  available  Unicode
+       characters into a _r_o_f_f file.
+
+       \\[[uu_x_x_x_x]]
+              uu  is the escape name.  _x_x_x_x is a hexadecimal number of four hex
+              digits, such as 00004411 for the letter AA, thus \\[[uu00004411]].
+
+       \\[[uu_y_y_y_y_y]]
+              uu is the escape name.  _y_y_y_y_y is a hexadecimal number of five hex
+              digits,  such  as 22FFAA11AA for a Chinese-looking character from the
+              Unicode block  _C_J_K  _C_o_m_p_a_t_i_b_i_l_i_t_y  _I_d_e_o_g_r_a_p_h_s  _S_u_p_p_l_e_m_e_n_t,  thus
+              \\[[uu22FFAA11AA]].
+
+       The  hexadecimal  value  indicates the corresponding Unicode code point
+       for a character.
+
+       \\[[uu_h_e_x_1___h_e_x_2]]
+       \\[[uu_h_e_x_1___h_e_x_2___h_e_x_3]]
+              _h_e_x_1, _h_e_x_2, and _h_e_x_3 are all Unicode hexadecimal codes (4  or  5
+              hex  digits)  that are used for overstriking, e.g. \\[[uu00004411__00330011]]
+              is _A _a_c_u_t_e, which can also be specified as ÁÁ; see ggrrooffff__cchhaarr(7).
+
+       The availability of the Unicode characters depends on  the  font  used.
+       For  text mode, the device --TTuuttff88 is quite complete; for _t_r_o_f_f modes it
+       might happen that some  or  many  characters  will  not  be  displayed.
+       Please check your fonts.
+
+   SSttrriinnggss
+       Strings  are  defined  by the ddss request and can be retrieved by the \\**
+       escape sequence.
+
+       Strings share their name space with  macros.   So  strings  and  macros
+       without  arguments  are  roughly  equivalent;  it is possible to call a
+       string like a macro and vice versa, but  this  often  leads  to  unpre‐
+       dictable  results.   The following string is the only one predefined in
+       groff.
+
+       \*[..TT]    The name of the current output device as specified by the  --TT
+                 command-line option.
+
+RREEGGIISSTTEERRSS
+       Registers  are  variables that store a value.  In groff, most registers
+       store numerical values (see section “Numerical Expressions” above), but
+       some can also hold a string value.
+
+       Each  register is given a name.  Arbitrary registers can be defined and
+       set with the nnrr request.
+
+       The value stored in a register can be retrieved by the escape sequences
+       introduced by \\nn.
+
+       Most  useful  are  predefined registers.  In the following the notation
+       _n_a_m_e is used to refer to register nnaammee to  make  clear  that  we  speak
+       about  registers.   Please keep in mind that the \\nn[[]] decoration is not
+       part of the register name.
+
+   RReeaadd--oonnllyy RReeggiisstteerrss
+       The following registers have predefined values that should not be modi‐
+       fied  by  the  user  (usually,  registers starting with a dot are read-
+       only).  Mostly, they provide information on  the  current  settings  or
+       store results from request calls.
+
+       \n[$$$$]    The process ID of ttrrooffff.
+       \n[..$$]    Number of arguments in the current macro or string.
+       \n[..aa]    Post-line extra line-space most recently utilized using \\xx.
+       \n[..AA]    Set to 1 in ttrrooffff if option --AA is used; always 1 in nnrrooffff.
+       \n[..bb]    The emboldening offset while ..bbdd is active.
+       \n[..bbrr]   Within  a  macro,  set to 1 if macro called with the ‘normal’
+                 control character, and to 0 otherwise.
+       \n[..cc]    Current input line number.
+       \n[..CC]    1 if compatibility mode is in effect, 0 otherwise.
+       \n[..ccddpp]  The depth of the last glyph added to the current environment.
+                 It is positive if the glyph extends below the baseline.
+       \n[..ccee]   The  number  of lines remaining to be centered, as set by the
+                 ccee request.
+       \n[..cchhtt]  The height of the last glyph added to  the  current  environ‐
+                 ment.   It  is  positive if the glyph extends above the base‐
+                 line.
+       \n[..ccoolloorr]
+                 1 if colors are enabled, 0 otherwise.
+       \n[..ccsskk]  The skew of the last glyph added to the current  environment.
+                 The  skew of a glyph is how far to the right of the center of
+                 a glyph the center of an accent over  that  glyph  should  be
+                 placed.
+       \n[..dd]    Current  vertical place in current diversion; equal to regis‐
+                 ter nnll.
+       \n[..eevv]   The name or number of the  current  environment  (string-val‐
+                 ued).
+       \n[..ff]    Current font number.
+       \n[..FF]    The name of the current input file (string-valued).
+       \n[..ffaamm]  The current font family (string-valued).
+       \n[..ffnn]   The current (internal) real font name (string-valued).
+       \n[..ffpp]   The number of the next free font position.
+       \n[..gg]    Always  1 in GNU troff.  Macros should use it to test if run‐
+                 ning under groff.
+       \n[..hh]    Text base-line high-water mark on current page or diversion.
+       \n[..HH]    Number of basic units per horizontal unit  of  output  device
+                 resolution.
+       \n[..hheeiigghhtt]
+                 The current font height as set with \\HH.
+       \n[..hhllaa]  The current hyphenation language as set by the hhllaa request.
+       \n[..hhllcc]  The  number  of  immediately preceding consecutive hyphenated
+                 lines.
+       \n[..hhllmm]  The maximum allowed number of consecutive  hyphenated  lines,
+                 as set by the hhllmm request.
+       \n[..hhyy]   The current hyphenation flags (as set by the hhyy request).
+       \n[..hhyymm]  The current hyphenation margin (as set by the hhyymm request).
+       \n[..hhyyss]  The current hyphenation space (as set by the hhyyss request).
+       \n[..ii]    Current indentation.
+       \n[..iinn]   The indentation that applies to the current output line.
+       \n[..iinntt]  Positive if last output line contains \\cc.
+       \n[..jj]    The  current  adjustment  mode.  It can be stored and used to
+                 set adjustment.  (n = 1, b = 1, l = 0, r = 5, c = 3).
+       \n[..kk]    The current horizontal output position (relative to the  cur‐
+                 rent indentation).
+       \n[..kkeerrnn] 1 if pairwise kerning is enabled, 0 otherwise.
+       \n[..ll]    Current line length.
+       \n[..LL]    The current line spacing setting as set by ..llss.
+       \n[..llgg]   The current ligature mode (as set by the llgg request).
+       \n[..lliinneettaabbss]
+                 The current line-tabs mode (as set by the lliinneettaabbss request).
+       \n[..llll]   The line length that applies to the current output line.
+       \n[..lltt]   The title length (as set by the lltt request).
+       \n[..mm]    The current drawing color (string-valued).
+       \n[..MM]    The current background color (string-valued).
+       \n[..nn]    Length of text portion on previous output line.
+       \n[..nnee]   The  amount  of  space that was needed in the last nnee request
+                 that caused a trap to be sprung.  Useful in conjunction  with
+                 register ..ttrruunncc.
+       \n[..nnss]   1 if in no-space mode, 0 otherwise.
+       \n[..oo]    Current page offset.
+       \n[..OO]    The suppression nesting level (see \\OO).
+       \n[..pp]    Current page length.
+       \n[..PP]    1  if  the current page is being printed, 0 otherwise (as de‐
+                 termined by the --oo command-line option).
+       \n[..ppee]   1 during page ejection, 0 otherwise.
+       \n[..ppnn]   The number of the next page: either the value set by a ppnn re‐
+                 quest, or the number of the current page plus 1.
+       \n[..ppss]   The current point size in scaled points.
+       \n[..ppssrr]  The last-requested point size in scaled points.
+       \n[..ppvvss]  The current post-vertical line spacing.
+       \n[..RR]    The  number  of unused number registers.  Always 10000 in GNU
+                 troff.
+       \n[..rrjj]   The number of lines to be right-justified as set  by  the  rrjj
+                 request.
+       \n[..ss]    Current point size as a decimal fraction.
+       \n[..ssllaanntt]
+                 The slant of the current font as set with \\SS.
+       \n[..ssrr]   The last requested point size in points as a decimal fraction
+                 (string-valued).
+       \n[..ssss]   The value of the parameters set by the first argument of  the
+                 ssss request.
+       \n[..ssssss]  The value of the parameters set by the second argument of the
+                 ssss request.
+       \n[..ssttyy]  The current font style (string-valued).
+       \n[..tt]    Vertical distance to the next trap.
+       \n[..TT]    Set to 1 if option --TT is used.
+       \n[..ttaabbss] A string representation of the current tab settings  suitable
+                 for use as an argument to the ttaa request.
+       \n[..ttrruunncc]
+                 The  amount  of vertical space truncated by the most recently
+                 sprung vertical position trap, or, if the trap was sprung  by
+                 an  nnee  request, minus the amount of vertical motion produced
+                 by ..nnee.  Useful in conjunction with the register ..nnee.
+       \n[..uu]    Equal to 1 in fill mode and 0 in no-fill mode.
+       \n[..UU]    Equal to 1 in safer mode and 0 in unsafe mode.
+       \n[..vv]    Current vertical line spacing.
+       \n[..VV]    Number of basic units per vertical unit of output device res‐
+                 olution.
+       \n[..vvpptt]  1 if vertical position traps are enabled, 0 otherwise.
+       \n[..ww]    Width of previous glyph.
+       \n[..wwaarrnn] The  sum  of  the number codes of the currently enabled warn‐
+                 ings.
+       \n[..xx]    The major version number.
+       \n[..yy]    The minor version number.
+       \n[..YY]    The revision number of groff.
+       \n[..zz]    Name of current diversion.
+       \n[..zzoooomm] Zoom factor for current font (in multiples of 1/1000th;  zero
+                 if no magnification).
+
+   WWrriittaabbllee RReeggiisstteerrss
+       The following registers can be read and written by the user.  They have
+       predefined default values, but these can be modified for customizing  a
+       document.
+
+       \n[%%]     Current page number.
+       \n[cc..]    Current input line number.
+       \n[cctt]    Character type (set by width function \\ww).
+       \n[ddll]    Maximal width of last completed diversion.
+       \n[ddnn]    Height of last completed diversion.
+       \n[ddww]    Current day of week (1–7).
+       \n[ddyy]    Current day of month (1–31).
+       \n[hhoouurrss] The number of hours past midnight.  Initialized at start-up.
+       \n[hhpp]    Current horizontal position at input line.
+       \n[llllxx]   Lower  left  x-coordinate  (in  PostScript  units) of a given
+                 PostScript image (set by ..ppssbbbb).
+       \n[llllyy]   Lower left y-coordinate (in  PostScript  units)  of  a  given
+                 PostScript image (set by ..ppssbbbb).
+       \n[llnn]    Output line number.
+       \n[llssnn]   The number of leading spaces of an input line.
+       \n[llssss]   The  horizontal  space corresponding to the leading spaces of
+                 an input line.
+       \n[mmiinnuutteess]
+                 The number of minutes after the hour.  Initialized at  start-
+                 up.
+       \n[mmoo]    Current month (1–12).
+       \n[nnll]    Vertical position of last printed text base-line.
+       \n[ooppmmaaxxxx]
+       \n[ooppmmaaxxyy]
+       \n[ooppmmiinnxx]
+       \n[ooppmmiinnyy]
+                 These  four registers mark the top left and bottom right hand
+                 corners of a box which encompasses all written glyphs.   They
+                 are reset to -1 by \\OO_0 or \\OO_1.
+       \n[rrssbb]   Like register ssbb, but takes account of the heights and depths
+                 of glyphs.
+       \n[rrsstt]   Like register sstt, but takes account of the heights and depths
+                 of glyphs.
+       \n[ssbb]    Depth  of string below base line (generated by width function
+                 \\ww).
+       \n[sseeccoonnddss]
+                 The number of  seconds  after  the  minute.   Initialized  at
+                 start-up.
+       \n[sskkww]   Right  skip width from the center of the last glyph in the \\ww
+                 argument.
+       \n[sslliimmiitt]
+                 If greater than 0, the maximum number of objects on the input
+                 stack.  If ≤0 there is no limit, i.e., recursion can continue
+                 until virtual memory is exhausted.
+       \n[sssscc]   The amount  of  horizontal  space  (possibly  negative)  that
+                 should  be added to the last glyph before a subscript (gener‐
+                 ated by width function \\ww).
+       \n[sstt]    Height of string above base line (generated by width function
+                 \\ww).
+       \n[ssyyssttaatt]
+                 The  return  value  of  the _s_y_s_t_e_m_(_) function executed by the
+                 last ssyy request.
+       \n[uurrxx]   Upper right x-coordinate (in PostScript  units)  of  a  given
+                 PostScript image (set by ..ppssbbbb).
+       \n[uurryy]   Upper  right  y-coordinate  (in  PostScript units) of a given
+                 PostScript image (set by ..ppssbbbb).
+       \n[yyeeaarr]  The current year (year 2000 compliant).
+       \n[yyrr]    Current year minus 1900.  For  Y2K  compliance  use  register
+                 yyeeaarr instead.
+
+HHYYPPHHEENNAATTIIOONN
+       The  ..hhyy  request, given an integer argument, controls when hyphenation
+       applies.  The default value is 11, which enables hyphenation almost  ev‐
+       erywhere (see below).  Macro packages often override this default.
+
+       11      disables  hyphenation  only  after the first and before the last
+              character of a word.
+
+       22      disables hyphenation only of the last word on a page or column.
+
+       44      disables hyphenation only before the last two  characters  of  a
+              word.
+
+       88      disables  hyphenation  only  after the first two characters of a
+              word.
+
+       1166     enables hyphenation before the last character of a word.
+
+       3322     enables hyphenation after the first character of a word.
+
+       The values are additive.  Some values cannot be used  together  because
+       they contradict; for instance, 4 and 16; 8 and 32.
+
+UUNNDDEERRLLIINNIINNGG
+       In  the  _R_U_N_O_F_F  language, the underlining was quite easy.  But in _r_o_f_f
+       this is much more difficult.
+
+   UUnnddeerrlliinniinngg wwiitthh ..uull
+       There exists a _g_r_o_f_f request ..uull (see above)  that  can  underline  the
+       next  or further source lines in nnrrooffff, but in ttrrooffff it produces only a
+       font change into _i_t_a_l_i_c.  So this request is not really useful.
+
+   UUnnddeerrlliinniinngg wwiitthh ..UULL ffrroomm mmss
+       In the ‘ms’ macro package in  tmac/s.tmac  ggrrooffff__mmss(7),  there  is  the
+       macro ..UULL.  But this works only in ttrrooffff, not in nnrrooffff.
+
+   UUnnddeerrlliinniinngg mmaaccrroo ddeeffiinniittiioonnss
+       So  one can use the _i_t_a_l_i_c nnrrooffff idea from ..uull and the ttrrooffff definition
+       in _m_s for writing a useful new macro, something like
+              .de UNDERLINE
+              . ie n \\$1\f[I]\\$2\f[P]\\$3
+              . el \\$1\Z'\\$2'\v'.25m'\D'l \w'\\$2'u 0'\v'-.25m'\\$3
+              ..
+       If ddoocclliifftteerr(1) makes trouble, change the  macro  name  UUNNDDEERRLLIINNEE  into
+       some  2-letter  word,  like  UUll.  Moreover change the font writing from
+       \\ff[[PP]] to \\ffPP.
+
+   UUnnddeerrlliinniinngg wwiitthhoouutt mmaaccrroo ddeeffiinniittiioonnss
+       If one does not want to use macro  definitions,  e.g.,  when  ddoocclliifftteerr
+       gets lost, use the following:
+              .ds u1 before
+              .ds u2 in
+              .ds u3 after
+              .ie n \*[u1]\f[I]\*[u2]\f[P]\*[u3]
+              .el \*[u1]\Z'\*[u2]'\v'.25m'\D'l \w'\*[u2]'u 0'\v'-.25m'\*[u3]
+       Due  to ddoocclliifftteerr, it might be necessary to change the variable writing
+       \\[[xxyy]] and \\**[[xxyy]] into the strange ancient writing \\**((xxyy and  \\((xxyy,  and
+       so on.
+
+       Then these lines could look like
+              .ds u1 before
+              .ds u2 in
+              .ds u3 after
+              .ie n \*[u1]\fI\*(u2\fP\*(u3
+              .el \*(u1\Z'\*(u2'\v'.25m'\D'l \w'\*(u2'u 0'\v'-.25m'\*(u3
+
+       The result looks like
+              before _i_n after
+
+   UUnnddeerrlliinniinngg wwiitthh OOvveerrssttrriikkiinngg \\zz aanndd \\((uull
+       There is another possibility for underlining by using overstriking with
+       \\zz_c (print _c with zero width without spacing) and \\((uull (underline char‐
+       acter).   This  produces  the underlining of 1 character, both in nnrrooffff
+       and in ttrrooffff.
+
+       For example the underlining of a character say tt looks like \\zz\\[[uull]]tt or
+       \\zz\\((uulltt
+
+       Longer  words  look  then  a bit strange, but a useful mode is to write
+       each character into a whole own line.  To underlines  the  3  character
+       part "tar" of the word "start":
+              before s\
+              \z\[ul]t\
+              \z\[ul]a\
+              \z\[ul]r\
+              t after
+       or
+              before s\
+              \z\(ult\
+              \z\(ula\
+              \z\(ulr\
+              t after
+
+       The result looks like
+              before s_t_a_rt after
+
+CCOOMMPPAATTIIBBIILLIITTYY
+       The  differences  between the groff language and classical troff as de‐
+       fined by [CSTR #54] are documented in ggrrooffff__ddiiffff(7).
+
+       The groff system provides a compatibility mode, see ggrrooffff(1) on how  to
+       invoke this.
+
+AAUUTTHHOORRSS
+       This  document  was  written  by  Bernd  Warken ⟨groff-bernd.warken-72@
+       web.de⟩.
+
+SSEEEE AALLSSOO
+       _G_r_o_f_f_: _T_h_e _G_N_U _I_m_p_l_e_m_e_n_t_a_t_i_o_n _o_f _t_r_o_f_f, by Trent A. Fisher  and  Werner
+       Lemberg,  is the primary _g_r_o_f_f manual.  You can browse it interactively
+       with “info groff”.  Besides the gory details, it  contains  many  exam‐
+       ples.
+
+       ggrrooffff(1)
+              the usage of the groff program and pointers to the documentation
+              and availability of the groff system.
+
+       ggrrooffff__ddiiffff(7)
+              describes the differences between the groff language and classi‐
+              cal troff.
+
+              This  is  the authoritative document for the predefined language
+              elements that are specific to groff.
+
+       ggrrooffff__cchhaarr(7)
+              the predefined groff special characters (glyphs).
+
+       ggrrooffff__ffoonntt(5)
+              the specification of fonts and the DESC file.
+
+       ggrrooffff__ttmmaacc(5)
+              contains an overview of available groff macro packages, instruc‐
+              tions  on  how  to  interface  them with a document, guidance on
+              writing macro packages and using diversions, and historical  in‐
+              formation on macro package naming conventions.
+
+       rrooffff(7)
+              the  history  of  roff, the common parts shared by all roff sys‐
+              tems, and pointers to further documentation.
+
+       [CSTR #54]
+              Nroff/Troff  User's  Manual  by  Ossanna  &  Kernighan  ⟨http://
+              cm.bell-labs.com/cm/cs/cstr/54.ps.gz⟩  — the bible for classical
+              troff.
+
+       _W_i_k_i_p_e_d_i_a
+              article     about     _g_r_o_f_f      ⟨https://en.wikipedia.org/wiki/
+              Groff_%28software%29⟩.
+
+       _T_u_t_o_r_i_a_l _a_b_o_u_t _g_r_o_f_f
+              Manas  Laha  -  An Introduction to the GNU Groff Text Processing
+              System ⟨dl.dropbox.com/u/4299293/grofftut.pdf⟩
+
+       _t_r_o_f_f_._o_r_g
+              This is a collection of internet sites with classical _r_o_f_f docu‐
+              mentations and other information.
+
+
+
+groff 1.22.4                     December 2018                        GROFF(7)

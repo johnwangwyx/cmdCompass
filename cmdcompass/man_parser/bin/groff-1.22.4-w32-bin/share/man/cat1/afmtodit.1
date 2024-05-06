@@ -1,0 +1,170 @@
+AFMTODIT(1)                 General Commands Manual                AFMTODIT(1)
+
+
+
+NNAAMMEE
+       afmtodit - create font files for use with groff -Tps and -Tpdf
+
+SSYYNNOOPPSSIISS
+       aaffmmttooddiitt [--cckkmmnnssxx] [--aa _n] [--dd _d_e_s_c_-_f_i_l_e] [--ee _e_n_c_-_f_i_l_e] [--ff _i_n_t_e_r_n_a_l_-
+                _n_a_m_e] [--ii _n] [--oo _o_u_t_p_u_t_-_f_i_l_e] _a_f_m_-_f_i_l_e _m_a_p_-_f_i_l_e _f_o_n_t
+
+       aaffmmttooddiitt --vv
+
+DDEESSCCRRIIPPTTIIOONN
+       _a_f_m_t_o_d_i_t creates a font file for use with  _g_r_o_f_f,  _g_r_o_p_s,  and  _g_r_o_p_d_f.
+       _a_f_m_t_o_d_i_t  is written in Perl; you must have Perl version 5.004 or newer
+       installed in order to run _a_f_m_t_o_d_i_t.
+
+       _a_f_m_-_f_i_l_e is the AFM (Adobe Font Metric) file for the font.
+
+       _m_a_p_-_f_i_l_e is a file that says which _g_r_o_f_f character names map onto  each
+       PostScript character name; this file should contain a sequence of lines
+       of the form
+              _p_s_-_c_h_a_r _g_r_o_f_f_-_c_h_a_r
+       where _p_s_-_c_h_a_r is the PostScript name of the character and _g_r_o_f_f_-_c_h_a_r is
+       the  groff name of the character (as used in the _g_r_o_f_f font file).  The
+       same _p_s_-_c_h_a_r can occur multiple times in the file; each _g_r_o_f_f_-_c_h_a_r must
+       occur  at  most  once.   Lines  starting  with  `#' and blank lines are
+       ignored.  If the file isn't found  in  the  current  directory,  it  is
+       searched  for  in  the  _d_e_v_p_s_/_g_e_n_e_r_a_t_e subdirectory of the default font
+       directory.
+
+       If a PostScript character is not mentioned in _m_a_p_-_f_i_l_e, and  a  generic
+       _g_r_o_f_f  glyph  name  can't  be  deduced using the Adobe Glyph List (AGL,
+       built into _a_f_m_t_o_d_i_t), then _a_f_m_t_o_d_i_t puts the PostScript character  into
+       the  _g_r_o_f_f font file as an unnamed character which can only be accessed
+       by the `\N' escape sequence in a _r_o_f_f document.  In particular, this is
+       true  for  glyph  variants named in the form "foo.bar"; all glyph names
+       containing one or more periods are  mapped  to  unnamed  entities.   If
+       option --ee is not specified, the encoding defined in the AFM file (i.e.,
+       entries with non-negative character codes) is used.  Refer  to  section
+       "Using  Symbols"  in  _G_r_o_f_f_: _T_h_e _G_N_U _I_m_p_l_e_m_e_n_t_a_t_i_o_n _o_f _t_r_o_f_f, the _g_r_o_f_f
+       Texinfo manual, which describes how _g_r_o_f_f glyph names are constructed.
+
+       Characters not encoded in the AFM file (i.e., entries which  have  `-1'
+       as  the  character  code)  are still available in _g_r_o_f_f; they get glyph
+       index values greater than 255 (or greater than  the  biggest  character
+       code  used in the AFM file in the unlikely case that it is greater than
+       255) in the _g_r_o_f_f font file.  Glyph  indices  of  unencoded  characters
+       don't have a specific order; it is best to access them with glyph names
+       only.
+
+       The _g_r_o_f_f font file will be output to a file called _f_o_n_t, unless the --oo
+       option is used.
+
+       If  there is a downloadable font file for the font, it may be listed in
+       the file _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_v_p_s_/_d_o_w_n_l_o_a_d; see _g_r_o_p_s(1).
+
+       If the --ii option is  used,  _a_f_m_t_o_d_i_t  will  automatically  generate  an
+       italic  correction, a left italic correction and a subscript correction
+       for each character (the significance of these parameters  is  explained
+       in  _g_r_o_f_f___f_o_n_t(5));  these  parameters  may be specified for individual
+       characters by adding to the _a_f_m_-_f_i_l_e lines of the form:
+              iittaalliiccCCoorrrreeccttiioonn _p_s_-_c_h_a_r _n
+              lleeffttIIttaalliiccCCoorrrreeccttiioonn _p_s_-_c_h_a_r _n
+              ssuubbssccrriippttCCoorrrreeccttiioonn _p_s_-_c_h_a_r _n
+       where _p_s_-_c_h_a_r is the PostScript name of the character,  and  _n  is  the
+       desired  value  of the corresponding parameter in thousandths of an em.
+       These parameters are normally  needed  only  for  italic  (or  oblique)
+       fonts.
+
+OOPPTTIIOONNSS
+       Whitespace is permitted between a command-line option and its argument.
+
+       --aa_n    Use  _n  as the slant parameter in the font file; this is used by
+              _g_r_o_f_f in the positioning of accents.  By default  _a_f_m_t_o_d_i_t  uses
+              the  negative of the IIttaalliiccAAnnggllee specified in the AFM file; with
+              true italic fonts it is sometimes desirable to use a slant  that
+              is  less  than this.  If you find that characters from an italic
+              font have accents placed too far to the right  over  them,  then
+              use the --aa option to give the font a smaller slant.
+
+       --cc     Include comments in the font file in order to identify the Post-
+              Script font.
+
+       --dd_d_e_s_c_-_f_i_l_e
+              The device description file is _d_e_s_c_-_f_i_l_e rather than the default
+              _D_E_S_C.   If  not found in the current directory, the _d_e_v_p_s subdi-
+              rectory of the default font directory is searched (this is  true
+              for  both  the  default device description file and a file given
+              with option --dd).
+
+       --ee_e_n_c_-_f_i_l_e
+              The PostScript font should be  reencoded  to  use  the  encoding
+              described  in  _e_n_c_-_f_i_l_e.  The format of _e_n_c_-_f_i_l_e is described in
+              _g_r_o_p_s(1).  If not found in the current directory, the _d_e_v_p_s sub-
+              directory of the default font directory is searched.
+
+       --ff_n_a_m_e The internal name of the _g_r_o_f_f font is set to _n_a_m_e.
+
+       --ii_n    Generate  an  italic  correction  for each character so that the
+              character's width plus  the  character's  italic  correction  is
+              equal  to  _n  thousandths  of an em plus the amount by which the
+              right edge of the character's bounding box is to  the  right  of
+              the  character's  origin.   If  this  would result in a negative
+              italic correction, use a zero italic correction instead.
+
+              Also generate a subscript correction equal to the product of the
+              tangent of the slant of the font and four fifths of the x-height
+              of the font.  If this would result  in  a  subscript  correction
+              greater  than  the italic correction, use a subscript correction
+              equal to the italic correction instead.
+
+              Also generate a left italic correction for each character  equal
+              to _n thousandths of an em plus the amount by which the left edge
+              of the character's bounding box is to the left  of  the  charac-
+              ter's origin.  The left italic correction may be negative unless
+              option --mm is given.
+
+              This option is normally needed only  with  italic  (or  oblique)
+              fonts.  The font files distributed with _g_r_o_f_f were created using
+              an option of --ii5500 for italic fonts.
+
+       --oo_o_u_t_p_u_t_-_f_i_l_e
+              The output file is _o_u_t_p_u_t_-_f_i_l_e instead of _f_o_n_t.
+
+       --kk     Omit any  kerning  data  from  the  _g_r_o_f_f  font;  use  only  for
+              monospaced (constant-width) fonts.
+
+       --mm     Prevent  negative  left  italic  correction  values.  Roman font
+              files distributed with _g_r_o_f_f were created with --ii00 --mm to improve
+              spacing with _e_q_n(1).
+
+       --nn     Don't  output  a  lliiggaattuurreess  command  for  this  font;  use with
+              monospaced (constant-width) fonts.
+
+       --ss     The font is special.  The effect of this option is  to  add  the
+              ssppeecciiaall command to the font file.
+
+       --vv     Print version and exit.
+
+       --xx     Don't use the built-in Adobe Glyph List.
+
+FFIILLEESS
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_v_p_s_/_D_E_S_C
+              Device description file.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_v_p_s_/F
+              Font description file for font _F.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_v_p_s_/_d_o_w_n_l_o_a_d
+              List of downloadable fonts.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_v_p_s_/_t_e_x_t_._e_n_c
+              Encoding used for text fonts.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_v_p_s_/_g_e_n_e_r_a_t_e_/_t_e_x_t_m_a_p
+              Standard mapping.
+
+SSEEEE AALLSSOO
+       _G_r_o_f_f_:  _T_h_e  _G_N_U _I_m_p_l_e_m_e_n_t_a_t_i_o_n _o_f _t_r_o_f_f, by Trent A. Fisher and Werner
+       Lemberg, is the primary _g_r_o_f_f manual.  Section "Using Symbols"  may  be
+       of  particular  note.   You  can  browse  it  interactively  with "info
+       '(groff)Using Symbols'".
+
+       _g_r_o_f_f(1), _g_r_o_p_d_f(1), _g_r_o_p_s(1), _g_r_o_f_f___f_o_n_t(5), _p_e_r_l(1)
+
+
+
+groff 1.22.4                     November 2018                     AFMTODIT(1)

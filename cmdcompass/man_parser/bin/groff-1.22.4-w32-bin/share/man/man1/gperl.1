@@ -1,0 +1,508 @@
+.TH GPERL 1 "November 2018" "groff 1.22.4"
+.SH NAME
+gperl \- groff preprocessor for Perl parts in roff files
+.
+.\" ====================================================================
+.\" Legal Terms
+.\" ====================================================================
+.\"
+.\" Copyright (C) 2014-2018 Free Software Foundation, Inc.
+.\"
+.\" This file is part of gperl, which is part of groff, a free software
+.\" project.
+.\"
+.\" You can redistribute it and/or modify it under the terms of the GNU
+.\" General Public License as published by the Free Software Foundation,
+.\" version 2.
+.\"
+.\" The license text is available in the internet at
+.\" <http://www.gnu.org/licenses/gpl-2.0.html>.
+.
+.\" ====================================================================
+.\" Characters
+.\" ====================================================================
+.
+.\" Ellipsis ...
+.ie t .ds EL \fS\N'188'\fP\"
+.el .ds EL \&.\|.\|.\&\"
+.\" called with \*(EL
+.
+.\" Bullet
+.ie t .ds BU \(bu
+.el .ds BU *
+.\" used in '.IP \*(BU 2m' (former .Topic)
+.
+.
+.\" ====================================================================
+.SH "SYNOPSIS"
+.\" ====================================================================
+.
+.SY gperl
+.RI [ filespec
+\*(EL]
+.YS
+.
+.SY gperl
+.B \-h
+.SY gperl
+.B \-\-help
+.YS
+.
+.SY gperl
+.B \-v
+.SY gperl
+.B \-\-version
+.YS
+.
+.
+.\" ====================================================================
+.SH DESCRIPTION
+.\" ====================================================================
+.
+This is a preprocessor for
+.BR \%groff (1).
+.
+It allows the use of
+.BR perl (7)
+code in
+.BR groff (7)
+files.
+.
+The result of a
+.I Perl part
+can be stored in groff
+.I strings
+or
+.I numerical registers
+based on the arguments at a final line of a
+.IR "Perl part" .
+.
+.
+.\" ====================================================================
+.SH "OPTIONS"
+.\" ====================================================================
+.
+So far, there are only
+.I filespec
+or
+.I breaking
+options.
+.
+.
+.P
+.I filespec
+are file names or the minus character
+.B \-
+character for standard input.
+.
+As usual, the argument
+.B \-\-
+can be used in order to let all following arguments mean file names,
+even if the names begin with a minus character
+.BR \- .
+.
+.
+.P
+An option is
+.IR breaking ,
+when the program just writes the information that was asked for and
+then stops.
+.
+All other arguments will be ignored by that.
+.
+These
+.I breaking
+options are here
+.
+.TP
+.B \-h\~\fR|\fB\~\-\-help
+Print help information with a short explanation of options to
+standard output.
+.
+.
+.TP
+.B \-v\~\fR|\fB\~\-\-version
+Print version information to standard output.
+.
+.
+.\" ====================================================================
+.SH "PERL PARTS"
+.\" ====================================================================
+.
+.I Perl
+parts in
+.I groff files
+are enclosed by two
+.B .Perl
+requests with different arguments, a
+.I starting
+and an
+.I ending
+command.
+.
+.
+.\" ====================================================================
+.SS "Starting Perl Mode"
+.\" ====================================================================
+.
+The starting
+.I Perl request
+can either be without arguments, or by a request that has the term
+.B start
+as its only argument.
+.RS
+.IP \*(BU 2m
+.B .Perl
+.IP \*(BU 2m
+.B .Perl start
+.RE
+.
+.
+.\" ====================================================================
+.SS "Ending Perl Mode without Storage"
+.\" ====================================================================
+.
+A
+.B .Perl
+command line with an argument different from
+.B start
+finishes a running
+.IR "Perl part" .
+.
+Of course, it would be reasonable to add the argument
+.BR stop ;
+that's possible, but not necessary.
+.
+.RS
+.IP \*(BU 2m
+.B .Perl stop
+.IP \*(BU 2m
+.BI .Perl " other_than_start"
+.RE
+.
+The argument
+.I other_than_start
+can additionally be used as a
+.I groff
+string variable name for storage \(em see next section.
+.
+.
+.\" ====================================================================
+.SS "Ending Perl Mode with Storage"
+.\" ====================================================================
+.
+A useful feature of
+.B gperl
+is to store one or more results from the
+.IR "Perl mode" .
+.
+.
+.P
+The output of a
+.I Perl part
+can be got with backticks
+.BR \[ga]...\[ga] .
+.
+.
+.P
+This program collects all printing to STDOUT (normal standard output)
+by the Perl
+.B print
+program.
+.
+This pseudo-printing output can have several lines, due to printed
+line breaks with
+.BR \(rsn .
+.
+By that, the output of a Perl run should be stored into a Perl array,
+with a single line for each array member.
+.
+.
+.P
+This Perl array output can be stored by
+.B gperl
+in either
+.TP
+.I groff strings
+by creating a groff command
+.B .ds
+.
+.TP
+.I groff number register
+by creating a groff command
+.B .rn
+.
+.
+.P
+The storage modes can be determined by arguments of a final stopping
+.B .Perl
+command.
+.
+Each argument
+.B .ds
+changes the mode into
+.I groff string
+and
+.B .nr
+changes the mode into
+.I groff number register
+for all following output parts.
+.
+.
+.P
+By default, all output is saved as strings, so
+.B .ds
+is not really needed before the first
+.B .nr
+command.
+.
+That suits to
+.BR \%groff (7),
+because every output can be saved as
+.I groff
+string, but the number registers can be very restrictive.
+.
+.
+.P
+In
+.IR "string mode" ,
+.B gperl
+generates a
+.I groff string
+storage line
+.RS
+.EX
+.BI .ds " var_name content"
+.EE
+.RE
+.
+In
+.I number register mode
+the following groff command is generated
+.RS
+.EX
+.BI .nr " var_name content"
+.EE
+.RE
+.
+.
+.P
+We present argument collections in the following.
+.
+You can add as first argument for all
+.BR stop .
+.
+We omit this additional element.
+.
+.
+.P
+.TP
+.BI ".Perl .ds " var_name
+This will store 1 output line into the groff string named
+.I var_name
+by the automatically created command
+.RS
+.RS
+.EX
+.BI .ds " var_name output"
+.EE
+.RE
+.RE
+.
+.
+.TP
+.BI .Perl " var_name"
+If
+.I var_name
+is different from
+.B start
+this is equivalent to the former command, because the string mode is
+string with
+.B .ds
+command.
+default.
+.
+.
+.TP
+.BI .Perl " var_name1 var_name2"
+This will store 2 output lines into groff string names
+.I var_name1
+and
+.IR var_name2 ,
+because the default mode
+.B .ds
+is active, such that no
+.B .ds
+argument is needed.
+.
+Of course, this is equivalent to
+.RS
+.RS
+.EX
+.BI ".Perl .ds " "var_name1 var_name2"
+.EE
+.RE
+and
+.RS
+.EX
+.BI ".Perl .ds " "var_name1 " ".ds" " var_name2"
+.EE
+.RE
+.RE
+.
+.
+.TP
+.BI ".Perl .nr" " var_name1 varname2"
+stores both variables as number register variables.
+.
+.B gperl
+generates
+.RS
+.EX
+.BI .nr " var_name1 output_line1"
+.BI .nr " var_name2 output_line2"
+.EE
+.RE
+.
+.
+.TP
+.BI ".Perl .nr " var_name1 " .ds " var_name2
+stores the 1st argument as
+.I number register
+and the second as
+.I string
+by
+.RS
+.EX
+.BI .nr " var_name1 output_line1"
+.BI .ds " var_name2 output_line2"
+.EE
+.RE
+.
+.
+.\" ====================================================================
+.SS "Printing towards STDERR is without Storage"
+.\" ====================================================================
+.
+The printing towards
+.IR STDERR ,
+(standard error) works as usual.
+.
+All error information goes to the real normal
+.IR "standard error" ,
+without other automatic storage.
+.
+.
+.\" ====================================================================
+.SH "EXAMPLES"
+.\" ====================================================================
+.
+A possible
+.I Perl part
+in a
+.I roff file
+could look like that:
+.RS
+.EX
+before
+\&.Perl start
+my $result = 'some data';
+print $result;
+\&.Perl stop .ds string_var
+after
+.EE
+.RE
+.
+.
+.P
+This stores the result
+.B \(rqsome data\(rq
+into the
+.I roff string
+called
+.BR string_var ,
+such that the following line is printed:
+.RS
+.EX
+\&.ds string_var some data
+.EE
+.RE
+by
+.B gperl
+as food for the coming
+.B groff
+run.
+.
+.
+.P
+A
+.I Perl part
+with several outputs is:
+.RS
+.EX
+\&.Perl start
+print \(rqfirst\(rsn\(rq;
+print \(rqsecond line\(rsn\(rq;
+print \(rq3\(rsn\(rq;
+\&.Perl var1 var2 .nr var3
+.EE
+.RE
+.
+This stores 3 printed lines into 3
+.I groff
+strings.
+.BR var1 , var2 , var3 .
+.
+So the following
+.I groff
+command lines are created:
+.RS
+.EX
+\&.ds var1 first
+\&.ds var2 second line
+\&.nr var3 3
+.EE
+.RE
+.
+.
+.\" ====================================================================
+.SH AUTHORS
+.\" ====================================================================
+.B gperl
+was written by
+.MT groff\-bernd.warken\-72@\:web.de
+Bernd Warken
+.ME .
+.
+.
+.\" ====================================================================
+.SH "SEE ALSO"
+.\" ====================================================================
+.
+.P
+Man pages related to
+.I groff
+are
+.BR \%groff (1),
+.BR \%groff (7),
+.BR \%grog (1),
+and
+.BR \%groffer (1).
+.
+.
+.P
+Documents related to
+.I Perl
+are
+.BR \%perl (1),
+.BR \%perl (7).
+.
+.
+.\" ====================================================================
+.\" Emacs settings
+.\" ====================================================================
+.
+.\" Local Variables:
+.\" mode: nroff
+.\" End:
+.\" vim: set filetype=groff:

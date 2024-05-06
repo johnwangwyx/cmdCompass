@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is part of groff, the GNU roff type-setting system.
+
+Copyright (C) 2004-2018 Free Software Foundation, Inc.
+Written by Peter Schaffter (peter@schaffter.ca).
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with no
+Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
+Texts.
+
+A copy of the Free Documentation License is included as a file called
+FDL in the main directory of the groff source package.
+-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
+  <title>Mom -- Version 2.0 notes</title>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+</head>
+
+<body style="background-color: #f5faff;">
+
+<!-- ==================================================================== -->
+
+<div id="top" class="page">
+
+<!-- Navigation links -->
+<table style="width: 100%;">
+<tr>
+  <td><a href="toc.html">Back to Table of Contents</a></td>
+  <td style="text-align: right;"><a href="intro.html#top">Next: Introduction to mom</a></td>
+</tr>
+</table>
+
+<h1 class="docs">Version 2.0 notes</h1>
+
+<div style="width: 70%; margin: auto;">
+<ol style="margin-left: -1em;">
+  <li><a href="#prefatory">Prefatory comments</a></li>
+  <li><a href="#differences">Differences between 2.0 and 1.x</a>
+  <ul class="no-enumerator" style="padding-left: 0">
+    <li><a href="#pdf-support">2.1 PDF support</a>
+    <ul class="no-enumerator" style="padding-left: 1em">
+      <li><a href="#mom-pdf">2.1.1 The manual, <span class="book-title">Producing PDFs with groff and mom</span></a></li>
+      <li><a href="#pdf-image">2.1.2 PDF_IMAGE</a></li>
+    </ul></li>
+    <li><a href="#covers">2.2 Covers</a></li>
+    <li><a href="#headings">2.3 Headings</a></li>
+    <li><a href="#margin-notes">2.4 Margin notes</a></li>
+    <li><a href="#floats">2.5 Floats</a></li>
+    <li><a href="#table-of-contents">2.5 Tables of contents</a></li>
+  </ul></li>
+  <li><a href="#v2.1-changes">Version 2.1 changes</a></li>
+  <li><a href="#pdfmom">The <strong>pdfmom</strong> wrapper around groff</a></li>
+  <li><a href="#install-font">The <strong>install-font.sh</strong> script</a></li>
+</ol>
+</div>
+
+<div class="rule-medium"><hr/></div>
+
+<h2 id="prefatory" class="docs">1. Prefatory comments</h2>
+
+<p>
+Version 2.0 comes about as a result of Deri James&#8217;
+contribution of <strong>gropdf</strong> to <strong>groff</strong>,
+and his subsequent work integrating the device with
+<strong>mom</strong>.
+</p>
+
+<p>
+Whereas the 1.x releases were oriented toward PostScript output,
+2.0 focuses on PDF output, a bias reflected throughout this
+documentation.  Users are strongly encouraged to process their files
+with
+<a href="#pdfmom"><strong>pdfmom</strong></a>,
+a wrapper around <strong>groff&nbsp;-Tpdf</strong>, in order to take
+full advantage of all PDF has to offer.
+</p>
+
+<p>
+While portions of mom have been rewritten, and new features
+introduced, 2.0 is backwardly compatible with 1.x releases.  Changes
+are either transparent, or accompanied by notifications on stderr.
+</p>
+
+<p>
+The implementation of nested heads has been completely rethought,
+as has the manner of styling of them.  There are no limits on
+how deep the nesting can go.  The 1.x macros <kbd>HEAD</kbd>,
+<kbd>SUBHEAD</kbd>, and <kbd>SUBSUHEAD</kbd> may still be used, but
+must be re-designed with the new <kbd>HEADING_STYLE</kbd> macro
+if their 1.x defaults are not desired.
+</p>
+
+<p>
+In conjunction with the changes to nested heads, Table of Contents
+generation has also been rethought.  Greater flexibility in the
+inclusion of toc entry numbering been added.  Like nested heads,
+there&#8217;s a new macro <kbd>TOC_ENTRY_STYLE</kbd> that permits
+styling of each level in the toc hierarchy separately.  The default
+overall layout has also been significantly improved, achieving a
+level of typographical elegance formerly lacking.  Best of all, the
+Table of Contents can now be repositioned to the correct spot at the
+top of a document from within the mom source file.
+</p>
+
+<p>
+When mom files are processed with <strong>pdfmom</strong>, a PDF
+outline for the Contents panel of PDF viewers is automatically
+generated.  In addition, entries in the Table of Contents
+are clickable links when a document is viewed at the screen.
+<strong>pdfmom</strong> also permits setting a document&#8217;s
+papersize within the source file without the corresponding need for
+<kbd>-P-p&lt;papersize&gt;</kbd> on the command line.
+</p>
+
+<p>
+Lastly, while not strictly part of mom, a bash script,
+<strong>install-font.sh</strong>, has been posted at the
+<a href="http://www.schaffter.ca/mom/">mom site</a>.
+The script significantly eases the installation of new
+groff families and fonts, with conversion to .pfa
+and .t42 being performed by <strong>fontforge</strong>.
+</p>
+
+<h2 id="differences" class="docs">2. Differences between v2.0 and v1.x</h2>
+
+<h3 id="pdf-support" class="docs">2.1. PDF support</h3>
+
+<p>
+PDF support has been added, with features including the automatic
+generation of PDF outlines, embedding of images in PDF format (via
+the
+<a href="images.html#pdf-image">PDF_IMAGE</a>
+macro) and PDF linking (internal and external).
+</p>
+
+<h4 id="mom-pdf" class="docs">2.1.1. Producing PDFs with groff and mom</h4>
+
+<p>
+A manual in PDF format,
+<span class="book-title">Producing PDFs with groff and mom</span>,
+has been added to the documentation.  The file,
+<strong>mom-pdf.pdf</strong> can be found in
+<br/>
+<span class="pre-in-pp">
+  /usr/local/share/doc/groff-&lt;version&gt;/pdf/
+</span>
+or
+<br/>
+<span class="pre-in-pp">
+  /usr/share/doc/groff-base/pdf/
+</span>
+or at
+<br/>
+<span class="pre-in-pp">
+  <a href="http://www.schaffter.ca/mom/momdoc/mom-pdf.pdf">http://www.schaffter.ca/mom/momdoc/mom-pdf.pdf</a>
+</span>
+PDF usage, and all associated macros except
+<a href="#pdf-image">PDF_IMAGE</a>,
+are fully explained in the manual, which should be considered an
+integral part of the present documentation.  In addition, the mom
+source file for the manual can be found in
+<br/>
+<span class="pre-in-pp">
+  /usr/local/share/doc/groff-&lt;version&gt;/examples/mom
+</span>
+or
+<br/>
+<span class="pre-in-pp">
+  /usr/share/doc/groff-base/examples/mom/
+</span>
+and provides an excellent demonstration of mom usage.
+</p>
+
+<h4 id="pdf-image" class="docs">2.1.2. PDF_IMAGE</h4>
+
+<p>
+A new macro for embedding PDF images has been added,
+<a href="images.html#pdf-image"><kbd>PDF_IMAGE</kbd></a>.
+</p>
+
+<p>
+<kbd>PDF_IMAGE</kbd> functions similarly to <kbd>PSPIC</kbd> and
+accepts the same arguments.  Differences in implementation are that
+PDF_IMAGE requires the image dimensions (the bounding box) to be
+supplied.  Instructions for getting the bounding box are included in
+the documentation entry for PDF_IMAGE.  Two additional options,
+<kbd>SCALE</kbd> and <kbd>ADJUST</kbd>, allow scaling of the image
+and optical centering.
+</p>
+
+<h3 id="covers" class="docs">2.2. Covers</h3>
+
+<p>
+Arguments to
+<a href="cover.html#cover"><kbd>COVER</kbd></a>
+and
+<a href="cover.html#doc-cover"><kbd>DOC_COVER</kbd></a>
+may now be given in any order.
+</p>
+
+<h3 id="headings" class="docs">2.3. Headings</h3>
+
+<p>
+The 1.x macros
+<br/>
+<span class="pre-in-pp">
+  HEAD SUBHEAD SUBSUBHEAD
+</span>
+are now deprecated and have been replaced by a single macro
+<br/>
+<span class="pre-in-pp">
+  <a href="docelement.html#heading"><kbd>HEADING &lt;n&gt;</kbd></a>
+</span>
+where <kbd>&lt;n&gt;</kbd> is the heading level.  The deprecated
+macros may still be used, and conform in style to their original
+defaults; they are, however, wrappers around
+<kbd>HEADING</kbd> levels 1 - 3.
+Both the wrappers and <kbd>HEADING</kbd> itself can take a
+<kbd>NAMED &lt;id&gt;</kbd> argument, specifying a PDF link
+destination.
+</p>
+
+<p>
+Styling of headings is managed by a single macro
+<br/>
+<span class="pre-in-pp">
+  <a href="docelement.html#heading"><kbd>HEADING_STYLE &lt;n&gt;</kbd></a>
+</span>
+where <kbd>&lt;n&gt;</kbd> conforms to a <kbd>HEADING</kbd> level.
+The control macros for HEAD, SUBHEAD and SUBSUBHEAD have been
+removed.  Users wishing to style the wrappers must use
+<kbd>HEADING_STYLE</kbd>.
+</p>
+
+<p>
+<kbd>PARAHEAD</kbd> is no longer valid.  Paragraph heads in
+2.0 are created by passing the <kbd>PARAHEAD</kbd> argument to
+<kbd>.HEADING</kbd>.  Mom will abort with an informational message
+whenever she encounters <kbd>.PARAHEAD</kbd>.
+</p>
+
+<h3 id="margin-notes" class="docs">2.4. Margin notes</h3>
+
+<p>
+The macro for setting margin note parameters,
+<a href="docelement.html#mn-init"><kbd>MN_INIT</kbd></a>,
+has been re-written such that each parameter now has the form
+<br/>
+<span class="pre-in-pp">
+  &lt;PARAMETER&gt; &lt;value&gt;
+</span>
+This differs from 1.x where parameters were entered without a
+preceding <kbd>&lt;PARAMETER&gt;</kbd> flag.  Parameters may be
+entered in any order.  Any that are skipped are set to default
+values.  Documents created with 1.x will have to have their
+<kbd>MN_INIT</kbd> updated accordingly.
+</p>
+
+<h3 id="floats" class="docs">2.5. Floats</h3>
+
+<p>
+A
+<a href="images.html#floats-intro">FLOAT</a>
+macro has been added, which functions similarly to the <kbd>ms</kbd>
+macros&#8217; <kbd>.KF/.KE</kbd>, ie the contents of the float are
+output immediately if there&#8217;s room on the page; otherwise,
+normal text processing continues and the contents are output at the
+top of the next page.  An <kbd>ADJUST</kbd> argument to FLOAT allows
+for optical centering.
+</p>
+
+<h3 id="table-of-contents" class="docs">2.6. Tables of contents</h3>
+
+<p>
+The default look of the Table of Contents has been overhauled to
+produce a more typographically pleasing result.  All control macros
+for TOC title and entry styles have been removed, replaced by the
+macros
+<br/>
+<span class="pre-in-pp">
+  <a href="tables-of-contents.html#toc-title-style">TOC_TITLE_STYLE</a>
+</span>
+and
+<br/>
+<span class="pre-in-pp">
+  <a href="tables-of-contents.html#toc-title-style">TOC_ENTRY_STYLE &lt;n&gt;</a>
+</span>
+where <kbd>&lt;n&gt;</kbd> corresponds to a <kbd>HEADING</kbd>
+level.  Both macros permit setting any or all of the style
+parameters for TOC titles (ie chapters or major sections/divisions
+of a collated document) and TOC entries (nested heading levels) at
+once.  Documents created with 1.x that contain TOCs will need to
+have their TOC style updated if the new defaults are unsatisfactory.
+</p>
+
+<p>
+Two new TOC control macros have been added,
+<br/>
+<span class="pre-in-pp">
+  <a href="tables-of-contents.html#space-toc-items">SPACE_TOC_ITEMS</a>
+</span>
+and
+<br/>
+<span class="pre-in-pp">
+  <a
+  href="tables-of-contents.html#auto-relocate-toc">AUTO_RELOCATE_TOC</a>
+</span>
+<kbd>SPACE_TOC_ITEMS</kbd> groups TOC entry levels and separates
+them with a discrete amount of whitespace.  This leads to improved
+legibility, and is highly recommended even though it is not
+mom&#8217;s default. <kbd>AUTO_RELOCATE_TOC</kbd> intelligently
+repositions the Table of Contents to the top of a document when
+the mom source file is processed with
+<a href="pdfmom"><strong>pdfmom</strong></a>.
+</p>
+
+<h2 id="v2.1-changes" class="docs">3. Version 2.1 changes</h2>
+
+<p>
+Version 2.1 adds these features:
+</p>
+<ul style="margin-top: -.5em; width: 90%">
+  <li>expansion of cover, docheader, page header, and heading
+  control macros to permit caps, smallcaps, color, and
+  underscoring</li>
+  <li>the ability to style every element appearing in docheaders and
+  automatically-generated cover/title pages separately</li>
+  <li>macros to place images on cover/title pages</li>
+  <li>a new macro COVERTEXT that allows adding text (e.g. an
+  Abstract) to automatically-generated cover/title pages or to
+  create cover/title pages entirely by hand</li>
+  <li>separate indent control macros for QUOTES and BLOCKQUOTES</li>
+  <li>pseudo-smallcaps, including a control macro to choose the
+  size, weight, and width of the small caps</li>
+  <li>new &lt;element&gt;_STYLE macros that allow setting
+  parameters for &lt;element&gt; with a single macro using
+  keyword/value pairs</li>
+</ul>
+
+<p>
+The following changes have been made:
+</p>
+
+<ul style="margin-top: -.5em; width: 90%">
+  <li>MISC_AUTOLEAD (including COVER_MISC_AUTOLEAD and
+  DOC_COVER_MISC_AUTOLEAD) has been replaced in favour of MISC_LEAD,
+  which takes an absolute leading value, rather than one derived
+  from the point size</li>
+  <li>COVER_UNDERLINE and DOC_COVER_UNDERLINE have been
+  removed in favour of COVER_DOCTYPE_UNDERLINE and
+  DOC_COVER_DOCTYPE_UNDERLINE</li>
+  <li>DOCTYPE NAMED &lt;string&gt; no longer accepts a color
+  argument; setting the color for &lt;string&gt; is accomplished with
+  DOCTYPE_COLOR &lt;color&gt;; in addition, the string now has a
+  complete set of control macros</li>
+  <li>default underscoring of the DOCTYPE NAMED string has been
+  removed, both in the docheader and on cover/title pages</li>
+  <li>no cover/title page data persists, however formatting for the
+  elements on them does</li>
+</ul>
+
+<h2 id="v2.1-changes" class="docs">3. Version 2.2 changes</h2>
+
+<p>
+Version 2.2 adds these features:
+</p>
+<ul style="margin-top: -.5em; width: 90%">
+  <li>flex-spacing, an alternative to mom&#8217;s default shimming
+  policy; flex-spacing balances vertical whitespace on the page by
+  distributing any excess equally at sensible points so that running
+  text always fills the page to the bottom margin (see
+  <a href="docprocessing.html#vertical-whitespace-management">
+    vertical whitespace management</a>
+  </li>
+  <li>improvements to auto-labelling, such that it is now possible
+  to link symbollically to auto-labelled preprocessor material and
+  PDF images</li>
+</ul>
+
+<h2 id="pdfmom" class="docs">4. pdfmom</h2>
+
+<p>
+Deri James has provided <strong>pdfmom</strong>, a wrapper around
+groff that processes mom source files with all the PDF bells and
+whistles.  Its use is highly recommended.  Usage is explained in the
+manual,
+<a href="http://www.schaffter.ca/mom/pdf/mom-pdf.pdf"><span class="book-title">Producing PDFs with groff and mom</span></a>.
+A significant convenience of <strong>pdfmom</strong> is that it can,
+with the <kbd>-Tps</kbd> flag, be used to pass processing over to Keith
+Marshall&#8217;s <strong>pdfroff</strong>.  This is useful when
+processing files that contain PostScript images embedded with
+<kbd>PSPIC</kbd>. <strong>pdfmom</strong>, without the flag, uses
+groff&#8217;s PDF device (<strong>gropdf</strong>), which only
+recognizes PDF images that have been embedded with
+<a href="images.html#pdf-image"><kbd>PDF_IMAGE</kbd></a>.
+</p>
+
+<h2 id="install-font" class="docs">5. install-font.sh</h2>
+
+<p>
+A bash script, <strong>install-font.sh</strong>, has been posted at the
+<a href="http://www.schaffter.ca/mom/mom-01.html">mom site</a>.
+There&#8217;s nothing mom-specific about the script, and it is not
+an official part of groff.
+</p>
+
+<p>
+Installing groff fonts is a multi-step procedure, which, while not
+difficult, can be a nuisance.  <strong>install-font.sh</strong> takes
+care of all the details, including converting fonts to formats
+acceptable to <strong>grops</strong> and <strong>gropdf</strong>,
+creating and installing the groff fonts in the appropriate
+directories, updating the <strong>download</strong> files, and
+installing the original fonts in a system-wide directory, if
+desired.
+</p>
+
+<div class="rule-long"><hr/></div>
+
+<!-- Navigation links -->
+<table style="width: 100%; margin-top: 12px;">
+<tr>
+  <td style="width: 33%;"><a href="toc.html">Back to Table of Contents</a></td>
+  <td style="width: 20%; text-align: center;"><a href="#top">Top</a></td>
+  <td style="width: 46%; text-align: right;"><a href="intro.html">Next: Introduction to mom</a></td>
+</tr>
+</table>
+
+</div>
+
+<div class="bottom-spacer"><br/></div>
+
+</body>
+</html>

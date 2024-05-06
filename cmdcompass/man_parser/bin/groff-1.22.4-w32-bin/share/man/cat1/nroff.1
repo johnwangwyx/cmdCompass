@@ -1,0 +1,69 @@
+NROFF(1)                    General Commands Manual                   NROFF(1)
+
+
+
+NNAAMMEE
+       nroff - use groff to format documents for TTY devices
+
+SSYYNNOOPPSSIISS
+       nnrrooffff [--CCcchhiippSSttUUvv] [--dd_c_s] [--MM_d_i_r] [--mm_n_a_m_e] [--nn_n_u_m] [--oo_l_i_s_t] [--rr_c_n]
+             [--TT_n_a_m_e] [--WW_w_a_r_n_i_n_g] [--ww_w_a_r_n_i_n_g] [_f_i_l_e ...]
+
+       nnrrooffff ----hheellpp
+
+       nnrrooffff --vv
+       nnrrooffff ----vveerrssiioonn
+
+DDEESSCCRRIIPPTTIIOONN
+       _n_r_o_f_f formats documents written in the _r_o_f_f(7) language for typewriter-
+       like devices such as terminal emulators.
+
+       GNU  _n_r_o_f_f  emulates the traditional Unix _n_r_o_f_f command using _g_r_o_f_f(1).
+       _n_r_o_f_f generates output via _g_r_o_t_t_y(1), _g_r_o_f_f's TTY output device,  which
+       needs to know the character encoding scheme used by the terminal.  Con-
+       sequently, acceptable arguments to the --TT  option  are  aasscciiii,  llaattiinn11,
+       uuttff88,   and   ccpp11004477;   any   others   are  ignored.   If  neither  the
+       _G_R_O_F_F___T_Y_P_E_S_E_T_T_E_R environment variable nor the  --TT  command-line  option
+       (which  overrides the environment variable) specifies a (valid) device,
+       _n_r_o_f_f consults the locale to select an appropriate output  device.   It
+       first  tries  the _l_o_c_a_l_e(1) program, then checks several locale-related
+       environment variables; see "ENVIRONMENT", below.  If all of the forego-
+       ing fail, --TTaasscciiii is implied.
+
+       Whitespace is not permitted between an option and its argument.  The --hh
+       and --cc options are equivalent to _g_r_o_t_t_y's options --hh (using tabs in the
+       output)  and  --cc  (using  the  old  output scheme instead of SGR escape
+       sequences).  The --dd, --CC, --ii, --MM, --mm, --nn, --oo, --rr,  --ww,  and  --WW  options
+       have  the effect described in _t_r_o_f_f(1).  In addition, _n_r_o_f_f ignores --ee,
+       --qq, and --ss (which are not implemented in _t_r_o_f_f).  The options --pp (pic),
+       --tt  (tbl),  --SS  (safer),  and  --UU (unsafe) are passed to _g_r_o_f_f.  --vv and
+       ----vveerrssiioonn show version information, while ----hheellpp displays a usage  mes-
+       sage; all exit afterward.
+
+EENNVVIIRROONNMMEENNTT
+       _G_R_O_F_F___T_Y_P_E_S_E_T_T_E_R
+              specifies the default output device for _g_r_o_f_f.
+
+       _G_R_O_F_F___B_I_N___P_A_T_H
+              is  a colon-separated list of directories in which to search for
+              the _g_r_o_f_f executable before searching in _P_A_T_H.   If  unset,  _d_:_/
+              _u_s_r_/_b_i_n is used.
+
+       _L_C___A_L_L
+       _L_C___C_T_Y_P_E
+       _L_A_N_G
+       _L_E_S_S_C_H_A_R_S_E_T
+              are  pattern-matched in this order for standard character encod-
+              ings supported by _g_r_o_f_f in the event no --TT option is  given  and
+              _G_R_O_F_F___T_Y_P_E_S_E_T_T_E_R is unset.
+
+NNOOTTEESS
+       Character   definitions  in  the  file  _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_t_m_a_c_/
+       _t_t_y_-_c_h_a_r_._t_m_a_c are loaded to replace unrepresentable glyphs.
+
+SSEEEE AALLSSOO
+       _g_r_o_f_f(1), _t_r_o_f_f(1), _g_r_o_t_t_y(1), _l_o_c_a_l_e(1), _r_o_f_f(7)
+
+
+
+groff 1.22.4                     November 2018                        NROFF(1)

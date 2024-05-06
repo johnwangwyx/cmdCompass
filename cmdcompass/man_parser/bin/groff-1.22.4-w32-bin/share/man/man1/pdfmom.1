@@ -1,0 +1,190 @@
+.TH PDFMOM 1 "November 2018" "groff 1.22.4"
+.SH NAME
+pdfmom \- produce PDF documents using the mom macro package for groff
+.
+.
+.\" ====================================================================
+.\" Legal Terms
+.\" ====================================================================
+.\"
+.\" Copyright (C) 2012-2018 Free Software Foundation, Inc.
+.\"
+.\" Permission is granted to make and distribute verbatim copies of this
+.\" manual provided the copyright notice and this permission notice are
+.\" preserved on all copies.
+.\"
+.\" Permission is granted to copy and distribute modified versions of
+.\" this manual under the conditions for verbatim copying, provided that
+.\" the entire resulting derived work is distributed under the terms of
+.\" a permission notice identical to this one.
+.\"
+.\" Permission is granted to copy and distribute translations of this
+.\" manual into another language, under the above conditions for
+.\" modified versions, except that this permission notice may be
+.\" included in translations approved by the Free Software Foundation
+.\" instead of in the original English.
+.
+.
+.\" ====================================================================
+.SH SYNOPSIS
+.\" ====================================================================
+.
+.SY pdfmom
+.OP \-Tpdf
+.RI [ groff-options ]
+.I file
+\&.\|.\|.\&
+.YS
+.
+.SY pdfmom
+.B \-Tps
+.RI [ pdfroff-options ]
+.RI [ groff-options ]
+.I file
+\&.\|.\|.\&
+.YS
+.
+.SY pdfmom
+.B \-v
+.YS
+.
+.
+.\" ====================================================================
+.SH DESCRIPTION
+.\" ====================================================================
+.
+.I pdfmom
+is a wrapper around
+.IR groff (1)
+that facilitates the production of PDF documents from files
+formatted with the
+.I mom
+macros.
+.
+.
+.P
+.I pdfmom
+prints to the standard output,
+so output must usually be redirected to a destination file.
+The size of the final PDF can be reduced by piping the output
+through
+.IR ps2pdf (1).
+.
+.
+.P
+If called with the
+.B \-Tpdf
+option (which is the default),
+.I pdfmom
+processes files using groff's native PDF driver,
+.IR gropdf (1).
+.
+If
+.B \-Tps
+is given, processing is passed over to
+.IR pdfroff ,
+which uses
+.IR groff 's
+PostScript driver.
+.
+In either case, multiple runs of the source file are performed in
+order to satisfy any forward references in the document.
+.
+.
+.P
+.I pdfmom
+accepts all the same options as
+.IR groff .
+If
+.B \-Tps
+is given, the options associated with
+.I pdfroff
+are accepted as well.
+.
+Please note that when
+.I pdfmom
+calls
+.IR pdfroff ,
+the
+.RS
+.B \-mpdfmark \-mom \-\-no-toc
+.RE
+options are implied and should not be given on the
+command line.
+.
+Equally, it is not necessary to supply the
+.B \-mom
+or
+.B "\-m\~mom"
+options when
+.B \-Tps
+is absent.
+.
+.
+.P
+PDF integration with the
+.I mom
+macros is discussed in full in the manual
+.IR "Producing PDFs with groff and mom" ,
+which was itself produced with
+.IR pdfmom .
+.
+.
+.P
+If called with the
+.B \-v
+option,
+.I pdfmom
+simply displays its version information and exits.
+.
+.
+.\" ====================================================================
+.SH BUGS
+.\" ====================================================================
+.
+.I pdfmom
+sometimes issues warnings of the type
+.RS
+\&.\|.\|.:
+can't transparently output node at top level
+.RE
+.
+but this is more of an annoyance than a bug, and may safely be ignored.
+.
+.
+.\" ====================================================================
+.SH AUTHORS
+.\" ====================================================================
+.
+.I pfdmom
+was written by
+.MT deri@\:chuzzlewit.demon.co.uk
+Deri James
+.ME
+and
+.MT peter@\:schaffter.ca
+Peter Schaffter
+.ME .
+.
+.
+.\" ====================================================================
+.SH "SEE ALSO"
+.\" ====================================================================
+.
+.IR "Producing PDFs with groff and mom" ,
+by Deri James and Peter Schaffter;
+a copy is installed at
+.IR \%d:/\:usr/\:share/\:doc/\:groff\-1.22.4/\:pdf/\:mom\-pdf.pdf .
+.
+.
+.P
+.IR groff (1),
+.IR gropdf (1),
+.IR pdfroff (1),
+.IR ps2pdf (1)
+.
+.
+.\" Local Variables:
+.\" mode: nroff
+.\" End:
+.\" vim: set filetype=groff:

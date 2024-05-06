@@ -1,0 +1,196 @@
+GROTTY(1)                   General Commands Manual                  GROTTY(1)
+
+
+
+NNAAMMEE
+       grotty - groff driver for typewriter-like devices
+
+SSYYNNOOPPSSIISS
+       ggrroottttyy [--bbBBccddffhhiioorruuUUvv] [--FF _d_i_r] [_f_i_l_e ...]
+
+DDEESSCCRRIIPPTTIIOONN
+       ggrroottttyy  translates  the  output  of  GNU ttrrooffff into a form suitable for
+       typewriter-like devices.  Normally ggrroottttyy should be  invoked  by  using
+       the  ggrrooffff  command  with a --TTaasscciiii, --TTllaattiinn11 or --TTuuttff88 option on ASCII
+       based systems, and with --TTccpp11004477 and --TTuuttff88 on EBCDIC based hosts.   If
+       no  files  are given, ggrroottttyy reads the standard input.  A filename of --
+       also causes ggrroottttyy to read the standard input.  Output  is  written  to
+       the standard output.
+
+       By  default,  ggrroottttyy  emits  SGR  escape sequences (from ISO 6429, also
+       called ANSI color escapes) to change  text  attributes  (bold,  italic,
+       colors).  This makes it possible to have eight different background and
+       foreground colors; additionally, bold and italic attributes can be used
+       _aa_tt _tt_hh_ee _ss_aa_mm_ee _tt_ii_mm_ee (by using the BI font).
+
+       The following colors are defined in ttttyy..ttmmaacc: black, white, red, green,
+       blue, yellow, magenta, cyan.  Unknown colors are mapped to the  default
+       color  (which  is  dependent  on  the settings of the terminal; in most
+       cases, this is black for the foreground and white for the background).
+
+       Use the --cc switch to revert to the old behaviour, printing a bold char-
+       acter  _c with the sequence "_c BACKSPACE _c" and an italic character _c by
+       the sequence "__ BACKSPACE _c".  At the same time, color output  is  dis-
+       abled.   The  same  effect  can  be  achieved  by  setting  either  the
+       _G_R_O_F_F___N_O___S_G_R environment variable or using the  `sgr'  X  command  (see
+       below).
+
+       For  SGR  support,  it  is necessary to use the --RR option of lleessss(1) to
+       disable the interpretation  of  ggrroottttyy's  old  output  format.   Conse-
+       quently,  all programs which use lleessss as the pager program have to pass
+       this option to it.  For mmaann(1) in particular,  either  add  --RR  to  the
+       _P_A_G_E_R environment variable, e.g.
+
+              PPAAGGEERR==""//uussrr//bbiinn//lleessss --RR""
+              eexxppoorrtt PPAAGGEERR
+
+       or  use  the  --PP  option  of  mmaann  to  set the pager executable and its
+       options, or modify the configuration file of mmaann in a similar  fashion.
+       Note that with some mmaann(1) versions, you have to use the _M_A_N_P_A_G_E_R envi-
+       ronment variable instead.
+
+       ggrroottttyy's old output format can be displayed on  a  terminal  by  piping
+       through uull(1).  Pagers such as mmoorree(1) or lleessss(1) are also able to dis-
+       play these sequences.  Use either --BB or --UU when  piping  into  lleessss(1);
+       use --bb when piping into mmoorree(1).  There is no need to filter the output
+       through ccooll(1) since ggrroottttyy never outputs reverse line feeds.
+
+       The font description file may contain a command
+
+              iinntteerrnnaallnnaammee _n
+
+       where _n is a decimal integer.  If the 01 bit in _n is set, then the font
+       is  treated as an italic font; if the 02 bit is set, then it is treated
+       as a bold font.  The code field in the font description field gives the
+       code which is used to output the character.  This code can also be used
+       in the \\NN escape sequence in ttrrooffff.
+
+       If the _D_E_S_C file contains the keyword  uunniiccooddee,  ggrroottttyy  emits  Unicode
+       characters in UTF-8 encoding.  Otherwise, it emits characters in a sin-
+       gle-byte encoding depending on the data in the font description  files.
+       See the ggrrooffff__ffoonntt(5) man page for more details.
+
+OOPPTTIIOONNSS
+       Whitespace is permitted between a command-line option and its argument.
+
+       --bb     Suppress  the  use of overstriking for bold characters.  Ignored
+              if --cc isn't used.
+
+       --BB     Use only overstriking for bold-italic characters.  Ignored if --cc
+              isn't used.
+
+       --cc     Use  ggrroottttyy's old output format (see above).  This also disables
+              color output.
+
+       --dd     Ignore all \\DD commands.  Without this  ggrroottttyy  renders  \\DD''ll......''
+              commands that have at least one zero argument (and so are either
+              horizontal or vertical) using --, ||, and ++ characters.  In a sim-
+              ilar   way,  ggrroottttyy  handles  \\DD''pp......''  commands  which  consist
+              entirely of horizontal and vertical lines.
+
+       --ff     Use form feeds in the output.  A form feed is output at the  end
+              of each page that has no output on its last line.
+
+       --FF_d_i_r  Prepend  directory  dir_/_d_e_vname  to the search path for font and
+              device description files; _n_a_m_e is the name of the  device,  usu-
+              ally aasscciiii, llaattiinn11, uuttff88, or ccpp11004477.
+
+       --hh     Use  horizontal  tabs in the output.  Tabs are assumed to be set
+              every 8 columns.
+
+       --ii     Use escape sequences to set the italic text attribute instead of
+              the  underline  attribute for italic fonts (`I' and `BI').  Note
+              that  most  terminals  (including  xterm)  don't  support  this.
+              Ignored if --cc is active.
+
+       --oo     Suppress overstriking (other than for bold or underlined charac-
+              ters in case the old output format has been activated with --cc).
+
+       --rr     Use escape sequences to set the reverse text  attribute  instead
+              of  the  underline  attribute  for  italic fonts (`I' and `BI').
+              Ignored if --cc is active.
+
+       --uu     Suppress the use of underlining for italic characters.   Ignored
+              if --cc isn't used.
+
+       --UU     Use  only underlining for bold-italic characters.  Ignored if --cc
+              isn't used.
+
+       --vv     Print the version number.
+
+UUSSAAGGEE
+       ggrroottttyy understands a single X command  produced  using  the  \\XX  escape
+       sequence.
+
+       \\XX''ttttyy:: ssggrr _n''
+              If  _n  is  non-zero  or  missing, enable SGR output (this is the
+              default), otherwise use the old  drawing  scheme  for  bold  and
+              underline.
+
+EENNVVIIRROONNMMEENNTT
+       _G_R_O_F_F___N_O___S_G_R
+              If set, the old drawing scheme for bold and underline (using the
+              backspace character) is active.  Colors are disabled.
+
+       _G_R_O_F_F___F_O_N_T___P_A_T_H
+              A list of directories in which to search for the _d_e_vname  direc-
+              tory  in  addition  to  the  default  ones.   See  ttrrooffff(1)  and
+              ggrrooffff__ffoonntt(5) for more details.
+
+FFIILLEESS
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_v_a_s_c_i_i_/_D_E_S_C
+              Device description file for the aasscciiii device.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_v_a_s_c_i_i_/F
+              Font description file for font _F of the aasscciiii device.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_v_l_a_t_i_n_1_/_D_E_S_C
+              Device description file for the llaattiinn11 device.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_v_l_a_t_i_n_1_/F
+              Font description file for font _F of the llaattiinn11 device.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_v_u_t_f_8_/_D_E_S_C
+              Device description file for the uuttff88 device.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_v_u_t_f_8_/F
+              Font description file for font _F of the uuttff88 device.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_v_c_p_1_0_4_7_/_D_E_S_C
+              Device description file for the ccpp11004477 device.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_f_o_n_t_/_d_e_v_c_p_1_0_4_7_/F
+              Font description file for font _F of the ccpp11004477 device.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_t_m_a_c_/_t_t_y_._t_m_a_c
+              Macros for use with ggrroottttyy.
+
+       _d_:_/_u_s_r_/_s_h_a_r_e_/_g_r_o_f_f_/_1_._2_2_._4_/_t_m_a_c_/_t_t_y_-_c_h_a_r_._t_m_a_c
+              Additional character definitions for use with ggrroottttyy.
+
+       Note that on  EBCDIC  hosts,  only  files  for  the  ccpp11004477  device  is
+       installed.
+
+BBUUGGSS
+       ggrroottttyy is intended only for simple documents.
+
+       There is no support for fractional horizontal or vertical motions.
+
+       There  is no support for \\DD commands other than horizontal and vertical
+       lines.
+
+       Characters above the first line (i.e. with a vertical  position  of  0)
+       cannot be printed.
+
+       Color  handling  differs  from ggrrooppss(1).  \\MM doesn't set the fill color
+       for closed graphic objects (which ggrroottttyy doesn't  support  anyway)  but
+       changes  the background color of the character cell, affecting all sub-
+       sequent operations.
+
+SSEEEE AALLSSOO
+       ggrrooffff(1), ttrrooffff(1), ggrrooffff__oouutt(5), ggrrooffff__ffoonntt(5), ggrrooffff__cchhaarr(7),  uull(1),
+       mmoorree(1), mmaann(1), lleessss(1)
+
+
+
+groff 1.22.4                     December 2018                       GROTTY(1)
