@@ -1,3 +1,11 @@
+## Version 0.2.0 (Initial Development)
+
+### ADDED
+* Add man pages loader to be able to dynamically download and extract man pages for a given package name.
+* Add `man_pages_kv.db` to serve as the kv storage that maps a command to its package name. (They can indeed be different)
+
+### CHANGED
+### DEBUGGED
 
 ## Version 0.1.0 (Initial Development)
 
