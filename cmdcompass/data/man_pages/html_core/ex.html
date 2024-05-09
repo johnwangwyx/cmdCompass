@@ -1,0 +1,1180 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:03 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>VIM</title>
+
+</head>
+<body>
+
+<h1 align="center">VIM</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#ON-LINE HELP">ON-LINE HELP</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#BUGS">BUGS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">vim - Vi
+IMproved, a programmer&rsquo;s text editor</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>vim</b>
+[options] [file ..] <b><br>
+vim</b> [options] - <b><br>
+vim</b> [options] -t tag <b><br>
+vim</b> [options] -q [errorfile]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ex <br>
+view <br>
+gvim gview evim eview <br>
+rvim rview rgvim rgview</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Vim</b> is a
+text editor that is upwards compatible to Vi. It can be used
+to edit all kinds of plain text. It is especially useful for
+editing programs.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There are a lot
+of enhancements above Vi: multi level undo, multi windows
+and buffers, syntax highlighting, command line editing,
+filename completion, on-line help, visual selection, etc..
+See &quot;:help vi_diff.txt&quot; for a summary of the
+differences between <b>Vim</b> and Vi.</p>
+
+<p style="margin-left:11%; margin-top: 1em">While running
+<b>Vim</b> a lot of help can be obtained from the on-line
+help system, with the &quot;:help&quot; command. See the
+ON-LINE HELP section below.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Most often
+<b>Vim</b> is started to edit a single file with the
+command</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>vim file</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">More generally
+<b>Vim</b> is started with:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>vim [options] [filelist]</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">If the filelist
+is missing, the editor will start with an empty buffer.
+Otherwise exactly one out of the following four may be used
+to choose one or more files to be edited.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="12%">
+
+
+<p>file ..</p></td>
+<td width="6%"></td>
+<td width="71%">
+
+
+<p>A list of filenames. The first one will be the current
+file and read into the buffer. The cursor will be positioned
+on the first line of the buffer. You can get to the other
+files with the &quot;:next&quot; command. To edit a file
+that starts with a dash, precede the filelist with
+&quot;--&quot;.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="12%">
+
+
+<p>-</p></td>
+<td width="6%"></td>
+<td width="71%">
+
+
+<p>The file to edit is read from stdin. Commands are read
+from stderr, which should be a tty.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="12%">
+
+
+<p>-t {tag}</p></td>
+<td width="6%"></td>
+<td width="71%">
+
+
+<p>The file to edit and the initial cursor position depends
+on a &quot;tag&quot;, a sort of goto label. {tag} is looked
+up in the tags file, the associated file becomes the current
+file and the associated command is executed. Mostly this is
+used for C programs, in which case {tag} could be a function
+name. The effect is that the file containing that function
+becomes the current file and the cursor is positioned on the
+start of the function. See &quot;:help
+tag-commands&quot;.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;">-q [errorfile]</p>
+
+<p style="margin-left:29%;">Start in quickFix mode. The
+file [errorfile] is read and the first error is displayed.
+If [errorfile] is omitted, the filename is obtained from the
+&rsquo;errorfile&rsquo; option (defaults to
+&quot;AztecC.Err&quot; for the Amiga, &quot;errors.err&quot;
+on other systems). Further errors can be jumped to with the
+&quot;:cn&quot; command. See &quot;:help quickfix&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Vim</b>
+behaves differently, depending on the name of the command
+(the executable may still be the same file).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>vim</p></td>
+<td width="9%"></td>
+<td width="74%">
+
+
+<p>The &quot;normal&quot; way, everything is default.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>ex</p></td>
+<td width="9%"></td>
+<td width="74%">
+
+
+<p>Start in Ex mode. Go to Normal mode with the
+&quot;:vi&quot; command. Can also be done with the
+&quot;-e&quot; argument.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>view</p></td>
+<td width="9%"></td>
+<td width="74%">
+
+
+<p>Start in read-only mode. You will be protected from
+writing the files. Can also be done with the &quot;-R&quot;
+argument.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;">gvim gview</p>
+
+<p style="margin-left:26%;">The GUI version. Starts a new
+window. Can also be done with the &quot;-g&quot;
+argument.</p>
+
+<p style="margin-left:11%;">evim eview</p>
+
+<p style="margin-left:26%;">The GUI version in easy mode.
+Starts a new window. Can also be done with the
+&quot;-y&quot; argument.</p>
+
+<p style="margin-left:11%;">rvim rview rgvim rgview</p>
+
+<p style="margin-left:26%;">Like the above, but with
+restrictions. It will not be possible to start shell
+commands, or suspend <b>Vim.</b> Can also be done with the
+&quot;-Z&quot; argument.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The options may
+be given in any order, before or after filenames. Options
+without an argument can be combined after a single dash.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="15%">
+
+
+<p>+[num]</p></td>
+<td width="3%"></td>
+<td width="71%">
+
+
+<p>For the first file the cursor will be positioned on line
+&quot;num&quot;. If &quot;num&quot; is missing, the cursor
+will be positioned on the last line.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="15%">
+
+
+<p>+/{pat}</p></td>
+<td width="3%"></td>
+<td width="71%">
+
+
+<p>For the first file the cursor will be positioned in the
+line with the first occurrence of {pat}. See &quot;:help
+search-pattern&quot; for the available search patterns.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="15%">
+
+
+<p>+{command}</p></td>
+<td width="3%"></td>
+<td width="71%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;">-c {command}</p>
+
+<p style="margin-left:29%;">{command} will be executed
+after the first file has been read. {command} is interpreted
+as an Ex command. If the {command} contains spaces it must
+be enclosed in double quotes (this depends on the shell that
+is used). Example: vim &quot;+set si&quot; main.c <br>
+Note: You can use up to 10 &quot;+&quot; or &quot;-c&quot;
+commands.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p>-S {file}</p></td>
+<td width="4%"></td>
+<td width="71%">
+
+
+<p>{file} will be sourced after the first file has been
+read. This is equivalent to -c &quot;source {file}&quot;.
+{file} cannot start with &rsquo;-&rsquo;. If {file} is
+omitted &quot;Session.vim&quot; is used (only works when -S
+is the last argument).</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">--cmd {command}</p>
+
+<p style="margin-left:29%;">Like using &quot;-c&quot;, but
+the command is executed just before processing any vimrc
+file. You can use up to 10 of these commands, independently
+from &quot;-c&quot; commands.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p>-A</p></td>
+<td width="1%"></td>
+<td width="71%">
+
+
+<p>If <b>Vim</b> has been compiled with ARABIC support for
+editing right-to-left oriented files and Arabic keyboard
+mapping, this option starts <b>Vim</b> in Arabic mode, i.e.
+&rsquo;arabic&rsquo; is set. Otherwise an error message is
+given and <b>Vim</b> aborts.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p>-b</p></td>
+<td width="1%"></td>
+<td width="71%">
+
+
+<p>Binary mode. A few options will be set that makes it
+possible to edit a binary or executable file.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p>-C</p></td>
+<td width="1%"></td>
+<td width="71%">
+
+
+<p>Compatible. Set the &rsquo;compatible&rsquo; option.
+This will make <b>Vim</b> behave mostly like Vi, even though
+a .vimrc file exists.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p>-d</p></td>
+<td width="1%"></td>
+<td width="71%">
+
+
+<p>Start in diff mode. There should between two to eight
+file name arguments. <b>Vim</b> will open all the files and
+show differences between them. Works like vimdiff(1).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p>-d {device}</p></td>
+<td width="1%"></td>
+<td width="71%">
+
+
+<p>Open {device} for use as a terminal. Only on the Amiga.
+Example: &quot;-d con:20/30/600/150&quot;.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p>-D</p></td>
+<td width="1%"></td>
+<td width="71%">
+
+
+<p>Debugging. Go to debugging mode when executing the first
+command from a script.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p>-e</p></td>
+<td width="1%"></td>
+<td width="71%">
+
+
+<p>Start <b>Vim</b> in Ex mode, just like the executable
+was called &quot;ex&quot;.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p>-E</p></td>
+<td width="1%"></td>
+<td width="71%">
+
+
+<p>Start <b>Vim</b> in improved Ex mode, just like the
+executable was called &quot;exim&quot;.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p>-f</p></td>
+<td width="1%"></td>
+<td width="71%">
+
+
+<p>Foreground. For the GUI version, <b>Vim</b> will not
+fork and detach from the shell it was started in. On the
+Amiga, <b>Vim</b> is not restarted to open a new window.
+This option should be used when <b>Vim</b> is executed by a
+program that will wait for the edit session to finish (e.g.
+mail). On the Amiga the &quot;:sh&quot; and &quot;:!&quot;
+commands will not work.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p>--nofork</p></td>
+<td width="1%"></td>
+<td width="71%">
+
+
+<p>Foreground. For the GUI version, <b>Vim</b> will not
+fork and detach from the shell it was started in.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p>-F</p></td>
+<td width="1%"></td>
+<td width="71%">
+
+
+<p>If <b>Vim</b> has been compiled with FKMAP support for
+editing right-to-left oriented files and Farsi keyboard
+mapping, this option starts <b>Vim</b> in Farsi mode, i.e.
+&rsquo;fkmap&rsquo; and &rsquo;rightleft&rsquo; are set.
+Otherwise an error message is given and <b>Vim</b>
+aborts.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p>-g</p></td>
+<td width="1%"></td>
+<td width="71%">
+
+
+<p>If <b>Vim</b> has been compiled with GUI support, this
+option enables the GUI. If no GUI support was compiled in,
+an error message is given and <b>Vim</b> aborts.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p>-h</p></td>
+<td width="1%"></td>
+<td width="71%">
+
+
+<p>Give a bit of help about the command line arguments and
+options. After this <b>Vim</b> exits.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p>-H</p></td>
+<td width="1%"></td>
+<td width="71%">
+
+
+<p>If <b>Vim</b> has been compiled with RIGHTLEFT support
+for editing right-to-left oriented files and Hebrew keyboard
+mapping, this option starts <b>Vim</b> in Hebrew mode, i.e.
+&rsquo;hkmap&rsquo; and &rsquo;rightleft&rsquo; are set.
+Otherwise an error message is given and <b>Vim</b>
+aborts.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;">-i {viminfo}</p>
+
+<p style="margin-left:29%;">Specifies the filename to use
+when reading or writing the viminfo file, instead of the
+default &quot;~/.viminfo&quot;. This can also be used to
+skip the use of the .viminfo file, by giving the name
+&quot;NONE&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p>-L</p></td>
+<td width="4%"></td>
+<td width="71%">
+
+
+<p>Same as -r.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p>-l</p></td>
+<td width="4%"></td>
+<td width="71%">
+
+
+<p>Lisp mode. Sets the &rsquo;lisp&rsquo; and
+&rsquo;showmatch&rsquo; options on.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p>-m</p></td>
+<td width="4%"></td>
+<td width="71%">
+
+
+<p>Modifying files is disabled. Resets the
+&rsquo;write&rsquo; option. You can still modify the buffer,
+but writing a file is not possible.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p>-M</p></td>
+<td width="4%"></td>
+<td width="71%">
+
+
+<p>Modifications not allowed. The &rsquo;modifiable&rsquo;
+and &rsquo;write&rsquo; options will be unset, so that
+changes are not allowed and files can not be written. Note
+that these options can be set to enable making
+modifications.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p>-N</p></td>
+<td width="4%"></td>
+<td width="71%">
+
+
+<p>No-compatible mode. Resets the &rsquo;compatible&rsquo;
+option. This will make <b>Vim</b> behave a bit better, but
+less Vi compatible, even though a .vimrc file does not
+exist.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p>-n</p></td>
+<td width="4%"></td>
+<td width="71%">
+
+
+<p>No swap file will be used. Recovery after a crash will
+be impossible. Handy if you want to edit a file on a very
+slow medium (e.g. floppy). Can also be done with &quot;:set
+uc=0&quot;. Can be undone with &quot;:set uc=200&quot;.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p>-nb</p></td>
+<td width="4%"></td>
+<td width="71%">
+
+
+<p>Become an editor server for NetBeans. See the docs for
+details.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p>-o[N]</p></td>
+<td width="4%"></td>
+<td width="71%">
+
+
+<p>Open N windows stacked. When N is omitted, open one
+window for each file.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p>-O[N]</p></td>
+<td width="4%"></td>
+<td width="71%">
+
+
+<p>Open N windows side by side. When N is omitted, open one
+window for each file.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p>-p[N]</p></td>
+<td width="4%"></td>
+<td width="71%">
+
+
+<p>Open N tab pages. When N is omitted, open one tab page
+for each file.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p>-R</p></td>
+<td width="4%"></td>
+<td width="71%">
+
+
+<p>Read-only mode. The &rsquo;readonly&rsquo; option will
+be set. You can still edit the buffer, but will be prevented
+from accidentally overwriting a file. If you do want to
+overwrite a file, add an exclamation mark to the Ex command,
+as in &quot;:w!&quot;. The -R option also implies the -n
+option (see above). The &rsquo;readonly&rsquo; option can be
+reset with &quot;:set noro&quot;. See &quot;:help
+&rsquo;readonly&rsquo;&quot;.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p>-r</p></td>
+<td width="4%"></td>
+<td width="71%">
+
+
+<p>List swap files, with information about using them for
+recovery.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p>-r {file}</p></td>
+<td width="4%"></td>
+<td width="71%">
+
+
+<p>Recovery mode. The swap file is used to recover a
+crashed editing session. The swap file is a file with the
+same filename as the text file with &quot;.swp&quot;
+appended. See &quot;:help recovery&quot;.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p>-s</p></td>
+<td width="4%"></td>
+<td width="71%">
+
+
+<p>Silent mode. Only when started as &quot;Ex&quot; or when
+the &quot;-e&quot; option was given before the
+&quot;-s&quot; option.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">-s {scriptin}</p>
+
+<p style="margin-left:29%;">The script file {scriptin} is
+read. The characters in the file are interpreted as if you
+had typed them. The same can be done with the command
+&quot;:source! {scriptin}&quot;. If the end of the file is
+reached before the editor exits, further characters are read
+from the keyboard.</p>
+
+<p style="margin-left:11%;">-T {terminal}</p>
+
+<p style="margin-left:29%;">Tells <b>Vim</b> the name of
+the terminal you are using. Only required when the automatic
+way doesn&rsquo;t work. Should be a terminal known to
+<b>Vim</b> (builtin) or defined in the termcap or terminfo
+file.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p>-u {vimrc}</p></td>
+<td width="1%"></td>
+<td width="71%">
+
+
+<p>Use the commands in the file {vimrc} for
+initializations. All the other initializations are skipped.
+Use this to edit a special kind of files. It can also be
+used to skip all initializations by giving the name
+&quot;NONE&quot;. See &quot;:help initialization&quot;
+within vim for more details.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p>-U {gvimrc}</p></td>
+<td width="1%"></td>
+<td width="71%">
+
+
+<p>Use the commands in the file {gvimrc} for GUI
+initializations. All the other GUI initializations are
+skipped. It can also be used to skip all GUI initializations
+by giving the name &quot;NONE&quot;. See &quot;:help
+gui-init&quot; within vim for more details.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p>-V[N]</p></td>
+<td width="1%"></td>
+<td width="71%">
+
+
+<p>Verbose. Give messages about which files are sourced and
+for reading and writing a viminfo file. The optional number
+N is the value for &rsquo;verbose&rsquo;. Default is 10.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p>-v</p></td>
+<td width="1%"></td>
+<td width="71%">
+
+
+<p>Start <b>Vim</b> in Vi mode, just like the executable
+was called &quot;vi&quot;. This only has effect when the
+executable is called &quot;ex&quot;.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">-w {scriptout}</p>
+
+<p style="margin-left:29%;">All the characters that you
+type are recorded in the file {scriptout}, until you exit
+<b>Vim.</b> This is useful if you want to create a script
+file to be used with &quot;vim -s&quot; or
+&quot;:source!&quot;. If the {scriptout} file exists,
+characters are appended.</p>
+
+<p style="margin-left:11%;">-W {scriptout}</p>
+
+<p style="margin-left:29%;">Like -w, but an existing file
+is overwritten.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="15%">
+
+
+<p>-x</p></td>
+<td width="3%"></td>
+<td width="71%">
+
+
+<p>Use encryption when writing files. Will prompt for a
+crypt key.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="15%">
+
+
+<p>-X</p></td>
+<td width="3%"></td>
+<td width="71%">
+
+
+<p>Don&rsquo;t connect to the X server. Shortens startup
+time in a terminal, but the window title and clipboard will
+not be used.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="15%">
+
+
+<p>-y</p></td>
+<td width="3%"></td>
+<td width="71%">
+
+
+<p>Start <b>Vim</b> in easy mode, just like the executable
+was called &quot;evim&quot; or &quot;eview&quot;. Makes
+<b>Vim</b> behave like a click-and-type editor.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="15%">
+
+
+<p>-Z</p></td>
+<td width="3%"></td>
+<td width="71%">
+
+
+<p>Restricted mode. Works like the executable starts with
+&quot;r&quot;.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="15%">
+
+
+<p>--</p></td>
+<td width="3%"></td>
+<td width="71%">
+
+
+<p>Denotes the end of the options. Arguments after this
+will be handled as a file name. This can be used to edit a
+filename that starts with a &rsquo;-&rsquo;.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="15%">
+
+
+<p>--clean</p></td>
+<td width="3%"></td>
+<td width="71%">
+
+
+<p>Do not use any personal configuration (vimrc, plugins,
+etc.). Useful to see if a problem reproduces with a clean
+Vim setup.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="15%">
+
+
+<p>--echo-wid</p></td>
+<td width="3%"></td>
+<td width="71%">
+
+
+<p>GTK GUI only: Echo the Window ID on stdout.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="15%">
+
+
+<p>--help</p></td>
+<td width="3%"></td>
+<td width="71%">
+
+
+<p>Give a help message and exit, just like
+&quot;-h&quot;.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="15%">
+
+
+<p>--literal</p></td>
+<td width="3%"></td>
+<td width="71%">
+
+
+<p>Take file name arguments literally, do not expand
+wildcards. This has no effect on Unix where the shell
+expands wildcards.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="15%">
+
+
+<p>--noplugin</p></td>
+<td width="3%"></td>
+<td width="71%">
+
+
+<p>Skip loading plugins. Implied by -u NONE.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="15%">
+
+
+<p>--remote</p></td>
+<td width="3%"></td>
+<td width="71%">
+
+
+<p>Connect to a Vim server and make it edit the files given
+in the rest of the arguments. If no server is found a
+warning is given and the files are edited in the current
+Vim.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;">--remote-expr {expr}</p>
+
+<p style="margin-left:29%;">Connect to a Vim server,
+evaluate {expr} in it and print the result on stdout.</p>
+
+<p style="margin-left:11%;">--remote-send {keys}</p>
+
+<p style="margin-left:29%;">Connect to a Vim server and
+send {keys} to it.</p>
+
+<p style="margin-left:11%;">--remote-silent</p>
+
+<p style="margin-left:29%;">As --remote, but without the
+warning when no server is found.</p>
+
+<p style="margin-left:11%;">--remote-wait</p>
+
+<p style="margin-left:29%;">As --remote, but Vim does not
+exit until the files have been edited.</p>
+
+<p style="margin-left:11%;">--remote-wait-silent</p>
+
+<p style="margin-left:29%;">As --remote-wait, but without
+the warning when no server is found.</p>
+
+<p style="margin-left:11%;">--serverlist</p>
+
+<p style="margin-left:29%;">List the names of all Vim
+servers that can be found.</p>
+
+<p style="margin-left:11%;">--servername {name}</p>
+
+<p style="margin-left:29%;">Use {name} as the server name.
+Used for the current Vim, unless used with a --remote
+argument, then it&rsquo;s the name of the server to connect
+to.</p>
+
+<p style="margin-left:11%;">--socketid {id}</p>
+
+<p style="margin-left:29%;">GTK GUI only: Use the GtkPlug
+mechanism to run gvim in another window.</p>
+
+<p style="margin-left:11%;">--startuptime {file}</p>
+
+<p style="margin-left:29%;">During startup write timing
+messages to the file {fname}.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p>--version</p></td>
+<td width="4%"></td>
+<td width="54%">
+
+
+<p>Print version information and exit.</p></td>
+<td width="17%">
+</td></tr>
+</table>
+
+<h2>ON-LINE HELP
+<a name="ON-LINE HELP"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Type
+&quot;:help&quot; in <b>Vim</b> to get started. Type
+&quot;:help subject&quot; to get help on a specific subject.
+For example: &quot;:help ZZ&quot; to get help for the
+&quot;ZZ&quot; command. Use &lt;Tab&gt; and CTRL-D to
+complete subjects (&quot;:help cmdline-completion&quot;).
+Tags are present to jump from one place to another (sort of
+hypertext links, see &quot;:help&quot;). All documentation
+files can be viewed in this way, for example &quot;:help
+syntax.txt&quot;.</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">/usr/share/vim/vim90/doc/*.txt</p>
+
+<p style="margin-left:34%;">The <b>Vim</b> documentation
+files. Use &quot;:help doc-file-list&quot; to get the
+complete list.</p>
+
+
+<p style="margin-left:11%;">/usr/share/vim/vim90/doc/tags</p>
+
+<p style="margin-left:34%;">The tags file used for finding
+information in the documentation files.</p>
+
+
+<p style="margin-left:11%;">/usr/share/vim/vim90/syntax/syntax.vim</p>
+
+<p style="margin-left:34%;">System wide syntax
+initializations.</p>
+
+
+<p style="margin-left:11%;">/usr/share/vim/vim90/syntax/*.vim</p>
+
+<p style="margin-left:34%;">Syntax files for various
+languages.</p>
+
+<p style="margin-left:11%;">/usr/share/vim/vimrc</p>
+
+<p style="margin-left:34%;">System wide <b>Vim</b>
+initializations.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="12%">
+
+
+<p>~/.vimrc</p></td>
+<td width="11%"></td>
+<td width="52%">
+
+
+<p>Your personal <b>Vim</b> initializations.</p></td>
+<td width="14%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;">/usr/share/vim/gvimrc</p>
+
+<p style="margin-left:34%;">System wide gvim
+initializations.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p>~/.gvimrc</p></td>
+<td width="9%"></td>
+<td width="54%">
+
+
+<p>Your personal gvim initializations.</p></td>
+<td width="12%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;">/usr/share/vim/vim90/optwin.vim</p>
+
+<p style="margin-left:34%;">Script used for the
+&quot;:options&quot; command, a nice way to view and set
+options.</p>
+
+
+<p style="margin-left:11%;">/usr/share/vim/vim90/menu.vim</p>
+
+<p style="margin-left:34%;">System wide menu
+initializations for gvim.</p>
+
+
+<p style="margin-left:11%;">/usr/share/vim/vim90/bugreport.vim</p>
+
+<p style="margin-left:34%;">Script to generate a bug
+report. See &quot;:help bugs&quot;.</p>
+
+
+<p style="margin-left:11%;">/usr/share/vim/vim90/filetype.vim</p>
+
+<p style="margin-left:34%;">Script to detect the type of a
+file by its name. See &quot;:help
+&rsquo;filetype&rsquo;&quot;.</p>
+
+
+<p style="margin-left:11%;">/usr/share/vim/vim90/scripts.vim</p>
+
+<p style="margin-left:34%;">Script to detect the type of a
+file by its contents. See &quot;:help
+&rsquo;filetype&rsquo;&quot;.</p>
+
+
+<p style="margin-left:11%;">/usr/share/vim/vim90/print/*.ps</p>
+
+<p style="margin-left:34%;">Files used for PostScript
+printing.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For recent info
+read the VIM home page: <br>
+&lt;URL:http://www.vim.org/&gt;</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">vimtutor(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Most of
+<b>Vim</b> was made by Bram Moolenaar, with a lot of help
+from others. See &quot;:help credits&quot; in <b>Vim. <br>
+Vim</b> is based on Stevie, worked on by: Tim Thompson, Tony
+Andrews and G.R. (Fred) Walter. Although hardly any of the
+original code remains.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Probably. See
+&quot;:help todo&quot; for a list of known problems.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that a
+number of things that may be regarded as bugs by some, are
+in fact caused by a too-faithful reproduction of Vi&rsquo;s
+behaviour. And if you think other things are bugs
+&quot;because Vi does it differently&quot;, you should take
+a closer look at the vi_diff.txt file (or type :help
+vi_diff.txt when in Vim). Also have a look at the
+&rsquo;compatible&rsquo; and &rsquo;cpoptions&rsquo;
+options.</p>
+<hr>
+</body>
+</html>

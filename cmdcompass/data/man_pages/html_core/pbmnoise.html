@@ -1,0 +1,286 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:29 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pbmnoise User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pbmnoise User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pbmnoise -
+create a PBM image made up of white noise</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbmnoise</b>
+<i>width height</i></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-ratio=</b><i>M</i><b>/</b><i>N</i>]
+[<b>-pack</b>] [<b>-randomseed=</b><i>integer</i>]
+[<b>-endian=</b>]{<b>big</b>|<b>little</b>|<b>native</b>|<b>swap</b>}]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviations of option are acceptable. You may use double
+hyphens instead of single hyphen to denote options. You may
+use white space in place of the equals sign to separate an
+option name from its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbmnoise</b>
+creates a PBM image with random pixels. You specify the
+probability each pixel will be black or white (essentially,
+the proportion of black to white pixels in the image).</p>
+
+<p style="margin-left:11%; margin-top: 1em">You specify the
+dimensions of the image with the <i>width</i> and
+<i>height</i> arguments.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pbmnoise</b> recognizes the following command line
+options: <b><br>
+-ratio=</b><i>M</i><b>/</b><i>N</i></p>
+
+<p style="margin-left:22%;">The proportion of black pixels
+in the generated image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">To be precise,
+this is the probability that any given pixel will be black.
+By the law of large numbers, we can expect the proportion of
+black pixels in a reasonably large image to be close to this
+fraction.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The option
+value is a fraction. The denominator must be 1 or an integer
+power of 2 up to 65536. the numerator must be 0 or a
+positive integer not exceeding denominator.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+1/2, meaning the output image has essentially the same
+number of black and white pixels.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If the ratio is
+0 the output image is entirely white. If 1, the output is
+entirely black.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-pack</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>The program generates pixels in 32-bit units discarding
+any fractional pixels at row ends by default. When this
+option is specified, the unused pixels are carried over to
+the next row, eliminating waste in exchange for some
+overhead cost.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">Using this
+option improves performance when the image width is
+small.</p>
+
+
+<p style="margin-left:11%;"><b>-randomseed=</b><i>integer</i></p>
+
+<p style="margin-left:22%;">This is the seed for the random
+number generator that generates the pixels.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Use this to
+ensure you get the same image on separate invocations.</p>
+
+<p style="margin-left:22%; margin-top: 1em">By default,
+<b>pbmnoise</b> uses a seed derived from the time of day and
+process ID, which gives you fairly uncorrelated results in
+multiple invocations.</p>
+
+<p style="margin-left:11%;"><b>-endian=</b><i>mode</i></p>
+
+<p style="margin-left:22%;"><b>pbmnoise</b> internally
+generates random 32-bit integers and uses the
+machine&rsquo;s binary encoding of those integers as strings
+of pixels. Because the integers are random, it doesn&rsquo;t
+normally matter what binaary encoding is used for them, but
+if you need consistent results between machines using the
+same random number generator, it matters. For that reason
+(mainly for testing the program), this option lets you
+control that encoding, between big-endian and
+little-endian.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>mode</i> is
+one of the following:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>big</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Force big-endian output by rearranging bytes on
+little-endian machines. No effect on big-endian
+machines.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>little</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Likewise, force little-endian output.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>native</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Do not rearrange anything. This is the default.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>swap</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Always swap regardless of system endianness.</p></td></tr>
+</table>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This generates
+a random PBM image with roughly one-third of pixels colored
+black: <br>
+pbmnoise -ratio=11/32 1200 1200 &gt; random.pbm</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+is an alternate method for generating a random PBM image
+which uses <b>pgmnoise</b> and <b>pgmtopbm</b> instead of
+<b>pbmnoise</b>. It is less efficient. <br>
+pgmnoise -maxval=100 1200 1200 | \ <br>
+pgmtopbm -threshold -value=0.333 &gt; random.pbm</p>
+
+<p style="margin-left:11%; margin-top: 1em">This generates
+a random PPM image, maxval 1: <br>
+pbmnoise 600 400 &gt; red.pbm <br>
+pbmnoise 600 400 &gt; green.pbm <br>
+pbmnoise 600 400 &gt; blue.pbm <br>
+rgb3topbm red.pbm green.pbm blue.pbm &gt; random.ppm</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbm</b>(1)
+<b>pgmnoise</b>(1) <b>pgmtopbm</b>(1)</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbmnoise</b>
+was new in Netpbm 10.97 (December 2021).</p>
+
+<p style="margin-left:11%; margin-top: 1em">In Netpbm
+before that, you can use <b>pgmnoise</b>.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Akira F
+Urushibata wrote this program and contributed it to the
+public domain in December 2021.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pbmnoise.html</b></p>
+<hr>
+</body>
+</html>

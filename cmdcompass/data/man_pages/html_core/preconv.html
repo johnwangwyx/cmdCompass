@@ -1,0 +1,429 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:40 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>PRECONV</title>
+
+</head>
+<body>
+
+<h1 align="center">PRECONV</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#USAGE">USAGE</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">preconv -
+convert encoding of input files to something GNU troff
+understands</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p style="margin-top: 1em"><b>preconv</b></p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p style="margin-top: 1em">[<b>-dr</b>]
+[<b>-D&nbsp;</b><i>default_encoding</i>]
+[<b>-e&nbsp;</b><i>encoding</i>] [<i>file</i> ...]</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p><b>preconv</b></p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p><b>-h</b></p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p><b>preconv</b></p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p><b>--help</b></p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p style="margin-top: 1em"><b>preconv</b></p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p style="margin-top: 1em"><b>-v</b></p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p><b>preconv</b></p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p><b>--version</b></p></td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>preconv</b>
+reads <i>files</i> and converts its encoding(s) to a form
+GNU <b>troff</b>(1) can process, sending the data to
+standard output. Currently, this means ASCII characters and
+&rsquo;\[uXXXX]&rsquo; entities, where &rsquo;XXXX&rsquo; is
+a hexadecimal number with four to six digits, representing a
+Unicode input code. Normally, <b>preconv</b> should be
+invoked with the <b>-k</b> and <b>-K</b> options of
+<b>groff</b>.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Whitespace is
+permitted between a command-line option and its
+argument.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-d</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Emit debugging messages to standard error (mainly the
+used encoding).</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-D</b><i>encoding</i></p>
+
+<p style="margin-left:22%;">Specify default encoding if
+everything fails (see below).</p>
+
+<p style="margin-left:11%;"><b>-e</b><i>encoding</i></p>
+
+<p style="margin-left:22%;">Specify input encoding
+explicitly, overriding all other methods. This corresponds
+to <b>groff</b>&rsquo;s <b>-K</b><i>encoding</i> option.
+Without this switch, <b>preconv</b> uses the algorithm
+described below to select the input encoding.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--help</b></p></td>
+<td width="2%"></td>
+<td width="46%">
+</td>
+<td width="32%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-h</b></p></td>
+<td width="2%"></td>
+<td width="46%">
+
+
+<p>Print a help message and exit.</p></td>
+<td width="32%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-r</b></p></td>
+<td width="2%"></td>
+<td width="46%">
+
+
+<p>Do not add .lf requests.</p></td>
+<td width="32%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--version</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-v</b></p></td>
+<td width="8%"></td>
+<td width="52%">
+
+
+<p>Print the version number and exit.</p></td>
+<td width="26%">
+</td></tr>
+</table>
+
+<h2>USAGE
+<a name="USAGE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>preconv</b>
+tries to find the input encoding with the following
+algorithm.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em">1.</p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">If the input encoding has been
+explicitly specified with option <b>-e</b>, use it.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>2.</p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Otherwise, check whether the input starts with a <i>Byte
+Order Mark</i> (BOM, see below). If found, use it.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>3.</p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Otherwise, check whether there is a known <i>coding
+tag</i> (see below) in either the first or second input
+line. If found, use it.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>4</p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Finally, if the <b>uchardet</b> library (an encoding
+detector library available on most major distributions) is
+available on the system, use it to try to detect the
+encoding of the file.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>5.</p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>If everything fails, use a default encoding as given
+with option <b>-D</b>, by the current locale, or
+&rsquo;latin1&rsquo; if the locale is set to
+&rsquo;C&rsquo;, &rsquo;POSIX&rsquo;, or empty (in that
+order).</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Note that the
+<b>groff</b> program supports a <i>GROFF_ENCODING</i>
+environment variable which is eventually expanded to option
+<b>-k</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Byte Order
+Mark</b> <br>
+The Unicode Standard defines character U+FEFF as the Byte
+Order Mark (BOM). On the other hand, value U+FFFE is
+guaranteed not be a Unicode character at all. This allows
+detection of the byte order within the data stream (either
+big-endian or little-endian), and the MIME encodings
+&rsquo;UTF-16&rsquo; and &rsquo;UTF-32&rsquo; mandate that
+the data stream starts with U+FEFF. Similarly, the data
+stream encoded as &rsquo;UTF-8&rsquo; might start with a BOM
+(to ease the conversion from and to UTF-16 and UTF-32). In
+all cases, the byte order mark is <i>not</i> part of the
+data but part of the encoding protocol; in other words,
+<b>preconv</b>&rsquo;s output doesn&rsquo;t contain it.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that
+U+FEFF not at the start of the input data actually is
+emitted; it has then the meaning of a &rsquo;zero width
+no-break space&rsquo; character &ndash; something not needed
+normally in <b>groff</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Coding
+Tags</b> <br>
+Editors which support more than a single character encoding
+need tags within the input files to mark the file&rsquo;s
+encoding. While it is possible to guess the right input
+encoding with the help of heuristic algorithms for data
+which represents a greater amount of a natural language, it
+is still just a guess. Additionally, all algorithms fail
+easily for input which is either too short or doesn&rsquo;t
+represent a natural language.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For these
+reasons, <b>preconv</b> supports the coding tag convention
+(with some restrictions) as used by <b>GNU Emacs</b> and
+<b>XEmacs</b> (and probably other programs too).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Coding tags in
+<b>GNU Emacs</b> and <b>XEmacs</b> are stored in so-called
+<i>File Variables</i>. <b>preconv</b> recognizes the
+following syntax form which must be put into a troff comment
+in the first or second line.</p>
+
+<p style="margin-left:22%; margin-top: 1em">-*-
+<i>tag1</i>: <i>value1</i>; <i>tag2</i>: <i>value2</i>; ...
+-*-</p>
+
+<p style="margin-left:11%; margin-top: 1em">The only
+relevant tag for <b>preconv</b> is &rsquo;coding&rsquo;
+which can take the values listed below. Here an example line
+which tells <b>Emacs</b> to edit a file in troff mode, and
+to use latin2 as its encoding.</p>
+
+<p style="margin-left:22%; margin-top: 1em">.\&quot; -*-
+mode: troff; coding: latin-2 -*-</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+list gives all MIME coding tags (either lowercase or
+uppercase) supported by <b>preconv</b>; this list is
+hard-coded in the source.</p>
+
+<p style="margin-left:22%; margin-top: 1em">big5, cp1047,
+euc-jp, euc-kr, gb2312, iso-8859-1, iso-8859-2, iso-8859-5,
+iso-8859-7, iso-8859-9, iso-8859-13, iso-8859-15, koi8-r,
+us-ascii, utf-8, utf-16, utf-16be, utf-16le</p>
+
+<p style="margin-left:11%; margin-top: 1em">In addition,
+the following hard-coded list of other tags is recognized
+which eventually map to values from the list above.</p>
+
+<p style="margin-left:22%; margin-top: 1em">ascii,
+chinese-big5, chinese-euc, chinese-iso-8bit, cn-big5, cn-gb,
+cn-gb-2312, cp878, csascii, csisolatin1, cyrillic-iso-8bit,
+cyrillic-koi8, euc-china, euc-cn, euc-japan, euc-japan-1990,
+euc-korea, greek-iso-8bit, iso-10646/utf8, iso-10646/utf-8,
+iso-latin-1, iso-latin-2, iso-latin-5, iso-latin-7,
+iso-latin-9, japanese-euc, japanese-iso-8bit, jis8, koi8,
+korean-euc, korean-iso-8bit, latin-0, latin1, latin-1,
+latin-2, latin-5, latin-7, latin-9, mule-utf-8, mule-utf-16,
+mule-utf-16be, mule-utf-16-be, mule-utf-16be-with-signature,
+mule-utf-16le, mule-utf-16-le, mule-utf-16le-with-signature,
+utf8, utf-16-be, utf-16-be-with-signature,
+utf-16be-with-signature, utf-16-le,
+utf-16-le-with-signature, utf-16le-with-signature</p>
+
+<p style="margin-left:11%; margin-top: 1em">Those tags are
+taken from <b>GNU Emacs</b> and <b>XEmacs</b>, together with
+some aliases. Trailing &rsquo;-dos&rsquo;,
+&rsquo;-unix&rsquo;, and &rsquo;-mac&rsquo; suffixes of
+coding tags (which give the end-of-line convention used in
+the file) are stripped off before the comparison with the
+above tags happens.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Iconv Issues
+<br>
+preconv</b> by itself only supports three encodings:
+latin-1, cp1047, and UTF-8; all other encodings are passed
+to the <b>iconv</b> library functions. At compile time it is
+searched and checked for a valid <b>iconv</b>
+implementation; a call to &rsquo;preconv --version&rsquo;
+shows whether <b>iconv</b> is used.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>preconv</b>
+doesn&rsquo;t support <i>local variable lists</i> yet. This
+is a different syntax form to specify local variables at the
+end of a file.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>groff</b>(1)
+<br>
+the <b>GNU Emacs</b> and <b>XEmacs</b> info pages</p>
+<hr>
+</body>
+</html>

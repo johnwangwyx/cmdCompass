@@ -1,0 +1,502 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:24 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamarith User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamarith User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#NOTE: UNARY FUNCTIONS">NOTE: UNARY FUNCTIONS</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamarith -
+perform arithmetic on two Netpbm images</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamarith
+-add</b> | <b>-subtract</b> | <b>-multiply</b> |
+<b>-divide</b> | <b>-difference</b> | <b>-minimum</b> |
+<b>-maximum</b> | <b>-mean</b> | <b>-equal</b> |
+<b>-compare</b> | <b>-and</b> | <b>-or</b> | <b>-nand</b> |
+<b>-nor</b> | <b>-xor</b> | <b>-shiftleft</b> |
+<b>-shiftright</b> [<b>-closeness=</b><i>N</i>] <i>pamfile1
+pamfile2</i> ...</p>
+
+<p style="margin-left:11%; margin-top: 1em">All options can
+be abbreviated to their shortest unique prefix. You may use
+two hyphens instead of one. You may separate an option name
+and its value with white space instead of an equals
+sign.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamarith</b>
+reads two or more PBM, PGM, PPM, or PAM images as input. It
+performs the specified binary arithmetic operation on their
+sample values and produces an output of a format which is
+the more general of the two input formats. The two input
+images must be of the same width and height. The arithmetic
+is performed on each pair of identically located tuples to
+generate the identically located tuple of the output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For functions
+that are commutative and associative, <b>pamarith</b>
+applies <br>
+the binary function repetitively on as many input images as
+you supply. For <br>
+example, for <b>-add</b> , the output is the sum of all the
+inputs. For <br>
+other functions (e.g. <b>-subtract</b>), the program fails
+if you supply <br>
+more than two input images. (Before Netpbm 10.93 (December
+2020), the <br>
+program always failed with more than two input images).</p>
+
+<p style="margin-left:11%; margin-top: 1em">For some other
+functions, <b>pamarith</b> could theoretically compute a
+<br>
+meaningful result for multiple arguments, but it fails
+nonetheless if you <br>
+give more than two input images. <b>-mean</b> and
+<b>-equal</b> are in that <br>
+category.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Most of what
+<b>pamarith</b> does is not meaningful for visual images. It
+<br>
+works toward Netpbm&rsquo;s secondary purpose of just
+manipulating arbitrary <br>
+matrices of numbers.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For the purpose
+of the calculation, it assumes any PBM, PGM, or PPM input
+image is the equivalent PAM image of tuple type
+<b>BLACKANDWHITE</b>, <b>GRAYSCALE</b>, or <b>RGB</b>,
+respectively, and if it produces a PBM, PGM, or PPM output,
+produces the equivalent of the PAM image which is the result
+of the calculation.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The first
+<i>pamfile</i> argument identifies the &quot;left&quot;
+argument image; the second <i>pamfile</i> argument
+identifies the &quot;right&quot; one.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the output
+is PAM, the tuple type is the same as the tuple type of the
+left input image.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamarith</b>
+performs the arithmetic on each pair of identically located
+tuples in the two input images.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The arithmetic
+operation is in all cases fundamentally a function from two
+integers to an integer (but see below - the functions are
+defined in ways that you can effectively e.g. add real
+numbers). The operation is performed on two tuples as
+follows. The two input images must have the same depth, or
+one of them must have depth one. <b>pamarith</b> fails if
+one of these is not the case.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If they have
+the same depth, <b>pamarith</b> simply carries out the
+arithmetic one sample at a time. I.e. if at a particular
+position the left input image contains the tuple
+(s1,s2,...,sN) and the right input image contains the tuple
+(t1,t2,...tN), and the function is f, then the output image
+contains the tuple (f(s1,t1),f(s2,t2),...,f(sN,tN)).</p>
+
+<p style="margin-left:11%; margin-top: 1em">If one of the
+images has depth 1, the arithmetic is performed between the
+one sample in that image and each of the samples in the
+other. I.e. if at a particular position the left input image
+contains the tuple (s) and the right input image contains
+the tuple (t1,t2,...tN), and the function is f, then the
+output image contains the tuple
+(f(s,t1),f(s,t2),...,f(s,tN)).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>PBM
+Oddness</b> <br>
+If you&rsquo;re familiar with the PBM format, you may find
+<b>pamarith</b>&rsquo;s operation on PBM images to be
+nonintuitive. Because in PBM black is represented as 1 and
+white as 0, you might be expecting black minus black to be
+white.</p>
+
+<p style="margin-left:11%; margin-top: 1em">But the PBM
+format is irrelevant, because <b>pamarith</b> operates on
+the numbers found in the PAM equivalent (see above). In a
+PAM black and white image, black is 0 and white is 1. So
+black minus black is black.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Maxval</b>
+<br>
+The meanings of the samples with respect to the maxval
+varies according to the function you select.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In PAM images
+in general, the most usual meaning of a sample (the one that
+applies when a PAM image represents a visual image), is that
+it represents a fraction of some maximum. The maxval of the
+image corresponds to some maximum value (in the case of a
+visual image, it corresponds to &quot;full
+intensity.&quot;), and a sample value divided by the maxval
+gives the fraction.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For
+<b>pamarith</b>, this interpretation applies to the regular
+arithmetic functions: <b>-add</b>, <b>-subtract</b>,
+<b>-multiply</b>, <b>-divide</b>, <b>-difference</b>,
+<b>-minimum</b>, <b>-maximum</b>, <b>-mean</b>,
+<b>-equal</b>, and <b>-compare</b>. For those, you should
+think of the arguments and result as numbers in the range
+[0,1). For example, if the maxval of the left argument image
+is 100 and the maxval of the right argument image is 200 and
+the maxval of the output image is 200, and the left sample
+value in an <b>-add</b> calculation is 50 and the right
+sample is 60, the actual calculation is 50/100 + 60/200 =
+160/200, and the output sample value is 160.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For these
+functions, <b>pamarith</b> makes the output image&rsquo;s
+maxval the maximum of the two input maxvals, except with
+<b>-equal</b> and <b>-compare</b>. For <b>-equal</b>, the
+output maxval is always 1. For <b>-compare</b>, it is always
+2. (Before Netpbm 10.14 (February 2003), there was no
+exception for <b>-compare</b>; in 10.14, the exception was
+just that the maxval was <i>at least</i> 2, and sometime
+between 10.18 and 10.26 (January 2005), it changed to being
+exactly 2).</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the result
+of a calculation falls outside the range [0, 1),
+<b>pamarith</b> clips it -- i.e. considers it to be zero or
+1-.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In many cases,
+where both your input maxvals are the same, you can just
+think of the operation as taking place between the sample
+values directly, with no consideration of the maxval except
+for the clipping. E.g. an <b>-add</b> of sample value 5 to
+sample value 8 yields sample value 13.</p>
+
+<p style="margin-left:11%; margin-top: 1em">But with
+<b>-multiply</b>, this doesn&rsquo;t work. Say your two
+input images have maxval 255, which means the output image
+also has maxval 255. Consider a location in the image where
+the input sample values are 5 and 10. You might think the
+multiplicative product of those would yield 50 in the
+output. But <b>pamarith</b> carries out the arithmetic on
+the fractions 5/255 and 10/255. It multiplies those together
+and then rescales to the output maxval, giving a sample
+value in the output PAM of 50/255 rounded to the nearest
+integer: 0.</p>
+
+<p style="margin-left:11%; margin-top: 1em">With the bit
+string operations, the maxval has a whole different meaning.
+The operations in question are: <b>-and</b>, <b>-or</b>,
+<b>-nand</b>, <b>-nor</b>, <b>-xor</b>, and
+<b>-shiftleft</b>, <b>-shiftright</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">With these,
+each sample value in one or both input images, and in the
+output image, represents a bit string, not a number. The
+maxval tells how wide the bit string is. The maxval must be
+a full binary count (a power of two minus one, such as 0xff)
+and the number of ones in it is the width of the bit string.
+For the dyadic bit string operations (that&rsquo;s
+everything but the shift functions), the maxvals of the
+input images must be the same and <b>pamarith</b> makes the
+maxval of the output image the same.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For the bit
+shift operations, the output maxval is the same as the left
+input maxval. The right input image (which contains the
+shift counts) can have any maxval and the maxval is
+irrelevant to the interpretation of the samples. The sample
+value is the actual shift count. But it&rsquo;s still
+required that no sample value exceed the maxval.</p>
+
+<h2>NOTE: UNARY FUNCTIONS
+<a name="NOTE: UNARY FUNCTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamarith</b>
+applies only binary functions. If you want to apply a unary
+function, e.g. &quot;halve&quot;, to a single image, use
+<b>pamfunc</b>.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamarith</b> recognizes the following command line
+options:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>The
+Function</b> <br>
+These options select the function that <b>pamarith</b>
+applies.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You must
+specify one of these, and cannot specify more than one.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-add</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Adds the two values. If the result is larger than
+maxval, it is clipped.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-subtract</b></p>
+
+<p style="margin-left:22%;">Subtracts a value in the right
+input image from a value in the left input image.</p>
+
+<p style="margin-left:11%;"><b>-minimum</b></p>
+
+<p style="margin-left:22%;">Chooses the smaller value of
+the two.</p>
+
+<p style="margin-left:11%;"><b>-maximum</b></p>
+
+<p style="margin-left:22%;">Chooses the larger value of the
+two.</p>
+
+<p style="margin-left:11%;"><b>-difference</b></p>
+
+<p style="margin-left:22%;">Calculates the absolute value
+of the difference.</p>
+
+<p style="margin-left:11%;"><b>-multiply</b></p>
+
+<p style="margin-left:22%;">Does an ordinary arithmetic
+multiplication, but tends to produce nonobvious results
+because of the way <b>pamarith</b> interprets sample values.
+See <a href="#maxval">Maxval</a> .</p>
+
+<p style="margin-left:11%;"><b>-divide</b></p>
+
+<p style="margin-left:22%;">Divides a value in the left
+input image by the value in the right input image. But like
+<b>-multiply</b>, it tends to produce nonobvious results.
+Note that <b>pamarith</b> clipping behavior makes this of
+little use when the left argument (dividend) is greater than
+the right argument (divisor) -- the result in that case is
+always the maxval. If the divisor is 0, the result is the
+maxval.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>-divide</b>
+was new in Netpbm 10.30 (October 2005).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-equal</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Produces maxval when the values in the two images are
+equal and zero when they are not. Note that the output
+maxval is always 1 for <b>-equal</b>.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">If the maxvals
+of the input images are not identical, <b>pamarith</b> may
+claim two values are not equal when in fact they are,
+because of the precision with which it does the arithmetic.
+However, it will never say A is greater than B if A is less
+than B.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You can make
+the equality test approximate with the <b>-closeness</b>
+option. This gives the percentage of maxval by which the
+samples can differ and still be considered equal.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>-equal</b>
+was new in Netpbm 10.93 (December 2020).</p>
+
+<p style="margin-left:11%;"><b>-compare</b></p>
+
+<p style="margin-left:22%;">Produces the value <b>0</b>
+when the value in the left input image is less than the
+value in the right input image, <b>1</b> when the values are
+equal, and <b>2</b> when the left is greater than the
+right.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If the maxvals
+of the input images are not identical, <b>pamarith</b> may
+claim two values are not equal when in fact they are,
+because of the precision with which it does the arithmetic.
+However, it will never say A is greater than B if A is less
+than B.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>-compare</b>
+was new in Netpbm 10.13 (December 2002).</p>
+
+<p style="margin-left:11%;"><b>-and</b>, <b>-nand</b>,
+<b>-or</b>, <b>-nor</b>, <b>-xor</b></p>
+
+<p style="margin-left:22%;">These consider the input and
+output images to contain bit strings; they compute bitwise
+logic operations. Note that if the maxval is 1, you can also
+look at these as logic operations on boolean input values.
+See section <a href="#maxval">Maxval</a> for the special
+meaning of maxval with respect to bit string operations such
+as these.</p>
+
+<p style="margin-left:11%;"><b>-shiftleft</b>,
+<b>-shiftright</b></p>
+
+<p style="margin-left:22%;">These consider the left input
+image and output image to contain bit strings. They compute
+a bit shift operation, with bits falling off the left or
+right end and zeroes shifting in, as opposed to bits off one
+end to the other. The right input image sample value is the
+number of bit positions to shift.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Note that the
+maxval (see <a href="#maxval">Maxval</a> ) determines the
+width of the frame within which you are shifting.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Other <br>
+-closeness</b></p>
+
+<p style="margin-left:22%;">This changes the meaning of
+<b>-equal</b>. It is not valid with any other function. See
+the description of <b>-equal</b>.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamfunc</b>(1),
+<b>pamsummcol</b>(1), <b>pamsumm</b>(1),
+<b>pnminvert</b>(1), <b>pambrighten</b>(1),
+<b>ppmdim</b>(1), <b>pnmconvol</b>(1), <b>pamdepth</b>(1),
+<b>pnmpsnr</b>(1), <b>pnm</b>(1), <b>pam</b>(1)</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamarith</b>
+replaced <b>pnmarith</b> in Netpbm 10.3 (June 2002).</p>
+
+<p style="margin-left:11%; margin-top: 1em">In Netpbm 10.3
+through 10.8, though, <b>pamarith</b> was not backward
+compatible because it required the input images to be of the
+same depth, so you could not multiply a PBM by a PPM as is
+often done for masking. (It was not intended at the time
+that <b>pnmarith</b> would be removed from Netpbm -- the
+plan was just to rewrite it to use <b>pamarith</b>; it was
+removed by mistake).</p>
+
+<p style="margin-left:11%; margin-top: 1em">But starting
+with Netpbm 10.9 (September 2002), <b>pamarith</b> allows
+the images to have different depths as long as one of them
+has depth 1, and that made it backward compatible with
+<b>pnmarith</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The original
+<b>pnmarith</b> did not have the <b>-mean</b> option.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>-compare</b> option was added in Netpbm 10.13 (December
+2002).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The bit string
+operations were added in Netpbm 10.27 (March 2005).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>-divide</b> option was added in Netpbm 10.30 (October
+2005).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The ability to
+have more than one input (operand) was added in Netpbm 10.93
+(December 2020).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>-equal</b> option was added in Netpbm 10.93 (December
+2020).</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamarith.html</b></p>
+<hr>
+</body>
+</html>

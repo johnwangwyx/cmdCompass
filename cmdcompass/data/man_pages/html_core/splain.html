@@ -1,0 +1,287 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:48 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SPLAIN</title>
+
+</head>
+<body>
+
+<h1 align="center">SPLAIN</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#INTERNALS">INTERNALS</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">diagnostics,
+splain - produce verbose warning diagnostics</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Using the
+&quot;diagnostics&quot; pragma:</p>
+
+<p style="margin-left:11%; margin-top: 1em">use
+diagnostics; <br>
+use diagnostics -verbose; <br>
+enable diagnostics; <br>
+disable diagnostics;</p>
+
+<p style="margin-left:11%; margin-top: 1em">Using the
+&quot;splain&quot; standalone filter program:</p>
+
+<p style="margin-left:11%; margin-top: 1em">perl program
+2&gt;diag.out <br>
+splain [-v] [-p] diag.out</p>
+
+<p style="margin-left:11%; margin-top: 1em">Using
+diagnostics to get stack traces from a misbehaving
+script:</p>
+
+<p style="margin-left:11%; margin-top: 1em">perl
+-Mdiagnostics=-traceonly my_script.pl</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>The
+&quot;diagnostics&quot; Pragma</b> <br>
+This module extends the terse diagnostics normally emitted
+by both the perl compiler and the perl interpreter (from
+running perl with a -w switch or &quot;use warnings&quot;),
+augmenting them with the more explicative and endearing
+descriptions found in perldiag. Like the other pragmata, it
+affects the compilation phase of your program rather than
+merely the execution phase.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To use in your
+program as a pragma, merely invoke</p>
+
+<p style="margin-left:11%; margin-top: 1em">use
+diagnostics;</p>
+
+<p style="margin-left:11%; margin-top: 1em">at the start
+(or near the start) of your program. (Note that this
+<i>does</i> enable perl&rsquo;s <b>-w</b> flag.) Your whole
+compilation will then be subject(ed :-) to the enhanced
+diagnostics. These still go out <b><small>STDERR</small></b>
+.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Due to the
+interaction between runtime and compiletime issues, and
+because it&rsquo;s probably not a very good idea anyway, you
+may not use &quot;no diagnostics&quot; to turn them off at
+compiletime. However, you may control their behaviour at
+runtime using the <b>disable()</b> and <b>enable()</b>
+methods to turn them off and on respectively.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>-verbose</b> flag first prints out the perldiag
+introduction before any other diagnostics. The
+$diagnostics::PRETTY variable can generate nicer escape
+sequences for pagers.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Warnings
+dispatched from perl itself (or more accurately, those that
+match descriptions found in perldiag) are only displayed
+once (no duplicate descriptions). User code generated
+warnings a la <b>warn()</b> are unaffected, allowing
+duplicate user messages to be displayed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This module
+also adds a stack trace to the error message when perl dies.
+This is useful for pinpointing what caused the death. The
+<b>-traceonly</b> (or just <b>-t</b>) flag turns off the
+explanations of warning messages leaving just the stack
+traces. So if your script is dieing, run it again with</p>
+
+<p style="margin-left:11%; margin-top: 1em">perl
+-Mdiagnostics=-traceonly my_bad_script</p>
+
+<p style="margin-left:11%; margin-top: 1em">to see the call
+stack at the time of death. By supplying the
+<b>-warntrace</b> (or just <b>-w</b>) flag, any warnings
+emitted will also come with a stack trace.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>The</b>
+<i>splain</i> <b>Program</b> <br>
+Another program, <i>splain</i> is actually nothing more than
+a link to the (executable) <i>diagnostics.pm</i> module, as
+well as a link to the <i>diagnostics.pod</i> documentation.
+The <b>-v</b> flag is like the &quot;use diagnostics
+-verbose&quot; directive. The <b>-p</b> flag is like the
+$diagnostics::PRETTY variable. Since you&rsquo;re
+post-processing with <i>splain</i>, there&rsquo;s no sense
+in being able to <b>enable()</b> or <b>disable()</b>
+processing.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Output from
+<i>splain</i> is directed to <b><small>STDOUT</small></b> ,
+unlike the pragma.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+file is certain to trigger a few errors at both runtime and
+compiletime:</p>
+
+<p style="margin-left:11%; margin-top: 1em">use
+diagnostics; <br>
+print NOWHERE &quot;nothing\n&quot;; <br>
+print STDERR &quot;\n\tThis message should be
+unadorned.\n&quot;; <br>
+warn &quot;\tThis is a user warning&quot;; <br>
+print &quot;\nDIAGNOSTIC TESTER: Please enter a &lt;CR&gt;
+here: &quot;; <br>
+my $a, $b = scalar &lt;STDIN&gt;; <br>
+print &quot;\n&quot;; <br>
+print $x/$y;</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you prefer
+to run your program first and look at its problem
+afterwards, do this:</p>
+
+<p style="margin-left:11%; margin-top: 1em">perl -w test.pl
+2&gt;test.out <br>
+./splain &lt; test.out</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that this
+is not in general possible in shells of more dubious
+heritage, as the theoretical</p>
+
+<p style="margin-left:11%; margin-top: 1em">(perl -w
+test.pl &gt;/dev/tty) &gt;&amp; test.out <br>
+./splain &lt; test.out</p>
+
+<p style="margin-left:11%; margin-top: 1em">Because you
+just moved the existing <b>stdout</b> to somewhere else.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you
+don&rsquo;t want to modify your source code, but still have
+on-the-fly warnings, do this:</p>
+
+<p style="margin-left:11%; margin-top: 1em">exec
+3&gt;&amp;1; perl -w test.pl 2&gt;&amp;1 1&gt;&amp;3
+3&gt;&amp;- | splain 1&gt;&amp;2 3&gt;&amp;-</p>
+
+<p style="margin-left:11%; margin-top: 1em">Nifty, eh?</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you want to
+control warnings on the fly, do something like this. Make
+sure you do the &quot;use&quot; first, or you won&rsquo;t be
+able to get at the <b>enable()</b> or <b>disable()</b>
+methods.</p>
+
+<p style="margin-left:11%; margin-top: 1em">use
+diagnostics; # checks entire compilation phase <br>
+print &quot;\ntime for 1st bogus diags: SQUAWKINGS\n&quot;;
+<br>
+print BOGUS1 'nada'; <br>
+print &quot;done with 1st bogus\n&quot;; <br>
+disable diagnostics; # only turns off runtime warnings <br>
+print &quot;\ntime for 2nd bogus: (squelched)\n&quot;; <br>
+print BOGUS2 'nada'; <br>
+print &quot;done with 2nd bogus\n&quot;; <br>
+enable diagnostics; # turns back on runtime warnings <br>
+print &quot;\ntime for 3rd bogus: SQUAWKINGS\n&quot;; <br>
+print BOGUS3 'nada'; <br>
+print &quot;done with 3rd bogus\n&quot;; <br>
+disable diagnostics; <br>
+print &quot;\ntime for 4th bogus: (squelched)\n&quot;; <br>
+print BOGUS4 'nada'; <br>
+print &quot;done with 4th bogus\n&quot;;</p>
+
+<h2>INTERNALS
+<a name="INTERNALS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Diagnostic
+messages derive from the <i>perldiag.pod</i> file when
+available at runtime. Otherwise, they may be embedded in the
+file itself when the splain package is built. See the
+<i>Makefile</i> for details.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If an extant
+$SIG{__WARN__} handler is discovered, it will continue to be
+honored, but only after the <b>diagnostics::splainthis()</b>
+function (the module&rsquo;s $SIG{__WARN__} interceptor) has
+had its way with your warnings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There is a
+$diagnostics::DEBUG variable you may set if you&rsquo;re
+desperately curious what sorts of things are being
+intercepted.</p>
+
+<p style="margin-left:11%; margin-top: 1em">BEGIN {
+$diagnostics::DEBUG = 1 }</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Not being able
+to say &quot;no diagnostics&quot; is annoying, but may not
+be insurmountable.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;-pretty&quot; directive is called too late to affect
+matters. You have to do this instead, and <i>before</i> you
+load the module.</p>
+
+<p style="margin-left:11%; margin-top: 1em">BEGIN {
+$diagnostics::PRETTY = 1 }</p>
+
+<p style="margin-left:11%; margin-top: 1em">I could start
+up faster by delaying compilation until it should be needed,
+but this gets a &quot;panic: top_level&quot; when using the
+pragma form in Perl 5.001e.</p>
+
+<p style="margin-left:11%; margin-top: 1em">While
+it&rsquo;s true that this documentation is somewhat
+subserious, if you use a program named <i>splain</i>, you
+should expect a bit of whimsy.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Tom
+Christiansen &lt;<i>tchrist@mox.perl.com</i>&gt;, 25 June
+1995.</p>
+<hr>
+</body>
+</html>

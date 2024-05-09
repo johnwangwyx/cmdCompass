@@ -1,0 +1,267 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:33:57 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>clear</title>
+
+</head>
+<body>
+
+<h1 align="center">clear</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#PORTABILITY">PORTABILITY</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>clear</b> -
+clear the terminal screen</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>clear</b>
+[<b>-T</b><i>type</i>] [<b>-V</b>] [<b>-x</b>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>clear</b>
+clears your terminal&rsquo;s screen if this is possible,
+including the terminal&rsquo;s scrollback buffer (if the
+extended &ldquo;E3&rdquo; capability is defined).
+<b>clear</b> looks in the environment for the terminal type
+given by the environment variable <b>TERM</b>, and then in
+the <b>terminfo</b> database to determine how to clear the
+screen.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>clear</b>
+writes to the standard output. You can redirect the standard
+output to a file (which prevents <b>clear</b> from actually
+clearing the screen), and later <b>cat</b> the file to the
+screen, clearing it at that point.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-T</b>
+<i>type</i></p>
+
+<p style="margin-left:18%;">indicates the <i>type</i> of
+terminal. Normally this option is unnecessary, because the
+default is taken from the environment variable <b>TERM</b>.
+If <b>-T</b> is specified, then the shell variables
+<b>LINES</b> and <b>COLUMNS</b> will also be ignored.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-V</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>reports the version of ncurses which was used in this
+program, and exits. The options are as follows:</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-x</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>do not attempt to clear the terminal&rsquo;s scrollback
+buffer using the extended &ldquo;E3&rdquo; capability.</p></td></tr>
+</table>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">A <b>clear</b>
+command appeared in 2.79BSD dated February 24, 1979. Later
+that was provided in Unix 8th edition (1985).</p>
+
+<p style="margin-left:11%; margin-top: 1em">AT&amp;T
+adapted a different BSD program (<b>tset</b>) to make a new
+command (<b>tput</b>), and used this to replace the
+<b>clear</b> command with a shell script which calls <b>tput
+clear</b>, e.g.,</p>
+
+<pre style="margin-left:17%; margin-top: 1em">/usr/bin/tput ${1:+-T$1} clear 2&gt; /dev/null
+exit</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">In 1989, when
+Keith Bostic revised the BSD <b>tput</b> command to make it
+similar to the AT&amp;T <b>tput</b>, he added a shell script
+for the <b>clear</b> command:</p>
+
+<pre style="margin-left:17%; margin-top: 1em">exec tput clear</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">The remainder
+of the script in each case is a copyright notice.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The ncurses
+<b>clear</b> command began in 1995 by adapting the original
+BSD <b>clear</b> command (with terminfo, of course).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <b>E3</b>
+extension came later:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">In June 1999, <b>xterm</b>
+provided an extension to the standard control sequence for
+clearing the screen. Rather than clearing just the visible
+part of the screen using</p></td></tr>
+</table>
+
+<pre style="margin-left:23%; margin-top: 1em">printf &rsquo;\033[2J&rsquo;</pre>
+
+
+<p style="margin-left:17%; margin-top: 1em">one could clear
+the <i>scrollback</i> using</p>
+
+<p style="margin-left:23%; margin-top: 1em"><tt>printf
+&rsquo;\033[</tt><b>3</b><tt>J&rsquo;</tt></p>
+
+<p style="margin-left:17%; margin-top: 1em">This is
+documented in <i>XTerm Control Sequences</i> as a feature
+originating with <b>xterm</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">A few other terminal developers
+adopted the feature, e.g., PuTTY in 2006.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>In April 2011, a Red Hat developer submitted a patch to
+the Linux kernel, modifying its console driver to do the
+same thing. The Linux change, part of the 3.0 release, did
+not mention <b>xterm</b>, although it was cited in the Red
+Hat bug report (#683733) which led to the change.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>Again, a few other terminal developers adopted the
+feature. But the next relevant step was a change to the
+<b>clear</b> program in 2013 to incorporate this
+extension.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>In 2013, the <b>E3</b> extension was overlooked in
+<b>tput</b> with the &ldquo;clear&rdquo; parameter. That was
+addressed in 2016 by reorganizing <b>tput</b> to share its
+logic with <b>clear</b> and <b>tset</b>.</p></td></tr>
+</table>
+
+<h2>PORTABILITY
+<a name="PORTABILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Neither IEEE
+Std 1003.1/The Open Group Base Specifications Issue 7
+(POSIX.1-2008) nor X/Open Curses Issue 7 documents tset or
+reset.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The latter
+documents <b>tput</b>, which could be used to replace this
+utility either via a shell script or by an alias (such as a
+symbolic link) to run <b>tput</b> as <b>clear</b>.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>tput</b>(1),
+<b>terminfo</b>(5), <b>xterm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em">This describes
+<b>ncurses</b> version 6.4 (patch 20221231).</p>
+<hr>
+</body>
+</html>

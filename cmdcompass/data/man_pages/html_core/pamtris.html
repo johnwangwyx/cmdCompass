@@ -1,0 +1,1074 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:28 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamtris User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamtris User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#INSTRUCTION CODE">INSTRUCTION CODE</a><br>
+<a href="#TIPS">TIPS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamtris -
+triangle rasterizer featuring perspective-correct
+interpolation of generic vertex attributes and depth
+buffering</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtris</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-width=</b><i>width</i></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-height=</b><i>height</i></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">{&nbsp;<b>-num_attribs=</b><i>attributes_per_vertex</i>
+[&nbsp;<b>-tupletype=</b><i>tupletype&nbsp;</i>] |
+<b>-rgb</b> | <b>-grayscale&nbsp;</b>}</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[&nbsp;<b>-maxval=</b><i>maxval&nbsp;</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">All options can
+be abbreviated to their shortest unique prefix. You may use
+two hyphens instead of one to designate an option. You may
+use either white space or an equals sign between an option
+name and its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtris</b>
+can be used to draw a great variety of 2D and 3D graphics by
+composing arbitrarily complex pictures out of separate
+triangles, triangle strips and triangle fans. The program
+reads instructions written in a simple command script
+notation from Standard Input and outputs its results as a
+(potentially multi-image) PAM stream on Standard Output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For example,
+the following input</p>
+
+<p style="margin-left:11%; margin-top: 1em">mode fan <br>
+attribs 0 128 0 <br>
+vertex 0 0 1 <br>
+attribs 0 0 128 <br>
+vertex 200 0 1 <br>
+attribs 50 20 103 <br>
+vertex 190 61 1 <br>
+attribs 100 40 78 <br>
+vertex 161 117 1 <br>
+attribs 150 60 53 <br>
+vertex 117 161 1 <br>
+attribs 200 80 28 <br>
+vertex 61 190 1 <br>
+attribs 250 100 3 <br>
+vertex 0 200 1 <br>
+print</p>
+
+<p style="margin-left:11%; margin-top: 1em">produces
+this:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example
+pamtris output for FAN mode</b>
+<img src="-C" alt="Image -C" width="100" height="100"></p>
+
+<p style="margin-left:11%; margin-top: 1em">The input file
+gives triangle data by setting the appropriate drawing mode,
+if necessary, and then providing a list of vertices. Each
+vertex is also associated with a list of up to 20
+&quot;attributes,&quot; which are integer values between 0
+and a given maxval. In the most common usage, you use
+<b>pamtris</b> to draw a visual image and a vertex has three
+attributes, which are an RGB specification of a color. Such
+attribute lists may be provided on a per-vertex basis.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Prior to
+effectively writing a PAM image to Standard Output,
+<b>pamtris</b> first rasterizes it onto an internal frame
+buffer, which consists of an &quot;image buffer&quot; and a
+&quot;depth buffer.&quot; The image buffer consists of a
+sequence of <i>height</i> rows containing a sequence of
+<i>width</i> tuples. There is one sample for each vertex
+attribute in every tuple plus an opacity (alpha) sample.
+Each tuple in the image buffer is also associated with an
+integer depth in the depth buffer, which determines whether
+subsequent drawing operations affect that particular tuple
+or not. This provides a way of depth-sorting graphical
+objects which is adequate for many purposes in 2D and 3D
+computer graphics. One prominent shortcoming of such an
+approach to depth-sorting, however, is that it does not
+automatically work with objects which are intended to appear
+&quot;translucent,&quot; therefore requiring more elaborate
+strategies to incorporate said objects into pictures
+generated using this technique.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The opacity
+sample is the last sample of the tuple. <b>pamtris</b>
+manipulates opacity internally and for any tuple it is
+always either 0 or the maxval. The program does not provide
+the user direct control over the alpha image plane.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtris</b>
+rasterizes triangles by approximating their visible area as
+a collection of tuples at particular positions in the frame
+buffer, and to each sample of every such tuple it assigns a
+value which is a perspective-correct interpolation between
+the values of the corresponding attribute for each vertex of
+the triangle. Whenever a tuple within the area of the frame
+buffer is produced, it is written to the corresponding
+position in the frame buffer if and only if it passes a
+depth test. This test works as follows: the depth value of
+every incoming tuple (which is itself an interpolation
+between the Z-coordinates of the vertices of the
+corresponding triangle) is compared against the value in the
+corresponding position in the depth buffer. If the depth
+value of the incoming tuple equals or is smaller than the
+depth value already present in said position in the depth
+buffer, the following happens.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Every sample <i>i</i>, where 0 &amp;#8804; <i>i</i> &lt;
+<i>num_attribs</i>, of the tuple in the corresponding
+position in the image buffer is set to equal the value of
+the respective sample of the incoming tuple; and the alpha
+sample (the last one) is updated to the <i>maxval</i>;</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>The depth value in the corresponding position in the
+depth buffer is updated to a depth value directly
+proportional to that of the incoming tuple.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Otherwise, that
+particular tuple effects no change at all in the frame
+buffer.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The frame
+buffer is initially set so that all samples in every tuple
+of the image buffer contain the value 0, and all entries in
+the depth buffer contain the maximum permitted depth
+value.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+attributes&rsquo; values, and therefore the samples in the
+output PAM images, have no fixed interpretation ascribed to
+them (except for the last image plane, which is deliberately
+supposed to represent tuple opacity information); one may
+ascribe any suitable meaning to them, such as that of
+colors, texture coordinates, surface normals, light
+interaction characteristics, texture influence coefficients
+for multi-texturing, etc.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Fan Mode</b>
+<br>
+The following command generates the image from the fan mode
+example at the top of the
+<a href="#description">DESCRIPTION</a> section. If the file
+<b>fan.tris</b> contains that code, you could process it
+with:</p>
+
+<p style="margin-left:11%; margin-top: 1em">$ pamtris
+-height=200 -width=200 -rgb &lt;fan.tris &gt;fan.pam</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Strip
+Mode</b> <br>
+The following is an example of strip mode:</p>
+
+<p style="margin-left:11%; margin-top: 1em">mode strip <br>
+attribs 255 0 0 # red <br>
+vertex 0 200 1 <br>
+vertex 50 0 1 <br>
+attribs 0 0 0 # black <br>
+vertex 100 200 1 <br>
+attribs 0 205 205 # cyan <br>
+vertex 150 0 1 <br>
+attribs 0 0 255 # blue <br>
+vertex 200 200 1 <br>
+vertex 250 0 1 <br>
+print</p>
+
+<p style="margin-left:11%; margin-top: 1em">Save the above
+code in a file named <b>strip.tris</b> (for instance) and
+process it with:</p>
+
+<p style="margin-left:11%; margin-top: 1em">$ pamtris
+-height=200 -width=200 -rgb &lt;strip.tris &gt;strip.pam</p>
+
+<p style="margin-left:11%; margin-top: 1em">to yield:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example
+pamtris output for STRIP mode</b>
+<img src="-C" alt="Image -C" width="100" height="100"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Triangle
+Mode</b> <br>
+The following is an example of triangle mode:</p>
+
+<p style="margin-left:11%; margin-top: 1em"># yellow square
+<br>
+mode strip <br>
+attrib 155 155 0 <br>
+vertex 50 50 100 <br>
+vertex 50 200 100 <br>
+vertex 200 50 100 <br>
+vertex 200 200 100</p>
+
+<p style="margin-left:11%; margin-top: 1em"># blue triangle
+<br>
+mode triangles <br>
+attrib 0 205 205 <br>
+vertex 20 125 70 <br>
+attrib 0 0 140 <br>
+vertex 230 70 120 # Change &quot;120&quot; and see what
+happens <br>
+vertex 230 180 120 # <br>
+print</p>
+
+<p style="margin-left:11%; margin-top: 1em">Save the above
+code in a file named <b>pierce.tris</b> (for instance) and
+process it with:</p>
+
+<p style="margin-left:11%; margin-top: 1em">$ pamtris
+-height=200 -width=200 -rgb &lt;pierce.tris
+&gt;pierce.pam</p>
+
+<p style="margin-left:11%; margin-top: 1em">to yield:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example
+pamtris output for TRIANGLES mode</b>
+<img src="-C" alt="Image -C" width="100" height="100"></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Meta-programming</b>
+<br>
+The <b>pamtris</b> command language is much too rudimentary
+to be used directly for any serious drawing; you will
+probably want to use a general purpose programming language
+to generate a temporary <b>pamtris</b> command file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For example,
+the <b>draw_polygon</b> procedure in the C program below
+outputs <b>pamtris</b> instructions to draw a regular
+polygon. It does this by generating a number of
+<b>vertex</b> instructions tracing around the perimeter of
+the corresponding circumscribed circle. (Note: The PAM image
+produced by piping the output of the below program into
+<b>pamtris</b> was subsequently downscaled through
+<b>pamscale&nbsp;-linear&nbsp;-xscale&nbsp;0.25&nbsp;-yscale&nbsp;0.25</b>
+to achieve an <a href="#antialias">anti-aliased</a>
+effect.)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Regular
+Polygons</b>
+<img src="-C" alt="Image -C" width="100" height="100"></p>
+
+<p style="margin-left:11%; margin-top: 1em">/*
+----------------------- * <br>
+* width = 512 * <br>
+* height = 512 * <br>
+* num_attribs = 3 * <br>
+* tupletype = RGB_ALPHA * <br>
+* ----------------------- */</p>
+
+<p style="margin-left:11%; margin-top: 1em">#include
+&lt;math.h&gt; <br>
+#include &lt;stdio.h&gt; <br>
+#include &lt;stdlib.h&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">#define PI
+3.14159265358979323844</p>
+
+<p style="margin-left:11%; margin-top: 1em">void
+draw_polygon <br>
+(int const center_x, int const center_y, int const radius,
+int const sides) <br>
+{ <br>
+printf(&quot;mode fan\n&quot; <br>
+&quot;vertex %d %d 0\n&quot;, center_x, center_y);</p>
+
+<p style="margin-left:11%; margin-top: 1em">for(int i = 0;
+i &lt;= sides; i++) <br>
+{ <br>
+int const x = round(center_x + radius * cos(i*2.0*PI /
+sides)); <br>
+int const y = round(center_y - radius * sin(i*2.0*PI /
+sides));</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">printf(&quot;vertex
+%d %d 0\n&quot;, x, y); <br>
+} <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">int main(void)
+<br>
+{ <br>
+puts(&quot;attribs 0 185 80&quot;); /* color: green */ <br>
+draw_polygon(300, 210, 150, 5); /* draws pentagon */</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">puts(&quot;attribs
+255 15 240&quot;); /* color: magenta */ <br>
+draw_polygon(150, 320, 100, 7); /* draws heptagon */</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">puts(&quot;!&quot;);
+<br>
+}</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamtris</b> recognizes the following command line
+options:</p>
+
+<p style="margin-left:11%; margin-top: 1em">&lt;dl
+compact=&quot;compact&quot;&gt; <b><br>
+-width=</b><i>width</i></p>
+
+<p style="margin-left:22%;">Sets the width of the internal
+frame buffer and, by extension, of the output PAM images,
+given in number of columns. This must be an integer in the
+closed range [1, 8192].</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option is
+mandatory.</p>
+
+
+<p style="margin-left:11%;"><b>-height=</b><i>height</i></p>
+
+<p style="margin-left:22%;">This is the height of the
+internal frame buffer and, by extension, of the output PAM
+images, given in number of rows. This must be an integer in
+the closed range [1, 8192].</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option is
+mandatory.</p>
+
+
+<p style="margin-left:11%;"><b>-num_attribs=</b><i>attributes_per_vertex</i></p>
+
+<p style="margin-left:22%;">This is the number of
+attributes per vertex. The depth of the output PAM images
+equals this value plus one (to accomodate the alpha plane).
+The argument must be an integer in the closed range [1,
+20].</p>
+
+<p style="margin-left:22%; margin-top: 1em">The input
+instruction stream may override this with a <b>reset</b>
+command.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You must
+specify exactly one of <b>-num_attribs</b>, <b>-rgb</b>, and
+<b>-grayscale</b>.</p>
+
+
+<p style="margin-left:11%;"><b>-tupletype=</b><i>tupletype</i></p>
+
+<p style="margin-left:22%;">This is the tuple type for the
+output PAM images. The argument is a string which may be no
+longer than 255 characters.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The input
+instruction stream may override this with a <b>reset</b>
+command.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+a null string.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+cannot be specified together with <b>-rgb</b> or
+<b>-grayscale</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-rgb</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>This is a convenience option which simply serves as an
+alias for <b>-num_attribs=</b>3 <b>-tupletype=</b>RGB_ALPHA.
+In other words, this option is a quick way to specify that
+you are going to use <b>pamtris</b> to draw RGB(_ALPHA)
+color images directly, and the three vertex attributes are
+the red, green and blue levels of the color associated with
+the vertex, in that order.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">The input
+instruction stream may override this with a <b>reset</b>
+command.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You must
+specify exactly one of <b>-num_attribs</b>, <b>-rgb</b>, and
+<b>-grayscale</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.85 (December 2018).</p>
+
+<p style="margin-left:11%;"><b>-grayscale</b></p>
+
+<p style="margin-left:22%;">Another convenience option,
+similar to <b>-rgb</b>; except this one is an alias for
+<b>-num_attribs=</b>1 <b>-tupletype=GRAYSCALE_ALPHA</b>. The
+one vertex attribute is the gray level associated with the
+vertex.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The input
+instruction stream may override this with a <b>reset</b>
+command.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You must
+specify exactly one of <b>-num_attribs</b>, <b>-rgb</b>, and
+<b>-grayscale</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.85 (December 2018).</p>
+
+
+<p style="margin-left:11%;"><b>-maxval=</b><i>maxval</i></p>
+
+<p style="margin-left:22%;">Sets the maxval of the output
+PAM images, which is also the maximum permitted value for
+each vertex attribute. This must be an integer in the closed
+range [1, 65535].</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default
+value is 255.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The input
+instruction stream may override this with a <b>reset</b>
+command.</p>
+
+<h2>INSTRUCTION CODE
+<a name="INSTRUCTION CODE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The input for
+<b>pamtris</b> consists of a stream of text lines read from
+Standard Input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Empty lines or
+lines that contain only white space characters are called
+blank lines and are ignored.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When a <b>#</b>
+occurs anywhere in a line, <b>pamtris</b> ignores it along
+with every character after it. In other words, everything
+from the <b>#</b> until the end of the line receives the
+same treatment as white space.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Lines which are
+not blank must contain a sequence of strings, called tokens,
+separated by white space. The first such token must be one
+of the commands recognized by <b>pamtris</b>, and all
+further tokens are interpreted as the arguments for that
+command, if it takes any. When an insufficient number of
+arguments is provided for a command, the line is considered
+invalid and is given the same treatment as a blank line. The
+same happens when an out of range argument or one of a kind
+different of what is expected is given (for example, when
+you give a string of letters where a numerical value is
+expected), or when an unrecognized command/argument is
+found. When a number of arguments greater than that required
+for a particular command is provided, only the portion of
+the line up to the last required argument is considered and
+any further tokens are ignored.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtris</b>
+is case-insensitive. That is, <b>mode</b>, <b>MODE</b>,
+<b>mODe</b>, etc. are all treated the same way.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The commands
+recognized by <b>pamtris</b> are:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>mode</b></p></td>
+<td width="83%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>attribs</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>vertex</b></p></td>
+<td width="80%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>print</b></p></td>
+<td width="80%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>clear</b></p></td>
+<td width="80%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>reset</b></p></td>
+<td width="80%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>quit</b></p></td>
+<td width="80%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">You may use a
+minimum unique abbreviation of a command name. You may use
+an exclamation mark (<b>!</b>) in place of the <b>print</b>
+command name and an asterisk (<b>*</b>) in place of
+<b>clear</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The functions
+of the commands are as follows. <b><br>
+mode</b> { triangles | strip | fan }</p>
+
+<p style="margin-left:22%; margin-top: 1em">This makes
+<b>pamtris</b> enter a new drawing mode. The argument is a
+word which specifies the mode to change to. Instead of a
+full argument name, it is permissible to provide a minimum
+unique abbreviation, which has the same effect. The drawing
+mode will remain the same until the next <b>mode</b> command
+is given.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This command
+also resets the current vertex list, which is
+(re)initialized to an empty state after the command is
+executed. One may add new vertices to this list through
+successive invocations of the <b>vertex</b> command (see
+below). You do not have to worry about providing &quot;too
+many&quot; vertices, since the vertex list is virtualized:
+<b>pamtris</b> maintains only the state pertaining to three
+vertices at any one time. The current vertex list is
+initially empty.</p>
+
+<p style="margin-left:22%; margin-top: 1em">It is
+permissible to give <b>pamtris</b> a <b>mode</b> command
+which instructs it to enter a drawing mode it is currently
+already in. One might use this approach to reset the current
+vertex list without changing the current drawing mode.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Regardless of
+the current drawing mode, the program immediately rasterizes
+a new triangle into the frame buffer as soon as you provide
+the necessary vertices for it through the current vertex
+list. (If you reset the vertex list before giving all the
+vertices necessary to draw a new triangle, the program
+effectively discards from the list any vertices that might
+have been pushed into the vertex list up to that point
+without using them to draw any new triangles.)</p>
+
+<p style="margin-left:22%; margin-top: 1em">In the
+following descriptions of each drawing mode,
+triangles&rsquo; and vertices&rsquo; indices (ordinal
+numbers) are 0-based.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+<b>triangles</b> argument instructs <b>pamtris</b> to enter
+the &quot;TRIANGLES&quot; drawing mode. While in this mode,
+a series of separate triangles is constructed. Every three
+vertices pushed into the current vertex list specify a new
+triangle. Formally, this means that every <i>Nth</i>
+triangle is specified by vertices 3*<i>N</i>,
+3*<i>N&nbsp;</i>+&nbsp;1, and 3*<i>N&nbsp;</i>+&nbsp;2. This
+is the default initial mode and is therefore not required to
+be set explicitly before drawing any triangles.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+<b>strip</b> argument instructs <b>pamtris</b> to enter the
+&quot;STRIP&quot; drawing mode. While in this mode,
+<b>pamtris</b> constructs a &quot;triangle strip.&quot; That
+is, the first three vertices pushed into the current vertex
+list specify the first triangle, and every new vertex pushed
+after that specifies, together with the previous two, the
+next triangle. Formally, this means that every <i>N</i>th
+triangle is specified by vertices <i>N</i>,
+<i>N&nbsp;</i>+&nbsp;1, and <i>N&nbsp;</i>+&nbsp;2.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The <b>fan</b>
+argument instructs <b>pamtris</b> to enter the
+&quot;FAN&quot; drawing mode. While in this mode, a
+so-called &quot;triangle fan&quot; is constructed. That is,
+the first three vertices pushed into the current vertex list
+specify the first triangle, and every new vertex pushed
+after that specifies, together with the previous vertex and
+the first one, the next triangle. Formally, this means that
+every <i>N</i>th triangle is specified by vertices <i>0</i>,
+<i>N&nbsp;</i>+&nbsp;1, and <i>N&nbsp;</i>+&nbsp;2.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>attribs</b>
+<i>a&lt;sub&gt;0 a&lt;sub&gt;1</i></p>
+
+<p style="margin-left:22%;"><i>a&lt;sub&gt;2</i> ...
+<i>a&lt;sub&gt;num_attribs - 1</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">This updates
+the current attribute values list. This command takes as
+arguments a sequence of <i>num_attribs</i> integers which
+represent the values of the attributes to be associated with
+the next vertex. This sequence of values is the just
+mentioned &quot;current attribute values list.&quot;</p>
+
+<p style="margin-left:22%; margin-top: 1em">Each <i>ith</i>
+argument, where 0 &amp;#8804; <i>i</i> &lt;
+<i>num_attribs</i>, indicates the value to be assigned to
+the <i>i</i>th attribute of the current attribute values
+list. All arguments must be integer values in the closed
+range [0, <i>maxval</i>]. If a number of arguments less than
+the current value of <i>num_attribs</i> is given, the
+command is considered invalid and is therefore ignored.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The current
+attribute values list remains unchanged until the next valid
+<b>attribs</b> or <b>reset</b> command is given. The
+<b>attribs</b> command allows one to change the values of
+each attribute individually, while the <b>reset</b> command
+is not specifically designed for that function, but it has
+the side effect of setting all values in the current
+attribute values list to the <i>maxval</i> (see below).</p>
+
+<p style="margin-left:22%; margin-top: 1em">All values in
+the current attribute values list are initially set to the
+<i>maxval</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">&lt;dt
+id=&quot;cmd_vertex&quot;&gt;<b>vertex</b> <i>x y z</i>
+[<i>w</i>]</p>
+
+<p style="margin-left:22%; margin-top: 1em">Adds a new
+vertex to the current vertex list (see the <b>mode</b>
+command above), assigning the values of the arguments to its
+respective coordinates, and the values in the current
+attribute values list (see the <b>attribs</b> command above)
+to the respective entries in the attribute list associated
+with the vertex.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>x</i>,
+<i>y</i> and <i>z</i> must be integer values in the closed
+range [-32767, 32767]. <i>x</i> and <i>y</i> represent,
+respectively, the column and row of the tuple which
+corresponds to the location of the vertex. Such values may
+correspond to tuples outside the limits of the frame buffer.
+The origin of the coordinate system is at the top-left tuple
+of the frame buffer. The X-axis goes from left to right, and
+the Y-axis from top to bottom. A negative value for <i>x</i>
+indicates a column that many tuples to the left of the
+leftmost column of the frame buffer. Likewise, a negative
+value for <i>y</i> indicates a row that many tuples above
+the uppermost row of the frame buffer. Observe that those
+coordinates correspond directly to a particular point in the
+coordinate system delineated above, regardless of whether
+you are trying to draw an image which is supposed to look as
+if viewed &quot;in perspective&quot; or not; <b>pamtris</b>
+does <i>not</i> &quot;warp&quot; the coordinates you give in
+any way. Therefore, if you want to draw images in
+perspective, you must compute values for <i>x</i> and
+<i>y</i> already projected into <b>pamtris</b>&rsquo;
+coordinate system yourself, using an external perspective
+projection method, prior to giving them to the program.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The <i>z</i>
+parameter represents the Z-coordinate of the vertex, which
+is used to compute depth values for tuples within the areas
+of rasterized triangles. Intuitively, smaller values for
+<i>z</i> mean &quot;closer to the viewer,&quot; and larger
+ones mean &quot;farther away from the viewer&quot; (but
+remember: as said above, the <i>x</i> and <i>y</i>
+coordinates are not warped in any way, which implies that
+they are not affected by <i>z</i>; neither by the next
+parameter, for that matter).</p>
+
+<p style="margin-left:22%; margin-top: 1em">Optionally, you
+may provide a <i>w</i> parameter which represents a
+&quot;perspective correction factor&quot; used to properly
+interpolate vertex attributes across the area of the
+corresponding triangle. This must be an integer value in the
+closed range [1, 1048575]. If you don&rsquo;t provide a
+value for it, the default value of 1 is used (hence, if you
+want to nullify the effects of perspective correction on a
+triangle so the output samples are computed as if just
+linearly interpolated, simply do not provide a value for
+<i>w</i> for any vertex of the triangle). If, however, you
+intend to draw 3D geometry in perspective, you must provide
+an appropriate value for this parameter, otherwise the
+output images might look very wrong. <i>w</i> was new in
+Netpbm 10.85 (December 2018).</p>
+
+<p style="margin-left:22%; margin-top: 1em">Consider the
+<a href="https://en.wikipedia.org/wiki/Viewing_frustum">
+typical model</a> of the so-called &quot;viewing
+frustum&quot; used to project vertices in 3D &quot;world
+space&quot; onto a planar &quot;image space.&quot; If we
+adopt the convention that a &quot;z-plane&quot; means any
+plane parallel to the view-plane (a.k.a. picture plane,
+a.k.a. near plane), the value of <i>w</i> for a vertex
+should then be the (smallest/euclidean/orthogonal) distance
+in pixels between the projection reference point (PRP, or
+&quot;eye&quot;) and the z-plane containing the vertex. One
+way to compute this value amounts to simply taking the dot
+product between the 3D vector <b>r</b> and the 3D unit
+vector <b>n</b>, where <b>r</b> is the vector which goes
+from the projection reference point (PRP, or
+&quot;eye&quot;) to the vertex, and <b>n</b> is a view-plane
+normal (VPN) of unit length which points away from the PRP.
+In other words, this is equal to the length of the
+orthogonal projection of <b>r</b> on the line
+&quot;determined&quot; by <b>n</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">(Note: For any
+two 3D vectors <b>a</b> and <b>b</b>, with respective real
+scalar components a&lt;sub&gt;x, a&lt;sub&gt;y,
+a&lt;sub&gt;z and b&lt;sub&gt;x, b&lt;sub&gt;y,
+b&lt;sub&gt;z, the dot product between <b>a</b> and <b>b</b>
+is simply
+a&lt;sub&gt;x*b&lt;sub&gt;x&nbsp;+&nbsp;a&lt;sub&gt;y*b&lt;sub&gt;y&nbsp;+&nbsp;a&lt;sub&gt;z*b&lt;sub&gt;z.)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>print</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>This writes a PAM image to Standard Output whose raster
+is a copy of the current contents of the image buffer. The
+values of the WIDTH and HEIGHT fields are the same as the
+width and height, respectively, of the frame buffer, which
+were given on the command line during program invocation.
+The MAXVAL field is equal to the current maxval; the DEPTH
+field is equal to the current value of <i>num_attribs</i> +
+1; and the TUPLTYPE field is equal to the current
+tupletype.</p> </td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">This command
+has no effect upon the current drawing state. E. g. it does
+not modify the current drawing mode, the current vertex
+list, etc.</p>
+
+<p style="margin-left:22%; margin-top: 1em">One may issue
+an arbitrary number of <b>print</b> commands at different
+positions in the input instruction sequence to produce a
+multi-image PAM stream.</p>
+
+<p style="margin-left:11%;"><b>clear</b> [ image | depth
+]</p>
+
+<p style="margin-left:22%; margin-top: 1em">Clears the
+frame buffer. That is, all samples in the image buffer are
+once again set to 0, and all entries in the depth buffer are
+once again set to the maximum permitted depth value.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Optionally, one
+may provide an argument to only clear either the image
+buffer or the depth buffer individually, while leaving the
+other intact. With the <b>image</b> argument, only the image
+buffer is cleared; with the <b>depth</b> argument, only the
+depth buffer is cleared. Instead of full argument names, one
+may provide a minimum unique abbreviation, which has the
+same effect. The single character <b>z</b> is also accepted
+as an alias for <b>depth</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Like the
+<b>print</b> command, this command has no effect upon the
+current drawing state either.</p>
+
+<p style="margin-left:11%;"><b>reset</b> <i>maxval
+num_attribs</i> [<i>tupletype</i>]</p>
+
+<p style="margin-left:22%; margin-top: 1em">This updates
+the current maxval and number of attributes per vertex
+(num_attribs), resetting the &lt;u&gt;image&lt;/u&gt; buffer
+with a new maxval and number of samples per tuple while at
+it. The parameter <i>maxval</i> must be an integer in the
+closed range [1, 65535], and <i>num_attribs</i> must be an
+integer in the closed range [1, 20].</p>
+
+<p style="margin-left:22%; margin-top: 1em">Optionally,
+after the second argument, one may provide a string to be
+assigned to the current <i>tupletype</i>. The string goes
+from the first character after the second argument which is
+not white space and continues until (and including) the last
+character before the end of the line which is not white
+space. If a new tupletype is not provided, or the provided
+string is longer than 255 characters, the empty string is
+assigned to the current <i>tupletype</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The side
+effects of running this command are</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>The new image buffer is completely cleared once the
+command is executed.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>All values in the current attribute values list are set
+to the new maxval.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>The current vertex list is reset.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">However, it
+does not touch the depth buffer: it is left the same way as
+it was found before the command. Also the drawing mode
+remains the same (e. g. if <b>pamtris</b> was in FAN mode,
+it will continue in that same mode, etc.).</p>
+
+<p style="margin-left:22%; margin-top: 1em">If this command
+is given with an invalid value for <i>maxval</i> or
+<i>num_attribs</i>, it is ignored and therefore none of the
+above side effects apply, nor do the current maxval,
+num_attribs or tupletype change at all.</p>
+
+<p style="margin-left:22%; margin-top: 1em">It is
+permissible to give a value for <i>maxval</i> and
+<i>num_attribs</i> equal to the current maxval and
+num_attribs, respectively, although the above side effects
+will still apply even in such cases.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Since this
+command deals with memory allocation, it may fail to execute
+successfully. If that happens, no lines of input will be
+read anymore and <b>pamtris</b> will be terminated as if the
+<b>quit</b> command was given.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p style="margin-top: 1em"><b>quit</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">This terminates <b>pamtris</b>.
+It will not read any more lines of input after this
+command.</p> </td></tr>
+</table>
+
+<h2>TIPS
+<a name="TIPS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Texturing</b>
+<br>
+It is possible to apply so-called &quot;textures&quot; to
+images produced with <b>pamtris</b> by using a pair of
+vertex attributes as texture coordinates, then using
+<b>pamchannel</b>(1) to select the appropriate channels in
+the output image(s), and finally processing the result
+through <b>pamlookup</b>(1), providing the desired texture
+file as a &quot;lookup table.&quot; If you are drawing
+pictures in perspective, make sure to provide adequate
+values for the <i>w</i> parameter to your vertex commands (
+<a href="#cmd_vertex">see above</a> ) so that the resulting
+samples in the images produced by <b>pamtris</b> are
+perspective-correct. You might want to consider using
+<b>pnmtile</b>(1) to make textures which are inteded to be
+&quot;repeated&quot; along triangle meshes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The animated
+GIF below is an example of what can be achieved using the
+technique described above (Earth texture from
+<a href="https://visibleearth.nasa.gov/view.php?id=73580">nasa.gov</a>
+).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Rotating
+Earth</b>
+<img src="-C" alt="Image -C" width="100" height="100"></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Anti-aliased
+edges <br>
+pamtris</b> performs no anti-aliasing on triangle edges by
+itself. However, it is possible to obtain anti-aliased
+images through a &quot;super-sampling&quot; approach: draw
+your image(s) at a size larger than the desired final size,
+and then, when all postprocessing is done, downscale the
+final image(s) to the desired size. Drawing images with
+twice the desired width and height, then downscaling them to
+the intended size while disregarding gamma (i.e. what
+<b>pamscale&nbsp;-linear</b> does) often produces good
+enough results; but the larger the ratio
+<i>&quot;size&nbsp;of&nbsp;original&nbsp;image&quot;&nbsp;/&nbsp;&quot;size&nbsp;of&nbsp;downscaled&nbsp;
+image&quot;</i> , the better the quality of the
+anti-aliasing effect.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pampick</b>(1)
+<b>pamchannel</b>(1) <b>pamstack</b>(1) <b>pamlookup</b>(1)
+<b>pamarith</b>(1) <b>pamscale</b>(1) <b>pamdepth</b>(1)
+<b>pamexec</b>(1) <b>pam</b>(1)</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtris</b>
+was new in Netpbm 10.84 (September 2018).</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamtris.html</b></p>
+<hr>
+</body>
+</html>

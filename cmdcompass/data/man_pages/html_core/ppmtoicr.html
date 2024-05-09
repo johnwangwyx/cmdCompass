@@ -1,0 +1,231 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:38 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Ppmtoicr User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Ppmtoicr User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#LIMITATIONS">LIMITATIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ppmtoicr -
+convert a PPM image into NCSA ICR format</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmtoicr</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-windowname</b>
+<i>name</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-expand</b>
+<i>expand</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-display</b>
+<i>display</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-rle</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<i>ppmfile</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmtoicr</b>
+reads a PPM file as input. Produces an NCSA Telnet
+Interactive Color Raster graphic file as output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If
+<i>ppmfile</i> is not supplied, <b>ppmtoicr</b> reads from
+Standard Input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Interactive
+Color Raster (ICR) is a protocol for displaying raster
+graphics on workstation screens. The protocol is implemented
+in NCSA Telnet for the Macintosh version 2.3. The ICR
+protocol shares characteristics of the Tektronix graphics
+terminal emulation protocol. For example, escape sequences
+are used to control the display.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmtoicr</b>
+will output the appropriate sequences to create a window of
+the dimensions of the input image, create a colormap of up
+to 256 colors on the display, then load the picture data
+into the window.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that there
+is no icrtoppm tool - this transformation is one way.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>ppmtoicr</b> recognizes the following command line
+options: <b><br>
+-windowname</b> <i>name</i></p>
+
+<p style="margin-left:22%;">Output will be displayed in
+<i>name</i> (Default is to use <i>ppmfile</i> or
+&quot;untitled&quot; if the input is from Standard
+Input).</p>
+
+<p style="margin-left:11%;"><b>-expand</b>
+<i>expand</i></p>
+
+<p style="margin-left:22%;">Output will be expanded on
+display by factor <i>expand</i> (For example, a value of 2
+will cause four pixels to be displayed for every input
+pixel.)</p>
+
+<p style="margin-left:11%;"><b>-display</b>
+<i>display</i></p>
+
+<p style="margin-left:22%;">Output will be displayed on
+screen numbered <i>display</i></p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">To display a
+PPM file named <b>ppmfile</b> using the protocol:</p>
+
+<p style="margin-left:11%; margin-top: 1em">ppmtoicr
+ppmfile</p>
+
+<p style="margin-left:11%; margin-top: 1em">This will
+create a window named <i>ppmfile</i> on the display with the
+correct dimensions for <i>ppmfile</i>, create and download a
+colormap of up to 256 colors, and download the picture into
+the window. You may achieve the same effect with the
+following sequence:</p>
+
+<p style="margin-left:11%; margin-top: 1em">ppmtoicr
+ppmfile &gt; filename <br>
+cat filename</p>
+
+<p style="margin-left:11%; margin-top: 1em">To display a
+GIF file using the protocol in a window titled after the
+input file, zoom the displayed image by a factor of 2, and
+run-length encode the data:</p>
+
+<p style="margin-left:11%; margin-top: 1em">giftopnm
+giffile | ppmtoicr -w giffile -r -e 2</p>
+
+<h2>LIMITATIONS
+<a name="LIMITATIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The protocol
+uses frequent fflush() calls to speed up display. If you
+save the output to a file for later display via <b>cat</b>,
+<b>ppmtoicr</b> will draw much more slowly. In either case,
+increasing the blocksize limit on the display will speed up
+transmission substantially.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppm</b>(1)</p>
+
+<p style="margin-left:11%; margin-top: 1em">NCSA Telnet for
+the Macintosh, University of Illinois at Urbana-Champaign
+(1989)</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Until Netpbm
+10.71 (June 2015), there was a <b>-rle</b> option
+documented, which was said to cause the output to use run
+length encoding compression. But because of a simple bug in
+option processing code, the option never had any effect. And
+the compression code did not look like it worked anyway and
+would take a fair amount of work to fix. Because it was
+unlikely anyone would ever use this program again, much less
+want to use run length encoding, we removed it from the
+documentation rather than fix the code.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1990 by Kanthan Pillay (<i>svpillay@Princeton.EDU</i>),
+Princeton University Computing and Information
+Technology.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/ppmtoicr.html</b></p>
+<hr>
+</body>
+</html>

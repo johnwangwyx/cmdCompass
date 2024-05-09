@@ -1,0 +1,257 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:33:57 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>COL</title>
+
+</head>
+<body>
+
+<h1 align="center">COL</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#AVAILABILITY">AVAILABILITY</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">col - filter
+reverse line feeds from input</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>col</b>
+<i>options</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i><b>col</b></i>
+filters out reverse (and half-reverse) line feeds so the
+output is in the correct order, with only forward and
+half-forward line feeds. It also replaces any whitespace
+characters with tabs where possible. This can be useful in
+processing the output of <b>nroff</b>(1) and
+<b>tbl</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>col</b>
+reads from standard input and writes to standard output.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-b</b>,
+<b>--no-backspaces</b></p>
+
+<p style="margin-left:17%;">Do not output any backspaces,
+printing only the last character written to each column
+position.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-f</b>,
+<b>--fine</b></p>
+
+<p style="margin-left:17%;">Permit half-forward line feeds.
+Normally characters destined for a half-line boundary are
+printed on the following line.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--tabs</b></p>
+
+<p style="margin-left:17%;">Output tabs instead of multiple
+spaces.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-l</b>,
+<b>--lines</b> <i>number</i></p>
+
+<p style="margin-left:17%;">Buffer at least <i>number</i>
+lines in memory. By default, 128 lines are buffered.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-p</b>,
+<b>--pass</b></p>
+
+<p style="margin-left:17%;">Force unknown control sequences
+to be passed through unchanged. Normally <b>col</b> will
+filter out any control sequences other than those recognized
+and interpreted by itself, which are listed below.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-x</b>,
+<b>--spaces</b></p>
+
+<p style="margin-left:17%;">Output multiple spaces instead
+of tabs.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Display help text and exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-V</b>,
+<b>--version</b></p>
+
+<p style="margin-left:17%;">Print version and exit.</p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The <b>col</b>
+utility conforms to the Single UNIX Specification, Version
+2. The <b>-l</b> option is an extension to the standard.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The control
+sequences for carriage motion that <b>col</b> understands
+and their decimal values are listed in the following
+table:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ESC-7</b></p>
+
+<p style="margin-left:17%;">reverse line feed (escape then
+7)</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ESC-8</b></p>
+
+<p style="margin-left:17%;">half reverse line feed (escape
+then 8)</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ESC-9</b></p>
+
+<p style="margin-left:17%;">half forward line feed (escape
+then 9)</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>backspace</b></p>
+
+<p style="margin-left:17%;">moves back one column (8);
+ignored in the first column</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>newline</b></p>
+
+<p style="margin-left:17%;">forward line feed (10); also
+does carriage return</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>carriage
+return</b></p>
+
+<p style="margin-left:17%;">(13)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>shift
+in</b></p>
+
+<p style="margin-left:17%;">shift to normal character set
+(15)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>shift
+out</b></p>
+
+<p style="margin-left:17%;">shift to alternate character
+set (14)</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>space</b></p>
+
+<p style="margin-left:17%;">moves forward one column
+(32)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>tab</b></p>
+
+<p style="margin-left:17%;">moves forward to next tab stop
+(9)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>vertical
+tab</b></p>
+
+<p style="margin-left:17%;">reverse line feed (11)</p>
+
+<p style="margin-left:11%; margin-top: 1em">All
+unrecognized control characters and escape sequences are
+discarded.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>col</b>
+keeps track of the character set as characters are read and
+makes sure the character set is correct when they are
+output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the input
+attempts to back up to the last flushed line, <b>col</b>
+will display a warning message.</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">A <b>col</b>
+command appeared in Version 6 AT&amp;T UNIX.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>expand</b>(1),
+<b>nroff</b>(1), <b>tbl</b>(1)</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For bug
+reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+
+<h2>AVAILABILITY
+<a name="AVAILABILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The <b>col</b>
+command is part of the util-linux package which can be
+downloaded from <i>Linux Kernel Archive</i>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>
+<hr>
+</body>
+</html>

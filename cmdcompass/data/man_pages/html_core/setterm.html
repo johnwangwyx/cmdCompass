@@ -1,0 +1,471 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:46 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SETTERM</title>
+
+</head>
+<body>
+
+<h1 align="center">SETTERM</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#COMPATIBILITY">COMPATIBILITY</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#AVAILABILITY">AVAILABILITY</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">setterm - set
+terminal attributes</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>setterm</b>
+[options]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>setterm</b>
+writes to standard output a character string that will
+invoke the specified terminal capabilities. Where possible
+<i>terminfo</i> is consulted to find the string to use. Some
+options however (marked &quot;virtual consoles only&quot;
+below) do not correspond to a <b>terminfo</b>(5) capability.
+In this case, if the terminal type is &quot;con&quot; or
+&quot;linux&quot; the string that invokes the specified
+capabilities on the PC Minix virtual console driver is
+output. Options that are not implemented by the terminal are
+ignored.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For boolean
+options (<b>on</b> or <b>off</b>), the default is
+<b>on</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Below, an
+<i>8-color</i> can be <b>black</b>, <b>red</b>,
+<b>green</b>, <b>yellow</b>, <b>blue</b>, <b>magenta</b>,
+<b>cyan</b>, or <b>white</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A
+<i>16-color</i> can be an <i>8-color</i>, or <b>grey</b>, or
+<b>bright</b> followed by <b>red</b>, <b>green</b>,
+<b>yellow</b>, <b>blue</b>, <b>magenta</b>, <b>cyan</b>, or
+<b>white</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The various
+color options may be set independently, at least on virtual
+consoles, though the results of setting multiple modes (for
+example, <b>--underline</b> and <b>--half-bright</b>) are
+hardware-dependent.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The optional
+arguments are recommended with '=' (equals sign) and not
+space between the option and the argument. For example
+--option=argument. <b>setterm</b> can interpret the next
+non-option argument as an optional argument too.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--appcursorkeys</b>
+on|off</p>
+
+<p style="margin-left:17%;">Sets Cursor Key Application
+Mode on or off. When on, ESC O A, ESC O B, etc. will be sent
+for the cursor keys instead of ESC [ A, ESC [ B, etc. See
+the <i>vi and Cursor-Keys</i> section of the
+<i>Text-Terminal-HOWTO</i> for how this can cause problems
+for <b>vi</b> users. Virtual consoles only.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--append</b>
+<i>console_number</i></p>
+
+<p style="margin-left:17%;">Like <b>--dump</b>, but appends
+to the snapshot file instead of overwriting it. Only works
+if no <b>--dump</b> options are given.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--background</b>
+<i>8-color</i>|default</p>
+
+<p style="margin-left:17%;">Sets the background text
+color.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--blank</b>[=0-60|force|poke]</p>
+
+<p style="margin-left:17%;">Sets the interval of
+inactivity, in minutes, after which the screen will be
+automatically blanked (using APM if available). Without an
+argument, it gets the blank status (returns which vt was
+blanked, or zero for an unblanked vt). Virtual consoles
+only.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The
+<b>force</b> argument keeps the screen blank even if a key
+is pressed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The <b>poke</b>
+argument unblanks the screen.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--bfreq</b>[=<i>number</i>]</p>
+
+<p style="margin-left:17%;">Sets the bell frequency in
+Hertz. Without an argument, it defaults to <b>0</b>. Virtual
+consoles only.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--blength</b>[=0-2000]</p>
+
+<p style="margin-left:17%;">Sets the bell duration in
+milliseconds. Without an argument, it defaults to <b>0</b>.
+Virtual consoles only.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--blink</b>
+on|off</p>
+
+<p style="margin-left:17%;">Turns blink mode on or off.
+Except on a virtual console, <b>--blink off</b> turns off
+all attributes (bold, half-brightness, blink, reverse).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--bold</b>
+on|off</p>
+
+<p style="margin-left:17%;">urns bold (extra bright) mode
+on or off. Except on a virtual console, <b>--bold off</b>
+turns off all attributes (bold, half-brightness, blink,
+reverse).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--clear</b>[=all|rest]</p>
+
+<p style="margin-left:17%;">Without an argument or with the
+argument <b>all</b>, the entire screen is cleared and the
+cursor is set to the home position, just like
+<b>clear</b>(1) does. With the argument <b>rest</b>, the
+screen is cleared from the current cursor position to the
+end.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--clrtabs</b>[=<i>tab1
+tab2 tab3</i> ...]</p>
+
+<p style="margin-left:17%;">Clears tab stops from the given
+horizontal cursor positions, in the range <b>1-160</b>.
+Without arguments, it clears all tab stops. Virtual consoles
+only.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--cursor</b>
+on|off</p>
+
+<p style="margin-left:17%;">Turns the terminal&rsquo;s
+cursor on or off.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--default</b></p>
+
+<p style="margin-left:17%;">Sets the terminal&rsquo;s
+rendering options to the default values.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--dump</b>[=<i>console_number</i>]</p>
+
+<p style="margin-left:17%;">Writes a snapshot of the
+virtual console with the given number to the file specified
+with the <b>--file</b> option, overwriting its contents; the
+default is <i>screen.dump</i>. Without an argument, it dumps
+the current virtual console. This overrides
+<b>--append</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--file</b>
+<i>filename</i></p>
+
+<p style="margin-left:17%;">Sets the snapshot file name for
+any <b>--dump</b> or <b>--append</b> options on the same
+command line. If this option is not present, the default is
+<i>screen.dump</i> in the current directory. A path name
+that exceeds the system maximum will be truncated, see
+<b>PATH_MAX</b> from <i>linux/limits.h</i> for the
+value.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--foreground</b>
+<i>8-color</i>|default</p>
+
+<p style="margin-left:17%;">Sets the foreground text
+color.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--half-bright</b>
+on|off</p>
+
+<p style="margin-left:17%;">Turns dim (half-brightness)
+mode on or off. Except on a virtual console,
+<b>--half-bright off</b> turns off all attributes (bold,
+half-brightness, blink, reverse).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--hbcolor</b>
+[bright] <i>16-color</i></p>
+
+<p style="margin-left:17%;">Sets the color for half-bright
+characters.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--initialize</b></p>
+
+<p style="margin-left:17%;">Displays the terminal
+initialization string, which typically sets the
+terminal&rsquo;s rendering options, and other attributes to
+the default values.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--inversescreen</b>
+on|off</p>
+
+<p style="margin-left:17%;">Swaps foreground and background
+colors for the whole screen.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--linewrap</b>
+on|off</p>
+
+<p style="margin-left:17%;">Makes the terminal continue on
+a new line when a line is full.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--msg</b>
+on|off</p>
+
+<p style="margin-left:17%;">Enables or disables the sending
+of kernel <b>printk</b>() messages to the console. Virtual
+consoles only.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--msglevel</b>
+0-8</p>
+
+<p style="margin-left:17%;">Sets the console logging level
+for kernel <b>printk()</b> messages. All messages strictly
+more important than this will be printed, so a logging level
+of <b>0</b> has the same effect as <b>--msg on</b> and a
+logging level of <b>8</b> will print all kernel messages.
+<b>klogd</b>(8) may be a more convenient interface to the
+logging of kernel messages.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Virtual
+consoles only.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--powerdown</b>[=0-60]</p>
+
+<p style="margin-left:17%;">Sets the VESA powerdown
+interval in minutes. Without an argument, it defaults to
+<b>0</b> (disable powerdown). If the console is blanked or
+the monitor is in suspend mode, then the monitor will go
+into vsync suspend mode or powerdown mode respectively after
+this period of time has elapsed.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--powersave</b>
+<i>mode</i></p>
+
+<p style="margin-left:17%;">Valid values for <i>mode</i>
+are:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b>vsync|on</b></p>
+
+<p style="margin-left:23%;">Puts the monitor into VESA
+vsync suspend mode.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b>hsync</b></p>
+
+<p style="margin-left:23%;">Puts the monitor into VESA
+hsync suspend mode.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b>powerdown</b></p>
+
+<p style="margin-left:23%;">Puts the monitor into VESA
+powerdown mode.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>off</b></p>
+
+<p style="margin-left:23%;">Turns monitor VESA powersaving
+features.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--regtabs</b>[=1-160]</p>
+
+<p style="margin-left:17%;">Clears all tab stops, then sets
+a regular tab stop pattern, with one tab every specified
+number of positions. Without an argument, it defaults to
+<b>8</b>. Virtual consoles only.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--repeat</b>
+on|off</p>
+
+<p style="margin-left:17%;">Turns keyboard repeat on or
+off. Virtual consoles only.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--reset</b></p>
+
+<p style="margin-left:17%;">Displays the terminal reset
+string, which typically resets the terminal to its power-on
+state.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--resize</b></p>
+
+<p style="margin-left:17%;">Reset terminal size by
+assessing maximum row and column. This is useful when actual
+geometry and kernel terminal driver are not in sync. Most
+notable use case is with serial consoles, that do not use
+<b>ioctl</b>(3p) but just byte streams and breaks.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--reverse</b>
+on|off</p>
+
+<p style="margin-left:17%;">Turns reverse video mode on or
+off. Except on a virtual console, <b>--reverse off</b> turns
+off all attributes (bold, half-brightness, blink,
+reverse).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--store</b></p>
+
+<p style="margin-left:17%;">Stores the terminal&rsquo;s
+current rendering options (foreground and background colors)
+as the values to be used at reset-to-default. Virtual
+consoles only.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--tabs</b>[=<i>tab1
+tab2 tab3</i> ...]</p>
+
+<p style="margin-left:17%;">Sets tab stops at the given
+horizontal cursor positions, in the range <b>1-160</b>.
+Without arguments, it shows the current tab stop
+settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--term</b>
+<i>terminal_name</i></p>
+
+<p style="margin-left:17%;">Overrides the <b>TERM</b>
+environment variable.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--ulcolor</b>
+[bright] <i>16-color</i></p>
+
+<p style="margin-left:17%;">Sets the color for underlined
+characters. Virtual consoles only.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--underline</b>
+on|off</p>
+
+<p style="margin-left:17%;">Turns underline mode on or
+off.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Display help text and exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-V</b>,
+<b>--version</b></p>
+
+<p style="margin-left:17%;">Print version and exit.</p>
+
+<h2>COMPATIBILITY
+<a name="COMPATIBILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Since version
+2.25 <b>setterm</b> has support for long options with two
+hyphens, for example <b>--help</b>, beside the historical
+long options with a single hyphen, for example <b>-help</b>.
+In scripts it is better to use the backward-compatible
+single hyphen rather than the double hyphen. Currently there
+are no plans nor good reasons to discontinue single-hyphen
+compatibility.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Differences
+between the Minix and Linux versions are not documented.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>stty</b>(1),
+<b>tput</b>(1), <b>tty</b>(4), <b>terminfo</b>(5)</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For bug
+reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+
+<h2>AVAILABILITY
+<a name="AVAILABILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>setterm</b> command is part of the util-linux package
+which can be downloaded from <i>Linux Kernel Archive</i>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>
+<hr>
+</body>
+</html>

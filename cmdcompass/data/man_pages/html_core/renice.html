@@ -1,0 +1,197 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:44 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>RENICE</title>
+
+</head>
+<body>
+
+<h1 align="center">RENICE</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#AVAILABILITY">AVAILABILITY</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">renice - alter
+priority of running processes</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>renice</b>
+[<b>-n</b>] <i>priority</i> [<b>-g</b>|<b>-p</b>|<b>-u</b>]
+<i>identifier</i>...</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>renice</b>
+alters the scheduling priority of one or more running
+processes. The first argument is the <i>priority</i> value
+to be used. The other arguments are interpreted as process
+IDs (by default), process group IDs, user IDs, or user
+names. <b>renice</b>'ing a process group causes all
+processes in the process group to have their scheduling
+priority altered. <b>renice</b>'ing a user causes all
+processes owned by the user to have their scheduling
+priority altered.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-n</b>,
+<b>--priority</b> <i>priority</i></p>
+
+<p style="margin-left:17%;">Specify the scheduling
+<i>priority</i> to be used for the process, process group,
+or user. Use of the option <b>-n</b> or <b>--priority</b> is
+optional, but when used it must be the first argument.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-g</b>,
+<b>--pgrp</b></p>
+
+<p style="margin-left:17%;">Interpret the succeeding
+arguments as process group IDs.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-p</b>,
+<b>--pid</b></p>
+
+<p style="margin-left:17%;">Interpret the succeeding
+arguments as process IDs (the default).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-u</b>,
+<b>--user</b></p>
+
+<p style="margin-left:17%;">Interpret the succeeding
+arguments as usernames or UIDs.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Display help text and exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-V</b>,
+<b>--version</b></p>
+
+<p style="margin-left:17%;">Print version and exit.</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/etc/passwd</i></p>
+
+<p style="margin-left:17%;">to map user names to user
+IDs</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Users other
+than the superuser may only alter the priority of processes
+they own. Furthermore, an unprivileged user can only
+<i>increase</i> the &quot;nice value&quot; (i.e., choose a
+lower priority) and such changes are irreversible unless
+(since Linux 2.6.12) the user has a suitable
+&quot;nice&quot; resource limit (see <b>ulimit</b>(1p) and
+<b>getrlimit</b>(2)).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The superuser
+may alter the priority of any process and set the priority
+to any value in the range -20 to 19. Useful priorities are:
+19 (the affected processes will run only when nothing else
+in the system wants to), 0 (the &quot;base&quot; scheduling
+priority), anything negative (to make things go very
+fast).</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>renice</b> command appeared in 4.0BSD.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+command would change the priority of the processes with PIDs
+987 and 32, plus all processes owned by the users daemon and
+root:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>renice +1
+987 -u daemon root -p 32</b></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>nice</b>(1),
+<b>chrt</b>(1), <b>getpriority</b>(2),
+<b>setpriority</b>(2), <b>credentials</b>(7),
+<b>sched</b>(7)</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For bug
+reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+
+<h2>AVAILABILITY
+<a name="AVAILABILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>renice</b> command is part of the util-linux package
+which can be downloaded from <i>Linux Kernel Archive</i>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>
+<hr>
+</body>
+</html>

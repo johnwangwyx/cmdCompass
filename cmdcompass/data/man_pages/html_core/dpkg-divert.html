@@ -1,0 +1,373 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:01 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>dpkg-divert</title>
+
+</head>
+<body>
+
+<h1 align="center">dpkg-divert</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#COMMANDS">COMMANDS</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">dpkg-divert -
+override a package&rsquo;s version of a file</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dpkg-divert</b>
+[<i>option</i>...] <i>command</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i><b>dpkg-divert</b></i>
+is the utility used to set up and update the list of
+diversions.</p>
+
+<p style="margin-left:11%; margin-top: 1em">File
+<i>diversions</i> are a way of forcing <b>dpkg</b>(1) not to
+install a file into its location, but to a <i>diverted</i>
+location. Diversions can be used through the Debian package
+scripts to move a file away when it causes a conflict.
+System administrators can also use it to override some
+package&rsquo;s configuration file, or whenever some files
+(which aren&rsquo;t marked as &ldquo;conffiles&rdquo;) need
+to be preserved by <b>dpkg</b>, when installing a newer
+version of a package which contains those files.</p>
+
+<h2>COMMANDS
+<a name="COMMANDS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>--add</b>]
+<i>file</i></p>
+
+<p style="margin-left:17%;">Add a diversion for
+<i>file</i>. The file is currently not renamed, see
+<b>--rename</b>.</p>
+
+<p style="margin-left:11%;"><b>--remove</b> <i>file</i></p>
+
+<p style="margin-left:17%;">Remove a diversion for
+<i>file</i>. The file is currently not renamed, see
+<b>--rename</b>.</p>
+
+<p style="margin-left:11%;"><b>--list</b>
+[<i>glob-pattern</i>]</p>
+
+<p style="margin-left:17%;">List all diversions, or ones
+matching <i>glob-pattern</i>.</p>
+
+<p style="margin-left:11%;"><b>--listpackage</b>
+<i>file</i></p>
+
+<p style="margin-left:17%;">Print the name of the package
+that diverts <i>file</i> (since dpkg 1.15.0). Prints
+<small>LOCAL</small> if <i>file</i> is locally diverted and
+nothing if <i>file</i> is not diverted.</p>
+
+<p style="margin-left:11%;"><b>--truename</b>
+<i>file</i></p>
+
+<p style="margin-left:17%;">Print the real name for a
+diverted file.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--admindir</b>
+<i>directory</i></p>
+
+<p style="margin-left:17%;">Set the administrative
+directory to <i>directory</i>. Defaults to
+&laquo;<i>/var/lib/dpkg</i>&raquo; if
+<b><small>DPKG_ADMINDIR</small></b> has not been set.</p>
+
+<p style="margin-left:11%;"><b>--instdir</b>
+<i>directory</i></p>
+
+<p style="margin-left:17%;">Set the installation directory,
+which refers to the directory where packages get installed
+(since dpkg 1.19.2). Defaults to &laquo;<i>/</i>&raquo; if
+<b><small>DPKG_ROOT</small></b> has not been set.</p>
+
+<p style="margin-left:11%;"><b>--root</b>
+<i>directory</i></p>
+
+<p style="margin-left:17%;">Set the root directory to
+<b>directory</b>, which sets the installation directory to
+&laquo;<i>directory</i>&raquo; and the administrative
+directory to
+&laquo;<i>directory</i><b>/var/lib/dpkg</b>&raquo; (since
+dpkg 1.19.2) if <b><small>DPKG_ROOT</small></b> has not been
+set.</p>
+
+<p style="margin-left:11%;"><b>--divert</b>
+<i>divert-to</i></p>
+
+<p style="margin-left:17%;"><i>divert-to</i> is the
+location where the versions of <i>file</i>, as provided by
+other packages, will be diverted.</p>
+
+<p style="margin-left:11%;"><b>--local</b></p>
+
+<p style="margin-left:17%;">Specifies that all
+packages&rsquo; versions of this file are diverted. This
+means, that there are no exceptions, and whatever package is
+installed, the file is diverted. This can be used by an
+admin to install a locally modified version.</p>
+
+<p style="margin-left:11%;"><b>--package</b>
+<i>package</i></p>
+
+<p style="margin-left:17%;"><i>package</i> is the name of a
+package whose copy of <i>file</i> will not be diverted. i.e.
+<i>file</i> will be diverted for all packages except
+<i>package</i>.</p>
+
+<p style="margin-left:11%;"><b>--quiet</b></p>
+
+<p style="margin-left:17%;">Quiet mode, i.e. no verbose
+output.</p>
+
+<p style="margin-left:11%;"><b>--rename</b></p>
+
+<p style="margin-left:17%;">Actually move the file aside
+(or back). <b>dpkg-divert</b> will abort operation in case
+the destination file already exists. This is the common
+behavior used for diversions of files from the
+non-<b>Essential</b> package set (see <b>--no-rename</b> for
+more details).</p>
+
+<p style="margin-left:11%;"><b>--no-rename</b></p>
+
+<p style="margin-left:17%;">Specifies that the file should
+not be renamed while adding or removing the diversion into
+the database (since dpkg 1.19.1). This is intended for
+diversions of files from the <b>Essential</b> package set,
+where the temporary disappearance of the original file is
+not acceptable, as it can render the system non-functional.
+This is the default behavior, but that will change in the
+dpkg 1.20.x cycle.</p>
+
+<p style="margin-left:11%;"><b>--test</b></p>
+
+<p style="margin-left:17%;">Test mode, i.e. don&rsquo;t
+actually perform any changes, just demonstrate.</p>
+
+<p style="margin-left:11%;"><b>-?</b>, <b>--help</b></p>
+
+<p style="margin-left:17%;">Show the usage message and
+exit.</p>
+
+<p style="margin-left:11%;"><b>--version</b></p>
+
+<p style="margin-left:17%;">Show the version and exit.</p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em"><b>0</b></p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">The requested action was
+successfully performed.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p><b>2</b></p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>Fatal or unrecoverable error due to invalid command-line
+usage, or interactions with the system, such as accesses to
+the database, memory allocations, etc.</p></td></tr>
+</table>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><small>DPKG_ROOT</small></b></p>
+
+<p style="margin-left:17%;">If set and the <b>--instdir</b>
+or <b>--root</b> options have not been specified, it will be
+used as the filesystem root directory (since dpkg
+1.19.2).</p>
+
+
+<p style="margin-left:11%;"><b><small>DPKG_ADMINDIR</small></b></p>
+
+<p style="margin-left:17%;">If set and the
+<b>--admindir</b> or <b>--root</b> options have not been
+specified, it will be used as the <b>dpkg</b> data
+directory.</p>
+
+
+<p style="margin-left:11%;"><b><small>DPKG_MAINTSCRIPT_PACKAGE</small></b></p>
+
+<p style="margin-left:17%;">If set and the <b>--local</b>
+and <b>--package</b> options have not been specified,
+<b>dpkg-divert</b> will use it as the package name.</p>
+
+
+<p style="margin-left:11%;"><b><small>DPKG_DEBUG</small></b></p>
+
+<p style="margin-left:17%;">Sets the debug mask (since dpkg
+1.21.10) from an octal value. The currently accepted flags
+are described in the <b>dpkg --debug</b> option, but not all
+these flags might have an effect on this program.</p>
+
+
+<p style="margin-left:11%;"><b><small>DPKG_COLORS</small></b></p>
+
+<p style="margin-left:17%;">Sets the color mode (since dpkg
+1.18.5). The currently accepted values are: <b>auto</b>
+(default), <b>always</b> and <b>never</b>.</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/var/lib/dpkg/diversions</i></p>
+
+<p style="margin-left:17%;">File which contains the current
+list of diversions of the system. It is located in the
+<b>dpkg</b> administration directory, along with other files
+important to <b>dpkg</b>, such as <i>status</i> or
+<i>available</i>.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>Note:
+dpkg-divert</b> preserves the old copy of this file, with
+extension <i>-old</i>, before replacing it with the new
+one.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">When adding,
+default is <b>--local</b> and <b>--divert</b>
+<i>original</i><b>.distrib</b>. When removing,
+<b>--package</b> or <b>--local</b> and <b>--divert</b> must
+match if specified.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Directories
+can&rsquo;t be diverted with <b>dpkg-divert</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Care should be
+taken when diverting shared libraries, <b>ldconfig</b>(8)
+creates a symbolic link based on the
+<small>DT_SONAME</small> field embedded in the library.
+Because <b>ldconfig</b> does not honor diverts (only
+<b>dpkg</b> does), the symlink may end up pointing at the
+diverted library, if a diverted library has the same
+<small>SONAME</small> as the undiverted one.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">To divert all
+copies of a <i>/usr/bin/example</i> to
+<i>/usr/bin/example.foo</i>, i.e. directs all packages
+providing <i>/usr/bin/example</i> to install it as
+<i>/usr/bin/example.foo</i>, performing the rename if
+required:</p>
+
+<p style="margin-left:11%; margin-top: 1em">dpkg-divert
+--divert /usr/bin/example.foo --rename /usr/bin/example</p>
+
+<p style="margin-left:11%; margin-top: 1em">To remove that
+diversion:</p>
+
+<p style="margin-left:11%; margin-top: 1em">dpkg-divert
+--rename --remove /usr/bin/example</p>
+
+<p style="margin-left:11%; margin-top: 1em">To divert any
+package trying to install <i>/usr/bin/example</i> to
+<i>/usr/bin/example.foo</i>, except your own <i>wibble</i>
+package:</p>
+
+<p style="margin-left:11%; margin-top: 1em">dpkg-divert
+--package wibble --divert /usr/bin/example.foo \ <br>
+--rename /usr/bin/example</p>
+
+<p style="margin-left:11%; margin-top: 1em">To remove that
+diversion:</p>
+
+<p style="margin-left:11%; margin-top: 1em">dpkg-divert
+--package wibble --rename --remove /usr/bin/example</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dpkg</b>(1).</p>
+<hr>
+</body>
+</html>

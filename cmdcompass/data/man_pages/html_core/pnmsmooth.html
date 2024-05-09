@@ -1,0 +1,216 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:35 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pnmsmooth User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pnmsmooth User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pnmsmooth -
+smooth out an image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmsmooth</b>
+[<b>-width=</b><i>cols</i>] [<b>-height=</b><i>rows</i>]
+[<i>pnmfile</i>] [<b>-size</b>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviations of options is acceptable. You may use double
+hyphens instead of single hyphen to denote options. You may
+use white space in place of the equals sign to separate an
+option name from its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmsmooth</b>
+smoothes out an image by replacing each pixel with the
+average of its width X height neighbors. It is implemented
+as a progam that invokes <b>pnmconvol</b> with an
+appropriate convolution matrix.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pnmsmooth</b> recognizes the following command line
+options: <b><br>
+-width=</b><i>cols</i> <b><br>
+-height=</b><i>rows</i></p>
+
+<p style="margin-left:22%;">These options specify the
+dimensions of the convolution matrix. Default dimensions are
+3 wide and 3 high.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Before Netpbm
+10.49 (December 2009), the maximum size of the convolution
+matrix is limited by the maxval of the image such that width
+* height * 2 must not exceed the maxval. (use
+<b>pamdepth</b> to increase the maxval if necessary).</p>
+
+<p style="margin-left:22%; margin-top: 1em">These options
+were new in Netpbm 10.32 (February 2006). Before that, use
+<b>-size</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-size</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>This deprecated option exists in current Netpbm for
+backward compatibility. It was obsoleted by <b>-width</b>
+and <b>-height</b> in Netpbm 10.32 (February 2006).</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">When you use
+this option, the first two program arguments are the width
+and height, respectively, of the convolution matrix and do
+the same thing as the <b>-width</b> and <b>-height</b>
+option values. The third (optional) program argument is the
+input file name.</p>
+
+<p style="margin-left:22%; margin-top: 1em">In reality, in
+old <b>pnmsmooth</b>, the width and height are two values of
+the <b>-size</b> option, but the modern Netpbm command
+syntax paradigm doesn&rsquo;t allow an option with multiple
+values, so instead <b>-size</b> is an option with no value
+and width and height are program arguments. That has the
+fortunate effect of making the following command mean the
+same in current <b>pnmsmooth</b> as in old <b>pnmsmooth</b>:
+<br>
+pnmsmooth -size 5 5 infile.ppm &gt;outfile.ppm</p>
+
+
+<p style="margin-left:11%;"><b>-dump=</b><i>dumpfile</i></p>
+
+<p style="margin-left:22%;">This options makes
+<b>pnmsmooth</b> only show you the convolution matrix. It
+writes to Standard Output a <b>pnmconvol -matrix</b> option
+value that represents the matrix. It does not invoke
+<b>pnmconvol</b> and does not produce an output image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Before Netpbm
+10.49 (December 2009), this option is rather different. It
+takes a file name as a value, and it writes to that file the
+convolution matrix as a PGM file (as used to be the normal
+input for <b>pnmconvol</b>).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmconvol</b>(1),
+<b>pnm</b>(1)</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Before Netpbm
+10.32 (February 2006), <b>pnmsmooth</b> did not use the
+modern Netpbm command line parser, so had an unconventional
+command line syntax. Most importantly, you could not use an
+equal sign or double hyphens in the options.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Before Netpbm
+10.49 (December 2009), there was a <b>-dump</b> option. This
+strange option caused <b>pnmsmooth</b> not to do any
+smoothing or produce any output image but instead write the
+convolution matrix it would have used, as PGM file such as
+<b>pnmconvol</b> used to use, to a file you specify. The
+idea was you could then use that file with a separate
+invocation of <b>pnmconvol</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Then, in Netpbm
+10.49, there was a rather different <b>-dump</b> option with
+a similar purpose: It caused <b>pnmsmooth</b> to write to
+Standard Error a string suitable as a value for the
+<b>pnmconvol -matrix</b> option (an option that was new in
+Netpbm 10.49).</p>
+
+<p style="margin-left:11%; margin-top: 1em">But in Netpbm
+10.51 (June 2010), <b>pnmconvol</b> started using the even
+newer <b>pnmconvol -normalize</b> option (new in 10.50),
+which made specifying the convolution matrix for the kind of
+smoothing that <b>pnmsmooth</b> does trivial, so
+<b>-dump</b> disappeared from <b>pnmsmooth</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">(There were
+also ease of implementation issues that kept us from simply
+keeping the original <b>-dump</b> around for backward
+compatibility: As we modified <b>pnmsmooth</b> to take
+advantage of the new features of <b>pnmconvol</b>, which
+<b>pnmsmooth</b> uses internally, the information needed to
+implement <b>-dump</b> was no longer available in the
+program).</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pnmsmooth.html</b></p>
+<hr>
+</body>
+</html>

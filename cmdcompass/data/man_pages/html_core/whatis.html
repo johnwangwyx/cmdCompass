@@ -1,0 +1,354 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:59 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>WHATIS</title>
+
+</head>
+<body>
+
+<h1 align="center">WHATIS</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#BUGS">BUGS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">whatis -
+display one-line manual page descriptions</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>whatis</b>
+[<b>-dlv?V</b>] [<b>-r</b>|<b>-w</b>] [<b>-s</b>
+<i>list</i>] [<b>-m</b> <i>system</i>[,...]] [<b>-M</b>
+<i>path</i>] [<b>-L</b> <i>locale</i>] [<b>-C</b>
+<i>file</i>] <i>name</i> ...</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Each manual
+page has a short description available within it.
+<b>whatis</b> searches the manual page names and displays
+the manual page descriptions of any <i>name</i> matched.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>name</i> may
+contain wildcards (<b>-w</b>) or be a regular expression
+(<b>-r</b>). Using these options, it may be necessary to
+quote the <i>name</i> or escape (\) the special characters
+to stop the shell from interpreting them.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>index</b>
+databases are used during the search, and are updated by the
+<b>mandb</b> program. Depending on your installation, this
+may be run by a periodic cron job, or may need to be run
+manually after new manual pages have been installed. To
+produce an old style text <b>whatis</b> database from the
+relative <b>index</b> database, issue the command:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>whatis
+-M</b> <i>manpath</i> <b>-w &rsquo;*&rsquo; | sort &gt;</b>
+<i>manpath/whatis</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">where
+<i>manpath</i> is a manual page hierarchy such as
+<i>/usr/man</i>.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-d</b>,
+<b>--debug</b></p>
+
+<p style="margin-left:22%;">Print debugging
+information.</p>
+
+<p style="margin-left:11%;"><b>-v</b>, <b>--verbose</b></p>
+
+<p style="margin-left:22%;">Print verbose warning
+messages.</p>
+
+<p style="margin-left:11%;"><b>-r</b>, <b>--regex</b></p>
+
+<p style="margin-left:22%;">Interpret each <i>name</i> as a
+regular expression. If a <i>name</i> matches any part of a
+page name, a match will be made. This option causes
+<b>whatis</b> to be somewhat slower due to the nature of
+database searches.</p>
+
+<p style="margin-left:11%;"><b>-w</b>,
+<b>--wildcard</b></p>
+
+<p style="margin-left:22%;">Interpret each <i>name</i> as a
+pattern containing shell style wildcards. For a match to be
+made, an expanded <i>name</i> must match the entire page
+name. This option causes <b>whatis</b> to be somewhat slower
+due to the nature of database searches.</p>
+
+<p style="margin-left:11%;"><b>-l</b>, <b>--long</b></p>
+
+<p style="margin-left:22%;">Do not trim output to the
+terminal width. Normally, output will be truncated to the
+terminal width to avoid ugly results from poorly-written
+<b>NAME</b> sections.</p>
+
+<p style="margin-left:11%;"><b>-s</b> <i>list</i>,
+<b>--sections=</b><i>list</i>,
+<b>--section=</b><i>list</i></p>
+
+<p style="margin-left:22%;">Search only the given manual
+sections. <i>list</i> is a colon- or comma-separated list of
+sections. If an entry in <i>list</i> is a simple section,
+for example &quot;3&quot;, then the displayed list of
+descriptions will include pages in sections &quot;3&quot;,
+&quot;3perl&quot;, &quot;3x&quot;, and so on; while if an
+entry in <i>list</i> has an extension, for example
+&quot;3perl&quot;, then the list will only include pages in
+that exact part of the manual section.</p>
+
+<p style="margin-left:11%;"><b>-m</b> <i>system</i>[,...],
+<b>--systems=</b><i>system</i>[,...]</p>
+
+<p style="margin-left:22%;">If this system has access to
+other operating systems&rsquo; manual page names, they can
+be accessed using this option. To search NewOS&rsquo;s
+manual page names, use the option <b>-m NewOS</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+<i>system</i> specified can be a combination of comma
+delimited operating system names. To include a search of the
+native operating system&rsquo;s manual page names, include
+the system name <b>man</b> in the argument string. This
+option will override the $<b>SYSTEM</b> environment
+variable.</p>
+
+
+<p style="margin-left:11%;"><b>-M&nbsp;</b><i>path</i>,&nbsp;<b>--manpath=</b><i>path</i></p>
+
+<p style="margin-left:22%;">Specify an alternate set of
+colon-delimited manual page hierarchies to search. By
+default, <b>whatis</b> uses the $<b>MANPATH</b> environment
+variable, unless it is empty or unset, in which case it will
+determine an appropriate manpath based on your $<b>PATH</b>
+environment variable. This option overrides the contents of
+$<b>MANPATH</b>.</p>
+
+
+<p style="margin-left:11%;"><b>-L&nbsp;</b><i>locale</i>,&nbsp;<b>--locale=</b><i>locale</i></p>
+
+<p style="margin-left:22%;"><b>whatis</b> will normally
+determine your current locale by a call to the C function
+<b>setlocale</b>(3) which interrogates various environment
+variables, possibly including $<b>LC_MESSAGES</b> and
+$<b>LANG</b>. To temporarily override the determined value,
+use this option to supply a <i>locale</i> string directly to
+<b>whatis</b>. Note that it will not take effect until the
+search for pages actually begins. Output such as the help
+message will always be displayed in the initially determined
+locale.</p>
+
+
+<p style="margin-left:11%;"><b>-C&nbsp;</b><i>file</i>,&nbsp;<b>--config-file=</b><i>file</i></p>
+
+<p style="margin-left:22%;">Use this user configuration
+file rather than the default of <i>~/.manpath</i>.</p>
+
+<p style="margin-left:11%;"><b>-?</b>, <b>--help</b></p>
+
+<p style="margin-left:22%;">Print a help message and
+exit.</p>
+
+<p style="margin-left:11%;"><b>--usage</b></p>
+
+<p style="margin-left:22%;">Print a short usage message and
+exit.</p>
+
+<p style="margin-left:11%;"><b>-V</b>, <b>--version</b></p>
+
+<p style="margin-left:22%;">Display version
+information.</p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>0</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Successful program
+execution.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>1</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Usage, syntax or configuration file error.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>2</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Operational error.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>16</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Nothing was found that matched the criteria
+specified.</p> </td></tr>
+</table>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>SYSTEM</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">If $<b>SYSTEM</b> is set, it
+will have the same effect as if it had been specified as the
+argument to the <b>-m</b> option.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>MANPATH</b></p>
+
+<p style="margin-left:22%;">If $<b>MANPATH</b> is set, its
+value is interpreted as the colon-delimited manual page
+hierarchy search path to use.</p>
+
+<p style="margin-left:22%; margin-top: 1em">See the
+<b>SEARCH PATH</b> section of <b>manpath</b>(5) for the
+default behaviour and details of how this environment
+variable is handled.</p>
+
+<p style="margin-left:11%;"><b>MANWIDTH</b></p>
+
+<p style="margin-left:22%;">If $<b>MANWIDTH</b> is set, its
+value is used as the terminal width (see the <b>--long</b>
+option). If it is not set, the terminal width will be
+calculated using the value of $<b>COLUMNS</b>, and
+<b>ioctl</b>(2) if available, or falling back to 80
+characters if all else fails.</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/usr/share/man/index.(bt|db|dir|pag)</i></p>
+
+<p style="margin-left:22%;">A traditional global
+<i>index</i> database cache.</p>
+
+
+<p style="margin-left:11%;"><i>/var/cache/man/index.(bt|db|dir|pag)</i></p>
+
+<p style="margin-left:22%;">An FHS compliant global
+<i>index</i> database cache.</p>
+
+
+<p style="margin-left:11%;"><i>/usr/share/man/.../whatis</i></p>
+
+<p style="margin-left:22%;">A traditional <b>whatis</b>
+text database.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>apropos</b>(1),
+<b>man</b>(1), <b>mandb</b>(8)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Wilf.
+(G.Wilford@ee.surrey.ac.uk). <br>
+Fabrizio Polacco (fpolacco@debian.org). <br>
+Colin Watson (cjwatson@debian.org).</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">https://gitlab.com/man-db/man-db/-/issues
+<br>
+ https://savannah.nongnu.org/bugs/?group=man-db</p>
+<hr>
+</body>
+</html>

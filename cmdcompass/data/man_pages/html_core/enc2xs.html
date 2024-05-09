@@ -1,0 +1,602 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:02 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>ENC2XS</title>
+
+</head>
+<body>
+
+<h1 align="center">ENC2XS</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#Quick Guide">Quick Guide</a><br>
+<a href="#The Unicode Character Map">The Unicode Character Map</a><br>
+<a href="#Bookmarks">Bookmarks</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">enc2xs -- Perl
+Encode Module Generator</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">enc2xs
+-[options] <br>
+enc2xs -M ModName mapfiles... <br>
+enc2xs -C</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>enc2xs</i>
+builds a Perl extension for use by Encode from either
+Unicode Character Mapping files (.ucm) or Tcl Encoding Files
+(.enc). Besides being used internally during the build
+process of the Encode module, you can use <i>enc2xs</i> to
+add your own encoding to perl. No knowledge of
+<small>XS</small> is necessary.</p>
+
+<h2>Quick Guide
+<a name="Quick Guide"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If you want to
+know as little about Perl as possible but need to add a new
+encoding, just read this chapter and forget the rest.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>0.</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>Have a .ucm file ready. You can get it from somewhere or
+you can write your own from scratch or you can grab one from
+the Encode distribution and customize it. For the
+<small>UCM</small> format, see the next Chapter. In the
+example below, I&rsquo;ll call my theoretical encoding
+myascii, defined in <i>my.ucm</i>. &quot;$&quot; is a shell
+prompt.</p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">$ ls -F <br>
+my.ucm</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em">1.</p></td>
+<td width="3%"></td>
+<td width="41%">
+
+
+<p style="margin-top: 1em">Issue a command as follows;</p></td>
+<td width="42%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">$ enc2xs -M My
+my.ucm <br>
+generating Makefile.PL <br>
+generating My.pm <br>
+generating README <br>
+generating Changes</p>
+
+<p style="margin-left:17%; margin-top: 1em">Now take a look
+at your current directory. It should look like this.</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ ls -F <br>
+Makefile.PL My.pm my.ucm t/</p>
+
+<p style="margin-left:17%; margin-top: 1em">The following
+files were created.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Makefile.PL -
+MakeMaker script <br>
+My.pm - Encode submodule <br>
+t/My.t - test file <br>
+1.1.</p>
+
+<p style="margin-left:23%;">If you want *.ucm installed
+together with the modules, do as follows;</p>
+
+<p style="margin-left:23%; margin-top: 1em">$ mkdir Encode
+<br>
+$ mv *.ucm Encode <br>
+$ enc2xs -M My Encode/*ucm</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>2.</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>Edit the files generated. You don&rsquo;t have to if you
+have no time <small>AND</small> no intention to give it to
+someone else. But it is a good idea to edit the pod and to
+add more tests.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>3.</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>Now issue a command all Perl Mongers love:</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">$ perl
+Makefile.PL <br>
+Writing Makefile for Encode::My</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em">4.</p></td>
+<td width="3%"></td>
+<td width="48%">
+
+
+<p style="margin-top: 1em">Now all you have to do is
+make.</p> </td>
+<td width="35%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">$ make <br>
+cp My.pm blib/lib/Encode/My.pm <br>
+/usr/local/bin/perl /usr/local/bin/enc2xs -Q -O \ <br>
+-o encode_t.c -f encode_t.fnm <br>
+Reading myascii (myascii) <br>
+Writing compiled form <br>
+128 bytes in string tables <br>
+384 bytes (75%) saved spotting duplicates <br>
+1 bytes (0.775%) saved using substrings <br>
+.... <br>
+chmod 644 blib/arch/auto/Encode/My/My.bs <br>
+$</p>
+
+<p style="margin-left:17%; margin-top: 1em">The time it
+takes varies depending on how fast your machine is and how
+large your encoding is. Unless you are working on something
+big like euc-tw, it won&rsquo;t take too long.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em">5.</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">You can &quot;make install&quot;
+already but you should test first.</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">$ make test
+<br>
+PERL_DL_NONLAZY=1 /usr/local/bin/perl -Iblib/arch -Iblib/lib
+\ <br>
+-e 'use Test::Harness qw(&amp;runtests $verbose); \ <br>
+$verbose=0; runtests @ARGV;' t/*.t <br>
+t/My....ok <br>
+All tests successful. <br>
+Files=1, Tests=2, 0 wallclock secs <br>
+( 0.09 cusr + 0.01 csys = 0.09 CPU)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em">6.</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">If you are content with the test
+result, just &quot;make install&quot;</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>7.</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>If you want to add your encoding to Encode&rsquo;s
+demand-loading list (so you don&rsquo;t have to &quot;use
+Encode::YourEncoding&quot;), run</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">enc2xs -C</p>
+
+<p style="margin-left:17%; margin-top: 1em">to update
+Encode::ConfigLocal, a module that controls local settings.
+After that, &quot;use Encode;&quot; is enough to load your
+encodings on demand.</p>
+
+<h2>The Unicode Character Map
+<a name="The Unicode Character Map"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Encode uses the
+Unicode Character Map ( <small>UCM</small> ) format for
+source character mappings. This format is used by
+<small>IBM</small> &rsquo;s <small>ICU</small> package and
+was adopted by Nick Ing-Simmons for use with the Encode
+module. Since <small>UCM</small> is more flexible than
+Tcl&rsquo;s Encoding Map and far more user-friendly, this is
+the recommended format for Encode now.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A
+<small>UCM</small> file looks like this.</p>
+
+<p style="margin-left:11%; margin-top: 1em"># <br>
+# Comments <br>
+# <br>
+&lt;code_set_name&gt; &quot;US-ascii&quot; # Required <br>
+&lt;code_set_alias&gt; &quot;ascii&quot; # Optional <br>
+&lt;mb_cur_min&gt; 1 # Required; usually 1 <br>
+&lt;mb_cur_max&gt; 1 # Max. # of bytes/char <br>
+&lt;subchar&gt; \x3F # Substitution char <br>
+# <br>
+CHARMAP <br>
+&lt;U0000&gt; \x00 |0 # &lt;control&gt; <br>
+&lt;U0001&gt; \x01 |0 # &lt;control&gt; <br>
+&lt;U0002&gt; \x02 |0 # &lt;control&gt; <br>
+.... <br>
+&lt;U007C&gt; \x7C |0 # VERTICAL LINE <br>
+&lt;U007D&gt; \x7D |0 # RIGHT CURLY BRACKET <br>
+&lt;U007E&gt; \x7E |0 # TILDE <br>
+&lt;U007F&gt; \x7F |0 # &lt;control&gt; <br>
+END CHARMAP</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">Anything that follows
+&quot;#&quot; is treated as a comment.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>The header section continues until a line containing the
+word <small>CHARMAP.</small> This section has a form of
+<i>&lt;keyword&gt; value</i>, one pair per line. Strings
+used as values must be quoted. Barewords are treated as
+numbers. <i>\xXX</i> represents a byte.</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Most of the
+keywords are self-explanatory. <i>subchar</i> means
+substitution character, not subcharacter. When you decode a
+Unicode sequence to this encoding but no matching character
+is found, the byte sequence defined here will be used. For
+most cases, the value here is \x3F; in <small>ASCII,</small>
+this is a question mark.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><small>CHARMAP</small> starts
+the character map section. Each line has a form as
+follows:</p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">&lt;UXXXX&gt;
+\xXX.. |0 # comment <br>
+^ ^ ^ <br>
+| | +- Fallback flag <br>
+| +-------- Encoded byte sequence <br>
++-------------- Unicode Character ID in hex</p>
+
+<p style="margin-left:17%; margin-top: 1em">The format is
+roughly the same as a header section except for the fallback
+flag: | followed by 0..3. The meaning of the possible values
+is as follows:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em">|0</p></td>
+<td width="3%"></td>
+<td width="77%">
+
+
+<p style="margin-top: 1em">Round trip safe. A character
+decoded to Unicode encodes back to the same byte sequence.
+Most characters have this flag.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>|1</p></td>
+<td width="3%"></td>
+<td width="77%">
+
+
+<p>Fallback for unicode -&gt; encoding. When seen, enc2xs
+adds this character for the encode map only.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>|2</p></td>
+<td width="3%"></td>
+<td width="77%">
+
+
+<p>Skip sub-char mapping should there be no code point.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>|3</p></td>
+<td width="3%"></td>
+<td width="77%">
+
+
+<p>Fallback for encoding -&gt; unicode. When seen, enc2xs
+adds this character for the decode map only.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="77%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">And finally,
+<small>END OF CHARMAP</small> ends the section.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When you are
+manually creating a <small>UCM</small> file, you should copy
+ascii.ucm or an existing encoding which is close to yours,
+rather than write your own from scratch.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When you do so,
+make sure you leave at least <b>U0000</b> to <b>U0020</b> as
+is, unless your environment is <small>EBCDIC.</small></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><small><b>CAVEAT</b></small>
+: not all features in <small>UCM</small> are implemented.
+For example, icu:state is not used. Because of that, you
+need to write a perl module if you want to support
+algorithmical encodings, notably the <small>ISO-2022</small>
+series. Such modules include Encode::JP::2022_JP,
+Encode::KR::2022_KR, and Encode::TW::HZ.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Coping with
+duplicate mappings</b> <br>
+When you create a map, you <small>SHOULD</small> make your
+mappings round-trip safe. That is,
+&quot;encode('your-encoding', decode('your-encoding',
+$data)) eq $data&quot; stands for all characters that are
+marked as &quot;|0&quot;. Here is how to make sure:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">Sort your map in Unicode
+order.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>When you have a duplicate entry, mark either one with
+&rsquo;|1&rsquo; or &rsquo;|3&rsquo;.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>And make sure the &rsquo;|1&rsquo; or &rsquo;|3&rsquo;
+entry <small>FOLLOWS</small> the &rsquo;|0&rsquo; entry.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Here is an
+example from big5-eten.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&lt;U2550&gt;
+\xF9\xF9 |0 <br>
+&lt;U2550&gt; \xA2\xA4 |3</p>
+
+<p style="margin-left:11%; margin-top: 1em">Internally
+Encoding -&gt; Unicode and Unicode -&gt; Encoding Map looks
+like this;</p>
+
+<p style="margin-left:11%; margin-top: 1em">E to U U to E
+<br>
+-------------------------------------- <br>
+\xF9\xF9 =&gt; U2550 U2550 =&gt; \xF9\xF9 <br>
+\xA2\xA4 =&gt; U2550</p>
+
+<p style="margin-left:11%; margin-top: 1em">So it is
+round-trip safe for \xF9\xF9. But if the line above is
+upside down, here is what happens.</p>
+
+<p style="margin-left:11%; margin-top: 1em">E to U U to E
+<br>
+-------------------------------------- <br>
+\xA2\xA4 =&gt; U2550 U2550 =&gt; \xF9\xF9 <br>
+(\xF9\xF9 =&gt; U2550 is now overwritten!)</p>
+
+<p style="margin-left:11%; margin-top: 1em">The Encode
+package comes with <i>ucmlint</i>, a crude but sufficient
+utility to check the integrity of a <small>UCM</small> file.
+Check under the Encode/bin directory for this.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When in doubt,
+you can use <i>ucmsort</i>, yet another utility under
+Encode/bin directory.</p>
+
+<h2>Bookmarks
+<a name="Bookmarks"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><small>ICU</small> Home Page
+&lt;http://www.icu-project.org/&gt;</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p><small>ICU</small> Character Mapping Tables
+&lt;http://site.icu-project.org/charts/charset&gt;</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>ICU:Conversion Data
+&lt;http://www.icu-project.org/userguide/conversion-data.html&gt;</p> </td></tr>
+</table>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Encode,
+perlmod, perlpod</p>
+<hr>
+</body>
+</html>

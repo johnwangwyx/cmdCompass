@@ -1,0 +1,251 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:19 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>MRF image format specification</title>
+
+</head>
+<body>
+
+<h1 align="center">MRF image format specification</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">MRF -
+monochrome recursive format (compressed bitmaps)</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This document
+describes the MRF format recognized by <b>Netpbm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em">MRF is a
+compressed format for bilevel (1-bit mono) images. It
+achieves better compression for some such images than either
+GIF or PNG. (It&rsquo;s also very easy to implement (about
+the same difficulty as RLE, I&rsquo;d say) and an MRF reader
+needs no tables/buffers, which may make it useful for tiny
+machines).</p>
+
+<p style="margin-left:11%; margin-top: 1em">In case the
+above hasn&rsquo;t made it sufficiently clear, I&rsquo;ll
+make this next point explicitly: <i>MRF cannot represent
+color at all.</i> Nor can it represent grayscale. It&rsquo;s
+a specifically mono format. (If you want to compress a color
+or grayscale image, my advice is to use JPEG2000).</p>
+
+<p style="margin-left:11%; margin-top: 1em">First,
+here&rsquo;s what goes where in an MRF file. I&rsquo;ll
+explain how the compression works afterward.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>Offset</p></td>
+<td width="2%"></td>
+<td width="66%">
+
+
+<p>Description</p></td>
+<td width="12%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>0</p></td>
+<td width="2%"></td>
+<td width="66%">
+
+
+<p>magic number - &quot;MRF1&quot; (in ASCII)</p></td>
+<td width="12%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>4</p></td>
+<td width="2%"></td>
+<td width="66%">
+
+
+<p>width (32-bit, MSB first (i.e. big-endian))</p></td>
+<td width="12%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>8</p></td>
+<td width="2%"></td>
+<td width="66%">
+
+
+<p>height (same)</p></td>
+<td width="12%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>12</p></td>
+<td width="2%"></td>
+<td width="66%">
+
+
+<p>reserved (single byte, must be zero)</p></td>
+<td width="12%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>13</p></td>
+<td width="2%"></td>
+<td width="66%">
+
+
+<p>compressed data</p></td>
+<td width="12%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Note that there
+is no end-of-file marker in the file itself - the compressed
+data carries on right up to EOF.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The way the
+picture is compressed is essentially very simple, but as
+they say, the devil is in the detail. So don&rsquo;t be put
+off if it sounds confusing.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The image is
+treated as a number of 64x64 squares, forming a grid large
+enough to encompass it. (If an image is (say) 129x65,
+it&rsquo;ll be treated in the same way as a 192x128 one. On
+decompression, the extra area which was encoded (the
+contents of this area is undefined) should be ignored.) Each
+of these squares in turn (in left-to-right, top-to-bottom
+order) is recursively subdivided until the smallest
+completely black or white squares are found. Some pseudocode
+(eek!) for the recursive subdivision routine should make
+things clearer:</p>
+
+<p style="margin-left:11%; margin-top: 1em">if square size
+&gt; 1x1 and square is all one color, output 1 bit <br>
+if whole square is black, output a 0 bit and return <br>
+if whole square is white, output a 1 bit and return <br>
+output a 0 bit <br>
+divide the square into four quarters, calling routine for
+<br>
+each in this order: top-left, top-right, bottom-left,
+bottom-right</p>
+
+<p style="margin-left:11%; margin-top: 1em">(Note that the
+&quot;output a 0 bit&quot; stage is not reached for squares
+of size 1x1, which is what stops it recursing infinitely. I
+mention this as it may not be immediately obvious.)</p>
+
+<p style="margin-left:11%; margin-top: 1em">The whole of
+the compressed data is made up of the bits output by the
+above routine. The bits are packed into bytes MSB first, so
+for example outputting the bits 1,0,0,0,0,0,0,0 would result
+in a 80h byte being output. Any &rsquo;unused&rsquo; bits in
+the last byte output are undefined; these are effectively
+after EOF and their value is unimportant.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If writing that
+sounds too much like hard work :-), you could always adapt
+<b>pbmtomrf</b> and/or <b>mrftopbm</b>. That&rsquo;s the
+main reason their source code is public domain, after
+all.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Above, I said
+the contents of any extra area encoded (when a bitmap
+smaller than the grid of squares is compressed) is
+undefined. This is deliberate so that the MRF compressor can
+make these unseen areas anything it wants so as to maximize
+compression, rather than simply leaving it blank.
+<b>pbmtomrf</b> does a little in this respect but could
+definitely be improved upon.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mrftopbm</b>&rsquo;s
+<b>-1</b> option causes it to include the edges, if any, in
+the output PBM. This may help when debugging a
+compressor&rsquo;s edge optimization.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that the
+&quot;F&quot; in the name &quot;MRF&quot; comes from
+&quot;format,&quot; which is redundant because it is the
+name of a format. That sort of makes &quot;MRF format&quot;
+sound as stupid as &quot;PIN number,&quot; but it&rsquo;s
+not really that bad.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mrftopbm</b>(1),
+<b>pbmtomrf</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Russell
+Marks.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/mrf.html</b></p>
+<hr>
+</body>
+</html>

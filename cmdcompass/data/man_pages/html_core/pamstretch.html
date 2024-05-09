@@ -1,0 +1,212 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:27 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamstretch User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamstretch User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#PARAMETERS">PARAMETERS</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#LIMITATIONS">LIMITATIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamstretch -
+scale up a PNM or PAM image by interpolating between
+pixels.</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamstretch</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-xscale=</b><i>X</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-yscale=</b><i>Y</i>]
+[<b>-blackedge</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-dropedge</b>]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>N</i></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<i>infile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can use the
+minimum unique abbreviation of the options. You can use two
+hyphens instead of one. You can separate an option name from
+its value with white space instead of an equals sign.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamstretch</b>
+scales up pictures by integer values, either vertically,
+horizontally, or both. <b>pamstretch</b> differs from
+<b>pamscale</b> and <b>pamenlarge</b> in that when it
+inserts the additional rows and columns, instead of making
+the new row or column a copy of its neighbor,
+<b>pamstretch</b> makes the new row or column an
+interpolation between its neighbors. In some images, this
+produces better looking output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To scale up to
+non-integer pixel sizes, e.g. 2.5, try
+<b>pamstretch-gen</b>(1) instead.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Options let you
+select alternative methods of dealing with the right/bottom
+edges of the picture. Since the interpolation is done
+between the top-left corners of the scaled-up pixels,
+it&rsquo;s not obvious what to do with the right/bottom
+edges. The default behaviour is to scale those up without
+interpolation (more precisely, the right edge is only
+interpolated vertically, and the bottom edge is only
+interpolated horizontally), but there are two other
+possibilities, selected by the <b>-blackedge</b> and
+<b>-dropedge</b> options.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the special
+case that the stretch factor is 1, there is no issue with
+the right and bottom edges, the edges of the output are
+identical to the edges of the input regardless of
+<b>-blackedge</b> and <b>-dropedge</b>. However, before
+Netpbm 10.86 (March 2019), <b>-dropedge</b> would cause the
+edge to be dropped even where the stretch factor was 1.</p>
+
+<h2>PARAMETERS
+<a name="PARAMETERS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The <i>N</i>
+parameter is the scale factor. It is valid only if you
+<i>don&rsquo;t</i> specify <b>-xscale</b> or <b>-yscale</b>.
+In that case, <b>pamstretch</b> scales in both dimensions
+and by the scale factor <i>N</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Before Netpbm
+10.86 (March 2019), 1 was not a valid value.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamstretch</b> recognizes the following command line
+options: <b><br>
+-xscale=</b><i>X</i></p>
+
+<p style="margin-left:22%;">This is the horizontal scale
+factor. If you don&rsquo;t specify this, but do specify a
+vertical scale factor, the horizontal scale factor is 1.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 9.21 (December 2001).</p>
+
+<p style="margin-left:11%;"><b>-yscale=</b><i>Y</i></p>
+
+<p style="margin-left:22%;">This is the vertical scale
+factor. If you don&rsquo;t specify this, but do specify a
+horizontal scale factor, the vertical scale factor is 1.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 9.21 (December 2001).</p>
+
+<p style="margin-left:11%;"><b>-blackedge</b></p>
+
+<p style="margin-left:22%;">interpolate to black at
+right/bottom edges.</p>
+
+<p style="margin-left:11%;"><b>-dropedge</b></p>
+
+<p style="margin-left:22%;">drop one (source) pixel at
+right/bottom edges. This is arguably more logical than the
+default behaviour, but it means producing output which is a
+slightly odd size.</p>
+
+<h2>LIMITATIONS
+<a name="LIMITATIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Usually
+produces fairly ugly output for PBMs. For most PBM input
+you&rsquo;ll probably want to reduce the &rsquo;noise&rsquo;
+first using something like <b>pnmnlfilt</b>(1).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamstretch-gen</b>(1),
+<b>pamenlarge</b>(1), <b>pamscale</b>(1),
+<b>pnmnlfilt</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Russell Marks
+(<i>russell.marks@ntlworld.com</i>).</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamstretch.html</b></p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:59 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>WHEREIS</title>
+
+</head>
+<body>
+
+<h1 align="center">WHEREIS</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#FILE SEARCH PATHS">FILE SEARCH PATHS</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#AVAILABILITY">AVAILABILITY</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">whereis -
+locate the binary, source, and manual page files for a
+command</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>whereis</b>
+[options] [<b>-BMS</b> <i>directory</i>... <b>-f</b>]
+<i>name</i>...</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>whereis</b>
+locates the binary, source and manual files for the
+specified command names. The supplied names are first
+stripped of leading pathname components. Prefixes of
+<b>s.</b> resulting from use of source code control are also
+dealt with. <b>whereis</b> then attempts to locate the
+desired program in the standard Linux places, and in the
+places specified by <b>$PATH</b> and <b>$MANPATH</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The search
+restrictions (options <b>-b</b>, <b>-m</b> and <b>-s</b>)
+are cumulative and apply to the subsequent <i>name</i>
+patterns on the command line. Any new search restriction
+resets the search mask. For example,</p>
+
+<p style="margin-left:15%; margin-top: 1em"><b>whereis -bm
+ls tr -m gcc</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">searches for
+&quot;ls&quot; and &quot;tr&quot; binaries and man pages,
+and for &quot;gcc&quot; man pages only.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The options
+<b>-B</b>, <b>-M</b> and <b>-S</b> reset search paths for
+the subsequent <i>name</i> patterns. For example,</p>
+
+<p style="margin-left:15%; margin-top: 1em"><b>whereis -m
+ls -M /usr/share/man/man1 -f cal</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">searches for
+&quot;<b>ls</b>&quot; man pages in all default paths, but
+for &quot;cal&quot; in the <i>/usr/share/man/man1</i>
+directory only.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-b</b></p>
+
+<p style="margin-left:17%;">Search for binaries.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-m</b></p>
+
+<p style="margin-left:17%;">Search for manuals.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-s</b></p>
+
+<p style="margin-left:17%;">Search for sources.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-u</b></p>
+
+<p style="margin-left:17%;">Only show the command names
+that have unusual entries. A command is said to be unusual
+if it does not have just one entry of each explicitly
+requested type. Thus '<b>whereis -m -u *</b>' asks for those
+files in the current directory which have no documentation
+file, or more than one.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-B</b>
+<i>list</i></p>
+
+<p style="margin-left:17%;">Limit the places where
+<b>whereis</b> searches for binaries, by a
+whitespace-separated list of directories.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-M</b>
+<i>list</i></p>
+
+<p style="margin-left:17%;">Limit the places where
+<b>whereis</b> searches for manuals and documentation in
+Info format, by a whitespace-separated list of
+directories.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-S</b>
+<i>list</i></p>
+
+<p style="margin-left:17%;">Limit the places where
+<b>whereis</b> searches for sources, by a
+whitespace-separated list of directories.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-f</b></p>
+
+<p style="margin-left:17%;">Terminates the directory list
+and signals the start of filenames. It <i>must</i> be used
+when any of the <b>-B</b>, <b>-M</b>, or <b>-S</b> options
+is used.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-l</b></p>
+
+<p style="margin-left:17%;">Output the list of effective
+lookup paths that <b>whereis</b> is using. When none of
+<b>-B</b>, <b>-M</b>, or <b>-S</b> is specified, the option
+will output the hard-coded paths that the command was able
+to find on the system.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Display help text and exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-V</b>,
+<b>--version</b></p>
+
+<p style="margin-left:17%;">Print version and exit.</p>
+
+<h2>FILE SEARCH PATHS
+<a name="FILE SEARCH PATHS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">By default
+<b>whereis</b> tries to find files from hard-coded paths,
+which are defined with glob patterns. The command attempts
+to use the contents of <b>$PATH</b> and <b>$MANPATH</b>
+environment variables as default search path. The easiest
+way to know what paths are in use is to add the <b>-l</b>
+listing option. Effects of the <b>-B</b>, <b>-M</b>, and
+<b>-S</b> are displayed with <b>-l</b>.</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>WHEREIS_DEBUG</b>=all</p>
+
+<p style="margin-left:17%;">enables debug output.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">To find all
+files in <i>/usr/bin</i> which are not documented in
+<i>/usr/man/man1</i> or have no source in
+<i>/usr/src</i>:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>cd /usr/bin
+whereis -u -ms -M /usr/man/man1 -S /usr/src -f *</b></p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For bug
+reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+
+<h2>AVAILABILITY
+<a name="AVAILABILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>whereis</b> command is part of the util-linux package
+which can be downloaded from <i>Linux Kernel Archive</i>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>
+<hr>
+</body>
+</html>

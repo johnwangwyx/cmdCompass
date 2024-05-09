@@ -1,0 +1,684 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:15 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>LOGINCTL</title>
+
+</head>
+<body>
+
+<h1 align="center">LOGINCTL</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#COMMANDS">COMMANDS</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">loginctl -
+Control the systemd login manager</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="63%">
+
+
+<p style="margin-top: 1em"><b>loginctl</b> [OPTIONS...]
+{COMMAND} [NAME...]</p></td>
+<td width="26%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>loginctl</b>
+may be used to introspect and control the state of the
+<b>systemd</b>(1) login manager
+<b>systemd-logind.service</b>(8).</p>
+
+<h2>COMMANDS
+<a name="COMMANDS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+commands are understood:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Session
+Commands <br>
+list-sessions</b></p>
+
+<p style="margin-left:17%;">List current sessions.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>session-status</b>
+[<i>ID</i>...]</p>
+
+<p style="margin-left:17%;">Show terse runtime status
+information about one or more sessions, followed by the most
+recent log data from the journal. Takes one or more session
+identifiers as parameters. If no session identifiers are
+passed, the status of the caller's session is shown. This
+function is intended to generate human-readable output. If
+you are looking for computer-parsable output, use
+<b>show-session</b> instead.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>show-session</b>
+[<i>ID</i>...]</p>
+
+<p style="margin-left:17%;">Show properties of one or more
+sessions or the manager itself. If no argument is specified,
+properties of the manager will be shown. If a session ID is
+specified, properties of the session are shown. By default,
+empty properties are suppressed. Use <b>--all</b> to show
+those too. To select specific properties to show, use
+<b>--property=</b>. This command is intended to be used
+whenever computer-parsable output is required. Use
+<b>session-status</b> if you are looking for formatted
+human-readable output.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>activate</b>
+[<i>ID</i>]</p>
+
+<p style="margin-left:17%;">Activate a session. This brings
+a session into the foreground if another session is
+currently in the foreground on the respective seat. Takes a
+session identifier as argument. If no argument is specified,
+the session of the caller is put into foreground.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>lock-session</b>
+[<i>ID</i>...], <b>unlock-session</b> [<i>ID</i>...]</p>
+
+<p style="margin-left:17%;">Activates/deactivates the
+screen lock on one or more sessions, if the session supports
+it. Takes one or more session identifiers as arguments. If
+no argument is specified, the session of the caller is
+locked/unlocked.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>lock-sessions</b>,
+<b>unlock-sessions</b></p>
+
+<p style="margin-left:17%;">Activates/deactivates the
+screen lock on all current sessions supporting it.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>terminate-session</b>
+<i>ID</i>...</p>
+
+<p style="margin-left:17%;">Terminates a session. This
+kills all processes of the session and deallocates all
+resources attached to the session. If the argument is
+specified as empty string the session invoking the command
+is terminated.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>kill-session</b>
+<i>ID</i>...</p>
+
+<p style="margin-left:17%;">Send a signal to one or more
+processes of the session. Use <b>--kill-whom=</b> to select
+which process to kill. Use <b>--signal=</b> to select the
+signal to send. If the argument is specified as empty string
+the signal is sent to the session invoking the command.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>User
+Commands <br>
+list-users</b></p>
+
+<p style="margin-left:17%;">List currently logged in
+users.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>user-status</b>
+[<i>USER</i>...]</p>
+
+<p style="margin-left:17%;">Show terse runtime status
+information about one or more logged in users, followed by
+the most recent log data from the journal. Takes one or more
+user names or numeric user IDs as parameters. If no
+parameters are passed, the status is shown for the user of
+the session of the caller. This function is intended to
+generate human-readable output. If you are looking for
+computer-parsable output, use <b>show-user</b> instead.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>show-user</b>
+[<i>USER</i>...]</p>
+
+<p style="margin-left:17%;">Show properties of one or more
+users or the manager itself. If no argument is specified,
+properties of the manager will be shown. If a user is
+specified, properties of the user are shown. By default,
+empty properties are suppressed. Use <b>--all</b> to show
+those too. To select specific properties to show, use
+<b>--property=</b>. This command is intended to be used
+whenever computer-parsable output is required. Use
+<b>user-status</b> if you are looking for formatted
+human-readable output.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>enable-linger</b>
+[<i>USER</i>...], <b>disable-linger</b> [<i>USER</i>...]</p>
+
+<p style="margin-left:17%;">Enable/disable user lingering
+for one or more users. If enabled for a specific user, a
+user manager is spawned for the user at boot and kept around
+after logouts. This allows users who are not logged in to
+run long-running services. Takes one or more user names or
+numeric UIDs as argument. If no argument is specified,
+enables/disables lingering for the user of the session of
+the caller.</p>
+
+<p style="margin-left:17%; margin-top: 1em">See also
+<i>KillUserProcesses=</i> setting in
+<b>logind.conf</b>(5).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>terminate-user</b>
+<i>USER</i>...</p>
+
+<p style="margin-left:17%;">Terminates all sessions of a
+user. This kills all processes of all sessions of the user
+and deallocates all runtime resources attached to the user.
+If the argument is specified as empty string the sessions of
+the user invoking the command are terminated.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>kill-user</b>
+<i>USER</i>...</p>
+
+<p style="margin-left:17%;">Send a signal to all processes
+of a user. Use <b>--signal=</b> to select the signal to
+send. If the argument is specified as empty string the
+signal is sent to the sessions of the user invoking the
+command.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Seat
+Commands <br>
+list-seats</b></p>
+
+<p style="margin-left:17%;">List currently available seats
+on the local system.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>seat-status</b>
+[<i>NAME</i>...]</p>
+
+<p style="margin-left:17%;">Show terse runtime status
+information about one or more seats. Takes one or more seat
+names as parameters. If no seat names are passed the status
+of the caller's session's seat is shown. This function is
+intended to generate human-readable output. If you are
+looking for computer-parsable output, use <b>show-seat</b>
+instead.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>show-seat</b>
+[<i>NAME</i>...]</p>
+
+<p style="margin-left:17%;">Show properties of one or more
+seats or the manager itself. If no argument is specified,
+properties of the manager will be shown. If a seat is
+specified, properties of the seat are shown. By default,
+empty properties are suppressed. Use <b>--all</b> to show
+those too. To select specific properties to show, use
+<b>--property=</b>. This command is intended to be used
+whenever computer-parsable output is required. Use
+<b>seat-status</b> if you are looking for formatted
+human-readable output.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>attach</b>
+<i>NAME DEVICE</i>...</p>
+
+<p style="margin-left:17%;">Persistently attach one or more
+devices to a seat. The devices should be specified via
+device paths in the /sys/ file system. To create a new seat,
+attach at least one graphics card to a previously unused
+seat name. Seat names may consist only of a&ndash;z,
+A&ndash;Z, 0&ndash;9, &quot;-&quot; and &quot;_&quot; and
+must be prefixed with &quot;seat&quot;. To drop assignment
+of a device to a specific seat, just reassign it to a
+different seat, or use <b>flush-devices</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>flush-devices</b></p>
+
+<p style="margin-left:17%;">Removes all device assignments
+previously created with <b>attach</b>. After this call, only
+automatically generated seats will remain, and all seat
+hardware is assigned to them.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>terminate-seat</b>
+<i>NAME</i>...</p>
+
+<p style="margin-left:17%;">Terminates all sessions on a
+seat. This kills all processes of all sessions on the seat
+and deallocates all runtime resources attached to them.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+options are understood:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--no-ask-password</b></p>
+
+<p style="margin-left:17%;">Do not query the user for
+authentication for privileged operations.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-p</b>,
+<b>--property=</b></p>
+
+<p style="margin-left:17%;">When showing session/user/seat
+properties, limit display to certain properties as specified
+as argument. If not specified, all set properties are shown.
+The argument should be a property name, such as
+&quot;Sessions&quot;. If specified more than once, all
+properties with the specified names are shown.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--value</b></p>
+
+<p style="margin-left:17%;">When showing session/user/seat
+properties, only print the value, and skip the property name
+and &quot;=&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-a</b>,
+<b>--all</b></p>
+
+<p style="margin-left:17%;">When showing session/user/seat
+properties, show all properties regardless of whether they
+are set or not.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-l</b>,
+<b>--full</b></p>
+
+<p style="margin-left:17%;">Do not ellipsize process tree
+entries.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--kill-whom=</b></p>
+
+<p style="margin-left:17%;">When used with
+<b>kill-session</b>, choose which processes to kill. Must be
+one of <b>leader</b>, or <b>all</b> to select whether to
+kill only the leader process of the session or all processes
+of the session. If omitted, defaults to <b>all</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-s</b>,
+<b>--signal=</b></p>
+
+<p style="margin-left:17%;">When used with
+<b>kill-session</b> or <b>kill-user</b>, choose which signal
+to send to selected processes. Must be one of the well known
+signal specifiers, such as <b>SIGTERM</b>, <b>SIGINT</b> or
+<b>SIGSTOP</b>. If omitted, defaults to <b>SIGTERM</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The special
+value &quot;help&quot; will list the known values and the
+program will exit immediately, and the special value
+&quot;list&quot; will list known values along with the
+numerical signal numbers and the program will exit
+immediately.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-n</b>,
+<b>--lines=</b></p>
+
+<p style="margin-left:17%;">When used with
+<b>user-status</b> and <b>session-status</b>, controls the
+number of journal lines to show, counting from the most
+recent ones. Takes a positive integer argument. Defaults to
+10.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-o</b>,
+<b>--output=</b></p>
+
+<p style="margin-left:17%;">When used with
+<b>user-status</b> and <b>session-status</b>, controls the
+formatting of the journal entries that are shown. For the
+available choices, see <b>journalctl</b>(1). Defaults to
+&quot;short&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-H</b>,
+<b>--host=</b></p>
+
+<p style="margin-left:17%;">Execute the operation remotely.
+Specify a hostname, or a username and hostname separated by
+&quot;@&quot;, to connect to. The hostname may optionally be
+suffixed by a port ssh is listening on, separated by
+&quot;:&quot;, and then a container name, separated by
+&quot;/&quot;, which connects directly to a specific
+container on the specified host. This will use SSH to talk
+to the remote machine manager instance. Container names may
+be enumerated with <b>machinectl -H</b> <i>HOST</i>. Put
+IPv6 addresses in brackets.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-M</b>,
+<b>--machine=</b></p>
+
+<p style="margin-left:17%;">Execute operation on a local
+container. Specify a container name to connect to,
+optionally prefixed by a user name to connect as and a
+separating &quot;@&quot; character. If the special string
+&quot;.host&quot; is used in place of the container name, a
+connection to the local system is made (which is useful to
+connect to a specific user's user bus: &quot;--user
+--machine=lennart@.host&quot;). If the &quot;@&quot; syntax
+is not used, the connection is made as root user. If the
+&quot;@&quot; syntax is used either the left hand side or
+the right hand side may be omitted (but not both) in which
+case the local user name and &quot;.host&quot; are
+implied.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--no-pager</b></p>
+
+<p style="margin-left:17%;">Do not pipe output into a
+pager.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--no-legend</b></p>
+
+<p style="margin-left:17%;">Do not print the legend, i.e.
+column headers and the footer with hints.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Print a short help text and
+exit.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--version</b></p>
+
+<p style="margin-left:17%;">Print a short version string
+and exit.</p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">On success, 0
+is returned, a non-zero failure code otherwise.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;1.&nbsp;Querying
+user status</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$ loginctl
+user-status <br>
+fatima (1005) <br>
+Since: Sat 2016-04-09 14:23:31 EDT; 54min ago <br>
+State: active <br>
+Sessions: 5 *3 <br>
+Unit: user-1005.slice <br>
+&acirc;&acirc;user@1005.service <br>
+... <br>
+&acirc;&acirc;session-3.scope <br>
+... <br>
+&acirc;&acirc;session-5.scope <br>
+&acirc;&acirc;3473 login -- fatima <br>
+&acirc;&acirc;3515 -zsh</p>
+
+<p style="margin-left:17%; margin-top: 1em">Apr 09 14:40:30
+laptop login[2325]: pam_unix(login:session): <br>
+session opened for user fatima by LOGIN(uid=0) <br>
+Apr 09 14:40:30 laptop login[2325]: LOGIN ON tty3 BY
+fatima</p>
+
+<p style="margin-left:11%; margin-top: 1em">There are two
+sessions, 3 and 5. Session 3 is a graphical session, marked
+with a star. The tree of processing including the two
+corresponding scope units and the user manager unit are
+shown.</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_LOG_LEVEL</i></p>
+
+<p style="margin-left:17%;">The maximum log level of
+emitted messages (messages with a higher log level, i.e.
+less important ones, will be suppressed). Either one of (in
+order of decreasing importance) <b>emerg</b>, <b>alert</b>,
+<b>crit</b>, <b>err</b>, <b>warning</b>, <b>notice</b>,
+<b>info</b>, <b>debug</b>, or an integer in the range 0...7.
+See <b>syslog</b>(3) for more information.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_LOG_COLOR</i></p>
+
+<p style="margin-left:17%;">A boolean. If true, messages
+written to the tty will be colored according to
+priority.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This setting is
+only useful when messages are written directly to the
+terminal, because <b>journalctl</b>(1) and other tools that
+display logs will color messages based on the log level on
+their own.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_LOG_TIME</i></p>
+
+<p style="margin-left:17%;">A boolean. If true, console log
+messages will be prefixed with a timestamp.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This setting is
+only useful when messages are written directly to the
+terminal or a file, because <b>journalctl</b>(1) and other
+tools that display logs will attach timestamps based on the
+entry metadata on their own.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_LOG_LOCATION</i></p>
+
+<p style="margin-left:17%;">A boolean. If true, messages
+will be prefixed with a filename and line number in the
+source code where the message originates.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note that the
+log location is often attached as metadata to journal
+entries anyway. Including it directly in the message text
+can nevertheless be convenient when debugging programs.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_LOG_TID</i></p>
+
+<p style="margin-left:17%;">A boolean. If true, messages
+will be prefixed with the current numerical thread ID
+(TID).</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note that the
+this information is attached as metadata to journal entries
+anyway. Including it directly in the message text can
+nevertheless be convenient when debugging programs.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_LOG_TARGET</i></p>
+
+<p style="margin-left:17%;">The destination for log
+messages. One of <b>console</b> (log to the attached tty),
+<b>console-prefixed</b> (log to the attached tty but with
+prefixes encoding the log level and &quot;facility&quot;,
+see <b>syslog</b>(3), <b>kmsg</b> (log to the kernel
+circular log buffer), <b>journal</b> (log to the journal),
+<b>journal-or-kmsg</b> (log to the journal if available, and
+to kmsg otherwise), <b>auto</b> (determine the appropriate
+log target automatically, the default), <b>null</b> (disable
+log output).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_PAGER</i></p>
+
+<p style="margin-left:17%;">Pager to use when
+<b>--no-pager</b> is not given; overrides <i>$PAGER</i>. If
+neither <i>$SYSTEMD_PAGER</i> nor <i>$PAGER</i> are set, a
+set of well-known pager implementations are tried in turn,
+including <b>less</b>(1) and <b>more</b>(1), until one is
+found. If no pager implementation is discovered no pager is
+invoked. Setting this environment variable to an empty
+string or the value &quot;cat&quot; is equivalent to passing
+<b>--no-pager</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note: if
+<i>$SYSTEMD_PAGERSECURE</i> is not set,
+<i>$SYSTEMD_PAGER</i> (as well as <i>$PAGER</i>) will be
+silently ignored.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_LESS</i></p>
+
+<p style="margin-left:17%;">Override the options passed to
+<b>less</b> (by default &quot;FRSXMK&quot;).</p>
+
+<p style="margin-left:17%; margin-top: 1em">Users might
+want to change two options in particular:</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>K</b></p>
+
+<p style="margin-left:23%;">This option instructs the pager
+to exit immediately when Ctrl+C is pressed. To allow
+<b>less</b> to handle Ctrl+C itself to switch back to the
+pager command prompt, unset this option.</p>
+
+<p style="margin-left:23%; margin-top: 1em">If the value of
+<i>$SYSTEMD_LESS</i> does not include &quot;K&quot;, and the
+pager that is invoked is <b>less</b>, Ctrl+C will be ignored
+by the executable, and needs to be handled by the pager.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>X</b></p>
+
+<p style="margin-left:23%;">This option instructs the pager
+to not send termcap initialization and deinitialization
+strings to the terminal. It is set by default to allow
+command output to remain visible in the terminal even after
+the pager exits. Nevertheless, this prevents some pager
+functionality from working, in particular paged output
+cannot be scrolled with the mouse.</p>
+
+<p style="margin-left:17%; margin-top: 1em">See
+<b>less</b>(1) for more discussion.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_LESSCHARSET</i></p>
+
+<p style="margin-left:17%;">Override the charset passed to
+<b>less</b> (by default &quot;utf-8&quot;, if the invoking
+terminal is determined to be UTF-8 compatible).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_PAGERSECURE</i></p>
+
+<p style="margin-left:17%;">Takes a boolean argument. When
+true, the &quot;secure&quot; mode of the pager is enabled;
+if false, disabled. If <i>$SYSTEMD_PAGERSECURE</i> is not
+set at all, secure mode is enabled if the effective UID is
+not the same as the owner of the login session, see
+<b>geteuid</b>(2) and <b>sd_pid_get_owner_uid</b>(3). In
+secure mode, <b>LESSSECURE=1</b> will be set when invoking
+the pager, and the pager shall disable commands that open or
+create new files or start new subprocesses. When
+<i>$SYSTEMD_PAGERSECURE</i> is not set at all, pagers which
+are not known to implement secure mode will not be used.
+(Currently only <b>less</b>(1) implements secure mode.)</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note: when
+commands are invoked with elevated privileges, for example
+under <b>sudo</b>(8) or <b>pkexec</b>(1), care must be taken
+to ensure that unintended interactive features are not
+enabled. &quot;Secure&quot; mode for the pager may be
+enabled automatically as describe above. Setting
+<i>SYSTEMD_PAGERSECURE=0</i> or not removing it from the
+inherited environment allows the user to invoke arbitrary
+commands. Note that if the <i>$SYSTEMD_PAGER</i> or
+<i>$PAGER</i> variables are to be honoured,
+<i>$SYSTEMD_PAGERSECURE</i> must be set too. It might be
+reasonable to completely disable the pager using
+<b>--no-pager</b> instead.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_COLORS</i></p>
+
+<p style="margin-left:17%;">Takes a boolean argument. When
+true, <b>systemd</b> and related utilities will use colors
+in their output, otherwise the output will be monochrome.
+Additionally, the variable can take one of the following
+special values: &quot;16&quot;, &quot;256&quot; to restrict
+the use of colors to the base 16 or 256 ANSI colors,
+respectively. This can be specified to override the
+automatic decision based on <i>$TERM</i> and what the
+console is connected to.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_URLIFY</i></p>
+
+<p style="margin-left:17%;">The value must be a boolean.
+Controls whether clickable links should be generated in the
+output for terminal emulators supporting this. This can be
+specified to override the decision that <b>systemd</b> makes
+based on <i>$TERM</i> and other conditions.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd</b>(1),
+<b>systemctl</b>(1), <b>systemd-logind.service</b>(8),
+<b>logind.conf</b>(5)</p>
+<hr>
+</body>
+</html>

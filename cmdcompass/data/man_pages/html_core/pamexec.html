@@ -1,0 +1,199 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:25 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamexec User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamexec User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#APPLICATIONS">APPLICATIONS</a><br>
+<a href="#LIMITATIONS">LIMITATIONS</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamexec -
+Execute a shell command on each image in a Netpbm image
+stream</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamexec</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[&quot;<i>command</i>&quot;]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<i>netpbmfile</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-check</b>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviation of option is acceptable. You may use double
+hyphens instead of single hyphen to denote options. You may
+use white space in place of the equals sign to separate an
+option name from its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamexec</b>
+reads a Netpbm image stream as input. For each image, it
+runs a specified shell command and supplies the image to it
+as Standard Input (with a pipe).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>netpbmfile</i>
+is the file name of the input file, or <b>-</b> to indicate
+Standard Input. The default is Standard Input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Many Netpbm
+programs understand multimage Netpbm streams themselves, so
+you don&rsquo;t need to use <b>pamexec</b> to run the
+program on the images in the stream. Ideally, all Netpbm
+programs would have that capability, but multi-image streams
+are a relatively recent invention, so older Netpbm programs
+just process the first image in the stream and then stop.
+Even many recently written Netpbm programs work that way,
+since the authors aren&rsquo;t aware of the multi-image
+possibility.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Another way to
+process a multi-image stream is to use <b>pamsplit</b> to
+explode it into multiple files, one image per file. You can
+then process those files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To run your
+command on a subset of the images in the stream, use
+<b>pampick</b> to select the desired images from the input
+stream and pipe the result to <b>pamexec</b>.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamexec</b> recognizes the following command line
+option:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-check</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>This causes <b>pamexec</b> to exit without processing
+any further images if the command has a nonzero exit
+status.</p> </td></tr>
+</table>
+
+<h2>APPLICATIONS
+<a name="APPLICATIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">To make an
+animated GIF movie:</p>
+
+<p style="margin-left:11%; margin-top: 1em">pamexec
+pamtogif myvideo.ppm | gifsicle --multifile
+&gt;myvideo.gif</p>
+
+<h2>LIMITATIONS
+<a name="LIMITATIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamexec</b>
+assumes all commands consume all of Standard Input. If yours
+doesn&rsquo;t (perhaps it just exits when it&rsquo;s seen
+enough), <br>
+you can buffer through a temporary file like this, which
+copies the <br>
+first 3 lines of every image (the PPM header) to Standard
+Output:</p>
+
+<p style="margin-left:11%; margin-top: 1em">pamexec
+&quot;cat &gt;/tmp/x; head --lines=3 x&quot; myvideo.ppm</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamexec</b>
+was new in Netpbm 10.56 (September 2011).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Michael Pot
+wrote it, borrowing from <b>pamsplit</b>.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamfile</b>(1),
+<b>pampick</b>(1), <b>pamsplit</b>(1), <b>pnm</b>(1),
+<b>pam</b>(1), <b>cat</b> man page</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamexec.html</b></p>
+<hr>
+</body>
+</html>

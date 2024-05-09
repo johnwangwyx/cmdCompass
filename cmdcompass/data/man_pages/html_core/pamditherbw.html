@@ -1,0 +1,315 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:25 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamditherbw User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamditherbw User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#REFERENCES">REFERENCES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamditherbw -
+dither grayscale image to black and white</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamditherbw</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-floyd</b>
+| <b>-fs</b> | <b>-atkinson</b> | <b>-threshold</b> |
+<b>-hilbert</b> | <b>-dither8</b> | <b>-d8</b> |
+<b>-cluster3</b> | <b>-c3</b> | <b>-cluster4</b> |
+<b>-c4</b> | <b>-cluster8</b> | <b>-c8</b>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-value</b>
+<i>val</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-clump</b>
+<i>size</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-randomseed=</b><i>integer</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<i>pamfile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">All options can
+be abbreviated to their shortest unique prefix.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamditherbw</b>
+dithers a grayscale image. Dithering means turning each
+shade of gray into a pattern of black and white pixels that,
+from a distance, look the same as the gray.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The input
+should be a PGM image or a PAM image of tuple type
+GRAYSCALE. However, <b>pamditherbw</b> doesn&rsquo;t check,
+so if you feed it e.g. a PPM image, it will produce
+arbitrary results (actually, it just takes the first channel
+of whatever you give it and treats it as if it represented
+gray levels).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The output is a
+PAM with tuple type BLACKANDWHITE. You can turn this into a
+PBM (if you need to use it with an older program that
+doesn&rsquo;t understand PAM) with <b>pamtopnm</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To do the
+opposite of dithering, you can usually just scale the image
+down and then back up again with <b>pamscale</b>, possibly
+smoothing or blurring the result with <b>pnmsmooth</b> or
+<b>pnmconvol</b>. Or use the special case program
+<b>pbmtopgm</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To dither a
+color image (to reduce the number of pixel colors), use
+<b>ppmdither</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Another way to
+convert a grayscale image to a black and white image is
+thresholding. Thresholding is simply replacing each
+grayscale pixel with a black or white pixel depending on
+whether its brightness is above or below a threshold. That
+threshold might vary. Simple thresholding is a degenerate
+case of dithering, so <b>pamditherbw</b> does very simple
+thresholding with its <b>-threshold</b> option. But
+<b>pamthreshold</b> does more sophisticated
+thresholding.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If all you want
+is to change a PGM image with maxval 1 to a PBM image,
+<b>pamtopnm</b> will do that.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamditherbw</b> recognizes the following command line
+options:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Quantization
+Method</b> <br>
+The default quantization method is boustrophedonic
+Floyd-Steinberg error diffusion (<b>-floyd</b> or
+<b>-fs</b>).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Also available
+are simple thresholding (<b>-threshold</b>); Bayer&rsquo;s
+ordered dither (<b>-dither8</b>) with a 16x16 matrix;
+<a href="http://www.tinrocket.com/projects/programming/graphics/00158/">
+Atkinson</a> ; and three different sizes of 45-degree
+clustered-dot dither (<b>-cluster3</b>, <b>-cluster4</b>,
+<b>-cluster8</b>).</p>
+
+<p style="margin-left:11%; margin-top: 1em">A space filling
+curve halftoning method using the Hilbert curve is also
+available (<b>-hilbert</b>).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">Floyd-Steinberg
+or Atkinson will almost always give the best looking
+results; however, looking good is not always what you want.
+For instance, you can use thresholding in a pipeline with
+the <b>pnmconvol</b>, for tasks such as edge and peak
+detection. And clustered-dot dithering gives a newspaper-ish
+look, a useful special effect.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">Floyd-Steinberg
+is by far the more traditional, but
+<a href="http://www.tinrocket.com/projects/programming/graphics/00158/">
+some claim</a> Atkinson works better.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The Hilbert
+curve method is useful for processing images before display
+on devices that do not render individual pixels distinctly
+(like laser printers). This dithering method can give better
+results than the dithering usually done by the laser
+printers themselves. The <b>-clump</b> option alters the
+number of pixels in a clump. Typically a PGM image will have
+to be scaled to fit on a laser printer page (2400 x 3000
+pixels for an A4 300 dpi page), and then dithered to a PBM
+image before being converted to a postscript file. A
+printing pipeline might look something like:</p>
+
+<p style="margin-left:11%; margin-top: 1em">pamscale
+-xysize 2400 3000 image.pgm | pamditherbw -hilbert | \ <br>
+pamtopnm | pnmtops -scale 0.25 &gt; image.ps</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Other
+Options</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-value</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>This option alters the thresholding value for
+Floyd-Steinberg, Atkinson, and simple thresholding. It
+should be a real number between 0 and 1. Above 0.5 means
+darker images; below 0.5 means lighter.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-clump</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>This option alters the number of pixels in a clump when
+the Hilbert curve method is used. This is usually an integer
+between 2 and 100 (default 5). Smaller clump sizes smear the
+image less and are less grainy, but seem to lose some grey
+scale linearity.</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>-randomseed=</b><i>integer</i></p>
+
+<p style="margin-left:22%;">The Floyd-Steiberg and Atkinson
+methods use random numbers to diffuse the error. This is the
+seed for the random number generator. The other methods do
+not employ random numbers and ignore this option.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Use this to
+ensure you get the same image on separate invocations.</p>
+
+<p style="margin-left:22%; margin-top: 1em">By default,
+<b>pamditherbw</b> uses a seed derived from the time of day
+and process ID, which gives you fairly uncorrelated results
+in multiple invocations.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.45 (December 2008).</p>
+
+<h2>REFERENCES
+<a name="REFERENCES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The only
+reference you need for this stuff is &quot;Digital
+Halftoning&quot; by Robert Ulichney, MIT Press, ISBN
+0-262-21009-6.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The Hilbert
+curve space filling method is taken from &quot;Digital
+Halftoning with Space Filling Curves&quot; by Luiz Velho,
+Computer Graphics Volume 25, Number 4, proceedings of
+SIGRAPH &rsquo;91, page 81. ISBN 0-89791-436-8</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtopnm</b>(1),
+<b>pgmtopgm</b>(1), <b>pbmtopgm</b>(1),
+<b>pamthreshold</b>(1), <b>pbmreduce</b>(1),
+<b>pnmconvol</b>(1), <b>pamscale</b>(1), <b>pam</b>(1),
+<b>pnm</b>(1),</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamditherbw</b>
+was new in Netpbm 10.23 (July 2004), but is essentially the
+same program as <b>pgmtopbm</b> that has existed practically
+since the beginning. <b>pamditherbw</b> differs from its
+predecessor in that it properly adds brightnesses (using
+gamma transformations; <b>pgmtopbm</b> just adds them
+linearly) and that it accepts PAM input in addition to PGM
+and PBM and produces PAM output.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamditherbw</b>
+obsoletes <b>pgmtopbm</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-atkinson</b>
+was new in Netpbm 10.38 (March 2007).</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1989 by Jef Poskanzer.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamditherbw.html</b></p>
+<hr>
+</body>
+</html>

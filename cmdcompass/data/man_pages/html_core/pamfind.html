@@ -1,0 +1,174 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:25 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamfind User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamfind User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamfind - Print
+the locations of all tuples of a certain value in an
+image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamfind</b>
+{
+<b>-target=</b><i>sample0</i><b>,</b><i>sample1</i><b>,</b>
+... | <b>-color=</b><i>color</i> } [<b>-machine</b>]
+[<i>imagefile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">All options can
+be abbreviated to their shortest unique prefix. You may use
+two hyphens instead of one. You may separate an option name
+and its value with white space instead of an equals
+sign.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamfind</b>
+reads a Netpbm image (PNM or PAM) and prints a list of all
+the locations (row and column) of the tuples that have a
+value you specify. For example, you can list all the places
+that a visual image is red.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can specify
+the value in actual decimal sample values with a
+<b>-target</b> option or as a color with <b>-color</b>. If
+you specify <b>-color</b>, the program fails if the input
+image does not have depth 3. If it has depth 3 but the
+tuples aren&rsquo;t actually colors, you get results as if
+they are.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To do the
+opposite, see what tuple is at a given location, use
+<b>pamcut</b> and <b>pamtable</b>:</p>
+
+<p style="margin-left:11%; margin-top: 1em">$ pamcut
+-left=5 -top=7 -width=1 -height=1 | pamtable</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmcolormask</b>
+also finds all the tuples of a certain value, at least in
+visual images, but instead of printing their coordinates, it
+generates a mask image, which you can use to visualize where
+those tuples are or as input to another program.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamfind</b> recognizes the following command line
+options: <b><br>
+-target=</b><i>sample0</i><b>,</b><i>sample1</i><b>,</b> ...
+|</p>
+
+<p style="margin-left:22%;">This specifies the tuple value
+to find. You specify the sample values in order, and must
+specify the proper number of sample values for the depth of
+the image (e.g. 3 if it is a color image).</p>
+
+<p style="margin-left:22%; margin-top: 1em">You must
+specify exactly one of <b>-target</b> and <b>-color</b>.</p>
+
+<p style="margin-left:11%;"><b>-color=</b><i>color</i></p>
+
+<p style="margin-left:22%;">This is the color to find,
+assuming the image is a color visual image.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>color</i> is
+as described for the
+<a href="libnetpbm_image.html#colorname">argument of the
+<b>pnm_parsecolor()</b> library routine</a> .</p>
+
+<p style="margin-left:22%; margin-top: 1em">You must
+specify exactly one of <b>-target</b> and <b>-color</b>.</p>
+
+<p style="margin-left:11%;"><b>-machine</b></p>
+
+<p style="margin-left:22%;">This makes the output more
+convenient for a machine to use, while <br>
+less convenient for a human. <b>pamfind</b> reports the same
+information <br>
+as with no options.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.87 (March 2020).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamdepth</b>(1),
+<b>pamgetcolor</b>(1), <b>ppmhist</b>(1),
+<b>ppmcolormask</b>(1), <b>pamcut</b>(1),
+<b>pamtable</b>(1), <b>pam</b>(1)</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamfind</b>
+was added to Netpbm in Release 10.86 (March 2019).</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamfind.html</b></p>
+<hr>
+</body>
+</html>

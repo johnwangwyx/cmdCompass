@@ -1,0 +1,516 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:01 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>dpkg-deb</title>
+
+</head>
+<body>
+
+<h1 align="center">dpkg-deb</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#COMMANDS">COMMANDS</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">dpkg-deb -
+Debian package archive (.deb) manipulation tool</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dpkg-deb</b>
+[<i>option</i>...] <i>command</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i><b>dpkg-deb</b></i>
+packs, unpacks and provides information about Debian
+archives.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Use <b>dpkg</b>
+to install and remove packages from your system.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can also
+invoke <b>dpkg-deb</b> by calling <b>dpkg</b> with whatever
+options you want to pass to <b>dpkg-deb</b>. <b>dpkg</b>
+will spot that you wanted <b>dpkg-deb</b> and run it for
+you.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For most
+commands taking an input archive argument, the archive can
+be read from standard input if the archive name is given as
+a single minus character (&laquo;<b>-</b>&raquo;); otherwise
+lack of support will be documented in their respective
+command description.</p>
+
+<h2>COMMANDS
+<a name="COMMANDS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-b</b>,
+<b>--build</b> <i>binary-directory</i>
+[<i>archive</i>|<i>directory</i>]</p>
+
+<p style="margin-left:17%;">Creates a debian archive from
+the filesystem tree stored in <i>binary-directory</i>.
+<i>binary-directory</i> must have a
+<b><small>DEBIAN</small></b> subdirectory, which contains
+the control information files such as the control file
+itself. This directory will <i>not</i> appear in the binary
+package&rsquo;s filesystem archive, but instead the files in
+it will be put in the binary package&rsquo;s control
+information area.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Unless you
+specify <b>--nocheck</b>, <b>dpkg-deb</b> will read
+<b>DEBIAN/control</b> and parse it. It will check the file
+for syntax errors and other problems, and display the name
+of the binary package being built. <b>dpkg-deb</b> will also
+check the permissions of the maintainer scripts and other
+files found in the <b><small>DEBIAN</small></b> control
+information directory.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If no
+<i>archive</i> is specified then <b>dpkg-deb</b> will write
+the package into the file
+<i>binary-directory</i><b>.deb</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If the archive
+to be created already exists it will be overwritten.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If the second
+argument is a directory then <b>dpkg-deb</b> will write to
+the file
+<i>directory</i><b>/</b><i>package</i><b>_</b><i>version</i><b>_</b><i>arch</i><b>.deb.</b>
+When a target directory is specified, rather than a file,
+the <b>--nocheck</b> option may not be used (since
+<b>dpkg-deb</b> needs to read and parse the package control
+file to determine which filename to use).</p>
+
+<p style="margin-left:11%;"><b>-I</b>, <b>--info</b>
+<i>archive</i> [<i>control-file-name</i>...]</p>
+
+<p style="margin-left:17%;">Provides information about a
+binary package archive.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If no
+<i>control-file-name</i>s are specified then it will print a
+summary of the contents of the package as well as its
+control file.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If any
+<i>control-file-name</i>s are specified then <b>dpkg-deb</b>
+will print them in the order they were specified; if any of
+the components weren&rsquo;t present it will print an error
+message to stderr about each one and exit with status 2.</p>
+
+<p style="margin-left:11%;"><b>-W</b>, <b>--show</b>
+<i>archive</i></p>
+
+<p style="margin-left:17%;">Provides information about a
+binary package archive in the format specified by the
+<b>--showformat</b> argument. The default format displays
+the package&rsquo;s name and version on one line, separated
+by a tabulator.</p>
+
+<p style="margin-left:11%;"><b>-f</b>, <b>--field</b>
+<i>archive</i> [<i>control-field-name</i>...]</p>
+
+<p style="margin-left:17%;">Extracts control file
+information from a binary package archive.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If no
+<i>control-field-name</i>s are specified then it will print
+the whole control file.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If any are
+specified then <b>dpkg-deb</b> will print their contents, in
+the order in which they appear in the control file. If more
+than one <i>control-field-name</i> is specified then
+<b>dpkg-deb</b> will precede each with its field name (and a
+colon and space).</p>
+
+<p style="margin-left:17%; margin-top: 1em">No errors are
+reported for fields requested but not found.</p>
+
+<p style="margin-left:11%;"><b>-c</b>, <b>--contents</b>
+<i>archive</i></p>
+
+<p style="margin-left:17%;">Lists the contents of the
+filesystem tree archive portion of the package archive. It
+is currently produced in the format generated by
+<b>tar</b>&rsquo;s verbose listing.</p>
+
+<p style="margin-left:11%;"><b>-x</b>, <b>--extract</b>
+<i>archive directory</i></p>
+
+<p style="margin-left:17%;">Extracts the filesystem tree
+from a package archive into the specified directory.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note that
+extracting a package to the root directory will <i>not</i>
+result in a correct installation! Use <b>dpkg</b> to install
+packages.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>directory</i>
+(but not its parents) will be created if necessary, and its
+permissions modified to match the contents of the
+package.</p>
+
+<p style="margin-left:11%;"><b>-X</b>, <b>--vextract</b>
+<i>archive directory</i></p>
+
+<p style="margin-left:17%;">Is like <b>--extract</b>
+(<b>-x</b>) with <b>--verbose</b> (<b>-v</b>) which prints a
+listing of the files extracted as it goes.</p>
+
+<p style="margin-left:11%;"><b>-R</b>, <b>--raw-extract</b>
+<i>archive directory</i></p>
+
+<p style="margin-left:17%;">Extracts the filesystem tree
+from a package archive into a specified directory, and the
+control information files into a
+<b><small>DEBIAN</small></b> subdirectory of the specified
+directory (since dpkg 1.16.1).</p>
+
+<p style="margin-left:17%; margin-top: 1em">The target
+directory (but not its parents) will be created if
+necessary.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The input
+archive is not (currently) processed sequentially, so
+reading it from standard input (&laquo;<b>-</b>&raquo;) is
+<b>not</b> supported.</p>
+
+<p style="margin-left:11%;"><b>--ctrl-tarfile</b>
+<i>archive</i></p>
+
+<p style="margin-left:17%;">Extracts the control data from
+a binary package and sends it to standard output in
+<b>tar</b> format (since dpkg 1.17.14). Together with
+<b>tar</b>(1) this can be used to extract a particular
+control file from a package archive. The input archive will
+always be processed sequentially.</p>
+
+<p style="margin-left:11%;"><b>--fsys-tarfile</b>
+<i>archive</i></p>
+
+<p style="margin-left:17%;">Extracts the filesystem tree
+data from a binary package and sends it to standard output
+in <b>tar</b> format. Together with <b>tar</b>(1) this can
+be used to extract a particular file from a package archive.
+The input archive will always be processed sequentially.</p>
+
+<p style="margin-left:11%;"><b>-e</b>, <b>--control</b>
+<i>archive</i> [<i>directory</i>]</p>
+
+<p style="margin-left:17%;">Extracts the control
+information files from a package archive into the specified
+directory.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If no directory
+is specified then a subdirectory
+<b><small>DEBIAN</small></b> in the current directory is
+used.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The target
+directory (but not its parents) will be created if
+necessary.</p>
+
+<p style="margin-left:11%;"><b>-?</b>, <b>--help</b></p>
+
+<p style="margin-left:17%;">Show the usage message and
+exit.</p>
+
+<p style="margin-left:11%;"><b>--version</b></p>
+
+<p style="margin-left:17%;">Show the version and exit.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--showformat=</b><i>format</i></p>
+
+<p style="margin-left:17%;">This option is used to specify
+the format of the output <b>--show</b> will produce. The
+format is a string that will be output for each package
+listed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The string may
+reference any status field using the
+&ldquo;${<i>field-name</i>}&rdquo; form, a list of the valid
+fields can be easily produced using <b>-I</b> on the same
+package. A complete explanation of the formatting options
+(including escape sequences and field tabbing) can be found
+in the explanation of the <b>--showformat</b> option in
+<b>dpkg-query</b>(1).</p>
+
+<p style="margin-left:17%; margin-top: 1em">The default for
+this field is &ldquo;${Package}\t${Version}\n&rdquo;.</p>
+
+
+<p style="margin-left:11%;"><b>-z</b><i>compress-level</i></p>
+
+<p style="margin-left:17%;">Specify which compression level
+to use on the compressor backend, when building a package
+(default is 9 for gzip, 6 for xz, 3 for zstd). The accepted
+values are compressor specific. For gzip, from 0-9 with 0
+being mapped to compressor none. For xz from 0-9. For zstd
+from 0-22, with levels from 20 to 22 enabling its ultra
+mode. Before dpkg 1.16.2 level 0 was equivalent to
+compressor none for all compressors.</p>
+
+
+<p style="margin-left:11%;"><b>-S</b><i>compress-strategy</i></p>
+
+<p style="margin-left:17%;">Specify which compression
+strategy to use on the compressor backend, when building a
+package (since dpkg 1.16.2). Allowed values are <b>none</b>
+(since dpkg 1.16.4), <b>filtered</b>, <b>huffman</b>,
+<b>rle</b> and <b>fixed</b> for gzip (since dpkg 1.17.0) and
+<b>extreme</b> for xz.</p>
+
+
+<p style="margin-left:11%;"><b>-Z</b><i>compress-type</i></p>
+
+<p style="margin-left:17%;">Specify which compression type
+to use when building a package. Allowed values are
+<b>gzip</b>, <b>xz</b> (since dpkg 1.15.6), <b>zstd</b>
+(since dpkg 1.21.18) and <b>none</b> (default is
+<b>xz</b>).</p>
+
+
+<p style="margin-left:11%;"><b>--[no-]uniform-compression</b></p>
+
+<p style="margin-left:17%;">Specify that the same
+compression parameters should be used for all archive
+members (i.e. <b>control.tar</b> and <b>data.tar</b>; since
+dpkg 1.17.6). Otherwise only the <b>data.tar</b> member will
+use those parameters. The only supported compression types
+allowed to be uniformly used are <b>none</b>, <b>gzip</b>,
+<b>xz</b> and <b>zstd</b>. The
+<b>--no-uniform-compression</b> option disables uniform
+compression (since dpkg 1.19.0). Uniform compression is the
+default (since dpkg 1.19.0).</p>
+
+
+<p style="margin-left:11%;"><b>--threads-max=</b><i>threads</i></p>
+
+<p style="margin-left:17%;">Sets the maximum number of
+threads allowed for compressors that support multi-threaded
+operations (since dpkg 1.21.9).</p>
+
+<p style="margin-left:11%;"><b>--root-owner-group</b></p>
+
+<p style="margin-left:17%;">Set the owner and group for
+each entry in the filesystem tree data to root with id 0
+(since dpkg 1.19.0).</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>Note</b>:
+This option can be useful for rootless builds (see
+<i>rootless-builds.txt</i>), but should <b>not</b> be used
+when the entries have an owner or group that is not root.
+Support for these will be added later in the form of a meta
+manifest.</p>
+
+
+<p style="margin-left:11%;"><b>--deb-format=</b><i>format</i></p>
+
+<p style="margin-left:17%;">Set the archive format version
+used when building (since dpkg 1.17.0). Allowed values are
+<b>2.0</b> for the new format, and <b>0.939000</b> for the
+old one (default is <b>2.0</b>).</p>
+
+<p style="margin-left:17%; margin-top: 1em">The old archive
+format is less easily parsed by non-Debian tools and is now
+obsolete; its only use is when building packages to be
+parsed by versions of dpkg older than 0.93.76 (September
+1995), which was released as i386 a.out only.</p>
+
+<p style="margin-left:11%;"><b>--nocheck</b></p>
+
+<p style="margin-left:17%;">Inhibits <b>dpkg-deb
+--build</b>&rsquo;s usual checks on the proposed contents of
+an archive. You can build any archive you want, no matter
+how broken, this way.</p>
+
+<p style="margin-left:11%;"><b>-v</b>, <b>--verbose</b></p>
+
+<p style="margin-left:17%;">Enables verbose output (since
+dpkg 1.16.1). This currently only affects <b>--extract</b>
+making it behave like <b>--vextract</b>.</p>
+
+<p style="margin-left:11%;"><b>-D</b>, <b>--debug</b></p>
+
+<p style="margin-left:17%;">Enables debugging output. This
+is not very interesting.</p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em"><b>0</b></p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">The requested action was
+successfully performed.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p><b>2</b></p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>Fatal or unrecoverable error due to invalid command-line
+usage, or interactions with the system, such as accesses to
+the database, memory allocations, etc.</p></td></tr>
+</table>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><small>DPKG_DEB_THREADS_MAX</small></b></p>
+
+<p style="margin-left:17%;">Sets the maximum number of
+threads allowed for compressors that support multi-threaded
+operations (since dpkg 1.21.9).</p>
+
+<p style="margin-left:17%; margin-top: 1em">The
+<b>--threads-max</b> option overrides this value.</p>
+
+
+<p style="margin-left:11%;"><b><small>DPKG_DEB_COMPRESSOR_TYPE</small></b></p>
+
+<p style="margin-left:17%;">Sets the compressor type to use
+(since dpkg 1.21.10).</p>
+
+<p style="margin-left:17%; margin-top: 1em">The <b>-Z</b>
+option overrides this value.</p>
+
+
+<p style="margin-left:11%;"><b><small>DPKG_DEB_COMPRESSOR_LEVEL</small></b></p>
+
+<p style="margin-left:17%;">Sets the compressor level to
+use (since dpkg 1.21.10).</p>
+
+<p style="margin-left:17%; margin-top: 1em">The <b>-z</b>
+option overrides this value.</p>
+
+
+<p style="margin-left:11%;"><b><small>DPKG_COLORS</small></b></p>
+
+<p style="margin-left:17%;">Sets the color mode (since dpkg
+1.18.5). The currently accepted values are: <b>auto</b>
+(default), <b>always</b> and <b>never</b>.</p>
+
+
+<p style="margin-left:11%;"><b><small>TMPDIR</small></b></p>
+
+<p style="margin-left:17%;">If set, <b>dpkg-deb</b> will
+use it as the directory in which to create temporary files
+and directories.</p>
+
+
+<p style="margin-left:11%;"><b><small>SOURCE_DATE_EPOCH</small></b></p>
+
+<p style="margin-left:17%;">If set, it will be used as the
+timestamp (as seconds since the epoch) in the
+<b>deb</b>(5)&rsquo;s <b>ar</b>(5) container and used to
+clamp the mtime in the <b>tar</b>(5) file entries.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Do not attempt
+to use just <b>dpkg-deb</b> to install software! You must
+use <b>dpkg</b> proper to ensure that all the files are
+correctly placed and the package&rsquo;s scripts run and its
+status and contents recorded.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dpkg-deb
+-I</b> <i>package1</i><b>.deb</b> <i>package2</i><b>.deb</b>
+does the wrong thing.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There is no
+authentication on <b>.deb</b> files; in fact, there
+isn&rsquo;t even a straightforward checksum. (Higher level
+tools like <small>APT</small> support authenticating
+<b>.deb</b> packages retrieved from a given repository, and
+most packages nowadays provide an md5sum control file
+generated by debian/rules. Though this is not directly
+supported by the lower level tools.)</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/usr/share/doc/dpkg/spec/rootless-builds.txt</i>,
+<b>deb</b>(5), <b>deb-control</b>(5), <b>dpkg</b>(1),
+<b>dselect</b>(1).</p>
+<hr>
+</body>
+</html>

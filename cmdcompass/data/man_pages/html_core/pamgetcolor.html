@@ -1,0 +1,343 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:25 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamgetcolor User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamgetcolor User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#Table Of Contents">Table Of Contents</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamgetcolor -
+display the average colors from specified regions in an
+image.</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamgetcolor</b>
+[<b>-format</b> <i>format</i>] [<b>-radius</b>
+<i>radius</i>] [<b>-linear</b>] [<b>-infile</b>
+<i>pamfile</i>] <i>region1</i> [<i>region2</i> ...]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamgetcolor</b>
+prints the average colors of a set of circular regions in
+the input image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You specify a
+region as a positional argument of the form
+<i>column</i>,<i>row</i>[:<i>label</i>], where <i>column</i>
+and <i>row</i> are the coordinates of the center of the
+circle (first row of pixels is row 0; leftmost column of
+pixels is column 0), and <i>label</i> an optional label that
+<b>pamgetcolor</b> shall display to identify that region in
+its output. All regions have he same radius, specified by
+the <b>-radius</b> option. The region centers must lie
+within the image, but part of a region may fall outside the
+image; <b>pamgetcolor</b> considers only the part that is
+within the image in calculations.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">To read the
+color of the pixel at location (10,14) in the default
+format:</p>
+
+<p style="margin-left:11%; margin-top: 1em">pamgetcolor
+10,14 -infile test.ppm</p>
+
+<p style="margin-left:11%; margin-top: 1em">To read the
+colors of three pixels in the default format, assigning a
+label to each pixel:</p>
+
+<p style="margin-left:11%; margin-top: 1em">pamgetcolor
+10,10:topleft 100,100:middle 200,200:bottomright -infile
+test.ppm</p>
+
+<p style="margin-left:11%; margin-top: 1em">To read with
+16-bit precision the average color in the circle with a
+radius of four pixels and the center at (100,100):</p>
+
+<p style="margin-left:11%; margin-top: 1em">pamgetcolor
+-format int:65535 -radius 4 100,100 -infile test.ppm</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamgetcolor</b> recognizes the following command line
+options: <b><br>
+-format</b></p>
+
+<p style="margin-left:22%;">This specifies the format in
+which to output the colors. The output is always a
+<a href="libppm.html#colorname">Netpbm color
+specification</a> ; this format tells which of the various
+specifications for the same color the program uses.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This argument
+is of the form <i>formatId</i>[:<i>param</i>], where
+<i>formatId</i> specifies the format and <i>param</i> is a
+positive integer parameter that, depending on
+<i>formatId</i>, indicates either precision or
+normalization. The following values are possible for
+<i>formatId</i>:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>int</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Samples are decimal integers normalized to the maxval
+specified by <i>param</i>. Example:
+<b>rgb-255:255/128/64</b> This format is the default, with a
+maxval of 255.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>norm</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Samples are floating point numbers normalized to unity.
+E.g. <b>rgbi:1.0/0.5/.25</b> <i>param</i> specifies
+precision as the number of digits in the fractional
+part.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>x11</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Samples are hexadecimal numbers with <i>param</i>
+digits, e.g. <b>rgb:01/ff/8000</b></p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-radius</b></p>
+
+<p style="margin-left:22%;">sets the radius of the regions.
+A value of zero causes <b>pamgetcolor</b> to measure a
+single pixel and is the default.</p>
+
+<p style="margin-left:11%;"><b>-infile</b></p>
+
+<p style="margin-left:22%;">This specifies the Netpbm file
+to analyze.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you
+don&rsquo;t specify this option, <b>pamgetcolor</b> reads
+the image from Standard Input.</p>
+
+<p style="margin-left:11%;"><b>-linear</b></p>
+
+<p style="margin-left:22%;">This tells <b>pamgetcolor</b>
+to work with the intensity-linear variation of Netpbm images
+where the samples are proportional to light intensity rather
+than to brightness, as in true (gamma-adjusted) Netpbm
+formats.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmcolormap</b>(1),</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program
+was first submitted by Anton Shepelev
+(<i>anton.txt@gmail.com</i>).</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program
+was new in Netpbm 10.83 (June 2018).</p>
+
+<h2>Table Of Contents
+<a name="Table Of Contents"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="16%">
+
+
+
+<p style="margin-top: 1em"><a href="#synopsis">SYNOPSIS</a></p> </td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="16%">
+
+
+<p><a href="#description">DESCRIPTION</a></p></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="16%">
+
+
+<p><a href="#examples">EXAMPLES</a></p></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="16%">
+
+
+<p><a href="#options">OPTIONS</a></p></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="16%">
+
+
+<p><a href="#seealso">SEE ALSO</a></p></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="16%">
+
+
+<p><a href="#author">AUTHOR</a></p></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="16%">
+
+
+<p><a href="#history">HISTORY</a></p></td>
+<td width="62%">
+</td></tr>
+</table>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamgetcolor.html</b></p>
+<hr>
+</body>
+</html>

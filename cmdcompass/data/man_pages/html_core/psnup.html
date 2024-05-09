@@ -1,0 +1,192 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:43 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>PSNUP</title>
+
+</head>
+<body>
+
+<h1 align="center">PSNUP</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#TRADEMARKS">TRADEMARKS</a><br>
+<a href="#BUGS">BUGS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">psnup -
+multiple pages per sheet</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>psnup</b> [
+<b>-w</b><i>width</i> ] [ <b>-h</b><i>height</i> ] [
+<b>-p</b><i>paper</i> ] [ <b>-W</b><i>width</i> ] [
+<b>-H</b><i>height</i> ] [ <b>-P</b><i>paper</i> ] [
+<b>-l</b> ] [ <b>-r</b> ] [ <b>-f</b> ] [ <b>-c</b> ] [
+<b>-m</b><i>margin</i> ] [ <b>-b</b><i>border</i> ] [
+<b>-d</b><i>lwidth</i> ] [ <b>-s</b><i>scale</i> ] [
+<b>-</b><i>nup</i> ] [ <b>-q</b> ] [ <i>infile</i> [
+<i>outfile</i> ] ]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Psnup</i>
+puts multiple logical pages onto each physical sheet of
+paper. The input PostScript file should follow the Adobe
+Document Structuring Conventions.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <i>-w</i>
+option gives the paper width, and the <i>-h</i> option gives
+the paper height, normally specified in <b>cm</b> or
+<b>in</b>. The <i>-p</i> option can be used as an
+alternative, to set the paper size to <b>a0, a1, a2, a3, a4,
+a5, b5, letter, legal, tabloid, statement,</b> executive,
+folio, quarto or <b>10x14.</b> The default paper size is
+normally <b>a4,</b> but on a Debian system, /etc/papersize
+is consulted. The <i>-W, -H,</i> and <i>-P</i> options set
+the input paper size, if it is different from the output
+size. This makes it easy to impose pages of one size on a
+different size of paper.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <i>-l</i>
+option should be used for pages which are in landscape
+orientation (rotated 90 degrees anticlockwise). The
+<i>-r</i> option should be used for pages which are in
+seascape orientation (rotated 90 degrees clockwise), and the
+<i>-f</i> option should be used for pages which have the
+width and height interchanged, but are not rotated.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Psnup</i>
+normally uses &rsquo;row-major&rsquo; layout, where adjacent
+pages are placed in rows across the paper. The <i>-c</i>
+option changes the order to &rsquo;column-major&rsquo;,
+where successive pages are placed in columns down the
+paper.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A margin to
+leave around the whole page can be specified with the
+<i>-m</i> option. This is useful for sheets of
+&rsquo;thumbnail&rsquo; pages, because the normal page
+margins are reduced by putting multiple pages on a single
+sheet.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <i>-b</i>
+option is used to specify an additional margin around each
+page on a sheet.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <i>-d</i>
+option draws a line around the border of each page, of the
+specified width. If the <i>lwidth</i> parameter is omitted,
+a default linewidth of 1 point is assumed. The linewidth is
+relative to the original page dimensions, <i>i.e.</i> it is
+scaled down with the rest of the page.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The scale
+chosen by <i>psnup</i> can be overridden with the <i>-s</i>
+option. This is useful to merge pages which are already
+reduced.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <i>-nup</i>
+option selects the number of logical pages to put on each
+sheet of paper. This can be any whole number; <i>psnup</i>
+tries to optimise the layout so that the minimum amount of
+space is wasted. If <i>psnup</i> cannot find a layout within
+its tolerance limit, it will abort with an error message.
+The alternative form <i>-i nup</i> can also be used, for
+compatibility with other n-up programs.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Psnup</i>
+normally prints the page numbers of the pages re-arranged;
+the <i>-q</i> option suppresses this.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The potential
+use of this utility is varied but one particular use is in
+conjunction with <i>psbook(1).</i> For example, using groff
+to create a PostScript document and lpr as the
+<small>UNIX</small> print spooler a typical command line
+might look like this:</p>
+
+<p style="margin-left:11%; margin-top: 1em">groff -Tps -ms
+<i>file</i> | psbook | psnup -2 | lpr</p>
+
+<p style="margin-left:11%; margin-top: 1em">Where file is a
+4 page document this command will result in a two page
+document printing two pages of <i>file</i> per page and
+rearranges the page order to match the input pages 4 and 1
+on the first output page and pages 2 then 3 of the input
+document on the second output page.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+Angus J. C. Duggan 1991-1995</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">psbook(1),
+psselect(1), pstops(1), epsffit(1), psnup(1), psresize(1),
+psmerge(1), fixscribeps(1), getafm(1), fixdlsrps(1),
+fixfmps(1), fixpsditps(1), fixpspps(1), fixtpps(1),
+fixwfwps(1), fixwpps(1), fixwwps(1), extractres(1),
+includeres(1), showchar(1)</p>
+
+<h2>TRADEMARKS
+<a name="TRADEMARKS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>PostScript</b>
+is a trademark of Adobe Systems Incorporated.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Psnup</i>
+does not accept all DSC comments.</p>
+<hr>
+</body>
+</html>

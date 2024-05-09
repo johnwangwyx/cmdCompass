@@ -1,0 +1,400 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:29 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pbmtextps User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pbmtextps User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#USAGE">USAGE</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pbmtextps -
+render text into a PBM image using a postscript
+interpreter</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbmtextps</b>
+[<b>-font</b> <i>fontname</i>] [<b>-fontsize</b>
+<i>float</i>] [<b>-resolution</b> <i>n</i>]
+[<b>-leftmargin=</b><i>n</i>] [<b>-rightmargin=</b><i>n</i>]
+[<b>-topmargin=</b><i>n</i>] [<b>-bottommargin=</b><i>n</i>]
+[<b>-ascent=</b><i>n</i>] [<b>-descent=</b><i>n</i>]
+[<b>-pad</b>] [<b>-crop</b>] [<b>-stroke</b> <i>n</i>]
+[<b>-verbose</b>] [<b>-dump-ps</b>] <i>text</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbmtextps</b>
+takes a single line of text from the command line and
+renders it into a PBM image. The image is of a single line
+of text; newline characters in the input have no effect.</p>
+
+<p style="margin-left:11%; margin-top: 1em">See
+<b>pbmtext</b> for a more sophisticated generator of text,
+but using less common font formats. <b>pbmtext</b> can
+generate multiple lines of text.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>-plain</b> <a href="index.html#commonoptions">common
+option</a> has no effect before Netpbm 10.42 (March 2008).
+The output is always raw PBM.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Margins</b>
+<br>
+By default, the image is cropped at the top and the right.
+It is not cropped at the left or bottom so that the text
+begins at the same position relative to the origin. The size
+of the default left and bottom margins is explained
+below.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can set
+whatever margin you want with options <b>-leftmargin</b>,
+<b>-rightmargin</b>, <b>-topmargin</b> and
+<b>-bottommargin</b>. The specified amount of white space
+gets added to the far edge of type, e.g. if you specify 10
+points for <b>-topmargin</b>, you will get 10 points of
+white space above the highest character on the line. Specify
+0 to crop a side.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-ascent</b>
+adds white space to the top to reach a specified distance
+above the text baseline, and <b>-descent</b> adds white
+space to to the bottom to reach a specified distance below
+the text baseline.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-ascent</b>
+and <b>-descent</b> are more useful than <b>-topmargin</b>
+and <b>-bottomargin</b> when you render two pieces of text
+(in separate invocations of <b>pbmtextps</b>) that you will
+concatenate horizontally. With <b>-ascent</b> and
+<b>-descent</b>, the two images will be the same height with
+the text baseline in the same place. With <b>-topmargin</b>
+and <b>-bottommargin</b>, that may not be the case.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Example:</p>
+
+<p style="margin-left:11%; margin-top: 1em">$ pbmtextps
+-font=Times-Roman -descent=20 \ <br>
+&rsquo;The soup is called&rsquo; &gt; a1.pbm <br>
+$ pbmtextps -font=Itallic -descent=20 &rsquo;Goulash.&rsquo;
+&gt; a2.pbm <br>
+$ pnmcat -lr -jb a1.pbm a2.pbm &gt; out.pbm</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you have
+<b>-ascent</b>, there is probably no point in specifying
+<b>-topmargin</b> too, but if you do, the effect is
+cumulative. The same is true of <b>-descent</b> and
+<b>-bottommargin</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-pad</b>
+pads the image on the top and bottom to the where the
+highest and lowest characters in the font would reach, even
+if you don&rsquo;t have those characters in your text. This
+is useful if you will generate multiple images of text (with
+multiple invocations of <b>pbmtextps</b>) and concatenate
+them vertically to create a multiline text image.
+<b>-pad</b> makes sure the lines in this image are equally
+spaced.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Example:</p>
+
+<p style="margin-left:11%; margin-top: 1em">$ pbmtextps
+&rsquo;cat&rsquo; | pamfile <br>
+$ pbmtextps &rsquo;Catty&rsquo; | pamfile</p>
+
+<p style="margin-left:11%; margin-top: 1em">The commands
+above, with no <b>-pad</b>, show that the
+&rsquo;Catty&rsquo; image is higher because capital C
+reaches high and &rsquo;y&rsquo; reaches low.</p>
+
+<p style="margin-left:11%; margin-top: 1em">$ pbmtextps
+-pad &rsquo;cat&rsquo; | pamfile <br>
+$ pbmtextps -pad &rsquo;Catty&rsquo; | pamfile</p>
+
+<p style="margin-left:11%; margin-top: 1em">The commands
+above, with <b>-pad</b>, show that both images are the same
+height.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you specify
+<b>-pad</b> with <b>-ascent</b> or <b>-descent</b>, the
+larger value is effective.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-crop</b>
+makes the program crop all sides to the far edge of the
+type. It is the same as -leftmargin=0 -rightmargin=0
+-topmargin=0 -bottommargin=0.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You cannot
+specify any other margin-affecting options with
+<b>-crop</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The default top
+margin, when you specify neither <b>-ascent</b>,
+<b>-topmargin</b>, nor <b>-pad</b>, is as if you specified
+<b>topmargin=0</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The default
+bottom margin, when you specify neither <b>-descent</b>,
+<b>-bottommargin</b>, nor <b>-pad</b>, is as if you
+specified <b>-descent=</b><i>1.5*fontsize</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The default
+left margin, when you do not specify <b>-leftmargin</b>, is
+as if you specified
+<b>-leftmargin=</b><i>0.5*fontsize</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The default
+right margin, when you do not specify <b>-rightmargin</b>,
+is as if you specified <b>-rightmargin=0</b>.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pbmtextps</b> recognizes the following command line
+options: <b><br>
+-font=</b><i>fontname</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">This specifies
+the font to use. <i>fontname</i> is the name of any valid
+postscript font which is installed on the system.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+<b>TimesRoman</b>.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>Warning:</b>
+if <i>fontname</i> does not name a valid font,
+<b>pbmtextps</b> just uses the default font. It does not
+tell you it is doing this.</p>
+
+
+<p style="margin-left:11%;"><b>-fontsize=</b><i>float</i></p>
+
+<p style="margin-left:22%;">This is the size of the font in
+points. See the <b>-resolution</b> option for information on
+how to interpret this size.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+24 points.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Before Netpbm
+10.75 (June 2016), this has to be a whole number.</p>
+
+
+<p style="margin-left:11%;"><b>-resolution=</b><i>n</i></p>
+
+<p style="margin-left:22%;">This is the resolution in dots
+per inch of distance measurements pertaining to generation
+of the image. PBM images don&rsquo;t have any inherent
+resolution, so a distance such as &quot;1 inch&quot;
+doesn&rsquo;t mean anything unless you separately specify
+what resolution you&rsquo;re talking about. That&rsquo;s
+what this option does.</p>
+
+<p style="margin-left:22%; margin-top: 1em">In particular,
+the meaning of the font size is determined by this
+resolution. If the font size is 24 points and the resolution
+is 150 dpi, then the font size is 50 pixels.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+150 dpi.</p>
+
+<p style="margin-left:11%;"><b>-leftmargin=</b><i>n</i>
+<b><br>
+-rightmargin=</b><i>n</i> <b><br>
+-topmargin=</b><i>n</i> <b><br>
+-bottommargin=</b><i>n</i></p>
+
+<p style="margin-left:22%;">These options control the
+margins added to the image, measured from the far edge of
+the type. See <a href="#margins">Margins</a> for
+details.</p>
+
+<p style="margin-left:22%; margin-top: 1em">All sizes are
+in points, as a floating point number.</p>
+
+<p style="margin-left:22%; margin-top: 1em">These options
+were new in Netpbm 10.75 (June 2016).</p>
+
+<p style="margin-left:11%;"><b>-ascent=</b><i>n</i> <b><br>
+-descent=</b><i>n</i></p>
+
+<p style="margin-left:22%;">These options control the
+margins added to the image, measured from the text baseline.
+See <a href="#margins">Margins</a> for details.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Sizes are in
+points, as a floating point number.</p>
+
+<p style="margin-left:22%; margin-top: 1em">These options
+were new in Netpbm 10.75 (June 2016).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-pad</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>This pads the image on the top and bottom to the where
+the highest and lowest characters in the font would reach,
+even if you don&rsquo;t have those characters in your text.
+See <a href="#margins">Margins</a> for details.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.75 (June 2016).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em"><b>-crop</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">This makes the program crop all
+sides to the far edge of the type. It is the same as
+-leftmargin=0 -rightmargin=0 -topmargin=0 -bottommargin=0.
+See <a href="#margins">Margins</a> for details.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.75 (June 2016).</p>
+
+<p style="margin-left:11%;"><b>-stroke=</b><i>n</i></p>
+
+<p style="margin-left:22%;">This is the width of line, in
+points, to use for stroke font. There is no default stroke
+width because the characters are solid by default.</p>
+
+<p style="margin-left:11%;"><b>-verbose</b></p>
+
+<p style="margin-left:22%;">This option makes
+<b>pbmtextps</b> display extra information on Standard Error
+about its processing.</p>
+
+<p style="margin-left:11%;"><b>-dump-ps</b></p>
+
+<p style="margin-left:22%;">This option makes
+<b>pbmtextps</b> write to Standard Output the Postscript
+program it would use to create the image, rather than the
+image itself. You can use this as input to a Postscript
+interpreter (such as Ghostscript or a a printer) or to
+understand the program better.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.75 (June 2016).</p>
+
+<h2>USAGE
+<a name="USAGE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">You can
+generate antialiased text by using a larger resolution than
+the default and scaling the image down using
+<b>pamscale</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">See the manual
+for the similar <b>pbmtext</b> for more advice on usage.</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbmtextps</b>
+was added to Netpbm in Release 10.0 (June 2002).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbmtext</b>(1),
+<b>pamcut</b>(1), <b>pnmcrop</b>(1), <b>pamcomp</b>(1),
+<b>ppmchange</b>(1), <b>pnmrotate</b>(1),
+<b>pamscale</b>(1), <b>ppmlabel</b>(1), <b>pbm</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+2002 by James McCann</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pbmtextps.html</b></p>
+<hr>
+</body>
+</html>

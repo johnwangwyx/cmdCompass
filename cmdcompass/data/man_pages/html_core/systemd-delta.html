@@ -1,0 +1,226 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:52 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SYSTEMD-DELTA</title>
+
+</head>
+<body>
+
+<h1 align="center">SYSTEMD-DELTA</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">systemd-delta -
+Find overridden configuration files</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><b>systemd-delta</b>
+[OPTIONS...]
+[<i>PREFIX</i>[/<i>SUFFIX</i>]|<i>SUFFIX</i>...]</p> </td>
+<td width="6%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-delta</b>
+may be used to identify and compare configuration files that
+override other configuration files. Files in /etc/ have
+highest priority, files in /run/ have the second highest
+priority, ..., files in /usr/lib/ have lowest priority.
+Files in a directory with higher priority override files
+with the same name in directories of lower priority. In
+addition, certain configuration files can have
+&quot;.d&quot; directories which contain &quot;drop-in&quot;
+files with configuration snippets which augment the main
+configuration file. &quot;Drop-in&quot; files can be
+overridden in the same way by placing files with the same
+name in a directory of higher priority (except that, in case
+of &quot;drop-in&quot; files, both the &quot;drop-in&quot;
+file name and the name of the containing directory, which
+corresponds to the name of the main configuration file, must
+match). For a fuller explanation, see
+<b>systemd.unit</b>(5).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The command
+line argument will be split into a prefix and a suffix.
+Either is optional. The prefix must be one of the
+directories containing configuration files (/etc/, /run/,
+/lib/, ...). If it is given, only overriding files contained
+in this directory will be shown. Otherwise, all overriding
+files will be shown. The suffix must be a name of a
+subdirectory containing configuration files like tmpfiles.d,
+sysctl.d or systemd/system. If it is given, only
+configuration files in this subdirectory (across all
+configuration paths) will be analyzed. Otherwise, all
+configuration files will be analyzed. If the command line
+argument is not given at all, all configuration files will
+be analyzed. See below for some examples.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+options are understood:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-t</b>,
+<b>--type=</b></p>
+
+<p style="margin-left:17%;">When listing the differences,
+only list those that are asked for. The list itself is a
+comma-separated list of desired difference types.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Recognized
+types are:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>masked</i></p>
+
+<p style="margin-left:23%;">Show masked files</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>equivalent</i></p>
+
+<p style="margin-left:23%;">Show overridden files that
+while overridden, do not differ in content.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>redirected</i></p>
+
+<p style="margin-left:23%;">Show files that are redirected
+to another.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>overridden</i></p>
+
+<p style="margin-left:23%;">Show overridden, and changed
+files.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>extended</i></p>
+
+<p style="margin-left:23%;">Show *.conf files in drop-in
+directories for units.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>unchanged</i></p>
+
+<p style="margin-left:23%;">Show unmodified files too.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--diff=</b></p>
+
+<p style="margin-left:17%;">When showing modified files,
+when a file is overridden show a diff as well. This option
+takes a boolean argument. If omitted, it defaults to
+<b>true</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Print a short help text and
+exit.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--version</b></p>
+
+<p style="margin-left:17%;">Print a short version string
+and exit.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--no-pager</b></p>
+
+<p style="margin-left:17%;">Do not pipe output into a
+pager.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">To see all
+local configuration:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">systemd-delta</p>
+
+<p style="margin-left:11%; margin-top: 1em">To see all
+runtime configuration:</p>
+
+<p style="margin-left:17%; margin-top: 1em">systemd-delta
+/run</p>
+
+<p style="margin-left:11%; margin-top: 1em">To see all
+system unit configuration changes:</p>
+
+<p style="margin-left:17%; margin-top: 1em">systemd-delta
+systemd/system</p>
+
+<p style="margin-left:11%; margin-top: 1em">To see all
+runtime &quot;drop-in&quot; changes for system units:</p>
+
+<p style="margin-left:17%; margin-top: 1em">systemd-delta
+--type=extended /run/systemd/system</p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">On success, 0
+is returned, a non-zero failure code otherwise.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd</b>(1),
+<b>systemd.unit</b>(5)</p>
+<hr>
+</body>
+</html>

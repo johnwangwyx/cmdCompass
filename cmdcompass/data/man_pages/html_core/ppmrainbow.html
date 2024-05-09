@@ -1,0 +1,196 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:38 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Ppmrainbow User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Ppmrainbow User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#ARGUMENTS">ARGUMENTS</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ppmrainbow -
+Generate a rainbow</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmrainbow</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-width=</b><i>number</i>]
+[<b>-height=</b><i>number</i>]
+[<b>-tmpdir=</b><i>directory</i>] [<b>-norepeat</b>]
+[<b>-verbose</b>] <i>color</i> ...</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmrainbow</b>
+generates a PPM image that fades from one color to another
+to another from left to right, like a rainbow.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you want a
+vertical or other non-horizontal rainbow, run the output
+through <b>pnmrotate</b> or <b>pamflip</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">One use for
+such a rainbow is to compose it with another image under a
+transparency mask in order to add a rainbow area to another
+image. In fact, you can make rainbow-colored text by using
+<b>pbmtext</b>, <b>pamcomp</b>, and <b>ppmrainbow</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pgmramp</b>
+does a similar thing for grayscale images.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you just
+want an image containing all the possible colors (for some
+kind of processing; not to look at), see <b>pamseq</b>.</p>
+
+<h2>ARGUMENTS
+<a name="ARGUMENTS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>color</i>
+... is the list of colors, in order from left to right, to
+go into the rainbow.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The first color
+is added again on the right end of the image unless you
+specify the <b>-norepeat</b> option. This means you can
+concatenate multiple copies (tile, as with <b>pnmtile</b>)
+to make a continuous larger image.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>color</i> is
+as described for the
+<a href="libnetpbm_image.html#colorname">argument of the
+<b>pnm_parsecolor()</b> library routine</a> .</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">All options can
+be abbreviated to their shortest unique prefix. You may use
+two hyphens instead of one to designate an option. You may
+use either white space or equals signs between an option
+name and its value. <b><br>
+-width</b> <i>number</i></p>
+
+<p style="margin-left:22%;">The width in pixels of the
+output image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Default is
+600.</p>
+
+<p style="margin-left:11%;"><b>-height</b>
+<i>number</i></p>
+
+<p style="margin-left:22%;">The height in pixels of the
+output image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Default is
+8.</p>
+
+<p style="margin-left:11%;"><b>-norepeat</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+makes <b>ppmrainbow</b> end the rainbow with the last color
+you specify. Without this option, <b>ppmrainbow</b> adds the
+first color you specify to the right end of the rainbow as
+if you had repeated it.</p>
+
+<p style="margin-left:11%;"><b>-tmpdir</b></p>
+
+<p style="margin-left:22%;">The directory specification of
+the directory <b>ppmrainbow</b> is to use for temporary
+files.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Default is the
+value of the <b>TMPDIR</b> environment variable, or
+<b>/tmp</b> if <b>TMPDIR</b> is not set.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>ppmrainbow</b>
+always creates a directory within this directory and creates
+all its files within that directory.</p>
+
+<p style="margin-left:11%;"><b>-verbose</b></p>
+
+<p style="margin-left:22%;">Print the &quot;commands&quot;
+(invocations of other Netpbm programs) that
+<b>ppmrainbow</b> uses to create the image.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pgmramp</b>(1),
+<b>pamseq</b>(1), <b>pamgradient</b>(1), <b>ppmmake</b>(1),
+<b>ppmfade</b>(1), <b>ppm</b>(1).</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Arjen Bax wrote
+<b>ppmrainbow</b> in June 2001 and contributed it to the
+Netpbm package. Bryan Henderson wrote this manual in July
+2001.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/ppmrainbow.html</b></p>
+<hr>
+</body>
+</html>

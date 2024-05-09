@@ -1,0 +1,3307 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:07 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GROFFER</title>
+
+</head>
+<body>
+
+<h1 align="center">GROFFER</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTION OVERVIEW">OPTION OVERVIEW</a><br>
+<a href="#OPTION DETAILS">OPTION DETAILS</a><br>
+<a href="#OUTPUT MODES">OUTPUT MODES</a><br>
+<a href="#MAN PAGE SEARCHING">MAN PAGE SEARCHING</a><br>
+<a href="#DECOMPRESSION">DECOMPRESSION</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#CONFIGURATION FILES">CONFIGURATION FILES</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#COMPATIBILITY">COMPATIBILITY</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">groffer -
+display groff files and man pages on X and tty</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p style="margin-top: 1em"><b>groffer</b></p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p style="margin-top: 1em">[<i>mode-option</i> ...]
+[<i>groff-option</i> ...] [<i>man-option</i> ...]
+[<i>X-option</i> ...] [<b>--</b>] [<i>filespec</i> ...]</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p style="margin-top: 1em"><b>groffer</b></p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p style="margin-top: 1em"><b>-h</b></p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p><b>groffer</b></p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p><b>--help</b></p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p style="margin-top: 1em"><b>groffer</b></p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p style="margin-top: 1em"><b>-v</b></p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p><b>groffer</b></p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p><b>--version</b></p></td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>groffer</b> program is the easiest way to use
+<b>groff</b>(1). It can display arbitrary documents written
+in the <i>groff</i> language, see <b>groff</b>(7), or other
+<i>roff</i> languages, see <b>roff</b>(7), that are
+compatible to the original <i>troff</i> language. It finds
+and runs all necessary <i>groff</i> preprocessors, such as
+<b>chem</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>groffer</b> program also includes many of the features
+for finding and displaying the Unix manual pages
+(<i>man&nbsp;pages</i>), such that it can be used as a
+replacement for a <b>man</b>(1) program. Moreover,
+compressed files that can be handled by <b>gzip</b>(1) or
+<b>bzip2</b>(1) are decompressed on-the-fly.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The normal
+usage is quite simple by supplying a file name or name of a
+<i>man&nbsp;page</i> without further options. But the option
+handling has many possibilities for creating special
+behaviors. This can be done either in configuration files,
+with the shell environment variable <i>GROFFER_OPT</i>, or
+on the command line.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The output can
+be generated and viewed in several different ways available
+for <i>groff</i>. This includes the X Window System-based
+<i>groff</i> program <b>gxditview</b>(1), each
+<i>PostScript</i>, <i>PDF</i>, or <i>DVI</i> display
+program, a web browser by generating <i>HTML</i> or
+<i>XHTML</i> in <i>www&nbsp;mode</i>, or several
+<i>text&nbsp;modes</i> in text terminals.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Most of the
+options that must be named when running <b>groff</b>
+directly are determined automatically for <b>groffer</b>,
+due to the internal usage of the <b>grog</b>(1) program. But
+all parts can also be controlled manually by arguments.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Several file
+names can be specified on the command-line arguments. They
+are transformed into a single document in the normal way of
+<b>groff</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Option handling
+is done in GNU style. Options and file names can be mixed
+freely. The option &ldquo;<b>--</b>&rdquo; closes the option
+handling, all following arguments are treated as file names.
+Long options can be abbreviated in several ways.</p>
+
+<h2>OPTION OVERVIEW
+<a name="OPTION OVERVIEW"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>breaking
+options</i></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="46%">
+
+
+
+<p style="margin-top: 1em">[<b>-h&nbsp;</b>|&nbsp;<b>--help</b>]
+[<b>-v&nbsp;</b>|&nbsp;<b>--version</b>]</p> </td>
+<td width="31%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><i>groffer mode options</i></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="77%">
+
+
+<p style="margin-top: 1em">[<b>--auto</b>]
+[<b>--default</b>]
+[<b>--default-modes&nbsp;</b><i>mode1,mode2,...</i>]
+[<b>--dvi</b>] [<b>--groff</b>] [<b>--html</b>]
+[<b>--latin1</b>] [<b>--mode&nbsp;</b><i>display_mode</i>]
+[<b>--pdf</b>] [<b>--pdf2</b>] [<b>--ps</b>]
+[<b>--source</b>] [<b>--text</b>] [<b>--to-stdout</b>]
+[<b>--tty</b>] [<b>--utf8</b>]
+[<b>--viewer&nbsp;</b><i>prog</i>] [<b>--www</b>]
+[<b>--xhtml</b>] [<b>--x&nbsp;</b>|&nbsp;<b>--X</b>]</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><i>options related to
+groff</i></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="77%">
+
+
+
+<p style="margin-top: 1em">[<b>-T&nbsp;</b>|&nbsp;<b>--device&nbsp;</b><i>device</i>]
+[<b>-Z&nbsp;</b>|&nbsp;<b>--intermediate-output&nbsp;</b>|&nbsp;<b>--ditroff</b>]</p> </td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">All further
+<b>groff</b> short options are accepted.</p>
+
+<p style="margin-left:11%;"><i>options for
+man&nbsp;pages</i></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="77%">
+
+
+<p style="margin-top: 1em">[<b>--apropos</b>]
+[<b>--apropos-data</b>] [<b>--apropos-devel</b>]
+[<b>--apropos-progs</b>] [<b>--man</b>] [<b>--no-man</b>]
+[<b>--no-special</b>] [<b>--whatis</b>]</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><i>long options taken over from
+GNU man</i></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="77%">
+
+
+<p style="margin-top: 1em">[<b>--all</b>] [<b>--ascii</b>]
+[<b>--ditroff</b>] [<b>--extension&nbsp;</b><i>suffix</i>]
+[<b>--locale&nbsp;</b><i>language</i>] [<b>--local-file</b>]
+[<b>--location&nbsp;</b>|&nbsp;<b>--where</b>]
+[<b>--manpath&nbsp;</b><i>dir1:dir2:...</i>]
+[<b>--no-location</b>] [<b>--pager&nbsp;</b><i>program</i>]
+[<b>--sections&nbsp;</b><i>sec1:sec2:...</i>]
+[<b>--systems&nbsp;</b><i>sys1,sys2,...</i>]
+[<b>--troff-device&nbsp;</b><i>device</i>]</p> </td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">Further long
+options of GNU <b>man</b> are accepted as well.</p>
+
+<p style="margin-left:11%;"><i>options mapped to X Window
+System Toolkit Intrinsics options</i></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="77%">
+
+
+
+<p style="margin-top: 1em">[<b>--bd&nbsp;</b>|&nbsp;<b>--bordercolor&nbsp;</b><i>pixels</i>]
+[<b>--bg&nbsp;</b>|&nbsp;<b>--background&nbsp;</b><i>color</i>]
+[<b>--bw&nbsp;</b>|&nbsp;<b>--borderwidth&nbsp;</b><i>pixels</i>]
+[<b>--display&nbsp;</b><i>X-display</i>]
+[<b>--fg&nbsp;</b>|&nbsp;<b>--foreground&nbsp;</b><i>color</i>]
+[<b>--fn&nbsp;</b>|&nbsp;<b>--ft&nbsp;</b>|&nbsp;<b>--font&nbsp;</b><i>font_name</i>]
+[<b>--geometry&nbsp;</b><i>size_pos</i>]
+[<b>--resolution&nbsp;</b><i>value</i>] [<b>--rv</b>]
+[<b>--title&nbsp;</b><i>string</i>]
+[<b>--xrm&nbsp;</b><i>X-resource</i>]</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><i>options for
+development</i></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="77%">
+
+
+<p style="margin-top: 1em">[<b>--debug</b>]
+[<b>--debug-filenames</b>] [<b>--debug-grog</b>]
+[<b>--debug-keep</b>] [<b>--debug-params</b>]
+[<b>--debug-tmpdir</b>] [<b>--do-nothing</b>]
+[<b>--print&nbsp;</b><i>text</i>] [<b>-V</b>]</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><i>filespec arguments</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+<i>filespec</i> parameters are all arguments that are
+neither an option nor an option argument. They usually mean
+a file name or a <i>man page</i> searching scheme.</p>
+
+<p style="margin-left:22%; margin-top: 1em">In the
+following, the term <i>section_extension</i> is used. It
+means a word that consists of a <i>man section</i> that is
+optionally followed by an <i>extension</i>. The name of a
+<i>man section</i> is a single character from
+<b>[1&ndash;9on]</b>, the <i>extension</i> is some word. The
+<i>extension</i> is mostly lacking.</p>
+
+<p style="margin-left:22%; margin-top: 1em">No
+<i>filespec</i> parameters means standard input.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="12%">
+
+
+<p><b>-</b></p></td>
+<td width="3%"></td>
+<td width="63%">
+
+
+<p>stands for standard input (can occur several times).</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="12%">
+
+
+<p><i>filename</i></p></td>
+<td width="3%"></td>
+<td width="63%">
+
+
+<p>the path name of an existing file.</p></td></tr>
+</table>
+
+
+<p style="margin-left:22%;"><b>man:</b><i>name</i><b>(</b><i>section_extension</i><b>)
+<br>
+man:</b><i>name</i><b>.</b><i>section_extension <br>
+name</i><b>(</b><i>section_extension</i><b>)</b> <i><br>
+name</i><b>.</b><i>section_extension <br>
+section_extension name</i></p>
+
+<p style="margin-left:37%;">search the man&nbsp;page
+<i>name</i> in the section with optional extension
+<i>section_extension</i>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="12%">
+
+
+<p><b>man:</b><i>name</i></p></td>
+<td width="3%"></td>
+<td width="63%">
+
+
+<p>man&nbsp;page in the lowest <i>man&nbsp;section</i> that
+has <i>name</i>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="12%">
+
+
+<p><i>name</i></p></td>
+<td width="3%"></td>
+<td width="63%">
+
+
+<p>if <i>name</i> is not an existing file search for the
+man&nbsp;page <i>name</i> in the lowest
+man&nbsp;section.</p> </td></tr>
+</table>
+
+<h2>OPTION DETAILS
+<a name="OPTION DETAILS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>groffer</b> program can usually be run with very few
+options. But for special purposes, it supports many options.
+These can be classified in 5 option classes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">All short
+options of <b>groffer</b> are compatible with the short
+options of <b>groff</b>(1). All long options of
+<b>groffer</b> are compatible with the long options of
+<b>man</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Arguments for
+long option names can be abbreviated in several ways. First,
+the argument is checked whether it can be prolonged as is.
+Furthermore, each minus sign <b>-</b> is considered as a
+starting point for a new abbreviation. This leads to a set
+of multiple abbreviations for a single argument. For
+example, <b>--de-n-f</b> can be used as an abbreviation for
+<b>--debug-not-func</b>, but <b>--de-n</b> works as well. If
+the abbreviation of the argument leads to several resulting
+options an error is raised.</p>
+
+<p style="margin-left:11%; margin-top: 1em">These
+abbreviations are only allowed in the environment variable
+<i>GROFFER_OPT</i>, but not in the configuration files. In
+configuration, all long options must be exact.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>groffer
+breaking Options</b> <br>
+As soon as one of these options is found on the command line
+it is executed, printed to standard output, and the running
+<b>groffer</b> is terminated thereafter. All other arguments
+are ignored. <b><br>
+-h&nbsp;</b>|&nbsp;<b>--help</b></p>
+
+<p style="margin-left:22%;">Print help information with a
+short explanation of options to standard output.</p>
+
+
+<p style="margin-left:11%;"><b>-v&nbsp;</b>|&nbsp;<b>--version</b></p>
+
+<p style="margin-left:22%;">Print version information to
+standard output.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>groffer Mode
+Options</b> <br>
+The display mode and the viewer programs are determined by
+these options. If none of these mode and viewer options is
+specified <b>groffer</b> tries to find a suitable display
+mode automatically. The default modes are <i>mode pdf</i>,
+<i>mode ps</i>, <i>mode html</i>, <i>mode xhtml</i>, <i>mode
+x</i>, and <i>mode dvi</i> in the X Window System with
+different viewers and <i>mode tty</i> with device
+<i>utf8</i> under <b>less</b> on a terminal; other modes are
+tested if the programs for the main default mode do not
+exist.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the X Window
+System, many programs create their own window when called.
+<b>groffer</b> can run these viewers as an independent
+program in the background. As this does not work in text
+mode on a terminal (tty) there must be a way to know which
+viewers are X Window System-based graphical programs. The
+<b>groffer</b> script has a small amount of information on
+some viewer names. If a viewer argument of the command-line
+chooses an element that is recognized as an X Window
+System-based program in this list, it is treated as a viewer
+that can run in the background. Unrecognized viewers are not
+run in the background.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For each mode,
+you are free to choose whatever viewer you want. That need
+not be some graphical viewer suitable for this mode. There
+is a chance to view the output source; for example, the
+combination of the options <b>--mode=ps</b> and
+<b>--viewer=less</b> shows the content of the
+<i>PostScript</i> output, the source code, with the pager
+<b>less</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--auto</b></p></td>
+<td width="2%"></td>
+<td width="40%">
+
+
+<p>Equivalent to <b>--mode=auto</b>.</p></td>
+<td width="38%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--default</b></p>
+
+<p style="margin-left:22%;">Reset all configuration from
+previously processed command-line options to the default
+values. This is useful to wipe out all former options of the
+configuration, in <i>GROFFER_OPT</i>, and restart option
+processing using only the rest of the command line.</p>
+
+
+<p style="margin-left:11%;"><b>--default-modes&nbsp;</b><i>mode1,mode2,...</i></p>
+
+<p style="margin-left:22%;">Set the sequence of modes for
+<i>auto&nbsp;mode</i> to the comma separated list given in
+the argument. See <b>--mode</b> for details on modes.
+Display in the default manner; actually, this means to try
+the modes <i>x</i>, <i>ps</i>, and <i>tty</i> in this
+sequence.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>--dvi</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Equivalent to <b>--mode=dvi</b>. Known <i>DVI</i>
+viewers for the X Window System include <b>xdvi</b>(1) and
+<b>dvilx</b>(1).</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--groff</b></p>
+
+<p style="margin-left:22%;">Equivalent to
+<b>--mode=groff</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--html</b></p></td>
+<td width="2%"></td>
+<td width="40%">
+
+
+<p>Equivalent to <b>--mode=html</b>.</p></td>
+<td width="38%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--mode&nbsp;</b><i>value</i></p>
+
+<p style="margin-left:22%;">Set the display mode. The
+following mode values are recognized:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>auto</b></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>Select the automatic determination of the display mode.
+The sequence of modes that are tried can be set with the
+<b>--default-modes</b> option. Useful for restoring the
+<i>default&nbsp;mode</i> when a different mode was specified
+before.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>dvi</b></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>Display formatted input in a <i>DVI</i> viewer program.
+By default, the formatted input is displayed with the
+<b>xdvi</b>(1) program.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>groff</b></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>After the file determination, switch <b>groffer</b> to
+process the input like <b>groff</b>(1) would do. This
+disables the <i>groffer</i> viewing features.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>html</b></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>Translate the input into HTML format and display the
+result in a web browser program. By default, the existence
+of a sequence of standard web browsers is tested, starting
+with <b>konqueror</b>(1) and <b>mozilla</b>(1). The text
+HTML viewer is <b>lynx</b>(1). By default, the existence of
+a sequence of standard web browsers is tested, starting with
+<b>konqueror</b>(1) and <b>mozilla</b>(1). The text HTML
+viewer is <b>lynx</b>(1).</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>pdf</b></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>Transform <i>roff input files</i> into a <i>PDF file</i>
+by using the <b>groff (1)</b> device <b>-Tpdf</b>. This is
+the default <b>PDF</b> generator. The generated <i>PDF
+file</i> is displayed with suitable viewer programs, such as
+<b>okular</b>(1).</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>pdf2</b></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>This is the traditional <i>pdf mode</i>. Sometimes this
+mode produces more correct output than the default <b>PDF
+mode</b>. By default, the input is formatted by <b>groff</b>
+using the PostScript device, then it is transformed into the
+PDF file format using <b>gs</b>(1), or <b>ps2pdf</b>(1). If
+that&rsquo;s not possible, the <i>PostScript mode (ps)</i>
+is used instead. Finally it is displayed using different
+viewer programs.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>ps</b></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>Display formatted input in a PostScript viewer program.
+By default, the formatted input is displayed in one of many
+viewer programs.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>text</b></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>Format in a <i>groff&nbsp;text&nbsp;mode</i> and write
+the result to standard output without a pager or viewer
+program. The text device, <i>latin1</i> by default, can be
+chosen with option <b>-T</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>tty</b></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>Format in a <i>groff&nbsp;text&nbsp;mode</i> and write
+the result to standard output using a text pager program,
+even when in the X Window System.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>www</b></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>Equivalent to <b>--mode=html</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>x</b></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>Display the formatted input in a native <i>roff</i>
+viewer. By default, the formatted input is displayed with
+the <b>gxditview</b>(1) program being distributed together
+with <b>groff</b>. But the legacy X Window System
+application <b>xditview</b>(1) can also be chosen with the
+option <b>--viewer</b>. The default resolution is
+<b>75dpi</b>, but <b>100dpi</b> are also possible. The
+default <i>groff</i> device for the resolution of
+<b>75dpi</b> is <b>X75-12</b>, for <b>100dpi</b> it is
+<b>X100</b>. The corresponding <i>groff intermediate
+output</i> for the actual device is generated and the result
+is displayed. For a resolution of <b>100dpi</b>, the default
+width of the geometry of the display program is chosen to
+<b>850dpi</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>X</b></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>Equivalent to <b>--mode=x</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>xhtml</b></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>Translate the input into <i>XHTML</i> format, which is
+an <i>XML</i> version of <i>HTML</i>. Then display the
+result in a web browser program, mostly the known <i>HTML
+viewers</i>.</p> </td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">The following
+modes do not use the <i>groffer</i> viewing features. They
+are only interesting for advanced applications.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="20%">
+
+
+<p style="margin-top: 1em"><b>groff</b></p></td>
+<td width="1%"></td>
+<td width="68%">
+
+
+<p style="margin-top: 1em">Generate device output with
+plain <i>groff</i> without using the special viewing
+features of <i>groffer</i>. If no device was specified by
+option <b>-T</b> the <i>groff</i> default <b>ps</b> is
+assumed.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="20%">
+
+
+<p><b>source</b></p></td>
+<td width="1%"></td>
+<td width="68%">
+
+
+<p>Output the roff source code of the input files without
+further processing.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="20%">
+
+
+<p><b>--pdf</b></p></td>
+<td width="1%"></td>
+<td width="68%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">Equivalent to
+<b>--mode=pdf</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>--pdf2</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Equivalent to
+<b>--mode=pdf2</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--ps</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Equivalent to <b>--mode=ps</b>. Common PostScript
+viewers include <b>okular</b>(1), <b>evince</b>(1),
+<b>gv</b>(1), <b>ghostview</b>(1), and <b>gs</b>(1), In each
+case, arguments can be provided additionally.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--source</b></p>
+
+<p style="margin-left:22%;">Equivalent to
+<b>--mode=source</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--text</b></p></td>
+<td width="2%"></td>
+<td width="40%">
+
+
+<p>Equivalent to <b>--mode=text</b>.</p></td>
+<td width="38%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--to-stdout</b></p>
+
+<p style="margin-left:22%;">The file for the chosen mode is
+generated and its content is printed to standard output. It
+will not be displayed in graphical mode.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>--tty</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Equivalent to <b>--mode=tty</b>. The standard pager is
+<b>less</b>(1). This option is equivalent to <i>man</i>
+option <b>--pager=</b><i>prog</i>. The option argument can
+be a file name or a program to be searched in <i>$PATH</i>;
+arguments can be provided additionally.</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--viewer&nbsp;</b><i>prog</i></p>
+
+<p style="margin-left:22%;">Choose a viewer program for
+actual device or mode. This can be a file name or a program
+to be searched in <i>$PATH</i>; arguments can be provided
+additionally.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>--www</b></p></td>
+<td width="4%"></td>
+<td width="40%">
+
+
+<p>Equivalent to <b>--mode=html</b>.</p></td>
+<td width="38%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--X&nbsp;</b>|&nbsp;<b>--x</b></p>
+
+<p style="margin-left:22%;">Equivalent to <b>--mode=x</b>.
+Suitable viewer programs are <b>gxditview</b>(1) which is
+the default and <b>xditview</b>(1).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>--</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Signals the end of option processing; all remaining
+arguments are interpreted as <i>filespec</i> parameters.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Besides these,
+<b>groffer</b> accepts all short options that are valid for
+the <b>groff</b>(1) program. All non-<b>groffer</b> options
+are sent unmodified via <b>grog</b> to <b>groff</b>. So
+postprocessors, macro packages, compatibility with
+<i>classical troff</i>, and much more can be manually
+specified.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Options
+related to groff</b> <br>
+All short options of <b>groffer</b> are compatible with the
+short options of <b>groff</b>(1). The following of
+<b>groff</b> options have either an additional special
+meaning within <b>groffer</b> or make sense for normal
+usage.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Because of the
+special outputting behavior of the <b>groff</b> option <b>-Z
+groffer</b> was designed to be switched into
+<i>groff&nbsp;mode</i>; the <i>groffer</i> viewing features
+are disabled there. The other <b>groff</b> options do not
+switch the mode, but allow to customize the formatting
+process.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p style="margin-top: 1em"><b>--a</b></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">This generates an ASCII
+approximation of output in the <i>text&nbsp;modes</i>. That
+could be important when the text pager has problems with
+control sequences in <i>tty mode</i>.</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--m&nbsp;</b><i>file</i></p>
+
+<p style="margin-left:22%;">Add <i>file</i> as a
+<i>groff</i> macro file. This is useful in case it cannot be
+recognized automatically.</p>
+
+
+<p style="margin-left:11%;"><b>--P&nbsp;</b><i>opt_or_arg</i></p>
+
+<p style="margin-left:22%;">Send the argument
+<i>opt_or_arg</i> as an option or option argument to the
+actual <b>groff</b> postprocessor.</p>
+
+<p style="margin-left:11%;"><b>--T</b>
+<i>devname&nbsp;</i>|&nbsp;<b>--device</b>
+<i>devname</i></p>
+
+<p style="margin-left:22%;">This option determines
+<b>groff</b>&rsquo;s output device. The most important
+devices are the text output devices for referring to the
+different character sets, such as <b>ascii</b>, <b>utf8</b>,
+<b>latin1</b>, <b>utf8</b>, and others. Each of these
+arguments switches <b>groffer</b> into a
+<i>text&nbsp;mode</i> using this device, to
+<i>mode&nbsp;tty</i> if the actual mode is not a
+<i>text&nbsp;mode</i>. The following <i>devname</i>
+arguments are mapped to the corresponding <b>groffer
+--mode=</b><i>devname</i> option: <b>dvi</b>, <b>html</b>,
+<b>xhtml</b>, and <b>ps</b>. All <b>X*</b> arguments are
+mapped to <i>mode&nbsp;x</i>. Each other <i>devname</i>
+argument switches to <i>mode&nbsp;groff</i> using this
+device.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>--X</b></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>is equivalent to <b>groff -X</b>. It displays the
+<i>groff intermediate output</i> with <b>gxditview</b>. As
+the quality is relatively bad this option is deprecated; use
+<b>--X</b> instead because the <i>x&nbsp;mode</i> uses an
+<i>X</i>* device for a better display.</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>-Z&nbsp;</b>|&nbsp;<b>--intermediate-output&nbsp;</b>|&nbsp;<b>--ditroff</b></p>
+
+<p style="margin-left:22%;">Switch into
+<i>groff&nbsp;mode</i> and format the input with the
+<i>groff intermediate output</i> without postprocessing; see
+<b>groff_out</b>(5). This is equivalent to option
+<b>--ditroff</b> of <i>man</i>, which can be used as
+well.</p>
+
+<p style="margin-left:11%; margin-top: 1em">All other
+<b>groff</b> options are supported by <b>groffer</b>, but
+they are just transparently transferred to <b>groff</b>
+without any intervention. The options that are not
+explicitly handled by <b>groffer</b> are transparently
+passed to <b>groff</b>. Therefore these transparent options
+are not documented here, but in <b>groff</b>(1). Due to the
+automatism in <b>groffer</b>, none of these <b>groff</b>
+options should be needed, except for advanced usage.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Options for
+man&nbsp;pages <br>
+--apropos</b></p>
+
+<p style="margin-left:22%;">Start the <b>apropos</b>(1)
+command or facility of <b>man</b>(1) for searching the
+<i>filespec</i> arguments within all <i>man&nbsp;page</i>
+descriptions. Each <i>filespec</i> argument is taken for
+search as it is; <i>section</i> specific parts are not
+handled, such that <b>7 groff</b> searches for the two
+arguments <b>7</b> and <b>groff</b>, with a large result;
+for the <i>filespec</i> <b>groff.7</b> nothing will be
+found. The <i>language</i> locale is handled only when the
+called programs do support this; the GNU <b>apropos</b> and
+<b>man -k</b> do not. The display differs from the
+<b>apropos</b> program by the following concepts:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>Construct a <i>groff</i> frame similar to a
+<i>man&nbsp;page</i> to the output of <b>apropos</b>,</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>each <i>filespec</i> argument is searched on its
+own.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>The restriction by <b>--sections</b> is handled as
+well,</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>wildcard characters are allowed and handled without a
+further option.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--apropos-data</b></p>
+
+<p style="margin-left:22%;">Show only the <b>apropos</b>
+descriptions for data documents, these are the <b>man</b>(7)
+<i>sections&nbsp;4</i>, <i>5</i>, and <i>7</i>. Direct
+<i>section</i> declarations are ignored, wildcards are
+accepted.</p>
+
+<p style="margin-left:11%;"><b>--apropos-devel</b></p>
+
+<p style="margin-left:22%;">Show only the <b>apropos</b>
+descriptions for development documents, these are the
+<b>man</b>(7) <i>sections&nbsp;2</i>, <i>3</i>, and
+<i>9</i>. Direct <i>section</i> declarations are ignored,
+wildcards are accepted.</p>
+
+<p style="margin-left:11%;"><b>--apropos-progs</b></p>
+
+<p style="margin-left:22%;">Show only the <b>apropos</b>
+descriptions for documents on programs, these are the
+<b>man</b>(7) <i>sections&nbsp;1</i>, <i>6</i>, and
+<i>8</i>. Direct <i>section</i> declarations are ignored,
+wildcards are accepted.</p>
+
+<p style="margin-left:11%;"><b>--whatis</b></p>
+
+<p style="margin-left:22%;">For each <i>filespec</i>
+argument search all <i>man&nbsp;pages</i> and display their
+description &mdash; or say that it is not a
+<i>man&nbsp;page</i>. This is written from anew, so it
+differs from <i>man</i>&rsquo;s <b>whatis</b> output by the
+following concepts</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>each retrieved file name is added,</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>local files are handled as well,</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>the <i>language</i> and <i>system</i> locale is
+supported,</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>the display is framed by a <i>groff</i> output format
+similar to a <i>man&nbsp;page</i>,</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>wildcard characters are allowed without a further
+option.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+options were added to <b>groffer</b> for choosing whether
+the file name arguments are interpreted as names for local
+files or as a search pattern for <i>man&nbsp;pages</i>. The
+default is looking up for local files.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em"><b>--man</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Check the non-option
+command-line arguments (<i>filespecs</i>) first on being
+<i>man&nbsp;pages</i>, then whether they represent an
+existing file. By default, a <i>filespec</i> is first tested
+whether it is an existing file.</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--no-man&nbsp;</b>|&nbsp;<b>--local-file</b></p>
+
+<p style="margin-left:22%;">Do not check for
+<i>man&nbsp;pages</i>. <b>--local-file</b> is the
+corresponding <b>man</b> option.</p>
+
+<p style="margin-left:11%;"><b>--no-special</b></p>
+
+<p style="margin-left:22%;">Disable former calls of
+<b>--all</b>, <b>--apropos*</b>, and <b>--whatis</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Long options
+taken over from GNU man</b> <br>
+The long options of <b>groffer</b> were synchronized with
+the long options of GNU <b>man</b>. All long options of GNU
+<b>man</b> are recognized, but not all of these options are
+important to <b>groffer</b>, so most of them are just
+ignored. These ignored <b>man</b> options are
+<b>--catman</b>, <b>--troff</b>, and <b>--update</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the
+following, the <b>man</b> options that have a special
+meaning for <b>groffer</b> are documented.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If your system
+has GNU <b>man</b> installed the full set of long and short
+options of the GNU <b>man</b> program can be passed via the
+environment variable <i>MANOPT</i>; see <b>man</b>(1).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>--all</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>In searching <i>man&nbsp;pages</i>, retrieve all
+suitable documents instead of only one.</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>-7&nbsp;</b>|&nbsp;<b>--ascii</b></p>
+
+<p style="margin-left:22%;">In <i>text&nbsp;modes</i>,
+display ASCII translation of special characters for critical
+environment. This is equivalent to <b>groff -mtty_char</b>;
+see <b>groff_tmac</b>(5).</p>
+
+<p style="margin-left:11%;"><b>--ditroff</b></p>
+
+<p style="margin-left:22%;">Produce <i>groff intermediate
+output</i>. This is equivalent to <b>groffer -Z</b>.</p>
+
+
+<p style="margin-left:11%;"><b>--extension&nbsp;</b><i>suffix</i></p>
+
+<p style="margin-left:22%;">Restrict <i>man&nbsp;page</i>
+search to file names that have <i>suffix</i> appended to
+their section element. For example, in the file name
+<i>/usr/share/man/man3/terminfo.3ncurses.gz</i> the
+<i>man&nbsp;page</i> extension is <i>ncurses</i>.</p>
+
+
+<p style="margin-left:11%;"><b>--locale&nbsp;</b><i>language</i></p>
+
+<p style="margin-left:22%;">Set the language for
+<i>man&nbsp;pages</i>. This has the same effect, but
+overwrites <i>$LANG</i>.</p>
+
+<p style="margin-left:11%;"><b>--location</b></p>
+
+<p style="margin-left:22%;">Print the location of the
+retrieved files to standard error.</p>
+
+<p style="margin-left:11%;"><b>--no-location</b></p>
+
+<p style="margin-left:22%;">Do not display the location of
+retrieved files; this resets a former call to
+<b>--location</b>. This was added by <b>groffer</b>.</p>
+
+
+<p style="margin-left:11%;"><b>--manpath&nbsp;</b><i>&rsquo;dir1:dir2:...&rsquo;</i></p>
+
+<p style="margin-left:22%;">Use the specified search path
+for retrieving <i>man&nbsp;pages</i> instead of the program
+defaults. If the argument is set to the empty string
+&quot;&quot; the search for <i>man&nbsp;page</i> is
+disabled.</p>
+
+<p style="margin-left:11%;"><b>--pager</b></p>
+
+<p style="margin-left:22%;">Set the pager program in
+<i>tty&nbsp;mode</i>; default is <b>less</b>. This can be
+set with <b>--viewer</b>.</p>
+
+
+<p style="margin-left:11%;"><b>--sections&nbsp;</b><i>sec1:sec2:...</i></p>
+
+<p style="margin-left:22%;">Restrict searching for
+<i>man&nbsp;pages</i> to the given <i>sections</i>, a
+colon-separated list.</p>
+
+
+<p style="margin-left:11%;"><b>--systems&nbsp;</b><i>sys1,sys2,...</i></p>
+
+<p style="margin-left:22%;">Search for
+<i>man&nbsp;pages</i> for the given operating systems; the
+argument <i>systems</i> is a comma-separated list.</p>
+
+<p style="margin-left:11%;"><b>--where</b></p>
+
+<p style="margin-left:22%;">Equivalent to
+<b>--location</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>X Window
+System Toolkit Intrinsics Options</b> <br>
+The following long options were adapted from the
+corresponding X Window System Toolkit Intrinsics options.
+<b>groffer</b> will pass them to the actual viewer program
+if it is an X Window System program. Otherwise these options
+are ignored.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Unfortunately
+these options use the old style of a single minus for long
+options. For <b>groffer</b> that was changed to the standard
+with using a double minus for long options, for example,
+<b>groffer</b> uses the option <b>--font</b> for the X
+Window System Toolkit Intrinsics option <b>-font</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">See <b>X</b>(7)
+and the manual <i>X Toolkit Intrinsics &ndash; C Language
+Interface</i> for more details on these options and their
+arguments. <b><br>
+--background&nbsp;</b><i>color</i></p>
+
+<p style="margin-left:22%;">Set the background color of the
+viewer window.</p>
+
+
+<p style="margin-left:11%;"><b>--bd&nbsp;</b><i>pixels</i></p>
+
+<p style="margin-left:22%;">This is equivalent to
+<b>--bordercolor</b>.</p>
+
+
+<p style="margin-left:11%;"><b>--bg&nbsp;</b><i>color</i></p>
+
+<p style="margin-left:22%;">This is equivalent to
+<b>--background</b>.</p>
+
+
+<p style="margin-left:11%;"><b>--bw&nbsp;</b><i>pixels</i></p>
+
+<p style="margin-left:22%;">This is equivalent to
+<b>--borderwidth</b>.</p>
+
+
+<p style="margin-left:11%;"><b>--bordercolor&nbsp;</b><i>pixels</i></p>
+
+<p style="margin-left:22%;">Specifies the color of the
+border surrounding the viewer window.</p>
+
+
+<p style="margin-left:11%;"><b>--borderwidth&nbsp;</b><i>pixels</i></p>
+
+<p style="margin-left:22%;">Specifies the width in pixels
+of the border surrounding the viewer window.</p>
+
+
+<p style="margin-left:11%;"><b>--display&nbsp;</b><i>X-display</i></p>
+
+<p style="margin-left:22%;">Set the X Window System display
+on which the viewer program shall be started. See section
+&ldquo;Display Names&rdquo; in <b>X</b>(7) for the syntax of
+the argument.</p>
+
+
+<p style="margin-left:11%;"><b>--foreground&nbsp;</b><i>color</i></p>
+
+<p style="margin-left:22%;">Set the foreground color of the
+viewer window.</p>
+
+
+<p style="margin-left:11%;"><b>--fg&nbsp;</b><i>color</i></p>
+
+<p style="margin-left:22%;">This is equivalent to
+<b>--foreground</b>.</p>
+
+
+<p style="margin-left:11%;"><b>--fn&nbsp;</b><i>font_name</i></p>
+
+<p style="margin-left:22%;">This is equivalent to
+<b>--font</b>.</p>
+
+
+<p style="margin-left:11%;"><b>--font&nbsp;</b><i>font_name</i></p>
+
+<p style="margin-left:22%;">Set the font used by the viewer
+window. The argument is an X Window System font name.</p>
+
+
+<p style="margin-left:11%;"><b>--ft&nbsp;</b><i>font_name</i></p>
+
+<p style="margin-left:22%;">This is equivalent to
+<b>--font</b>.</p>
+
+
+<p style="margin-left:11%;"><b>--geometry&nbsp;</b><i>size_pos</i></p>
+
+<p style="margin-left:22%;">Set the geometry of the display
+window, that means its size and its starting position. See
+section &ldquo;Geometry Specifications&rdquo; in <b>X</b>(7)
+for the syntax of the argument.</p>
+
+
+<p style="margin-left:11%;"><b>--resolution&nbsp;</b><i>value</i></p>
+
+<p style="margin-left:22%;">Set X Window System resolution
+in dpi (dots per inch) in some viewer programs. The only
+supported dpi values are <b>75</b> and <b>100</b>. Actually,
+the default resolution for <b>groffer</b> is set to
+<b>75dpi</b>. The resolution also sets the default device in
+<i>mode x</i>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>--rv</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Reverse foreground and background color of the viewer
+window.</p> </td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--title&nbsp;</b><i>&rsquo;some
+text&rsquo;</i></p>
+
+<p style="margin-left:22%;">Set the title for the viewer
+window.</p>
+
+
+<p style="margin-left:11%;"><b>--xrm&nbsp;</b><i>&rsquo;resource&rsquo;</i></p>
+
+<p style="margin-left:22%;">Set the X Window System server
+resource to the given value.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Options for
+Development <br>
+--debug</b></p>
+
+<p style="margin-left:22%;">Enable all debugging options
+<b>--debug-</b><i>type</i>. The temporary files are kept and
+not deleted, the <b>grog</b> output is printed, the name of
+the temporary directory is printed, the displayed file names
+are printed, and the parameters are printed.</p>
+
+<p style="margin-left:11%;"><b>--debug-filenames</b></p>
+
+<p style="margin-left:22%;">Print the names of the files
+and <i>man&nbsp;pages</i> that are displayed by
+<b>groffer</b>.</p>
+
+<p style="margin-left:11%;"><b>--debug-grog</b></p>
+
+<p style="margin-left:22%;">Print the output of all
+<b>grog</b> commands.</p>
+
+<p style="margin-left:11%;"><b>--debug-keep</b></p>
+
+<p style="margin-left:22%;">Enable two debugging
+informations. Print the name of the temporary directory and
+keep the temporary files, do not delete them during the run
+of <b>groffer</b>.</p>
+
+<p style="margin-left:11%;"><b>--debug-params</b></p>
+
+<p style="margin-left:22%;">Print the parameters, as
+obtained from the configuration files, from
+<i>GROFFER_OPT</i>, and the command-line arguments.</p>
+
+<p style="margin-left:11%;"><b>--debug-tmpdir</b></p>
+
+<p style="margin-left:22%;">Print the name of the temporary
+directory.</p>
+
+<p style="margin-left:11%;"><b>--do-nothing</b></p>
+
+<p style="margin-left:22%;">This is like <b>--version</b>,
+but without the output; no viewer is started. This makes
+only sense in development.</p>
+
+<p style="margin-left:11%;"><b>--print=</b><i>text</i></p>
+
+<p style="margin-left:22%;">Just print the argument to
+standard error. This is good for parameter check.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-V</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>This is an advanced option for debugging only. Instead
+of displaying the formatted input, a lot of <i>groffer</i>
+specific information is printed to standard output:</p></td></tr>
+</table>
+
+<p style="margin-left:22%;">*</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%"></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p style="margin-top: 1em">the output file name in the
+temporary directory,</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>the display mode of the actual <b>groffer</b> run,</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>the display program for viewing the output with its
+arguments,</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>the active parameters from the config files, the
+arguments in <i>GROFFER_OPT</i>, and the arguments of the
+command line,</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>the pipeline that would be run by the <b>groff</b>
+program, but without executing it.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Other useful
+debugging options are the <b>groff</b> option <b>-Z</b> and
+<b>--mode=groff</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Filespec
+Arguments</b> <br>
+A <i>filespec</i> parameter is an argument that is not an
+option or option argument. In <b>groffer</b>,
+<i>filespec</i> parameters are a file name or a template for
+searching <i>man&nbsp;pages</i>. These input sources are
+collected and composed into a single output file such as
+<b>groff</b> does.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The strange
+POSIX behavior to regard all arguments behind the first
+non-option argument as <i>filespec</i> arguments is ignored.
+The GNU behavior to recognize options even when mixed with
+<i>filespec</i> arguments is used throughout. But, as usual,
+the double minus argument <b>--</b> ends the option handling
+and interprets all following arguments as <i>filespec</i>
+arguments; so the POSIX behavior can be easily adopted.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The options
+<b>--apropos*</b> have a special handling of <i>filespec</i>
+arguments. Each argument is taken as a search scheme of its
+own. Also a regexp (regular expression) can be used in the
+filespec. For example, <b>groffer --apropos
+&rsquo;^gro.f$&rsquo;</b> searches <b>groff</b> in the
+<i>man&nbsp;page</i> name, while <b>groffer --apropos
+groff</b> searches <b>groff</b> somewhere in the name or
+description of the <i>man&nbsp;pages</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">All other parts
+of <i>groffer</i>, such as the normal display or the output
+with <b>--whatis</b> have a different scheme for
+<i>filespecs</i>. No regular expressions are used for the
+arguments. The <i>filespec</i> arguments are handled by the
+following scheme.</p>
+
+<p style="margin-left:11%; margin-top: 1em">It is necessary
+to know that on each system the <i>man&nbsp;pages</i> are
+sorted according to their content into several sections. The
+<i>classical man sections</i> have a single-character name,
+either a digit from <b>1</b> to <b>9</b> or one of the
+characters <b>n</b> or <b>o</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This can
+optionally be followed by a string, the so-called
+<i>extension</i>. The <i>extension</i> allows the storage of
+several <i>man&nbsp;pages</i> with the same name in the same
+<i>section</i>. But the <i>extension</i> is only rarely
+used; usually it is omitted. Then the <i>extensions</i> are
+searched automatically by alphabet.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the
+following, we use the name <i>section_extension</i> for a
+word that consists of a single character <i>section</i> name
+or a <i>section</i> character that is followed by an
+<i>extension</i>. Each <i>filespec</i> parameter can have
+one of the following forms in decreasing sequence.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p style="margin-top: 1em">No <i>filespec</i> parameters
+means that <b>groffer</b> waits for standard input. The
+minus option <b>-</b> always stands for standard input; it
+can occur several times. If you want to look up a
+<i>man&nbsp;page</i> called <b>-</b> use the argument
+<b>man:-</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>Next a <i>filespec</i> is tested whether it is the path
+name of an existing file. Otherwise it is assumed to be a
+searching pattern for a <i>man&nbsp;page</i>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+
+<p><b>man:</b><i>name</i><b>(</b><i>section_extension</i><b>)</b><i>,</i>
+<b>man:</b><i>name</i><b>.</b><i>section_extension,
+name</i><b>(</b><i>section_extension</i><b>)</b><i>,</i> or
+<i>name</i><b>.</b><i>section_extension</i> search the
+man&nbsp;page <i>name</i> in man&nbsp;section and possibly
+extension of <i>section_extension</i>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>Now <b>man:</b><i>name</i> searches for a
+<i>man&nbsp;page</i> in the lowest <i>man&nbsp;section</i>
+that has a document called <i>name</i>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p><i>section_extension&nbsp;name</i> is a pattern of 2
+arguments that originates from a strange argument parsing of
+the <b>man</b> program. Again, this searches the man page
+<i>name</i> with <i>section_extension</i>, a combination of
+a <i>section</i> character optionally followed by an
+<i>extension</i>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>We are left with the argument <i>name</i> which is not
+an existing file. So this searches for the
+<i>man&nbsp;page</i> called <i>name</i> in the lowest
+<i>man&nbsp;section</i> that has a document for this
+name.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Several file
+name arguments can be supplied. They are mixed by
+<b>groff</b> into a single document. Note that the set of
+option arguments must fit to all of these file arguments. So
+they should have at least the same style of the <i>groff</i>
+language.</p>
+
+<h2>OUTPUT MODES
+<a name="OUTPUT MODES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">By default, the
+<b>groffer</b> program collects all input into a single
+file, formats it with the <b>groff</b> program for a certain
+device, and then chooses a suitable viewer program. The
+device and viewer process in <b>groffer</b> is called a
+<i>mode</i>. The mode and viewer of a running <b>groffer</b>
+program is selected automatically, but the user can also
+choose it with options. The modes are selected by option the
+arguments of <b>--mode=</b><i>anymode</i>. Additionally,
+each of this argument can be specified as an option of its
+own, such as <b>anymode</b>. Most of these modes have a
+viewer program, which can be chosen by the option
+<b>--viewer</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Several
+different modes are offered: graphical modes for the X
+Window System, <i>text&nbsp;modes</i>, and some direct
+<i>groff&nbsp;modes</i> for debugging and development.</p>
+
+<p style="margin-left:11%; margin-top: 1em">By default,
+<b>groffer</b> first tries whether <i>x&nbsp;mode</i> is
+possible, then <i>ps&nbsp;mode</i>, and finally
+<i>tty&nbsp;mode</i>. This mode testing sequence for
+<i>auto&nbsp;mode</i> can be changed by specifying a comma
+separated list of modes with the option
+<b>--default-modes.</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">The searching
+for <i>man&nbsp;pages</i> and the decompression of the input
+are active in every mode.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Graphical
+Display Modes</b> <br>
+The graphical display modes work mostly in the X Window
+System environment (or similar implementations within other
+windowing environments). The environment variable
+<i>DISPLAY</i> and the option <b>--display</b> are used for
+specifying the X Window System display to be used. If this
+environment variable is empty, <b>groffer</b> assumes that
+the X Window System is not running and changes to a
+<i>text&nbsp;mode</i>. You can change this automatic
+behavior by the option <b>--default-modes</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Known viewers
+for the graphical display modes and their standard X Window
+System viewer programs are</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p style="margin-top: 1em">in a PDF viewer
+(<i>pdf&nbsp;mode</i>)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>in a web browser (<i>html</i>, (<i>xhtml</i>, or
+<i>www&nbsp;mode</i>)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>in a PostScript viewer (<i>ps&nbsp;mode</i>)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>X Window System <i>roff</i> viewers such as
+<b>gxditview</b>(1) or <b>xditview</b>(1) (in
+<i>x&nbsp;mode</i>)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>in a DVI viewer program (<i>dvi&nbsp;mode</i>)</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>pdf&nbsp;mode</i> has a major advantage &mdash; it is the
+only graphical display mode that allows searching for text
+within the viewer; this can be a really important feature.
+Unfortunately, it takes some time to transform the input
+into the PDF format, so it was not chosen as the major
+mode.</p>
+
+<p style="margin-left:11%; margin-top: 1em">These graphical
+viewers can be customized by options of the X Window System
+Toolkit Intrinsics. But the <b>groffer</b> options use a
+leading double minus instead of the single minus used by the
+X Window System Toolkit Intrinsics.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Text
+modes</b> <br>
+There are two modes for text output, <i>mode&nbsp;text</i>
+for plain output without a pager and <i>mode&nbsp;tty</i>
+for a text output on a text terminal using some pager
+program.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the variable
+<i>DISPLAY</i> is not set or empty, <b>groffer</b> assumes
+that it should use <i>tty&nbsp;mode</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the actual
+implementation, the <i>groff</i> output device <i>latin1</i>
+is chosen for <i>text&nbsp;modes</i>. This can be changed by
+specifying option <b>-T</b> or <b>--device</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The pager to be
+used can be specified by one of the options <b>--pager</b>
+and <b>--viewer</b>, or by the environment variable
+<i>PAGER</i>. If all of this is not used the <b>less</b>(1)
+program with the option <b>-r</b> for correctly displaying
+control sequences is used as the default pager.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Special
+Modes for Debugging and Development</b> <br>
+These modes use the <i>groffer</i> file determination and
+decompression. This is combined into a single input file
+that is fed directly into <b>groff</b> with different
+strategy without the <i>groffer</i> viewing facilities.
+These modes are regarded as advanced, they are useful for
+debugging and development purposes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>source&nbsp;mode</i> with option <b>--source</b> just
+displays the decompressed input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Option
+<b>--to-stdout</b> does not display in a graphical mode. It
+just generates the file for the chosen mode and then prints
+its content to standard output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>groff&nbsp;mode</i> passes the input to <b>groff</b>
+using only some suitable options provided to <b>groffer</b>.
+This enables the user to save the generated output into a
+file or pipe it into another program.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In
+<i>groff&nbsp;mode</i>, the option <b>-Z</b> disables
+post-processing, thus producing the <i>groff intermediate
+output</i>. In this mode, the input is formatted, but not
+postprocessed; see <b>groff_out</b>(5) for details.</p>
+
+<p style="margin-left:11%; margin-top: 1em">All
+<b>groff</b> short options are supported by
+<b>groffer</b>.</p>
+
+<h2>MAN PAGE SEARCHING
+<a name="MAN PAGE SEARCHING"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The default
+behavior of <b>groffer</b> is to first test whether a file
+parameter represents a local file; if it is not an existing
+file name, it is assumed to represent the name of a
+<i>man&nbsp;page</i>. The following options can be used to
+determine whether the arguments should be handled as file
+name or <i>man&nbsp;page</i> arguments.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em"><b>--man</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">forces to interpret all file
+parameters as <i>filespecs</i> for searching
+<i>man&nbsp;pages</i>.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--no-man <br>
+--local-file</b></p>
+
+<p style="margin-left:22%;">disable the <i>man</i>
+searching; so only local files are displayed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If neither a
+local file nor a <i>man&nbsp;page</i> was retrieved for some
+file parameter a warning is issued on standard error, but
+processing is continued.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Search
+Algorithm</b> <br>
+Let us now assume that a <i>man&nbsp;page</i> should be
+searched. The <b>groffer</b> program provides a search
+facility for <i>man&nbsp;pages</i>. All long options, all
+environment variables, and most of the functionality of the
+GNU <b>man</b>(1) program were implemented. The search
+algorithm shall determine which file is displayed for a
+given <i>man&nbsp;page</i>. The process can be modified by
+options and environment variables.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The only
+<i>man</i> action that is omitted in <b>groffer</b> are the
+preformatted <i>man&nbsp;pages</i>, also called
+<i>cat&nbsp;pages</i>. With the excellent performance of the
+actual computers, the preformatted <i>man&nbsp;pages</i>
+aren&rsquo;t necessary any longer. Additionally,
+<b>groffer</b> is a <i>roff</i> program; it wants to read
+<i>roff</i> source files and format them itself.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The algorithm
+for retrieving the file for a <i>man&nbsp;page</i> needs
+first a set of directories. This set starts with the
+so-called <i>man&nbsp;path</i> that is modified later on by
+adding names of <i>operating system</i> and <i>language</i>.
+This arising set is used for adding the section directories
+which contain the <i>man&nbsp;page</i> files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>man&nbsp;path</i> is a list of directories that are
+separated by colon. It is generated by the following
+methods.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>The environment variable <i>MANPATH</i> can be set.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>It can be read from the arguments of the environment
+variable <i>MANOPT</i>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>The <i>man&nbsp;path</i> can be manually specified by
+using the option <b>--manpath</b>. An empty argument
+disables the <i>man&nbsp;page</i> searching.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>When no <i>man&nbsp;path</i> was set the
+<b>manpath</b>(1) program is tried to determine one.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>If this does not work a reasonable default path from
+<i>$PATH</i> is determined.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">We now have a
+starting set of directories. The first way to change this
+set is by adding names of <i>operating systems</i>. This
+assumes that <i>man&nbsp;pages</i> for several <i>operating
+systems</i> are installed. This is not always true. The
+names of such <i>operating systems</i> can be provided by 3
+methods.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p style="margin-top: 1em">The environment variable
+<i>SYSTEM</i> has the lowest precedence.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>This can be overridden by an option in
+<i>MANOPT</i>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>This again is overridden by the command-line option
+<b>--systems</b>.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Several names
+of <i>operating systems</i> can be given by appending their
+names, separated by a comma.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>man&nbsp;path</i> is changed by appending each
+<i>system</i> name as subdirectory at the end of each
+directory of the set. No directory of the
+<i>man&nbsp;path</i> set is kept. But if no <i>system</i>
+name is specified the <i>man&nbsp;path</i> is left
+unchanged.</p>
+
+<p style="margin-left:11%; margin-top: 1em">After this, the
+actual set of directories can be changed by <i>language</i>
+information. This assumes that there exist
+<i>man&nbsp;pages</i> in different languages. The wanted
+<i>language</i> can be chosen by several methods.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p style="margin-top: 1em">Environment variable
+<i>LANG</i>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>This is overridden by <i>LC_MESSAGES</i>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>This is overridden by <i>LC_ALL</i>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>This can be overridden by providing an option in
+<i>MANOPT</i>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>All these environment variables are overridden by the
+command-line option <b>--locale</b>.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The <i>default
+language</i> can be specified by specifying one of the
+pseudo-language parameters C or POSIX. This is like deleting
+a formerly given <i>language</i> information. The
+<i>man&nbsp;pages</i> in the <i>default language</i> are
+usually in English.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Of course, the
+<i>language</i> name is determined by <b>man</b>. In GNU
+<b>man</b>, it is specified in the POSIX&nbsp;1003.1 based
+format:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>&lt;language&gt;</i>[<b>_</b><i>&lt;territory&gt;</i>[<b>.</b><i>&lt;character-set&gt;</i>[<b>,</b><i>&lt;version&gt;</i>]]],</p>
+
+<p style="margin-left:11%; margin-top: 1em">but the
+two-letter code in <i>&lt;language&gt;</i> is sufficient for
+most purposes. If for a complicated <i>language</i>
+formulation no <i>man&nbsp;pages</i> are found
+<b>groffer</b> searches the country part consisting of these
+first two characters as well.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The actual
+directory set is copied thrice. The <i>language</i> name is
+appended as subdirectory to each directory in the first copy
+of the actual directory set (this is only done when a
+language information is given). Then the 2-letter
+abbreviation of the <i>language</i> name is appended as
+subdirectories to the second copy of the directory set (this
+is only done when the given language name has more than 2
+letters). The third copy of the directory set is kept
+unchanged (if no <i>language</i> information is given this
+is the kept directory set). These maximally 3 copies are
+appended to get the new directory set.</p>
+
+<p style="margin-left:11%; margin-top: 1em">We now have a
+complete set of directories to work with. In each of these
+directories, the <i>man</i> files are separated in
+<i>sections</i>. The name of a <i>section</i> is represented
+by a single character, a digit between <i>1</i> and
+<i>9</i>, or the character <i>o</i> or <i>n</i>, in this
+order.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For each
+available <i>section</i>, a subdirectory
+<b>man</b><i>&lt;section&gt;</i> exists containing all
+<i>man</i> files for this <i>section</i>, where
+<i>&lt;section&gt;</i> is a single character as described
+before. Each <i>man</i> file in a <i>section</i> directory
+has the form
+<b>man</b><i>&lt;section&gt;</i><b>/</b><i>&lt;name&gt;</i><b>.</b><i>&lt;section&gt;[&lt;extension&gt;][</i><b>.</b><i>&lt;compression&gt;]</i>,
+where <i>&lt;extension&gt;</i> and
+<i>&lt;compression&gt;</i> are optional. <i>&lt;name&gt;</i>
+is the name of the <i>man&nbsp;page</i> that is also
+specified as filespec argument on the command line.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>extension</i> is an addition to the section. This postfix
+acts like a subsection. An <i>extension</i> occurs only in
+the file name, not in name of the <i>section</i>
+subdirectory. It can be specified on the command line.</p>
+
+<p style="margin-left:11%; margin-top: 1em">On the other
+hand, the <i>compression</i> is just an information on how
+the file is compressed. This is not important for the user,
+such that it cannot be specified on the command line.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There are 4
+methods to specify a <i>section</i> on the command line:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p style="margin-top: 1em">Environment variable
+<i>MANSECT</i></p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>Command line option <b>--sections</b></p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>Appendix to the <i>name</i> argument in the form
+<i>&lt;name&gt;.&lt;section&gt;</i></p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>Preargument before the <i>name</i> argument in the form
+<i>&lt;section&gt; &lt;name&gt;</i></p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">It is also
+possible to specify several <i>sections</i> by appending the
+single characters separated by colons. One can imagine that
+this means to restrict the <i>man&nbsp;page</i> search to
+only some <i>sections</i>. The multiple <i>sections</i> are
+only possible for <i>MANSECT</i> and <b>--sections</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If no
+<i>section</i> is specified all <i>sections</i> are searched
+one after the other in the given order, starting with
+<i>section&nbsp;1</i>, until a suitable file is found.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There are 4
+methods to specify an <i>extension</i> on the command line.
+But it is not necessary to provide the whole extension name,
+some abbreviation is good enough in most cases.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p style="margin-top: 1em">Environment variable
+<i>EXTENSION</i></p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>Command line option <b>--extension</b></p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>Appendix to the <i>&lt;name&gt;.&lt;section&gt;</i>
+argument in the form
+<i>&lt;name&gt;.&lt;section&gt;&lt;extension&gt;</i></p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>Preargument before the <i>name</i> argument in the form
+<i>&lt;section&gt;&lt;extension&gt; &lt;name&gt;</i></p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">For further
+details on <i>man&nbsp;page</i> searching, see
+<b>man</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Examples of
+man files <br>
+/usr/share/man/man1/groff.1</b></p>
+
+<p style="margin-left:22%;">This is an uncompressed file
+for the <i>man&nbsp;page</i> groff in <i>section&nbsp;1</i>.
+It can be called by <i><br>
+sh#</i> groffer&nbsp;groff <br>
+No <i>section</i> is specified here, so all <i>sections</i>
+should be searched, but as <i>section&nbsp;1</i> is searched
+first this file will be found first. The file name is
+composed of the following components. <b>/usr/share/man/</b>
+must be part of the <i>man&nbsp;path</i>; the subdirectory
+<b>man1/</b> and the part <b>.1</b> stand for the
+<i>section</i>; <b>groff</b> is the name of the
+<i>man&nbsp;page</i>.</p>
+
+
+<p style="margin-left:11%;"><b>/usr/local/share/man/man7/groff.7.gz</b></p>
+
+<p style="margin-left:22%;">The file name is composed of
+the following components. <b>/usr/local/share/man</b> must
+be part of the <i>man&nbsp;path</i>; the subdirectory
+<b>man7/</b> and the part <b>.7</b> stand for the
+<i>section</i>; <b>groff</b> is the name of the
+<i>man&nbsp;page</i>; the final part <b>.gz</b> stands for a
+compression with <b>gzip</b>(1). As the <i>section</i> is
+not the first one it must be specified as well. This can be
+done by one of the following commands. <i><br>
+sh#&nbsp;</i>groffer&nbsp;groff.7 <i><br>
+sh#&nbsp;</i>groffer&nbsp;7&nbsp;groff <i><br>
+sh#&nbsp;</i>groffer&nbsp;--sections=7&nbsp;groff</p>
+
+
+<p style="margin-left:11%;"><b>/usr/local/man/man1/ctags.1emacs21.bz2</b></p>
+
+<p style="margin-left:22%;">Here <b>/usr/local/man</b> must
+be in <i>man&nbsp;path</i>; the subdirectory <b>man1/</b>
+and the file name part <b>.1</b> stand for
+<i>section&nbsp;1</i>; the name of the <i>man&nbsp;page</i>
+is <b>ctags</b>; the section has an extension
+<b>emacs21</b>; and the file is compressed as <b>.bz2</b>
+with <b>bzip2</b>(1). The file can be viewed with one of the
+following commands <i><br>
+sh#&nbsp;</i>groffer&nbsp;ctags.1e <i><br>
+sh#&nbsp;</i>groffer&nbsp;1e&nbsp;ctags <i><br>
+
+sh#&nbsp;</i>groffer&nbsp;--extension=e&nbsp;--sections=1&nbsp;ctags
+<br>
+where e works as an abbreviation for the extension
+emacs21.</p>
+
+
+<p style="margin-left:11%;"><b>/usr/man/linux/de/man7/man.7.Z</b></p>
+
+<p style="margin-left:22%;">The directory <b>/usr/man</b>
+is now part of the <i>man&nbsp;path</i>; then there is a
+subdirectory for an <i>operating system</i> name
+<b>linux/</b>; next comes a subdirectory <b>de/</b> for the
+German <i>language</i>; the <i>section</i> names <b>man7</b>
+and <b>.7</b> are known so far; <b>man</b> is the name of
+the <i>man&nbsp;page</i>; and <b>.Z</b> signifies the
+compression that can be handled by <b>gzip</b>(1). We want
+now show how to provide several values for some options.
+That is possible for <i>sections</i> and <i>operating
+system</i> names. So we use as <i>sections&nbsp;5</i> and
+<i>7</i> and as <i>system</i> names <i>linux</i> and
+<i>aix</i>. The command is then</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>sh#</i>
+groffer&nbsp;--locale=de&nbsp;--sections=5:7&nbsp;--systems=linux,aix&nbsp;man
+<i><br>
+sh#</i>
+LANG=de&nbsp;MANSECT=5:7&nbsp;SYSTEM=linux,aix&nbsp;groffer&nbsp;man</p>
+
+<h2>DECOMPRESSION
+<a name="DECOMPRESSION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The program has
+a decompression facility. If standard input or a file that
+was retrieved from the command line parameters is compressed
+with a format that is supported by either <b>gzip</b>(1) or
+<b>bzip2</b>(1) it is decompressed on-the-fly. This includes
+the GNU <b>.gz</b>, <b>.bz2</b>, and the traditional
+<b>.Z</b> compression. The program displays the
+concatenation of all decompressed input in the sequence that
+was specified on the command line.</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>groffer</b> program supports many system variables, most
+of them by courtesy of other programs. All environment
+variables of <b>groff</b>(1) and GNU <b>man</b>(1) and some
+standard system variables are honored.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Native
+groffer Variables</b> <i><br>
+GROFFER_OPT</i></p>
+
+<p style="margin-left:22%;">Store options for a run of
+<b>groffer</b>. The options specified in this variable are
+overridden by the options given on the command line. The
+content of this variable is run through the shell builtin
+&ldquo;eval&rdquo;, so arguments containing whitespace or
+special shell characters should be quoted. Do not forget to
+export this variable, otherwise it does not exist during the
+run of <b>groffer</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>System
+Variables</b> <br>
+The following variables have a special meaning for
+<b>groffer</b>. <i><br>
+DISPLAY</i></p>
+
+<p style="margin-left:22%;">If set, this variable indicates
+that the X Window System is running. Testing this variable
+decides on whether graphical or text output is generated.
+This variable should not be changed by the user carelessly,
+but it can be used to start the graphical <b>groffer</b> on
+a remote X Window System terminal. For example, depending on
+your system, <b>groffer</b> can be started on the second
+monitor by the command</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>sh#</i>
+DISPLAY=:0.1&nbsp;groffer&nbsp;what.ever &amp;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><i>LC_ALL</i></p></td>
+<td width="80%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><i>LC_MESSAGES</i></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><i>LANG</i></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>If one of these variables is set (in the above
+sequence), its content is interpreted as the locale, the
+language to be used, especially when retrieving
+<i>man&nbsp;pages</i>. A locale name is typically of the
+form
+<i>language</i>[<b>_</b><i>territory</i>[<b>.</b><i>codeset</i>[<b>@</b><i>modifier</i>]]],
+where <i>language</i> is an ISO 639 language code,
+<i>territory</i> is an ISO 3166 country code, and
+<i>codeset</i> is a character set or encoding identifier
+like ISO-8859-1 or UTF-8; see <b>setlocale</b>(3). The
+locale values C and POSIX stand for the default, i.e. the
+<i>man&nbsp;page</i> directories without a language prefix.
+This is the same behavior as when all 3&nbsp;variables are
+unset.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><i>PAGER</i></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>This variable can be used to set the pager for the tty
+output. For example, to disable the use of a pager
+completely set this variable to the <b>cat</b>(1)
+program</p> </td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em"><i>sh#</i>
+PAGER=cat&nbsp;groffer&nbsp;anything</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p style="margin-top: 1em"><i>PATH</i></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">All programs within the
+<b>groffer</b> script are called without a fixed path. Thus
+this environment variable determines the set of programs
+used within the run of <b>groffer</b>.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Groff
+Variables</b> <br>
+The <b>groffer</b> program internally calls <b>groff</b>, so
+all environment variables documented in <b>groff</b>(1) are
+internally used within <b>groffer</b> as well. The following
+variable has a direct meaning for the <b>groffer</b>
+program. <i><br>
+GROFF_TMPDIR</i></p>
+
+<p style="margin-left:22%;">If the value of this variable
+is an existing, writable directory, <b>groffer</b> uses it
+for storing its temporary files, just as <b>groff</b> does.
+See the <b>groff</b>(1) man page for more details on the
+location of temporary files.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Man
+Variables</b> <br>
+Parts of the functionality of the <b>man</b> program were
+implemented in <b>groffer</b>; support for all environment
+variables documented in <b>man</b>(1) was added to
+<b>groffer</b>, but the meaning was slightly modified due to
+the different approach in <b>groffer</b>; but the user
+interface is the same. The <b>man</b> environment variables
+can be overwritten by options provided with <i>MANOPT</i>,
+which in turn is overwritten by the command line. <i><br>
+EXTENSION</i></p>
+
+<p style="margin-left:22%;">Restrict the search for
+<i>man&nbsp;pages</i> to files having this extension. This
+is overridden by option <b>--extension</b>; see there for
+details.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><i>MANOPT</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>This variable contains options as a preset for
+<b>man</b>(1). As not all of these are relevant for
+<b>groffer</b> only the essential parts of its value are
+extracted. The options specified in this variable overwrite
+the values of the other environment variables that are
+specific to <i>man</i>. All options specified in this
+variable are overridden by the options given on the command
+line.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><i>MANPATH</i></p>
+
+<p style="margin-left:22%;">If set, this variable contains
+the directories in which the <i>man&nbsp;page</i> trees are
+stored. This is overridden by option <b>--manpath</b>.</p>
+
+<p style="margin-left:11%;"><i>MANSECT</i></p>
+
+<p style="margin-left:22%;">If this is a colon separated
+list of section names, the search for <i>man&nbsp;pages</i>
+is restricted to those manual sections in that order. This
+is overridden by option <b>--sections</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><i>SYSTEM</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>If this is set to a comma separated list of names these
+are interpreted as <i>man&nbsp;page</i> trees for different
+operating systems. This variable can be overwritten by
+option <b>--systems</b>; see there for details.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The environment
+variable <i>MANROFFSEQ</i> is ignored by <b>groffer</b>
+because the necessary preprocessors are determined
+automatically.</p>
+
+<h2>CONFIGURATION FILES
+<a name="CONFIGURATION FILES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>groffer</b> program can be preconfigured by two
+configuration files. <b><br>
+/etc/groff/groffer.conf</b></p>
+
+<p style="margin-left:22%;">System-wide configuration file
+for <b>groffer</b>.</p>
+
+
+<p style="margin-left:11%;"><b>$HOME/.groff/groffer.conf</b></p>
+
+<p style="margin-left:22%;">User-specific configuration
+file for <b>groffer</b>, where <i>$HOME</i> denotes the
+user&rsquo;s home directory. This file is called after the
+system-wide configuration file to enable overriding by the
+user.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Both files are
+handled for the configuration, but the configuration file in
+<b>/etc</b> comes first; it is overwritten by the
+configuration file in the home directory; both configuration
+files are overwritten by the environment variable
+<i>GROFFER_OPT</i>; everything is overwritten by the command
+line arguments.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+configuration files contain options that should be called as
+default for every <b>groffer</b> run. These options are
+written in lines such that each contains either a long
+option, a short option, or a short option cluster; each with
+or without an argument. So each line with configuration
+information starts with a minus character
+&ldquo;<b>-</b>&rdquo;; a line with a long option starts
+with two minus characters &ldquo;<b>--</b>&rdquo;, a line
+with a short option or short option cluster starts with a
+single minus &ldquo;<b>-</b>&rdquo;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The option
+names in the configuration files may not be abbreviated,
+they must be exact.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The argument
+for a long option can be separated from the option name
+either by an equal sign &ldquo;<b>=</b>&rdquo; or by
+whitespace, i.e. one or several space or tab characters. An
+argument for a short option or short option cluster can be
+directly appended to the option name or separated by
+whitespace. The end of an argument is the end of the line.
+It is not allowed to use a shell environment variable in an
+option name or argument.</p>
+
+<p style="margin-left:11%; margin-top: 1em">It is not
+necessary to use quotes in an option or argument, except for
+empty arguments. An empty argument can be provided by
+appending a pair of quotes to the separating equal sign or
+whitespace; with a short option, the separator can be
+omitted as well. For a long option with a separating equal
+sign &ldquo;<b>=</b>&rdquo;, the pair of quotes can be
+omitted, thus ending the line with the separating equal
+sign. All other quote characters are cancelled
+internally.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the
+configuration files, arbitrary whitespace is allowed at the
+beginning of each line, it is just ignored. Each whitespace
+within a line is replaced by a single space character
+&ldquo; &rdquo; internally.</p>
+
+<p style="margin-left:11%; margin-top: 1em">All lines of
+the configuration lines that do not start with a minus
+character are ignored, such that comments starting with
+&ldquo;<b>#</b>&rdquo; are possible. So there are no shell
+commands in the configuration files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">As an example,
+consider the following configuration file that can be used
+either in <b>/etc/groff/groffer.conf</b> or <b><big>~</big>
+/.groff/groffer.conf .</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"># groffer
+configuration file <br>
+# <br>
+# groffer options that are used in each call of groffer <br>
+--foreground=DarkBlue <br>
+--resolution=100 <br>
+--viewer=gxditview -geometry 900x1200</p>
+
+<p style="margin-left:11%; margin-top: 1em">The lines
+starting with <b>#</b> are just ignored, so they act as
+command lines. This configuration sets four <b>groffer</b>
+options (the lines starting with &ldquo;<b>-</b>&rdquo;).
+This has the following effects:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>Use a text color of <b>DarkBlue</b> in all viewers that
+support this, such as <b>gxditview</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>Use a resolution of <b>100dpi</b> in all viewers that
+support this, such as <b>gxditview</b>. By this, the default
+device in <i>x mode</i> is set to <b>X100</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>Force <b>gxditview</b>(1) as the <i>x-mode</i> viewer
+using the geometry option for setting the width to
+<b>900px</b> and the height to <b>1200px</b>. This geometry
+is suitable for a resolution of <b>100dpi</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>Use <b>xpdf</b>(1) as the <i>pdf-mode</i> viewer with
+the argument <b>-Z 150</b>.</p></td></tr>
+</table>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The usage of
+<b>groffer</b> is very easy. Usually, it is just called with
+a file name or <i>man&nbsp;page</i>. The following examples,
+however, show that <b>groffer</b> has much more fancy
+capabilities.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>sh#&nbsp;</i>groffer&nbsp;/usr/local/share/doc/groff/meintro.ms.gz</p>
+
+<p style="margin-left:11%; margin-top: 1em">Decompress,
+format and display the compressed file <b>meintro.ms.gz</b>
+in the directory <b>/usr/local/share/doc/groff</b>, using
+the standard viewer <b>gxditview</b> as graphical viewer
+when in the X Window System, or the <b>less</b>(1) pager
+program otherwise.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>sh#&nbsp;</i>groffer&nbsp;groff</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the file
+<b>./groff</b> exists use it as input. Otherwise interpret
+the argument as a search for the <i>man&nbsp;page</i> named
+<b>groff</b> in the smallest possible
+<i>man&nbsp;section</i>, being section 1 in this case.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>sh#&nbsp;</i>groffer&nbsp;man:groff</p>
+
+<p style="margin-left:11%; margin-top: 1em">search for the
+<i>man&nbsp;page</i> of <b>groff</b> even when the file
+<b>./groff</b> exists.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>sh#&nbsp;</i>groffer&nbsp;groff.7
+<i><br>
+sh#&nbsp;</i>groffer&nbsp;7&nbsp;groff</p>
+
+<p style="margin-left:11%; margin-top: 1em">search the
+<i>man&nbsp;page</i> of <b>groff</b> in
+<i>man&nbsp;section</i> <b>7</b>. This section search works
+only for a digit or a single character from a small set.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>sh#&nbsp;</i>groffer&nbsp;fb.modes</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the file
+<b>./fb.modes</b> does not exist interpret this as a search
+for the <i>man&nbsp;page</i> of <b>fb.modes</b>. As the
+extension <i>modes</i> is not a single character in
+classical section style the argument is not split to a
+search for <b>fb</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>sh#&nbsp;</i>groffer&nbsp;groff&nbsp;&rsquo;troff(1)&rsquo;&nbsp;man:roff</p>
+
+<p style="margin-left:11%; margin-top: 1em">The arguments
+that are not existing files are looked-up as the following
+<i>man&nbsp;pages</i>: <b>groff</b> (automatic search,
+should be found in <i>man&nbsp;</i>section&nbsp;1),
+<b>troff</b> (in section&nbsp;1), and <b>roff</b> (in the
+section with the lowest number, being&nbsp;7 in this case).
+The quotes around <i>&rsquo;troff(1)&rsquo;</i> are
+necessary because the parentheses are special shell
+characters; escaping them with a backslash character
+<i>\(</i> and <i>\)</i> would be possible, too. The
+formatted files are concatenated and displayed in one
+piece.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>sh#&nbsp;</i>LANG=de&nbsp;groffer&nbsp;--man&nbsp;--viewer=galeon&nbsp;ls</p>
+
+<p style="margin-left:11%; margin-top: 1em">Retrieve the
+German <i>man&nbsp;page</i> (language <i>de</i>) for the
+<b>ls</b> program, decompress it, format it to <i>html</i>
+or <i>xhtml</i> format (<i>www&nbsp;mode</i>) and view the
+result in the web browser <b>galeon</b>. The option
+<b>--man</b> guarantees that the <i>man&nbsp;page</i> is
+retrieved, even when a local file <b>ls</b> exists in the
+actual directory.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>sh#&nbsp;</i>groffer&nbsp;--source&nbsp;&rsquo;man:roff(7)&rsquo;</p>
+
+<p style="margin-left:11%; margin-top: 1em">Get the
+<i>man&nbsp;page</i> called <i>roff</i> in
+<i>man&nbsp;</i>section 7, decompress it, and print its
+unformatted content, its source code.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>sh#&nbsp;</i>groffer&nbsp;--de-p&nbsp;--in&nbsp;--ap</p>
+
+<p style="margin-left:11%; margin-top: 1em">This is a set
+of abbreviated arguments, it is determined as</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>sh#&nbsp;</i>groffer&nbsp;--debug-params&nbsp;--intermediate-output&nbsp;--apropos</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>sh#&nbsp;</i>cat&nbsp;file.gz&nbsp;|&nbsp;groffer&nbsp;-Z&nbsp;-mfoo</p>
+
+<p style="margin-left:11%; margin-top: 1em">The file
+<b>file.gz</b> is sent to standard input, this is
+decompressed, and then this is transported to the <i>groff
+intermediate output mode</i> without post-processing
+(<b>groff</b> option <b>-Z</b>), using macro package
+<i>foo</i> (<b>groff</b> option <b>-m</b>).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>sh#&nbsp;</i>echo&nbsp;&rsquo;\f(CBWOW!&rsquo;&nbsp;|
+<br>
+&gt; groffer --x --bg red --fg yellow --geometry 200x100
+-</p>
+
+<p style="margin-left:11%; margin-top: 1em">Display the
+word <b>WOW!</b> in a small window in constant-width bold
+font, using color yellow on red background.</p>
+
+<h2>COMPATIBILITY
+<a name="COMPATIBILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>groffer</b> program is written in Perl, the Perl version
+during writing was v5.8.8.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>groffer</b>
+provides its own parser for command-line arguments that is
+compatible to both POSIX <b>getopts</b>(1) and GNU
+<b>getopt</b>(1). It can handle option arguments and file
+names containing white space and a large set of special
+characters. The following standard types of options are
+supported.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p style="margin-top: 1em">The option consisting of a
+single minus <b>-</b> refers to standard input.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>A single minus followed by characters refers to a single
+character option or a combination thereof; for example, the
+<b>groffer</b> short option combination <b>-Qmfoo</b> is
+equivalent to <b>-Q&nbsp;-m&nbsp;foo</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>Long options are options with names longer than one
+character; they are always preceded by a double minus. An
+option argument can either go to the next command-line
+argument or be appended with an equal sign to the argument;
+for example, <b>--long=arg</b> is equivalent to
+<b>--long&nbsp;arg</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>An argument of <b>--</b> ends option parsing; all
+further command-line arguments are interpreted as
+<i>filespec</i> parameters, i.e. file names or constructs
+for searching <i>man&nbsp;pages</i>).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>All command-line arguments that are neither options nor
+option arguments are interpreted as <i>filespec</i>
+parameters and stored until option parsing has finished. For
+example, the command line</p></td></tr>
+</table>
+
+
+<p style="margin-left:14%; margin-top: 1em"><i>sh#&nbsp;</i>groffer
+file1 -a -o arg file2</p>
+
+<p style="margin-left:14%; margin-top: 1em">is equivalent
+to</p>
+
+
+<p style="margin-left:14%; margin-top: 1em"><i>sh#&nbsp;</i>groffer
+-a -o arg -- file1 file2</p>
+
+<p style="margin-left:11%; margin-top: 1em">The free mixing
+of options and <i>filespec</i> parameters follows the GNU
+principle. That does not fulfill the strange option behavior
+of POSIX that ends option processing as soon as the first
+non-option argument has been reached. The end of option
+processing can be forced by the option
+&ldquo;<b>--</b>&rdquo; anyway.</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>groffer</b>
+was written by
+<a href="mailto:groff-bernd.warken-72@web.de">Bernd
+Warken</a>.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>groff</b>(1),
+<b>troff</b>(1)</p>
+
+<p style="margin-left:22%;">Details on the options and
+environment variables available in <b>groff</b>; all of them
+can be used with <b>groffer</b>.</p>
+
+<p style="margin-left:11%;"><b>grog</b>(1)</p>
+
+<p style="margin-left:22%;">This program tries to guess the
+necessary <b>groff</b> command-line options from the input
+and the <b>groffer</b> options.</p>
+
+<p style="margin-left:11%;"><b>groff</b>(7)</p>
+
+<p style="margin-left:22%;">Documentation of the
+<i>groff</i> language.</p>
+
+<p style="margin-left:11%;"><b>groff_char</b>(7)</p>
+
+<p style="margin-left:22%;">Documentation on the
+<i>groff</i> characters, special characters, and
+glyphs..</p>
+
+<p style="margin-left:11%;"><b>groff_tmac</b>(5)</p>
+
+<p style="margin-left:22%;">Documentation on the
+<i>groff</i> macro files.</p>
+
+<p style="margin-left:11%;"><b>groff_out</b>(5)</p>
+
+<p style="margin-left:22%;">Documentation on the <i>groff
+intermediate output</i> before the run of a
+<i>postprocessor</i>. (<i>ditroff</i> output). This can be
+run by the <b>groff</b> or <b>groffer</b> option
+<b>-Z</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>man</b>(1)</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The standard program to display <i>man&nbsp;pages</i>.
+The information there is only useful if it is the
+<i>man&nbsp;page</i> for GNU <b>man</b>. Then it documents
+the options and environment variables that are supported by
+<b>groffer</b>.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>gxditview</b>(1) <b><br>
+xditview</b>(1x)</p>
+
+<p style="margin-left:22%;">Viewers for
+<b>groffer</b>&rsquo;s <i>x&nbsp;mode</i>.</p>
+
+<p style="margin-left:11%;"><b>kpdf</b>(1) <b><br>
+kghostview</b>(1) <b><br>
+evince</b>(1)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>ggv</b>(1)</p></td>
+<td width="80%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>gv</b>(1)</p></td>
+<td width="80%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>ghostview</b>(1)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>gs</b>(1)</p></td>
+<td width="4%"></td>
+<td width="46%">
+
+
+<p>Viewers for <b>groffer</b>&rsquo;s
+<i>ps&nbsp;mode</i>.</p> </td>
+<td width="32%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>kpdf</b>(1) <b><br>
+acroread</b>(1) <b><br>
+evince</b>(1) <b><br>
+xpdf</b>(1) <b><br>
+gpdf</b>(1) <b><br>
+kghostview</b>(1)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>ggv</b>(1)</p></td>
+<td width="2%"></td>
+<td width="47%">
+
+
+<p>Viewers for <b>groffer</b>&rsquo;s
+<i>pdf&nbsp;mode</i>.</p> </td>
+<td width="31%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>kdvi</b>(1),
+<b>xdvi</b>(1), <b>dvilx</b>(1)</p>
+
+<p style="margin-left:22%;">Viewers for
+<b>groffer</b>&rsquo;s <i>dvi&nbsp;mode</i>.</p>
+
+<p style="margin-left:11%;"><b>konqueror</b>(1) <b><br>
+epiphany</b>(1) <b><br>
+firefox</b>(1) <b><br>
+mozilla</b>(1) <b><br>
+netscape</b>(1) <b><br>
+lynx</b>(1)</p>
+
+<p style="margin-left:22%;">Web-browsers for
+<b>groffer</b>&rsquo;s <i>html</i>, <i>xhtml</i>, or
+<i>www&nbsp;mode</i>.</p>
+
+<p style="margin-left:11%;"><b>less</b>(1) <b><br>
+more</b>(1)</p>
+
+<p style="margin-left:22%;">Standard pager program for the
+<i>tty&nbsp;mode</i>.</p>
+
+<p style="margin-left:11%;"><b>gzip</b>(1) <b><br>
+bzip2</b>(1)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>xz</b>(1)</p></td>
+<td width="4%"></td>
+<td width="73%">
+
+
+<p>The decompression programs supported by
+<b>groffer</b>.</p> </td>
+<td width="5%">
+</td></tr>
+ </table>
+<hr>
+</body>
+</html>

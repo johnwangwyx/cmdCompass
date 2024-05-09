@@ -1,0 +1,243 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:43 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>PSTOPS</title>
+
+</head>
+<body>
+
+<h1 align="center">PSTOPS</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#TRADEMARKS">TRADEMARKS</a><br>
+<a href="#BUGS">BUGS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pstops -
+shuffle pages in a PostScript file</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pstops</b> [
+<b>-q</b> ] [ <b>-b</b> ] [ <b>-w</b><i>width</i> ] [
+<b>-h</b><i>height</i> ] [ <b>-p</b><i>paper</i> ] [
+<b>-d</b><i>lwidth</i> ] <i>pagespecs</i> [ <i>infile</i> [
+<i>outfile</i> ] ]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Pstops</i>
+rearranges pages from a PostScript document, creating a new
+PostScript file. The input PostScript file should follow the
+Adobe Document Structuring Conventions. <i>Pstops</i> can be
+used to perform a large number of arbitrary re-arrangements
+of Documents, including arranging for printing 2-up, 4-up,
+booklets, reversing, selecting front or back sides of
+documents, scaling, etc.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>pagespecs</i>
+follow the syntax:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="13%">
+
+
+<p><i>pagespecs</i></p></td>
+<td width="5%"></td>
+<td width="60%">
+
+
+<p><i>= [modulo:]specs</i></p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="13%">
+
+
+<p><i>specs</i></p></td>
+<td width="5%"></td>
+<td width="60%">
+
+
+<p><i>= spec[+specs][,specs]</i></p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="13%">
+
+
+<p><i>spec</i></p></td>
+<td width="5%"></td>
+<td width="60%">
+
+
+<p><i>=
+[-]pageno[L][R][U][H][V][@scale][(xoff,yoff)]</i></p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><i>modulo</i>
+is the number of pages in each block. The value of
+<i>modulo</i> should be greater than 0; the default value is
+1. <i>specs</i> are the page specifications for the pages in
+each block. The value of the <i>pageno</i> in each
+<i>spec</i> should be between 0 (for the first page in the
+block) and <i>modulo</i>-1 (for the last page in each block)
+inclusive. The optional dimensions <i>xoff</i> and
+<i>yoff</i> shift the page by the specified amount.
+<i>xoff</i> and <i>yoff</i> are in PostScript&rsquo;s
+points, but may be followed by the units <b>cm</b> or
+<b>in</b> to convert to centimetres or inches, or the flag
+<b>w</b> or <b>h</b> to specify as a multiple of the width
+or height. The optional parameters <i>L</i>, <i>R</i>,
+<i>U</i>, <i>H</i> and <i>V</i> rotate the page left, right,
+or upside-down, and flip (mirror) page horizontally or
+vertically. The optional <i>scale</i> parameter scales the
+page by the fraction specified. If the optional minus sign
+is specified, the page is relative to the end of the
+document, instead of the start.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If page
+<i>spec</i>s are separated by <b>+</b> the pages will be
+merged into one page; if they are separated by <b>,</b> they
+will be on separate pages. If there is only one page
+specification, with <i>pageno</i> zero, the <i>pageno</i>
+may be omitted.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The shift,
+rotation, and scaling are applied to the PostScript
+transformation matrix in that order regardless of which
+order they appear on the command line. The matrix
+accumulates the individual transformations. The effect on
+the image is to first scale with respect to an origin at the
+lower left corner, then rotate about the same origin, and
+finally shift.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <i>-w</i>
+option gives the width which is used by the <b>w</b>
+dimension specifier, and the <i>-h</i> option gives the
+height which is used by the <b>h</b> dimension specifier.
+These dimensions are also used (after scaling) to set the
+clipping path for each page. The <i>-p</i> option can be
+used as an alternative, to set the paper size to <b>a0, a1,
+a2, a3, a4, a5, b5, letter, legal, tabloid, statement,</b>
+executive, folio, quarto or <b>10x14.</b> The default paper
+size is <b>a4.</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">The <i>-b</i>
+option prevents any <b>bind</b> operators in the PostScript
+prolog from binding. This may be needed in cases where
+complex multi-page re-arrangements are being done.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <i>-d</i>
+option draws a line around the border of each page, of the
+specified width. If the <i>lwidth</i> parameter is omitted,
+a default linewidth of 1 point is assumed. The linewidth is
+relative to the original page dimensions, <i>i.e.</i> it is
+scaled up or down with the rest of the page.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Pstops normally
+prints the page numbers of the pages re-arranged; the
+<i>-q</i> option suppresses this.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This section
+contains some sample re-arrangements. To put two pages on
+one sheet (of A4 paper), the pagespec to use is:</p>
+
+
+<p align="center" style="margin-top: 1em">&quot;2:0L@.7(21cm,0)+1L@.7(21cm,14.85cm)&quot;</p>
+
+<p style="margin-top: 1em">To select all of the odd pages
+in reverse order, use:</p>
+
+<p align="center" style="margin-top: 1em">2:-0</p>
+
+<p style="margin-top: 1em">To re-arrange pages for printing
+2-up booklets, use</p>
+
+
+<p align="center" style="margin-top: 1em">&quot;4:-3L@.7(21cm,0)+0L@.7(21cm,14.85cm)&quot;</p>
+
+<p style="margin-top: 1em">for the front sides, and</p>
+
+
+<p align="center" style="margin-top: 1em">&quot;4:1L@.7(21cm,0)+-2L@.7(21cm,14.85cm)&quot;</p>
+
+<p style="margin-top: 1em">for the reverse sides (or join
+them with a comma for duplex printing).</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+Angus J. C. Duggan 1991-1995</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">psbook(1),
+psselect(1), pstops(1), epsffit(1), psnup(1), psresize(1),
+psmerge(1), fixscribeps(1), getafm(1), fixdlsrps(1),
+fixfmps(1), fixpsditps(1), fixpspps(1), fixtpps(1),
+fixwfwps(1), fixwpps(1), fixwwps(1), extractres(1),
+includeres(1), showchar(1)</p>
+
+<h2>TRADEMARKS
+<a name="TRADEMARKS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>PostScript</b>
+is a trademark of Adobe Systems Incorporated.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Pstops</i>
+does not accept all DSC comments.</p>
+<hr>
+</body>
+</html>

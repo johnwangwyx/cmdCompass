@@ -1,0 +1,282 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:25 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamfix User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamfix User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamfix - repair
+a Netpbm image with various corruptions</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamfix</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-truncate</b>]
+[<b>-changemaxval</b>] [<b>-clip</b>] [<b>-verbose</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<i>netpbmfile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviation of option is acceptable. You may use double
+hyphens instead of single hyphen to denote options. You may
+use white space in place of the equals sign to separate an
+option name from its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamfix</b>
+reads a stream that is mostly a Netpbm image but may have
+certain types of corruptions and produces a valid Netpbm
+image that preserves much of the information in the
+original.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In particular,
+Netpbm salvages streams that are truncated and that contain
+illegally large sample values.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamfix</b>
+looks at only on the first image in a multi-image
+stream.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Truncated
+Stream</b> <br>
+This is a stream that is missing the last part. Netpbm
+corrects this by creating an output image that simply has
+fewer rows.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You select this
+kind of repair with a <b>-truncate</b> option.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The header of a
+Netpbm image implies how large the image must be (how many
+bytes the file must contain). If the file is actually
+smaller than that, a Netpbm program that tries to read the
+image fails, with an error message telling you that it
+couldn&rsquo;t read the whole file. The data in the file is
+arranged in row order, from top to bottom, and the most
+common reason for the file being smaller than its header
+says it should be is because the bottommost rows are simply
+missing. So <b>pamfix</b> assumes that is the case and
+generates a new image with just the rows that are readable.
+(technically, that means the output&rsquo;s header indicates
+a smaller number of rows and omits any partial last
+row).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The most common
+way for a Netpbm file to be small is that something
+interrupted the program that generated it before it was
+finished writing the file. For example, the program ran out
+of its own input or encountered a bug or ran out of space in
+which to write the output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Another problem
+<b>pamfix</b> deals with is where the file isn&rsquo;t
+actually too small, but because of a system error, a byte in
+the middle of it cannot be read (think of a disk storage
+failure). <b>pamfix</b> reads the input sequentially until
+it can&rsquo;t read any further, for any reason. So it
+treats such an image as a truncated one, ignoring all data
+after the unreadable byte.</p>
+
+<p style="margin-left:11%; margin-top: 1em">But be aware
+that an image file is sometimes too small because of a bug
+in the program that generated it, and in that case it is not
+simply a matter of the bottom of the image missing, so
+<b>pamfix</b> simply creates a valid Netpbm image containing
+a garbage picture.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you want to
+test an image file to see if it is corrupted by being too
+small, use <b>pamfile --allimages</b> . It fails with an
+error message if the file is too small.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you want to
+cut the bottom off a valid Netpbm image, use
+<b>pamcut</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Excessive
+Sample Value</b> <br>
+This is a stream that contains a purported sample value that
+is higher than the maxval of the image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The header of a
+Netpbm image tells the maxval of the image, which is a value
+that gives meaning to all the sample values in the raster.
+The sample values represent a fraction of the maxval, so a
+sample value that is greater than the maxval makes no
+sense.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A regular
+Netpbm program fails if you give it input that contains a
+value larger than the maxval where a sample value
+belongs.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamfix</b>
+has three ways of salvaging such a stream:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Clip to the maxval. Request this with <b>-clip</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Raise the maxval, thus lowering the fraction represented
+by every sample in the image. Request this with
+<b>-changemaxval</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Truncate the image at the first invalid sample value.
+Request this with <b>-truncate</b> and neither <b>-clip</b>
+nor <b>-changemaxval</b>.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">You cannot
+specify both <b>-clip</b> and <b>-changemaxval</b>.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamfix</b> recognizes the following command line options:
+<b><br>
+-truncate</b></p>
+
+<p style="margin-left:22%;">Create a truncated output image
+from all the valid input rows that could be read.</p>
+
+<p style="margin-left:11%;"><b>-changemaxval</b></p>
+
+<p style="margin-left:22%;">Raise the maxval to cope with
+pixel values that exceed the maxval stated in the header of
+the input file.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-clip</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Change all pixel values that exceed the maxval stated in
+the header of the input file.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-verbose</b></p>
+
+<p style="margin-left:22%;">Report details of the
+transportation to standard error.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnm</b>(1),
+<b>pam</b>(1), <b>pamcut</b>(1), <b>pamfile</b>(1),
+<b>pamvalidate</b>(1)</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamfix</b>
+was new in Netpbm 10.66 (March 2014). But it grew out of
+<b>pamfixtrunc</b>, which was new in Netpbm 10.38 (March
+2007) and did only the truncated image repair (and for
+invalid sample values would simply pass them through to its
+output, generating an invalid Netpbm image).</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamfix.html</b></p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,451 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:20 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>NUMFMT</title>
+
+</head>
+<body>
+
+<h1 align="center">NUMFMT</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">numfmt -
+Convert numbers from/to human-readable strings</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>numfmt</b>
+[<i>OPTION</i>]... [<i>NUMBER</i>]...</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Reformat
+NUMBER(s), or the numbers from standard input if none are
+specified.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Mandatory
+arguments to long options are mandatory for short options
+too. <b><br>
+--debug</b></p>
+
+<p style="margin-left:22%;">print warnings about invalid
+input</p>
+
+<p style="margin-left:11%;"><b>-d</b>,
+<b>--delimiter</b>=<i>X</i></p>
+
+<p style="margin-left:22%;">use X instead of whitespace for
+field delimiter</p>
+
+
+<p style="margin-left:11%;"><b>--field</b>=<i>FIELDS</i></p>
+
+<p style="margin-left:22%;">replace the numbers in these
+input fields (default=1); see FIELDS below</p>
+
+
+<p style="margin-left:11%;"><b>--format</b>=<i>FORMAT</i></p>
+
+<p style="margin-left:22%;">use printf style floating-point
+FORMAT; see FORMAT below for details</p>
+
+<p style="margin-left:11%;"><b>--from</b>=<i>UNIT</i></p>
+
+<p style="margin-left:22%;">auto-scale input numbers to
+UNITs; default is &rsquo;none&rsquo;; see UNIT below</p>
+
+
+<p style="margin-left:11%;"><b>--from-unit</b>=<i>N</i></p>
+
+<p style="margin-left:22%;">specify the input unit size
+(instead of the default 1)</p>
+
+<p style="margin-left:11%;"><b>--grouping</b></p>
+
+<p style="margin-left:22%;">use locale-defined grouping of
+digits, e.g. 1,000,000 (which means it has no effect in the
+C/POSIX locale)</p>
+
+<p style="margin-left:11%;"><b>--header</b>[=<i>N</i>]</p>
+
+<p style="margin-left:22%;">print (without converting) the
+first N header lines; N defaults to 1 if not specified</p>
+
+
+<p style="margin-left:11%;"><b>--invalid</b>=<i>MODE</i></p>
+
+<p style="margin-left:22%;">failure mode for invalid
+numbers: MODE can be: abort (default), fail, warn,
+ignore</p>
+
+<p style="margin-left:11%;"><b>--padding</b>=<i>N</i></p>
+
+<p style="margin-left:22%;">pad the output to N characters;
+positive N will right-align; negative N will left-align;
+padding is ignored if the output is wider than N; the
+default is to automatically pad if a whitespace is found</p>
+
+
+<p style="margin-left:11%;"><b>--round</b>=<i>METHOD</i></p>
+
+<p style="margin-left:22%;">use METHOD for rounding when
+scaling; METHOD can be: up, down, from-zero (default),
+towards-zero, nearest</p>
+
+
+<p style="margin-left:11%;"><b>--suffix</b>=<i>SUFFIX</i></p>
+
+<p style="margin-left:22%;">add SUFFIX to output numbers,
+and accept optional SUFFIX in input numbers</p>
+
+<p style="margin-left:11%;"><b>--to</b>=<i>UNIT</i></p>
+
+<p style="margin-left:22%;">auto-scale output numbers to
+UNITs; see UNIT below</p>
+
+<p style="margin-left:11%;"><b>--to-unit</b>=<i>N</i></p>
+
+<p style="margin-left:22%;">the output unit size (instead
+of the default 1)</p>
+
+<p style="margin-left:11%;"><b>-z</b>,
+<b>--zero-terminated</b></p>
+
+<p style="margin-left:22%;">line delimiter is NUL, not
+newline</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--help</b></p></td>
+<td width="2%"></td>
+<td width="40%">
+
+
+<p>display this help and exit</p></td>
+<td width="38%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--version</b></p>
+
+<p style="margin-left:22%;">output version information and
+exit</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>UNIT
+options:</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>none</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>no auto-scaling is done; suffixes will trigger an
+error</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>auto</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>accept optional single/two letter suffix:</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">1K = 1000, 1Ki
+= 1024, 1M = 1000000, 1Mi = 1048576,</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em">si</p></td>
+<td width="8%"></td>
+<td width="56%">
+
+
+<p style="margin-top: 1em">accept optional single letter
+suffix:</p> </td>
+<td width="22%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">1K = 1000, 1M =
+1000000, ...</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p style="margin-top: 1em">iec</p></td>
+<td width="7%"></td>
+<td width="56%">
+
+
+<p style="margin-top: 1em">accept optional single letter
+suffix:</p> </td>
+<td width="22%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">1K = 1024, 1M =
+1048576, ...</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em">iec-i</p></td>
+<td width="4%"></td>
+<td width="52%">
+
+
+<p style="margin-top: 1em">accept optional two-letter
+suffix:</p> </td>
+<td width="26%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">1Ki = 1024, 1Mi
+= 1048576, ...</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>FIELDS
+supports cut(1) style field ranges:</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p style="margin-top: 1em">N</p></td>
+<td width="7%"></td>
+<td width="55%">
+
+
+<p style="margin-top: 1em">N&rsquo;th field, counted from
+1</p> </td>
+<td width="23%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>N-</p></td>
+<td width="7%"></td>
+<td width="55%">
+
+
+<p>from N&rsquo;th field, to end of line</p></td>
+<td width="23%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>N-M</p></td>
+<td width="7%"></td>
+<td width="55%">
+
+
+<p>from N&rsquo;th to M&rsquo;th field (inclusive)</p></td>
+<td width="23%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>-M</b></p></td>
+<td width="7%"></td>
+<td width="55%">
+
+
+<p>from first to M&rsquo;th field (inclusive)</p></td>
+<td width="23%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>-</p></td>
+<td width="7%"></td>
+<td width="55%">
+
+
+<p>all fields</p></td>
+<td width="23%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Multiple
+fields/ranges can be separated with commas</p>
+
+<p style="margin-left:11%; margin-top: 1em">FORMAT must be
+suitable for printing one floating-point argument
+&rsquo;%f&rsquo;. Optional quote (%&rsquo;f) will enable
+<b>--grouping</b> (if supported by current locale). Optional
+width value (%10f) will pad output. Optional zero (%010f)
+width will zero pad the number. Optional negative values
+(%-10f) will left align. Optional precision (%.1f) will
+override the input determined precision.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Exit status is
+0 if all input numbers were successfully converted. By
+default, numfmt will stop at the first conversion error with
+exit status 2. With <b>--invalid=</b>&rsquo;fail&rsquo; a
+warning is printed for each conversion error and the exit
+status is 2. With <b>--invalid=</b>&rsquo;warn&rsquo; each
+conversion error is diagnosed, but the exit status is 0.
+With <b>--invalid=</b>&rsquo;ignore&rsquo; conversion errors
+are not diagnosed and the exit status is 0.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:22%; margin-top: 1em">$ numfmt
+--to=si 1000</p>
+
+<p style="margin-left:22%; margin-top: 1em">-&gt;
+&quot;1.0K&quot;</p>
+
+<p style="margin-left:22%; margin-top: 1em">$ numfmt
+--to=iec 2048</p>
+
+<p style="margin-left:22%; margin-top: 1em">-&gt;
+&quot;2.0K&quot;</p>
+
+<p style="margin-left:22%; margin-top: 1em">$ numfmt
+--to=iec-i 4096</p>
+
+<p style="margin-left:22%; margin-top: 1em">-&gt;
+&quot;4.0Ki&quot;</p>
+
+<p style="margin-left:22%; margin-top: 1em">$ echo 1K |
+numfmt --from=si</p>
+
+<p style="margin-left:22%; margin-top: 1em">-&gt;
+&quot;1000&quot;</p>
+
+<p style="margin-left:22%; margin-top: 1em">$ echo 1K |
+numfmt --from=iec</p>
+
+<p style="margin-left:22%; margin-top: 1em">-&gt;
+&quot;1024&quot;</p>
+
+<p style="margin-left:22%; margin-top: 1em">$ df -B1 |
+numfmt --header --field 2-4 --to=si <br>
+$ ls -l | numfmt --header --field 5 --to=iec <br>
+$ ls -lh | numfmt --header --field 5 --from=iec --padding=10
+<br>
+$ ls -lh | numfmt --header --field 5 --from=iec --format
+%10f</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Written by
+Assaf Gordon.</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">GNU coreutils
+online help: &lt;https://www.gnu.org/software/coreutils/&gt;
+<br>
+Report any translation bugs to
+&lt;https://translationproject.org/team/&gt;</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+&copy; 2022 Free Software Foundation, Inc. License GPLv3+:
+GNU GPL version 3 or later
+&lt;https://gnu.org/licenses/gpl.html&gt;. <br>
+This is free software: you are free to change and
+redistribute it. There is NO WARRANTY, to the extent
+permitted by law.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Full
+documentation
+&lt;https://www.gnu.org/software/coreutils/numfmt&gt; <br>
+or available locally via: info '(coreutils) numfmt
+invocation'</p>
+<hr>
+</body>
+</html>

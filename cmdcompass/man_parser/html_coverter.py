@@ -3,7 +3,7 @@ import subprocess
 import platform
 
 WINDOWS_GROFF_BIN = "./man_parser/bin/groff-1.22.4-w32-bin/bin/groff.exe"
-OUTPUT_DIR = "./data/man_pages/html"
+OUTPUT_DIR = "./data/man_pages/html_download"
 
 
 def convert_man_pages(man_file, output_dir=OUTPUT_DIR):

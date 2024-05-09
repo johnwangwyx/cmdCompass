@@ -1,0 +1,593 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:54 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>TIMEDATECTL</title>
+
+</head>
+<body>
+
+<h1 align="center">TIMEDATECTL</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#COMMANDS">COMMANDS</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">timedatectl -
+Control the system time and date</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="52%">
+
+
+<p style="margin-top: 1em"><b>timedatectl</b> [OPTIONS...]
+{COMMAND}</p> </td>
+<td width="37%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>timedatectl</b>
+may be used to query and change the system clock and its
+settings, and enable or disable time synchronization
+services.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Use
+<b>systemd-firstboot</b>(1) to initialize the system time
+zone for mounted (but not booted) system images.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>timedatectl</b>
+may be used to show the current status of time
+synchronization services, for example
+<b>systemd-timesyncd.service</b>(8).</p>
+
+<h2>COMMANDS
+<a name="COMMANDS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+commands are understood:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>status</b></p>
+
+<p style="margin-left:17%;">Show current settings of the
+system clock and RTC, including whether network time
+synchronization is active. If no command is specified, this
+is the implied default.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>show</b></p>
+
+<p style="margin-left:17%;">Show the same information as
+<b>status</b>, but in machine readable form. This command is
+intended to be used whenever computer-parsable output is
+required. Use <b>status</b> if you are looking for formatted
+human-readable output.</p>
+
+<p style="margin-left:17%; margin-top: 1em">By default,
+empty properties are suppressed. Use <b>--all</b> to show
+those too. To select specific properties to show, use
+<b>--property=</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>set-time
+[TIME]</b></p>
+
+<p style="margin-left:17%;">Set the system clock to the
+specified time. This will also update the RTC time
+accordingly. The time may be specified in the format
+&quot;2012-10-30 18:17:16&quot;.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>set-timezone
+[TIMEZONE]</b></p>
+
+<p style="margin-left:17%;">Set the system time zone to the
+specified value. Available timezones can be listed with
+<b>list-timezones</b>. If the RTC is configured to be in the
+local time, this will also update the RTC time. This call
+will alter the /etc/localtime symlink. See
+<b>localtime</b>(5) for more information.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>list-timezones</b></p>
+
+<p style="margin-left:17%;">List available time zones, one
+per line. Entries from the list can be set as the system
+timezone with <b>set-timezone</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>set-local-rtc
+[BOOL]</b></p>
+
+<p style="margin-left:17%;">Takes a boolean argument. If
+&quot;0&quot;, the system is configured to maintain the RTC
+in universal time. If &quot;1&quot;, it will maintain the
+RTC in local time instead. Note that maintaining the RTC in
+the local timezone is not fully supported and will create
+various problems with time zone changes and daylight saving
+adjustments. If at all possible, keep the RTC in UTC mode.
+Note that invoking this will also synchronize the RTC from
+the system clock, unless <b>--adjust-system-clock</b> is
+passed (see above). This command will change the 3rd line of
+/etc/adjtime, as documented in <b>hwclock</b>(8).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>set-ntp
+[BOOL]</b></p>
+
+<p style="margin-left:17%;">Takes a boolean argument.
+Controls whether network time synchronization is active and
+enabled (if available). If the argument is true, this
+enables and starts the first existing network
+synchronization service. If the argument is false, then this
+disables and stops the known network synchronization
+services. The way that the list of services is built is
+described in <b>systemd-timedated.service</b>(8).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-timesyncd
+Commands</b> <br>
+The following commands are specific to
+<b>systemd-timesyncd.service</b>(8).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>timesync-status</b></p>
+
+<p style="margin-left:17%;">Show current status of
+<b>systemd-timesyncd.service</b>(8). If <b>--monitor</b> is
+specified, then this will monitor the status updates.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>show-timesync</b></p>
+
+<p style="margin-left:17%;">Show the same information as
+<b>timesync-status</b>, but in machine readable form. This
+command is intended to be used whenever computer-parsable
+output is required. Use <b>timesync-status</b> if you are
+looking for formatted human-readable output.</p>
+
+<p style="margin-left:17%; margin-top: 1em">By default,
+empty properties are suppressed. Use <b>--all</b> to show
+those too. To select specific properties to show, use
+<b>--property=</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ntp-servers</b>
+<i>INTERFACE SERVER</i><b>...</b></p>
+
+<p style="margin-left:17%;">Set the interface specific NTP
+servers. This command can be used only when the interface is
+managed by <b>systemd-networkd</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>revert</b>
+<i>INTERFACE</i></p>
+
+<p style="margin-left:17%;">Revert the interface specific
+NTP servers. This command can be used only when the
+interface is managed by <b>systemd-networkd</b>.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+options are understood:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--no-ask-password</b></p>
+
+<p style="margin-left:17%;">Do not query the user for
+authentication for privileged operations.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--adjust-system-clock</b></p>
+
+<p style="margin-left:17%;">If <b>set-local-rtc</b> is
+invoked and this option is passed, the system clock is
+synchronized from the RTC again, taking the new setting into
+account. Otherwise, the RTC is synchronized from the system
+clock.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--monitor</b></p>
+
+<p style="margin-left:17%;">If <b>timesync-status</b> is
+invoked and this option is passed, then <b>timedatectl</b>
+monitors the status of <b>systemd-timesyncd.service</b>(8)
+and updates the outputs. Use Ctrl+C to terminate the
+monitoring.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-a</b>,
+<b>--all</b></p>
+
+<p style="margin-left:17%;">When showing properties of
+<b>systemd-timesyncd.service</b>(8), show all properties
+regardless of whether they are set or not.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-p</b>,
+<b>--property=</b></p>
+
+<p style="margin-left:17%;">When showing properties of
+<b>systemd-timesyncd.service</b>(8), limit display to
+certain properties as specified as argument. If not
+specified, all set properties are shown. The argument should
+be a property name, such as &quot;ServerName&quot;. If
+specified more than once, all properties with the specified
+names are shown.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--value</b></p>
+
+<p style="margin-left:17%;">When printing properties with
+<b>show-timesync</b>, only print the value, and skip the
+property name and &quot;=&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-H</b>,
+<b>--host=</b></p>
+
+<p style="margin-left:17%;">Execute the operation remotely.
+Specify a hostname, or a username and hostname separated by
+&quot;@&quot;, to connect to. The hostname may optionally be
+suffixed by a port ssh is listening on, separated by
+&quot;:&quot;, and then a container name, separated by
+&quot;/&quot;, which connects directly to a specific
+container on the specified host. This will use SSH to talk
+to the remote machine manager instance. Container names may
+be enumerated with <b>machinectl -H</b> <i>HOST</i>. Put
+IPv6 addresses in brackets.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-M</b>,
+<b>--machine=</b></p>
+
+<p style="margin-left:17%;">Execute operation on a local
+container. Specify a container name to connect to,
+optionally prefixed by a user name to connect as and a
+separating &quot;@&quot; character. If the special string
+&quot;.host&quot; is used in place of the container name, a
+connection to the local system is made (which is useful to
+connect to a specific user's user bus: &quot;--user
+--machine=lennart@.host&quot;). If the &quot;@&quot; syntax
+is not used, the connection is made as root user. If the
+&quot;@&quot; syntax is used either the left hand side or
+the right hand side may be omitted (but not both) in which
+case the local user name and &quot;.host&quot; are
+implied.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Print a short help text and
+exit.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--version</b></p>
+
+<p style="margin-left:17%;">Print a short version string
+and exit.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--no-pager</b></p>
+
+<p style="margin-left:17%;">Do not pipe output into a
+pager.</p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">On success, 0
+is returned, a non-zero failure code otherwise.</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_LOG_LEVEL</i></p>
+
+<p style="margin-left:17%;">The maximum log level of
+emitted messages (messages with a higher log level, i.e.
+less important ones, will be suppressed). Either one of (in
+order of decreasing importance) <b>emerg</b>, <b>alert</b>,
+<b>crit</b>, <b>err</b>, <b>warning</b>, <b>notice</b>,
+<b>info</b>, <b>debug</b>, or an integer in the range 0...7.
+See <b>syslog</b>(3) for more information.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_LOG_COLOR</i></p>
+
+<p style="margin-left:17%;">A boolean. If true, messages
+written to the tty will be colored according to
+priority.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This setting is
+only useful when messages are written directly to the
+terminal, because <b>journalctl</b>(1) and other tools that
+display logs will color messages based on the log level on
+their own.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_LOG_TIME</i></p>
+
+<p style="margin-left:17%;">A boolean. If true, console log
+messages will be prefixed with a timestamp.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This setting is
+only useful when messages are written directly to the
+terminal or a file, because <b>journalctl</b>(1) and other
+tools that display logs will attach timestamps based on the
+entry metadata on their own.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_LOG_LOCATION</i></p>
+
+<p style="margin-left:17%;">A boolean. If true, messages
+will be prefixed with a filename and line number in the
+source code where the message originates.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note that the
+log location is often attached as metadata to journal
+entries anyway. Including it directly in the message text
+can nevertheless be convenient when debugging programs.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_LOG_TID</i></p>
+
+<p style="margin-left:17%;">A boolean. If true, messages
+will be prefixed with the current numerical thread ID
+(TID).</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note that the
+this information is attached as metadata to journal entries
+anyway. Including it directly in the message text can
+nevertheless be convenient when debugging programs.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_LOG_TARGET</i></p>
+
+<p style="margin-left:17%;">The destination for log
+messages. One of <b>console</b> (log to the attached tty),
+<b>console-prefixed</b> (log to the attached tty but with
+prefixes encoding the log level and &quot;facility&quot;,
+see <b>syslog</b>(3), <b>kmsg</b> (log to the kernel
+circular log buffer), <b>journal</b> (log to the journal),
+<b>journal-or-kmsg</b> (log to the journal if available, and
+to kmsg otherwise), <b>auto</b> (determine the appropriate
+log target automatically, the default), <b>null</b> (disable
+log output).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_PAGER</i></p>
+
+<p style="margin-left:17%;">Pager to use when
+<b>--no-pager</b> is not given; overrides <i>$PAGER</i>. If
+neither <i>$SYSTEMD_PAGER</i> nor <i>$PAGER</i> are set, a
+set of well-known pager implementations are tried in turn,
+including <b>less</b>(1) and <b>more</b>(1), until one is
+found. If no pager implementation is discovered no pager is
+invoked. Setting this environment variable to an empty
+string or the value &quot;cat&quot; is equivalent to passing
+<b>--no-pager</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note: if
+<i>$SYSTEMD_PAGERSECURE</i> is not set,
+<i>$SYSTEMD_PAGER</i> (as well as <i>$PAGER</i>) will be
+silently ignored.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_LESS</i></p>
+
+<p style="margin-left:17%;">Override the options passed to
+<b>less</b> (by default &quot;FRSXMK&quot;).</p>
+
+<p style="margin-left:17%; margin-top: 1em">Users might
+want to change two options in particular:</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>K</b></p>
+
+<p style="margin-left:23%;">This option instructs the pager
+to exit immediately when Ctrl+C is pressed. To allow
+<b>less</b> to handle Ctrl+C itself to switch back to the
+pager command prompt, unset this option.</p>
+
+<p style="margin-left:23%; margin-top: 1em">If the value of
+<i>$SYSTEMD_LESS</i> does not include &quot;K&quot;, and the
+pager that is invoked is <b>less</b>, Ctrl+C will be ignored
+by the executable, and needs to be handled by the pager.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>X</b></p>
+
+<p style="margin-left:23%;">This option instructs the pager
+to not send termcap initialization and deinitialization
+strings to the terminal. It is set by default to allow
+command output to remain visible in the terminal even after
+the pager exits. Nevertheless, this prevents some pager
+functionality from working, in particular paged output
+cannot be scrolled with the mouse.</p>
+
+<p style="margin-left:17%; margin-top: 1em">See
+<b>less</b>(1) for more discussion.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_LESSCHARSET</i></p>
+
+<p style="margin-left:17%;">Override the charset passed to
+<b>less</b> (by default &quot;utf-8&quot;, if the invoking
+terminal is determined to be UTF-8 compatible).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_PAGERSECURE</i></p>
+
+<p style="margin-left:17%;">Takes a boolean argument. When
+true, the &quot;secure&quot; mode of the pager is enabled;
+if false, disabled. If <i>$SYSTEMD_PAGERSECURE</i> is not
+set at all, secure mode is enabled if the effective UID is
+not the same as the owner of the login session, see
+<b>geteuid</b>(2) and <b>sd_pid_get_owner_uid</b>(3). In
+secure mode, <b>LESSSECURE=1</b> will be set when invoking
+the pager, and the pager shall disable commands that open or
+create new files or start new subprocesses. When
+<i>$SYSTEMD_PAGERSECURE</i> is not set at all, pagers which
+are not known to implement secure mode will not be used.
+(Currently only <b>less</b>(1) implements secure mode.)</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note: when
+commands are invoked with elevated privileges, for example
+under <b>sudo</b>(8) or <b>pkexec</b>(1), care must be taken
+to ensure that unintended interactive features are not
+enabled. &quot;Secure&quot; mode for the pager may be
+enabled automatically as describe above. Setting
+<i>SYSTEMD_PAGERSECURE=0</i> or not removing it from the
+inherited environment allows the user to invoke arbitrary
+commands. Note that if the <i>$SYSTEMD_PAGER</i> or
+<i>$PAGER</i> variables are to be honoured,
+<i>$SYSTEMD_PAGERSECURE</i> must be set too. It might be
+reasonable to completely disable the pager using
+<b>--no-pager</b> instead.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_COLORS</i></p>
+
+<p style="margin-left:17%;">Takes a boolean argument. When
+true, <b>systemd</b> and related utilities will use colors
+in their output, otherwise the output will be monochrome.
+Additionally, the variable can take one of the following
+special values: &quot;16&quot;, &quot;256&quot; to restrict
+the use of colors to the base 16 or 256 ANSI colors,
+respectively. This can be specified to override the
+automatic decision based on <i>$TERM</i> and what the
+console is connected to.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_URLIFY</i></p>
+
+<p style="margin-left:17%;">The value must be a boolean.
+Controls whether clickable links should be generated in the
+output for terminal emulators supporting this. This can be
+specified to override the decision that <b>systemd</b> makes
+based on <i>$TERM</i> and other conditions.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Show current
+settings:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ timedatectl
+<br>
+Local time: Thu 2017-09-21 16:08:56 CEST <br>
+Universal time: Thu 2017-09-21 14:08:56 UTC <br>
+RTC time: Thu 2017-09-21 14:08:56 <br>
+Time zone: Europe/Warsaw (CEST, +0200) <br>
+System clock synchronized: yes <br>
+NTP service: active <br>
+RTC in local TZ: no</p>
+
+<p style="margin-left:11%; margin-top: 1em">Enable network
+time synchronization:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ timedatectl
+set-ntp true <br>
+==== AUTHENTICATING FOR org.freedesktop.timedate1.set-ntp
+=== <br>
+Authentication is required to control whether network time
+synchronization shall be enabled. <br>
+Authenticating as: user <br>
+Password: ******** <br>
+==== AUTHENTICATION COMPLETE ===</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ systemctl
+status systemd-timesyncd.service <br>
+&acirc; systemd-timesyncd.service - Network Time
+Synchronization <br>
+Loaded: loaded
+(/lib/systemd/system/systemd-timesyncd.service; enabled)
+<br>
+Active: active (running) since Mo 2015-03-30 14:20:38 CEST;
+5s ago <br>
+Docs: man:systemd-timesyncd.service(8) <br>
+Main PID: 595 (systemd-timesyn) <br>
+Status: &quot;Using Time Server 216.239.38.15:123
+(time4.google.com).&quot; <br>
+CGroup: /system.slice/systemd-timesyncd.service <br>
+&acirc;&acirc;595 /lib/systemd/systemd-timesyncd <br>
+...</p>
+
+<p style="margin-left:11%; margin-top: 1em">Show current
+status of <b>systemd-timesyncd.service</b>(8):</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ timedatectl
+timesync-status <br>
+Server: 216.239.38.15 (time4.google.com) <br>
+Poll interval: 1min 4s (min: 32s; max 34min 8s) <br>
+Leap: normal <br>
+Version: 4 <br>
+Stratum: 1 <br>
+Reference: GPS <br>
+Precision: 1us (-20) <br>
+Root distance: 335us (max: 5s) <br>
+Offset: +316us <br>
+Delay: 349us <br>
+Jitter: 0 <br>
+Packet count: 1 <br>
+Frequency: -8.802ppm</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd</b>(1),
+<b>hwclock</b>(8), <b>date</b>(1), <b>localtime</b>(5),
+<b>systemctl</b>(1), <b>systemd-timedated.service</b>(8),
+<b>systemd-timesyncd.service</b>(8),
+<b>systemd-firstboot</b>(1)</p>
+<hr>
+</body>
+</html>

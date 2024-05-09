@@ -1,0 +1,209 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:04 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Fitstopnm User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Fitstopnm User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">fitstopnm -
+convert a FITS file into a PNM image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>fitstopnm</b>
+[<b>-image=</b><i>N</i>] [<b>-scanmax</b>]
+[<b>-printmax</b>] [<b>-min=</b><i>f</i>]
+[<b>-max=</b><i>f</i>] [<b>-omaxval=</b><i>N</i>
+[<i>FITSfile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviation of option is acceptable. You may use double
+hyphens instead of single hyphen to denote options. You may
+use white space in place of the equals sign to separate an
+option name from its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>fitstopnm</b>
+reads a FITS (Flexible Image Transport System) file as input
+and produces a PPM image if the FITS file consists of 3
+image planes (NAXIS = 3 and NAXIS3 = 3), or a PGM image if
+the FITS file consists of 2 image planes (NAXIS = 2), or if
+you specify the <b>-image</b> option.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that the
+PPM image is highly unlikely to be a true PPM image, as it
+is not normal for a FITS image to use the third axis as R,
+G, and B components of the pixels. The most common
+interpretation when there are 3 axes is that the third one
+is time. So the image is instead a pseudo-PPM in which the
+three sample values of a pixel represent something other
+than color components, for example gray levels at three
+instants (this variation on PPM is common in programs such
+as <b>fitstopnm</b> that predate the PAM format).</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you work
+with FITS images with 3 axes, you should probably always use
+the <b>-image</b> option to avoid getting an unwanted
+pseudo-PPM image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The program
+tells you what kind of PNM image it is writing.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>fitstopnm</b> recognizes the following command line
+options: <b><br>
+-image=</b><i>N</i></p>
+
+<p style="margin-left:22%;">This is for FITS files with
+three axes. This option says that the third axis is for
+multiple images, and the option value <i>N</i> tells which
+one you want.</p>
+
+<p style="margin-left:11%;"><b>-omaxval=</b><i>N</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">This is the
+maxval that the output PNM image is to have.</p>
+
+<p style="margin-left:22%; margin-top: 1em">By default, the
+maxval is the least possible to retain all the precision of
+the FITS input. That means the difference between the
+highest and lowest sample value in the input. If the values
+range from -5 to 100, for example, the default maxval would
+be 106 and each PNM sample value would correspond to one
+FITS sample value.</p>
+
+<p style="margin-left:22%; margin-top: 1em">For a FITS
+input with floating point sample values, the precision is
+essentially unlimited, so this is not possible. In that
+case, the default maxval is simply 255.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.39 (June 2007). Before that, the output
+maxval is always the default.</p>
+
+<p style="margin-left:11%;"><b>-min=</b><i>float</i>
+<b><br>
+-max=</b><i>float</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">You can use
+these options to override the min and max values as read
+from the FITS header or the image data if the header has no
+DATAMIN and DATAMAX keywords.</p>
+
+<p style="margin-left:11%;"><b>-scanmax</b></p>
+
+<p style="margin-left:22%;">Use this option to force the
+program to scan the data even when the header has DATAMIN
+and DATAMAX.</p>
+
+<p style="margin-left:11%;"><b>-printmax</b></p>
+
+<p style="margin-left:22%;">With this option, the program
+just prints the min and max values and quits without doing
+its normal job.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This is for use
+in shell programs. Example:</p>
+
+<p style="margin-left:22%; margin-top: 1em">eval
+&rsquo;fitstopnm -printmax $filename | \ <br>
+awk {min = $1; max = $2} \ <br>
+END {print &quot;min=&quot; min; &quot; max=&quot;
+max}&rsquo;</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Pixel
+Order</b> <br>
+You may need to pass the output of <b>fitstopnm</b> through
+<b>pamflip -topbottom</b>. See
+<a href="pamtofits.html#pixelorder"><b>pamtofits</b></a></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtofits</b>(1),
+<b>pamflip</b>(1), <b>pgm</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1989 by Jef Poskanzer, with modifications by Daniel Briggs
+(<i>dbriggs@nrao.edu</i>) and Alberto Accomazzi
+(<i>alberto@cfa.harvard.edu</i>).</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/fitstopnm.html</b></p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,614 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:01 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>dpkg-query</title>
+
+</head>
+<body>
+
+<h1 align="center">dpkg-query</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#COMMANDS">COMMANDS</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">dpkg-query - a
+tool to query the dpkg database</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dpkg-query</b>
+[<i>option</i>...] <i>command</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i><b>dpkg-query</b></i>
+is a tool to show information about packages listed in the
+<b>dpkg</b> database.</p>
+
+<h2>COMMANDS
+<a name="COMMANDS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-l</b>,
+<b>--list</b> [<i>package-name-pattern</i>...]</p>
+
+<p style="margin-left:17%;">List all known packages
+matching one or more patterns, regardless of their status,
+which includes any real or virtual package referenced in any
+dependency relationship field (such as <b>Breaks</b>,
+<b>Enhances</b>, etc.). If no <i>package-name-pattern</i> is
+given, list all packages in <i>/var/lib/dpkg/status</i>,
+excluding the ones marked as not-installed (i.e. those which
+have been previously purged). Normal shell wildcard
+characters are allowed in <i>package-name-pattern</i>.
+Please note you will probably have to quote
+<i>package-name-pattern</i> to prevent the shell from
+performing filename expansion. For example this will list
+all package names starting with &ldquo;libc6&rdquo;:</p>
+
+<p style="margin-left:17%; margin-top: 1em">dpkg-query -l
+'libc6*'</p>
+
+<p style="margin-left:17%; margin-top: 1em">The first three
+columns of the output show the desired action, the package
+status, and errors, in that order.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Desired action:
+<br>
+u = Unknown <br>
+i = Install <br>
+h = Hold <br>
+r = Remove <br>
+p = Purge</p>
+
+<p style="margin-left:17%; margin-top: 1em">Package status:
+<br>
+n = Not-installed <br>
+c = Config-files <br>
+H = Half-installed <br>
+U = Unpacked <br>
+F = Half-configured <br>
+W = Triggers-awaiting <br>
+t = Triggers-pending <br>
+i = Installed</p>
+
+<p style="margin-left:17%; margin-top: 1em">Error flags:
+<br>
+&lt;empty&gt; = (none) <br>
+R = Reinst-required</p>
+
+<p style="margin-left:17%; margin-top: 1em">An uppercase
+status or error letter indicates the package is likely to
+cause severe problems. Please refer to <b>dpkg</b>(1) for
+information about the above states and flags.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The output
+format of this option is not configurable, but varies
+automatically to fit the terminal width. It is intended for
+human readers, and is not easily machine-readable. See
+<b>-W</b> (<b>--show</b>) and <b>--showformat</b> for a way
+to configure the output format.</p>
+
+<p style="margin-left:11%;"><b>-W</b>, <b>--show</b>
+[<i>package-name-pattern</i>...]</p>
+
+<p style="margin-left:17%;">Just like the <b>--list</b>
+option this will list all packages matching the given
+patterns. However the output can be customized using the
+<b>--showformat</b> option.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The default
+output format gives one line per matching package, each line
+consisting of the package name and its installed version,
+separated by a tab. The package name will be architecture
+qualified for packages with a <b>Multi-Arch</b> field with
+the value <b>same</b> or with a foreign architecture, which
+is an architecture that is neither the native one nor
+<b>all</b>.</p>
+
+<p style="margin-left:11%;"><b>-s</b>, <b>--status</b>
+[<i>package-name</i>...]</p>
+
+<p style="margin-left:17%;">Report status of specified
+packages. This just displays the entry in the installed
+package status database. If no <i>package-name</i> is
+specified it will display all package entries in the status
+database (since dpkg 1.19.1). When multiple
+<i>package-name</i> entries are listed, the requested status
+entries are separated by an empty line, with the same order
+as specified on the argument list.</p>
+
+<p style="margin-left:11%;"><b>-L</b>, <b>--listfiles</b>
+<i>package-name</i>...</p>
+
+<p style="margin-left:17%;">List files installed to your
+system from <i>package-name</i>. When multiple
+<i>package-name</i>s are listed, the requested lists of
+files are separated by an empty line, with the same order as
+specified on the argument list.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Each file
+diversion is printed on its own line after its diverted
+file, prefixed with one of the following localized
+strings:</p>
+
+<p style="margin-left:17%; margin-top: 1em">locally
+diverted to: <i>diverted-to</i> <br>
+package diverts others to: <i>diverted-to</i> <br>
+diverted by <i>pkg</i> to: <i>diverted-to</i></p>
+
+<p style="margin-left:17%; margin-top: 1em">Hint: When
+machine parsing the output, it is customary to set the
+locale to <b>C.UTF-8</b> to get reproducible results.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This command
+will not list extra files created by maintainer scripts, nor
+will it list alternatives.</p>
+
+<p style="margin-left:11%;"><b>--control-list</b>
+<i>package-name</i></p>
+
+<p style="margin-left:17%;">List control files installed to
+your system from <i>package-name</i> (since dpkg 1.16.5).
+These can be used as input arguments to
+<b>--control-show</b>.</p>
+
+<p style="margin-left:11%;"><b>--control-show</b>
+<i>package-name control-file</i></p>
+
+<p style="margin-left:17%;">Print the <i>control-file</i>
+installed to your system from <i>package-name</i> to the
+standard output (since dpkg 1.16.5).</p>
+
+<p style="margin-left:11%;"><b>-c</b>,
+<b>--control-path</b> <i>package-name</i>
+[<i>control-file</i>]</p>
+
+<p style="margin-left:17%;">List paths for control files
+installed to your system from <i>package-name</i> (since
+dpkg 1.15.4). If <i>control-file</i> is specified then only
+list the path for that control file if it is present.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b>Warning</b>:
+this command is deprecated as it gives direct access to the
+internal dpkg database, please switch to use
+<b>--control-list</b> and <b>--control-show</b> instead for
+all cases where those commands might give the same end
+result. Although, as long as there is still at least one
+case where this command is needed (i.e. when having to
+remove a damaging postrm maintainer script), and while there
+is no good solution for that, this command will not get
+removed.</p>
+
+<p style="margin-left:11%;"><b>-S</b>, <b>--search</b>
+<i>filename-search-pattern</i>...</p>
+
+<p style="margin-left:17%;">Search for packages that own
+files corresponding to the given patterns. Standard shell
+wildcard characters can be used in the pattern, where
+asterisk (<b>*</b>) and question mark (<b>?</b>) will match
+a slash, and backslash (<b>\</b>) will be used as an escape
+character.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If the first
+character in the <i>filename-search-pattern</i> is none of
+&rsquo;<b>*[?/</b>&rsquo; then it will be considered a
+substring match and will be implicitly surrounded by
+&rsquo;<b>*</b>&rsquo; (as in
+<b>*</b><i>filename-search-pattern</i><b>*</b>). If the
+subsequent string contains any of &rsquo;<b>*[?\</b>&rsquo;,
+then it will handled like a glob pattern, otherwise any
+trailing &rsquo;<b>/</b>&rsquo; or &rsquo;<b>/.</b>&rsquo;
+will be removed and a literal path lookup will be
+performed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This command
+will not list extra files created by maintainer scripts, nor
+will it list alternatives.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The output
+format consists of one line per matching pattern, with a
+list of packages owning the pathname separated by a comma
+(U+002C &rsquo;<b>,</b>&rsquo;) and a space (U+0020 &rsquo;
+&rsquo;), followed by a colon (U+003A
+&rsquo;<b>:</b>&rsquo;) and a space, followed by the
+pathname. As in:</p>
+
+<p style="margin-left:17%; margin-top: 1em">pkgname1,
+pkgname2: pathname1 <br>
+pkgname3: pathname2</p>
+
+<p style="margin-left:17%; margin-top: 1em">File diversions
+are printed with the following localized strings:</p>
+
+<p style="margin-left:17%; margin-top: 1em">diversion by
+<i>pkgname</i> from: <i>diverted-from</i> <br>
+diversion by <i>pkgname</i> to: <i>diverted-to</i></p>
+
+<p style="margin-left:17%; margin-top: 1em">or for local
+diversions:</p>
+
+<p style="margin-left:17%; margin-top: 1em">local diversion
+from: <i>diverted-from</i> <br>
+local diversion to: <i>diverted-to</i></p>
+
+<p style="margin-left:17%; margin-top: 1em">Hint: When
+machine parsing the output, it is customary to set the
+locale to <b>C.UTF-8</b> to get reproducible results.</p>
+
+<p style="margin-left:11%;"><b>-p</b>, <b>--print-avail</b>
+[<i>package-name</i>...]</p>
+
+<p style="margin-left:17%;">Display details about packages,
+as found in <i>/var/lib/dpkg/available</i>. If no
+<i>package-name</i> is specified, it will display all
+package entries in the <i>available</i> database (since dpkg
+1.19.1). When multiple <i>package-name</i> are listed, the
+requested <i>available</i> entries are separated by an empty
+line, with the same order as specified on the argument
+list.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Users of
+APT-based frontends should use <b>apt show</b>
+<i>package-name</i> instead as the <i>available</i> file is
+only kept up-to-date when using <b>dselect</b>.</p>
+
+<p style="margin-left:11%;"><b>-?</b>, <b>--help</b></p>
+
+<p style="margin-left:17%;">Show the usage message and
+exit.</p>
+
+<p style="margin-left:11%;"><b>--version</b></p>
+
+<p style="margin-left:17%;">Show the version and exit.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--admindir=</b><i>dir</i></p>
+
+<p style="margin-left:17%;">Change the location of the
+<b>dpkg</b> database. The default location is
+<i>/var/lib/dpkg</i>.</p>
+
+
+<p style="margin-left:11%;"><b>--root=</b><i>directory</i></p>
+
+<p style="margin-left:17%;">Set the root directory to
+<i>directory</i>, which sets the administrative directory to
+&laquo;<i>directory</i>/var/lib/dpkg&raquo; (since dpkg
+1.21.0).</p>
+
+<p style="margin-left:11%;"><b>--load-avail</b></p>
+
+<p style="margin-left:17%;">Also load the available file
+when using the <b>--show</b> and <b>--list</b> commands,
+which now default to only querying the status file (since
+dpkg 1.16.2).</p>
+
+<p style="margin-left:11%;"><b>--no-pager</b></p>
+
+<p style="margin-left:17%;">Disables the use of any pager
+when showing information (since dpkg 1.19.2).</p>
+
+<p style="margin-left:11%;"><b>-f</b>,
+<b>--showformat=</b><i>format</i></p>
+
+<p style="margin-left:17%;">This option is used to specify
+the format of the output <b>--show</b> will produce (short
+option since dpkg 1.13.1). The format is a string that will
+be output for each package listed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">In the format
+string, &ldquo;<b>\</b>&rdquo; introduces escapes: <b><br>
+\n</b> newline <b><br>
+\r</b> carriage return <b><br>
+\t</b> tab</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&ldquo;<b>\</b>&rdquo;
+before any other character suppresses any special meaning of
+the following character, which is useful for
+&ldquo;<b>\</b>&rdquo; and &ldquo;<b>$</b>&rdquo;.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Package
+information can be included by inserting variable references
+to package fields using the syntax
+&ldquo;<b>${</b><i>field</i>[<b>;</b><i>width</i>]<b>}</b>&rdquo;.
+Fields are printed right-aligned unless the width is
+negative in which case left alignment will be used. The
+following <i>field</i>s are recognized but they are not
+necessarily available in the status file (only internal
+fields or fields stored in the binary package end up in it):
+<b><br>
+Architecture <br>
+Bugs <br>
+Conffiles</b> (internal) <b><br>
+Config-Version</b> (internal) <b><br>
+Conflicts <br>
+Breaks <br>
+Depends <br>
+Description <br>
+Enhances <br>
+Protected <br>
+Essential <br>
+Filename</b> (internal, front-end related) <b><br>
+Homepage <br>
+Installed-Size <br>
+MD5sum</b> (internal, front-end related) <b><br>
+MSDOS-Filename</b> (internal, front-end related) <b><br>
+Maintainer <br>
+Origin <br>
+Package <br>
+Pre-Depends <br>
+Priority <br>
+Provides <br>
+Recommends <br>
+Replaces <br>
+Revision</b> (obsolete) <b><br>
+Section <br>
+Size</b> (internal, front-end related) <b><br>
+Source <br>
+Status</b> (internal) <b><br>
+Suggests <br>
+Tag</b> (usually not in .deb but in repository Packages
+files) <b><br>
+Triggers-Awaited</b> (internal) <b><br>
+Triggers-Pending</b> (internal) <b><br>
+Version</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">The following
+are virtual fields, generated by <b>dpkg-query</b> from
+values from other fields (note that these do not use valid
+names for fields in control files): <b><br>
+binary:Package</b></p>
+
+<p style="margin-left:23%;">It contains the binary package
+name with a possible architecture qualifier like
+&ldquo;libc6:amd64&rdquo; (since dpkg 1.16.2). An
+architecture qualifier will be present to make the package
+name unambiguous, for packages with a <b>Multi-Arch</b>
+field with the value <b>same</b> or with a foreign
+architecture, which is an architecture that is neither the
+native one nor <b>all</b>.</p>
+
+<p style="margin-left:17%;"><b>binary:Synopsis</b></p>
+
+<p style="margin-left:23%;">It contains the package short
+description (since dpkg 1.19.1).</p>
+
+<p style="margin-left:17%;"><b>binary:Summary</b></p>
+
+<p style="margin-left:23%;">This is an alias for
+<b>binary:Synopsis</b> (since dpkg 1.16.2).</p>
+
+<p style="margin-left:17%;"><b>db:Status-Abbrev</b></p>
+
+<p style="margin-left:23%;">It contains the abbreviated
+package status (as three characters), such as &ldquo;ii
+&rdquo; or &ldquo;iHR&rdquo; (since dpkg 1.16.2). See the
+<b>--list</b> command description for more details.</p>
+
+<p style="margin-left:17%;"><b>db:Status-Want</b></p>
+
+<p style="margin-left:23%;">It contains the package wanted
+status, part of the Status field (since dpkg 1.17.11).</p>
+
+<p style="margin-left:17%;"><b>db:Status-Status</b></p>
+
+<p style="margin-left:23%;">It contains the package status
+word, part of the Status field (since dpkg 1.17.11).</p>
+
+<p style="margin-left:17%;"><b>db:Status-Eflag</b></p>
+
+<p style="margin-left:23%;">It contains the package status
+error flag, part of the Status field (since dpkg
+1.17.11).</p>
+
+<p style="margin-left:17%;"><b>db-fsys:Files</b></p>
+
+<p style="margin-left:23%;">It contains the list of the
+package filesystem entries separated by newlines (since dpkg
+1.19.3).</p>
+
+
+<p style="margin-left:17%;"><b>db-fsys:Last-Modified</b></p>
+
+<p style="margin-left:23%;">It contains the timestamp in
+seconds of the last time the package filesystem entries were
+modified (since dpkg 1.19.3).</p>
+
+<p style="margin-left:17%;"><b>source:Package</b></p>
+
+<p style="margin-left:23%;">It contains the source package
+name for this binary package (since dpkg 1.16.2).</p>
+
+<p style="margin-left:17%;"><b>source:Version</b></p>
+
+<p style="margin-left:23%;">It contains the source package
+version for this binary package (since dpkg 1.16.2)</p>
+
+
+<p style="margin-left:17%;"><b>source:Upstream-Version</b></p>
+
+<p style="margin-left:23%;">It contains the source package
+upstream version for this binary package (since dpkg
+1.18.16)</p>
+
+<p style="margin-left:17%; margin-top: 1em">The default
+format string is
+&ldquo;<b>${binary:Package}\t${Version}\n</b>&rdquo;.
+Actually, all other fields found in the status file (i.e.
+user defined fields) can be requested, too. They will be
+printed as-is, though, no conversion nor error checking is
+done on them. To get the name of the <b>dpkg</b> maintainer
+and the installed version, you could run:</p>
+
+<p style="margin-left:17%; margin-top: 1em">dpkg-query
+-f='${binary:Package} ${Version}\t${Maintainer}\n' \ <br>
+-W dpkg</p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em"><b>0</b></p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">The requested query was
+successfully performed.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p><b>1</b></p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>The requested query failed either fully or partially,
+due to no file or package being found (except for
+<b>--control-path</b>, <b>--control-list</b> and
+<b>--control-show</b> were such errors are fatal).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p><b>2</b></p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>Fatal or unrecoverable error due to invalid command-line
+usage, or interactions with the system, such as accesses to
+the database, memory allocations, etc.</p></td></tr>
+</table>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>External
+environment <small><br>
+SHELL</small></b></p>
+
+<p style="margin-left:17%;">Sets the program to execute
+when spawning a command via a shell (since dpkg 1.19.2).</p>
+
+<p style="margin-left:11%;"><b><small>PAGER <br>
+DPKG_PAGER</small></b></p>
+
+<p style="margin-left:17%;">Sets the pager command to use
+(since dpkg 1.19.1), which will be executed with
+&laquo;<b>$SHELL -c</b>&raquo;. If
+<b><small>SHELL</small></b> is not set,
+&laquo;<b>sh</b>&raquo; will be used instead. The
+<b><small>DPKG_PAGER</small></b> overrides the
+<b><small>PAGER</small></b> environment variable (since dpkg
+1.19.2).</p>
+
+
+<p style="margin-left:11%;"><b><small>DPKG_ROOT</small></b></p>
+
+<p style="margin-left:17%;">If set and the <b>--root</b>
+option has not been specified, it will be used as the
+filesystem root directory (since dpkg 1.21.0).</p>
+
+
+<p style="margin-left:11%;"><b><small>DPKG_ADMINDIR</small></b></p>
+
+<p style="margin-left:17%;">If set and the
+<b>--admindir</b> option has not been specified, it will be
+used as the <b>dpkg</b> data directory.</p>
+
+
+<p style="margin-left:11%;"><b><small>DPKG_DEBUG</small></b></p>
+
+<p style="margin-left:17%;">Sets the debug mask (since dpkg
+1.21.10) from an octal value. The currently accepted flags
+are described in the <b>dpkg --debug</b> option, but not all
+these flags might have an effect on this program.</p>
+
+
+<p style="margin-left:11%;"><b><small>DPKG_COLORS</small></b></p>
+
+<p style="margin-left:17%;">Sets the color mode (since dpkg
+1.18.5). The currently accepted values are: <b>auto</b>
+(default), <b>always</b> and <b>never</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Internal
+environment <small><br>
+LESS</small></b></p>
+
+<p style="margin-left:17%;">Defined by <b>dpkg-query</b> to
+&ldquo;<b>-FRSXMQ</b>&rdquo;, if not already set, when
+spawning a pager (since dpkg 1.19.2). To change the default
+behavior, this variable can be preset to some other value
+including an empty string, or the
+<b><small>PAGER</small></b> or
+<b><small>DPKG_PAGER</small></b> variables can be set to
+disable specific options with &laquo;<b>-+</b>&raquo;, for
+example <b>DPKG_PAGER=&quot;less -+F&quot;</b>.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dpkg</b>(1).</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:24 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pambayer User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pambayer User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pambayer -
+interpret Bayer patterns</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pambayer
+-type=</b>{<b>1</b>|<b>2</b>|<b>3</b>|<b>4</b>}
+[<b>-nointerpolate</b>] [<i>pamfile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviation of option is acceptable. You may use double
+hyphens instead of single hyphen to denote options. You may
+use white space in place of the equals sign to separate an
+option name from its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pambayer</b>
+reads a Bayer pattern in a 1-deep Netpbm image and produces
+a color image in PAM RGB format as output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A Bayer pattern
+is what you get from the optical sensor in some digital
+cameras. Such a camera doesn&rsquo;t have a red, green, and
+blue sensor in the exact same place for an individual pixel.
+Instead, it has red, green, and blue sensors laid out in a
+two dimensional array. The pattern in which they are laid
+out is the Bayer pattern. The input to <b>pambayer</b> is
+one sample value for each of those sensors, so some samples
+are red, some are green, and some are blue.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pambayer</b>
+turns that into a regular visual image with one pixel per
+sensor. For the two components of each pixel that are
+missing in the corresponding Bayer input, <b>pambayer</b>
+averages the sample values from the adjacent pixels that do
+have that component.</p>
+
+<p style="margin-left:11%; margin-top: 1em">But you can
+have <b>pambayer</b> fill in black instead (see the
+<b>-noninterpolate</b> option), which gives you a simpler
+representation of what the camera saw, on which you might do
+further processing. Such an image still looks right, though
+considerably dimmer, if you stand far enough away and let
+your eyes do the interpolation.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The input image
+is a pseudo-PNM image (pseudo- because while the structure
+is the same, the sample values have different meanings) or
+PAM image of arbitrary tuple type. <b>pambayer</b> looks at
+only the first plane of the input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The output
+image is a PAM image of tuple type &quot;RGB&quot;, i.e. a
+standard color image. You can convert this to PPM with
+<b>pamtopnm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you&rsquo;re
+interested in just one of the primary colors, use
+<b>pamchannel</b> on the output of <b>pambayer</b> to
+extract it.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pambayer</b> recognizes the following command line
+options: <b><br>
+-type=</b><i>n</i></p>
+
+<p style="margin-left:22%;">This tells which Bayer pattern
+the input is:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>1</p></td>
+<td width="10%"></td>
+<td width="27%">
+
+
+<p>GBG/RGR/GBG matrix</p></td>
+<td width="51%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>2</p></td>
+<td width="10%"></td>
+<td width="27%">
+
+
+<p>RGR/GBG/RGR matrix</p></td>
+<td width="51%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>3</p></td>
+<td width="10%"></td>
+<td width="27%">
+
+
+<p>BGB/GRG/BGB matrix</p></td>
+<td width="51%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>4</p></td>
+<td width="10%"></td>
+<td width="27%">
+
+
+<p>GRG/BGB/GRG matrix</p></td>
+<td width="51%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">This option is
+mandatory.</p>
+
+<p style="margin-left:11%;"><b>-nointerpolate</b></p>
+
+<p style="margin-left:22%;">Each output pixel position
+corresponds to one position in the input Bayer pattern,
+which means only one of the three color components is
+supplied by the input. For the other two, this option says
+to user zero. Without it, <b>pambayer</b> instead
+interpolates from the adjacent pixels that do have that
+color component.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.49 (December 2009).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>cameratopam</b>(1)
+<b>pam</b>(1)</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pambayer</b>
+was new in Netpbm 10.30 (October 2005).</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pambayer.html</b></p>
+<hr>
+</body>
+</html>

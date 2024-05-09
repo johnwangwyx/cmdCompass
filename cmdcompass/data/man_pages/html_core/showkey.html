@@ -1,0 +1,163 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:47 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SHOWKEY</title>
+
+</head>
+<body>
+
+<h1 align="center">SHOWKEY</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#2.6 KERNELS">2.6 KERNELS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">showkey -
+examine the codes sent by the keyboard</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">showkey
+[-h|--help] [-a|--ascii] [-s|--scancodes] [-k|--keycodes]
+[-V|--version]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>showkey</b>
+prints to standard output either the scan codes or the
+keycode or the &rsquo;ascii&rsquo; code of each key pressed.
+In the first two modes the program runs until 10 seconds
+have elapsed since the last key press or release event, or
+until it receives a suitable signal, like SIGTERM, from
+another process. In &rsquo;ascii&rsquo; mode the program
+terminates when the user types ^D.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When in
+scancode dump mode, <b>showkey</b> prints in hexadecimal
+format each byte received from the keyboard to the standard
+output. A new line is printed when an interval of about 0.1
+seconds occurs between the bytes received, or when the
+internal receive buffer fills up. This can be used to
+determine roughly, what byte sequences the keyboard sends at
+once on a given key press. The scan code dumping mode is
+primarily intended for debugging the keyboard driver or
+other low level interfaces. As such it shouldn&rsquo;t be of
+much interest to the regular end-user. However, some modern
+keyboards have keys or buttons that produce scancodes to
+which the kernel does not associate a keycode, and, after
+finding out what these are, the user can assign keycodes
+with <b>setkeycodes</b>(8).</p>
+
+<p style="margin-left:11%; margin-top: 1em">When in the
+default keycode dump mode, <b>showkey</b> prints to the
+standard output the keycode number or each key pressed or
+released. The kind of the event, press or release, is also
+reported. Keycodes are numbers assigned by the kernel to
+each individual physical key. Every key has always only one
+associated keycode number, whether the keyboard sends single
+or multiple scan codes when pressing it. Using
+<b>showkey</b> in this mode, you can find out what numbers
+to use in your personalized keymap files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When in
+&rsquo;ascii&rsquo; dump mode, <b>showkey</b> prints to the
+standard output the decimal, octal, and hexadecimal value(s)
+of the key pressed, according to he present keymap.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">-h --help</p>
+
+<p style="margin-left:22%;"><b>showkey</b> prints to the
+standard error output its version number, a compile option
+and a short usage message, then exits.</p>
+
+<p style="margin-left:11%;">-s --scancodes</p>
+
+<p style="margin-left:22%;">Starts <b>showkey</b> in scan
+code dump mode.</p>
+
+<p style="margin-left:11%;">-k --keycodes</p>
+
+<p style="margin-left:22%;">Starts <b>showkey</b> in
+keycode dump mode. This is the default, when no command line
+options are present.</p>
+
+<p style="margin-left:11%;">-a --ascii</p>
+
+<p style="margin-left:22%;">Starts <b>showkey</b> in
+&rsquo;ascii&rsquo; dump mode.</p>
+
+<p style="margin-left:11%;">-V --version</p>
+
+<p style="margin-left:22%;"><b>showkey</b> prints version
+number and exits.</p>
+
+<h2>2.6 KERNELS
+<a name="2.6 KERNELS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In 2.6 kernels
+key codes lie in the range 1-255, instead of 1-127. Key
+codes larger than 127 are returned as three bytes of which
+the low order 7 bits are: zero, bits 13-7, and bits 6-0 of
+the key code. The high order bits are: 0/1 for make/break,
+1, 1.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In 2.6 kernels
+raw mode, or scancode mode, is not very raw at all. Scan
+codes are first translated to key codes, and when scancodes
+are desired, the key codes are translated back. Various
+transformations are involved, and there is no guarantee at
+all that the final result corresponds to what the keyboard
+hardware did send. So, if you want to know the scan codes
+sent by various keys it is better to boot a 2.4 kernel.
+Since 2.6.9 there also is the boot option atkbd.softraw=0
+that tells the 2.6 kernel to return the actual scan
+codes.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>loadkeys</b>(1),
+<b>dumpkeys</b>(1), <b>keymaps</b>(5),
+<b>setkeycodes</b>(8)</p>
+<hr>
+</body>
+</html>

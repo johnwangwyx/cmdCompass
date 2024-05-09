@@ -1,0 +1,194 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:26 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamshadedrelief User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamshadedrelief User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#DESIGN NOTES">DESIGN NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">pamshadedrelief
+- generate shaded relief image from an elevation map</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamshadedrelief</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-gamma</b>
+<i>g</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamshadedrelief</b>
+creates a shaded relief image from an elevation map. A
+shaded relief image is a visual image of terrain, showing
+the terrain as if illuminated by oblique light and viewed
+from above, so that the brightess of each spot depends upon
+its slope. A common example of a shaded relief image is a
+relief map of the Earth, which shows mountains and
+valleys.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The image
+<b>pamshadedrelief</b> creates is as if illumated by a light
+source from the left.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The output
+image is a PAM with tuple type <b>GRAYSCALE</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The program
+<b>pamcrater</b> is a good thing to use to demonstrate the
+function of <b>pamshadedrelief</b>. It generates a terrain
+map of a cratered landscape.</p>
+
+<p style="margin-left:11%; margin-top: 1em">$ pamcrater |
+pamshadedrelief | pamx</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamshadedrelief</b> recognizes the following command line
+option: <b><br>
+-gamma</b> <i>factor</i> <b><br>
+-g</b> <i>factor</i></p>
+
+<p style="margin-left:22%;">The specified <i>factor</i> is
+used to gamma adjust the image in the same manner as
+performed by <b>pnmgamma</b>. The default value is 1.0,
+which results in a medium contrast image. Values larger than
+1 lighten the image and reduce contrast, while values less
+than 1 darken the image, increasing contrast.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Note that this
+is separate from the gamma correction that is part of the
+definition of the PAM GRAYSCALE format. The image
+<b>pamshadedrelief</b> generates is a genuine,
+gamma-corrected PAM GRAYSCALE image in any case. This option
+simply changes the contrast and may compensate for a display
+device that does not correctly render PAM GRAYSCALE
+images.</p>
+
+<h2>DESIGN NOTES
+<a name="DESIGN NOTES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">The<b>-gamma</b>
+option isn&rsquo;t really necessary since you can achieve
+the same effect by piping the output from
+<b>pamshadedrelief</b> through <b>pnmgamma</b>. However,
+<b>pamshadedrelief</b> performs an internal gamma map anyway
+in the process of rendering the elevation array into the PAM
+GRAYSCALE format, so there&rsquo;s no additional overhead in
+allowing an additional gamma adjustment.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmrelief</b>(1)
+<b>pnmgamma</b>(1), <b>pnmsmooth</b>(1) <b>pamcrater</b>(1)
+<b>pam</b>(1),</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pgmcrater</b>,
+from which this is derived, was written by John Walker:</p>
+
+<p style="margin-left:11%; margin-top: 1em">John Walker
+<br>
+Autodesk SA <br>
+Avenue des Champs-Montants 14b <br>
+CH-2074 MARIN <br>
+Suisse/Schweiz/Svizzera/Svizra/Switzerland <b><br>
+Usenet:</b><i>kelvin@Autodesk.com</i> <b><br>
+Fax:</b>038/33 88 15 <b><br>
+Voice:</b>038/33 76 33</p>
+
+<p style="margin-left:11%; margin-top: 1em">Permission to
+use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby
+granted, without any conditions or restrictions. This
+software is provided &quot;as is&quot; without express or
+implied warranty.</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pgmcrater</b>
+was split into <b>pamshadedrelief</b> and <b>pamcrater</b>
+in Netpbm 10.68 (September 2014). See the history section of
+the <b>pamcrater</b> manual for details.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamshadedrelief.html</b></p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:14 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>LEXGROG</title>
+
+</head>
+<body>
+
+<h1 align="center">LEXGROG</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#WHATIS PARSING">WHATIS PARSING</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#BUGS">BUGS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">lexgrog - parse
+header information in man pages</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>lexgrog</b>
+[<b>-m</b>|<b>-c</b>] [<b>-dfw?V</b>] [<b>-E</b>
+<i>encoding</i>] <i>file</i> ...</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>lexgrog</b>
+is an implementation of the traditional &ldquo;groff
+guess&rdquo; utility in <b>lex</b>. It reads the list of
+files on its command line as either man page source files or
+preformatted &ldquo;cat&rdquo; pages, and displays their
+name and description as used by <b>apropos</b> and
+<b>whatis</b>, the list of preprocessing filters required by
+the man page before it is passed to <b>nroff</b> or
+<b>troff</b>, or both.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If its input is
+badly formatted, <b>lexgrog</b> will print &ldquo;parse
+failed&rdquo;; this may be useful for external programs that
+need to check man pages for correctness. If one of
+<b>lexgrog</b>&rsquo;s input files is &ldquo;-&rdquo;, it
+will read from standard input; if any input file is
+compressed, a decompressed version will be read
+automatically.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-d</b>,
+<b>--debug</b></p>
+
+<p style="margin-left:22%;">Print debugging
+information.</p>
+
+<p style="margin-left:11%;"><b>-m</b>, <b>--man</b></p>
+
+<p style="margin-left:22%;">Parse input as man page source
+files. This is the default if neither <b>--man</b> nor
+<b>--cat</b> is given.</p>
+
+<p style="margin-left:11%;"><b>-c</b>, <b>--cat</b></p>
+
+<p style="margin-left:22%;">Parse input as preformatted man
+pages (&ldquo;cat pages&rdquo;). <b>--man</b> and
+<b>--cat</b> may not be given simultaneously.</p>
+
+<p style="margin-left:11%;"><b>-w</b>, <b>--whatis</b></p>
+
+<p style="margin-left:22%;">Display the name and
+description from the man page&rsquo;s header, as used by
+<b>apropos</b> and <b>whatis</b>. This is the default if
+neither <b>--whatis</b> nor <b>--filters</b> is given.</p>
+
+<p style="margin-left:11%;"><b>-f</b>, <b>--filters</b></p>
+
+<p style="margin-left:22%;">Display the list of filters
+needed to preprocess the man page before formatting with
+<b>nroff</b> or <b>troff</b>.</p>
+
+<p style="margin-left:11%;"><b>-E</b> <i>encoding</i>,
+<b>--encoding</b> <i>encoding</i></p>
+
+<p style="margin-left:22%;">Override the guessed character
+set for the page to <i>encoding</i>.</p>
+
+<p style="margin-left:11%;"><b>-?</b>, <b>--help</b></p>
+
+<p style="margin-left:22%;">Print a help message and
+exit.</p>
+
+<p style="margin-left:11%;"><b>--usage</b></p>
+
+<p style="margin-left:22%;">Print a short usage message and
+exit.</p>
+
+<p style="margin-left:11%;"><b>-V</b>, <b>--version</b></p>
+
+<p style="margin-left:22%;">Display version
+information.</p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em"><b>0</b></p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Successful program
+execution.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p><b>1</b></p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Usage error.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p><b>2</b></p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p><b>lexgrog</b> failed to parse one or more of its input
+files.</p> </td></tr>
+</table>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">$ lexgrog man.1
+<br>
+man.1: &quot;man - an interface to the system reference
+manuals&quot; <br>
+$ lexgrog -fw man.1 <br>
+man.1 (t): &quot;man - an interface to the system reference
+manuals&quot; <br>
+$ lexgrog -c whatis.cat1 <br>
+whatis.cat1: &quot;whatis - display manual page
+descriptions&quot; <br>
+$ lexgrog broken.1 <br>
+broken.1: parse failed</p>
+
+<h2>WHATIS PARSING
+<a name="WHATIS PARSING"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mandb</b>
+(which uses the same code as <b>lexgrog</b>) parses the
+<b>NAME</b> section at the top of each manual page looking
+for names and descriptions of the features documented in
+each. While the parser is quite tolerant, as it has to cope
+with a number of different forms that have historically been
+used, it may sometimes fail to extract the required
+information.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When using the
+traditional <i>man</i> macro set, a correct <b>NAME</b>
+section looks something like this:</p>
+
+<p style="margin-left:22%; margin-top: 1em">.SH NAME <br>
+foo \- program to do something</p>
+
+<p style="margin-left:11%; margin-top: 1em">Some manual
+pagers require the &rsquo;\-&rsquo; to be exactly as shown;
+<b>mandb</b> is more tolerant, but for compatibility with
+other systems it is nevertheless a good idea to retain the
+backslash.</p>
+
+<p style="margin-left:11%; margin-top: 1em">On the
+left-hand side, there may be several names, separated by
+commas. Names containing whitespace will be ignored to avoid
+pathological behaviour on certain ill-formed <b>NAME</b>
+sections. The text on the right-hand side is free-form, and
+may be spread over multiple lines. If several features with
+different descriptions are being documented in the same
+manual page, the following form is therefore used:</p>
+
+<p style="margin-left:22%; margin-top: 1em">.SH NAME <br>
+foo, bar \- programs to do something <br>
+.br <br>
+baz \- program to do nothing</p>
+
+<p style="margin-left:11%; margin-top: 1em">(A macro which
+starts a new paragraph, like .PP, may be used instead of the
+break macro .br.)</p>
+
+<p style="margin-left:11%; margin-top: 1em">When using the
+BSD-derived <i>mdoc</i> macro set, a correct <b>NAME</b>
+section looks something like this:</p>
+
+<p style="margin-left:22%; margin-top: 1em">.Sh NAME <br>
+.Nm foo <br>
+.Nd program to do something</p>
+
+<p style="margin-left:11%; margin-top: 1em">There are
+several common reasons why whatis parsing fails. Sometimes
+authors of manual pages replace &rsquo;.SH NAME&rsquo; with
+&rsquo;.SH MYPROGRAM&rsquo;, and then <b>mandb</b> cannot
+find the section from which to extract the information it
+needs. Sometimes authors include a NAME section, but place
+free-form text there rather than &rsquo;name \-
+description&rsquo;. However, any syntax resembling the above
+should be accepted.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>apropos</i>(1),
+<i>man</i>(1), <i>whatis</i>(1), <i>mandb</i>(8)</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>lexgrog</b>
+attempts to parse files containing .so requests, but will
+only be able to do so correctly if the files are properly
+installed in a manual page hierarchy.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The code used
+by <b>lexgrog</b> to scan man pages was written by:</p>
+
+<p style="margin-left:11%; margin-top: 1em">Wilf.
+(G.Wilford@ee.surrey.ac.uk). <br>
+Fabrizio Polacco (fpolacco@debian.org). <br>
+Colin Watson (cjwatson@debian.org).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Colin Watson
+wrote the current incarnation of the command-line front-end,
+as well as this man page.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">https://gitlab.com/man-db/man-db/-/issues
+<br>
+ https://savannah.nongnu.org/bugs/?group=man-db</p>
+<hr>
+</body>
+</html>

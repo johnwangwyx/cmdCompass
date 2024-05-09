@@ -1,0 +1,182 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:31 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>PDFMOM</title>
+
+</head>
+<body>
+
+<h1 align="center">PDFMOM</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pdfmom -
+produce PDF documents using the mom macro package for
+groff</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>pdfmom</b></p></td>
+<td width="2%"></td>
+<td width="72%">
+
+
+<p style="margin-top: 1em">[<b>-Tpdf</b>]
+[<i>groff-options</i>] <i>file</i> ...</p></td>
+<td width="6%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>pdfmom</b></p></td>
+<td width="2%"></td>
+<td width="72%">
+
+
+<p style="margin-top: 1em"><b>-Tps</b>
+[<i>pdfroff-options</i>] [<i>groff-options</i>] <i>file</i>
+...</p> </td>
+<td width="6%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>pdfmom</b></p></td>
+<td width="2%"></td>
+<td width="72%">
+
+
+<p style="margin-top: 1em"><b>-v</b></p></td>
+<td width="6%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><i>pdfmom</i></b>
+is a wrapper around <i>groff</i>(1) that facilitates the
+production of PDF documents from files formatted with the
+<i>mom</i> macros.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>pdfmom</i>
+prints to the standard output, so output must usually be
+redirected to a destination file. The size of the final PDF
+can be reduced by piping the output through
+<i>ps2pdf</i>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em">If called with
+the <b>-Tpdf</b> option (which is the default),
+<i>pdfmom</i> processes files using groff&rsquo;s native PDF
+driver, <i>gropdf</i>(1). If <b>-Tps</b> is given,
+processing is passed over to <i>pdfroff</i>, which uses
+<i>groff</i>&rsquo;s PostScript driver. In either case,
+multiple runs of the source file are performed in order to
+satisfy any forward references in the document.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>pdfmom</i>
+accepts all the same options as <i>groff</i>. If <b>-Tps</b>
+is given, the options associated with <i>pdfroff</i> are
+accepted as well. Please note that when <i>pdfmom</i> calls
+<i>pdfroff</i>, the</p>
+
+<p style="margin-left:22%;"><b>-mpdfmark -mom
+--no-toc</b></p>
+
+<p style="margin-left:11%;">options are implied and should
+not be given on the command line. Equally, it is not
+necessary to supply the <b>-mom</b> or <b>-m&nbsp;mom</b>
+options when <b>-Tps</b> is absent.</p>
+
+<p style="margin-left:11%; margin-top: 1em">PDF integration
+with the <i>mom</i> macros is discussed in full in the
+manual <i>Producing PDFs with groff and mom</i>, which was
+itself produced with <i>pdfmom</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If called with
+the <b>-v</b> option, <i>pdfmom</i> simply displays its
+version information and exits.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>pdfmom</i>
+sometimes issues warnings of the type</p>
+
+<p style="margin-left:22%;">...: can&rsquo;t transparently
+output node at top level</p>
+
+<p style="margin-left:11%;">but this is more of an
+annoyance than a bug, and may safely be ignored.</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>pfdmom</i>
+was written by
+<a href="mailto:deri@chuzzlewit.demon.co.uk">Deri James</a>
+and <a href="mailto:peter@schaffter.ca">Peter
+Schaffter</a>.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Producing
+PDFs with groff and mom</i>, by Deri James and Peter
+Schaffter; a copy is installed at
+<i>/usr/share/doc/groff-base/pdf/mom-pdf.pdf</i>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>groff</i>(1),
+<i>gropdf</i>(1), <i>pdfroff</i>(1), <i>ps2pdf</i>(1)</p>
+<hr>
+</body>
+</html>

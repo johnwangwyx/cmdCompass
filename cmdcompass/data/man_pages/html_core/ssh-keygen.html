@@ -1,0 +1,1400 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:49 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title></title>
+</head>
+<body>
+
+<hr>
+
+
+<p>SSH-KEYGEN(1) BSD General Commands Manual
+SSH-KEYGEN(1)</p>
+
+<p style="margin-top: 1em"><b>NAME</b></p>
+
+<p style="margin-left:6%;"><b>ssh-keygen</b> &mdash;
+OpenSSH authentication key utility</p>
+
+<p style="margin-top: 1em"><b>SYNOPSIS</b></p>
+
+<p style="margin-left:21%;"><b>ssh-keygen</b> [<b>-q</b>]
+[<b>-a&nbsp;</b><i>rounds</i>] [<b>-b&nbsp;</b><i>bits</i>]
+[<b>-C&nbsp;</b><i>comment</i>]
+[<b>-f&nbsp;</b><i>output_keyfile</i>]
+[<b>-m&nbsp;</b><i>format</i>]
+[<b>-N&nbsp;</b><i>new_passphrase</i>]
+[<b>-O&nbsp;</b><i>option</i>]
+[<b>-t&nbsp;dsa&nbsp;</b>|&nbsp;<b>ecdsa&nbsp;</b>|&nbsp;<b>ecdsa-sk&nbsp;</b>|&nbsp;<b>ed25519&nbsp;</b>|&nbsp;<b>ed25519-sk&nbsp;</b>|&nbsp;<b>rsa</b>]
+[<b>-w&nbsp;</b><i>provider</i>]
+[<b>-Z&nbsp;</b><i>cipher</i>] <b><br>
+ssh-keygen -p</b> [<b>-a&nbsp;</b><i>rounds</i>]
+[<b>-f&nbsp;</b><i>keyfile</i>]
+[<b>-m&nbsp;</b><i>format</i>]
+[<b>-N&nbsp;</b><i>new_passphrase</i>]
+[<b>-P&nbsp;</b><i>old_passphrase</i>]
+[<b>-Z&nbsp;</b><i>cipher</i>] <b><br>
+ssh-keygen -i</b> [<b>-f&nbsp;</b><i>input_keyfile</i>]
+[<b>-m&nbsp;</b><i>key_format</i>] <b><br>
+ssh-keygen -e</b> [<b>-f&nbsp;</b><i>input_keyfile</i>]
+[<b>-m&nbsp;</b><i>key_format</i>] <b><br>
+ssh-keygen -y</b> [<b>-f&nbsp;</b><i>input_keyfile</i>]
+<b><br>
+ssh-keygen -c</b> [<b>-a&nbsp;</b><i>rounds</i>]
+[<b>-C&nbsp;</b><i>comment</i>]
+[<b>-f&nbsp;</b><i>keyfile</i>]
+[<b>-P&nbsp;</b><i>passphrase</i>] <b><br>
+ssh-keygen -l</b> [<b>-v</b>]
+[<b>-E&nbsp;</b><i>fingerprint_hash</i>]
+[<b>-f&nbsp;</b><i>input_keyfile</i>] <b><br>
+ssh-keygen -B</b> [<b>-f&nbsp;</b><i>input_keyfile</i>]
+<b><br>
+ssh-keygen -D</b> <i>pkcs11</i> <b><br>
+ssh-keygen -F</b> <i>hostname</i> [<b>-lv</b>]
+[<b>-f&nbsp;</b><i>known_hosts_file</i>] <b><br>
+ssh-keygen -H</b> [<b>-f&nbsp;</b><i>known_hosts_file</i>]
+<b><br>
+ssh-keygen -K</b> [<b>-a&nbsp;</b><i>rounds</i>]
+[<b>-w&nbsp;</b><i>provider</i>] <b><br>
+ssh-keygen -R</b> <i>hostname</i>
+[<b>-f&nbsp;</b><i>known_hosts_file</i>] <b><br>
+ssh-keygen -r</b> <i>hostname</i> [<b>-g</b>]
+[<b>-f&nbsp;</b><i>input_keyfile</i>] <b><br>
+ssh-keygen -M generate</b> [<b>-O&nbsp;</b><i>option</i>]
+<i>output_file</i> <b><br>
+ssh-keygen -M screen</b> [<b>-f&nbsp;</b><i>input_file</i>]
+[<b>-O&nbsp;</b><i>option</i>] <i>output_file</i> <b><br>
+ssh-keygen -I</b> <i>certificate_identity</i> <b>-s</b>
+<i>ca_key</i> [<b>-hU</b>]
+[<b>-D&nbsp;</b><i>pkcs11_provider</i>]
+[<b>-n&nbsp;</b><i>principals</i>]
+[<b>-O&nbsp;</b><i>option</i>]
+[<b>-V&nbsp;</b><i>validity_interval</i>]
+[<b>-z&nbsp;</b><i>serial_number</i>] <i>file&nbsp;...</i>
+<b><br>
+ssh-keygen -L</b> [<b>-f&nbsp;</b><i>input_keyfile</i>]
+<b><br>
+ssh-keygen -A</b> [<b>-a&nbsp;</b><i>rounds</i>]
+[<b>-f&nbsp;</b><i>prefix_path</i>] <b><br>
+ssh-keygen -k -f</b> <i>krl_file</i> [<b>-u</b>]
+[<b>-s&nbsp;</b><i>ca_public</i>]
+[<b>-z&nbsp;</b><i>version_number</i>] <i>file&nbsp;...</i>
+<b><br>
+ssh-keygen -Q</b> [<b>-l</b>] <b>-f</b> <i>krl_file
+file&nbsp;...</i> <b><br>
+ssh-keygen -Y find-principals</b>
+[<b>-O&nbsp;</b><i>option</i>] <b>-s</b>
+<i>signature_file</i> <b>-f</b> <i>allowed_signers_file</i>
+<b><br>
+ssh-keygen -Y match-principals -I</b> <i>signer_identity</i>
+<b>-f</b> <i>allowed_signers_file</i> <b><br>
+ssh-keygen -Y check-novalidate</b>
+[<b>-O&nbsp;</b><i>option</i>] <b>-n</b> <i>namespace</i>
+<b>-s</b> <i>signature_file</i> <b><br>
+ssh-keygen -Y sign</b> [<b>-O&nbsp;</b><i>option</i>]
+<b>-f</b> <i>key_file</i> <b>-n</b> <i>namespace
+file&nbsp;...</i> <b><br>
+ssh-keygen -Y verify</b> [<b>-O&nbsp;</b><i>option</i>]
+<b>-f</b> <i>allowed_signers_file</i> <b>-I</b>
+<i>signer_identity</i> <b>-n</b> <i>namespace</i> <b>-s</b>
+<i>signature_file</i>
+[<b>-r&nbsp;</b><i>revocation_file</i>]</p>
+
+<p style="margin-top: 1em"><b>DESCRIPTION</b></p>
+
+<p style="margin-left:6%;"><b>ssh-keygen</b> generates,
+manages and converts authentication keys for ssh(1).
+<b>ssh-keygen</b> can create keys for use by SSH protocol
+version 2.</p>
+
+<p style="margin-left:6%; margin-top: 1em">The type of key
+to be generated is specified with the <b>-t</b> option. If
+invoked without any arguments, <b>ssh-keygen</b> will
+generate an RSA key.</p>
+
+
+<p style="margin-left:6%; margin-top: 1em"><b>ssh-keygen</b>
+is also used to generate groups for use in Diffie-Hellman
+group exchange (DH-GEX). See the <i>MODULI GENERATION</i>
+section for details.</p>
+
+<p style="margin-left:6%; margin-top: 1em">Finally,
+<b>ssh-keygen</b> can be used to generate and update Key
+Revocation Lists, and to test whether given keys have been
+revoked by one. See the <i>KEY REVOCATION LISTS</i> section
+for details.</p>
+
+<p style="margin-left:6%; margin-top: 1em">Normally each
+user wishing to use SSH with public key authentication runs
+this once to create the authentication key in
+<i>~/.ssh/id_dsa</i>, <i>~/.ssh/id_ecdsa</i>,
+<i>~/.ssh/id_ecdsa_sk</i>, <i>~/.ssh/id_ed25519</i>,
+<i>~/.ssh/id_ed25519_sk</i> or <i>~/.ssh/id_rsa</i>.
+Additionally, the system administrator may use this to
+generate host keys.</p>
+
+<p style="margin-left:6%; margin-top: 1em">Normally this
+program generates the key and asks for a file in which to
+store the private key. The public key is stored in a file
+with the same name but &ldquo;.pub&rdquo; appended. The
+program also asks for a passphrase. The passphrase may be
+empty to indicate no passphrase (host keys must have an
+empty passphrase), or it may be a string of arbitrary
+length. A passphrase is similar to a password, except it can
+be a phrase with a series of words, punctuation, numbers,
+whitespace, or any string of characters you want. Good
+passphrases are 10-30 characters long, are not simple
+sentences or otherwise easily guessable (English prose has
+only 1-2 bits of entropy per character, and provides very
+bad passphrases), and contain a mix of upper and lowercase
+letters, numbers, and non-alphanumeric characters. The
+passphrase can be changed later by using the <b>-p</b>
+option.</p>
+
+<p style="margin-left:6%; margin-top: 1em">There is no way
+to recover a lost passphrase. If the passphrase is lost or
+forgotten, a new key must be generated and the corresponding
+public key copied to other machines.</p>
+
+
+<p style="margin-left:6%; margin-top: 1em"><b>ssh-keygen</b>
+will by default write keys in an OpenSSH-specific format.
+This format is preferred as it offers better protection for
+keys at rest as well as allowing storage of key comments
+within the private key file itself. The key comment may be
+useful to help identify the key. The comment is initialized
+to &ldquo;user@host&rdquo; when the key is created, but can
+be changed using the <b>-c</b> option.</p>
+
+<p style="margin-left:6%; margin-top: 1em">It is still
+possible for <b>ssh-keygen</b> to write the previously-used
+PEM format private keys using the <b>-m</b> flag. This may
+be used when generating new keys, and existing new-format
+keys may be converted using this option in conjunction with
+the <b>-p</b> (change passphrase) flag.</p>
+
+<p style="margin-left:6%; margin-top: 1em">After a key is
+generated, <b>ssh-keygen</b> will ask where the keys should
+be placed to be activated.</p>
+
+<p style="margin-left:6%; margin-top: 1em">The options are
+as follows:</p>
+
+<p style="margin-top: 1em"><b>-A</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Generate host
+keys of all default key types (rsa, ecdsa, and ed25519) if
+they do not already exist. The host keys are generated with
+the default key file path, an empty passphrase, default bits
+for the key type, and default comment. If <b>-f</b> has also
+been specified, its argument is used as a prefix to the
+default path for the resulting host key files. This is used
+by system administration scripts to generate new host
+keys.</p>
+
+<p style="margin-top: 1em"><b>-a</b> <i>rounds</i></p>
+
+<p style="margin-left:17%;">When saving a private key, this
+option specifies the number of KDF (key derivation function,
+currently bcrypt_pbkdf(3)) rounds used. Higher numbers
+result in slower passphrase verification and increased
+resistance to brute-force password cracking (should the keys
+be stolen). The default is 16 rounds.</p>
+
+<p style="margin-top: 1em"><b>-B</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Show the
+bubblebabble digest of specified private or public key
+file.</p>
+
+<p style="margin-top: 1em"><b>-b</b> <i>bits</i></p>
+
+<p style="margin-left:17%;">Specifies the number of bits in
+the key to create. For RSA keys, the minimum size is 1024
+bits and the default is 3072 bits. Generally, 3072 bits is
+considered sufficient. DSA keys must be exactly 1024 bits as
+specified by FIPS 186-2. For ECDSA keys, the <b>-b</b> flag
+determines the key length by selecting from one of three
+elliptic curve sizes: 256, 384 or 521 bits. Attempting to
+use bit lengths other than these three values for ECDSA keys
+will fail. ECDSA-SK, Ed25519 and Ed25519-SK keys have a
+fixed length and the <b>-b</b> flag will be ignored.</p>
+
+<p style="margin-top: 1em"><b>-C</b> <i>comment</i></p>
+
+<p style="margin-left:17%;">Provides a new comment.</p>
+
+<p style="margin-top: 1em"><b>-c</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Requests
+changing the comment in the private and public key files.
+The program will prompt for the file containing the private
+keys, for the passphrase if the key has one, and for the new
+comment.</p>
+
+<p style="margin-top: 1em"><b>-D</b> <i>pkcs11</i></p>
+
+<p style="margin-left:17%;">Download the public keys
+provided by the PKCS#11 shared library <i>pkcs11</i>. When
+used in combination with <b>-s</b>, this option indicates
+that a CA key resides in a PKCS#11 token (see the
+<i>CERTIFICATES</i> section for details).</p>
+
+<p style="margin-top: 1em"><b>-E</b>
+<i>fingerprint_hash</i></p>
+
+<p style="margin-left:17%;">Specifies the hash algorithm
+used when displaying key fingerprints. Valid options are:
+&ldquo;md5&rdquo; and &ldquo;sha256&rdquo;. The default is
+&ldquo;sha256&rdquo;.</p>
+
+<p style="margin-top: 1em"><b>-e</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">This option
+will read a private or public OpenSSH key file and print to
+stdout a public key in one of the formats specified by the
+<b>-m</b> option. The default export format is
+&ldquo;RFC4716&rdquo;. This option allows exporting OpenSSH
+keys for use by other programs, including several commercial
+SSH implementations.</p>
+
+<p style="margin-top: 1em"><b>-F</b> <i>hostname</i> |
+<i>[hostname]:port</i></p>
+
+<p style="margin-left:17%;">Search for the specified
+<i>hostname</i> (with optional port number) in a
+<i>known_hosts</i> file, listing any occurrences found. This
+option is useful to find hashed host names or addresses and
+may also be used in conjunction with the <b>-H</b> option to
+print found keys in a hashed format.</p>
+
+<p style="margin-top: 1em"><b>-f</b> <i>filename</i></p>
+
+<p style="margin-left:17%;">Specifies the filename of the
+key file.</p>
+
+<p style="margin-top: 1em"><b>-g</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Use generic DNS
+format when printing fingerprint resource records using the
+<b>-r</b> command.</p>
+
+<p style="margin-top: 1em"><b>-H</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Hash a
+<i>known_hosts</i> file. This replaces all hostnames and
+addresses with hashed representations within the specified
+file; the original content is moved to a file with a .old
+suffix. These hashes may be used normally by <b>ssh</b> and
+<b>sshd</b>, but they do not reveal identifying information
+should the file&rsquo;s contents be disclosed. This option
+will not modify existing hashed hostnames and is therefore
+safe to use on files that mix hashed and non-hashed
+names.</p>
+
+<p style="margin-top: 1em"><b>-h</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">When signing a
+key, create a host certificate instead of a user
+certificate. See the <i>CERTIFICATES</i> section for
+details.</p>
+
+<p style="margin-top: 1em"><b>-I</b>
+<i>certificate_identity</i></p>
+
+<p style="margin-left:17%;">Specify the key identity when
+signing a public key. See the <i>CERTIFICATES</i> section
+for details.</p>
+
+<p style="margin-top: 1em"><b>-i</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">This option
+will read an unencrypted private (or public) key file in the
+format specified by the <b>-m</b> option and print an
+OpenSSH compatible private (or public) key to stdout. This
+option allows importing keys from other software, including
+several commercial SSH implementations. The default import
+format is &ldquo;RFC4716&rdquo;.</p>
+
+<p style="margin-top: 1em"><b>-K</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Download
+resident keys from a FIDO authenticator. Public and private
+key files will be written to the current directory for each
+downloaded key. If multiple FIDO authenticators are
+attached, keys will be downloaded from the first touched
+authenticator. See the <i>FIDO AUTHENTICATOR</i> section for
+more information.</p>
+
+<p style="margin-top: 1em"><b>-k</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Generate a KRL
+file. In this mode, <b>ssh-keygen</b> will generate a KRL
+file at the location specified via the <b>-f</b> flag that
+revokes every key or certificate presented on the command
+line. Keys/certificates to be revoked may be specified by
+public key file or using the format described in the <i>KEY
+REVOCATION LISTS</i> section.</p>
+
+<p style="margin-top: 1em"><b>-L</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Prints the
+contents of one or more certificates.</p>
+
+<p style="margin-top: 1em"><b>-l</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Show
+fingerprint of specified public key file. For RSA and DSA
+keys <b>ssh-keygen</b> tries to find the matching public key
+file and prints its fingerprint. If combined with <b>-v</b>,
+a visual ASCII art representation of the key is supplied
+with the fingerprint.</p>
+
+<p style="margin-top: 1em"><b>-M generate</b></p>
+
+<p style="margin-left:17%;">Generate candidate
+Diffie-Hellman Group Exchange (DH-GEX) parameters for
+eventual use by the
+&rsquo;diffie-hellman-group-exchange-*&rsquo; key exchange
+methods. The numbers generated by this operation must be
+further screened before use. See the <i>MODULI
+GENERATION</i> section for more information.</p>
+
+<p style="margin-top: 1em"><b>-M screen</b></p>
+
+<p style="margin-left:17%;">Screen candidate parameters for
+Diffie-Hellman Group Exchange. This will accept a list of
+candidate numbers and test that they are safe (Sophie
+Germain) primes with acceptable group generators. The
+results of this operation may be added to the
+<i>/etc/ssh/moduli</i> file. See the <i>MODULI
+GENERATION</i> section for more information.</p>
+
+<p style="margin-top: 1em"><b>-m</b> <i>key_format</i></p>
+
+<p style="margin-left:17%;">Specify a key format for key
+generation, the <b>-i</b> (import), <b>-e</b> (export)
+conversion options, and the <b>-p</b> change passphrase
+operation. The latter may be used to convert between OpenSSH
+private key and PEM private key formats. The supported key
+formats are: &ldquo;RFC4716&rdquo; (RFC 4716/SSH2 public or
+private key), &ldquo;PKCS8&rdquo; (PKCS8 public or private
+key) or &ldquo;PEM&rdquo; (PEM public key). By default
+OpenSSH will write newly-generated private keys in its own
+format, but when converting public keys for export the
+default format is &ldquo;RFC4716&rdquo;. Setting a format of
+&ldquo;PEM&rdquo; when generating or updating a supported
+private key type will cause the key to be stored in the
+legacy PEM private key format.</p>
+
+<p style="margin-top: 1em"><b>-N</b>
+<i>new_passphrase</i></p>
+
+<p style="margin-left:17%;">Provides the new
+passphrase.</p>
+
+<p style="margin-top: 1em"><b>-n</b> <i>principals</i></p>
+
+<p style="margin-left:17%;">Specify one or more principals
+(user or host names) to be included in a certificate when
+signing a key. Multiple principals may be specified,
+separated by commas. See the <i>CERTIFICATES</i> section for
+details.</p>
+
+<p style="margin-top: 1em"><b>-O</b> <i>option</i></p>
+
+<p style="margin-left:17%;">Specify a key/value option.
+These are specific to the operation that <b>ssh-keygen</b>
+has been requested to perform.</p>
+
+<p style="margin-left:17%; margin-top: 1em">When signing
+certificates, one of the options listed in the
+<i>CERTIFICATES</i> section may be specified here.</p>
+
+<p style="margin-left:17%; margin-top: 1em">When performing
+moduli generation or screening, one of the options listed in
+the <i>MODULI GENERATION</i> section may be specified.</p>
+
+<p style="margin-left:17%; margin-top: 1em">When generating
+FIDO authenticator-backed keys, the options listed in the
+<i>FIDO AUTHENTICATOR</i> section may be specified.</p>
+
+<p style="margin-left:17%; margin-top: 1em">When performing
+signature-related options using the <b>-Y</b> flag, the
+following options are accepted:</p>
+
+
+<p style="margin-top: 1em"><b>hashalg</b>=<i>algorithm</i></p>
+
+<p style="margin-left:27%;">Selects the hash algorithm to
+use for hashing the message to be signed. Valid algorithms
+are &ldquo;sha256&rdquo; and &ldquo;sha512.&rdquo; The
+default is &ldquo;sha512.&rdquo;</p>
+
+<p style="margin-top: 1em"><b>print-pubkey</b></p>
+
+<p style="margin-left:27%;">Print the full public key to
+standard output after signature verification.</p>
+
+
+<p style="margin-top: 1em"><b>verify-time</b>=<i>timestamp</i></p>
+
+<p style="margin-left:27%;">Specifies a time to use when
+validating signatures instead of the current time. The time
+may be specified as a date or time in the YYYYMMDD[Z] or in
+YYYYMMDDHHMM[SS][Z] formats. Dates and times will be
+interpreted in the current system time zone unless suffixed
+with a Z character, which causes them to be interpreted in
+the UTC time zone.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The <b>-O</b>
+option may be specified multiple times.</p>
+
+<p style="margin-top: 1em"><b>-P</b> <i>passphrase</i></p>
+
+<p style="margin-left:17%;">Provides the (old)
+passphrase.</p>
+
+<p style="margin-top: 1em"><b>-p</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Requests
+changing the passphrase of a private key file instead of
+creating a new private key. The program will prompt for the
+file containing the private key, for the old passphrase, and
+twice for the new passphrase.</p>
+
+<p style="margin-top: 1em"><b>-Q</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Test whether
+keys have been revoked in a KRL. If the <b>-l</b> option is
+also specified then the contents of the KRL will be
+printed.</p>
+
+<p style="margin-top: 1em"><b>-q</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Silence
+<b>ssh-keygen</b>.</p>
+
+<p style="margin-top: 1em"><b>-R</b> <i>hostname</i> |
+<i>[hostname]:port</i></p>
+
+<p style="margin-left:17%;">Removes all keys belonging to
+the specified <i>hostname</i> (with optional port number)
+from a <i>known_hosts</i> file. This option is useful to
+delete hashed hosts (see the <b>-H</b> option above).</p>
+
+<p style="margin-top: 1em"><b>-r</b> <i>hostname</i></p>
+
+<p style="margin-left:17%;">Print the SSHFP fingerprint
+resource record named <i>hostname</i> for the specified
+public key file.</p>
+
+<p style="margin-top: 1em"><b>-s</b> <i>ca_key</i></p>
+
+<p style="margin-left:17%;">Certify (sign) a public key
+using the specified CA key. See the <i>CERTIFICATES</i>
+section for details.</p>
+
+<p style="margin-left:17%; margin-top: 1em">When generating
+a KRL, <b>-s</b> specifies a path to a CA public key file
+used to revoke certificates directly by key ID or serial
+number. See the <i>KEY REVOCATION LISTS</i> section for
+details.</p>
+
+<p style="margin-top: 1em"><b>-t dsa</b> | <b>ecdsa</b> |
+<b>ecdsa-sk</b> | <b>ed25519</b> | <b>ed25519-sk</b> |
+<b>rsa</b></p>
+
+<p style="margin-left:17%;">Specifies the type of key to
+create. The possible values are &ldquo;dsa&rdquo;,
+&ldquo;ecdsa&rdquo;, &ldquo;ecdsa-sk&rdquo;,
+&ldquo;ed25519&rdquo;, &ldquo;ed25519-sk&rdquo;, or
+&ldquo;rsa&rdquo;.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This flag may
+also be used to specify the desired signature type when
+signing certificates using an RSA CA key. The available RSA
+signature variants are &ldquo;ssh-rsa&rdquo; (SHA1
+signatures, not recommended), &ldquo;rsa-sha2-256&rdquo;,
+and &ldquo;rsa-sha2-512&rdquo; (the default).</p>
+
+<p style="margin-top: 1em"><b>-U</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">When used in
+combination with <b>-s</b> or <b>-Y sign</b>, this option
+indicates that a CA key resides in a ssh-agent(1). See the
+<i>CERTIFICATES</i> section for more information.</p>
+
+<p style="margin-top: 1em"><b>-u</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Update a KRL.
+When specified with <b>-k</b>, keys listed via the command
+line are added to the existing KRL rather than a new KRL
+being created.</p>
+
+<p style="margin-top: 1em"><b>-V</b>
+<i>validity_interval</i></p>
+
+<p style="margin-left:17%;">Specify a validity interval
+when signing a certificate. A validity interval may consist
+of a single time, indicating that the certificate is valid
+beginning now and expiring at that time, or may consist of
+two times separated by a colon to indicate an explicit time
+interval.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The start time
+may be specified as:</p>
+
+<p><b>&bull;</b></p>
+
+<p style="margin-left:22%;">The string &ldquo;always&rdquo;
+to indicate the certificate has no specified start time.</p>
+
+<p><b>&bull;</b></p>
+
+<p style="margin-left:22%;">A date or time in the system
+time zone formatted as YYYYMMDD or YYYYMMDDHHMM[SS].</p>
+
+<p><b>&bull;</b></p>
+
+<p style="margin-left:22%;">A date or time in the UTC time
+zone as YYYYMMDDZ or YYYYMMDDHHMM[SS]Z.</p>
+
+<p><b>&bull;</b></p>
+
+<p style="margin-left:22%;">A relative time before the
+current system time consisting of a minus sign followed by
+an interval in the format described in the TIME FORMATS
+section of sshd_config(5).</p>
+
+<p><b>&bull;</b></p>
+
+<p style="margin-left:22%;">A raw seconds since epoch (Jan
+1 1970 00:00:00 UTC) as a hexadecimal number beginning with
+&ldquo;0x&rdquo;.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The end time
+may be specified similarly to the start time:</p>
+
+<p><b>&bull;</b></p>
+
+<p style="margin-left:22%;">The string
+&ldquo;forever&rdquo; to indicate the certificate has no
+specified end time.</p>
+
+<p><b>&bull;</b></p>
+
+<p style="margin-left:22%;">A date or time in the system
+time zone formatted as YYYYMMDD or YYYYMMDDHHMM[SS].</p>
+
+<p><b>&bull;</b></p>
+
+<p style="margin-left:22%;">A date or time in the UTC time
+zone as YYYYMMDDZ or YYYYMMDDHHMM[SS]Z.</p>
+
+<p><b>&bull;</b></p>
+
+<p style="margin-left:22%;">A relative time after the
+current system time consisting of a plus sign followed by an
+interval in the format described in the TIME FORMATS section
+of sshd_config(5).</p>
+
+<p><b>&bull;</b></p>
+
+<p style="margin-left:22%;">A raw seconds since epoch (Jan
+1 1970 00:00:00 UTC) as a hexadecimal number beginning with
+&ldquo;0x&rdquo;.</p>
+
+<p style="margin-left:17%; margin-top: 1em">For
+example:</p>
+
+<p style="margin-top: 1em">+52w1d</p>
+
+<p style="margin-left:27%; margin-top: 1em">Valid from now
+to 52 weeks and one day from now.</p>
+
+<p style="margin-top: 1em">-4w:+4w</p>
+
+<p style="margin-left:27%;">Valid from four weeks ago to
+four weeks from now.</p>
+
+
+<p style="margin-top: 1em">20100101123000:20110101123000</p>
+
+<p style="margin-left:27%;">Valid from 12:30 PM, January
+1st, 2010 to 12:30 PM, January 1st, 2011.</p>
+
+
+<p style="margin-top: 1em">20100101123000Z:20110101123000Z</p>
+
+<p style="margin-left:27%;">Similar, but interpreted in the
+UTC time zone rather than the system time zone.</p>
+
+<p style="margin-top: 1em">-1d:20110101</p>
+
+<p style="margin-left:27%;">Valid from yesterday to
+midnight, January 1st, 2011.</p>
+
+<p style="margin-top: 1em">0x1:0x2000000000</p>
+
+<p style="margin-left:27%;">Valid from roughly early 1970
+to May 2033.</p>
+
+<p style="margin-top: 1em">-1m:forever</p>
+
+<p style="margin-left:27%;">Valid from one minute ago and
+never expiring.</p>
+
+<p style="margin-top: 1em"><b>-v</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Verbose mode.
+Causes <b>ssh-keygen</b> to print debugging messages about
+its progress. This is helpful for debugging moduli
+generation. Multiple <b>-v</b> options increase the
+verbosity. The maximum is 3.</p>
+
+<p style="margin-top: 1em"><b>-w</b> <i>provider</i></p>
+
+<p style="margin-left:17%;">Specifies a path to a library
+that will be used when creating FIDO authenticator-hosted
+keys, overriding the default of using the internal USB HID
+support.</p>
+
+<p style="margin-top: 1em"><b>-Y find-principals</b></p>
+
+<p style="margin-left:17%;">Find the principal(s)
+associated with the public key of a signature, provided
+using the <b>-s</b> flag in an authorized signers file
+provided using the <b>-f</b> flag. The format of the allowed
+signers file is documented in the <i>ALLOWED SIGNERS</i>
+section below. If one or more matching principals are found,
+they are returned on standard output.</p>
+
+<p style="margin-top: 1em"><b>-Y match-principals</b></p>
+
+<p style="margin-left:17%;">Find principal matching the
+principal name provided using the <b>-I</b> flag in the
+authorized signers file specified using the <b>-f</b> flag.
+If one or more matching principals are found, they are
+returned on standard output.</p>
+
+<p style="margin-top: 1em"><b>-Y check-novalidate</b></p>
+
+<p style="margin-left:17%;">Checks that a signature
+generated using <b>ssh-keygen -Y sign</b> has a valid
+structure. This does not validate if a signature comes from
+an authorized signer. When testing a signature,
+<b>ssh-keygen</b> accepts a message on standard input and a
+signature namespace using <b>-n</b>. A file containing the
+corresponding signature must also be supplied using the
+<b>-s</b> flag. Successful testing of the signature is
+signalled by <b>ssh-keygen</b> returning a zero exit
+status.</p>
+
+<p style="margin-top: 1em"><b>-Y sign</b></p>
+
+<p style="margin-left:17%;">Cryptographically sign a file
+or some data using a SSH key. When signing,
+<b>ssh-keygen</b> accepts zero or more files to sign on the
+command-line - if no files are specified then
+<b>ssh-keygen</b> will sign data presented on standard
+input. Signatures are written to the path of the input file
+with &ldquo;.sig&rdquo; appended, or to standard output if
+the message to be signed was read from standard input.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The key used
+for signing is specified using the <b>-f</b> option and may
+refer to either a private key, or a public key with the
+private half available via ssh-agent(1). An additional
+signature namespace, used to prevent signature confusion
+across different domains of use (e.g. file signing vs email
+signing) must be provided via the <b>-n</b> flag. Namespaces
+are arbitrary strings, and may include: &ldquo;file&rdquo;
+for file signing, &ldquo;email&rdquo; for email signing. For
+custom uses, it is recommended to use names following a
+NAMESPACE@YOUR.DOMAIN pattern to generate unambiguous
+namespaces.</p>
+
+<p style="margin-top: 1em"><b>-Y verify</b></p>
+
+<p style="margin-left:17%;">Request to verify a signature
+generated using <b>ssh-keygen -Y sign</b> as described
+above. When verifying a signature, <b>ssh-keygen</b> accepts
+a message on standard input and a signature namespace using
+<b>-n</b>. A file containing the corresponding signature
+must also be supplied using the <b>-s</b> flag, along with
+the identity of the signer using <b>-I</b> and a list of
+allowed signers via the <b>-f</b> flag. The format of the
+allowed signers file is documented in the <i>ALLOWED
+SIGNERS</i> section below. A file containing revoked keys
+can be passed using the <b>-r</b> flag. The revocation file
+may be a KRL or a one-per-line list of public keys.
+Successful verification by an authorized signer is signalled
+by <b>ssh-keygen</b> returning a zero exit status.</p>
+
+<p style="margin-top: 1em"><b>-y</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">This option
+will read a private OpenSSH format file and print an OpenSSH
+public key to stdout.</p>
+
+<p style="margin-top: 1em"><b>-Z</b> <i>cipher</i></p>
+
+<p style="margin-left:17%;">Specifies the cipher to use for
+encryption when writing an OpenSSH-format private key file.
+The list of available ciphers may be obtained using
+&quot;ssh -Q cipher&quot;. The default is
+&ldquo;aes256-ctr&rdquo;.</p>
+
+<p style="margin-top: 1em"><b>-z</b>
+<i>serial_number</i></p>
+
+<p style="margin-left:17%;">Specifies a serial number to be
+embedded in the certificate to distinguish this certificate
+from others from the same CA. If the <i>serial_number</i> is
+prefixed with a &rsquo;+&rsquo; character, then the serial
+number will be incremented for each certificate signed on a
+single command-line. The default serial number is zero.</p>
+
+<p style="margin-left:17%; margin-top: 1em">When generating
+a KRL, the <b>-z</b> flag is used to specify a KRL version
+number.</p>
+
+<p style="margin-top: 1em"><b>MODULI GENERATION</b></p>
+
+<p style="margin-left:6%;"><b>ssh-keygen</b> may be used to
+generate groups for the Diffie-Hellman Group Exchange
+(DH-GEX) protocol. Generating these groups is a two-step
+process: first, candidate primes are generated using a fast,
+but memory intensive process. These candidate primes are
+then tested for suitability (a CPU-intensive process).</p>
+
+<p style="margin-left:6%; margin-top: 1em">Generation of
+primes is performed using the <b>-M generate</b> option. The
+desired length of the primes may be specified by the <b>-O
+bits</b> option. For example:</p>
+
+<p style="margin-left:14%; margin-top: 1em"># ssh-keygen -M
+generate -O bits=2048 moduli-2048.candidates</p>
+
+<p style="margin-left:6%; margin-top: 1em">By default, the
+search for primes begins at a random point in the desired
+length range. This may be overridden using the <b>-O
+start</b> option, which specifies a different start point
+(in hex).</p>
+
+<p style="margin-left:6%; margin-top: 1em">Once a set of
+candidates have been generated, they must be screened for
+suitability. This may be performed using the <b>-M
+screen</b> option. In this mode <b>ssh-keygen</b> will read
+candidates from standard input (or a file specified using
+the <b>-f</b> option). For example:</p>
+
+<p style="margin-left:14%; margin-top: 1em"># ssh-keygen -M
+screen -f moduli-2048.candidates moduli-2048</p>
+
+<p style="margin-left:6%; margin-top: 1em">By default, each
+candidate will be subjected to 100 primality tests. This may
+be overridden using the <b>-O prime-tests</b> option. The DH
+generator value will be chosen automatically for the prime
+under consideration. If a specific generator is desired, it
+may be requested using the <b>-O generator</b> option. Valid
+generator values are 2, 3, and 5.</p>
+
+<p style="margin-left:6%; margin-top: 1em">Screened DH
+groups may be installed in <i>/etc/ssh/moduli</i>. It is
+important that this file contains moduli of a range of bit
+lengths.</p>
+
+<p style="margin-left:6%; margin-top: 1em">A number of
+options are available for moduli generation and screening
+via the <b>-O</b> flag:</p>
+
+<p style="margin-top: 1em"><b>lines</b>=<i>number</i></p>
+
+<p style="margin-left:17%;">Exit after screening the
+specified number of lines while performing DH candidate
+screening.</p>
+
+
+<p style="margin-top: 1em"><b>start-line</b>=<i>line-number</i></p>
+
+<p style="margin-left:17%;">Start screening at the
+specified line number while performing DH candidate
+screening.</p>
+
+
+<p style="margin-top: 1em"><b>checkpoint</b>=<i>filename</i></p>
+
+<p style="margin-left:17%;">Write the last line processed
+to the specified file while performing DH candidate
+screening. This will be used to skip lines in the input file
+that have already been processed if the job is
+restarted.</p>
+
+<p style="margin-top: 1em"><b>memory</b>=<i>mbytes</i></p>
+
+<p style="margin-left:17%;">Specify the amount of memory to
+use (in megabytes) when generating candidate moduli for
+DH-GEX.</p>
+
+
+<p style="margin-top: 1em"><b>start</b>=<i>hex-value</i></p>
+
+<p style="margin-left:17%;">Specify start point (in hex)
+when generating candidate moduli for DH-GEX.</p>
+
+
+<p style="margin-top: 1em"><b>generator</b>=<i>value</i></p>
+
+<p style="margin-left:17%;">Specify desired generator (in
+decimal) when testing candidate moduli for DH-GEX.</p>
+
+<p style="margin-top: 1em"><b>CERTIFICATES</b></p>
+
+<p style="margin-left:6%;"><b>ssh-keygen</b> supports
+signing of keys to produce certificates that may be used for
+user or host authentication. Certificates consist of a
+public key, some identity information, zero or more
+principal (user or host) names and a set of options that are
+signed by a Certification Authority (CA) key. Clients or
+servers may then trust only the CA key and verify its
+signature on a certificate rather than trusting many
+user/host keys. Note that OpenSSH certificates are a
+different, and much simpler, format to the X.509
+certificates used in ssl(8).</p>
+
+
+<p style="margin-left:6%; margin-top: 1em"><b>ssh-keygen</b>
+supports two types of certificates: user and host. User
+certificates authenticate users to servers, whereas host
+certificates authenticate server hosts to users. To generate
+a user certificate:</p>
+
+<p style="margin-left:14%; margin-top: 1em">$ ssh-keygen -s
+/path/to/ca_key -I key_id /path/to/user_key.pub</p>
+
+<p style="margin-left:6%; margin-top: 1em">The resultant
+certificate will be placed in
+<i>/path/to/user_key-cert.pub</i>. A host certificate
+requires the <b>-h</b> option:</p>
+
+<p style="margin-left:14%; margin-top: 1em">$ ssh-keygen -s
+/path/to/ca_key -I key_id -h /path/to/host_key.pub</p>
+
+<p style="margin-left:6%; margin-top: 1em">The host
+certificate will be output to
+<i>/path/to/host_key-cert.pub</i>.</p>
+
+<p style="margin-left:6%; margin-top: 1em">It is possible
+to sign using a CA key stored in a PKCS#11 token by
+providing the token library using <b>-D</b> and identifying
+the CA key by providing its public half as an argument to
+<b>-s</b>:</p>
+
+<p style="margin-left:14%; margin-top: 1em">$ ssh-keygen -s
+ca_key.pub -D libpkcs11.so -I key_id user_key.pub</p>
+
+<p style="margin-left:6%; margin-top: 1em">Similarly, it is
+possible for the CA key to be hosted in a ssh-agent(1). This
+is indicated by the <b>-U</b> flag and, again, the CA key
+must be identified by its public half.</p>
+
+<p style="margin-left:14%; margin-top: 1em">$ ssh-keygen
+-Us ca_key.pub -I key_id user_key.pub</p>
+
+<p style="margin-left:6%; margin-top: 1em">In all cases,
+<i>key_id</i> is a &quot;key identifier&quot; that is logged
+by the server when the certificate is used for
+authentication.</p>
+
+<p style="margin-left:6%; margin-top: 1em">Certificates may
+be limited to be valid for a set of principal (user/host)
+names. By default, generated certificates are valid for all
+users or hosts. To generate a certificate for a specified
+set of principals:</p>
+
+<p style="margin-left:14%; margin-top: 1em">$ ssh-keygen -s
+ca_key -I key_id -n user1,user2 user_key.pub <br>
+$ ssh-keygen -s ca_key -I key_id -h -n host.domain
+host_key.pub</p>
+
+<p style="margin-left:6%; margin-top: 1em">Additional
+limitations on the validity and use of user certificates may
+be specified through certificate options. A certificate
+option may disable features of the SSH session, may be valid
+only when presented from particular source addresses or may
+force the use of a specific command.</p>
+
+<p style="margin-left:6%; margin-top: 1em">The options that
+are valid for user certificates are:</p>
+
+<p style="margin-top: 1em"><b>clear</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Clear all
+enabled permissions. This is useful for clearing the default
+set of permissions so permissions may be added
+individually.</p>
+
+
+<p style="margin-top: 1em"><b>critical</b>:<i>name</i>[=<i>contents</i>]
+<b><br>
+extension</b>:<i>name</i>[=<i>contents</i>]</p>
+
+<p style="margin-left:17%;">Includes an arbitrary
+certificate critical option or extension. The specified
+<i>name</i> should include a domain suffix, e.g.
+&ldquo;name@example.com&rdquo;. If <i>contents</i> is
+specified then it is included as the contents of the
+extension/option encoded as a string, otherwise the
+extension/option is created with no contents (usually
+indicating a flag). Extensions may be ignored by a client or
+server that does not recognise them, whereas unknown
+critical options will cause the certificate to be
+refused.</p>
+
+
+<p style="margin-top: 1em"><b>force-command</b>=<i>command</i></p>
+
+<p style="margin-left:17%;">Forces the execution of
+<i>command</i> instead of any shell or command specified by
+the user when the certificate is used for
+authentication.</p>
+
+<p style="margin-top: 1em"><b>no-agent-forwarding</b></p>
+
+<p style="margin-left:17%;">Disable ssh-agent(1) forwarding
+(permitted by default).</p>
+
+<p style="margin-top: 1em"><b>no-port-forwarding</b></p>
+
+<p style="margin-left:17%;">Disable port forwarding
+(permitted by default).</p>
+
+<p style="margin-top: 1em"><b>no-pty</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Disable PTY
+allocation (permitted by default).</p>
+
+<p style="margin-top: 1em"><b>no-user-rc</b></p>
+
+<p style="margin-left:17%;">Disable execution of
+<i>~/.ssh/rc</i> by sshd(8) (permitted by default).</p>
+
+<p style="margin-top: 1em"><b>no-x11-forwarding</b></p>
+
+<p style="margin-left:17%;">Disable X11 forwarding
+(permitted by default).</p>
+
+
+<p style="margin-top: 1em"><b>permit-agent-forwarding</b></p>
+
+<p style="margin-left:17%;">Allows ssh-agent(1)
+forwarding.</p>
+
+
+<p style="margin-top: 1em"><b>permit-port-forwarding</b></p>
+
+<p style="margin-left:17%;">Allows port forwarding.</p>
+
+<p style="margin-top: 1em"><b>permit-pty</b></p>
+
+<p style="margin-left:17%;">Allows PTY allocation.</p>
+
+<p style="margin-top: 1em"><b>permit-user-rc</b></p>
+
+<p style="margin-left:17%;">Allows execution of
+<i>~/.ssh/rc</i> by sshd(8).</p>
+
+
+<p style="margin-top: 1em"><b>permit-X11-forwarding</b></p>
+
+<p style="margin-left:17%;">Allows X11 forwarding.</p>
+
+<p style="margin-top: 1em"><b>no-touch-required</b></p>
+
+<p style="margin-left:17%;">Do not require signatures made
+using this key include demonstration of user presence (e.g.
+by having the user touch the authenticator). This option
+only makes sense for the FIDO authenticator algorithms
+<b>ecdsa-sk</b> and <b>ed25519-sk</b>.</p>
+
+
+<p style="margin-top: 1em"><b>source-address</b>=<i>address_list</i></p>
+
+<p style="margin-left:17%;">Restrict the source addresses
+from which the certificate is considered valid. The
+<i>address_list</i> is a comma-separated list of one or more
+address/netmask pairs in CIDR format.</p>
+
+<p style="margin-top: 1em"><b>verify-required</b></p>
+
+<p style="margin-left:17%;">Require signatures made using
+this key indicate that the user was first verified. This
+option only makes sense for the FIDO authenticator
+algorithms <b>ecdsa-sk</b> and <b>ed25519-sk</b>. Currently
+PIN authentication is the only supported verification
+method, but other methods may be supported in the
+future.</p>
+
+<p style="margin-left:6%; margin-top: 1em">At present, no
+standard options are valid for host keys.</p>
+
+<p style="margin-left:6%; margin-top: 1em">Finally,
+certificates may be defined with a validity lifetime. The
+<b>-V</b> option allows specification of certificate start
+and end times. A certificate that is presented at a time
+outside this range will not be considered valid. By default,
+certificates are valid from the UNIX Epoch to the distant
+future.</p>
+
+<p style="margin-left:6%; margin-top: 1em">For certificates
+to be used for user or host authentication, the CA public
+key must be trusted by sshd(8) or ssh(1). Refer to those
+manual pages for details.</p>
+
+<p style="margin-top: 1em"><b>FIDO AUTHENTICATOR</b></p>
+
+<p style="margin-left:6%;"><b>ssh-keygen</b> is able to
+generate FIDO authenticator-backed keys, after which they
+may be used much like any other key type supported by
+OpenSSH, so long as the hardware authenticator is attached
+when the keys are used. FIDO authenticators generally
+require the user to explicitly authorise operations by
+touching or tapping them. FIDO keys consist of two parts: a
+key handle part stored in the private key file on disk, and
+a per-device private key that is unique to each FIDO
+authenticator and that cannot be exported from the
+authenticator hardware. These are combined by the hardware
+at authentication time to derive the real key that is used
+to sign authentication challenges. Supported key types are
+<b>ecdsa-sk</b> and <b>ed25519-sk</b>.</p>
+
+<p style="margin-left:6%; margin-top: 1em">The options that
+are valid for FIDO keys are:</p>
+
+<p style="margin-top: 1em"><b>application</b></p>
+
+<p style="margin-left:17%;">Override the default FIDO
+application/origin string of &ldquo;ssh:&rdquo;. This may be
+useful when generating host or domain-specific resident
+keys. The specified application string must begin with
+&ldquo;ssh:&rdquo;.</p>
+
+
+<p style="margin-top: 1em"><b>challenge</b>=<i>path</i></p>
+
+<p style="margin-left:17%;">Specifies a path to a challenge
+string that will be passed to the FIDO authenticator during
+key generation. The challenge string may be used as part of
+an out-of-band protocol for key enrollment (a random
+challenge is used by default).</p>
+
+<p style="margin-top: 1em"><b>device</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Explicitly
+specify a fido(4) device to use, rather than letting the
+authenticator middleware select one.</p>
+
+<p style="margin-top: 1em"><b>no-touch-required</b></p>
+
+<p style="margin-left:17%;">Indicate that the generated
+private key should not require touch events (user presence)
+when making signatures. Note that sshd(8) will refuse such
+signatures by default, unless overridden via an
+authorized_keys option.</p>
+
+<p style="margin-top: 1em"><b>resident</b></p>
+
+<p style="margin-left:17%;">Indicate that the key handle
+should be stored on the FIDO authenticator itself. This
+makes it easier to use the authenticator on multiple
+computers. Resident keys may be supported on FIDO2
+authenticators and typically require that a PIN be set on
+the authenticator prior to generation. Resident keys may be
+loaded off the authenticator using ssh-add(1). Storing both
+parts of a key on a FIDO authenticator increases the
+likelihood of an attacker being able to use a stolen
+authenticator device.</p>
+
+<p style="margin-top: 1em"><b>user</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">A username to
+be associated with a resident key, overriding the empty
+default username. Specifying a username may be useful when
+generating multiple resident keys for the same application
+name.</p>
+
+<p style="margin-top: 1em"><b>verify-required</b></p>
+
+<p style="margin-left:17%;">Indicate that this private key
+should require user verification for each signature. Not all
+FIDO authenticators support this option. Currently PIN
+authentication is the only supported verification method,
+but other methods may be supported in the future.</p>
+
+
+<p style="margin-top: 1em"><b>write-attestation</b>=<i>path</i></p>
+
+<p style="margin-left:17%;">May be used at key generation
+time to record the attestation data returned from FIDO
+authenticators during key generation. This information is
+potentially sensitive. By default, this information is
+discarded.</p>
+
+<p style="margin-top: 1em"><b>KEY REVOCATION LISTS</b></p>
+
+<p style="margin-left:6%;"><b>ssh-keygen</b> is able to
+manage OpenSSH format Key Revocation Lists (KRLs). These
+binary files specify keys or certificates to be revoked
+using a compact format, taking as little as one bit per
+certificate if they are being revoked by serial number.</p>
+
+<p style="margin-left:6%; margin-top: 1em">KRLs may be
+generated using the <b>-k</b> flag. This option reads one or
+more files from the command line and generates a new KRL.
+The files may either contain a KRL specification (see below)
+or public keys, listed one per line. Plain public keys are
+revoked by listing their hash or contents in the KRL and
+certificates revoked by serial number or key ID (if the
+serial is zero or not available).</p>
+
+<p style="margin-left:6%; margin-top: 1em">Revoking keys
+using a KRL specification offers explicit control over the
+types of record used to revoke keys and may be used to
+directly revoke certificates by serial number or key ID
+without having the complete original certificate on hand. A
+KRL specification consists of lines containing one of the
+following directives followed by a colon and some
+directive-specific information.</p>
+
+<p style="margin-top: 1em"><b>serial</b>:
+<i>serial_number</i>[-<i>serial_number</i>]</p>
+
+<p style="margin-left:17%;">Revokes a certificate with the
+specified serial number. Serial numbers are 64-bit values,
+not including zero and may be expressed in decimal, hex or
+octal. If two serial numbers are specified separated by a
+hyphen, then the range of serial numbers including and
+between each is revoked. The CA key must have been specified
+on the <b>ssh-keygen</b> command line using the <b>-s</b>
+option.</p>
+
+<p style="margin-top: 1em"><b>id</b>: <i>key_id</i></p>
+
+<p style="margin-left:17%;">Revokes a certificate with the
+specified key ID string. The CA key must have been specified
+on the <b>ssh-keygen</b> command line using the <b>-s</b>
+option.</p>
+
+<p style="margin-top: 1em"><b>key</b>:
+<i>public_key</i></p>
+
+<p style="margin-left:17%;">Revokes the specified key. If a
+certificate is listed, then it is revoked as a plain public
+key.</p>
+
+<p style="margin-top: 1em"><b>sha1</b>:
+<i>public_key</i></p>
+
+<p style="margin-left:17%;">Revokes the specified key by
+including its SHA1 hash in the KRL.</p>
+
+<p style="margin-top: 1em"><b>sha256</b>:
+<i>public_key</i></p>
+
+<p style="margin-left:17%;">Revokes the specified key by
+including its SHA256 hash in the KRL. KRLs that revoke keys
+by SHA256 hash are not supported by OpenSSH versions prior
+to 7.9.</p>
+
+<p style="margin-top: 1em"><b>hash</b>:
+<i>fingerprint</i></p>
+
+<p style="margin-left:17%;">Revokes a key using a
+fingerprint hash, as obtained from a sshd(8) authentication
+log message or the <b>ssh-keygen -l</b> flag. Only SHA256
+fingerprints are supported here and resultant KRLs are not
+supported by OpenSSH versions prior to 7.9.</p>
+
+<p style="margin-left:6%; margin-top: 1em">KRLs may be
+updated using the <b>-u</b> flag in addition to <b>-k</b>.
+When this option is specified, keys listed via the command
+line are merged into the KRL, adding to those already
+there.</p>
+
+<p style="margin-left:6%; margin-top: 1em">It is also
+possible, given a KRL, to test whether it revokes a
+particular key (or keys). The <b>-Q</b> flag will query an
+existing KRL, testing each key specified on the command
+line. If any key listed on the command line has been revoked
+(or an error encountered) then <b>ssh-keygen</b> will exit
+with a non-zero exit status. A zero exit status will only be
+returned if no key was revoked.</p>
+
+<p style="margin-top: 1em"><b>ALLOWED SIGNERS</b></p>
+
+<p style="margin-left:6%;">When verifying signatures,
+<b>ssh-keygen</b> uses a simple list of identities and keys
+to determine whether a signature comes from an authorized
+source. This &quot;allowed signers&quot; file uses a format
+patterned after the AUTHORIZED_KEYS FILE FORMAT described in
+sshd(8). Each line of the file contains the following
+space-separated fields: principals, options, keytype,
+base64-encoded key. Empty lines and lines starting with a
+&rsquo;#&rsquo; are ignored as comments.</p>
+
+<p style="margin-left:6%; margin-top: 1em">The principals
+field is a pattern-list (see PATTERNS in ssh_config(5))
+consisting of one or more comma-separated USER@DOMAIN
+identity patterns that are accepted for signing. When
+verifying, the identity presented via the <b>-I</b> option
+must match a principals pattern in order for the
+corresponding key to be considered acceptable for
+verification.</p>
+
+<p style="margin-left:6%; margin-top: 1em">The options (if
+present) consist of comma-separated option specifications.
+No spaces are permitted, except within double quotes. The
+following option specifications are supported (note that
+option keywords are case-insensitive):</p>
+
+<p style="margin-top: 1em"><b>cert-authority</b></p>
+
+<p style="margin-left:17%;">Indicates that this key is
+accepted as a certificate authority (CA) and that
+certificates signed by this CA may be accepted for
+verification.</p>
+
+
+<p style="margin-top: 1em"><b>namespaces</b>=namespace-list</p>
+
+<p style="margin-left:17%;">Specifies a pattern-list of
+namespaces that are accepted for this key. If this option is
+present, the signature namespace embedded in the signature
+object and presented on the verification command-line must
+match the specified list before the key will be considered
+acceptable.</p>
+
+
+<p style="margin-top: 1em"><b>valid-after</b>=timestamp</p>
+
+<p style="margin-left:17%;">Indicates that the key is valid
+for use at or after the specified timestamp, which may be a
+date or time in the YYYYMMDD[Z] or YYYYMMDDHHMM[SS][Z]
+formats. Dates and times will be interpreted in the current
+system time zone unless suffixed with a Z character, which
+causes them to be interpreted in the UTC time zone.</p>
+
+
+<p style="margin-top: 1em"><b>valid-before</b>=timestamp</p>
+
+<p style="margin-left:17%;">Indicates that the key is valid
+for use at or before the specified timestamp.</p>
+
+<p style="margin-left:6%; margin-top: 1em">When verifying
+signatures made by certificates, the expected principal name
+must match both the principals pattern in the allowed
+signers file and the principals embedded in the certificate
+itself.</p>
+
+<p style="margin-left:6%; margin-top: 1em">An example
+allowed signers file:</p>
+
+<p style="margin-left:10%; margin-top: 1em"># Comments
+allowed at start of line <br>
+user1@example.com,user2@example.com ssh-rsa AAAAX1... <br>
+# A certificate authority, trusted for all principals in a
+domain. <br>
+*@example.com cert-authority ssh-ed25519 AAAB4... <br>
+# A key that is accepted only for file signing. <br>
+user2@example.com namespaces=&quot;file&quot; ssh-ed25519
+AAA41...</p>
+
+<p style="margin-top: 1em"><b>ENVIRONMENT</b> <br>
+SSH_SK_PROVIDER</p>
+
+<p style="margin-left:17%;">Specifies a path to a library
+that will be used when loading any FIDO authenticator-hosted
+keys, overriding the default of using the built-in USB HID
+support.</p>
+
+<p style="margin-top: 1em"><b>FILES</b> <br>
+~/.ssh/id_dsa <br>
+~/.ssh/id_ecdsa <br>
+~/.ssh/id_ecdsa_sk <br>
+~/.ssh/id_ed25519 <br>
+~/.ssh/id_ed25519_sk <br>
+~/.ssh/id_rsa</p>
+
+<p style="margin-left:17%;">Contains the DSA, ECDSA,
+authenticator-hosted ECDSA, Ed25519, authenticator-hosted
+Ed25519 or RSA authentication identity of the user. This
+file should not be readable by anyone but the user. It is
+possible to specify a passphrase when generating the key;
+that passphrase will be used to encrypt the private part of
+this file using 128-bit AES. This file is not automatically
+accessed by <b>ssh-keygen</b> but it is offered as the
+default file for the private key. ssh(1) will read this file
+when a login attempt is made.</p>
+
+<p style="margin-top: 1em">~/.ssh/id_dsa.pub <br>
+~/.ssh/id_ecdsa.pub <br>
+~/.ssh/id_ecdsa_sk.pub <br>
+~/.ssh/id_ed25519.pub <br>
+~/.ssh/id_ed25519_sk.pub <br>
+~/.ssh/id_rsa.pub</p>
+
+<p style="margin-left:17%;">Contains the DSA, ECDSA,
+authenticator-hosted ECDSA, Ed25519, authenticator-hosted
+Ed25519 or RSA public key for authentication. The contents
+of this file should be added to
+<i>~/.ssh/authorized_keys</i> on all machines where the user
+wishes to log in using public key authentication. There is
+no need to keep the contents of this file secret.</p>
+
+<p style="margin-top: 1em">/etc/ssh/moduli</p>
+
+<p style="margin-left:17%;">Contains Diffie-Hellman groups
+used for DH-GEX. The file format is described in
+moduli(5).</p>
+
+<p style="margin-top: 1em"><b>SEE ALSO</b></p>
+
+<p style="margin-left:6%;">ssh(1), ssh-add(1),
+ssh-agent(1), moduli(5), sshd(8)</p>
+
+<p style="margin-top: 1em"><i>The Secure Shell (SSH) Public
+Key File Format</i></p>
+
+<p style="margin-left:6%;">,</p>
+
+<p>RFC 4716 , <br>
+2006 .</p>
+
+<p style="margin-top: 1em"><b>AUTHORS</b></p>
+
+<p style="margin-left:6%;">OpenSSH is a derivative of the
+original and free ssh 1.2.12 release by Tatu Ylonen. Aaron
+Campbell, Bob Beck, Markus Friedl, Niels Provos, Theo de
+Raadt and Dug Song removed many bugs, re-added newer
+features and created OpenSSH. Markus Friedl contributed the
+support for SSH protocol versions 1.5 and 2.0.</p>
+
+<p style="margin-left:6%; margin-top: 1em">BSD
+September&nbsp;10, 2022 BSD</p>
+<hr>
+</body>
+</html>

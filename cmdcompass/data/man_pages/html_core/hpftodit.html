@@ -1,0 +1,400 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:10 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>HPFTODIT</title>
+
+</head>
+<body>
+
+<h1 align="center">HPFTODIT</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">hpftodit -
+create font description files for use with groff -Tlj4</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="12%">
+
+
+<p style="margin-top: 1em"><b>hpftodit</b></p></td>
+<td width="2%"></td>
+<td width="66%">
+
+
+<p style="margin-top: 1em">[<b>-aqs</b>]
+[<b>-i&nbsp;</b><i>n</i>] <i>tfm-file map-file
+output-font</i></p> </td>
+<td width="9%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="12%">
+
+
+<p style="margin-top: 1em"><b>hpftodit</b></p></td>
+<td width="2%"></td>
+<td width="66%">
+
+
+<p style="margin-top: 1em"><b>-d</b> <i>tfm-file</i>
+[<i>map-file</i>]</p> </td>
+<td width="9%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="12%">
+
+
+<p style="margin-top: 1em"><b>hpftodit</b></p></td>
+<td width="2%"></td>
+<td width="66%">
+
+
+<p style="margin-top: 1em"><b>--help</b></p></td>
+<td width="9%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="12%">
+
+
+<p style="margin-top: 1em"><b>hpftodit</b></p></td>
+<td width="2%"></td>
+<td width="66%">
+
+
+<p style="margin-top: 1em"><b>-v</b></p></td>
+<td width="9%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="12%">
+
+
+<p><b>hpftodit</b></p></td>
+<td width="2%"></td>
+<td width="66%">
+
+
+<p><b>--version</b></p></td>
+<td width="9%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>hpftodit</b>
+creates a font file for use with a Hewlett-Packard
+LaserJet&nbsp;4-series (or newer) printer with <b>groff
+-Tlj4</b>, using data from an HP tagged font metric (TFM)
+file. <i>tfm-file</i> is the name of the TFM file for the
+font; Intellifont and TrueType TFM files are supported, but
+symbol set TFM files are not. <i>map-file</i> is a file
+giving the <i>groff</i> names for characters in the font;
+this file should consist of a sequence of lines of the
+form:</p>
+
+<p style="margin-left:22%;"><i>m u c1 c2</i> ... [#
+<i>comment</i>]</p>
+
+<p style="margin-left:11%;">where <i>m</i> is a decimal
+integer giving the MSL (Master Symbol List) number of the
+character, <i>u</i> is a hexadecimal integer giving the
+Unicode value of the character, and <i>c1</i>, <i>c2</i>,
+... are the <i>groff</i> names of the character (see
+<b>groff_char</b>(7) for a list). The values can be
+separated by any whitespace; the Unicode value must use
+uppercase digits A&ndash;F, and must be without a leading
+&rsquo;<b>0x</b>&rsquo;, &rsquo;<b>u</b>&rsquo;, or
+&rsquo;<b>U+</b>&rsquo;. Unicode values corresponding to
+composite glyphs are decomposed; e.g.,
+&rsquo;<b>u00C0</b>&rsquo; becomes
+&rsquo;<b>u0041_0300</b>&rsquo;. The name for a glyph
+without a <i>groff</i> name may be given as
+<b>u</b><i>XXXX</i> if the glyph corresponds to a Unicode
+value, or as an unnamed glyph &rsquo;<b>---</b>&rsquo;. If
+the given Unicode value is in the Private Use Area
+(0xE000&ndash;0xF8FF), the glyph is included as an unnamed
+glyph. Refer to <b>groff_diff</b>(1) for additional
+information about unnamed glyphs and how to access them.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Blank lines and
+lines beginning with &rsquo;<b>#</b>&rsquo; are ignored. A
+&rsquo;<b>#</b>&rsquo; following one or more <i>groff</i>
+names begins a comment. Because &rsquo;<b>#</b>&rsquo; is a
+valid <i>groff</i> name, it must appear first in a list of
+<i>groff</i> names if a comment is included, e.g.,</p>
+
+<p style="margin-left:22%;"><b>3 0023 # # number
+sign</b></p>
+
+<p style="margin-left:11%;">or</p>
+
+<p style="margin-left:22%;"><b>3 0023 # sh # number
+sign</b></p>
+
+<p style="margin-left:11%;">rather than</p>
+
+<p style="margin-left:22%;"><b>3 0023 sh # # number
+sign</b></p>
+
+<p style="margin-left:11%;">which will treat the first
+&rsquo;<b>#</b>&rsquo; as the beginning of the comment.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>groff</i> font file is written to the specified
+<i>output-font</i>; if this operand is
+&rsquo;<b>-</b>&rsquo;, the font file is written to the
+standard output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <b>-s</b>
+option should be given if the font is special (a font is
+&ldquo;special&rdquo; if <i>groff</i> should search it
+whenever a character is not found in the current font). If
+the font is special, it should be listed in the <b>fonts</b>
+command in the DESC file; if it is not special, there is no
+need to list it, since <i>groff</i> can automatically mount
+it when it&rsquo;s first used.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the
+<b>-i</b> option is used, <b>hpftodit</b> automatically will
+generate an italic correction, a left italic correction and
+a subscript correction for each character (the significance
+of these parameters is explained in
+<b>groff_font</b>(5)).</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-a</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Include characters in the TFM
+file that are not included in <i>map-file</i>. A glyph with
+corresponding Unicode value is given the name u<i>XXXX</i>;
+a glyph without a Unicode value is included as an unnamed
+glyph &rsquo;---&rsquo;. A glyph with a Unicode value in the
+Private Use Area (0xE000&ndash;0xF8FF) also is included as
+an unnamed glyph.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+provides a simple means of adding Unicode-named and unnamed
+glyphs to a font without including them in the map file, but
+it affords little control over which glyphs are placed in a
+regular font and which are placed in a special font. The
+presence or absence of the <b>-s</b> option has some effect
+on which glyphs are included: without the <b>-s</b> option,
+only the &ldquo;text&rdquo; symbol sets are searched for
+matching glyphs; with the <b>-s</b> option, only the
+&ldquo;mathematical&rdquo; symbol sets are searched.
+Nonetheless, restricting the symbol sets searched
+isn&rsquo;t very selective&mdash;many glyphs are placed in
+both regular and special fonts. Normally, the <b>-a</b>
+option should be used only as a last resort.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-d</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Dump information about the TFM
+file to the standard output; this option can be useful for
+ensuring that a TFM file is a proper match for a font, and
+that the contents of the TFM file are suitable. The
+information includes the values of important TFM tags, and a
+listing (by MSL number for Intellifont TFM files or by
+Unicode value for TrueType TFM files) of the glyphs included
+in the TFM file. The unit of measure &rsquo;DU&rsquo; for
+some tags indicates design units; there are 8782&nbsp;design
+units per em for Intellifont fonts, and 2048&nbsp;design
+units per em for TrueType fonts. Note that the accessibility
+of a glyph depends on its inclusion in a symbol set; some
+TFM files list many glyphs but only a few symbol sets.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">The glyph
+listing includes the glyph index within the TFM file, the
+MSL or Unicode value, and the symbol set and character code
+that will be used to print the glyph. If <i>map-file</i> is
+given, <i>groff</i> names are given for matching glyphs. If
+only the glyph index and MSL or Unicode value are given, the
+glyph does not appear in any supported symbol set and cannot
+be printed.</p>
+
+<p style="margin-left:22%; margin-top: 1em">With the
+<b>-d</b> option, <i>map-file</i> is optional, and
+<i>output-font</i> is ignored if given.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p style="margin-top: 1em"><b>-q</b></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Suppress warnings about
+characters in the map file that were not found in the TFM
+file. Warnings never are given for unnamed glyphs or by
+glyphs named by their Unicode values. This option is useful
+when sending the output of <b>hpftodit</b> to the standard
+output.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>-v</b></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Print the <b>hpftodit</b> version number and exit.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>-s</b></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>The font is special. This option adds the <b>special</b>
+command to the font file, and affects the order in which HP
+symbol sets are searched for each glyph. Without the
+<b>-s</b> option, the &ldquo;text&rdquo; sets are searched
+before the &ldquo;mathematical&rdquo; symbol sets. With the
+<b>-s</b> option, the search order is reversed.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>-i</b><i>n</i></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Generate an italic correction for each character so that
+the character&rsquo;s width plus the character&rsquo;s
+italic correction is equal to <i>n</i> thousandths of an em
+plus the amount by which the right edge of the
+character&rsquo;s bounding is to the right of the
+character&rsquo;s origin. If this would result in a negative
+italic correction, use a zero italic correction instead.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">Also generate a
+subscript correction equal to the product of the tangent of
+the slant of the font and four fifths of the x-height of the
+font. If this would result in a subscript correction greater
+than the italic correction, use a subscript correction equal
+to the italic correction instead.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Also generate a
+left italic correction for each character equal to <i>n</i>
+thousandths of an em plus the amount by which the left edge
+of the character&rsquo;s bounding box is to the left of the
+character&rsquo;s origin. The left italic correction may be
+negative.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+normally is needed only with italic or oblique fonts; a
+value of 50 (0.05&nbsp;em) usually is a reasonable
+choice.</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/usr/share/groff/1.22.4/font/devlj4/DESC</i></p>
+
+<p style="margin-left:22%;">device description file</p>
+
+
+<p style="margin-left:11%;"><i>/usr/share/groff/1.22.4/font/devlj4/</i>F</p>
+
+<p style="margin-left:22%;">Font description file for font
+<i>F</i></p>
+
+
+<p style="margin-left:11%;"><i>/usr/share/groff/1.22.4/font/devlj4/generate/</i>*<i>.map</i></p>
+
+<p style="margin-left:22%;">symbol mapping files</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>groff</b>(1),
+<b>groff_diff</b>(1), <b>grolj4</b>(1),
+<b>groff_font</b>(5), <b>lj4_font</b>(5)</p>
+<hr>
+</body>
+</html>

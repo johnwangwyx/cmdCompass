@@ -1,0 +1,236 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:33:54 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>BASENC</title>
+
+</head>
+<body>
+
+<h1 align="center">BASENC</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#ENCODINGS EXAMPLES">ENCODINGS EXAMPLES</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">basenc -
+Encode/decode data and print to standard output</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>basenc</b>
+[<i>OPTION</i>]... [<i>FILE</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">basenc encode
+or decode FILE, or standard input, to standard output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">With no FILE,
+or when FILE is -, read standard input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Mandatory
+arguments to long options are mandatory for short options
+too. <b><br>
+--base64</b></p>
+
+<p style="margin-left:22%;">same as &rsquo;base64&rsquo;
+program (RFC4648 section 4)</p>
+
+<p style="margin-left:11%;"><b>--base64url</b></p>
+
+<p style="margin-left:22%;">file- and url-safe base64
+(RFC4648 section 5)</p>
+
+<p style="margin-left:11%;"><b>--base32</b></p>
+
+<p style="margin-left:22%;">same as &rsquo;base32&rsquo;
+program (RFC4648 section 6)</p>
+
+<p style="margin-left:11%;"><b>--base32hex</b></p>
+
+<p style="margin-left:22%;">extended hex alphabet base32
+(RFC4648 section 7)</p>
+
+<p style="margin-left:11%;"><b>--base16</b></p>
+
+<p style="margin-left:22%;">hex encoding (RFC4648 section
+8)</p>
+
+<p style="margin-left:11%;"><b>--base2msbf</b></p>
+
+<p style="margin-left:22%;">bit string with most
+significant bit (msb) first</p>
+
+<p style="margin-left:11%;"><b>--base2lsbf</b></p>
+
+<p style="margin-left:22%;">bit string with least
+significant bit (lsb) first</p>
+
+<p style="margin-left:11%;"><b>-d</b>, <b>--decode</b></p>
+
+<p style="margin-left:22%;">decode data</p>
+
+<p style="margin-left:11%;"><b>-i</b>,
+<b>--ignore-garbage</b></p>
+
+<p style="margin-left:22%;">when decoding, ignore
+non-alphabet characters</p>
+
+<p style="margin-left:11%;"><b>-w</b>,
+<b>--wrap</b>=<i>COLS</i></p>
+
+<p style="margin-left:22%;">wrap encoded lines after COLS
+character (default 76). Use 0 to disable line wrapping</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--z85</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>ascii85-like encoding (ZeroMQ spec:32/Z85); when
+encoding, input length must be a multiple of 4; when
+decoding, input length must be a multiple of 5</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--help</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>display this help and exit</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--version</b></p>
+
+<p style="margin-left:22%;">output version information and
+exit</p>
+
+<p style="margin-left:11%; margin-top: 1em">When decoding,
+the input may contain newlines in addition to the bytes of
+the formal alphabet. Use <b>--ignore-garbage</b> to attempt
+to recover from any other non-alphabet bytes in the encoded
+stream.</p>
+
+<h2>ENCODINGS EXAMPLES
+<a name="ENCODINGS EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:22%; margin-top: 1em">$ printf
+&rsquo;\376\117\202&rsquo; | basenc --base64 <br>
+/k+C</p>
+
+<p style="margin-left:22%; margin-top: 1em">$ printf
+&rsquo;\376\117\202&rsquo; | basenc --base64url <br>
+_k-C</p>
+
+<p style="margin-left:22%; margin-top: 1em">$ printf
+&rsquo;\376\117\202&rsquo; | basenc --base32 <br>
+7ZHYE===</p>
+
+<p style="margin-left:22%; margin-top: 1em">$ printf
+&rsquo;\376\117\202&rsquo; | basenc --base32hex <br>
+VP7O4===</p>
+
+<p style="margin-left:22%; margin-top: 1em">$ printf
+&rsquo;\376\117\202&rsquo; | basenc --base16 <br>
+FE4F82</p>
+
+<p style="margin-left:22%; margin-top: 1em">$ printf
+&rsquo;\376\117\202&rsquo; | basenc --base2lsbf <br>
+011111111111001001000001</p>
+
+<p style="margin-left:22%; margin-top: 1em">$ printf
+&rsquo;\376\117\202&rsquo; | basenc --base2msbf <br>
+111111100100111110000010</p>
+
+<p style="margin-left:22%; margin-top: 1em">$ printf
+&rsquo;\376\117\202\000&rsquo; | basenc --z85 <br>
+@.FaC</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Written by
+Simon Josefsson and Assaf Gordon.</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">GNU coreutils
+online help: &lt;https://www.gnu.org/software/coreutils/&gt;
+<br>
+Report any translation bugs to
+&lt;https://translationproject.org/team/&gt;</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+&copy; 2022 Free Software Foundation, Inc. License GPLv3+:
+GNU GPL version 3 or later
+&lt;https://gnu.org/licenses/gpl.html&gt;. <br>
+This is free software: you are free to change and
+redistribute it. There is NO WARRANTY, to the extent
+permitted by law.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Full
+documentation
+&lt;https://www.gnu.org/software/coreutils/basenc&gt; <br>
+or available locally via: info '(coreutils) basenc
+invocation'</p>
+<hr>
+</body>
+</html>

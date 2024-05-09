@@ -1,0 +1,296 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:09 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>H2PH</title>
+
+</head>
+<body>
+
+<h1 align="center">H2PH</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#DIAGNOSTICS">DIAGNOSTICS</a><br>
+<a href="#BUGS">BUGS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">h2ph - convert
+.h C header files to .ph Perl header files</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>h2ph [-d
+destination directory] [-r | -a] [-l] [-h] [-e] [-D] [-Q]
+[headerfiles]</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><i>h2ph</i></b>
+converts any C header files specified to the corresponding
+Perl header file format. It is most easily run while in
+/usr/include:</p>
+
+<p style="margin-left:11%; margin-top: 1em">cd
+/usr/include; h2ph * sys/*</p>
+
+<p style="margin-left:11%; margin-top: 1em">or</p>
+
+<p style="margin-left:11%; margin-top: 1em">cd
+/usr/include; h2ph * sys/* arpa/* netinet/*</p>
+
+<p style="margin-left:11%; margin-top: 1em">or</p>
+
+<p style="margin-left:11%; margin-top: 1em">cd
+/usr/include; h2ph -r -l .</p>
+
+<p style="margin-left:11%; margin-top: 1em">The output
+files are placed in the hierarchy rooted at Perl&rsquo;s
+architecture dependent library directory. You can specify a
+different hierarchy with a <b>-d</b> switch.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If run with no
+arguments, filters standard input to standard output.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">-d
+destination_dir</p>
+
+<p style="margin-left:17%;">Put the resulting <b>.ph</b>
+files beneath <b>destination_dir</b>, instead of beneath the
+default Perl library location
+($Config{'installsitearch'}).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>-r</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>Run recursively; if any of <b>headerfiles</b> are
+directories, then run <i>h2ph</i> on all files in those
+directories (and their subdirectories, etc.). <b>-r</b> and
+<b>-a</b> are mutually exclusive.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>-a</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>Run automagically; convert <b>headerfiles</b>, as well
+as any <b>.h</b> files which they include. This option will
+search for <b>.h</b> files in all directories which your C
+compiler ordinarily uses. <b>-a</b> and <b>-r</b> are
+mutually exclusive.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>-l</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>Symbolic links will be replicated in the destination
+directory. If <b>-l</b> is not specified, then links are
+skipped over.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>-h</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>Put &rsquo;hints&rsquo; in the .ph files which will help
+in locating problems with <i>h2ph</i>. In those cases when
+you <b>require</b> a <b>.ph</b> file containing syntax
+errors, instead of the cryptic</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">[ some error
+condition ] at (eval mmm) line nnn</p>
+
+<p style="margin-left:17%; margin-top: 1em">you will see
+the slightly more helpful</p>
+
+<p style="margin-left:17%; margin-top: 1em">[ some error
+condition ] at filename.ph line nnn</p>
+
+<p style="margin-left:17%; margin-top: 1em">However, the
+<b>.ph</b> files almost double in size when built using
+<b>-h</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em">-e</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">If an error is encountered
+during conversion, output file will be removed and a warning
+emitted instead of terminating the conversion
+immediately.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>-D</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>Include the code from the <b>.h</b> file as a comment in
+the <b>.ph</b> file. This is primarily used for debugging
+<i>h2ph</i>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>-Q</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>&rsquo;Quiet&rsquo; mode; don&rsquo;t print out the
+names of the files being converted.</p></td></tr>
+</table>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">No environment
+variables are used.</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">/usr/include/*.h
+<br>
+/usr/include/sys/*.h</p>
+
+<p style="margin-left:11%; margin-top: 1em">etc.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Larry Wall</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>perl</b>(1)</p>
+
+<h2>DIAGNOSTICS
+<a name="DIAGNOSTICS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The usual
+warnings if it can&rsquo;t read or write the files
+involved.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Doesn&rsquo;t
+construct the %sizeof array for you.</p>
+
+<p style="margin-left:11%; margin-top: 1em">It
+doesn&rsquo;t handle all C constructs, but it does attempt
+to isolate definitions inside evals so that you can get at
+the definitions that it can translate.</p>
+
+<p style="margin-left:11%; margin-top: 1em">It&rsquo;s only
+intended as a rough tool. You may need to dicker with the
+files produced.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You have to run
+this program by hand; it&rsquo;s not run as part of the Perl
+installation.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Doesn&rsquo;t
+handle complicated expressions built piecemeal, a la:</p>
+
+<p style="margin-left:11%; margin-top: 1em">enum { <br>
+FIRST_VALUE, <br>
+SECOND_VALUE, <br>
+#ifdef ABC <br>
+THIRD_VALUE <br>
+#endif <br>
+};</p>
+
+<p style="margin-left:11%; margin-top: 1em">Doesn&rsquo;t
+necessarily locate all of your C compiler&rsquo;s
+internally-defined symbols.</p>
+<hr>
+</body>
+</html>

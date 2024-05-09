@@ -1,0 +1,191 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:33:59 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>DBUS-MONITOR</title>
+
+</head>
+<body>
+
+<h1 align="center">DBUS-MONITOR</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLE">EXAMPLE</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#BUGS">BUGS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">dbus-monitor -
+debug probe to print message bus messages</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em"><b>dbus-monitor</b> [--system |
+--session | --address&nbsp;<i>ADDRESS</i>] [--profile |
+--monitor | --pcap | --binary]
+[<i>watch&nbsp;expressions</i>]</p> </td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>dbus-monitor</b> command is used to monitor messages
+going through a D-Bus message bus. See
+<b><font color="#0000FF">http://www.freedesktop.org/software/dbus/</font></b>
+<font color="#000000">for more information about the big
+picture.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">There
+are two well-known message buses: the systemwide message bus
+(installed on many systems as the &quot;messagebus&quot;
+service) and the per-user-login-session message bus (started
+each time a user logs in). The --system and --session
+options direct <b>dbus-monitor</b> to monitor the system or
+session buses respectively. If neither is specified,
+<b>dbus-monitor</b> monitors the session bus.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>dbus-monitor</b>
+has two different text output modes: the 'classic'-style
+monitoring mode, and profiling mode. The profiling format is
+a compact format with a single line per message and
+microsecond-resolution timing information. The --profile and
+--monitor options select the profiling and monitoring output
+format respectively.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>dbus-monitor</b>
+also has two binary output modes. The binary mode, selected
+by --binary, outputs the entire binary message stream
+(without the initial authentication handshake). The PCAP
+mode, selected by --pcap, adds a PCAP file header to the
+beginning of the output, and prepends a PCAP message header
+to each message; this produces a binary file that can be
+read by, for instance, Wireshark.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">If
+no mode is specified, <b>dbus-monitor</b> uses the
+monitoring output format.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">In
+order to get <b>dbus-monitor</b> to see the messages you are
+interested in, you should specify a set of watch expressions
+as you would expect to be passed to the
+<i>dbus_bus_add_match</i> function.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+message bus configuration may keep <b>dbus-monitor</b> from
+seeing all messages, especially if you run the monitor as a
+non-root user.</font></p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--system</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Monitor
+the system message bus.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--session</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Monitor
+the session message bus. (This is the default.)</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--address
+ADDRESS</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Monitor
+an arbitrary message bus given at ADDRESS.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--profile</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Use the
+profiling output format.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--monitor</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Use the
+monitoring output format. (This is the default.)</font></p>
+
+<h2>EXAMPLE
+<a name="EXAMPLE"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Here
+is an example of using dbus-monitor to watch for the gnome
+typing monitor to say things</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">dbus-monitor
+&quot;type='signal',sender='org.gnome.TypingMonitor',interface='org.gnome.TypingMonitor'&quot;</font></p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">dbus-monitor
+was written by Philip Blundell. The profiling output mode
+was added by Olli Salli.</font></p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Please
+send bug reports to the D-Bus mailing list or bug tracker,
+see</font>
+<b><font color="#0000FF">http://www.freedesktop.org/software/dbus/</font></b></p>
+<hr>
+</body>
+</html>

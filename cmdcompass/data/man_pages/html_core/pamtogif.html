@@ -1,0 +1,559 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:27 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamtogif User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamtogif User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#LICENSE">LICENSE</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamtogif -
+convert a Netpbm image to a GIF image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtogif</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-interlace</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-sort</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-mapfile=</b><i>mapfile</i>]
+[<b>-transparent=</b>[<b>=</b>]<i>color</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-alphacolor=</b><i>color</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-comment=</b><i>text</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-noclear</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-nolzw</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-aspect=</b><i>fraction</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-verbose</b>]
+[<i>netpbmfile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">All options can
+be abbreviated to their shortest unique prefix. You may use
+two hyphens instead of one to designate an option. You may
+use either white space or an equals sign between an option
+name and its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtogif</b>
+reads a Netpbm image as input and produces a GIF file as
+output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This program
+creates only individual GIF images. To combine multiple GIF
+images into an animated GIF, use
+<a href="http://www.lcdf.org/gifsicle/"><b>gifsicle</b></a>
+(not part of the Netpbm package).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtogif</b>
+creates either an original GIF87 format GIF file or the <br>
+newer GIF89 format. It creates GIF89 when the output needs
+to have features <br>
+that were new with GIF89, to wit transparency or comments.
+Otherwise, it <br>
+creates GIF87. Really old GIF readers conceivably could not
+recognize <br>
+GIF89. The output needs to have transparency when either the
+input has a <br>
+transparency information or you specify the
+<b>-transparent</b> option. It <br>
+needs to have comments when you specify the <b><br>
+-comment</b> option.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtogif</b>
+generates a GIF image with a single image block, which means
+the image cannot have more than 256 colors in it (it
+contains a single color map with a maximum size of 256). If
+the image you want to convert has more colors than that
+(<b>ppmhist</b> can tell you), you can use <b>pnmquant</b>
+to reduce it to 256. Or use the more complex but faster
+method described under the <b>-mapfile</b> option.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If your input
+image is a PAM with transparency information,
+<b>pamtogif</b> uses one entry in the GIF colormap
+specifically for the transparent pixels, so you can have at
+most 255 opaque colors. In contrast, if you use the
+<b>-transparent</b> option, one of the colors from the input
+becomes transparent, so the limit is still 256.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtogif</b>
+recognizes transparency information in the input by the <br>
+tuple type being <b>RGB_ALPHA</b>, <b>GRAYSCALE_ALPHA</b>,
+or <b><br>
+BLACKANDWHITE_ALPHA</b>. This is the case for any image that
+has <br>
+transparency information and was created by a Netpbm program
+that <br>
+manipulates visual images. If, on the other hand, you have a
+PAM generated <br>
+some other way, but you know the planes have the same
+meaning as implied by <br>
+these tuple types, you can make <b>pamtogif</b> process the
+transparency <br>
+information by changing the tuple type accordingly before
+you pass it <br>
+to <b>pamtogif</b>. You can use <b>pamstack</b> to change
+the tuple type.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtogif</b>
+was new in Netpbm 10.37 (December 2006). In older Netpbm,
+use <b>ppmtogif</b>.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamtogif</b> recognizes the following command line
+options: <b><br>
+-interlace</b></p>
+
+<p style="margin-left:22%;">Produce an interlaced GIF
+file.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-sort</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Produce a GIF file with a color map sorted in a
+predictable order.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">This does
+<i>not</i> produce the sorted color map which is part of the
+GIF format. That kind of sorted color map is one where the
+colors are sorted according to how important they are, and
+the GIF header tells the viewer that it is sorted that way.
+Its purpose is to allow the viewer to use fewer colors than
+are in the color map if it is not capable of displaying all
+the colors.</p>
+
+<p style="margin-left:22%; margin-top: 1em">What this
+option produces is a color map sorted by red value, then
+green, then blue. That can be useful in analyzing GIF
+images, particularly those made with two versions of the
+program, because it removes some of the variability.</p>
+
+
+<p style="margin-left:11%;"><b>-mapfile=</b><i>mapfile</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Use the colors
+found in the file <i>mapfile</i> to create the colormap in
+the GIF file, instead of the colors from <i>netpbmfile</i>.
+<i>mapfile</i> can be any PPM file; all that matters is the
+colors in it. If the colors in <i>netpbmfile</i> do not
+match those in <i>mapfile</i>, <b>pamtogif</b> matches them
+to a &quot;best match.&quot; You can obtain a much better
+result by using <b>pnmremap</b> to change the colors in the
+input to those in the map file.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+<i>mapfile</i> file is not a palette file, just an image
+whose colors you want to use. The order of colors in the GIF
+palette have nothing to do with where they appear in the
+<i>mapfile</i> image, and duplication of colors in the image
+is irrelevant.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The map
+file&rsquo;s depth must match the number of color components
+in the input (which is not necessarily the same as the
+input&rsquo;s depth -- the input might have a transparency
+plane in addition). If your map file does not, or it
+<i>might</i> not, run your input through <b>pnmremap</b>
+using the same map file so that it does.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You can use
+<b>-mapfile</b> to speed up conversion of an image where you
+already have a map file because of earlier processing of
+your image. For example, it is common to start with an image
+that has more than 256 colors and remap its colors to a set
+of 256 colors so that <b>pamgtogif</b> can convert it (a GIF
+can have only 256 colors; <b>pamtogif</b> without
+<b>-mapfile</b> fails on any image that has more than that)
+with <b>pnmquant</b>. When you do this, <b>pnmquant</b>
+generates a palette to do the color quantization, then
+<b>pamtogif</b> generates an identical palette from the
+quantized image. You can save computation by generating the
+palette once:</p>
+
+<p style="margin-left:22%; margin-top: 1em">$ pnmcolormap
+256 myimage.ppm &gt;/tmp/colormap.ppm <br>
+$ pamtogif myimage.ppm -mapfile=/tmp/colormap.ppm
+&gt;output.gif</p>
+
+
+<p style="margin-left:11%;"><b>-transparent=</b><i>color</i></p>
+
+<p style="margin-left:22%;"><b>pamtogif</b> marks the
+specified color as transparent in the GIF image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you
+don&rsquo;t specify <b>-transparent</b>, <b>pamtogif</b>
+does not mark any color transparent (except as indicated by
+the transparency information in the input file).</p>
+
+<p style="margin-left:22%; margin-top: 1em">Specify the
+color (<i>color</i>) as described for the
+<a href="libnetpbm_image.html#colorname">argument of the
+<b>pnm_parsecolor()</b> library routine</a> .</p>
+
+<p style="margin-left:22%; margin-top: 1em">If the color
+you specify is not present in the image, <b>pamtogif</b>
+selects instead the color in the image that is closest to
+the one you specify. Closeness is measured as a Cartesian
+distance between colors in RGB space. If multiple colors are
+equidistant, <b>pamtogif</b> chooses one of them
+arbitrarily.</p>
+
+<p style="margin-left:22%; margin-top: 1em">However, if you
+prefix your color specification with &quot;=&quot;, e.g.
+<b>-transparent==red</b>, only the exact color you specify
+will be transparent. If that color does not appear in the
+image, there will be no transparency. <b>pamtogif</b> issues
+an information message when this is the case.</p>
+
+<p style="margin-left:22%; margin-top: 1em">When you
+specify <b>-transparent</b>, <b>pamtogif</b> ignores
+explicit transparency information (the &quot;alpha
+channel&quot;) in the input image.</p>
+
+
+<p style="margin-left:11%;"><b>-alphacolor=</b><i>color</i></p>
+
+<p style="margin-left:22%;">This specifies the foreground
+color for transparent pixels. A viewer may use the
+foreground color for a transparent pixel if it chooses not
+to have another color &quot;show through.&quot;. The default
+is black.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This applies
+only to pixels that are transparent in the GIF because they
+are transparent in the Netpbm input. If a GIF pixel is
+transparent because of the <b>-transparent</b> option, the
+foreground color is the color indicated by that option.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Note that in
+GIF, all transparent pixels have the same foreground color.
+(There is only one entry in the GIF colormap for transparent
+pixels).</p>
+
+<p style="margin-left:22%; margin-top: 1em">Specify the
+color (<i>color</i>) as described for the
+<a href="libnetpbm_image.html#colorname">argument of the
+<b>pnm_parsecolor()</b> library routine</a> .</p>
+
+
+<p style="margin-left:11%;"><b>-comment=</b><i>text</i></p>
+
+<p style="margin-left:22%;">Include a comment in the GIF
+output with comment text <i>text</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Without this
+option, there are no comments in the output.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Note that in a
+command shell, you&rsquo;ll have to use quotation marks
+around <i>text</i> if it contains characters (e.g. space)
+that would make the shell think it is multiple arguments:
+<br>
+$ pamtogif -comment &quot;this is a comment&quot;
+&lt;xxx.ppm &gt;xxx.gif</p>
+
+<p style="margin-left:11%;"><b>-noclear</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+causes the output not to contain any GIF clear codes.</p>
+
+<p style="margin-left:22%; margin-top: 1em">In GIF, the
+stream defines codes that represent strings of pixels as it
+goes. The stream contains definitions of codes mixed in with
+the references to those codes that describe the pixels of
+the image. GIF specifies a maximum number of codes that can
+be defined; when the stream has defined that many, the
+stream can either just use those for the rest of the image
+or include a clear code, deleting all the string codes so
+that the stream can start over defining new ones.</p>
+
+<p style="margin-left:22%; margin-top: 1em">By far the most
+common choice is the clear code. This usually results in a
+smaller stream because the set of strings of pixels that
+occur in an image vary over the parts of the image. Hardly
+any GIF encoders produce streams that don&rsquo;t use the
+clear code.</p>
+
+<p style="margin-left:22%; margin-top: 1em">But it is
+conceivable that a stream could be smaller without the use
+of the clear code because it saves the stream having to
+redefine the same string codes over and over. It could even
+avoid a thrashing situation where the stream continually
+defines a set of strings that never get used again before
+the maximum is reached.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+to use the clear codes.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.82 (March 2018). Before that, the program
+aways uses the clear codes.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-nolzw</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>This option is mainly of historical interest -- it
+involves use of a patent that is now expired.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+causes the GIF output, and thus <b>pamtogif</b>, not to use
+LZW (Lempel-Ziv) compression. As a result, the image file is
+larger and, before the patent expired, no royalties would be
+owed to the holder of the patent on LZW. See the section
+LICENSE below.</p>
+
+<p style="margin-left:22%; margin-top: 1em">LZW is a method
+for combining the information from multiple pixels into a
+single GIF code. With the <b>-nolzw</b> option,
+<b>pamtogif</b> creates one GIF code per pixel, so it is not
+doing any compression and not using LZW. However, any GIF
+decoder, whether it uses an LZW decompressor or not, will
+correctly decode this uncompressed format. An LZW
+decompressor would see this as a particular case of LZW
+compression.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Note that if
+someone uses an LZW decompressor such as the one in
+<b>giftopnm</b> or pretty much any graphics display program
+to process the output of <b>pamtogif -nolzw</b> , he is then
+using the LZW patent. But the patent holder expressed far
+less interest in enforcing the patent on decoding than on
+encoding.</p>
+
+
+<p style="margin-left:11%;"><b>-aspect=</b><i>fraction</i></p>
+
+<p style="margin-left:22%;">This is the aspect ratio of the
+pixels of the image. Its only effect is to record that
+information in the GIF for use by whatever interprets the
+GIF. Note that this feature of GIF is hardly ever used and
+most GIF decoders ignore this information and assume pixels
+are square.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Pixels in a
+Netpbm image do not have aspect ratios; there is always a
+one-one correspondence between GIF pixels and Netpbm
+pixels.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The aspect
+ratio is the quotient of width divided by height. GIF allows
+aspect ratios from 0.25 (1:4) to 4 (4:1) in increments of
+1/64. <b>pamtogif</b> implements a natural extension of GIF
+that allows an aspect ratio up to 4 14/64. If you specify
+anything outside this range, <b>pamtogif</b> fails.
+<b>pamtogif</b> rounds <i>fraction</i> to the nearest
+1/64.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+square (1.0).</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.38 (March 2007). Before that, the pixels
+are always square.</p>
+
+<p style="margin-left:11%;"><b>-verbose</b></p>
+
+<p style="margin-left:22%;">This option causes
+<b>pamtogif</b> to display information about the conversion
+process and the image it produces.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>giftopnm</b>(1),
+<b>pnmremap</b>(1), <b>ppmtogif</b>(1),</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gifsicle</b>
+<a href="http://www.lcdf.org/gifsicle">http://www.lcdf.org/gifsicle</a>
+, <b>pnm</b>(1), <b>pam</b>(1).</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtogif</b>
+was new in Netpbm 10.37 (December 2006). It replaced
+<b>ppmtogif</b>, which created GIF images for Pbmplus/Netpbm
+users since 1989.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The main
+outward change in the conversion from <b>ppmtogif</b> to
+<b>pamtogif</b> was that <b>pamtogif</b> was able to use
+transparency information (&quot;alpha channel&quot;) in PAM
+input, whereas with <b>ppmtogif</b>, one had to supply the
+transparency mask in a separate pseudo-PGM image (via the
+<b>-alpha</b> option).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Jef Poskanzer
+wrote <b>ppmtogif</b> in 1989, and it has always been a
+cornerstone of Pbmplus/Netpbm because GIF is such a popular
+image format. Jef based the LZW encoding on GIFENCOD by
+David Rowley &lt;<i>mgardi@watdcsu.waterloo.edu</i>&gt;. Jef
+included GIFENCOD&rsquo;s GIFCOMPR.C file pretty much whole.
+Rowley, in turn, adapted the LZW compression code from
+classic Unix <b>compress</b>, which used techniques
+described in IEEE Computer, June 1984.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Jef&rsquo;s
+<b>ppmtogif</b> notably lacked the ability to use a
+transparency mask with it. You could create transparent
+pixels in a GIF, but only with the <b>-transparent</b>
+option, which allowed one to specify that all pixels of a
+certain color in the input were to be transparent. Bryan
+Henderson added the <b>-alpha</b> option in July 2001 so you
+could supply a mask image that indicates exactly which
+pixels are to be transparent, and those pixels could have
+the same color as other opaque ones.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Bryan Henderson
+added another significant piece of code and function in
+October 2001: the ability to generate a GIF without using
+the LZW patent -- an uncompressed GIF. This was very
+important to many people at the time because the GIF patent
+was still in force, and this allowed them to make an image
+that any GIF viewer could display, royalty-free. Bryan
+adapted code from the Independent JPEG Group&rsquo;s
+<b>djpeg</b> for that.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There is no
+code in <b>pamtogif</b> from Jef&rsquo;s original, but Jef
+may still hold copyright over it because of the way in which
+it evolved. Virtually all of the code in <b>pamtogif</b> was
+written by Bryan Henderson and contributed to the public
+domain.</p>
+
+<h2>LICENSE
+<a name="LICENSE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If you use
+<b>pamtogif</b> without the <b>-nolzw</b> option, you are
+using a patent on the LZW compression method which is owned
+by Unisys. The patent has expired (in 2003 in the US and in
+2004 elsewhere), so it doesn&rsquo;t matter. While the
+patent was in force, most people who used <b>pamtogif</b>
+and similar programs did so without a license from Unisys to
+do so. Unisys typically asked $5000 for a license for
+trivial use of the patent. Unisys never enforced the patent
+against trivial users.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Rumor has it
+that IBM also owns or owned a patent covering
+<b>pamtogif</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A replacement
+for the GIF format that never required any patents to use is
+the PNG format.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamtogif.html</b></p>
+<hr>
+</body>
+</html>

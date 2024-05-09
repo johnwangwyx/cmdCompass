@@ -1,0 +1,312 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:06 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GPGV</title>
+
+</head>
+<body>
+
+<h1 align="center">GPGV</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#RETURN VALUE">RETURN VALUE</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gpgv</b> -
+Verify OpenPGP signatures</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gpgv</b>
+[<i>options</i>] <i>signed_files</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i><b>gpgv</b></i>
+is an OpenPGP signature verification tool.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+actually a stripped-down version of <b>gpg</b> which is only
+able to check signatures. It is somewhat smaller than the
+fully-blown <b>gpg</b> and uses a different (and simpler)
+way to check that the public keys used to make the signature
+are valid. There are no configuration files and only a few
+options are implemented.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>gpgv</b>
+assumes that all keys in the keyring are trustworthy. That
+does also mean that it does not check for expired or revoked
+keys.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If no
+<b>--keyring</b> option is given, <b>gpgv</b> looks for a
+&rsquo;&rsquo;default&rsquo;&rsquo; keyring named
+&rsquo;<i>trustedkeys.kbx</i>&rsquo; (preferred) or
+&rsquo;<i>trustedkeys.gpg</i>&rsquo; in the home directory
+of GnuPG, either the default home directory or the one set
+by the <b>--homedir</b> option or the <b>GNUPGHOME</b>
+environment variable. If any <b>--keyring</b> option is
+used, <b>gpgv</b> will not look for the default keyring. The
+<b>--keyring</b> option may be used multiple times and all
+specified keyrings will be used together.</p>
+
+<h2>RETURN VALUE
+<a name="RETURN VALUE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The program
+returns 0 if everything is fine, 1 if at least one signature
+was bad, and other error codes for fatal errors.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gpgv</b>
+recognizes these options: <b><br>
+--verbose</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-v</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Gives more information during processing. If used twice,
+the input data is listed in detail.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--quiet</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-q</b></p></td>
+<td width="8%"></td>
+<td width="47%">
+
+
+<p>Try to be as quiet as possible.</p></td>
+<td width="31%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--keyring</b>
+<i>file</i></p>
+
+<p style="margin-left:22%;">Add <i>file</i> to the list of
+keyrings. If <i>file</i> begins with a tilde and a slash,
+these are replaced by the HOME directory. If the filename
+does not contain a slash, it is assumed to be in the
+home-directory (&quot;~/.gnupg&quot; if --homedir is not
+used).</p>
+
+<p style="margin-left:11%;"><b>--output</b> <i>file</i>
+<b><br>
+-o</b> <i>file</i></p>
+
+<p style="margin-left:22%;">Write output to <i>file</i>; to
+write to stdout use <b>-</b>. This option can be used to get
+the signed text from a cleartext or binary signature; it
+also works for detached signatures, but in that case this
+option is in general not useful. Note that an existing file
+will be overwritten.</p>
+
+<p style="margin-left:11%;"><b>--status-fd</b> <i>n</i></p>
+
+<p style="margin-left:22%;">Write special status strings to
+the file descriptor <i>n</i>. See the file DETAILS in the
+documentation for a listing of them.</p>
+
+<p style="margin-left:11%;"><b>--logger-fd n</b></p>
+
+<p style="margin-left:22%;">Write log output to file
+descriptor <b>n</b> and not to stderr.</p>
+
+<p style="margin-left:11%;"><b>--log-file file</b></p>
+
+<p style="margin-left:22%;">Same as <b>--logger-fd</b>,
+except the logger data is written to file <b>file</b>. Use
+&rsquo;<i>socket://</i>&rsquo; to log to socket.</p>
+
+
+<p style="margin-left:11%;"><b>--ignore-time-conflict</b></p>
+
+<p style="margin-left:22%;">GnuPG normally checks that the
+timestamps associated with keys and signatures have
+plausible values. However, sometimes a signature seems to be
+older than the key due to clock problems. This option turns
+these checks into warnings.</p>
+
+<p style="margin-left:11%;"><b>--homedir</b> <i>dir</i></p>
+
+<p style="margin-left:22%;">Set the name of the home
+directory to <i>dir</i>. If this option is not used, the
+home directory defaults to &rsquo;<i>~/.gnupg</i>&rsquo;. It
+is only recognized when given on the command line. It also
+overrides any home directory stated through the environment
+variable &rsquo;<i>GNUPGHOME</i>&rsquo; or (on Windows
+systems) by means of the Registry entry
+<i>HKCU\Software\GNU\GnuPG:HomeDir</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">On Windows
+systems it is possible to install GnuPG as a portable
+application. In this case only this command line option is
+considered, all other ways to set a home directory are
+ignored.</p>
+
+<p style="margin-left:22%; margin-top: 1em">To install
+GnuPG as a portable application under Windows, create an
+empty file named &rsquo;<i>gpgconf.ctl</i>&rsquo; in the
+same directory as the tool &rsquo;<i>gpgconf.exe</i>&rsquo;.
+The root of the installation is then that directory; or, if
+&rsquo;<i>gpgconf.exe</i>&rsquo; has been installed directly
+below a directory named &rsquo;<i>bin</i>&rsquo;, its parent
+directory. You also need to make sure that the following
+directories exist and are writable:
+&rsquo;<i>ROOT/home</i>&rsquo; for the GnuPG home and
+&rsquo;<i>ROOT/var/cache/gnupg</i>&rsquo; for internal cache
+files.</p>
+
+<p style="margin-left:11%;"><b>--weak-digest name</b></p>
+
+<p style="margin-left:22%;">Treat the specified digest
+algorithm as weak. Signatures made over weak digests
+algorithms are normally rejected. This option can be
+supplied multiple times if multiple algorithms should be
+considered weak. MD5 is always considered weak, and does not
+need to be listed explicitly.</p>
+
+
+<p style="margin-left:11%;"><b>--enable-special-filenames</b></p>
+
+<p style="margin-left:22%;">This option enables a mode in
+which filenames of the form &rsquo;<i>-&amp;n</i>&rsquo;,
+where n is a non-negative decimal number, refer to the file
+descriptor n and not to a file with that name.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gpgv pgpfile
+<br>
+gpgv sigfile</b> [<b>datafile</b>]</p>
+
+<p style="margin-left:22%;">Verify the signature of the
+file. The second form is used for detached signatures, where
+<b>sigfile</b> is the detached signature (either
+ASCII-armored or binary) and <b>datafile</b> contains the
+signed data; if <b>datafile</b> is &quot;-&quot; the signed
+data is expected on <b>stdin</b>; if <b>datafile</b> is not
+given the name of the file holding the signed data is
+constructed by cutting off the extension (&quot;.asc&quot;,
+&quot;.sig&quot; or &quot;.sign&quot;) from
+<b>sigfile</b>.</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>~/.gnupg/trustedkeys.gpg</b></p>
+
+<p style="margin-left:22%;">The default keyring with the
+allowed keys.</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p style="margin-top: 1em"><b>HOME</b></p></td>
+<td width="5%"></td>
+<td width="64%">
+
+
+<p style="margin-top: 1em">Used to locate the default home
+directory.</p> </td>
+<td width="14%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>GNUPGHOME</b></p>
+
+<p style="margin-left:22%;">If set directory used instead
+of &quot;~/.gnupg&quot;.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gpg</b>(1)</p>
+
+<p style="margin-left:11%; margin-top: 1em">The full
+documentation for this tool is maintained as a Texinfo
+manual. If GnuPG and the info program are properly installed
+at your site, the command</p>
+
+<p style="margin-left:14%; margin-top: 1em">info gnupg</p>
+
+<p style="margin-left:11%; margin-top: 1em">should give you
+access to the complete manual including a menu structure and
+an index.</p>
+<hr>
+</body>
+</html>

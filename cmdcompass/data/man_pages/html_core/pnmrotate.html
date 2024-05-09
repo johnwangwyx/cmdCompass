@@ -1,0 +1,216 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:35 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pnmrotate User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pnmrotate User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#REFERENCES">REFERENCES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pnmrotate -
+rotate a PNM image by some angle</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmrotate</b>
+[<b>-noantialias</b>] [<b>-background=</b><i>color</i>]
+<i>angle</i> [<i>pnmfile</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmrotate</b>
+reads a PNM image as input. It rotates it by the specified
+angle and produces the same kind of PNM image as output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The input is
+the file named by <i>pnmfile</i> or Standard Input if you
+don&rsquo;t specify <i>pnmfile</i>. The output goes to
+Standard Output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The resulting
+image is a rectangle that contains the (rectangular) input
+image within it, rotated with respect to its bottom edge.
+The containing rectangle is as small as possible to contain
+the rotated image. The background of the containing image is
+a single color that <b>pnmrotate</b> determines to be the
+background color of the original image, or that you specify
+explicitly.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>angle</i> is
+in decimal degrees (floating point), measured
+counter-clockwise. It can be negative, but it should be
+between -90 and 90.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You should use
+<b>pamflip</b> instead for rotations that are a multiple of
+a quarter turn. It is faster and more accurate.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For rotations
+greater than 45 degrees you may get better results if you
+first use <i>pamflip</i> to do a 90 degree rotation and then
+<i>pnmrotate</i> less than 45 degrees back the other
+direction.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The rotation
+algorithm is Alan Paeth&rsquo;s three-shear method. Each
+shear is implemented by looping over the source pixels and
+distributing fractions to each of the destination pixels.
+This has an &quot;anti-aliasing&quot; effect - it avoids
+jagged edges and similar artifacts. However, it also means
+that the original colors or gray levels in the image are
+modified. If you need to keep precisely the same set of
+colors, you can use the <b>-noantialias</b> option.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The program
+runs faster and uses less real memory with the
+<b>-noantialias</b> option. It uses a large amount of
+virtual memory either way, as it keeps a copy of the input
+image and a copy of the output image in memory, using 12
+bytes per pixel for each. But with <b>-noantialias</b>, it
+accesses this memory sequentially in half a dozen passes,
+with only a few pages of memory at a time required in real
+memory.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In contrast,
+without <b>-noantialias</b>, the program&rsquo;s real memory
+working set size is one page per input image row plus one
+page per output image row. Before Netpbm 10.16 (June 2003),
+<b>-noantialias</b> had the same memory requirement.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pnmrotate</b> recognizes the following command line
+options:</p>
+
+<p style="margin-left:11%; margin-top: 1em">All options can
+be abbreviated to their shortest unique prefix. You may use
+two hyphens instead of one to designate an option. You may
+use either white space or equals signs between an option
+name and its value. <b><br>
+-background=</b><i>color</i></p>
+
+<p style="margin-left:22%;">This determines the color of
+the background on which the rotated image sits.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Specify the
+color (<i>color</i>) as described for the
+<a href="libnetpbm_image.html#colorname">argument of the
+<b>pnm_parsecolor()</b> library routine</a> .</p>
+
+<p style="margin-left:22%; margin-top: 1em">By default, if
+you don&rsquo;t specify this option, <b>pnmrotate</b>
+selects what appears to it to be the background color of the
+original image. It determines this color rather
+simplistically, by taking an average of the colors of the
+two top corners of the image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.15. Before that, <b>pnmrotate</b> always
+behaved as is the default now.</p>
+
+<p style="margin-left:11%;"><b>-noantialias</b></p>
+
+<p style="margin-left:22%;">This option forces
+<b>pnmrotate</b> to simply move pixels around instead of
+synthesizing output pixels from multiple input pixels. The
+latter could cause the output to contain colors that are not
+in the input, which may not be desirable. It also probably
+makes the output contain a large number of colors. If you
+need a small number of colors, but it doesn&rsquo;t matter
+if they are the exact ones from the input, consider using
+<b>pnmquant</b> on the output instead of using
+<b>-noantialias</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Note that to
+ensure the output does not contain colors that are not in
+the input, you also must consider the background color. See
+the <b>-background</b> option.</p>
+
+<h2>REFERENCES
+<a name="REFERENCES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">&quot;A Fast
+Algorithm for General Raster Rotation&quot; by Alan Paeth,
+Graphics Interface &rsquo;86, pp. 77-81.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmshear</b>(1),
+<b>pamflip</b>(1), <b>pnmquant</b>(1), <b>pnm</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1989, 1991 by Jef Poskanzer.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pnmrotate.html</b></p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:26 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pammasksharpen User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pammasksharpen User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pammasksharpen
+- Sharpen an image via an unsharp mask</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pammasksharpen</b>
+[<b>-sharpness=</b><i>realnum</i>]
+[<b>-threshold=</b><i>realnum</i>] <i>maskfile</i>
+[<i>inputfile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">All options can
+be abbreviated to their shortest unique prefix. You may use
+two hyphens instead of one. You may separate an option name
+and its value with white space instead of an equals
+sign.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamgauss 5 5
+-sigma=.7 -tupletype=GRAYSCALE | pamtopnm &gt; gauss.pgm
+<br>
+pnmconvol -nooffset gauss.pgm myimage.ppm &gt; blurred.ppm
+<br>
+pammasksharpen blurred.ppm myimage.ppm &gt;
+sharpened.ppm</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pammasksharpen</b>
+reads a Netpbm image as input and produces a sharpened
+version of it, in the same format, as output. It does this
+via an unsharp mask, which you supply as another Netpbm
+image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">An unsharp mask
+is generally a blurred version of the original image. The
+sharpening computation is this: Calculate the
+&quot;edgeness&quot; of a sample in the input image as the
+signed difference between the sample value and the
+corresponding sample in the unsharp mask. This tells how
+different the pixel is from its neighbors. Add a multiple of
+the edgeness to the original sample to get the corresponding
+output sample. Clip as necessary. This causes pixels that
+are brighter than their neighbors to get even brighter,
+while pixels that are dimmer than their neighbors get even
+dimmer. This makes edges -- places where pixel values change
+quickly in space -- stand out more.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The unsharp
+mask must be the same dimensions and have the same maxval as
+the input image.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>The Unsharp
+Mask</b> <br>
+You usually create the unsharp mask as a Gaussian blur of
+the original image, which you can do using <b>pamgauss</b>
+and <b>pnmconvol</b> as in the example above. The
+convolution kernel you use with <b>pnmconvol</b> is normally
+a square with side length an odd number of pixels.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When you create
+an unsharp mask like this, you will have to choose the side
+length of the convolution kernel. That length implements the
+parameter of unsharp mask sharpening usually known as
+&quot;radius.&quot; In particular, a radius of R pixels
+corresponds to a convolution kernel 2R+1 pixels on a
+side.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Radius is a
+very important parameter; you can ruin an image with a
+radius too large. You can safely use the highest radius with
+an inanimate object, while a human face demands the least.
+Landscapes fall in between. But it really depends on the
+size of the details. Fine detail needs a smaller radius, or
+else you may obliterate tiny detail of the same size as the
+Radius width. A large image often has larger detail (more
+pixels involved), so can use a larger radius. Radius and
+sharpness (see <b>-sharpness</b> option) interact: reducing
+one allows you to increase the other.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pammasksharpen</b> recognizes the following command line
+options: <b><br>
+-sharpness=</b><i>realnum</i></p>
+
+<p style="margin-left:22%;">This specifies the magnitude of
+the sharpening. It is the multiple of edgeness that gets
+added to each sample as described above.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>realnum</i>
+is a nonnegative real decimal number. Zero means no
+sharpening at all.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This parameter
+is known as &quot;amount&quot; in ImageMagick.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+1.0.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.30 (October 2005). Before that, the
+sharpness was always 1.0.</p>
+
+
+<p style="margin-left:11%;"><b>-threshold=</b><i>realnum</i></p>
+
+<p style="margin-left:22%;">This minimum amount of edgeness
+that will be considered edgeness at all. i.e. if the
+magnitude of the edgeness is less than this,
+<b>pammasksharpen</b> will treat the edgeness as zero.</p>
+
+<p style="margin-left:22%; margin-top: 1em">A nonzero value
+may be necessary here to avoid speckling in smooth
+areas.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This is a
+fraction of the maxval (so it is in the range [0, 1.0]).</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+0.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.34 (June 2006).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmconvol</b>(1),
+<b>pamedge</b>(1), <b>pamsharpness</b>(1),
+<b>pamsharpmap</b>(1), <b>pamarith</b>(1), <b>pnm</b>(1),
+<b>pam</b>(1)</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pammasksharpen</b>
+was new in Netpbm 10.23 (July 2004).</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pammasksharpen.html</b></p>
+<hr>
+</body>
+</html>

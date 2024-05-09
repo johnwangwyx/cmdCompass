@@ -1,0 +1,149 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:33:53 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>AA-EXEC</title>
+
+</head>
+<body>
+
+<h1 align="center">AA-EXEC</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS aa-exec accepts the following arguments:">OPTIONS aa-exec accepts the following arguments:</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">aa-exec -
+confine a program with the specified AppArmor profile</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>aa-exec</b>
+[options] [--] [<i>&lt;command&gt;</i> ...]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>aa-exec</b>
+is used to launch a program confined by the specified
+profile and or namespace. If both a profile and namespace
+are specified command will be confined by profile in the new
+policy namespace. If only a namespace is specified, the
+profile name of the current confinement will be used. If
+neither a profile or namespace is specified command will be
+run using standard profile attachment (ie. as if run without
+the aa-exec command).</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the
+arguments are to be pasted to the <i>&lt;command&gt;</i>
+being invoked by aa-exec then -- should be used to separate
+aa-exec arguments from the command. <br>
+aa-exec -p profile1 -- ls -l</p>
+
+<h2>OPTIONS aa-exec accepts the following arguments:
+<a name="OPTIONS aa-exec accepts the following arguments:"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">-p
+<small>PROFILE,</small> --profile=PROFILE</p>
+
+<p style="margin-left:17%;">confine <i>&lt;command&gt;</i>
+with <small>PROFILE.</small> If the <small>PROFILE</small>
+is not specified use the current profile name (likely
+unconfined).</p>
+
+<p style="margin-left:11%;">-n <small>NAMESPACE,</small>
+--namespace=NAMESPACE</p>
+
+<p style="margin-left:17%;">use profiles in
+<small>NAMESPACE.</small> This will result in confinement
+transitioning to using the new profile namespace.</p>
+
+<p style="margin-left:11%;">-i, --immediate</p>
+
+<p style="margin-left:17%;">transition to
+<small>PROFILE</small> before doing executing
+<i>&lt;command&gt;</i>. This subjects the running of
+<i>&lt;command&gt;</i> to the exec transition rules of the
+current profile.</p>
+
+<p style="margin-left:11%;">-v, --verbose</p>
+
+<p style="margin-left:17%;">show commands being
+performed</p>
+
+<p style="margin-left:11%;">-d, --debug</p>
+
+<p style="margin-left:17%;">show commands and error
+codes</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>--</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>Signal the end of options and disables further option
+processing. Any arguments after the -- are treated as
+arguments of the command. This is useful when passing
+arguments to the <i>&lt;command&gt;</i> being invoked by
+aa-exec.</p> </td></tr>
+</table>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If you find any
+bugs, please report them at
+&lt;https://gitlab.com/apparmor/apparmor/-/issues&gt;</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>aa-stack</b>(8),
+<b>aa-namespace</b>(8), <b>apparmor</b>(7),
+<b>apparmor.d</b>(5), <b>aa_change_profile</b>(3),
+<b>aa_change_onexec</b>(3) and
+&lt;https://wiki.apparmor.net&gt;.</p>
+<hr>
+</body>
+</html>

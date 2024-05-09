@@ -1,0 +1,951 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:27 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamstereogram User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamstereogram User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#PARAMETERS">PARAMETERS</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#Table Of Contents">Table Of Contents</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamstereogram -
+create a single-image stereogram from a PAM depth map</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamstereogram</b>
+[<b>-help</b>] [<b>-verbose</b>] [<b>-blackandwhite</b> |
+<b>-grayscale</b> | <b>-color</b>]
+[<b>-maxval=</b><i>value</i>]
+[<b>-patfile=</b><i>pamfile</i>]
+[<b>-texfile=</b><i>pamfile</i>]
+[<b>-bgcolor=</b><i>color</i>]
+[<b>-smoothing=</b><i>pixels</i>]
+[<b>-xbegin=</b><i>pixels</i>]
+[<b>-xshift=</b><i>pixels</i>]
+[<b>-yshift=</b><i>pixels</i>] [<b>-yfillshift</b>
+<i>pixels</i>] [<b>-magnifypat=</b><i>scale</i>]
+[<b>-guidetop</b>] [<b>-guidebottom</b>]
+[<b>-guidesize=</b><i>pixels</i>]
+[<b>-dpi=</b><i>resolution</i>] [<b>-crosseyed</b>]
+[<b>-makemask</b>] [<b>-eyesep=</b><i>inches</i>]
+[<b>-depth=</b><i>fraction</i>]
+[<b>-planes=</b><i>near_pixels</i>,<i>far_pixels</i>]
+[<b>-randomseed=</b><i>integer</i>] [<b>-tileable</b>]
+[<i>infile</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamstereogram</b>
+inputs a depth map (a map of the distances from your eye of
+the points in a scene) and outputs a single-image stereogram
+(SIS). A SIS is a 2-D image specially designed to appear
+three dimensional when viewed with relaxed, slightly
+unfocused eyes. What&rsquo;s exciting about single-image
+stereograms is that they don&rsquo;t require special glasses
+to view, although it does require a bit of practice to train
+your eyes to unfocus properly. The <b>pamstereogram</b>
+program provides a wealth of control over how the stereogram
+is generated, including the following:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>black and white, grayscale, or color output</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>single-image random-dot stereograms (SIRDS),
+single-image stereograms (SIS) using a tiled image, or
+mapped-texture stereograms (MTS)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>images targeting a given device resolution and eye
+separation</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>optional guide boxes to assist in focusing</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>the ability to trade off depth levels for easier
+viewing</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>choice of wall-eyed or cross-eyed stereograms</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The output is a
+PAM image on standard output. Options control the exact
+format of the PAM. If you want a PNM (PBM, PGM, or PPM)
+image, use <b>pamtopnm</b> on the output. There is no need
+to convert if you will use the image as input to a current
+Netpbm program, but many other programs don&rsquo;t know
+what a PAM is.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To make a
+red/cyan type of stereogram (that you view with 3-D glasses)
+instead, see <b>ppm3d</b>.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">You may use
+either single or double hyphens to denote options. You may
+use either whitespace or an equals sign to separate an
+option name from its value.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamstereogram</b> recognizes the following command line
+options: <b><br>
+-verbose</b></p>
+
+<p style="margin-left:22%;">Display messages about image
+sizes and formats and properties of the stereogram being
+generated.</p>
+
+<p style="margin-left:11%;"><b>-blackandwhite</b></p>
+
+<p style="margin-left:22%;">Produce a single-image
+random-dot black-and-white stereogram. This is the
+default.</p>
+
+<p style="margin-left:11%;"><b>-grayscale</b></p>
+
+<p style="margin-left:22%;">Produce a single-image
+random-dot grayscale stereogram.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-color</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Produce a single-image random-dot color stereogram.</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>-maxval=</b><i>value</i></p>
+
+<p style="margin-left:22%;">Designate the maximum value of
+each gray/color component, i.e. the color resolution.
+Smaller values make the output image have smaller numbers of
+unique grays/colors. If you don&rsquo;t specify
+<b>-maxval</b>, <b>pamstereogram</b> uses the maxval of the
+input image. This option has no effect with
+<b>-blackandwhite</b>.</p>
+
+
+<p style="margin-left:11%;"><b>-patfile=</b><i>pamfile</i></p>
+
+<p style="margin-left:22%;">Specify an image to use as a
+repeated background pattern for the stereogram instead of a
+random-dot pattern. Intricate images generally produce a
+crisper 3-D effect that simpler images. The output file will
+have the same maxval and format (black and white, grayscale
+or color) as the pattern file. You cannot specify the
+<b>-patfile</b> option along with <b>-blackandwhite</b>,
+<b>-grayscale</b>, <b>-color</b>, or <b>-maxval</b>. The
+<b>-verbose</b> option will give you information on the
+ideal dimensions of the pattern file.</p>
+
+
+<p style="margin-left:11%;"><b>-xbegin=</b><i>pixels</i></p>
+
+<p style="margin-left:22%;">Specify the horizontal
+coordinate at which to begin stereogram generation. The
+background pattern will be minimally distorted at this point
+and more distorted at greater distances. Consider using this
+in conjunction with <b>-xshift</b> to align the horizontal
+start of the pattern with the horizontal start of stereogram
+generation. <b>-xbegin</b> is meaningful only in conjunction
+with <b>-patfile</b>, <b>-makemask</b>, or <b>-texfile</b>,
+and <b>pamstereogram</b> actually ignores it with respect to
+<b>-texfile</b> (but may not in a future version of
+<b>pamstereogram</b>).</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+to begin in the center.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.71 (June 2015).</p>
+
+
+<p style="margin-left:11%;"><b>-texfile=</b><i>pamfile</i></p>
+
+<p style="margin-left:22%;">Specify an image to use as the
+texture for a mapped-texture stereogram. The idea is that
+the depth-map image provides the depth values of the 3-D
+object/scene while the texture image provides the true-color
+values. Consequently, the texture image should align with
+the depth-map image. (Note that it&rsquo;s required to have
+the same dimensions.) The texture image&rsquo;s background
+color is ignored when blending colors.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.53 (December 2010).</p>
+
+
+<p style="margin-left:11%;"><b>-bgcolor=</b><i>color</i></p>
+
+<p style="margin-left:22%;">Use <i>color</i> as the texture
+image&rsquo;s background color instead of letting
+<b>pamstereogram</b> determine it automatically. Specify the
+color as described for the
+<a href="libnetpbm_image.html#colorname">argument of the
+pnm_parsecolor() library routine</a> . The <b>-bgcolor</b>
+option is meaningful only in conjunction with
+<b>-texfile</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.53 (December 2010).</p>
+
+
+<p style="margin-left:11%;"><b>-smoothing=</b><i>pixels</i></p>
+
+<p style="margin-left:22%;">When used without
+<b>-texfile</b>, attempt to eliminate artifacts introduced
+by edges in the depth map if <i>pixels</i> is greater than
+zero.</p>
+
+<p style="margin-left:22%; margin-top: 1em">When used with
+<b>-texfile</b>, horizontally blur non-background colors
+into background pixels up to a distance of <i>pixels</i>
+pixels. This helps smooth over distracting glitches
+introduced by the stereogram&rsquo;s color constraints when
+producing a mapped-texture stereogram. In this case, the
+<b>-smoothing</b> option is helpful when the texture image
+includes smooth color transitions (as in a photograph) but
+makes crisp texture images (as in a line drawing) appear
+blurry.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.53 (December 2010). Before Netpbm 10.61
+(December 2012), it has no effect without
+<b>-texfile</b>.</p>
+
+
+<p style="margin-left:11%;"><b>-xshift=</b><i>pixels</i></p>
+
+<p style="margin-left:22%;">Shift the pattern image
+(designated by <b>-patfile</b>) to the right by
+<i>pixels</i> pixels (default: 0).</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option is
+valid only along with <b>-patfile</b>.</p>
+
+<p style="margin-left:11%;"><b>-yshift</b>
+<i>pixels</i></p>
+
+<p style="margin-left:22%;">Shift the pattern image
+(designated by <b>-patfile</b>) downwards by <i>pixels</i>
+pixels (default: 0). This option is valid only along with
+<b>-patfile</b>.</p>
+
+<p style="margin-left:11%;"><b>-yfillshift</b>
+<i>pixels</i></p>
+
+<p style="margin-left:22%;">Shift the pattern image
+(designated by <b>-patfile</b>) downwards by <i>pixels</i>
+pixels (default: 0) but only after the initial population of
+the pattern. (If used with <b>-yshift</b> the resulting
+shifts are summed.) A small <b>-yfillshift</b> helps reduce
+visual artifacts in the 3-D image. Steer&rsquo;s website,
+referenced under <a href="#seealso">SEE ALSO</a> ,
+recommends a shift of approximately 1/16&quot; (6-7 pixels
+at <b>pamstereogram</b>&rsquo;s default of 100 DPI).</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.94 (March 2021).</p>
+
+
+<p style="margin-left:11%;"><b>-magnifypat=</b><i>scale</i></p>
+
+<p style="margin-left:22%;">Magnify each pixel in the
+pattern file or each random dot by integral scaling factor
+<i>scale</i>. Note that <b>pamstereogram</b> applies the
+pattern magnification <i>after</i> pattern shifting
+(<b>-xshift</b> and <b>-yshift</b>).</p>
+
+<p style="margin-left:11%;"><b>-guidebottom</b></p>
+
+<p style="margin-left:22%;">Draw a pair of black squares on
+a white background underneath the stereogram proper. These
+squares help you guide your eyes into proper focus to view
+the 3-D image. The trick is to focus your eyes some distance
+behind the image, causing you to see four black squares,
+then continue altering your focus distance until the middle
+two black squares fuse into a single black square. At that
+point, a crisp, 3-D image will appear.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.61 (December 2012). Before that, the
+presence of <b>-guidesize</b>, with a positive value, has
+the same effect.</p>
+
+<p style="margin-left:11%;"><b>-guidetop</b></p>
+
+<p style="margin-left:22%;">Same as <b>-guidebottom</b>,
+except the guides go at the top of the image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.61 (December 2012). Before that, the
+presence of <b>-guidesize</b>, with a negative value, has
+the same effect.</p>
+
+
+<p style="margin-left:11%;"><b>-guidesize=</b><i>pixels</i></p>
+
+<p style="margin-left:22%;">The size (width and height) of
+each guide box.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This is valid
+only with <b>-guidetop</b> or <b>-guidebottom</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Default is
+20.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Before Netpbm
+10.61 (December 2012), if you don&rsquo;t specify this
+option, <b>pamstereogram</b> draws no guides. If you specify
+it with a positive value, <b>pamstereogram</b> behaves as if
+you specified <b>-guidebottom</b> too, and if you specify it
+with a negative value, it behaves as if you specified
+<b>-guidetop</b> and specified <b>guidesize</b> with the
+absolute value of that negative value.</p>
+
+
+<p style="margin-left:11%;"><b>-dpi=</b><i>resolution</i></p>
+
+<p style="margin-left:22%;">Specify the resolution of the
+output device in dots per inch. The default is 100 DPI,
+which represents a fairly crisp screen resolution.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Before Netpbm
+10.53 (December 2010), the default was 96 DPI.</p>
+
+<p style="margin-left:11%;"><b>-crosseyed</b></p>
+
+<p style="margin-left:22%;">Invert the gray levels in the
+depth map (input image) so that the 3-D image pops out of
+the page where it would otherwise sink into the page and
+vice versa. Some people are unable to diverge their eyes and
+can only cross them. The <b>-crosseyed</b> option enables
+such people to see the 3-D image as intended. You can also
+specify the <b>-crosseyed</b> option if you prefer using
+depth maps in which darker colors are closer to the eye and
+lighter colors are farther from the eye.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Before Netpbm
+10.53 (December 2010), <b>pamstereogram</b> used higher
+(lighter) numbers for things closer to the eye
+<i>without</i> <b>-crosseyed</b> and vice versa.</p>
+
+<p style="margin-left:11%;"><b>-makemask</b></p>
+
+<p style="margin-left:22%;">Instead of a stereogram, output
+a PAM mask image showing coloring constraints. New pixels
+will be taken from the pattern file where the mask is black.
+Copies of existing pixels will be taken from the pattern
+file where the mask is white. The <b>-makemask</b> option
+can be used to help create more sophisticated pattern files
+(to use with <b>-patfile</b>) Note that <b>-makemask</b>
+ignores <b>-magnifypat</b>; it always produces masks that
+assume a pattern magnification of 1.</p>
+
+
+<p style="margin-left:11%;"><b>-eyesep=</b><i>inches</i></p>
+
+<p style="margin-left:22%;">Specify the separation in
+inches between your eyes. The default, 2.5 inches (6.4 cm),
+should be sufficient for most people and probably
+doesn&rsquo;t need to be changed.</p>
+
+
+<p style="margin-left:11%;"><b>-depth=</b><i>fraction</i></p>
+
+<p style="margin-left:22%;">Specify the output
+image&rsquo;s depth of field. That is, <i>fraction</i>
+represents the fractional distance of the near plane from
+the far plane. Smaller numbers make the 3-D image easier to
+perceive but flatter. Larger numbers make the 3-D image more
+difficult to perceive but deeper. The default, 0.3333,
+generally works fairly well.</p>
+
+
+<p style="margin-left:11%;"><b>-planes=</b><i>near_pixels</i>,<i>far_pixels</i></p>
+
+<p style="margin-left:22%;">Explicitly specify the distance
+between repeated pixels in the near plane and in the far
+plane. This is an alternative to <b>-eyesep</b> and
+<b>-depth</b>. The following equalities hold:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="40%">
+
+
+<p><i>eyesep</i> = 2 * <i>far</i></p></td>
+<td width="38%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="40%">
+
+
+<p><i>depth</i> = 2 * (<i>far</i> - <i>near</i>) /</p></td>
+<td width="38%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%;">(2 * <i>far</i> -
+<i>near</i>)</p>
+
+<p style="margin-left:22%; margin-top: 1em">The number of
+distinct 3-D depths is <i>far</i> - <i>near</i> + 1. One
+might say that <b>-eyesep</b> and <b>-depth</b> are a more
+human-friendly way to specify stereoscopic parameters
+(distance between eyes and tradeoff between perceptibility
+and depth) while <b>-planes</b> is a more computer-centric
+way (pixel distances in the resulting stereogram).</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.59 (June 2012).</p>
+
+
+<p style="margin-left:11%;"><b>-randomseed=</b><i>integer</i></p>
+
+<p style="margin-left:22%;">Specify a seed to be used for
+the random number generator. The default is to use a seed
+based on the time of day, to one second granularity.</p>
+
+<p style="margin-left:22%; margin-top: 1em">It is useful to
+specify the seed if you want to create reproducible results.
+With the same random seed, you should get identical results
+every time you run <b>pamstereogram</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This is
+irrelevant if you use a pattern file (<b>-patfile</b>
+option), because there is no random element to
+<b>pamstereogram</b>&rsquo;s behavior.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.32 (February 2006).</p>
+
+<p style="margin-left:11%;"><b>-tileable</b></p>
+
+<p style="margin-left:22%;">Make the generated image
+horizontally tileable. This works by blending a
+left-to-right rendering (the equivalent of <b>-xbegin</b>=0)
+with a right-to-left rendering (the equivalent of
+<b>-xbegin</b>=<i>width-1</i>).</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.91 (June 2020).</p>
+
+<h2>PARAMETERS
+<a name="PARAMETERS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The only
+parameter, <i>infile</i>, is the name of an input file that
+is a depth map image. If you don&rsquo;t specify
+<i>infile</i>, the input is from standard input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The input is a
+PAM image of depth 1. Each sample represents the distance
+from the eye that the 3-D image at that location should be.
+Lower (darker) numbers mean further from the eye.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Input Images
+<br>
+pamstereogram</b> pays no attention to the image&rsquo;s
+tuple type and ignores all planes other than plane 0.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Like any Netpbm
+program, <b>pamstereogram</b> will accept PNM input as if it
+were the PAM equivalent.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Mapped-texture
+Stereograms</b> <br>
+In a <i>mapped-texture stereogram</i> (MTS), the 3-D image
+can be drawn with true colors. Unlike a SIRDS or tiled-image
+SIS, however, the image portrayed by an MTS is apparent in
+normal 2-D viewing. It appears repeated multiple times and
+overlapped with itself, but it is not hidden.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You create an
+MTS with <b>pamstereogram</b> by passing the filename of a
+PAM &quot;texture image&quot; with a <b>-texfile</b> option.
+A texture image portrays the same 3-D object as the
+depth-map image but indicates the colors that the program
+should apply to the object.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamstereogram</b>
+ignores the texture image&rsquo;s background color when it
+overlaps copies of the 3-D object. This prevents, for
+example, a bright-red object on a black background from
+being drawn as a dark-red object (a blend of 50% bright red
+and 50% black); instead, the program ignores the black and
+the object remains bright red. A consequence of this feature
+is that an MTS looks best when the objects in the texture
+image have a crisp outline. Smooth transitions to the
+background color result in unwanted color artifacts around
+edges because the program ignores only <i>exact</i> matches
+with the background color.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You should
+specify a larger-than-normal value for <b>-eyesep</b>
+(and/or <b>-dpi</b>) when producing an MTS. Otherwise, the
+3-D object will repeat so many times that most colored
+pixels will overlap other colored pixels, reducing the
+number of true-colored pixels that remain.</p>
+
+<p style="margin-left:11%; margin-top: 1em">An MTS can
+employ a background pattern (<b>-patfile</b>). In this case,
+<b>pamstereogram</b> replaces background pixels with pattern
+pixels in the final step of generating the image.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Miscellaneous</b>
+<br>
+A good initial test is to input an image consisting of a
+solid shape of distance 0 within a large field of maximum
+distance (e.g., a white square on a black background).</p>
+
+<p style="margin-left:11%; margin-top: 1em">With the
+default values for <b>-dpi</b> and <b>-eyesep</b>, pattern
+images that are 128 pixels wide can tile seamlessly.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Generate a
+SIRDS out of small, brightly colored squares and prepare it
+for display on an 87 DPI monitor:</p>
+
+<p style="margin-left:11%; margin-top: 1em">pamstereogram
+depthmap.pam \ <br>
+-dpi 87 -verbose -color -maxval 1 -magnifypat 3 \ <br>
+&gt;3d.pam</p>
+
+<p style="margin-left:11%; margin-top: 1em">Generate a SIS
+by tiling a PPM file (a prior run with <b>-verbose</b>
+indicates how wide the pattern file should be for seamless
+tiling, although any width is acceptable for producing
+SISes):</p>
+
+<p style="margin-left:11%; margin-top: 1em">pamstereogram
+depthmap.pam -patfile mypattern.ppm &gt;3d.pam</p>
+
+<p style="margin-left:11%; margin-top: 1em">Generate an MTS
+by associating colors with a depth-mapped object (using a
+large eye separation to reduce the number of repetitions of
+the texture image) and twice smoothing over
+background-colored speckles:</p>
+
+<p style="margin-left:11%; margin-top: 1em">pamstereogram
+depthmap.pam \ <br>
+-texfile colormap.pam -smoothing 2 -eyesep 3.5 \ <br>
+&gt;3d.pam</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em"><b>pam</b>(1)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p><b>pamsistoaglyph</b>(1)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p><b>ppm3d</b>(1)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Harold W. Thimbleby, Stuart Inglis, and Ian H. Witten.
+<i>Displaying 3D Images: Algorithms for Single Image Random
+Dot Stereograms</i>. In IEEE Computer, <b>27</b>(10):38-48,
+October 1994. DOI:
+<a href="http://dx.doi.org/10.1109/2.318576">10.1109/2.318576</a>
+.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>W. A. Steer. <i>Stereograms: Technical Details</i>. URL:
+<b>http://www.techmind.org/stereo/stech.html</b>(1).</p> </td></tr>
+</table>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamstereogram</b>
+was new in Netpbm 10.22 (April 2004), but probably broken
+beyond usability until Netpbm 10.32 (February 2006) and
+Netpbm 10.26.23 (January 2006).</p>
+
+<p style="margin-left:11%; margin-top: 1em">A backward
+incompatible change to the way you request guide boxes
+(<b>-guidetop</b>, <b>-guidebottom</b>, <b>-guidesize</b>
+happened in Netpbm 10.61 (December 2012).</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+&copy; 2006-2020 Scott Pakin,
+<i>scott+pbm@pakin.org</i>.</p>
+
+<h2>Table Of Contents
+<a name="Table Of Contents"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="40%">
+
+
+
+<p style="margin-top: 1em"><a href="#synopsis">SYNOPSIS</a></p> </td>
+<td width="38%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="40%">
+
+
+<p><a href="#description">DESCRIPTION</a></p></td>
+<td width="38%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="40%">
+
+
+<p><a href="#options">OPTIONS</a></p></td>
+<td width="38%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="40%">
+
+
+<p><a href="#parameters">PARAMETERS</a></p></td>
+<td width="38%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="40%">
+
+
+<p><a href="#notes">NOTES</a></p></td>
+<td width="38%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="40%">
+
+
+<p><a href="#inputimages">Input Images</a></p></td>
+<td width="38%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="40%">
+
+
+<p><a href="#mappedtexture">Mapped-texture
+Stereograms</a></p> </td>
+<td width="38%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="40%">
+
+
+<p><a href="#notes_misc">Miscellaneous</a></p></td>
+<td width="38%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="40%">
+
+
+<p><a href="#examples">EXAMPLES</a></p></td>
+<td width="38%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="40%">
+
+
+<p><a href="#seealso">SEE ALSO</a></p></td>
+<td width="38%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="40%">
+
+
+<p><a href="#history">HISTORY</a></p></td>
+<td width="38%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="40%">
+
+
+<p><a href="#author">AUTHOR</a></p></td>
+<td width="38%">
+</td></tr>
+</table>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamstereogram.html</b></p>
+<hr>
+</body>
+</html>

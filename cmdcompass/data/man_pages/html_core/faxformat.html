@@ -1,0 +1,195 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:03 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Fax Formats</title>
+
+</head>
+<body>
+
+<h1 align="center">Fax Formats</h1>
+
+<a href="#TIFF">TIFF</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<p style="margin-left:11%; margin-top: 1em">This page, part
+of the <b>Netpbm user&rsquo;s guide</b>(1), describes FAX
+formats in relation to Netpbm facilities.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The ITU
+(formerly CCITT) publishes standards for operation of fax
+machines (the idea is to provide a way to be sure that a fax
+machine is able to receive a fax sent by another). These
+standards incidentally specify graphics file formats -- a
+protocol for representing a visual image in sequences of
+bits.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The two
+relevant standards are called Group 3 (G3) and Group 4 (G4)
+(Groups 1 and 2 are analog standards no longer in use).
+Virtually every fax machine in existence conforms at least
+generally to at least one of these standards.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The standard
+for Group 3 fax is defined in ITU Recommendation T.4. In the
+U.S., that is implemented by EIA standards EIA-465 and
+EIA-466. These standards cover more than the file format as
+well, including how to transmit bits over a telephone line
+and procedures for handling document transmissions.</p>
+
+<p style="margin-left:11%; margin-top: 1em">G3 faxes are
+204 dots per inch (dpi) horizontally and 98 dpi (196 dpi
+optionally, in fine-detail mode) vertically.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The standards
+specify three file formats (also called coding methods and
+compression schemes -- remember the standard doesn&rsquo;t
+mention computer files; it talks about the format of a
+stream of bits travelling over a telephone line):</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>MH</p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>This compresses in one dimension: it compresses
+individual raster lines but makes no attempt to compress
+redundancy between lines.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">One dimensional
+compression is traditionally the best a fax machine could
+handle because G3 neither assumes error free transmission
+not retransmits when errors occur, and receiving fax
+machines traditionally could not afford to buffer much of a
+page. It&rsquo;s important that when there is an error in a
+raster line, its impact not spread to many lines after
+it.</p>
+
+<p style="margin-left:22%; margin-top: 1em">All Group 3 and
+Group 4 fax machines must be able to send and receive
+MH.</p>
+
+<p style="margin-left:22%; margin-top: 1em">MH is sometimes
+called &quot;G3,&quot; but that is a poor name because while
+the Group 3 standard does specify MH, it has always
+specified other formats too.</p>
+
+<p style="margin-left:22%; margin-top: 1em">MH is sometimes
+called &quot;T4&quot; based on the name of the document that
+specifies it, ITU T.4. But this is a poor name because T.4
+also specifies MR.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em">MR</p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">This compresses in two
+dimensions, horizontally and vertically.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">MR has always
+been part of the Group 3 standard, but is optional (a Group
+3 fax machine may or may not be able to send and receive
+it).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p style="margin-top: 1em">MMR</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">This is a more advanced format
+than the others. It is even more two-dimensional than MR. It
+is optional in the Group 3 standard, and didn&rsquo;t even
+exist in earlier versions of it. It was developed
+specifically for the Group 4 standard, but then added to an
+extended Group 3 standard as well.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">MMR is
+sometimes called Group 4, but that is a poor name because of
+the fact that it is also part of the current Group 3
+standard.</p>
+
+<p style="margin-left:22%; margin-top: 1em">MMR is
+sometimes called &quot;T6&quot; based on the name of the
+document <br>
+that specifies it, ITU T.6.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>g3topbm</b>
+converts the MH format to PBM. <b>pbmtog3</b> converts PBM
+to MH.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There is no
+Netpbm program to convert to or from other fax formats.</p>
+
+<h2>TIFF
+<a name="TIFF"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The TIFF format
+is flexible enough to allow lots of different coding
+methods, within it. There are TIFF subformats for MH, MR,
+and MMR, among others. These are particularly useful when
+you receive a fax as a TIFF file.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>tifftopnm</b>
+recognizes and can convert from any of these.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtotiff</b>
+can convert to any of these; you use command options to
+choose which.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/faxformat.html</b></p>
+<hr>
+</body>
+</html>

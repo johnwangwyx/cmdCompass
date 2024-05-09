@@ -1,0 +1,1133 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:05 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>EQN</title>
+
+</head>
+<body>
+
+<h1 align="center">EQN</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#USAGE">USAGE</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#MATHML MODE LIMITATIONS">MATHML MODE LIMITATIONS</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">eqn - format
+equations for troff or MathML</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p style="margin-top: 1em"><b>eqn</b></p></td>
+<td width="2%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">[<b>-rvCNR</b>]
+[<b>-d&nbsp;</b><i>xy</i>] [<b>-T&nbsp;</b><i>name</i>]
+[<b>-M&nbsp;</b><i>dir</i>] [<b>-f&nbsp;</b><i>F</i>]
+[<b>-s&nbsp;</b><i>n</i>] [<b>-p&nbsp;</b><i>n</i>]
+[<b>-m&nbsp;</b><i>n</i>] [<i>file</i> ...]</p></td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page describes the GNU version of <b>eqn</b>, which is part
+of the groff document formatting system. <b>eqn</b> compiles
+descriptions of equations embedded within <b>troff</b> input
+files into commands that are understood by <b>troff</b>.
+Normally, it should be invoked using the <b>-e</b> option of
+<b>groff</b>. The syntax is quite compatible with Unix eqn.
+The output of GNU <b>eqn</b> cannot be processed with Unix
+troff; it must be processed with GNU troff. If no files are
+given on the command line, the standard input is read. A
+filename of <b>-</b> causes the standard input to be
+read.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>eqn</b>
+searches for the file <i>eqnrc</i> in the directories given
+with the <b>-M</b> option first, then in
+<i>/usr/lib/groff/site-tmac</i>, <i>/usr/share/groff/
+site-tmac</i>, and finally in the standard macro directory
+<i>/usr/share/ groff/1.22.4/tmac</i>. If it exists,
+<b>eqn</b> processes it before the other input files. The
+<b>-R</b> option prevents this.</p>
+
+<p style="margin-left:11%; margin-top: 1em">GNU <b>eqn</b>
+does not provide the functionality of neqn: it does not
+support low-resolution, typewriter-like devices (although it
+may work adequately for very simple input).</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Whitespace is
+permitted between a command-line option and its
+argument.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-d</b><i>xy</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Specify delimiters <i>x</i> and&nbsp;<i>y</i> for the
+left and right end, respectively, of in-line equations. Any
+<b>delim</b> statements in the source file overrides
+this.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-C</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Recognize <b>.EQ</b> and <b>.EN</b> even when followed
+by a character other than space or newline. Also, the
+statement &rsquo;<b>delim on</b>&rsquo; is not handled
+specially.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-N</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Don&rsquo;t allow newlines within delimiters. This
+option allows <b>eqn</b> to recover better from missing
+closing delimiters.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-v</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Print the version number.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-r</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Only one size reduction.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-m</b><i>n</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The minimum point-size is&nbsp;<i>n</i>. <b>eqn</b> does
+not reduce the size of subscripts or superscripts to a
+smaller size than&nbsp;<i>n</i>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-T</b><i>name</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The output is for device <i>name</i>. Normally, the only
+effect of this is to define a macro <i>name</i> with a value
+of&nbsp;<b>1</b>; <i>eqnrc</i> uses this to provide
+definitions appropriate for the output device. However, if
+the specified device is &ldquo;MathML&rdquo;, the output is
+MathML markup rather than troff commands, and <i>eqnrc</i>
+is not loaded at all. The default output device is
+<b>ps</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-M</b><i>dir</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Search <i>dir</i> for <i>eqnrc</i> before the default
+directories.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-R</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Don&rsquo;t load <i>eqnrc</i>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-f</b><i>F</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>This is equivalent to a <b>gfont&nbsp;</b><i>F</i>
+command.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-s</b><i>n</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>This is equivalent to a <b>gsize&nbsp;</b><i>n</i>
+command. This option is deprecated. <b>eqn</b> normally sets
+equations at whatever the current point size is when the
+equation is encountered.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-p</b><i>n</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>This says that subscripts and superscripts should be
+<i>n&nbsp;</i>points smaller than the surrounding text. This
+option is deprecated. Normally <b>eqn</b> sets subscripts
+and superscripts at 70% of the size of the surrounding
+text.</p> </td></tr>
+</table>
+
+<h2>USAGE
+<a name="USAGE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Only the
+differences between GNU <b>eqn</b> and Unix eqn are
+described here.</p>
+
+<p style="margin-left:11%; margin-top: 1em">GNU <b>eqn</b>
+emits Presentation MathML output when invoked with the
+<b>-T&nbsp;MathML</b> option.</p>
+
+<p style="margin-left:11%; margin-top: 1em">GNU eqn sets
+the input token <b>&quot;...&quot;</b> as three periods or
+low dots, rather than the three centered dots of classic
+eqn. To get three centered dots, write <b>cdots</b> or
+<b>cdot cdot cdot</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Most of the new
+features of the GNU <b>eqn</b> input language are based on
+TeX. There are some references to the differences between
+TeX and GNU <b>eqn</b> below; these may safely be ignored if
+you do not know TeX.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Controlling
+delimiters</b> <br>
+If not in compatibility mode, <b>eqn</b> recognizes</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>delim
+on</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">to restore the
+delimiters which have been previously disabled with a call
+to &rsquo;<b>delim off</b>&rsquo;. If delimiters
+haven&rsquo;t been specified, the call has no effect.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Automatic
+spacing <br>
+eqn</b> gives each component of an equation a type, and
+adjusts the spacing between components using that type.
+Possible types are described in the table below.</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-69571.png" alt="Image grohtml-69571.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em">Components of
+an equation get a type in one of two ways. <b><br>
+type&nbsp;</b><i>t&nbsp;e</i></p>
+
+<p style="margin-left:22%;">This yields an equation
+component that contains&nbsp;<i>e</i> but that has
+type&nbsp;<i>t</i>, where <i>t</i> is one of the types
+mentioned above. For example, <b>times</b> is defined as</p>
+
+<p style="margin-left:32%; margin-top: 1em"><b>type
+&quot;binary&quot; \(mu</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">The name of the
+type doesn&rsquo;t have to be quoted, but quoting protects
+from macro expansion.</p>
+
+
+<p style="margin-left:11%;"><b>chartype&nbsp;</b><i>t&nbsp;text</i></p>
+
+<p style="margin-left:22%;">Unquoted groups of characters
+are split up into individual characters, and the type of
+each character is looked up; this changes the type that is
+stored for each character; it says that the characters in
+<i>text</i> from now on have type&nbsp;<i>t</i>. For
+example,</p>
+
+<p style="margin-left:32%; margin-top: 1em"><b>chartype
+&quot;punctuation&quot; .,;:</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">would make the
+characters &rsquo;.,;:&rsquo; have type punctuation whenever
+they subsequently appeared in an equation. The
+type&nbsp;<i>t</i> can also be <b>letter</b> or
+<b>digit</b>; in these cases <b>chartype</b> changes the
+font type of the characters. See subsection
+&ldquo;Fonts&rdquo; below.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>New
+primitives</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>big&nbsp;</b><i>e</i></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Enlarges the expression it modifies; intended to have
+semantics like CSS &rsquo;large&rsquo;. In troff output, the
+point size is increased by&nbsp;5; in MathML output, the
+expression uses</p></td></tr>
+</table>
+
+<p style="margin-left:32%; margin-top: 1em">&lt;mstyle
+mathsize=&rsquo;big&rsquo;&gt;</p>
+
+
+<p style="margin-left:11%;"><i>e1&nbsp;</i><b>smallover&nbsp;</b><i>e2</i></p>
+
+<p style="margin-left:22%;">This is similar to <b>over</b>;
+<b>smallover</b> reduces the size of <i>e1</i> and
+<i>e2</i>; it also puts less vertical space between
+<i>e1</i> or <i>e2</i> and the fraction bar. The <b>over</b>
+primitive corresponds to the TeX <b>\over</b> primitive in
+display styles; <b>smallover</b> corresponds to <b>\over</b>
+in non-display styles.</p>
+
+
+<p style="margin-left:11%;"><b>vcenter&nbsp;</b><i>e</i></p>
+
+<p style="margin-left:22%;">This vertically centers
+<i>e</i> about the math axis. The math axis is the vertical
+position about which characters such as &rsquo;+&rsquo; and
+&rsquo;&minus;&rsquo; are centered; also it is the vertical
+position used for the bar of fractions. For example,
+<b>sum</b> is defined as</p>
+
+<p style="margin-left:32%; margin-top: 1em"><b>{ type
+&quot;operator&quot; vcenter size +5 \(*S }</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">(Note that
+vcenter is silently ignored when generating MathML.)</p>
+
+
+<p style="margin-left:11%;"><i>e1&nbsp;</i><b>accent&nbsp;</b><i>e2</i></p>
+
+<p style="margin-left:22%;">This sets <i>e2</i> as an
+accent over <i>e1</i>. <i>e2</i> is assumed to be at the
+correct height for a lowercase letter; <i>e2</i> is moved
+down according to whether <i>e1</i> is taller or shorter
+than a lowercase letter. For example, <b>hat</b> is defined
+as</p>
+
+<p style="margin-left:32%; margin-top: 1em"><b>accent {
+&quot;^&quot; }</b></p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>dotdot</b>,
+<b>dot</b>, <b>tilde</b>, <b>vec</b>, and <b>dyad</b> are
+also defined using the <b>accent</b> primitive.</p>
+
+
+<p style="margin-left:11%;"><i>e1&nbsp;</i><b>uaccent&nbsp;</b><i>e2</i></p>
+
+<p style="margin-left:22%;">This sets <i>e2</i> as an
+accent under <i>e1</i>. <i>e2</i> is assumed to be at the
+correct height for a character without a descender;
+<i>e2</i> is moved down if <i>e1</i> has a descender.
+<b>utilde</b> is pre-defined using <b>uaccent</b> as a tilde
+accent below the baseline.</p>
+
+
+<p style="margin-left:11%;"><b>split&nbsp;&quot;</b><i>text</i><b>&quot;</b></p>
+
+<p style="margin-left:22%;">This has the same effect as
+simply</p>
+
+
+<p style="margin-left:32%; margin-top: 1em"><i>text</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">but <i>text</i>
+is not subject to macro expansion because it is quoted;
+<i>text</i> is split up and the spacing between individual
+characters is adjusted.</p>
+
+
+<p style="margin-left:11%;"><b>nosplit&nbsp;</b><i>text</i></p>
+
+<p style="margin-left:22%;">This has the same effect as</p>
+
+
+<p style="margin-left:32%; margin-top: 1em"><b>&quot;</b><i>text</i><b>&quot;</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">but because
+<i>text</i> is not quoted it is subject to macro expansion;
+<i>text</i> is not split up and the spacing between
+individual characters is not adjusted.</p>
+
+
+<p style="margin-left:11%;"><i>e&nbsp;</i><b>opprime</b></p>
+
+<p style="margin-left:22%;">This is a variant of
+<b>prime</b> that acts as an operator on&nbsp;<i>e</i>. It
+produces a different result from <b>prime</b> in a case such
+as <b>A&nbsp;opprime&nbsp;sub&nbsp;1</b>: with
+<b>opprime</b> the&nbsp;<b>1</b> is tucked under the prime
+as a subscript to the&nbsp;<b>A</b> (as is conventional in
+mathematical typesetting), whereas with <b>prime</b>
+the&nbsp;<b>1</b> is a subscript to the prime character. The
+precedence of <b>opprime</b> is the same as that of
+<b>bar</b> and <b>under</b>, which is higher than that of
+everything except <b>accent</b> and <b>uaccent</b>. In
+unquoted text a&nbsp;<b>'</b> that is not the first
+character is treated like <b>opprime</b>.</p>
+
+
+<p style="margin-left:11%;"><b>special&nbsp;</b><i>text&nbsp;e</i></p>
+
+<p style="margin-left:22%;">This constructs a new object
+from&nbsp;<i>e</i> using a <b>troff</b>(1) macro named
+<i>text</i>. When the macro is called, the string <b>0s</b>
+contains the output for&nbsp;<i>e</i>, and the number
+registers <b>0w</b>, <b>0h</b>, <b>0d</b>, <b>0skern</b>,
+and <b>0skew</b> contain the width, height, depth, subscript
+kern, and skew of&nbsp;<i>e</i>. (The <i>subscript kern</i>
+of an object says how much a subscript on that object should
+be tucked in; the <i>skew</i> of an object says how far to
+the right of the center of the object an accent over the
+object should be placed.) The macro must modify <b>0s</b> so
+that it outputs the desired result with its origin at the
+current point, and increase the current horizontal position
+by the width of the object. The number registers must also
+be modified so that they correspond to the result.</p>
+
+<p style="margin-left:22%; margin-top: 1em">For example,
+suppose you wanted a construct that &rsquo;cancels&rsquo; an
+expression by drawing a diagonal line through it.</p>
+
+<p style="margin-left:32%; margin-top: 1em"><b>.EQ <br>
+define cancel &rsquo;special Ca&rsquo; <br>
+.EN <br>
+.de Ca <br>
+.&nbsp;&nbsp;ds 0s \ <br>
+\Z&rsquo;\\*(0s&rsquo;\ <br>
+\v&rsquo;\\n(0du&rsquo;\ <br>
+\D&rsquo;l \\n(0wu -\\n(0hu-\\n(0du&rsquo;\ <br>
+\v&rsquo;\\n(0hu&rsquo; <br>
+..</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Then you could
+cancel an expression&nbsp;<i>e</i> with
+<b>cancel&nbsp;{&nbsp;</b><i>e&nbsp;</i><b>}</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Here&rsquo;s a
+more complicated construct that draws a box round an
+expression:</p>
+
+<p style="margin-left:32%; margin-top: 1em"><b>.EQ <br>
+define box &rsquo;special Bx&rsquo; <br>
+.EN <br>
+.de Bx <br>
+.&nbsp;&nbsp;ds 0s \ <br>
+\Z&rsquo;\h&rsquo;1n&rsquo;\\*(0s&rsquo;\ <br>
+\Z&rsquo;\ <br>
+\v&rsquo;\\n(0du+1n&rsquo;\ <br>
+\D&rsquo;l \\n(0wu+2n 0&rsquo;\ <br>
+\D&rsquo;l 0 -\\n(0hu-\\n(0du-2n&rsquo;\ <br>
+\D&rsquo;l -\\n(0wu-2n 0&rsquo;\ <br>
+\D&rsquo;l 0 \\n(0hu+\\n(0du+2n&rsquo;\ <br>
+&rsquo;\ <br>
+\h&rsquo;\\n(0wu+2n&rsquo; <br>
+.&nbsp;&nbsp;nr 0w +2n <br>
+.&nbsp;&nbsp;nr 0d +1n <br>
+.&nbsp;&nbsp;nr 0h +1n <br>
+..</b></p>
+
+<p style="margin-left:11%;"><b>space&nbsp;</b><i>n</i></p>
+
+<p style="margin-left:22%;">A positive value of the
+integer&nbsp;<i>n</i> (in hundredths of an em) sets the
+vertical spacing before the equation, a negative value sets
+the spacing after the equation, replacing the default
+values. This primitive provides an interface to
+<b>groff</b>&rsquo;s <b>\x</b> escape (but with opposite
+sign).</p>
+
+<p style="margin-left:22%; margin-top: 1em">This keyword
+has no effect if the equation is part of a <b>pic</b>
+picture.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Extended
+primitives <br>
+
+col&nbsp;</b><i>n&nbsp;</i><b>{&nbsp;</b><i>...&nbsp;</i><b>}
+<br>
+
+ccol&nbsp;</b><i>n&nbsp;</i><b>{&nbsp;</b><i>...&nbsp;</i><b>}
+<br>
+
+lcol&nbsp;</b><i>n&nbsp;</i><b>{&nbsp;</b><i>...&nbsp;</i><b>}
+<br>
+
+rcol&nbsp;</b><i>n&nbsp;</i><b>{&nbsp;</b><i>...&nbsp;</i><b>}
+<br>
+
+pile&nbsp;</b><i>n&nbsp;</i><b>{&nbsp;</b><i>...&nbsp;</i><b>}
+<br>
+
+cpile&nbsp;</b><i>n&nbsp;</i><b>{&nbsp;</b><i>...&nbsp;</i><b>}
+<br>
+
+lpile&nbsp;</b><i>n&nbsp;</i><b>{&nbsp;</b><i>...&nbsp;</i><b>}
+<br>
+
+rpile&nbsp;</b><i>n&nbsp;</i><b>{&nbsp;</b><i>...&nbsp;</i><b>}</b></p>
+
+<p style="margin-left:22%;">The integer value&nbsp;<i>n</i>
+(in hundredths of an em) increases the vertical spacing
+between rows, using <b>groff</b>&rsquo;s <b>\x</b> escape
+(the value has no effect in MathML mode). Negative values
+are possible but have no effect. If there is more than a
+single value given in a matrix, the biggest one is used.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Customization</b>
+<br>
+When <b>eqn</b> is generating troff markup, the appearance
+of equations is controlled by a large number of parameters.
+They have no effect when generating MathML mode, which
+pushes typesetting and fine motions downstream to a MathML
+rendering engine. These parameters can be set using the
+<b>set</b> command. <b><br>
+set&nbsp;</b><i>p&nbsp;n</i></p>
+
+<p style="margin-left:22%;">This sets
+parameter&nbsp;<i>p</i> to value&nbsp;<i>n</i>;
+<i>n&nbsp;</i>is an integer. For example,</p>
+
+<p style="margin-left:32%; margin-top: 1em"><b>set x_height
+45</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">says that
+<b>eqn</b> should assume an x&nbsp;height of
+0.45&nbsp;ems.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Possible
+parameters are as follows. Values are in units of hundredths
+of an em unless otherwise stated. These descriptions are
+intended to be expository rather than definitive. <b><br>
+minimum_size</b></p>
+
+<p style="margin-left:32%;"><b>eqn</b> doesn&rsquo;t set
+anything at a smaller point-size than this. The value is in
+points.</p>
+
+<p style="margin-left:22%;"><b>fat_offset</b></p>
+
+<p style="margin-left:32%;">The <b>fat</b> primitive
+emboldens an equation by overprinting two copies of the
+equation horizontally offset by this amount. This parameter
+is not used in MathML mode; instead, fat text uses</p>
+
+<p style="margin-left:43%; margin-top: 1em">&lt;mstyle
+mathvariant=&rsquo;double-struck&rsquo;&gt;</p>
+
+<p style="margin-left:22%;"><b>over_hang</b></p>
+
+<p style="margin-left:32%;">A fraction bar is longer by
+twice this amount than the maximum of the widths of the
+numerator and denominator; in other words, it overhangs the
+numerator and denominator by at least this amount.</p>
+
+<p style="margin-left:22%;"><b>accent_width</b></p>
+
+<p style="margin-left:32%;">When <b>bar</b> or <b>under</b>
+is applied to a single character, the line is this long.
+Normally, <b>bar</b> or <b>under</b> produces a line whose
+length is the width of the object to which it applies; in
+the case of a single character, this tends to produce a line
+that looks too long.</p>
+
+<p style="margin-left:22%;"><b>delimiter_factor</b></p>
+
+<p style="margin-left:32%;">Extensible delimiters produced
+with the <b>left</b> and <b>right</b> primitives have a
+combined height and depth of at least this many thousandths
+of twice the maximum amount by which the sub-equation that
+the delimiters enclose extends away from the axis.</p>
+
+<p style="margin-left:22%;"><b>delimiter_shortfall</b></p>
+
+<p style="margin-left:32%;">Extensible delimiters produced
+with the <b>left</b> and <b>right</b> primitives have a
+combined height and depth not less than the difference of
+twice the maximum amount by which the sub-equation that the
+delimiters enclose extends away from the axis and this
+amount.</p>
+
+
+<p style="margin-left:22%;"><b>null_delimiter_space</b></p>
+
+<p style="margin-left:32%;">This much horizontal space is
+inserted on each side of a fraction.</p>
+
+<p style="margin-left:22%;"><b>script_space</b></p>
+
+<p style="margin-left:32%;">The width of subscripts and
+superscripts is increased by this amount.</p>
+
+<p style="margin-left:22%;"><b>thin_space</b></p>
+
+<p style="margin-left:32%;">This amount of space is
+automatically inserted after punctuation characters.</p>
+
+<p style="margin-left:22%;"><b>medium_space</b></p>
+
+<p style="margin-left:32%;">This amount of space is
+automatically inserted on either side of binary
+operators.</p>
+
+<p style="margin-left:22%;"><b>thick_space</b></p>
+
+<p style="margin-left:32%;">This amount of space is
+automatically inserted on either side of relations.</p>
+
+<p style="margin-left:22%;"><b>x_height</b></p>
+
+<p style="margin-left:32%;">The height of lowercase letters
+without ascenders such as &rsquo;x&rsquo;.</p>
+
+<p style="margin-left:22%;"><b>axis_height</b></p>
+
+<p style="margin-left:32%;">The height above the baseline
+of the center of characters such as &rsquo;+&rsquo; and
+&rsquo;&minus;&rsquo;. It is important that this value is
+correct for the font you are using.</p>
+
+
+<p style="margin-left:22%;"><b>default_rule_thickness</b></p>
+
+<p style="margin-left:32%;">This should set to the
+thickness of the <b>\(ru</b> character, or the thickness of
+horizontal lines produced with the <b>\D</b> escape
+sequence.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>num1</b></p></td>
+<td width="1%"></td>
+<td width="68%">
+
+
+<p>The <b>over</b> command shifts up the numerator by at
+least this amount.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>num2</b></p></td>
+<td width="1%"></td>
+<td width="68%">
+
+
+<p>The <b>smallover</b> command shifts up the numerator by
+at least this amount.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>denom1</b></p></td>
+<td width="1%"></td>
+<td width="68%">
+
+
+<p>The <b>over</b> command shifts down the denominator by
+at least this amount.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>denom2</b></p></td>
+<td width="1%"></td>
+<td width="68%">
+
+
+<p>The <b>smallover</b> command shifts down the denominator
+by at least this amount.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>sup1</b></p></td>
+<td width="1%"></td>
+<td width="68%">
+
+
+<p>Normally superscripts are shifted up by at least this
+amount.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>sup2</b></p></td>
+<td width="1%"></td>
+<td width="68%">
+
+
+<p>Superscripts within superscripts or upper limits or
+numerators of <b>smallover</b> fractions are shifted up by
+at least this amount. This is usually less than sup1.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>sup3</b></p></td>
+<td width="1%"></td>
+<td width="68%">
+
+
+<p>Superscripts within denominators or square roots or
+subscripts or lower limits are shifted up by at least this
+amount. This is usually less than sup2.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>sub1</b></p></td>
+<td width="1%"></td>
+<td width="68%">
+
+
+<p>Subscripts are normally shifted down by at least this
+amount.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>sub2</b></p></td>
+<td width="1%"></td>
+<td width="68%">
+
+
+<p>When there is both a subscript and a superscript, the
+subscript is shifted down by at least this amount.</p></td></tr>
+</table>
+
+<p style="margin-left:22%;"><b>sup_drop</b></p>
+
+<p style="margin-left:32%;">The baseline of a superscript
+is no more than this much amount below the top of the object
+on which the superscript is set.</p>
+
+<p style="margin-left:22%;"><b>sub_drop</b></p>
+
+<p style="margin-left:32%;">The baseline of a subscript is
+at least this much below the bottom of the object on which
+the subscript is set.</p>
+
+<p style="margin-left:22%;"><b>big_op_spacing1</b></p>
+
+<p style="margin-left:32%;">The baseline of an upper limit
+is at least this much above the top of the object on which
+the limit is set.</p>
+
+<p style="margin-left:22%;"><b>big_op_spacing2</b></p>
+
+<p style="margin-left:32%;">The baseline of a lower limit
+is at least this much below the bottom of the object on
+which the limit is set.</p>
+
+<p style="margin-left:22%;"><b>big_op_spacing3</b></p>
+
+<p style="margin-left:32%;">The bottom of an upper limit is
+at least this much above the top of the object on which the
+limit is set.</p>
+
+<p style="margin-left:22%;"><b>big_op_spacing4</b></p>
+
+<p style="margin-left:32%;">The top of a lower limit is at
+least this much below the bottom of the object on which the
+limit is set.</p>
+
+<p style="margin-left:22%;"><b>big_op_spacing5</b></p>
+
+<p style="margin-left:32%;">This much vertical space is
+added above and below limits.</p>
+
+<p style="margin-left:22%;"><b>baseline_sep</b></p>
+
+<p style="margin-left:32%;">The baselines of the rows in a
+pile or matrix are normally this far apart. In most cases
+this should be equal to the sum of <b>num1</b> and
+<b>denom1</b>.</p>
+
+<p style="margin-left:22%;"><b>shift_down</b></p>
+
+<p style="margin-left:32%;">The midpoint between the top
+baseline and the bottom baseline in a matrix or pile is
+shifted down by this much from the axis. In most cases this
+should be equal to <b>axis_height</b>.</p>
+
+<p style="margin-left:22%;"><b>column_sep</b></p>
+
+<p style="margin-left:32%;">This much space is added
+between columns in a matrix.</p>
+
+<p style="margin-left:22%;"><b>matrix_side_sep</b></p>
+
+<p style="margin-left:32%;">This much space is added at
+each side of a matrix.</p>
+
+<p style="margin-left:22%;"><b>draw_lines</b></p>
+
+<p style="margin-left:32%;">If this is non-zero, lines are
+drawn using the <b>\D</b> escape sequence, rather than with
+the <b>\l</b> escape sequence and the <b>\(ru</b>
+character.</p>
+
+<p style="margin-left:22%;"><b>body_height</b></p>
+
+<p style="margin-left:32%;">The amount by which the height
+of the equation exceeds this is added as extra space before
+the line containing the equation (using <b>\x</b>). The
+default value is 85.</p>
+
+<p style="margin-left:22%;"><b>body_depth</b></p>
+
+<p style="margin-left:32%;">The amount by which the depth
+of the equation exceeds this is added as extra space after
+the line containing the equation (using <b>\x</b>). The
+default value is 35.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>nroff</b></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>If this is non-zero, then <b>ndefine</b> behaves like
+<b>define</b> and <b>tdefine</b> is ignored, otherwise
+<b>tdefine</b> behaves like <b>define</b> and <b>ndefine</b>
+is ignored. The default value is&nbsp;0 (This is typically
+changed to&nbsp;1 by the <i>eqnrc</i> file for the
+<b>ascii</b>, <b>latin1</b>, <b>utf8</b>, and <b>cp1047</b>
+devices.)</p> </td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">A more precise
+description of the role of many of these parameters can be
+found in Appendix&nbsp;H of <i>The TeXbook</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Macros</b>
+<br>
+Macros can take arguments. In a macro body, <b>$</b><i>n</i>
+where <i>n</i> is between 1 and&nbsp;9, is replaced by the
+<i>n</i>th argument if the macro is called with arguments;
+if there are fewer than <i>n&nbsp;</i>arguments, it is
+replaced by nothing. A word containing a left parenthesis
+where the part of the word before the left parenthesis has
+been defined using the <b>define</b> command is recognized
+as a macro call with arguments; characters following the
+left parenthesis up to a matching right parenthesis are
+treated as comma-separated arguments; commas inside nested
+parentheses do not terminate an argument. <b><br>
+
+sdefine&nbsp;</b><i>name&nbsp;X&nbsp;anything&nbsp;X</i></p>
+
+<p style="margin-left:22%;">This is like the <b>define</b>
+command, but <i>name</i> is not recognized if called with
+arguments.</p>
+
+
+<p style="margin-left:11%;"><b>include&nbsp;&quot;</b><i>file</i><b>&quot;
+<br>
+copy&nbsp;&quot;</b><i>file</i><b>&quot;</b></p>
+
+<p style="margin-left:22%;">Include the contents of
+<i>file</i> (<b>include</b> and <b>copy</b> are synonyms).
+Lines of <i>file</i> beginning with <b>.EQ</b> or <b>.EN</b>
+are ignored.</p>
+
+
+<p style="margin-left:11%;"><b>ifdef&nbsp;</b><i>name&nbsp;X&nbsp;anything&nbsp;X</i></p>
+
+<p style="margin-left:22%;">If <i>name</i> has been defined
+by <b>define</b> (or has been automatically defined because
+<i>name</i> is the output device) process <i>anything</i>;
+otherwise ignore <i>anything</i>. <i>X</i> can be any
+character not appearing in <i>anything</i>.</p>
+
+
+<p style="margin-left:11%;"><b>undef&nbsp;</b><i>name</i></p>
+
+<p style="margin-left:22%;">Remove definition of
+<i>name</i>, making it undefined.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Besides the
+macros mentioned above, the following definitions are
+available: <b>Alpha</b>, <b>Beta</b>, ..., <b>Omega</b>
+(this is the same as <b>ALPHA</b>, <b>BETA</b>, ...,
+<b>OMEGA</b>), <b>ldots</b> (three dots on the base line),
+and <b>dollar</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Fonts <br>
+eqn</b> normally uses at least two fonts to set an equation:
+an italic font for letters, and a roman font for everything
+else. The existing <b>gfont</b> command changes the font
+that is used as the italic font. By default this
+is&nbsp;<b>I</b>. The font that is used as the roman font
+can be changed using the new <b>grfont</b> command. <b><br>
+grfont&nbsp;</b><i>f</i></p>
+
+<p style="margin-left:22%;">Set the roman font
+to&nbsp;<i>f</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>italic</b> primitive uses the current italic font set by
+<b>gfont</b>; the <b>roman</b> primitive uses the current
+roman font set by <b>grfont</b>. There is also a new
+<b>gbfont</b> command, which changes the font used by the
+<b>bold</b> primitive. If you only use the <b>roman</b>,
+<b>italic</b> and <b>bold</b> primitives to changes fonts
+within an equation, you can change all the fonts used by
+your equations just by using <b>gfont</b>, <b>grfont</b> and
+<b>gbfont</b> commands.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can control
+which characters are treated as letters (and therefore set
+in italics) by using the <b>chartype</b> command described
+above. A type of <b>letter</b> causes a character to be set
+in italic type. A type of <b>digit</b> causes a character to
+be set in roman type.</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/usr/share/groff/1.22.4/tmac/eqnrc</i></p>
+
+<p style="margin-left:22%;">Initialization file.</p>
+
+<h2>MATHML MODE LIMITATIONS
+<a name="MATHML MODE LIMITATIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">MathML is
+designed on the assumption that it cannot know the exact
+physical characteristics of the media and devices on which
+it will be rendered. It does not support fine control of
+motions and sizes to the same degree troff does. Thus:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p><b>eqn</b> parameters have no effect on the generated
+MathML.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>The <b>special</b>, <b>up</b>, <b>down</b>, <b>fwd</b>,
+and <b>back</b> operations cannot be implemented, and yield
+a MathML &rsquo;&lt;merror&gt;&rsquo; message instead.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>The <b>vcenter</b> keyword is silently ignored, as
+centering on the math axis is the MathML default.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Characters that <b>eqn</b> over troff sets extra large
+&ndash; notably the integral sign &ndash; may appear too
+small and need to have their &rsquo;&lt;mstyle&gt;&rsquo;
+wrappers adjusted by hand.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">As in its troff
+mode, <b>eqn</b> in MathML mode leaves the <b>.EQ</b> and
+<b>.EN</b> delimiters in place for displayed equations, but
+emits no explicit delimiters around inline equations. They
+can, however, be recognized as strings that begin with
+&rsquo;&lt;math&gt;&rsquo; and end with
+&rsquo;&lt;/math&gt;&rsquo; and do not cross line
+boundaries.</p>
+
+<p style="margin-left:11%; margin-top: 1em">See section
+&ldquo;Bugs&rdquo; below for translation limits specific to
+<b>eqn</b>.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Inline
+equations are set at the point size that is current at the
+beginning of the input line.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In MathML mode,
+the <b>mark</b> and <b>lineup</b> features don&rsquo;t work.
+These could, in theory, be implemented with
+&rsquo;&lt;maligngroup&gt;&rsquo; elements.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In MathML mode,
+each digit of a numeric literal gets a separate
+&rsquo;&lt;mn&gt; &lt;/mn&gt;&rsquo; pair, and decimal
+points are tagged with &rsquo;&lt;mo&gt;&lt;/mo&gt;&rsquo;.
+This is allowed by the specification, but inefficient.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>groff</b>(1),
+<b>troff</b>(1), <b>pic</b>(1), <b>groff_font</b>(5),
+<i>The&nbsp;TeXbook</i></p>
+<hr>
+</body>
+</html>

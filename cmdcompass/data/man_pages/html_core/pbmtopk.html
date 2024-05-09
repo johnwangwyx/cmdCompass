@@ -1,0 +1,222 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:30 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pbmtopk User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pbmtopk User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pbmtopk -
+convert a PBM image into a packed (PK) format font</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbmtopk</b>
+<i>pkfile</i>[<b>.pk</b>] <i>tfmfile</i>[<b>.tfm</b>]
+<i>resolution</i> [<b>-s</b> <i>designsize</i>] [<b>-p</b>
+<i>num param</i>...] [<b>-C</b> <i>codingscheme</i>]
+[<b>-F</b> <i>family</i>] [<b>-f</b> <i>optfile</i>]
+[<b>-c</b> <i>num</i>] [<b>-W</b> <i>width</i>] [<b>-H</b>
+<i>height</i>] [<b>-D</b> <i>depth</i>] [<b>-I</b>
+<i>ital</i>] [<b>-h</b> <i>horiz</i>] [<b>-v</b>
+<i>vert</i>] [<b>-x</b> <i>xoff</i>] [<b>-y</b> <i>yoff</i>]
+[<i>pbmfile</i> ...]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbmtopk</b>
+reads PBM images as input and produces a packed (PK) font
+file and a TFM (TeX font metric) file as output. The
+resolution parameter indicates the resolution of the font,
+in dots per inch. If the filename &quot;-&quot; is used for
+any of the filenames, <b>pbmtopk</b> uses Standard Input or
+Standard Output.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pbmtopk</b> recognizes the following command line
+options: <b><br>
+-s</b> <i>designsize</i></p>
+
+<p style="margin-left:22%;">Sets the design size of the
+font, in TeX&rsquo;s points (72.27pt to the inch). The
+default design size is 1. The TFM parameters are given as
+multiples of the design size.</p>
+
+<p style="margin-left:11%;"><b>-p</b> <i>num
+param</i>...</p>
+
+<p style="margin-left:22%;">Sets the first num font
+parameters for the font. The first seven parameters are the
+slant, interword spacing, interword space stretchability,
+interword space shrinkability, x-height, quad width, and
+post-sentence extra space of the font. Math and symbol fonts
+may have more parameters; see The TeXbook for a list of
+these. Reasonable default values are chosen for parameters
+which are not specified.</p>
+
+<p style="margin-left:11%;"><b>-C</b>
+<i>codingscheme</i></p>
+
+<p style="margin-left:22%;">Sets the coding scheme comment
+in the TFM file.</p>
+
+<p style="margin-left:11%;"><b>-F</b> <i>family</i></p>
+
+<p style="margin-left:22%;">Sets the font family comment in
+the TFM file.</p>
+
+<p style="margin-left:11%;"><b>-f</b> <i>optfile</i></p>
+
+<p style="margin-left:22%;">Reads the file optfile, which
+should contain a lines of the form:</p>
+
+<p style="margin-left:22%; margin-top: 1em">filename xoff
+yoff horiz vert width height depth ital</p>
+
+<p style="margin-left:22%; margin-top: 1em">The PBM files
+specified by the filename parameters are inserted
+consecutively in the font with the specified attributes. If
+any of the attributes are omitted, or replaced with
+&quot;*&quot;, a default value will be calculated from the
+size of the bitmap. The settings of the -W, -H, -D, -I, -h,
+-v, -x, and -y options do not affected characters created in
+this way. The character number can be changed by including a
+line starting with &quot;=&quot;, followed by the new
+number. Lines beginning with &quot;%&quot; or &quot;#&quot;
+are ignored.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-c</b> <i>num</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Sets the character number of the next bitmap encountered
+to num.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-W</b> <i>width</i></p>
+
+<p style="margin-left:22%;">Sets the TFM width of the next
+character to width (in design size multiples).</p>
+
+<p style="margin-left:11%;"><b>-H</b> <i>height</i></p>
+
+<p style="margin-left:22%;">Sets the TFM height of the next
+character to height (in design size multiples).</p>
+
+<p style="margin-left:11%;"><b>-D</b> <i>depth</i></p>
+
+<p style="margin-left:22%;">Sets the TFM depth of the next
+character to depth (in design size multiples).</p>
+
+<p style="margin-left:11%;"><b>-I</b> <i>ital</i></p>
+
+<p style="margin-left:22%;">Sets the italic correction of
+the next character to ital (in design size multiples).</p>
+
+<p style="margin-left:11%;"><b>-h</b> <i>horiz</i></p>
+
+<p style="margin-left:22%;">Sets the horizontal escapement
+of the next character to horiz (in pixels).</p>
+
+<p style="margin-left:11%;"><b>-v</b> <i>vert</i></p>
+
+<p style="margin-left:22%;">Sets the vertical escapement of
+the next character to vert (in pixels).</p>
+
+<p style="margin-left:11%;"><b>-x</b> <i>xoff</i></p>
+
+<p style="margin-left:22%;">Sets the horizontal offset of
+the next character to xoff (in pixels).</p>
+
+<p style="margin-left:11%;"><b>-y</b> <i>yoff</i></p>
+
+<p style="margin-left:22%;">Sets the vertical offset of the
+next character to yoff (in pixels, from the top row).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pktopbm</b>(1),
+<b>pbm</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Adapted from
+Tom Rokicki&rsquo;s pxtopk by Angus Duggan
+&lt;<i>ajcd@dcs.ed.ac.uk</i>&gt;.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pbmtopk.html</b></p>
+<hr>
+</body>
+</html>

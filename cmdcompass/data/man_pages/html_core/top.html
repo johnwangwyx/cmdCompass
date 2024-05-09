@@ -1,0 +1,3688 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:55 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>TOP</title>
+
+</head>
+<body>
+
+<h1 align="center">TOP</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OVERVIEW">OVERVIEW</a><br>
+<a href="#1. COMMAND-LINE Options">1. COMMAND-LINE Options</a><br>
+<a href="#2. SUMMARY Display">2. SUMMARY Display</a><br>
+<a href="#3. FIELDS / Columns">3. FIELDS / Columns</a><br>
+<a href="#4. INTERACTIVE Commands">4. INTERACTIVE Commands</a><br>
+<a href="#5. ALTERNATE-DISPLAY Provisions">5. ALTERNATE-DISPLAY Provisions</a><br>
+<a href="#6. FILES">6. FILES</a><br>
+<a href="#7. ENVIRONMENT VARIABLE(S)">7. ENVIRONMENT VARIABLE(S)</a><br>
+<a href="#8. STUPID TRICKS Sampler">8. STUPID TRICKS Sampler</a><br>
+<a href="#9. BUGS">9. BUGS</a><br>
+<a href="#10. SEE Also">10. SEE Also</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">top - display
+Linux processes</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>top</b>
+[options]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The <b>top</b>
+program provides a dynamic real-time view of a running
+system. It can display <b>system</b> summary information as
+well as a list of <b>processes</b> or <b>threads</b>
+currently being managed by the Linux kernel. The types of
+system summary information shown and the types, order and
+size of information displayed for processes are all user
+configurable and that configuration can be made persistent
+across restarts.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The program
+provides a limited interactive interface for process
+manipulation as well as a much more extensive interface for
+personal configuration &nbsp;--&nbsp; encompassing every
+aspect of its operation. And while <b>top</b> is referred to
+throughout this document, you are free to name the program
+anything you wish. That new name, possibly an alias, will
+then be reflected on top&rsquo;s display and used when
+reading and writing a configuration file.</p>
+
+<h2>OVERVIEW
+<a name="OVERVIEW"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Documentation</b>
+<br>
+The remaining Table of Contents</p>
+
+<p style="margin-left:11%; margin-top: 1em">OVERVIEW <br>
+Operation <br>
+Linux Memory Types <br>
+1. COMMAND-LINE Options <br>
+2. SUMMARY Display <br>
+a. UPTIME and LOAD Averages <br>
+b. TASK and CPU States <br>
+c. MEMORY Usage <br>
+3. FIELDS / Columns Display <br>
+a. DESCRIPTIONS of Fields <br>
+b. MANAGING Fields <br>
+4. INTERACTIVE Commands <br>
+a. GLOBAL Commands <br>
+b. SUMMARY AREA Commands <br>
+c. TASK AREA Commands <br>
+1. Appearance <br>
+2. Content <br>
+3. Size <br>
+4. Sorting <br>
+d. COLOR Mapping <br>
+5. ALTERNATE-DISPLAY Provisions <br>
+a. WINDOWS Overview <br>
+b. COMMANDS for Windows <br>
+c. SCROLLING a Window <br>
+d. SEARCHING in a Window <br>
+e. FILTERING in a Window <br>
+6. FILES <br>
+a. PERSONAL Configuration File <br>
+b. ADDING INSPECT Entries <br>
+c. SYSTEM Configuration File <br>
+d. SYSTEM Restrictions File <br>
+7. ENVIRONMENT VARIABLE(S) <br>
+8. STUPID TRICKS Sampler <br>
+a. Kernel Magic <br>
+b. Bouncing Windows <br>
+c. The Big Bird Window <br>
+d. The Ol&rsquo; Switcheroo <br>
+9. BUGS, 10. SEE Also</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Operation</b>
+<br>
+When operating top, the two most important keys are the help
+(h or ?) key and quit (&rsquo;q&rsquo;) key. Alternatively,
+you could simply use the traditional interrupt key (^C) when
+you&rsquo;re done.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When started
+for the first time, you&rsquo;ll be presented with these
+traditional elements on the main top screen: 1) Summary
+Area; 2) Fields/Columns Header; 3) Task Area. Each of these
+will be explored in the sections that follow. There is also
+an Input/Message line between the Summary Area and Columns
+Header which needs no further explanation.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The main top
+screen is <i>generally</i> quite adaptive to changes in
+terminal dimensions under X-Windows. Other top screens may
+be less so, especially those with static text. It ultimately
+depends, however, on your particular window manager and
+terminal emulator. There may be occasions when their view of
+terminal size and current contents differs from top&rsquo;s
+view, which is always based on operating system calls.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Following any
+re-size operation, if a top screen is corrupted, appears
+incomplete or disordered, simply typing something innocuous
+like a punctuation character or cursor motion key will
+usually restore it. In extreme cases, the following sequence
+almost certainly will: <i><br>
+key/cmd objective</i> <br>
+^Z <b>suspend</b> top <br>
+fg <b>resume</b> top <br>
+&lt;Left&gt; force a screen <b>redraw</b> (if necessary)</p>
+
+<p style="margin-left:11%; margin-top: 1em">But if the
+display is still corrupted, there is one more step you could
+try. Insert this command after top has been suspended but
+before resuming it. <i><br>
+key/cmd objective</i> <br>
+reset restore your <b>terminal settings</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Note</b>:
+the width of top&rsquo;s display will be limited to 512
+positions. Displaying all fields requires approximately 250
+characters. Remaining screen width is usually allocated to
+any variable width columns currently visible. The variable
+width columns, such as COMMAND, are noted in topic 3a.
+DESCRIPTIONS of Fields. Actual output width may also be
+influenced by the -w switch, which is discussed in topic 1.
+COMMAND-LINE Options.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Lastly, some of
+top&rsquo;s screens or functions require the use of cursor
+motion keys like the standard arrow keys plus the Home, End,
+PgUp and PgDn keys. If your terminal or emulator does not
+provide those keys, the following combinations are accepted
+as alternatives: <i><br>
+key equivalent-keys</i> <br>
+Left alt + <b>h</b> <br>
+Down alt + <b>j</b> <br>
+Up alt + <b>k</b> <br>
+Right alt + <b>l</b> <br>
+Home alt + ctrl + <b>h</b> <br>
+PgDn alt + ctrl + <b>j</b> <br>
+PgUp alt + ctrl + <b>k</b> <br>
+End alt + ctrl + <b>l</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">The <b>Up</b>
+and <b>Down</b> arrow keys have special significance when
+prompted for line input terminated with the &lt;Enter&gt;
+key. Those keys, or their aliases, can be used to retrieve
+previous input lines which can then be edited and re-input.
+And there are four additional keys available with line
+oriented input. <i><br>
+key special-significance</i> <br>
+Up recall <b>older</b> strings for re-editing <br>
+Down recall <b>newer</b> strings or <b>erase</b> entire line
+<br>
+Insert toggle between <b>insert</b> and <b>overtype</b>
+modes <br>
+Delete character <b>removed</b> at cursor, moving others
+left <br>
+Home jump to <b>beginning</b> of input line <br>
+End jump to <b>end</b> of input line</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Linux Memory
+Types</b> <br>
+For our purposes there are three types of memory, and one is
+optional. First is physical memory, a limited resource where
+code and data must reside when executed or referenced. Next
+is the optional swap file, where modified (dirty) memory can
+be saved and later retrieved if too many demands are made on
+physical memory. Lastly we have virtual memory, a nearly
+unlimited resource serving the following goals:</p>
+
+<p style="margin-left:11%; margin-top: 1em">1. abstraction,
+free from physical memory addresses/limits <br>
+2. isolation, every process in a separate address space <br>
+3. sharing, a single mapping can serve multiple needs <br>
+4. flexibility, assign a virtual address to a file</p>
+
+<p style="margin-left:11%; margin-top: 1em">Regardless of
+which of these forms memory may take, all are managed as
+pages (typically 4096 bytes) but expressed by default in top
+as KiB (kibibyte). The memory discussed under topic
+&rsquo;2c. MEMORY Usage&rsquo; deals with physical memory
+and the swap file for the system as a whole. The memory
+reviewed in topic &rsquo;3. FIELDS / Columns Display&rsquo;
+embraces all three memory types, but for individual
+processes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For each such
+process, every memory page is restricted to a single
+quadrant from the table below. Both physical memory and
+virtual memory can include any of the four, while the swap
+file only includes #1 through #3. The memory in quadrant #4,
+when modified, acts as its own dedicated swap file.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Private</b>
+| <b>Shared <br>
+1</b> | <b>2 <br>
+Anonymous</b> . stack | <br>
+. malloc() | <br>
+. brk()/sbrk() | . POSIX shm* <br>
+. mmap(PRIVATE, ANON) | . mmap(SHARED, ANON) <br>
+-----------------------+---------------------- <br>
+. mmap(PRIVATE, fd) | . mmap(SHARED, fd) <b><br>
+File-backed</b> . pgms/shared libs | <b><br>
+3</b> | <b>4</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+may help in interpreting process level memory values
+displayed as scalable columns and discussed under topic
+&rsquo;3a. DESCRIPTIONS of Fields&rsquo;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">%MEM - simply
+RES divided by total physical memory <br>
+CODE - the &rsquo;pgms&rsquo; portion of quadrant <b>3</b>
+<br>
+DATA - the entire quadrant <b>1</b> portion of VIRT plus all
+<br>
+explicit mmap file-backed pages of quadrant <b>3</b> <br>
+RES - anything occupying physical memory which, beginning
+with <br>
+Linux-4.5, is the sum of the following three fields: <br>
+RSan - quadrant <b>1</b> pages, which include any <br>
+former quadrant <b>3</b> pages if modified <br>
+RSfd - quadrant <b>3</b> and quadrant <b>4</b> pages <br>
+RSsh - quadrant <b>2</b> pages <br>
+RSlk - subset of RES which cannot be swapped out (any
+quadrant) <br>
+SHR - subset of RES (excludes <b>1</b>, includes all
+<b>2</b> &amp; <b>4</b>, some <b>3</b>) <br>
+SWAP - potentially any quadrant except <b>4</b> <br>
+USED - simply the sum of RES and SWAP <br>
+VIRT - everything in-use and/or reserved (all quadrants)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Note</b>:
+Even though program images and shared libraries are
+considered <i>private</i> to a process, they will be
+accounted for as <i>shared</i> (SHR) by the kernel.</p>
+
+<h2>1. COMMAND-LINE Options
+<a name="1. COMMAND-LINE Options"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Mandatory
+<i>arguments</i> to long options are mandatory for short
+options too.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Although not
+required, the equals sign can be used with either option
+form and whitespace before and/or after the &rsquo;=&rsquo;
+is permitted. <br>
+-<b>b</b>, <b>--batch</b></p>
+
+<p style="margin-left:15%;">Starts top in Batch mode, which
+could be useful for sending output from top to other
+programs or to a file. In this mode, top will not accept
+input and runs until the iterations limit you&rsquo;ve set
+with the &rsquo;-n&rsquo; command-line option or until
+killed.</p>
+
+<p style="margin-left:11%;">-<b>c</b>,
+<b>--cmdline-toggle</b></p>
+
+<p style="margin-left:15%;">Starts top with the last
+remembered &rsquo;c&rsquo; state reversed. Thus, if top was
+displaying command lines, now that field will show program
+names, and vice versa. See the &rsquo;c&rsquo; interactive
+command for additional information.</p>
+
+<p style="margin-left:11%;">-<b>d</b>, <b>--delay</b> =
+<i>SECS</i> [<i>.TENTHS</i>]</p>
+
+<p style="margin-left:15%;">Specifies the delay between
+screen updates, and overrides the corresponding value in
+one&rsquo;s personal configuration file or the startup
+default. Later this can be changed with the &rsquo;d&rsquo;
+or &rsquo;s&rsquo; interactive commands.</p>
+
+<p style="margin-left:15%; margin-top: 1em">Fractional
+seconds are honored, but a negative number is not allowed.
+In all cases, however, such changes are prohibited if top is
+running in Secure mode, except for root (unless the
+&rsquo;s&rsquo; command-line option was used). For
+additional information on Secure mode see topic 6d. SYSTEM
+Restrictions File.</p>
+
+<p style="margin-left:11%;">-<b>E</b>,
+<b>--scale-summary-mem</b> = <i>k</i> | <i>m</i> | <i>g</i>
+| <i>t</i> | <i>p</i> | <i>e</i></p>
+
+<p style="margin-left:15%;">Instructs top to force summary
+area memory to be scaled as: <br>
+k - kibibytes <br>
+m - mebibytes <br>
+g - gibibytes <br>
+t - tebibytes <br>
+p - pebibytes <br>
+e - exbibytes</p>
+
+<p style="margin-left:15%; margin-top: 1em">Later this can
+be changed with the &rsquo;E&rsquo; command toggle.</p>
+
+<p style="margin-left:11%;">-<b>e</b>,
+<b>--scale-task-mem</b> = <i>k</i> | <i>m</i> | <i>g</i> |
+<i>t</i> | <i>p</i></p>
+
+<p style="margin-left:15%;">Instructs top to force task
+area memory to be scaled as: <br>
+k - kibibytes <br>
+m - mebibytes <br>
+g - gibibytes <br>
+t - tebibytes <br>
+p - pebibytes</p>
+
+<p style="margin-left:15%; margin-top: 1em">Later this can
+be changed with the &rsquo;e&rsquo; command toggle.</p>
+
+<p style="margin-left:11%;">-<b>H</b>,
+<b>--threads-show</b></p>
+
+<p style="margin-left:15%;">Instructs top to display
+individual threads. Without this command-line option a
+summation of all threads in each process is shown. Later
+this can be changed with the &rsquo;H&rsquo; interactive
+command.</p>
+
+<p style="margin-left:11%;">-<b>h</b>, <b>--help</b></p>
+
+<p style="margin-left:15%;">Display usage help text, then
+quit.</p>
+
+<p style="margin-left:11%;">-<b>i</b>,
+<b>--idle-toggle</b></p>
+
+<p style="margin-left:15%;">Starts top with the last
+remembered &rsquo;i&rsquo; state reversed. When this toggle
+is <i>Off</i>, tasks that have not used any CPU since the
+last update will not be displayed. For additional
+information regarding this toggle see topic 4c. TASK AREA
+Commands, SIZE.</p>
+
+<p style="margin-left:11%;">-<b>n</b>, <b>--iterations</b>
+= <i>NUMBER</i></p>
+
+<p style="margin-left:15%;">Specifies the maximum number of
+iterations, or frames, top should produce before ending.</p>
+
+<p style="margin-left:11%;">-<b>O</b>,
+<b>--list-fields</b></p>
+
+<p style="margin-left:15%;">This option acts as a form of
+help for the -o option shown below. It will cause top to
+print each of the available field names on a separate line,
+then quit. Such names are subject to NLS (National Language
+Support) translation.</p>
+
+<p style="margin-left:11%;">-<b>o</b>,
+<b>--sort-override</b> = <i>FIELDNAME</i></p>
+
+<p style="margin-left:15%;">Specifies the name of the field
+on which tasks will be sorted, independent of what is
+reflected in the configuration file. You can prepend a
+&rsquo;+&rsquo; or &rsquo;-&rsquo; to the field name to also
+override the sort direction. A leading &rsquo;+&rsquo; will
+force sorting high to low, whereas a &rsquo;-&rsquo; will
+ensure a low to high ordering.</p>
+
+<p style="margin-left:15%; margin-top: 1em">This option
+exists primarily to support automated/scripted batch mode
+operation.</p>
+
+<p style="margin-left:11%;">-<b>p</b>, <b>--pid</b> =
+<i>PIDLIST</i> (as: <i>1</i>,<i>2</i>,<i>3</i>, ... or
+-p<i>1</i> -p<i>2</i> -p<i>3</i> ...)</p>
+
+<p style="margin-left:15%;">Monitor only processes with
+specified process IDs. However, when combined with Threads
+mode (&rsquo;H&rsquo;), all processes in the thread group
+(see TGID) of each monitored PID will also be shown.</p>
+
+<p style="margin-left:15%; margin-top: 1em">This option can
+be given up to 20 times, or you can provide a comma
+delimited list with up to 20 pids. Co-mingling both
+approaches is permitted.</p>
+
+<p style="margin-left:15%; margin-top: 1em">A pid value of
+zero will be treated as the process id of the top program
+itself once it is running.</p>
+
+<p style="margin-left:15%; margin-top: 1em">This is a
+command-line option only and should you wish to return to
+normal operation, it is not necessary to quit and restart
+top &nbsp;--&nbsp; just issue any of these interactive
+commands: &rsquo;=&rsquo;, &rsquo;u&rsquo; or
+&rsquo;U&rsquo;.</p>
+
+<p style="margin-left:15%; margin-top: 1em">The
+&rsquo;p&rsquo;, &rsquo;u&rsquo; and &rsquo;U&rsquo;
+command-line options are mutually exclusive.</p>
+
+<p style="margin-left:11%;">-<b>S</b>,
+<b>--accum-time-toggle</b></p>
+
+<p style="margin-left:15%;">Starts top with the last
+remembered &rsquo;S&rsquo; state reversed. When Cumulative
+time mode is <i>On</i>, each process is listed with the cpu
+time that it and its dead children have used. See the
+&rsquo;S&rsquo; interactive command for additional
+information regarding this mode.</p>
+
+<p style="margin-left:11%;">-<b>s</b>,
+<b>--secure-mode</b></p>
+
+<p style="margin-left:15%;">Starts top with secure mode
+forced, even for root. This mode is far better controlled
+through a system configuration file (see topic 6.
+FILES).</p>
+
+<p style="margin-left:11%;">-<b>U</b>,
+<b>--filter-any-user</b> = <i>USER</i> (as: <i>number</i> or
+<i>name</i>)</p>
+
+<p style="margin-left:15%;">Display only processes with a
+user id or user name matching that given. This option
+matches on <i>any</i> user (<i>real</i>, <i>effective</i>,
+<i>saved</i>, or <i>filesystem</i>).</p>
+
+<p style="margin-left:15%; margin-top: 1em">Prepending an
+exclamation point (&rsquo;!&rsquo;) to the user id or name
+instructs top to display only processes with users not
+matching the one provided.</p>
+
+<p style="margin-left:15%; margin-top: 1em">The
+&rsquo;p&rsquo;, &rsquo;U&rsquo; and &rsquo;u&rsquo;
+command-line options are mutually exclusive.</p>
+
+<p style="margin-left:11%;">-<b>u</b>,
+<b>--filter-only-euser</b> = <i>USER</i> (as: <i>number</i>
+or <i>name</i>)</p>
+
+<p style="margin-left:15%;">Display only processes with a
+user id or user name matching that given. This option
+matches on the <i>effective</i> user id only.</p>
+
+<p style="margin-left:15%; margin-top: 1em">Prepending an
+exclamation point (&rsquo;!&rsquo;) to the user id or name
+instructs top to display only processes with users not
+matching the one provided.</p>
+
+<p style="margin-left:15%; margin-top: 1em">The
+&rsquo;p&rsquo;, &rsquo;U&rsquo; and &rsquo;u&rsquo;
+command-line options are mutually exclusive.</p>
+
+<p style="margin-left:11%;">-<b>V</b>, <b>--version</b></p>
+
+<p style="margin-left:15%;">Display version information,
+then quit.</p>
+
+<p style="margin-left:11%;">-<b>w</b>, <b>--width</b>
+[=<i>COLUMNS</i>]</p>
+
+<p style="margin-left:15%;">In Batch mode, when used
+without an argument top will format output using the
+COLUMNS= and LINES= environment variables, if set.
+Otherwise, width will be fixed at the maximum 512 columns.
+With an argument, output width can be decreased or increased
+(up to 512) but the number of rows is considered
+unlimited.</p>
+
+<p style="margin-left:15%; margin-top: 1em">In normal
+display mode, when used without an argument top will
+<i>attempt</i> to format output using the COLUMNS= and
+LINES= environment variables, if set. With an argument,
+output width can only be decreased, not increased. Whether
+using environment variables or an argument with -w, when
+<i>not</i> in Batch mode actual terminal dimensions can
+never be exceeded.</p>
+
+<p style="margin-left:15%; margin-top: 1em"><b>Note</b>:
+Without the use of this command-line option, output width is
+always based on the terminal at which top was invoked
+whether or not in Batch mode.</p>
+
+<p style="margin-left:11%;">-<b>1</b>,
+<b>--single-cpu-toggle</b></p>
+
+<p style="margin-left:15%;">Starts top with the last
+remembered Cpu States portion of the summary area reversed.
+Either all cpu information will be displayed in a single
+line or each cpu will be displayed separately, depending on
+the state of the NUMA Node command toggle
+(&rsquo;2&rsquo;).</p>
+
+<p style="margin-left:15%; margin-top: 1em">See the
+&rsquo;1&rsquo; and &rsquo;2&rsquo; interactive commands for
+additional information.</p>
+
+<h2>2. SUMMARY Display
+<a name="2. SUMMARY Display"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Each of the
+following three areas are individually controlled through
+one or more interactive commands. See topic 4b. SUMMARY AREA
+Commands for additional information regarding these
+provisions.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>2a. UPTIME
+and LOAD Averages</b> <br>
+This portion consists of a single line containing: <b><br>
+program</b> or <b>window</b> name, depending on display mode
+<br>
+current time and length of time since last boot <br>
+total number of users <br>
+system load avg over the last 1, 5 and 15 minutes</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>2b. TASK and
+CPU States</b> <br>
+This portion consists of a minimum of two lines. In an SMP
+environment, additional lines can reflect individual CPU
+state percentages.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Line 1 shows
+total <b>tasks</b> or <b>threads</b>, depending on the state
+of the Threads-mode toggle. That total is further classified
+as: <br>
+running; sleeping; stopped; zombie</p>
+
+<p style="margin-left:11%; margin-top: 1em">Line 2 shows
+CPU state percentages based on the interval since the last
+refresh.</p>
+
+<p style="margin-left:11%; margin-top: 1em">As a default,
+percentages for these individual categories are displayed.
+Depending on your kernel version, the <b>st</b> field may
+not be shown. <b><br>
+us</b> : time running un-niced user processes <b><br>
+sy</b> : time running kernel processes <b><br>
+ni</b> : time running niced user processes <b><br>
+id</b> : time spent in the kernel idle handler <b><br>
+wa</b> : time waiting for I/O completion <b><br>
+hi</b> : time spent servicing hardware interrupts <b><br>
+si</b> : time spent servicing software interrupts <b><br>
+st</b> : time stolen from this vm by the hypervisor</p>
+
+<p style="margin-left:11%; margin-top: 1em">Beyond the
+first tasks/threads line, there are alternate CPU display
+modes available via the 4-way &rsquo;t&rsquo; command
+toggle. They show an abbreviated summary consisting of these
+elements: <br>
+a b c d <br>
+%Cpu(s): <b>75.0</b>/25.0 <b>100</b>[ ... ]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Where: a) is
+the &rsquo;user&rsquo; (us + ni) percentage; b) is the
+&rsquo;system&rsquo; (sy + hi + si) percentage; c) is the
+total percentage; and d) is one of two visual graphs of
+those representations. Such graphs also reflect separate
+&rsquo;user&rsquo; and &rsquo;system&rsquo; portions.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the
+&rsquo;4&rsquo; command toggle is used to yield more than
+two cpus per line, results will be further abridged
+eliminating the a) and b) elements. However, that
+information is still reflected in the graph itself assuming
+color is active or, if not, bars vs. blocks are being
+shown.</p>
+
+<p style="margin-left:11%; margin-top: 1em">See topic 4b.
+SUMMARY AREA Commands for additional information on the
+&rsquo;t&rsquo; and &rsquo;4&rsquo; command toggles.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>2c. MEMORY
+Usage</b> <br>
+This portion consists of two lines which may express values
+in kibibytes (KiB) through exbibytes (EiB) depending on the
+scaling factor enforced with the &rsquo;E&rsquo; interactive
+command.</p>
+
+<p style="margin-left:11%; margin-top: 1em">As a default,
+Line 1 reflects physical memory, classified as: <br>
+total, free, used and buff/cache</p>
+
+<p style="margin-left:11%; margin-top: 1em">Line 2 reflects
+mostly virtual memory, classified as: <br>
+total, free, used and avail (which is physical memory)</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>avail</b> number on line 2 is an estimation of physical
+memory available for starting new applications, without
+swapping. Unlike the <b>free</b> field, it attempts to
+account for readily reclaimable page cache and memory slabs.
+It is available on kernels 3.14, emulated on kernels
+2.6.27+, otherwise the same as <b>free</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the
+alternate memory display modes, two abbreviated summary
+lines are shown consisting of these elements: <br>
+a b c <br>
+GiB Mem : <b>18.7</b>/15.738 [ ... ] <br>
+GiB Swap: <b>0.0</b>/7.999 [ ... ]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Where: a) is
+the percentage used; b) is the total available; and c) is
+one of two visual graphs of those representations.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the case of
+physical memory, the percentage represents the <b>total</b>
+minus the estimated <b>avail</b> noted above. The
+&rsquo;Mem&rsquo; graph itself is divided between the
+non-cached portion of <b>used</b> and any remaining memory
+not otherwise accounted for by <b>avail</b>. See topic 4b.
+SUMMARY AREA Commands and the &rsquo;m&rsquo; command for
+additional information on that special 4-way toggle.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This table may
+help in interpreting the scaled values displayed: <br>
+KiB = kibibyte = 1024 bytes <br>
+MiB = mebibyte = 1024 KiB = 1,048,576 bytes <br>
+GiB = gibibyte = 1024 MiB = 1,073,741,824 bytes <br>
+TiB = tebibyte = 1024 GiB = 1,099,511,627,776 bytes <br>
+PiB = pebibyte = 1024 TiB = 1,125,899,906,842,624 bytes <br>
+EiB = exbibyte = 1024 PiB = 1,152,921,504,606,846,976
+bytes</p>
+
+<h2>3. FIELDS / Columns
+<a name="3. FIELDS / Columns"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>3a.
+DESCRIPTIONS of Fields</b> <br>
+Listed below are top&rsquo;s available process fields
+(columns). They are shown in strict ascii alphabetical
+order. You may customize their position and whether or not
+they are displayable with the &rsquo;f&rsquo; (Fields
+Management) interactive command.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Any field is
+selectable as the sort field, and you control whether they
+are sorted high-to-low or low-to-high. For additional
+information on sort provisions see topic 4c. TASK AREA
+Commands, SORTING.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The fields
+related to physical memory or virtual memory reference
+&rsquo;(KiB)&rsquo; which is the unsuffixed display mode.
+Such fields may, however, be scaled from KiB through PiB.
+That scaling is influenced via the &rsquo;e&rsquo;
+interactive command or established for startup through a
+build option. <b><br>
+%CPU &nbsp;</b>--&nbsp; CPU Usage</p>
+
+<p style="margin-left:17%;">The task&rsquo;s share of the
+elapsed CPU time since the last screen update, expressed as
+a percentage of total CPU time.</p>
+
+<p style="margin-left:17%; margin-top: 1em">In a true SMP
+environment, if a process is multi-threaded and top is
+<i>not</i> operating in Threads mode, amounts greater than
+100% may be reported. You toggle Threads mode with the
+&rsquo;H&rsquo; interactive command.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Also for
+multi-processor environments, if Irix mode is <i>Off</i>,
+top will operate in Solaris mode where a task&rsquo;s cpu
+usage will be divided by the total number of CPUs. You
+toggle Irix/Solaris modes with the &rsquo;I&rsquo;
+interactive command.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>Note</b>:
+When running in forest view mode (&rsquo;V&rsquo;) with
+children collapsed (&rsquo;v&rsquo;), this field will also
+include the CPU time of those unseen children. See topic 4c.
+TASK AREA Commands, CONTENT for more information regarding
+the &rsquo;V&rsquo; and &rsquo;v&rsquo; toggles.</p>
+
+<p style="margin-left:11%;"><b>%CUC &nbsp;</b>--&nbsp; CPU
+Utilization</p>
+
+<p style="margin-left:17%;">This field is identical to %CUU
+below, except the percentage also reflects reaped child
+processes.</p>
+
+<p style="margin-left:11%;"><b>%CUU &nbsp;</b>--&nbsp; CPU
+Utilization</p>
+
+<p style="margin-left:17%;">A task&rsquo;s total CPU usage
+divided by its elapsed running time, expressed as a
+percentage.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If a process
+currently displays high CPU usage, this field can help
+determine if such behavior is normal. Conversely, if a
+process has low CPU usage currently, %CUU may reflect
+historically higher demands over its lifetime.</p>
+
+<p style="margin-left:11%;"><b>%MEM &nbsp;</b>--&nbsp;
+Memory Usage (RES)</p>
+
+<p style="margin-left:17%;">A task&rsquo;s currently
+resident share of available physical memory.</p>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&rsquo;OVERVIEW, Linux Memory Types&rsquo; for additional
+details.</p>
+
+<p style="margin-left:11%;"><b>AGID &nbsp;</b>--&nbsp;
+Autogroup Identifier</p>
+
+<p style="margin-left:17%;">The autogroup identifier
+associated with a process. This feature operates in
+conjunction with the CFS scheduler to improve interactive
+desktop performance.</p>
+
+<p style="margin-left:17%; margin-top: 1em">When
+/proc/sys/kernel/sched_autogroup_enabled is set, a new
+autogroup is created with each new session (see SID). All
+subsequently forked processes in that session inherit
+membership in this autogroup. The kernel then attempts to
+equalize distribution of CPU cycles across such groups.
+Thus, an autogroup with many CPU intensive processes (e.g
+make -j) will not dominate an autogroup with only one or two
+processes.</p>
+
+<p style="margin-left:17%; margin-top: 1em">When -1 is
+displayed it means this information is not available.</p>
+
+<p style="margin-left:11%;"><b>AGNI &nbsp;</b>--&nbsp;
+Autogroup Nice Value</p>
+
+<p style="margin-left:17%;">The autogroup nice value which
+affects scheduling of all processes in that group. A
+negative nice value means higher priority, whereas a
+positive nice value means lower priority.</p>
+
+<p style="margin-left:11%;"><b>CGNAME &nbsp;</b>--&nbsp;
+Control Group Name</p>
+
+<p style="margin-left:17%;">The name of the control group
+to which a process belongs, or &rsquo;-&rsquo; if not
+applicable for that process.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This will
+typically be the last entry in the full list of control
+groups as shown under the next heading (CGROUPS). And as is
+true there, this field is also variable width.</p>
+
+<p style="margin-left:11%;"><b>CGROUPS &nbsp;</b>--&nbsp;
+Control Groups</p>
+
+<p style="margin-left:17%;">The names of the control
+group(s) to which a process belongs, or &rsquo;-&rsquo; if
+not applicable for that process.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Control Groups
+provide for allocating resources (cpu, memory, network
+bandwidth, etc.) among installation-defined groups of
+processes. They enable fine-grained control over allocating,
+denying, prioritizing, managing and monitoring those
+resources.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Many different
+hierarchies of cgroups can exist simultaneously on a system
+and each hierarchy is attached to one or more subsystems. A
+subsystem represents a single resource.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>Note</b>:
+The CGROUPS field, unlike most columns, is not fixed-width.
+When displayed, it plus any other variable width columns
+will be allocated all remaining screen width (up to the
+maximum 512 characters). Even so, such variable width fields
+could still suffer truncation. See topic 5c. SCROLLING a
+Window for additional information on accessing any truncated
+data.</p>
+
+<p style="margin-left:11%;"><b>CODE &nbsp;</b>--&nbsp; Code
+Size (KiB)</p>
+
+<p style="margin-left:17%;">The amount of physical memory
+currently devoted to executable code, also known as the Text
+Resident Set size or TRS.</p>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&rsquo;OVERVIEW, Linux Memory Types&rsquo; for additional
+details.</p>
+
+<p style="margin-left:11%;"><b>COMMAND &nbsp;</b>--&nbsp;
+Command <b>Name</b> or Command <b>Line</b></p>
+
+<p style="margin-left:17%;">Display the command line used
+to start a task or the name of the associated program. You
+toggle between command <i>line</i> and <i>name</i> with
+&rsquo;c&rsquo;, which is both a command-line option and an
+interactive command.</p>
+
+<p style="margin-left:17%; margin-top: 1em">When
+you&rsquo;ve chosen to display command lines, processes
+without a command line (like kernel threads) will be shown
+with only the program name in brackets, as in this example:
+<br>
+[kthreadd]</p>
+
+<p style="margin-left:17%; margin-top: 1em">This field may
+also be impacted by the forest view display mode. See the
+&rsquo;V&rsquo; interactive command for additional
+information regarding that mode.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>Note</b>:
+The COMMAND field, unlike most columns, is not fixed-width.
+When displayed, it plus any other variable width columns
+will be allocated all remaining screen width (up to the
+maximum 512 characters). Even so, such variable width fields
+could still suffer truncation. This is especially true for
+this field when command lines are being displayed (the
+&rsquo;c&rsquo; interactive command.) See topic 5c.
+SCROLLING a Window for additional information on accessing
+any truncated data.</p>
+
+<p style="margin-left:11%;"><b>DATA &nbsp;</b>--&nbsp; Data
++ Stack Size (KiB)</p>
+
+<p style="margin-left:17%;">The amount of private memory
+<i>reserved</i> by a process. It is also known as the Data
+Resident Set or DRS. Such memory may not yet be mapped to
+physical memory (RES) but will always be included in the
+virtual memory (VIRT) amount.</p>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&rsquo;OVERVIEW, Linux Memory Types&rsquo; for additional
+details.</p>
+
+<p style="margin-left:11%;"><b>ELAPSED &nbsp;</b>--&nbsp;
+Elapsed Running Time</p>
+
+<p style="margin-left:17%;">The length of time since a
+process was started. Thus, the most recently started task
+will display the smallest time interval.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The value will
+be expressed as &rsquo;HH,MM&rsquo; (hours,minutes) but is
+subject to additional scaling if the interval becomes too
+great to fit column width. At that point it will be scaled
+to &rsquo;DD+HH&rsquo; (days+hours) and possibly beyond.</p>
+
+<p style="margin-left:11%;"><b>ENVIRON &nbsp;</b>--&nbsp;
+Environment variables</p>
+
+<p style="margin-left:17%;">Display all of the environment
+variables, if any, as seen by the respective processes.
+These variables will be displayed in their raw native order,
+not the sorted order you are accustomed to seeing with an
+unqualified &rsquo;set&rsquo;.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>Note</b>:
+The ENVIRON field, unlike most columns, is not fixed-width.
+When displayed, it plus any other variable width columns
+will be allocated all remaining screen width (up to the
+maximum 512 characters). Even so, such variable width fields
+could still suffer truncation. This is especially true for
+this field. See topic 5c. SCROLLING a Window for additional
+information on accessing any truncated data.</p>
+
+<p style="margin-left:11%;"><b>EXE &nbsp;</b>--&nbsp;
+Executable Path</p>
+
+<p style="margin-left:17%;">Where available, this is the
+full path to the executable, including the program name.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>Note</b>:
+The EXE field, unlike most columns, is not fixed-width. When
+displayed, it plus any other variable width columns will be
+allocated all remaining screen width (up to the maximum 512
+characters).</p>
+
+<p style="margin-left:11%;"><b>Flags &nbsp;</b>--&nbsp;
+Task Flags</p>
+
+<p style="margin-left:17%;">This column represents the
+task&rsquo;s current scheduling flags which are expressed in
+hexadecimal notation and with zeros suppressed. These flags
+are officially documented in &lt;linux/sched.h&gt;.</p>
+
+<p style="margin-left:11%;"><b>GID &nbsp;</b>--&nbsp; Group
+Id</p>
+
+<p style="margin-left:17%;">The <i>effective</i> group
+ID.</p>
+
+<p style="margin-left:11%;"><b>GROUP &nbsp;</b>--&nbsp;
+Group Name</p>
+
+<p style="margin-left:17%;">The <i>effective</i> group
+name.</p>
+
+<p style="margin-left:11%;"><b>LOGID &nbsp;</b>--&nbsp;
+Login User Id</p>
+
+<p style="margin-left:17%;">The user ID used at
+<i>login</i>. When -1 is displayed it means this information
+is not available.</p>
+
+<p style="margin-left:11%;"><b>LXC &nbsp;</b>--&nbsp; Lxc
+Container Name</p>
+
+<p style="margin-left:17%;">The name of the lxc container
+within which a task is running. If a process is not running
+inside a container, a dash (&rsquo;-&rsquo;) will be
+shown.</p>
+
+<p style="margin-left:11%;"><b>NI &nbsp;</b>--&nbsp; Nice
+Value</p>
+
+<p style="margin-left:17%;">The nice value of the task. A
+negative nice value means higher priority, whereas a
+positive nice value means lower priority. Zero in this field
+simply means priority will not be adjusted in determining a
+task&rsquo;s dispatch-ability.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>Note</b>:
+This value only affects scheduling priority relative to
+other processes in the same autogroup. See the
+&rsquo;AGID&rsquo; and &rsquo;AGNI&rsquo; fields for
+additional information on autogroups.</p>
+
+<p style="margin-left:11%;"><b>NU &nbsp;</b>--&nbsp; Last
+known NUMA node</p>
+
+<p style="margin-left:17%;">A number representing the NUMA
+node associated with the last used processor
+(&rsquo;P&rsquo;). When -1 is displayed it means that NUMA
+information is not available.</p>
+
+<p style="margin-left:17%; margin-top: 1em">See the
+&rsquo;&rsquo;2&rsquo; and &rsquo;3&rsquo; interactive
+commands for additional NUMA provisions affecting the
+summary area.</p>
+
+<p style="margin-left:11%;"><b>OOMa &nbsp;</b>--&nbsp; Out
+of Memory Adjustment Factor</p>
+
+<p style="margin-left:17%;">The value, ranging from -1000
+to +1000, added to the current out of memory score (OOMs)
+which is then used to determine which task to kill when
+memory is exhausted.</p>
+
+<p style="margin-left:11%;"><b>OOMs &nbsp;</b>--&nbsp; Out
+of Memory Score</p>
+
+<p style="margin-left:17%;">The value, ranging from 0 to
++1000, used to select task(s) to kill when memory is
+exhausted. Zero translates to &rsquo;never kill&rsquo;
+whereas 1000 means &rsquo;always kill&rsquo;.</p>
+
+<p style="margin-left:11%;"><b>P &nbsp;</b>--&nbsp; Last
+used CPU (SMP)</p>
+
+<p style="margin-left:17%;">A number representing the last
+used processor. In a true SMP environment this will likely
+change frequently since the kernel intentionally uses weak
+affinity. Also, the very act of running top may break this
+weak affinity and cause more processes to change CPUs more
+often (because of the extra demand for cpu time).</p>
+
+<p style="margin-left:11%;"><b>PGRP &nbsp;</b>--&nbsp;
+Process Group Id</p>
+
+<p style="margin-left:17%;">Every process is member of a
+unique process group which is used for distribution of
+signals and by terminals to arbitrate requests for their
+input and output. When a process is created (forked), it
+becomes a member of the process group of its parent. By
+convention, this value equals the process ID (see PID) of
+the first member of a process group, called the process
+group leader.</p>
+
+<p style="margin-left:11%;"><b>PID &nbsp;</b>--&nbsp;
+Process Id</p>
+
+<p style="margin-left:17%;">The task&rsquo;s unique process
+ID, which periodically wraps, though never restarting at
+zero. In kernel terms, it is a dispatchable entity defined
+by a task_struct.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This value may
+also be used as: a process group ID (see PGRP); a session ID
+for the session leader (see SID); a thread group ID for the
+thread group leader (see TGID); and a TTY process group ID
+for the process group leader (see TPGID).</p>
+
+<p style="margin-left:11%;"><b>PPID &nbsp;</b>--&nbsp;
+Parent Process Id</p>
+
+<p style="margin-left:17%;">The process ID (pid) of a
+task&rsquo;s parent.</p>
+
+<p style="margin-left:11%;"><b>PR &nbsp;</b>--&nbsp;
+Priority</p>
+
+<p style="margin-left:17%;">The scheduling priority of the
+task. If you see &rsquo;rt&rsquo; in this field, it means
+the task is running under real time scheduling priority.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Under linux,
+real time priority is somewhat misleading since
+traditionally the operating itself was not preemptible. And
+while the 2.6 kernel can be made mostly preemptible, it is
+not always so.</p>
+
+<p style="margin-left:11%;"><b>PSS &nbsp;</b>--&nbsp;
+Proportional Resident Memory, smaps (KiB)</p>
+
+<p style="margin-left:17%;">The proportion of this
+task&rsquo;s share of &rsquo;RSS&rsquo; where each page is
+divided by the number of processes sharing it. It is also
+the sum of the &rsquo;PSan&rsquo;, &rsquo;PSfd&rsquo; and
+&rsquo;PSsh&rsquo; fields.</p>
+
+<p style="margin-left:17%; margin-top: 1em">For example, if
+a process has 1000 resident pages alone and 1000 resident
+pages shared with another process, its &rsquo;PSS&rsquo;
+would be 1500 (times page size).</p>
+
+<p style="margin-left:17%; margin-top: 1em">Accessing smaps
+values is 10x more costly than other memory statistics and
+data for other users requires root privileges.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>PSan
+&nbsp;</b>--&nbsp; Proportional Anonymous Memory, smaps
+(KiB) <b><br>
+PSfd &nbsp;</b>--&nbsp; Proportional File Memory, smaps
+(KiB) <b><br>
+PSsh &nbsp;</b>--&nbsp; Proportional Shmem Memory, smaps
+(KiB)</p>
+
+<p style="margin-left:17%;">As was true for
+&rsquo;PSS&rsquo; above (total proportional resident
+memory), these fields represent the proportion of this
+task&rsquo;s share of each type of memory divided by the
+number of processes sharing it.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Accessing smaps
+values is 10x more costly than other memory statistics and
+data for other users requires root privileges.</p>
+
+<p style="margin-left:11%;"><b>RES &nbsp;</b>--&nbsp;
+Resident Memory Size (KiB)</p>
+
+<p style="margin-left:17%;">A subset of the virtual address
+space (VIRT) representing the non-swapped physical memory a
+task is currently using. It is also the sum of the
+&rsquo;RSan&rsquo;, &rsquo;RSfd&rsquo; and
+&rsquo;RSsh&rsquo; fields.</p>
+
+<p style="margin-left:17%; margin-top: 1em">It can include
+private anonymous pages, private pages mapped to files
+(including program images and shared libraries) plus shared
+anonymous pages. All such memory is backed by the swap file
+represented separately under SWAP.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Lastly, this
+field may also include shared file-backed pages which, when
+modified, act as a dedicated swap file and thus will never
+impact SWAP.</p>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&rsquo;OVERVIEW, Linux Memory Types&rsquo; for additional
+details.</p>
+
+<p style="margin-left:11%;"><b>RSS &nbsp;</b>--&nbsp;
+Resident Memory, smaps (KiB)</p>
+
+<p style="margin-left:17%;">Another, more precise view of
+process non-swapped physical memory. It is obtained from the
+&rsquo;smaps_rollup&rsquo; file and is generally slightly
+larger than that shown for &rsquo;RES&rsquo;.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Accessing smaps
+values is 10x more costly than other memory statistics and
+data for other users requires root privileges.</p>
+
+<p style="margin-left:11%;"><b>RSan &nbsp;</b>--&nbsp;
+Resident Anonymous Memory Size (KiB)</p>
+
+<p style="margin-left:17%;">A subset of resident memory
+(RES) representing private pages not mapped to a file.</p>
+
+<p style="margin-left:11%;"><b>RSfd &nbsp;</b>--&nbsp;
+Resident File-Backed Memory Size (KiB)</p>
+
+<p style="margin-left:17%;">A subset of resident memory
+(RES) representing the implicitly shared pages supporting
+program images and shared libraries. It also includes
+explicit file mappings, both private and shared.</p>
+
+<p style="margin-left:11%;"><b>RSlk &nbsp;</b>--&nbsp;
+Resident Locked Memory Size (KiB)</p>
+
+<p style="margin-left:17%;">A subset of resident memory
+(RES) which cannot be swapped out.</p>
+
+<p style="margin-left:11%;"><b>RSsh &nbsp;</b>--&nbsp;
+Resident Shared Memory Size (KiB)</p>
+
+<p style="margin-left:17%;">A subset of resident memory
+(RES) representing the explicitly shared anonymous shm*/mmap
+pages.</p>
+
+<p style="margin-left:11%;"><b>RUID &nbsp;</b>--&nbsp; Real
+User Id</p>
+
+<p style="margin-left:17%;">The <i>real</i> user ID.</p>
+
+<p style="margin-left:11%;"><b>RUSER &nbsp;</b>--&nbsp;
+Real User Name</p>
+
+<p style="margin-left:17%;">The <i>real</i> user name.</p>
+
+<p style="margin-left:11%;"><b>S &nbsp;</b>--&nbsp; Process
+Status</p>
+
+<p style="margin-left:17%;">The status of the task which
+can be one of: <b><br>
+D</b> = uninterruptible sleep <b><br>
+I</b> = idle <b><br>
+R</b> = running <b><br>
+S</b> = sleeping <b><br>
+T</b> = stopped by job control signal <b><br>
+t</b> = stopped by debugger during trace <b><br>
+Z</b> = zombie</p>
+
+<p style="margin-left:17%; margin-top: 1em">Tasks shown as
+running should be more properly thought of as ready to run
+&nbsp;--&nbsp; their task_struct is simply represented on
+the Linux run-queue. Even without a true SMP machine, you
+may see numerous tasks in this state depending on
+top&rsquo;s delay interval and nice value.</p>
+
+<p style="margin-left:11%;"><b>SHR &nbsp;</b>--&nbsp;
+Shared Memory Size (KiB)</p>
+
+<p style="margin-left:17%;">A subset of resident memory
+(RES) that may be used by other processes. It will include
+shared anonymous pages and shared file-backed pages. It also
+includes private pages mapped to files representing program
+images and shared libraries.</p>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&rsquo;OVERVIEW, Linux Memory Types&rsquo; for additional
+details.</p>
+
+<p style="margin-left:11%;"><b>SID &nbsp;</b>--&nbsp;
+Session Id</p>
+
+<p style="margin-left:17%;">A session is a collection of
+process groups (see PGRP), usually established by the login
+shell. A newly forked process joins the session of its
+creator. By convention, this value equals the process ID
+(see PID) of the first member of the session, called the
+session leader, which is usually the login shell.</p>
+
+<p style="margin-left:11%;"><b>STARTED &nbsp;</b>--&nbsp;
+Start Time Interval</p>
+
+<p style="margin-left:17%;">The length of time since system
+boot when a process started. Thus, the most recently started
+task will display the largest time interval.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The value will
+be expressed as &rsquo;MM:SS&rsquo; (minutes:seconds). But
+if the interval is too great to fit column width it will be
+scaled as &rsquo;HH,MM&rsquo; (hours,minutes) and possibly
+beyond.</p>
+
+<p style="margin-left:11%;"><b>SUID &nbsp;</b>--&nbsp;
+Saved User Id</p>
+
+<p style="margin-left:17%;">The <i>saved</i> user ID.</p>
+
+<p style="margin-left:11%;"><b>SUPGIDS &nbsp;</b>--&nbsp;
+Supplementary Group IDs</p>
+
+<p style="margin-left:17%;">The IDs of any supplementary
+group(s) established at login or inherited from a
+task&rsquo;s parent. They are displayed in a comma delimited
+list.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>Note</b>:
+The SUPGIDS field, unlike most columns, is not fixed-width.
+When displayed, it plus any other variable width columns
+will be allocated all remaining screen width (up to the
+maximum 512 characters).</p>
+
+<p style="margin-left:11%;"><b>SUPGRPS &nbsp;</b>--&nbsp;
+Supplementary Group Names</p>
+
+<p style="margin-left:17%;">The names of any supplementary
+group(s) established at login or inherited from a
+task&rsquo;s parent. They are displayed in a comma delimited
+list.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>Note</b>:
+The SUPGRPS field, unlike most columns, is not fixed-width.
+When displayed, it plus any other variable width columns
+will be allocated all remaining screen width (up to the
+maximum 512 characters).</p>
+
+<p style="margin-left:11%;"><b>SUSER &nbsp;</b>--&nbsp;
+Saved User Name</p>
+
+<p style="margin-left:17%;">The <i>saved</i> user name.</p>
+
+<p style="margin-left:11%;"><b>SWAP &nbsp;</b>--&nbsp;
+Swapped Size (KiB)</p>
+
+<p style="margin-left:17%;">The formerly resident portion
+of a task&rsquo;s address space written to the swap file
+when physical memory becomes over committed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&rsquo;OVERVIEW, Linux Memory Types&rsquo; for additional
+details.</p>
+
+<p style="margin-left:11%;"><b>TGID &nbsp;</b>--&nbsp;
+Thread Group Id</p>
+
+<p style="margin-left:17%;">The ID of the thread group to
+which a task belongs. It is the PID of the thread group
+leader. In kernel terms, it represents those tasks that
+share an mm_struct.</p>
+
+<p style="margin-left:11%;"><b>TIME &nbsp;</b>--&nbsp; CPU
+Time</p>
+
+<p style="margin-left:17%;">Total CPU time the task has
+used since it started. When Cumulative mode is <i>On</i>,
+each process is listed with the cpu time that it and its
+dead children have used. You toggle Cumulative mode with
+&rsquo;S&rsquo;, which is both a command-line option and an
+interactive command. See the &rsquo;S&rsquo; interactive
+command for additional information regarding this mode.</p>
+
+<p style="margin-left:11%;"><b>TIME+ &nbsp;</b>--&nbsp; CPU
+Time, hundredths</p>
+
+<p style="margin-left:17%;">The same as TIME, but
+reflecting more granularity through hundredths of a
+second.</p>
+
+<p style="margin-left:11%;"><b>TPGID &nbsp;</b>--&nbsp; Tty
+Process Group Id</p>
+
+<p style="margin-left:17%;">The process group ID of the
+foreground process for the connected tty, or -1 if a process
+is not connected to a terminal. By convention, this value
+equals the process ID (see PID) of the process group leader
+(see PGRP).</p>
+
+<p style="margin-left:11%;"><b>TTY &nbsp;</b>--&nbsp;
+Controlling Tty</p>
+
+<p style="margin-left:17%;">The name of the controlling
+terminal. This is usually the device (serial port, pty,
+etc.) from which the process was started, and which it uses
+for input or output. However, a task need not be associated
+with a terminal, in which case you&rsquo;ll see
+&rsquo;?&rsquo; displayed.</p>
+
+<p style="margin-left:11%;"><b>UID &nbsp;</b>--&nbsp; User
+Id</p>
+
+<p style="margin-left:17%;">The <i>effective</i> user ID of
+the task&rsquo;s owner.</p>
+
+<p style="margin-left:11%;"><b>USED &nbsp;</b>--&nbsp;
+Memory in Use (KiB)</p>
+
+<p style="margin-left:17%;">This field represents the
+non-swapped physical memory a task is using (RES) plus the
+swapped out portion of its address space (SWAP).</p>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&rsquo;OVERVIEW, Linux Memory Types&rsquo; for additional
+details.</p>
+
+<p style="margin-left:11%;"><b>USER &nbsp;</b>--&nbsp; User
+Name</p>
+
+<p style="margin-left:17%;">The <i>effective</i> user name
+of the task&rsquo;s owner.</p>
+
+<p style="margin-left:11%;"><b>USS &nbsp;</b>--&nbsp;
+Unique Set Size</p>
+
+<p style="margin-left:17%;">The non-swapped portion of
+physical memory (&rsquo;RSS&rsquo;) not shared with any
+other process. It is derived from the
+&rsquo;smaps_rollup&rsquo; file.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Accessing smaps
+values is 10x more costly than other memory statistics and
+data for other users requires root privileges.</p>
+
+<p style="margin-left:11%;"><b>VIRT &nbsp;</b>--&nbsp;
+Virtual Memory Size (KiB)</p>
+
+<p style="margin-left:17%;">The total amount of virtual
+memory used by the task. It includes all code, data and
+shared libraries plus pages that have been swapped out and
+pages that have been mapped but not used.</p>
+
+<p style="margin-left:17%; margin-top: 1em">See
+&rsquo;OVERVIEW, Linux Memory Types&rsquo; for additional
+details.</p>
+
+<p style="margin-left:11%;"><b>WCHAN &nbsp;</b>--&nbsp;
+Sleeping in Function</p>
+
+<p style="margin-left:17%;">This field will show the name
+of the kernel function in which the task is currently
+sleeping. Running tasks will display a dash
+(&rsquo;-&rsquo;) in this column.</p>
+
+<p style="margin-left:11%;"><b>ioR &nbsp;</b>--&nbsp; I/O
+Bytes Read</p>
+
+<p style="margin-left:17%;">The number of bytes a process
+caused to be fetched from the storage layer.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Root privileges
+are required to display &rsquo;io&rsquo; data for other
+users.</p>
+
+<p style="margin-left:11%;"><b>ioRop &nbsp;</b>--&nbsp; I/O
+Read Operations</p>
+
+<p style="margin-left:17%;">The number of read I/O
+operations (syscalls) for a process. Such calls might not
+result in actual physical disk I/O.</p>
+
+<p style="margin-left:11%;"><b>ioW &nbsp;</b>--&nbsp; I/O
+Bytes Written</p>
+
+<p style="margin-left:17%;">The number of bytes a process
+caused to be sent to the storage layer.</p>
+
+<p style="margin-left:11%;"><b>ioWop &nbsp;</b>--&nbsp; I/O
+Write Operations</p>
+
+<p style="margin-left:17%;">The number of write I/O
+operations (syscalls) for a process. Such calls might not
+result in actual physical disk I/O.</p>
+
+<p style="margin-left:11%;"><b>nDRT &nbsp;</b>--&nbsp;
+Dirty Pages Count</p>
+
+<p style="margin-left:17%;">The number of pages that have
+been modified since they were last written to auxiliary
+storage. Dirty pages must be written to auxiliary storage
+before the corresponding physical memory location can be
+used for some other virtual page.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This field was
+deprecated with linux 2.6 and is always zero.</p>
+
+<p style="margin-left:11%;"><b>nMaj &nbsp;</b>--&nbsp;
+Major Page Fault Count</p>
+
+<p style="margin-left:17%;">The number of <b>major</b> page
+faults that have occurred for a task. A page fault occurs
+when a process attempts to read from or write to a virtual
+page that is not currently present in its address space. A
+major page fault is when auxiliary storage access is
+involved in making that page available.</p>
+
+<p style="margin-left:11%;"><b>nMin &nbsp;</b>--&nbsp;
+Minor Page Fault count</p>
+
+<p style="margin-left:17%;">The number of <b>minor</b> page
+faults that have occurred for a task. A page fault occurs
+when a process attempts to read from or write to a virtual
+page that is not currently present in its address space. A
+minor page fault does not involve auxiliary storage access
+in making that page available.</p>
+
+<p style="margin-left:11%;"><b>nTH &nbsp;</b>--&nbsp;
+Number of Threads</p>
+
+<p style="margin-left:17%;">The number of threads
+associated with a process.</p>
+
+<p style="margin-left:11%;"><b>nsCGROUP &nbsp;</b>--&nbsp;
+CGROUP namespace</p>
+
+<p style="margin-left:17%;">The Inode of the namespace used
+to hide the identity of the control group of which process
+is a member.</p>
+
+<p style="margin-left:11%;"><b>nsIPC &nbsp;</b>--&nbsp; IPC
+namespace</p>
+
+<p style="margin-left:17%;">The Inode of the namespace used
+to isolate interprocess communication (IPC) resources such
+as System V IPC objects and POSIX message queues.</p>
+
+<p style="margin-left:11%;"><b>nsMNT &nbsp;</b>--&nbsp; MNT
+namespace</p>
+
+<p style="margin-left:17%;">The Inode of the namespace used
+to isolate filesystem mount points thus offering different
+views of the filesystem hierarchy.</p>
+
+<p style="margin-left:11%;"><b>nsNET &nbsp;</b>--&nbsp; NET
+namespace</p>
+
+<p style="margin-left:17%;">The Inode of the namespace used
+to isolate resources such as network devices, IP addresses,
+IP routing, port numbers, etc.</p>
+
+<p style="margin-left:11%;"><b>nsPID &nbsp;</b>--&nbsp; PID
+namespace</p>
+
+<p style="margin-left:17%;">The Inode of the namespace used
+to isolate process ID numbers meaning they need not remain
+unique. Thus, each such namespace could have its own
+&rsquo;init/systemd&rsquo; (PID #1) to manage various
+initialization tasks and reap orphaned child processes.</p>
+
+<p style="margin-left:11%;"><b>nsTIME &nbsp;</b>--&nbsp;
+TIME namespace</p>
+
+<p style="margin-left:17%;">The Inode of the namespace
+which allows processes to see different system times in a
+way similar to the UTS namespace.</p>
+
+<p style="margin-left:11%;"><b>nsUSER &nbsp;</b>--&nbsp;
+USER namespace</p>
+
+<p style="margin-left:17%;">The Inode of the namespace used
+to isolate the user and group ID numbers. Thus, a process
+could have a normal unprivileged user ID outside a user
+namespace while having a user ID of 0, with full root
+privileges, inside that namespace.</p>
+
+<p style="margin-left:11%;"><b>nsUTS &nbsp;</b>--&nbsp; UTS
+namespace</p>
+
+<p style="margin-left:17%;">The Inode of the namespace used
+to isolate hostname and NIS domain name. UTS simply means
+&quot;UNIX Time-sharing System&quot;.</p>
+
+<p style="margin-left:11%;"><b>vMj &nbsp;</b>--&nbsp; Major
+Page Fault Count Delta</p>
+
+<p style="margin-left:17%;">The number of <b>major</b> page
+faults that have occurred since the last update (see
+nMaj).</p>
+
+<p style="margin-left:11%;"><b>vMn &nbsp;</b>--&nbsp; Minor
+Page Fault Count Delta</p>
+
+<p style="margin-left:17%;">The number of <b>minor</b> page
+faults that have occurred since the last update (see
+nMin).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>3b. MANAGING
+Fields</b> <br>
+After pressing the interactive command &rsquo;f&rsquo;
+(Fields Management) you will be presented with a screen
+showing: 1) the &rsquo;current&rsquo; window name; 2) the
+designated sort field; 3) all fields in their current order
+along with descriptions. Entries marked with an asterisk are
+the currently displayed fields, screen width permitting.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>As the on screen instructions indicate, you navigate
+among the fields with the <b>Up</b> and <b>Down</b> arrow
+keys. The PgUp, PgDn, Home and End keys can also be used to
+quickly reach the first or last available field.</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>The <b>Right</b> arrow key selects a field for
+repositioning and the <b>Left</b> arrow key or the
+&lt;<b>Enter</b>&gt; key commits that field&rsquo;s
+placement.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>The &rsquo;<b>d</b>&rsquo; key or the
+&lt;<b>Space</b>&gt; bar toggles a field&rsquo;s display
+status, and thus the presence or absence of the
+asterisk.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>The &rsquo;<b>s</b>&rsquo; key designates a field as the
+sort field. See topic 4c. TASK AREA Commands, SORTING for
+additional information regarding your selection of a sort
+field.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>The &rsquo;<b>a</b>&rsquo; and &rsquo;<b>w</b>&rsquo;
+keys can be used to cycle through all available windows and
+the &rsquo;<b>q</b>&rsquo; or &lt;<b>Esc</b>&gt; keys exit
+Fields Management.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The Fields
+Management screen can also be used to change the
+&rsquo;current&rsquo; window/field group in either
+full-screen mode or alternate-display mode. Whatever was
+targeted when &rsquo;q&rsquo; or &lt;Esc&gt; was pressed
+will be made current as you return to the top display. See
+topic 5. ALTERNATE-DISPLAY Provisions and the
+&rsquo;g&rsquo; interactive command for insight into
+&rsquo;current&rsquo; windows and field groups.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Note</b>:
+Any window that has been scrolled <i>horizontally</i> will
+be reset if any field changes are made via the Fields
+Management screen. Any <i>vertical</i> scrolled position,
+however, will not be affected. See topic 5c. SCROLLING a
+Window for additional information regarding vertical and
+horizontal scrolling.</p>
+
+<h2>4. INTERACTIVE Commands
+<a name="4. INTERACTIVE Commands"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Listed below is
+a brief index of commands within categories. Some commands
+appear more than once &nbsp;--&nbsp; their meaning or scope
+may vary depending on the context in which they are
+issued.</p>
+
+<p style="margin-left:11%; margin-top: 1em">4a.
+<i>Global-Commands</i> <br>
+&lt;Ent/Sp&gt; ?, =, 0, <br>
+A, B, d, E, e, g, H, h, I, k, q, r, s, W, X, Y, Z, <br>
+^G, ^K, ^N, ^P, ^U, ^L, ^R <br>
+4b. <i>Summary-Area-Commands</i> <br>
+C, l, t, m, 1, 2, 3, 4, 5, ! <br>
+4c. <i>Task-Area-Commands</i> <br>
+Appearance: b, J, j, x, y, z <br>
+Content: c, F, f, O, o, S, U, u, V, v, ^E <br>
+Size: #, i, n <br>
+Sorting: &lt;, &gt;, f, R <br>
+4d. <i>Color-Mapping</i> <br>
+&lt;Ret&gt;, a, B, b, H, M, q, S, T, w, z, 0 - 7 <br>
+5b. <i>Commands-for-Windows</i> <br>
+-, _, =, +, A, a, G, g, w <br>
+5c. <i>Scrolling-a-Window</i> <br>
+C, Up, Dn, Left, Right, PgUp, PgDn, Home, End <br>
+5d. <i>Searching-in-a-Window</i> <br>
+L, &amp; <br>
+5e. <i>Filtering-in-a-Window <br>
+O, o, ^O, =, +</i></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>4a. GLOBAL
+Commands</b> <br>
+The global interactive commands are <b>always</b> available
+in both full-screen mode and alternate-display mode.
+However, some of these interactive commands are <b>not
+available</b> when running in Secure mode.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you wish to
+know in advance whether or not your top has been secured,
+simply ask for help and view the system summary on the
+second line. &nbsp;&nbsp; <br>
+&lt;<b>Enter</b>&gt; or
+&lt;<b>Space</b>&gt;&nbsp;&nbsp;:<i>Refresh-Display</i></p>
+
+<p style="margin-left:22%;">These commands awaken top and
+following receipt of any input the entire display will be
+repainted. They also force an update of any hotplugged cpu
+or physical memory changes.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Use either of
+these keys if you have a large delay interval and wish to
+see current status, &nbsp;&nbsp;&nbsp;</p>
+
+<p style="margin-left:11%;"><b>?</b> |
+<b>h&nbsp;&nbsp;</b>:<i>Help</i></p>
+
+<p style="margin-left:22%;">There are two help levels
+available. The first will provide a reminder of all the
+basic interactive commands. If top is <i>secured</i>, that
+screen will be abbreviated.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Typing
+&rsquo;h&rsquo; or &rsquo;?&rsquo; on that help screen will
+take you to help for those interactive commands applicable
+to alternate-display mode. &nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>=&nbsp;&nbsp;</b>:<i>Exit-Display-Limits</i></p>
+
+<p style="margin-left:22%;">Removes restrictions on what is
+shown. This command will reverse any &rsquo;i&rsquo; (idle
+tasks), &rsquo;n&rsquo; (max tasks), &rsquo;v&rsquo; (hide
+children) and &rsquo;F&rsquo; focus commands that might be
+active. It also provides for an exit from PID monitoring,
+User filtering, Other filtering, Locate processing and
+Combine Cpus mode.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Additionally,
+if the window has been scrolled it will be reset with this
+command. &nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>0&nbsp;&nbsp;</b>:<i>Zero-Suppress</i>
+toggle</p>
+
+<p style="margin-left:22%;">This command determines whether
+zeros are shown or suppressed for many of the fields in a
+task window. Fields like UID, GID, NI, PR or P are not
+affected by this toggle. &nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>A&nbsp;&nbsp;</b>:<i>Alternate-Display-Mode</i>
+toggle</p>
+
+<p style="margin-left:22%;">This command will switch
+between full-screen mode and alternate-display mode. See
+topic 5. ALTERNATE-DISPLAY Provisions and the
+&rsquo;g&rsquo; interactive command for insight into
+&rsquo;current&rsquo; windows and field groups.
+&nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>B&nbsp;&nbsp;</b>:<i>Bold-Disable/Enable</i>
+toggle</p>
+
+<p style="margin-left:22%;">This command will influence use
+of the bold terminfo capability and alters <b>both</b> the
+summary area and task area for the &rsquo;current&rsquo;
+window. While it is intended primarily for use with dumb
+terminals, it can be applied anytime.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>Note</b>:
+When this toggle is <i>On</i> and top is operating in
+monochrome mode, the <b>entire display</b> will appear as
+normal text. Thus, unless the &rsquo;x&rsquo; and/or
+&rsquo;y&rsquo; toggles are using reverse for emphasis,
+there will be no visual confirmation that they are even
+on.</p>
+
+<p style="margin-left:11%;">*&nbsp;&nbsp;<b>d</b> |
+<b>s&nbsp;&nbsp;</b>:<i>Change-Delay-Time-interval</i></p>
+
+<p style="margin-left:22%;">You will be prompted to enter
+the delay time, in seconds, between display updates.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Fractional
+seconds are honored, but a negative number is not allowed.
+Entering 0 causes (nearly) continuous updates, with an
+unsatisfactory display as the system and tty driver try to
+keep up with top&rsquo;s demands. The delay value is
+inversely proportional to system loading, so set it with
+care.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If at any time
+you wish to know the current delay time, simply ask for help
+and view the system summary on the second line.
+&nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>E&nbsp;&nbsp;</b>:<i>Enforce-Summary-Memory-Scale</i>
+in Summary Area</p>
+
+<p style="margin-left:22%;">With this command you can cycle
+through the available summary area memory scaling which
+ranges from KiB (kibibytes or 1,024 bytes) through EiB
+(exbibytes or 1,152,921,504,606,846,976 bytes).</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you see a
+&rsquo;+&rsquo; between a displayed number and the following
+label, it means that top was forced to truncate some portion
+of that number. By raising the scaling factor, such
+truncation can be avoided. &nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>e&nbsp;&nbsp;</b>:<i>Enforce-Task-Memory-Scale</i>
+in Task Area</p>
+
+<p style="margin-left:22%;">With this command you can cycle
+through the available task area memory scaling which ranges
+from KiB (kibibytes or 1,024 bytes) through PiB (pebibytes
+or 1,125,899,906,842,624 bytes).</p>
+
+<p style="margin-left:22%; margin-top: 1em">While top will
+try to honor the selected target range, additional scaling
+might still be necessary in order to accommodate current
+values. If you wish to see a more homogeneous result in the
+memory columns, raising the scaling range will usually
+accomplish that goal. Raising it too high, however, is
+likely to produce an all zero result which cannot be
+suppressed with the &rsquo;0&rsquo; interactive command.
+&nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>g&nbsp;&nbsp;</b>:<i>Choose-Another-Window/Field-Group</i></p>
+
+<p style="margin-left:22%;">You will be prompted to enter a
+number between 1 and 4 designating the field group which
+should be made the &rsquo;current&rsquo; window. You will
+soon grow comfortable with these 4 windows, especially after
+experimenting with alternate-display mode.
+&nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>H&nbsp;&nbsp;</b>:<i>Threads-mode</i>
+toggle</p>
+
+<p style="margin-left:22%;">When this toggle is <i>On</i>,
+individual threads will be displayed for all processes in
+all visible task windows. Otherwise, top displays a
+summation of all threads in each process.
+&nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>I&nbsp;&nbsp;</b>:<i>Irix/Solaris-Mode</i>
+toggle</p>
+
+<p style="margin-left:22%;">When operating in Solaris mode
+(&rsquo;I&rsquo; toggled <i>Off</i>), a task&rsquo;s cpu
+usage will be divided by the total number of CPUs. After
+issuing this command, you&rsquo;ll be told the new state of
+this toggle.</p>
+
+
+<p style="margin-left:11%;">*&nbsp;&nbsp;<b>k&nbsp;&nbsp;</b>:<i>Kill-a-task</i></p>
+
+<p style="margin-left:22%;">You will be prompted for a PID
+and then the signal to send.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Entering no PID
+or a negative number will be interpreted as the default
+shown in the prompt (the first task displayed). A PID value
+of zero means the top program itself.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default
+signal, as reflected in the prompt, is SIGTERM. However, you
+can send any signal, via number or name.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you wish to
+abort the kill process, do one of the following depending on
+your progress: <br>
+1) at the pid prompt, type an invalid number <br>
+2) at the signal prompt, type 0 (or any invalid signal) <br>
+3) at any prompt, type &lt;Esc&gt; &nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>q&nbsp;&nbsp;</b>:<i>Quit</i>
+<br>
+*&nbsp;&nbsp;<b>r&nbsp;&nbsp;</b>:<i>Renice-a-Task</i></p>
+
+<p style="margin-left:22%;">You will be prompted for a PID
+and then the value to nice it to.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Entering no PID
+or a negative number will be interpreted as the default
+shown in the prompt (the first task displayed). A PID value
+of zero means the top program itself.</p>
+
+<p style="margin-left:22%; margin-top: 1em">A positive nice
+value will cause a process to lose priority. Conversely, a
+negative nice value will cause a process to be viewed more
+favorably by the kernel. As a general rule, ordinary users
+can only increase the nice value and are prevented from
+lowering it.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you wish to
+abort the renice process, do one of the following depending
+on your progress: <br>
+1) at the pid prompt, type an invalid number <br>
+2) at the nice prompt, type &lt;Enter&gt; with no input <br>
+3) at any prompt, type &lt;Esc&gt; &nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>W&nbsp;&nbsp;</b>:<i>Write-the-Configuration-File</i></p>
+
+<p style="margin-left:22%;">This will save all of your
+options and toggles plus the current display mode and delay
+time. By issuing this command just before quitting top, you
+will be able restart later in exactly that same state.
+&nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>X&nbsp;&nbsp;</b>:<i>Extra-Fixed-Width</i></p>
+
+<p style="margin-left:22%;">Some fields are fixed width and
+not scalable. As such, they are subject to truncation which
+would be indicated by a &rsquo;+&rsquo; in the last
+position.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This
+interactive command can be used to alter the widths of the
+following fields:</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>field
+default field default field default</i> <br>
+GID 5 GROUP 8 WCHAN 10 <br>
+LOGID 5 LXC 8 nsCGROUP 10 <br>
+RUID 5 RUSER 8 nsIPC 10 <br>
+SUID 5 SUSER 8 nsMNT 10 <br>
+UID 5 TTY 8 nsNET 10 <br>
+USER 8 nsPID 10 <br>
+nsTIME 10 <br>
+nsUSER 10 <br>
+nsUTS 10</p>
+
+<p style="margin-left:22%; margin-top: 1em">You will be
+prompted for the amount to be added to the default widths
+shown above. Entering zero forces a return to those
+defaults.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you enter a
+negative number, top will automatically increase the column
+size as needed until there is no more truncated data.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>Note</b>:
+Whether explicitly or automatically increased, the widths
+for these fields are never decreased by top. To narrow them
+you must specify a smaller number or restore the defaults.
+&nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>Y&nbsp;&nbsp;</b>:<i>Inspect-Other-Output</i></p>
+
+<p style="margin-left:22%;">After issuing the
+&rsquo;Y&rsquo; interactive command, you will be prompted
+for a target PID. Typing a value or accepting the default
+results in a separate screen. That screen can be used to
+view a variety of files or piped command output while the
+normal top iterative display is paused.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>Note</b>:
+This interactive command is only fully realized when
+supporting entries have been manually added to the end of
+the top configuration file. For details on creating those
+entries, see topic 6b. ADDING INSPECT Entries.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Most of the
+keys used to navigate the Inspect feature are reflected in
+its header prologue. There are, however, additional keys
+available once you have selected a particular file or
+command. They are familiar to anyone who has used the pager
+&rsquo;less&rsquo; and are summarized here for future
+reference.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>key
+function</i> <br>
+= alternate status-line, file or pipeline <br>
+/ find, equivalent to &rsquo;L&rsquo; locate <br>
+n find next, equivalent to &rsquo;&amp;&rsquo; locate next
+<br>
+&lt;Space&gt; scroll down, equivalent to &lt;PgDn&gt; <br>
+b scroll up, equivalent to &lt;PgUp&gt; <br>
+g first line, equivalent to &lt;Home&gt; <br>
+G last line, equivalent to &lt;End&gt;
+&nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>Z&nbsp;&nbsp;</b>:<i>Change-Color-Mapping</i></p>
+
+<p style="margin-left:22%;">This key will take you to a
+separate screen where you can change the colors for the
+&rsquo;current&rsquo; window, or for all windows. For
+details regarding this interactive command see topic 4d.
+COLOR Mapping. &nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>^G&nbsp;&nbsp;</b>:<i>Display-Control-Groups</i>
+(Ctrl key + &rsquo;g&rsquo;) &nbsp;&nbsp; <b><br>
+^K&nbsp;&nbsp;</b>:<i>Display-Cmdline</i> (Ctrl key +
+&rsquo;k&rsquo;) &nbsp;&nbsp; <b><br>
+^N&nbsp;&nbsp;</b>:<i>Display-Environment</i> (Ctrl key +
+&rsquo;n&rsquo;) &nbsp;&nbsp; <b><br>
+^P&nbsp;&nbsp;</b>:<i>Display-Namesspaces</i> (Ctrl key +
+&rsquo;p&rsquo;) &nbsp;&nbsp; <b><br>
+^U&nbsp;&nbsp;</b>:<i>Display-Supplementary-Groups</i> (Ctrl
+key + &rsquo;u&rsquo;)</p>
+
+<p style="margin-left:22%;">Applied to the first process
+displayed, these commands will show that task&rsquo;s full
+(potentially wrapped) information. Such data will be
+displayed in a separate window at the bottom of the screen
+while normal top monitoring continues.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Keying the
+<i>same</i> &rsquo;Ctrl&rsquo; command a second time removes
+that separate window as does the &rsquo;=&rsquo; command.
+Keying a different &rsquo;Ctrl&rsquo; combination, while one
+is already active, immediately transitions to the new
+information.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Notable among
+these provisions is the Ctrl+N (environment) command. Its
+output can be extensive and not easily read when line
+wrapped. A more readable version can be achieved with an
+&rsquo;Inspect&rsquo; entry in the rcfile like the
+following.</p>
+
+<p style="margin-left:22%; margin-top: 1em">pipe ^I
+Environment ^I cat /proc/%d/environ | tr &rsquo;\0&rsquo;
+&rsquo;\n&rsquo;</p>
+
+<p style="margin-left:22%; margin-top: 1em">See the
+&rsquo;Y&rsquo; interactive command above and topic 6b.
+ADDING INSPECT Entries for additional information.</p>
+
+<p style="margin-left:22%; margin-top: 1em">As an
+alternative to &rsquo;Inspect&rsquo;, and available to all
+of these &rsquo;Ctrl&rsquo; commands, the tab key can be
+used to highlight individual elements in the bottom window.
+&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>^L&nbsp;&nbsp;</b>:<i>Logged-Messages</i>
+(Ctrl key + &rsquo;l&rsquo;)</p>
+
+<p style="margin-left:22%;">The 10 most recent messages are
+displayed in a separate window at the bottom of the screen
+while normal top monitoring continues. Keying
+&rsquo;^L&rsquo; a second time removes that window as does
+the &rsquo;=&rsquo; command. Use the tab key to highlight
+individual messages.</p>
+
+
+<p style="margin-left:11%;">*&nbsp;<b>^R&nbsp;&nbsp;</b>:<i>Renice-an-Autogroup</i>
+(Ctrl key + &rsquo;r&rsquo;)</p>
+
+<p style="margin-left:22%;">You will be prompted for a PID
+and then the value for its autogroup AGNI.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Entering no PID
+will be interpreted as the default shown in the prompt (the
+first task displayed).</p>
+
+<p style="margin-left:22%; margin-top: 1em">A positive AGNI
+value will cause processes in that autogroup to lose
+priority. Conversely, a negative value causes them to be
+viewed more favorably by the kernel. Ordinary users are not
+allowed to set negative AGNI values.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you wish to
+abort the renice process type &lt;Esc&gt;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p>The commands shown with an asterisk (&rsquo;*&rsquo;)
+are not available in Secure mode, nor will they be shown on
+the level-1 help screen.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><b>4b. SUMMARY
+AREA Commands</b> <br>
+The summary area interactive commands are <b>always
+available</b> in both full-screen mode and alternate-display
+mode. They affect the beginning lines of your display and
+will determine the position of messages and prompts.</p>
+
+<p style="margin-left:11%; margin-top: 1em">These commands
+always impact just the &rsquo;current&rsquo; window/field
+group. See topic 5. ALTERNATE-DISPLAY Provisions and the
+&rsquo;g&rsquo; interactive command for insight into
+&rsquo;current&rsquo; windows and field groups.
+&nbsp;&nbsp;&nbsp; <b><br>
+C&nbsp;&nbsp;</b>:<i>Show-scroll-coordinates</i> toggle</p>
+
+<p style="margin-left:22%;">Toggle an informational message
+which is displayed whenever the message line is not
+otherwise being used. For additional information see topic
+5c. SCROLLING a Window. &nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>l&nbsp;&nbsp;</b>:<i>Load-Average/Uptime</i>
+toggle</p>
+
+<p style="margin-left:22%;">This is also the line
+containing the program name (possibly an alias) when
+operating in full-screen mode or the &rsquo;current&rsquo;
+window name when operating in alternate-display mode.
+&nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>t&nbsp;&nbsp;</b>:<i>Task/Cpu-States</i>
+toggle</p>
+
+<p style="margin-left:22%;">This command affects from 2 to
+many summary area lines, depending on the state of the
+&rsquo;1&rsquo;, &rsquo;2&rsquo; or &rsquo;3&rsquo; command
+toggles and whether or not top is running under true
+SMP.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This portion of
+the summary area is also influenced by the &rsquo;H&rsquo;
+interactive command toggle, as reflected in the total label
+which shows either Tasks or Threads.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This command
+serves as a 4-way toggle, cycling through these modes: <br>
+1. detailed percentages by category <br>
+2. abbreviated user/system and total % + bar graph <br>
+3. abbreviated user/system and total % + block graph <br>
+4. turn off task and cpu states display</p>
+
+<p style="margin-left:22%; margin-top: 1em">When operating
+in either of the graphic modes, the display becomes much
+more meaningful when individual CPUs or NUMA nodes are also
+displayed. See the the &rsquo;1&rsquo;, &rsquo;2&rsquo; and
+&rsquo;3&rsquo; commands below for additional information.
+&nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>m&nbsp;&nbsp;</b>:<i>Memory/Swap-Usage</i>
+toggle</p>
+
+<p style="margin-left:22%;">This command affects the two
+summary area lines dealing with physical and virtual
+memory.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This command
+serves as a 4-way toggle, cycling through these modes: <br>
+1. detailed percentages by memory type <br>
+2. abbreviated % used/total available + bar graph <br>
+3. abbreviated % used/total available + block graph <br>
+4. turn off memory display &nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>1&nbsp;&nbsp;</b>:<i>Single/Separate-Cpu-States</i>
+toggle</p>
+
+<p style="margin-left:22%;">This command affects how the
+&rsquo;t&rsquo; command&rsquo;s Cpu States portion is shown.
+Although this toggle exists primarily to serve
+massively-parallel SMP machines, it is not restricted to
+solely SMP environments.</p>
+
+<p style="margin-left:22%; margin-top: 1em">When you see
+&rsquo;%Cpu(s):&rsquo; in the summary area, the
+&rsquo;1&rsquo; toggle is <i>On</i> and all cpu information
+is gathered in a single line. Otherwise, each cpu is
+displayed separately as: &rsquo;%Cpu0, %Cpu1, ...&rsquo; up
+to available screen height. &nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>2&nbsp;&nbsp;</b>:<i>NUMA-Nodes/Cpu-Summary</i>
+toggle</p>
+
+<p style="margin-left:22%;">This command toggles between
+the &rsquo;1&rsquo; command cpu summary display (only) or a
+summary display plus the cpu usage statistics for each NUMA
+Node. It is only available if a system has the requisite
+NUMA support. &nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>3&nbsp;&nbsp;</b>:<i>Expand-NUMA-Node</i></p>
+
+<p style="margin-left:22%;">You will be invited to enter a
+number representing a NUMA Node. Thereafter, a node summary
+plus the statistics for each cpu in that node will be shown
+until the &rsquo;1&rsquo;, &rsquo;2&rsquo; or
+&rsquo;4&rsquo; command toggle is pressed. This interactive
+command is only available if a system has the requisite NUMA
+support. &nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>4&nbsp;&nbsp;</b>:<i>Display-Multiple-Elements-Adjacent</i>
+toggle</p>
+
+<p style="margin-left:22%;">This command toggle turns the
+&rsquo;1&rsquo; toggle <i>Off</i> and shows multiple CPU and
+Memory results on each line. Each successive &rsquo;4&rsquo;
+key adds another CPU until again reverting to separate lines
+for CPU and Memory results.</p>
+
+<p style="margin-left:22%; margin-top: 1em">A maximum of 8
+CPUs per line can be displayed in this manner. However, data
+truncation may occur before reaching the maximum. That is
+definitely true when displaying detailed statistics via the
+&rsquo;t&rsquo; command toggle since such data cannot be
+scaled like the graphic representations.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If one wished
+to quickly exit adjacent mode without cycling all the way to
+8, simply use the &rsquo;1&rsquo; command toggle.
+&nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>5&nbsp;&nbsp;</b>:<i>Display-P-Cores-and-E-Cores</i>
+toggle</p>
+
+<p style="margin-left:22%;">This command toggle is only
+active when the &rsquo;t&rsquo; toggle is <i>On</i> and the
+&rsquo;1&rsquo;, &rsquo;2&rsquo;, &rsquo;3&rsquo; and
+&rsquo;!&rsquo; toggles are <i>Off</i>, thus showing
+individual CPU results. It assumes a platform has multiple
+cores of two distinct types, either multi-threaded (P-Core)
+or single-threaded (E-Core).</p>
+
+<p style="margin-left:22%; margin-top: 1em">While normally
+each cpu is displayed as &rsquo;%Cpu0, %Cpu1, ...&rsquo;,
+this toggle can be used to identify and/or filter those cpus
+by their core type, either P-Core (performance) or E-Core
+(efficient).</p>
+
+<p style="margin-left:22%; margin-top: 1em">The 1st time
+&rsquo;5&rsquo; is struck, each CPU is displayed as
+&rsquo;%Cp<b>P</b>&rsquo; or &rsquo;%Cp<b>E</b>&rsquo;
+representing the two core types. The 2nd time, only P-Cores
+(%Cp<b>P</b>) will be shown. The 3rd time, only E-Cores
+(%Cp<b>E</b>) are displayed. When this command toggle is
+struck for the 4th time, the CPU display returns to the
+normal &rsquo;%Cpu&rsquo; convention.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If separate
+<i>performance</i> and <i>efficient</i> categories are not
+present, this command toggle will have no effect.
+&nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>!&nbsp;&nbsp;</b>:<i>Combine-Cpus-Mode</i>
+toggle</p>
+
+<p style="margin-left:22%;">This command toggle is intended
+for massively parallel SMP environments where, even with the
+&rsquo;4&rsquo; command toggle, not all processors can be
+displayed. With each press of &rsquo;!&rsquo; the number of
+additional cpus combined is doubled thus reducing the total
+number of cpu lines displayed.</p>
+
+<p style="margin-left:22%; margin-top: 1em">For example,
+with the first press of &rsquo;!&rsquo; one additional cpu
+will be combined and displayed as &rsquo;0-1, 2-3,
+...&rsquo; instead of the normal &rsquo;%Cpu0, %Cpu1, %Cpu2,
+%Cpu3, ...&rsquo;. With a second &rsquo;!&rsquo; command
+toggle two additional cpus are combined and shown as
+&rsquo;0-2, 3-5, ...&rsquo;. Then the third &rsquo;!&rsquo;
+press, combining four additional cpus, shows as &rsquo;0-4,
+5-9, ...&rsquo;, etc.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Such
+progression continues until individual cpus are again
+displayed and impacts both the &rsquo;1&rsquo; and
+&rsquo;4&rsquo; toggles (one or muliple columns). Use the
+&rsquo;=&rsquo; command to exit <b>Combine Cpus</b>
+mode.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Note</b>: If
+the entire summary area has been toggled <i>Off</i> for any
+window, you would be left with just the <b>message line</b>.
+In that way, you will have maximized available task rows but
+(temporarily) sacrificed the program name in full-screen
+mode or the &rsquo;current&rsquo; window name when in
+alternate-display mode.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>4c. TASK
+AREA Commands</b> <br>
+The task area interactive commands are <b>always</b>
+available in full-screen mode.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The task area
+interactive commands are <b>never available</b> in
+alternate-display mode <i>if</i> the &rsquo;current&rsquo;
+window&rsquo;s task display has been toggled <i>Off</i> (see
+topic 5. ALTERNATE-DISPLAY Provisions).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>APPEARANCE</b>
+of task window &nbsp;&nbsp;&nbsp; <b><br>
+J&nbsp;&nbsp;</b>:<i>Justify-Numeric-Columns</i> toggle</p>
+
+<p style="margin-left:22%;">Alternates between
+right-justified (the default) and left-justified numeric
+data. If the numeric data completely fills the available
+column, this command toggle may impact the column header
+only. &nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>j&nbsp;&nbsp;</b>:<i>Justify-Character-Columns</i>
+toggle</p>
+
+<p style="margin-left:22%;">Alternates between
+left-justified (the default) and right-justified character
+data. If the character data completely fills the available
+column, this command toggle may impact the column header
+only.</p>
+
+<p style="margin-left:14%; margin-top: 1em">The following
+commands will also be influenced by the state of the global
+&rsquo;B&rsquo; (bold enable) toggle. &nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>b&nbsp;&nbsp;</b>:<i>Bold/Reverse</i>
+toggle</p>
+
+<p style="margin-left:22%;">This command will impact how
+the &rsquo;x&rsquo; and &rsquo;y&rsquo; toggles are
+displayed. It may also impact the summary area when a bar
+graph has been selected for cpu states or memory usage via
+the &rsquo;t&rsquo; or &rsquo;m&rsquo; toggles.
+&nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>x&nbsp;&nbsp;</b>:<i>Column-Highlight</i>
+toggle</p>
+
+<p style="margin-left:22%;">Changes highlighting for the
+current sort field. If you forget which field is being
+sorted this command can serve as a quick visual reminder,
+providing the sort field is being displayed. The sort field
+might <i>not</i> be visible because: <br>
+1) there is insufficient <i>Screen Width</i> <br>
+2) the &rsquo;f&rsquo; interactive command turned it <i>Off
+&nbsp;&nbsp;&nbsp;</i></p>
+
+
+<p style="margin-left:11%;"><b>y&nbsp;&nbsp;</b>:<i>Row-Highlight</i>
+toggle</p>
+
+<p style="margin-left:22%;">Changes highlighting for
+&quot;running&quot; tasks. For additional insight into this
+task state, see topic 3a. DESCRIPTIONS of Fields, the
+&rsquo;S&rsquo; field (Process Status).</p>
+
+<p style="margin-left:22%; margin-top: 1em">Use of this
+provision provides important insight into your
+system&rsquo;s health. The only costs will be a few
+additional tty escape sequences. &nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>z&nbsp;&nbsp;</b>:<i>Color/Monochrome</i>
+toggle</p>
+
+<p style="margin-left:22%;">Switches the
+&rsquo;current&rsquo; window between your last used color
+scheme and the older form of black-on-white or
+white-on-black. This command will alter <b>both</b> the
+summary area and task area but does not affect the state of
+the &rsquo;x&rsquo;, &rsquo;y&rsquo; or &rsquo;b&rsquo;
+toggles.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>CONTENT</b>
+of task window &nbsp;&nbsp;&nbsp; <b><br>
+c&nbsp;&nbsp;</b>:<i>Command-Line/Program-Name</i>
+toggle</p>
+
+<p style="margin-left:22%;">This command will be honored
+whether or not the COMMAND column is currently visible.
+Later, should that field come into view, the change you
+applied will be seen. &nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>F&nbsp;&nbsp;</b>:<i>Maintain-Parent-Focus</i>
+toggle</p>
+
+<p style="margin-left:22%;">When in forest view mode, this
+key serves as a toggle to retain focus on a target task,
+presumably one with forked children. If forest view mode is
+<i>Off</i> this key has no effect.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The toggle is
+applied to the first (topmost) process in the
+&rsquo;current&rsquo; window. Once established, that task is
+always displayed as the first (topmost) process along with
+its forked children. All other processes will be
+suppressed.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>Note</b>:
+keys like &rsquo;i&rsquo; (idle tasks), &rsquo;n&rsquo; (max
+tasks), &rsquo;v&rsquo; (hide children) and User/Other
+filtering remain accessible and can impact what is
+displayed. &nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>f&nbsp;&nbsp;</b>:<i>Fields-Management</i></p>
+
+<p style="margin-left:22%;">This key displays a separate
+screen where you can change which fields are displayed,
+their order and also designate the sort field. For
+additional information on this interactive command see topic
+3b. MANAGING Fields. &nbsp;&nbsp;&nbsp;</p>
+
+<p style="margin-left:11%;"><b>O</b> |
+<b>o&nbsp;&nbsp;</b>:<i>Other-Filtering</i></p>
+
+<p style="margin-left:22%;">You will be prompted for the
+selection criteria which then determines which tasks will be
+shown in the &rsquo;current&rsquo; window. Your criteria can
+be made case sensitive or case can be ignored. And you
+determine if top should include or exclude matching
+tasks.</p>
+
+<p style="margin-left:22%; margin-top: 1em">See topic 5e.
+FILTERING in a window for details on these and additional
+related interactive commands. &nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>S&nbsp;&nbsp;</b>:<i>Cumulative-Time-Mode</i>
+toggle</p>
+
+<p style="margin-left:22%;">When Cumulative mode is
+<i>On</i>, each process is listed with the cpu time that it
+and its dead children have used.</p>
+
+<p style="margin-left:22%; margin-top: 1em">When
+<i>Off</i>, programs that fork into many separate tasks will
+appear less demanding. For programs like &rsquo;init&rsquo;
+or a shell this is appropriate but for others, like
+compilers, perhaps not. Experiment with two task windows
+sharing the same sort field but with different
+&rsquo;S&rsquo; states and see which representation you
+prefer.</p>
+
+<p style="margin-left:22%; margin-top: 1em">After issuing
+this command, you&rsquo;ll be informed of the new state of
+this toggle. If you wish to know in advance whether or not
+Cumulative mode is in effect, simply ask for help and view
+the window summary on the second line.
+&nbsp;&nbsp;&nbsp;</p>
+
+<p style="margin-left:11%;"><b>U</b> |
+<b>u&nbsp;&nbsp;</b>:<i>Show-Specific-User-Only</i></p>
+
+<p style="margin-left:22%;">You will be prompted for the
+<b>uid</b> or <b>name</b> of the user to display. The -u
+option matches on <b>effective</b> user whereas the -U
+option matches on <b>any</b> user (real, effective, saved,
+or filesystem).</p>
+
+<p style="margin-left:22%; margin-top: 1em">Thereafter, in
+that task window only matching users will be shown, or
+possibly no processes will be shown. Prepending an
+exclamation point (&rsquo;!&rsquo;) to the user id or name
+instructs top to display only processes with users not
+matching the one provided.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Different task
+windows can be used to filter different users. Later, if you
+wish to monitor all users again in the &rsquo;current&rsquo;
+window, re-issue this command but just press &lt;Enter&gt;
+at the prompt. &nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>V&nbsp;&nbsp;</b>:<i>Forest-View-Mode</i>
+toggle</p>
+
+<p style="margin-left:22%;">In this mode, processes are
+reordered according to their parents and the layout of the
+COMMAND column resembles that of a tree. In forest view mode
+it is still possible to toggle between program name and
+command line (see the &rsquo;c&rsquo; interactive command)
+or between processes and threads (see the &rsquo;H&rsquo;
+interactive command).</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>Note</b>:
+Typing any key affecting the sort order will exit forest
+view mode in the &rsquo;current&rsquo; window. See topic 4c.
+TASK AREA Commands, SORTING for information on those keys.
+&nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>v&nbsp;&nbsp;</b>:<i>Hide/Show-Children</i>
+toggle</p>
+
+<p style="margin-left:22%;">When in forest view mode, this
+key serves as a toggle to collapse or expand the children of
+a parent.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The toggle is
+applied against the first (topmost) process in the
+&rsquo;current&rsquo; window. See topic 5c. SCROLLING a
+Window for additional information regarding vertical
+scrolling.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If the target
+process has not forked any children, this key has no effect.
+It also has no effect when not in forest view mode.
+&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>^E&nbsp;&nbsp;</b>:<i>Scale-CPU-Time-fields</i>
+(Ctrl key + &rsquo;e&rsquo;)</p>
+
+<p style="margin-left:22%;">The &rsquo;time&rsquo; fields
+are normally displayed with the greatest precision their
+widths permit. This toggle reduces that precision until it
+wraps. It also illustrates the scaling those fields
+<i>might</i> experience automatically, which usually depends
+on how long the system runs.</p>
+
+<p style="margin-left:22%; margin-top: 1em">For example, if
+&rsquo;MMM:SS.hh&rsquo; is shown, each ^E keystroke would
+change it to: &rsquo;MM:SS&rsquo;, &rsquo;Hours,MM&rsquo;,
+&rsquo;Days+Hours&rsquo; and finally
+&rsquo;Weeks+Days&rsquo;.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Not all time
+fields are subject to the full range of such scaling.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>SIZE</b> of
+task window &nbsp;&nbsp;&nbsp; <b><br>
+i&nbsp;&nbsp;</b>:<i>Idle-Process</i> toggle</p>
+
+<p style="margin-left:22%;">Displays all tasks or just
+active tasks. When this toggle is <i>Off</i>, tasks that
+have not used any CPU since the last update will not be
+displayed. However, due to the granularity of the %CPU and
+TIME+ fields, some processes may still be displayed that
+<i>appear</i> to have used <i>no</i> CPU.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If this command
+is applied to the last task display when in
+alternate-display mode, then it will not affect the
+window&rsquo;s size, as all prior task displays will have
+already been painted. &nbsp;&nbsp;&nbsp;</p>
+
+<p style="margin-left:11%;"><b>n</b> |
+<b>#&nbsp;&nbsp;</b>:<i>Set-Maximum-Tasks</i></p>
+
+<p style="margin-left:22%;">You will be prompted to enter
+the number of tasks to display. The lessor of your number
+and available screen rows will be used.</p>
+
+<p style="margin-left:22%; margin-top: 1em">When used in
+alternate-display mode, this is the command that gives you
+precise control over the size of each currently visible task
+display, except for the very last. It will not affect the
+last window&rsquo;s size, as all prior task displays will
+have already been painted.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>Note</b>: If
+you wish to increase the size of the last visible task
+display when in alternate-display mode, simply decrease the
+size of the task display(s) above it.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>SORTING</b>
+of task window</p>
+
+<p style="margin-left:15%; margin-top: 1em">For
+compatibility, this top supports most of the former top sort
+keys. Since this is primarily a service to former top users,
+these commands do not appear on any help screen. <i><br>
+command sorted-field supported</i> <br>
+A start time (non-display) <b>No</b> <br>
+M %MEM Yes <br>
+N PID Yes <br>
+P %CPU Yes <br>
+T TIME+ Yes</p>
+
+<p style="margin-left:15%; margin-top: 1em">Before using
+any of the following sort provisions, top suggests that you
+temporarily turn on column highlighting using the
+&rsquo;x&rsquo; interactive command. That will help ensure
+that the actual sort environment matches your intent.</p>
+
+<p style="margin-left:15%; margin-top: 1em">The following
+interactive commands will <b>only</b> be honored when the
+current sort field is <b>visible</b>. The sort field might
+<i>not</i> be visible because: <br>
+1) there is insufficient <i>Screen Width</i> <br>
+2) the &rsquo;f&rsquo; interactive command turned it <i>Off
+&nbsp;&nbsp;&nbsp;</i> <b><br>
+&lt;&nbsp;&nbsp;</b>:<i>Move-Sort-Field-Left</i></p>
+
+<p style="margin-left:26%;">Moves the sort column to the
+left unless the current sort field is the first field being
+displayed. &nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:15%;"><b>&gt;&nbsp;&nbsp;</b>:<i>Move-Sort-Field-Right</i></p>
+
+<p style="margin-left:26%;">Moves the sort column to the
+right unless the current sort field is the last field being
+displayed.</p>
+
+<p style="margin-left:15%; margin-top: 1em">The following
+interactive commands will <b>always</b> be honored whether
+or not the current sort field is visible. &nbsp;&nbsp;&nbsp;
+<b><br>
+f&nbsp;&nbsp;</b>:<i>Fields-Management</i></p>
+
+<p style="margin-left:26%;">This key displays a separate
+screen where you can change which field is used as the sort
+column, among other functions. This can be a convenient way
+to simply verify the current sort field, when running top
+with column highlighting turned <i>Off</i>.
+&nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:15%;"><b>R&nbsp;&nbsp;</b>:<i>Reverse/Normal-Sort-Field</i>
+toggle</p>
+
+<p style="margin-left:26%;">Using this interactive command
+you can alternate between high-to-low and low-to-high
+sorts.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>4d. COLOR
+Mapping</b> <br>
+When you issue the &rsquo;Z&rsquo; interactive command, you
+will be presented with a separate screen. That screen can be
+used to change the colors in just the &rsquo;current&rsquo;
+window or in all four windows before returning to the top
+display.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+interactive commands are available. <b><br>
+4</b> upper case letters to select a <b>target <br>
+8</b> numbers to select a <b>color</b> <br>
+normal toggles available <br>
+B :bold disable/enable <br>
+b :running tasks &quot;bold&quot;/reverse <br>
+z :color/mono <br>
+other commands available <br>
+a/w :apply, then go to next/prior <br>
+&lt;Enter&gt; :apply and exit <br>
+q :abandon current changes and exit</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you use
+&rsquo;a&rsquo; or &rsquo;w&rsquo; to cycle the targeted
+window, you will have applied the color scheme that was
+displayed when you left that window. You can, of course,
+easily return to any window and reapply different colors or
+turn colors <i>Off</i> completely with the &rsquo;z&rsquo;
+toggle.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The Color
+Mapping screen can also be used to change the
+&rsquo;current&rsquo; window/field group in either
+full-screen mode or alternate-display mode. Whatever was
+targeted when &rsquo;q&rsquo; or &lt;Enter&gt; was pressed
+will be made current as you return to the top display.</p>
+
+<h2>5. ALTERNATE-DISPLAY Provisions
+<a name="5. ALTERNATE-DISPLAY Provisions"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>5a. WINDOWS
+Overview <br>
+Field Groups/Windows</b>:</p>
+
+<p style="margin-left:15%;">In full-screen mode there is a
+single window represented by the entire screen. That single
+window can still be changed to display 1 of 4 different
+<b>field groups</b> (see the &rsquo;g&rsquo; interactive
+command, repeated below). Each of the 4 field groups has a
+unique separately configurable <b>summary area</b> and its
+own configurable <b>task area</b>.</p>
+
+<p style="margin-left:15%; margin-top: 1em">In
+alternate-display mode, those 4 underlying field groups can
+now be made visible simultaneously, or can be turned
+<i>Off</i> individually at your command.</p>
+
+<p style="margin-left:15%; margin-top: 1em">The summary
+area will always exist, even if it&rsquo;s only the message
+line. At any given time only <i>one</i> summary area can be
+displayed. However, depending on your commands, there could
+be from <i>zero</i> to <i>four</i> separate task displays
+currently showing on the screen.</p>
+
+<p style="margin-left:11%;"><b>Current Window</b>:</p>
+
+<p style="margin-left:15%;">The &rsquo;current&rsquo;
+window is the window associated with the summary area and
+the window to which task related commands are always
+directed. Since in alternate-display mode you can toggle the
+task display <i>Off</i>, some commands might be restricted
+for the &rsquo;current&rsquo; window.</p>
+
+<p style="margin-left:15%; margin-top: 1em">A further
+complication arises when you have toggled the first summary
+area line <i>Off</i>. With the loss of the window name (the
+&rsquo;l&rsquo; toggled line), you&rsquo;ll not easily know
+what window is the &rsquo;current&rsquo; window.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>5b. COMMANDS
+for Windows &nbsp;&nbsp;&nbsp; <br>
+-</b> | <b>_&nbsp;&nbsp;</b>:<i>Show/Hide-Window(s)</i>
+toggles</p>
+
+<p style="margin-left:22%;">The &rsquo;-&rsquo; key turns
+the &rsquo;current&rsquo; window&rsquo;s task display
+<i>On</i> and <i>Off</i>. When <i>On</i>, that task area
+will show a minimum of the columns header you&rsquo;ve
+established with the &rsquo;f&rsquo; interactive command. It
+will also reflect any other task area options/toggles
+you&rsquo;ve applied yielding zero or more tasks.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+&rsquo;_&rsquo; key does the same for all task displays. In
+other words, it switches between the currently visible task
+display(s) and any task display(s) you had toggled
+<i>Off</i>. If all 4 task displays are currently visible,
+this interactive command will leave the summary area as the
+only display element.</p>
+
+<p style="margin-left:11%;">*&nbsp;&nbsp;<b>=</b> |
+<b>+&nbsp;&nbsp;</b>:<i>Equalize/Reset-Window(s)</i></p>
+
+<p style="margin-left:22%;">The &rsquo;=&rsquo; key forces
+the &rsquo;current&rsquo; window&rsquo;s task display to be
+visible. It also reverses any active &rsquo;i&rsquo; (idle
+tasks), &rsquo;n&rsquo; (max tasks), &rsquo;u/U&rsquo; (user
+filter), &rsquo;o/O&rsquo; (other filter), &rsquo;v&rsquo;
+(hide children), &rsquo;F&rsquo; focused, &rsquo;L&rsquo;
+(locate) and &rsquo;!&rsquo; (combine cpus) commands. Also,
+if the window had been scrolled, it will be reset with this
+command. See topic 5c. SCROLLING a Window for additional
+information regarding vertical and horizontal scrolling.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+&rsquo;+&rsquo; key does the same for all windows. The four
+task displays will reappear, evenly balanced, while
+retaining any customizations previously applied beyond those
+noted for the &rsquo;=&rsquo; command toggle.</p>
+
+
+<p style="margin-left:11%;">*&nbsp;&nbsp;<b>A&nbsp;&nbsp;</b>:<i>Alternate-Display-Mode</i>
+toggle</p>
+
+<p style="margin-left:22%;">This command will switch
+between full-screen mode and alternate-display mode.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The first time
+you issue this command, all four task displays will be
+shown. Thereafter when you switch modes, you will see only
+the task display(s) you&rsquo;ve chosen to make visible.</p>
+
+<p style="margin-left:11%;">*&nbsp;&nbsp;<b>a</b> |
+<b>w&nbsp;&nbsp;</b>:<i>Next-Window-Forward/Backward</i></p>
+
+<p style="margin-left:22%;">This will change the
+&rsquo;current&rsquo; window, which in turn changes the
+window to which commands are directed. These keys act in a
+circular fashion so you can reach any desired window using
+either key.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Assuming the
+window name is visible (you have not toggled &rsquo;l&rsquo;
+<i>Off</i>), whenever the &rsquo;current&rsquo; window name
+loses its emphasis/color, that&rsquo;s a reminder the task
+display is <i>Off</i> and many commands will be restricted.
+&nbsp;&nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>G&nbsp;&nbsp;</b>:<i>Change-Window/Field-Group-Name</i></p>
+
+<p style="margin-left:22%;">You will be prompted for a new
+name to be applied to the &rsquo;current&rsquo; window. It
+does not require that the window name be visible (the
+&rsquo;l&rsquo; toggle to be <i>On</i>).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>*</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p>The interactive commands shown with an asterisk
+(&rsquo;*&rsquo;) have use beyond alternate-display
+mode.</p> </td></tr>
+</table>
+
+<p style="margin-left:15%;">=, A, g are always available
+<br>
+a, w act the same with color mapping <br>
+and fields management</p>
+
+
+<p style="margin-left:11%;">*&nbsp;&nbsp;<b>g&nbsp;&nbsp;</b>:<i>Choose-Another-Window/Field-Group</i></p>
+
+<p style="margin-left:22%;">You will be prompted to enter a
+number between 1 and 4 designating the field group which
+should be made the &rsquo;current&rsquo; window.</p>
+
+<p style="margin-left:22%; margin-top: 1em">In full-screen
+mode, this command is necessary to alter the
+&rsquo;current&rsquo; window. In alternate-display mode, it
+is simply a less convenient alternative to the
+&rsquo;a&rsquo; and &rsquo;w&rsquo; commands.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>5c.
+SCROLLING a Window</b> <br>
+Typically a task window is a partial view into a
+system&rsquo;s total tasks/threads which shows only some of
+the available fields/columns. With these scrolling keys, you
+can move that view vertically or horizontally to reveal any
+desired task or column. <b><br>
+Up</b>,<b>PgUp&nbsp;&nbsp;</b>:<i>Scroll-Tasks</i></p>
+
+<p style="margin-left:17%;">Move the view up toward the
+first task row, until the first task is displayed at the top
+of the &rsquo;current&rsquo; window. The <i>Up</i> arrow key
+moves a single line while <i>PgUp</i> scrolls the entire
+window.</p>
+
+
+<p style="margin-left:11%;"><b>Down</b>,<b>PgDn&nbsp;&nbsp;</b>:<i>Scroll-Tasks</i></p>
+
+<p style="margin-left:17%;">Move the view down toward the
+last task row, until the last task is the only task
+displayed at the top of the &rsquo;current&rsquo; window.
+The <i>Down</i> arrow key moves a single line while
+<i>PgDn</i> scrolls the entire window.</p>
+
+
+<p style="margin-left:11%;"><b>Left</b>,<b>Right&nbsp;&nbsp;</b>:<i>Scroll-Columns</i></p>
+
+<p style="margin-left:17%;">Move the view of displayable
+fields horizontally one column at a time.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>Note</b>: As
+a reminder, some fields/columns are not fixed-width but
+allocated all remaining screen width when visible. When
+scrolling right or left, that feature may produce some
+unexpected results initially.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Additionally,
+there are special provisions for any variable width field
+when positioned as the last displayed field. Once that field
+is reached via the right arrow key, and is thus the only
+column shown, you can continue scrolling horizontally within
+such a field. See the &rsquo;C&rsquo; interactive command
+below for additional information.</p>
+
+
+<p style="margin-left:11%;"><b>Home&nbsp;&nbsp;</b>:<i>Jump-to-Home-Position</i></p>
+
+<p style="margin-left:17%;">Reposition the display to the
+un-scrolled coordinates.</p>
+
+
+<p style="margin-left:11%;"><b>End&nbsp;&nbsp;</b>:<i>Jump-to-End-Position</i></p>
+
+<p style="margin-left:17%;">Reposition the display so that
+the rightmost column reflects the last displayable field and
+the bottom task row represents the last task.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>Note</b>:
+From this position it is still possible to scroll
+<i>down</i> and <i>right</i> using the arrow keys. This is
+true until a single column and a single task is left as the
+only display element.</p>
+
+
+<p style="margin-left:11%;"><b>C&nbsp;&nbsp;</b>:<i>Show-scroll-coordinates</i>
+toggle</p>
+
+<p style="margin-left:17%;">Toggle an informational message
+which is displayed whenever the message line is not
+otherwise being used. That message will take one of two
+forms depending on whether or not a variable width column
+has also been scrolled.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>scroll
+coordinates: y = n/n (tasks), x = n/n (fields)</b> <br>
+scroll coordinates: y = n/n (tasks), x = n/n (fields) <b>+
+nn</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">The coordinates
+shown as <b>n</b>/<b>n</b> are relative to the upper left
+corner of the &rsquo;current&rsquo; window. The additional
+&rsquo;<b>+&nbsp;nn</b>&rsquo; represents the displacement
+into a variable width column when it has been scrolled
+horizontally. Such displacement occurs in normal 8 character
+tab stop amounts via the right and left arrow keys. <b><br>
+y = n/n (tasks)</b></p>
+
+<p style="margin-left:23%;">The first <b>n</b> represents
+the topmost visible task and is controlled by scrolling
+keys. The second <b>n</b> is updated automatically to
+reflect total tasks.</p>
+
+<p style="margin-left:17%;"><b>x = n/n (fields)</b></p>
+
+<p style="margin-left:23%;">The first <b>n</b> represents
+the leftmost displayed column and is controlled by scrolling
+keys. The second <b>n</b> is the total number of displayable
+fields and is established with the &rsquo;<b>f</b>&rsquo;
+interactive command.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The above
+interactive commands are <b>always</b> available in
+full-screen mode but <b>never</b> available in
+alternate-display mode if the &rsquo;current&rsquo;
+window&rsquo;s task display has been toggled <i>Off</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Note</b>:
+When any form of filtering is active, you can expect some
+slight aberrations when scrolling since not all tasks will
+be visible. This is particularly apparent when using the
+Up/Down arrow keys.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>5d.
+SEARCHING in a Window</b> <br>
+You can use these interactive commands to locate a task row
+containing a particular value. <b><br>
+L&nbsp;&nbsp;</b>:<i>Locate-a-string</i></p>
+
+<p style="margin-left:17%;">You will be prompted for the
+case-sensitive string to locate starting from the current
+window coordinates. There are no restrictions on search
+string content.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Searches are
+not limited to values from a single field or column. All of
+the values displayed in a task row are allowed in a search
+string. You may include spaces, numbers, symbols and even
+forest view artwork.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Keying
+&lt;Enter&gt; with no input will effectively disable the
+&rsquo;&amp;&rsquo; key until a new search string is
+entered.</p>
+
+
+<p style="margin-left:11%;"><b>&amp;&nbsp;&nbsp;</b>:<i>Locate-next</i></p>
+
+<p style="margin-left:17%;">Assuming a search string has
+been established, top will attempt to locate the next
+occurrence.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When a match is
+found, the current window is repositioned vertically so the
+task row containing that string is first. The scroll
+coordinates message can provide confirmation of such
+vertical repositioning (see the &rsquo;C&rsquo; interactive
+command). Horizontal scrolling, however, is never altered
+via searching.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+availability of a matching string will be influenced by the
+following factors.</p>
+
+<p style="margin-left:15%;">a. Which fields are displayable
+from the total available,</p>
+
+<p style="margin-left:20%;">see topic 3b. MANAGING
+Fields.</p>
+
+<p style="margin-left:15%;">b. Scrolling a window
+vertically and/or horizontally,</p>
+
+<p style="margin-left:20%;">see topic 5c. SCROLLING a
+Window.</p>
+
+<p style="margin-left:15%;">c. The state of the
+command/command-line toggle,</p>
+
+<p style="margin-left:20%;">see the &rsquo;c&rsquo;
+interactive command.</p>
+
+<p style="margin-left:15%;">d. The stability of the chosen
+sort column,</p>
+
+<p style="margin-left:20%;">for example PID is good but
+%CPU bad.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If a search
+fails, restoring the &rsquo;current&rsquo; window home
+(unscrolled) position, scrolling horizontally, displaying
+command-lines or choosing a more stable sort field could yet
+produce a successful &rsquo;&amp;&rsquo; search.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The above
+interactive commands are <b>always</b> available in
+full-screen mode but <b>never</b> available in
+alternate-display mode if the &rsquo;current&rsquo;
+window&rsquo;s task display has been toggled <i>Off</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>5e.
+FILTERING in a Window</b> <br>
+You can use this &rsquo;Other Filter&rsquo; feature to
+establish selection criteria which will then determine which
+tasks are shown in the &rsquo;current&rsquo; window. Such
+filters can be made persistent if preserved in the rcfile
+via the &rsquo;W&rsquo; interactive command.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Establishing a
+filter requires: 1) a field name; 2) an operator; and 3) a
+selection value, as a minimum. This is the most complex of
+top&rsquo;s user input requirements so, when you make a
+mistake, command recall will be your friend. Remember the
+Up/Down arrow keys or their aliases when prompted for
+input.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Filter
+Basics</b></p>
+
+<p style="margin-left:15%;">1. field names are case
+sensitive and spelled as in the header <br>
+2. selection values need not comprise the full displayed
+field <br>
+3. a selection is either case insensitive or sensitive to
+case <br>
+4. the default is inclusion, prepending &rsquo;!&rsquo;
+denotes exclusions <br>
+5. multiple selection criteria can be applied to a task
+window <br>
+6. inclusion and exclusion criteria can be used
+simultaneously <br>
+7. the 1 equality and 2 relational filters can be freely
+mixed <br>
+8. separate unique filters are maintained for each task
+window</p>
+
+<p style="margin-left:15%; margin-top: 1em">If a field is
+not turned on or is not currently in view, then your
+selection criteria will not affect the display. Later,
+should a filtered field become visible, the selection
+criteria will then be applied.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Keyboard
+Summary &nbsp;&nbsp; <br>
+O&nbsp;&nbsp;</b>:<i>Other-Filter</i> (upper case)</p>
+
+<p style="margin-left:20%;">You will be prompted to
+establish a <b>case sensitive</b> filter. &nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>o&nbsp;&nbsp;</b>:<i>Other-Filter</i>
+(lower case)</p>
+
+<p style="margin-left:20%;">You will be prompted to
+establish a filter that <b>ignores case</b> when matching.
+&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>^O&nbsp;&nbsp;</b>:<i>Show-Active-Filters</i>
+(Ctrl key + &rsquo;o&rsquo;)</p>
+
+<p style="margin-left:20%;">This can serve as a reminder of
+which filters are active in the &rsquo;current&rsquo;
+window. A summary will be shown on the message line until
+you press the &lt;Enter&gt; key. &nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>=&nbsp;&nbsp;</b>:<i>Reset-Filtering</i>
+in current window</p>
+
+<p style="margin-left:20%;">This clears all of your
+selection criteria in the &rsquo;current&rsquo; window. It
+also has additional impact so please see topic 4a. GLOBAL
+Commands. &nbsp;&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>+&nbsp;&nbsp;</b>:<i>Reset-Filtering</i>
+in all windows</p>
+
+<p style="margin-left:20%;">This clears the selection
+criteria in all windows, assuming you are in
+alternate-display mode. As with the &rsquo;=&rsquo;
+interactive command, it too has additional consequences so
+you might wish to see topic 5b. COMMANDS for Windows.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Input
+Requirements</b></p>
+
+<p style="margin-left:15%; margin-top: 1em">When prompted
+for selection criteria, the data you provide must take one
+of two forms. There are 3 required pieces of information,
+with a 4th as optional. These examples use spaces for
+clarity but your input generally would not. <br>
+#1 <b>#2</b> #3 ( required ) <br>
+Field-Name ? include-if-value <b><br>
+!</b> Field-Name ? <b>exclude</b>-if-value <br>
+#4 ( optional )</p>
+
+<p style="margin-left:15%; margin-top: 1em">Items #1, #3
+and #4 should be self-explanatory. Item <b>#2</b> represents
+both a required <i>delimiter</i> and the <i>operator</i>
+which must be one of either equality (&rsquo;=&rsquo;) or
+relation (&rsquo;&lt;&rsquo; or &rsquo;&gt;&rsquo;).</p>
+
+<p style="margin-left:15%; margin-top: 1em">The
+&rsquo;=&rsquo; equality operator requires only a partial
+match and that can reduce your &rsquo;if-value&rsquo; input
+requirements. The &rsquo;&gt;&rsquo; or &rsquo;&lt;&rsquo;
+relational operators always employ string comparisons, even
+with numeric fields. They are designed to work with a
+field&rsquo;s default <i>justification</i> and with
+homogeneous data. When some field&rsquo;s numeric amounts
+have been subjected to <i>scaling</i> while others have not,
+that data is no longer homogeneous.</p>
+
+<p style="margin-left:15%; margin-top: 1em">If you
+establish a relational filter and you <b>have</b> changed
+the default Numeric or Character <i>justification</i>, that
+filter is likely to fail. When a relational filter is
+applied to a memory field and you <b>have not</b> changed
+the <i>scaling</i>, it may produce misleading results. This
+happens, for example, because &rsquo;100.0m&rsquo; (MiB)
+would appear greater than &rsquo;1.000g&rsquo; (GiB) when
+compared as strings.</p>
+
+<p style="margin-left:15%; margin-top: 1em">If your
+filtered results appear suspect, simply altering
+justification or scaling may yet achieve the desired
+objective. See the &rsquo;j&rsquo;, &rsquo;J&rsquo; and
+&rsquo;e&rsquo; interactive commands for additional
+information.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Potential
+Problems</b></p>
+
+<p style="margin-left:15%; margin-top: 1em">These
+<b>GROUP</b> filters could produce the exact same results or
+the second one might not display anything at all, just a
+blank task window. <br>
+GROUP=root ( only the same results when ) <br>
+GROUP=ROOT ( invoked via lower case &rsquo;o&rsquo; )</p>
+
+<p style="margin-left:15%; margin-top: 1em">Either of these
+<b>RES</b> filters might yield inconsistent and/or
+misleading results, depending on the current memory scaling
+factor. Or both filters could produce the exact same
+results. <br>
+RES&gt;9999 ( only the same results when ) <br>
+!RES&lt;10000 ( memory scaling is at &rsquo;KiB&rsquo; )</p>
+
+<p style="margin-left:15%; margin-top: 1em">This
+<b>nMin</b> filter illustrates a problem unique to scalable
+fields. This particular field can display a maximum of 4
+digits, beyond which values are automatically scaled to KiB
+or above. So while amounts greater than 9999 exist, they
+will appear as 2.6m, 197k, etc. <br>
+nMin&gt;9999 ( always a blank task window )</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Potential
+Solutions</b></p>
+
+<p style="margin-left:15%; margin-top: 1em">These examples
+illustrate how Other Filtering can be creatively applied to
+achieve almost any desired result. Single quotes are
+sometimes shown to delimit the spaces which are part of a
+filter or to represent a request for status (^O) accurately.
+But if you used them with if-values in real life, no matches
+would be found.</p>
+
+<p style="margin-left:15%; margin-top: 1em">Assuming field
+<b>nTH</b> is displayed, the first filter will result in
+only multi-threaded processes being shown. It also reminds
+us that a trailing space is part of every displayed field.
+The second filter achieves the exact same results with less
+typing. <br>
+!nTH=&rsquo; 1 &rsquo; ( &rsquo; for clarity only ) <br>
+nTH&gt;1 ( same with less i/p )</p>
+
+<p style="margin-left:15%; margin-top: 1em">With Forest
+View mode active and the <b>COMMAND</b> column in view, this
+filter effectively collapses child processes so that just 3
+levels are shown. <br>
+!COMMAND=&rsquo; &rsquo;- &rsquo; ( &rsquo; for clarity only
+)</p>
+
+<p style="margin-left:15%; margin-top: 1em">The final two
+filters appear as in response to the status request key
+(^O). In reality, each filter would have required separate
+input. The <b>PR</b> example shows the two concurrent
+filters necessary to display tasks with priorities of 20 or
+more, since some might be negative. Then by exploiting
+trailing spaces, the <b>nMin</b> series of filters could
+achieve the failed &rsquo;9999&rsquo; objective discussed
+above. <br>
+&rsquo;PR&gt;20&rsquo; + &rsquo;!PR=-&rsquo; ( 2 for right
+result ) <br>
+&rsquo;!nMin=0 &rsquo; + &rsquo;!nMin=1 &rsquo; +
+&rsquo;!nMin=2 &rsquo; + &rsquo;!nMin=3 &rsquo; ...</p>
+
+<h2>6. FILES
+<a name="6. FILES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>6a. PERSONAL
+Configuration File</b> <br>
+This file is created or updated via the &rsquo;W&rsquo;
+interactive command.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The legacy
+version is written as &rsquo;$HOME/.your-name-4-top&rsquo; +
+&rsquo;rc&rsquo; with a leading period.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A newly created
+configuration file is written as
+procps/your-name-4-top&rsquo; + &rsquo;rc&rsquo; without a
+leading period. The procps directory will be subordinate to
+either $XDG_CONFIG_HOME when set as an absolute path or the
+$HOME/.config directory.</p>
+
+<p style="margin-left:11%; margin-top: 1em">While not
+intended to be edited manually, here is the general layout:
+<br>
+global # line 1: the program name/alias notation <br>
+&quot; # line 2: id,altscr,irixps,delay,curwin <br>
+per ea # line a: winname,fieldscur <br>
+window # line b: winflags,sortindx,maxtasks,etc <br>
+&quot; # line c: summclr,msgsclr,headclr,taskclr <br>
+global # line 15: additional miscellaneous settings <br>
+&quot; # any remaining lines are devoted to optional <br>
+&quot; # active &rsquo;other filters&rsquo; discussed in
+section 5e above <br>
+&quot; # plus &rsquo;inspect&rsquo; entries discussed in
+section 6b below</p>
+
+<p style="margin-left:11%; margin-top: 1em">If a valid
+absolute path to the rcfile cannot be established,
+customizations made to a running top will be impossible to
+preserve.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>6b. ADDING
+INSPECT Entries</b> <br>
+To exploit the &rsquo;Y&rsquo; interactive command, you must
+add entries at the <b>end</b> of the top personal
+configuration file. Such entries simply reflect a file to be
+read or command/pipeline to be executed whose results will
+then be displayed in a separate scrollable, searchable
+window.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you
+don&rsquo;t know the location or name of your top rcfile,
+use the &rsquo;W&rsquo; interactive command to rewrite it
+and note those details.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Inspect entries
+can be added with a redirected echo or by editing the
+configuration file. Redirecting an echo risks overwriting
+the rcfile should it replace (&gt;) rather than append
+(&gt;&gt;) to that file. Conversely, when using an editor
+care must be taken not to corrupt existing lines, some of
+which could contain unprintable data or unusual characters
+depending on the top version under which that configuration
+file was saved.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Those Inspect
+entries beginning with a &rsquo;#&rsquo; character are
+ignored, regardless of content. Otherwise they consist of
+the following 3 elements, each of which <i>must</i> be
+separated by a tab character (thus 2 &rsquo;\t&rsquo;
+total):</p>
+
+<p style="margin-left:11%; margin-top: 1em">.type: literal
+&rsquo;file&rsquo; or &rsquo;pipe&rsquo; <br>
+.name: selection shown on the Inspect screen <br>
+.fmts: string representing a path or command</p>
+
+<p style="margin-left:11%; margin-top: 1em">The two types
+of Inspect entries are <i>not</i> interchangeable. Those
+designated &rsquo;<b>file</b>&rsquo; will be accessed using
+fopen and must reference a single file in the
+&rsquo;.fmts&rsquo; element. Entries specifying
+&rsquo;<b>pipe</b>&rsquo; will employ popen, their
+&rsquo;.fmts&rsquo; element could contain many pipelined
+commands and, none can be interactive.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the file or
+pipeline represented in your &rsquo;.fmts&rsquo; deals with
+the specific PID input or accepted when prompted, then the
+format string must also contain the &rsquo;<b>%d</b>&rsquo;
+specifier, as these examples illustrate.</p>
+
+<p style="margin-left:11%; margin-top: 1em">.fmts=
+/proc/<i>%d</i>/numa_maps <br>
+.fmts= lsof -P -p <i>%d</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">For
+&rsquo;<b>pipe</b>&rsquo; type entries only, you may also
+wish to redirect stderr to stdout for a more comprehensive
+result. Thus the format string becomes:</p>
+
+<p style="margin-left:11%; margin-top: 1em">.fmts= pmap -x
+%d <i>2&gt;&amp;1</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">Here are
+examples of both types of Inspect entries as they might
+appear in the rcfile. The first entry will be ignored due to
+the initial &rsquo;#&rsquo; character. For clarity, the
+pseudo tab depictions (^I) are surrounded by an extra space
+but the actual tabs would not be.</p>
+
+<p style="margin-left:11%; margin-top: 1em"># pipe ^I
+Sockets ^I lsof -n -P -i 2&gt;&amp;1 <br>
+pipe ^I Open Files ^I lsof -P -p %d 2&gt;&amp;1 <br>
+file ^I NUMA Info ^I /proc/%d/numa_maps <br>
+pipe ^I Log ^I tail -n100 /var/log/syslog | sort -Mr</p>
+
+<p style="margin-left:11%; margin-top: 1em">Except for the
+commented entry above, these next examples show what could
+be echoed to achieve similar results, assuming the rcfile
+name was &rsquo;.toprc&rsquo;. However, due to the embedded
+tab characters, each of these lines should be preceded by
+&rsquo;<b>/bin/echo -e</b>&rsquo;, not just a simple an
+&rsquo;echo&rsquo;, to enable backslash interpretation
+regardless of which shell you use.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">&quot;pipe\tOpen
+Files\tlsof -P -p %d 2&gt;&amp;1&quot; &gt;&gt; ~/.toprc
+<br>
+&quot;file\tNUMA Info\t/proc/%d/numa_maps&quot; &gt;&gt;
+~/.toprc <br>
+&quot;pipe\tLog\ttail -n200 /var/log/syslog | sort -Mr&quot;
+&gt;&gt; ~/.toprc</p>
+
+<p style="margin-left:11%; margin-top: 1em">If any inspect
+entry you create produces output with unprintable characters
+they will be displayed in either the ^C notation or
+hexadecimal &lt;FF&gt; form, depending on their value. This
+applies to tab characters as well, which will show as
+&rsquo;^I&rsquo;. If you want a truer representation, any
+embedded tabs should be expanded. The following example
+takes what could have been a &rsquo;file&rsquo; entry but
+employs a &rsquo;pipe&rsquo; instead so as to expand the
+embedded tabs.</p>
+
+<p style="margin-left:11%; margin-top: 1em"># next would
+have contained &rsquo;\t&rsquo; ... <br>
+# file ^I &lt;your_name&gt; ^I /proc/%d/status <br>
+# but this will eliminate embedded &rsquo;\t&rsquo; ... <br>
+pipe ^I &lt;your_name&gt; ^I cat /proc/%d/status | expand
+-</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Note</b>:
+Some programs might rely on <i>SIGINT</i> to end. Therefore,
+if a &rsquo;<b>pipe</b>&rsquo; such as the following is
+established, one must use Ctrl-C to terminate it in order to
+review the results. This is the single occasion where a
+&rsquo;^C&rsquo; will not also terminate top.</p>
+
+<p style="margin-left:11%; margin-top: 1em">pipe ^I Trace
+^I /usr/bin/strace -p %d 2&gt;&amp;1</p>
+
+<p style="margin-left:11%; margin-top: 1em">Lastly, while
+&rsquo;<b>pipe</b>&rsquo; type entries have been discussed
+in terms of pipelines and commands, there is nothing to
+prevent you from including <i>shell scripts</i> as well.
+Perhaps even newly created scripts designed specifically for
+the &rsquo;Y&rsquo; interactive command.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For example, as
+the number of your Inspect entries grows over time, the
+&rsquo;Options:&rsquo; row will be truncated when screen
+width is exceeded. That does not affect operation other than
+to make some selections invisible. However, if some choices
+are lost to truncation but you want to see more options,
+there is an easy solution hinted at below.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Inspection
+Pause at pid ... <br>
+Use: left/right then &lt;Enter&gt; ... <br>
+Options: help 1 2 3 4 5 6 7 8 9 10 11 ...</p>
+
+<p style="margin-left:11%; margin-top: 1em">The entries in
+the top rcfile would have a number for the
+&rsquo;.name&rsquo; element and the &rsquo;help&rsquo; entry
+would identify a shell script you&rsquo;ve written
+explaining what those numbered selections actually mean. In
+that way, many more choices can be made visible.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>6c. SYSTEM
+Configuration File</b> <br>
+This configuration file represents defaults for users who
+have not saved their own configuration file. The format
+mirrors exactly the personal configuration file and can also
+include &rsquo;inspect&rsquo; entries as explained
+above.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Creating it is
+a simple process.</p>
+
+<p style="margin-left:11%; margin-top: 1em">1. Configure
+top appropriately for your installation and preserve that
+configuration with the &rsquo;W&rsquo; interactive
+command.</p>
+
+<p style="margin-left:11%; margin-top: 1em">2. Add and test
+any desired &rsquo;inspect&rsquo; entries.</p>
+
+<p style="margin-left:11%; margin-top: 1em">3. Copy that
+configuration file to the <i>/etc/</i> directory as
+&rsquo;<b>topdefaultrc</b>&rsquo;.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>6d. SYSTEM
+Restrictions File</b> <br>
+The presence of this file will influence which version of
+the help screen is shown to an ordinary user.</p>
+
+<p style="margin-left:11%; margin-top: 1em">More
+importantly, it will limit what ordinary users are allowed
+to do when top is running. They will not be able to issue
+the following commands. <br>
+k Kill a task <br>
+r Renice a task <br>
+d or s Change delay/sleep interval</p>
+
+<p style="margin-left:11%; margin-top: 1em">This
+configuration file is not created by top. Rather, it is
+created manually and placed it in the <i>/etc/</i> directory
+as &rsquo;<b>toprc</b>&rsquo;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">It should have
+exactly two lines, as shown in this example: <br>
+s # line 1: secure mode switch <br>
+5.0 # line 2: delay interval in seconds</p>
+
+<h2>7. ENVIRONMENT VARIABLE(S)
+<a name="7. ENVIRONMENT VARIABLE(S)"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The value set
+for the following is unimportant, just its presence. <br>
+LIBPROC_HIDE_KERNEL</p>
+
+<p style="margin-left:22%;">This will prevent display of
+any kernel threads and exclude such processes from the
+summary area Tasks/Threads counts.</p>
+
+<h2>8. STUPID TRICKS Sampler
+<a name="8. STUPID TRICKS Sampler"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Many of these
+tricks work best when you give top a scheduling boost. So
+plan on starting him with a nice value of -10, assuming
+you&rsquo;ve got the authority.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>7a. Kernel
+Magic</b> <br>
+For these stupid tricks, top needs full-screen mode.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p>The user interface, through prompts and help,
+intentionally implies that the delay interval is limited to
+tenths of a second. However, you&rsquo;re free to set any
+desired delay. If you want to see Linux at his scheduling
+best, try a delay of .09 seconds or less.</p></td></tr>
+</table>
+
+<p style="margin-left:15%; margin-top: 1em">For this
+experiment, under x-windows open an xterm and maximize it.
+Then do the following: <br>
+. provide a scheduling boost and tiny delay via: <br>
+nice -n -10 top -d.09 <br>
+. keep sorted column highlighting <i>Off</i> so as to <br>
+minimize path length <br>
+. turn <i>On</i> reverse row highlighting for emphasis <br>
+. try various sort columns (TIME/MEM work well), <br>
+and normal or reverse sorts to bring the most <br>
+active processes into view</p>
+
+<p style="margin-left:15%; margin-top: 1em">What
+you&rsquo;ll see is a very busy Linux doing what he&rsquo;s
+always done for you, but there was no program available to
+illustrate this.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p style="margin-top: 1em">Under an xterm using
+&rsquo;white-on-black&rsquo; colors, on top&rsquo;s Color
+Mapping screen set the task color to black and be sure that
+task highlighting is set to bold, not reverse. Then set the
+delay interval to around .3 seconds.</p></td></tr>
+</table>
+
+<p style="margin-left:15%; margin-top: 1em">After bringing
+the most active processes into view, what you&rsquo;ll see
+are the ghostly images of just the currently running
+tasks.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p style="margin-top: 1em">Delete the existing rcfile, or
+create a new symlink. Start this new version then type
+&rsquo;T&rsquo; (a secret key, see topic 4c. Task Area
+Commands, SORTING) followed by &rsquo;W&rsquo; and
+&rsquo;q&rsquo;. Finally, restart the program with -d0 (zero
+delay).</p> </td></tr>
+</table>
+
+<p style="margin-left:15%; margin-top: 1em">Your display
+will be refreshed at three times the rate of the former top,
+a 300% speed advantage. As top climbs the TIME ladder, be as
+patient as you can while speculating on whether or not top
+will ever reach the top.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>7b. Bouncing
+Windows</b> <br>
+For these stupid tricks, top needs alternate-display
+mode.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p style="margin-top: 1em">With 3 or 4 task displays
+visible, pick any window other than the last and turn idle
+processes <i>Off</i> using the &rsquo;i&rsquo; command
+toggle. Depending on where you applied &rsquo;i&rsquo;,
+sometimes several task displays are bouncing and sometimes
+it&rsquo;s like an accordion, as top tries his best to
+allocate space.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p>Set each window&rsquo;s summary lines differently: one
+with no memory (&rsquo;m&rsquo;); another with no states
+(&rsquo;t&rsquo;); maybe one with nothing at all, just the
+message line. Then hold down &rsquo;a&rsquo; or
+&rsquo;w&rsquo; and watch a variation on bouncing windows
+&nbsp;--&nbsp; hopping windows.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p>Display all 4 windows and for each, in turn, set idle
+processes to <i>Off</i> using the &rsquo;i&rsquo; command
+toggle. You&rsquo;ve just entered the &quot;extreme
+bounce&quot; zone.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><b>7c. The Big
+Bird Window</b> <br>
+This stupid trick also requires alternate-display mode.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p style="margin-top: 1em">Display all 4 windows and make
+sure that 1:Def is the &rsquo;current&rsquo; window. Then,
+keep increasing window size with the &rsquo;n&rsquo;
+interactive command until all the other task displays are
+&quot;pushed out of the nest&quot;.</p></td></tr>
+</table>
+
+<p style="margin-left:15%; margin-top: 1em">When
+they&rsquo;ve all been displaced, toggle between all
+visible/invisible windows using the &rsquo;_&rsquo; command
+toggle. Then ponder this: <br>
+is top fibbing or telling honestly your imposed truth?</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>7d. The
+Ol&rsquo; Switcheroo</b> <br>
+This stupid trick works best without alternate-display mode,
+since justification is active on a per window basis.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p style="margin-top: 1em">Start top and make COMMAND the
+last (rightmost) column displayed. If necessary, use the
+&rsquo;c&rsquo; command toggle to display command lines and
+ensure that forest view mode is active with the
+&rsquo;V&rsquo; command toggle.</p></td></tr>
+</table>
+
+<p style="margin-left:15%; margin-top: 1em">Then use the
+up/down arrow keys to position the display so that some
+truncated command lines are shown (&rsquo;+&rsquo; in last
+position). You may have to resize your xterm to produce
+truncation.</p>
+
+<p style="margin-left:15%; margin-top: 1em">Lastly, use the
+&rsquo;j&rsquo; command toggle to make the COMMAND column
+right justified.</p>
+
+<p style="margin-left:15%; margin-top: 1em">Now use the
+right arrow key to reach the COMMAND column. Continuing with
+the right arrow key, watch closely the direction of travel
+for the command lines being shown.</p>
+
+<p style="margin-left:15%; margin-top: 1em">some lines
+travel left, while others travel right</p>
+
+<p style="margin-left:15%; margin-top: 1em">eventually all
+lines will Switcheroo, and move right</p>
+
+<h2>9. BUGS
+<a name="9. BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Please send bug
+reports to
+<a href="procps@freelists.org">procps@freelists.org</a>.</p>
+
+<h2>10. SEE Also
+<a name="10. SEE Also"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>free</b>(1),
+<b>ps</b>(1), <b>uptime</b>(1), <b>atop</b>(1),
+<b>slabtop</b>(1), <b>vmstat</b>(8), <b>w</b>(1)</p>
+<hr>
+</body>
+</html>

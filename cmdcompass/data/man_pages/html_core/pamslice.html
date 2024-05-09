@@ -1,0 +1,219 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:27 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamslice User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamslice User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#OPTION USAGE">OPTION USAGE</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamslice -
+extract one line of values out of a Netpbm image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamslice</b>
+{<b>-row=</b><i>rownumber</i> |
+<b>-column=</b><i>columnnumber</i>}
+[<b>-plane=</b><i>planenumber</i>] [<i>imagefile</i>]</p>
+
+<h2>OPTION USAGE
+<a name="OPTION USAGE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">All options can
+be abbreviated to their shortest unique prefix. You may use
+two hyphens instead of one. You may separate an option name
+and its value with white space instead of an equals
+sign.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamslice</b>
+extracts one line of tuples (pixels) out of a Netpbm image
+and prints their values in a table. A line means a row or
+column. It shows you a one-dimensional cross section of a
+two-dimensional image. (With the <b>-plane</b> option, it
+can be thought of as a one-dimensional cross-section of a
+three-dimensional image).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The table has
+one line per tuple, consisting of blank-separated ASCII
+decimal numbers. The first number is the column number if
+you specified a row slice or the row number if you specified
+a column slice. The rest of the numbers are the sample
+values in plane number order. For a PBM or PGM input, there
+is only one plane. For a PPM input, Plane 0 is red, Plane 1
+is green, and Plane 2 is blue. See the specifications of the
+image formats for details on exactly what these numbers
+mean.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you want to
+see the entire raster of a Netpbm image, use
+<b>pamtable</b>.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamslice</b> recognizes the following command line
+options: <b><br>
+-row=</b><i>rownumber</i></p>
+
+<p style="margin-left:22%;">This indicates that the slice
+is to be horizontal -- i.e. one row of the <br>
+image -- and indicates which row. Rows are numbered from the
+top <br>
+starting with 0.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You cannot
+specify both <b>-row</b> and <b>-column</b>.</p>
+
+
+<p style="margin-left:11%;"><b>-column=</b><i>colnumber</i></p>
+
+<p style="margin-left:22%;">This indicates that the slice
+is to be vertical -- i.e. one column of the <br>
+image -- and indicates which column. Columns are numbered
+from the left <br>
+starting with 0.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You cannot
+specify both <b>-row</b> and <b>-column</b>.</p>
+
+
+<p style="margin-left:11%;"><b>-plane=</b><i>planenumber</i></p>
+
+<p style="margin-left:22%;">This specifies that you are
+interested in only one plane of the image <br>
+and which one. Planes are numbered from 0 and have meanings
+that vary <br>
+on the type of image. In a PPM image, Plane 0 is red, Plane
+1 is <br>
+green, and Plane 2 is blue.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you
+don&rsquo;t specify <b>-plane</b>, you get all the planes --
+each <br>
+line of output has multiple numbers in addition to the
+sequence number. <br>
+If you do specify <b>-plane</b>, each line of output
+contains one <br>
+number in addition to the sequence number.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-xmgr</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>This option causes <b>pamslice</b> to format the output
+as input for a</p></td></tr>
+</table>
+
+<p style="margin-left:22%;"><b>xmgr</b> so you can plot it.
+The only difference this option makes <br>
+is that it adds header information to the beginning of the
+output.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtable</b>(1)
+<b>pamcut</b>(1) <b>pnmtopnm</b>(1) <b>pamchannel</b>(1)
+<b>pnm</b>(1)</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamslice</b>
+replaced <b>pgmslice</b> in Netpbm 10.3 (June 2002). It was
+backward compatible, but worked on Netpbm images other than
+PGM and PBM and added the <b>-plane</b> and <b>-xmgr</b>
+options.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Jos Dingjan
+&lt;<i>jos@tuatha.org</i>&gt; wrote <b>pgmslice</b> after
+being unable to find the source code to Marco
+Beijersbergen&rsquo;s program with the same name. Bryan
+Henderson converted it to <b>pamslice</b>.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamslice.html</b></p>
+<hr>
+</body>
+</html>

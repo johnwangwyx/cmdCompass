@@ -1,0 +1,336 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:18 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>memusage</title>
+
+</head>
+<body>
+
+<h1 align="center">memusage</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">memusage -
+profile memory usage of a program</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>memusage</b>
+[<i>option</i>]... <i>program</i>
+[<i>programoption</i>]...</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>memusage</b>
+is a bash script which profiles memory usage of the program,
+<i>program</i>. It preloads the <b>libmemusage.so</b>
+library into the caller&rsquo;s environment (via the
+<b>LD_PRELOAD</b> environment variable; see
+<b>ld.so</b>(8)). The <b>libmemusage.so</b> library traces
+memory allocation by intercepting calls to <b>malloc</b>(3),
+<b>calloc</b>(3), <b>free</b>(3), and <b>realloc</b>(3);
+optionally, calls to <b>mmap</b>(2), <b>mremap</b>(2), and
+<b>munmap</b>(2) can also be intercepted.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>memusage</b>
+can output the collected data in textual form, or it can use
+<b>memusagestat</b>(1) (see the <b>-p</b> option, below) to
+create a PNG file containing graphical representation of the
+collected data.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Memory usage
+summary</b> <br>
+The &quot;Memory usage summary&quot; line output by
+<b>memusage</b> contains three fields:</p>
+
+<p style="margin-left:17%;"><b>heap total</b></p>
+
+<p style="margin-left:28%;">Sum of <i>size</i> arguments of
+all <b>malloc</b>(3) calls, products of arguments
+(<i>nmemb</i>*<i>size</i>) of all <b>calloc</b>(3) calls,
+and sum of <i>length</i> arguments of all <b>mmap</b>(2)
+calls. In the case of <b>realloc</b>(3) and
+<b>mremap</b>(2), if the new size of an allocation is larger
+than the previous size, the sum of all such differences (new
+size minus old size) is added.</p>
+
+<p style="margin-left:17%;"><b>heap peak</b></p>
+
+<p style="margin-left:28%;">Maximum of all <i>size</i>
+arguments of <b>malloc</b>(3), all products of
+<i>nmemb</i>*<i>size</i> of <b>calloc</b>(3), all
+<i>size</i> arguments of <b>realloc</b>(3), <i>length</i>
+arguments of <b>mmap</b>(2), and <i>new_size</i> arguments
+of <b>mremap</b>(2).</p>
+
+<p style="margin-left:17%;"><b>stack peak</b></p>
+
+<p style="margin-left:28%;">Before the first call to any
+monitored function, the stack pointer address (base stack
+pointer) is saved. After each function call, the actual
+stack pointer address is read and the difference from the
+base stack pointer computed. The maximum of these
+differences is then the stack peak.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Immediately
+following this summary line, a table shows the number calls,
+total memory allocated or deallocated, and number of failed
+calls for each intercepted function. For <b>realloc</b>(3)
+and <b>mremap</b>(2), the additional field
+&quot;nomove&quot; shows reallocations that changed the
+address of a block, and the additional &quot;dec&quot; field
+shows reallocations that decreased the size of the block.
+For <b>realloc</b>(3), the additional field &quot;free&quot;
+shows reallocations that caused a block to be freed (i.e.,
+the reallocated size was 0).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;realloc/total memory&quot; of the table output by
+<b>memusage</b> does not reflect cases where
+<b>realloc</b>(3) is used to reallocate a block of memory to
+have a smaller size than previously. This can cause sum of
+all &quot;total memory&quot; cells (excluding
+&quot;free&quot;) to be larger than the &quot;free/total
+memory&quot; cell.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Histogram
+for block sizes</b> <br>
+The &quot;Histogram for block sizes&quot; provides a
+breakdown of memory allocations into various bucket
+sizes.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-n&nbsp;</b><i>name</i>,&nbsp;<b>--progname=</b><i>name</i></p>
+
+<p style="margin-left:22%;">Name of the program file to
+profile.</p>
+
+
+<p style="margin-left:11%;"><b>-p&nbsp;</b><i>file</i>,&nbsp;<b>--png=</b><i>file</i></p>
+
+<p style="margin-left:22%;">Generate PNG graphic and store
+it in <i>file</i>.</p>
+
+
+<p style="margin-left:11%;"><b>-d&nbsp;</b><i>file</i>,&nbsp;<b>--data=</b><i>file</i></p>
+
+<p style="margin-left:22%;">Generate binary data file and
+store it in <i>file</i>.</p>
+
+
+<p style="margin-left:11%;"><b>-u</b>,&nbsp;<b>--unbuffered</b></p>
+
+<p style="margin-left:22%;">Do not buffer output.</p>
+
+
+<p style="margin-left:11%;"><b>-b&nbsp;</b><i>size</i>,&nbsp;<b>--buffer=</b><i>size</i></p>
+
+<p style="margin-left:22%;">Collect <i>size</i> entries
+before writing them out.</p>
+
+<p style="margin-left:11%;"><b>--no-timer</b></p>
+
+<p style="margin-left:22%;">Disable timer-based
+(<b>SIGPROF</b>) sampling of stack pointer value.</p>
+
+
+<p style="margin-left:11%;"><b>-m</b>,&nbsp;<b>--mmap</b></p>
+
+<p style="margin-left:22%;">Also trace <b>mmap</b>(2),
+<b>mremap</b>(2), and <b>munmap</b>(2).</p>
+
+
+<p style="margin-left:11%;"><b>-?</b>,&nbsp;<b>--help</b></p>
+
+<p style="margin-left:22%;">Print help and exit.</p>
+
+<p style="margin-left:11%;"><b>--usage</b></p>
+
+<p style="margin-left:22%;">Print a short usage message and
+exit.</p>
+
+
+<p style="margin-left:11%;"><b>-V</b>,&nbsp;<b>--version</b></p>
+
+<p style="margin-left:22%;">Print version information and
+exit.</p>
+
+<p style="margin-left:11%;">The following options apply
+only when generating graphical output: <b><br>
+-t</b>,&nbsp;<b>--time-based</b></p>
+
+<p style="margin-left:22%;">Use time (rather than number of
+function calls) as the scale for the X axis.</p>
+
+
+<p style="margin-left:11%;"><b>-T</b>,&nbsp;<b>--total</b></p>
+
+<p style="margin-left:22%;">Also draw a graph of total
+memory use.</p>
+
+<p style="margin-left:11%;"><b>--title=</b><i>name</i></p>
+
+<p style="margin-left:22%;">Use <i>name</i> as the title of
+the graph.</p>
+
+
+<p style="margin-left:11%;"><b>-x&nbsp;</b><i>size</i>,&nbsp;<b>--x-size=</b><i>size</i></p>
+
+<p style="margin-left:22%;">Make the graph <i>size</i>
+pixels wide.</p>
+
+
+<p style="margin-left:11%;"><b>-y&nbsp;</b><i>size</i>,&nbsp;<b>--y-size=</b><i>size</i></p>
+
+<p style="margin-left:22%;">Make the graph <i>size</i>
+pixels high.</p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The exit status
+of <b>memusage</b> is equal to the exit status of the
+profiled program.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">To report bugs,
+see
+<a href="http://www.gnu.org/software/libc/bugs.html">http://www.gnu.org/software/libc/bugs.html</a></p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Below is a
+simple program that reallocates a block of memory in cycles
+that rise to a peak before then cyclically reallocating the
+memory in smaller blocks that return to zero. After
+compiling the program and running the following commands, a
+graph of the memory usage of the program can be found in the
+file <i>memusage.png</i>:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>memusage
+--data=memusage.dat ./a.out</b> <br>
+... <br>
+Memory usage summary: heap total: 45200, heap peak: 6440,
+stack peak: 224 <br>
+total calls total memory failed calls <br>
+malloc| 1 400 0 <br>
+realloc| 40 44800 0 (nomove:40, dec:19, free:0) <br>
+calloc| 0 0 0 <br>
+free| 1 440 <br>
+Histogram for block sizes: <br>
+192-207 1 2% ================ <br>
+... <br>
+2192-2207 1 2% ================ <br>
+2240-2255 2 4% ================================= <br>
+2832-2847 2 4% ================================= <br>
+3440-3455 2 4% ================================= <br>
+4032-4047 2 4% ================================= <br>
+4640-4655 2 4% ================================= <br>
+5232-5247 2 4% ================================= <br>
+5840-5855 2 4% ================================= <br>
+6432-6447 1 2% ================ <br>
+$ <b>memusagestat memusage.dat memusage.png</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Program
+source</b> <br>
+#include &lt;stdio.h&gt; <br>
+#include &lt;stdlib.h&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">#define CYCLES
+20</p>
+
+<p style="margin-left:11%; margin-top: 1em">int <br>
+main(int argc, char *argv[]) <br>
+{ <br>
+int i, j; <br>
+size_t size; <br>
+int *p;</p>
+
+<p style="margin-left:11%; margin-top: 1em">size =
+sizeof(*p) * 100; <br>
+printf(&quot;malloc: %zu\n&quot;, size); <br>
+p = malloc(size);</p>
+
+<p style="margin-left:11%; margin-top: 1em">for (i = 0; i
+&lt; CYCLES; i++) { <br>
+if (i &lt; CYCLES / 2) <br>
+j = i; <br>
+else <br>
+j--;</p>
+
+<p style="margin-left:11%; margin-top: 1em">size =
+sizeof(*p) * (j * 50 + 110); <br>
+printf(&quot;realloc: %zu\n&quot;, size); <br>
+p = realloc(p, size);</p>
+
+<p style="margin-left:11%; margin-top: 1em">size =
+sizeof(*p) * ((j + 1) * 150 + 110); <br>
+printf(&quot;realloc: %zu\n&quot;, size); <br>
+p = realloc(p, size); <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">free(p); <br>
+exit(EXIT_SUCCESS); <br>
+}</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>memusagestat</b>(1),
+<b>mtrace</b>(1), <b>ld.so</b>(8)</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,3466 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:18 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>MAWK</title>
+
+</head>
+<body>
+
+<h1 align="center">MAWK</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#THE AWK LANGUAGE">THE AWK LANGUAGE</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#COMPATIBILITY ISSUES">COMPATIBILITY ISSUES</a><br>
+<a href="#ENVIRONMENT VARIABLES">ENVIRONMENT VARIABLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">mawk - pattern
+scanning and text processing language</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mawk</b>
+[-<b>W</b> <i>option</i>] [-<b>F</b> <i>value</i>]
+[-<b>v</b> <i>var=value</i>] [--] &rsquo;program text&rsquo;
+[file ...] <b><br>
+mawk</b> [-<b>W</b> <i>option</i>] [-<b>F</b> <i>value</i>]
+[-<b>v</b> <i>var=value</i>] [-<b>f</b> <i>program-file</i>]
+[--] [file ...]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mawk</b> is
+an interpreter for the AWK Programming Language. The AWK
+language is useful for manipulation of data files, text
+retrieval and processing, and for prototyping and
+experimenting with algorithms. <b>mawk</b> is a <i>new
+awk</i> meaning it implements the AWK language as defined in
+Aho, Kernighan and Weinberger, <i>The AWK Programming
+Language,</i> Addison-Wesley Publishing, 1988 (hereafter
+referred to as the AWK book.) <b>mawk</b> conforms to the
+POSIX 1003.2 (draft 11.3) definition of the AWK language
+which contains a few features not described in the AWK book,
+and <b>mawk</b> provides a small number of extensions.</p>
+
+<p style="margin-left:11%; margin-top: 1em">An AWK program
+is a sequence of <i>pattern {action}</i> pairs and function
+definitions. Short programs are entered on the command line
+usually enclosed in &rsquo; &rsquo; to avoid shell
+interpretation. Longer programs can be read in from a file
+with the -f option. Data input is read from the list of
+files on the command line or from standard input when the
+list is empty. The input is broken into records as
+determined by the record separator variable, <b>RS</b>.
+Initially, <b>RS</b> = &ldquo;\n&rdquo; and records are
+synonymous with lines. Each record is compared against each
+<i>pattern</i> and if it matches, the program text for
+<i>{action}</i> is executed.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="18%">
+
+
+<p style="margin-top: 1em">-<b>F</b> <i>value</i></p></td>
+<td width="5%"></td>
+<td width="66%">
+
+
+<p style="margin-top: 1em">sets the field separator,
+<b>FS</b>, to <i>value</i>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="18%">
+
+
+<p>-<b>f</b> <i>file</i></p></td>
+<td width="5%"></td>
+<td width="66%">
+
+
+<p>Program text is read from <i>file</i> instead of from
+the command line. Multiple <b>-f</b> options are
+allowed.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="18%">
+
+
+<p>-<b>v</b> <i>var=value</i></p></td>
+<td width="5%"></td>
+<td width="66%">
+
+
+<p>assigns <i>value</i> to program variable <i>var</i>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="18%">
+
+
+<p>--</p></td>
+<td width="5%"></td>
+<td width="66%">
+
+
+<p>indicates the unambiguous end of options.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The above
+options will be available with any POSIX compatible
+implementation of AWK. Implementation specific options are
+prefaced with <b>-W</b>. <b>mawk</b> provides these:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="18%">
+
+
+<p style="margin-top: 1em">-<b>W</b> dump</p></td>
+<td width="5%"></td>
+<td width="66%">
+
+
+<p style="margin-top: 1em">writes an assembler like listing
+of the internal representation of the program to stdout and
+exits 0 (on successful compilation).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="18%">
+
+
+<p>-<b>W</b> exec <i>file</i></p></td>
+<td width="5%"></td>
+<td width="66%">
+
+
+<p>Program text is read from <i>file</i> and this is the
+last option.</p></td></tr>
+</table>
+
+<p style="margin-left:34%; margin-top: 1em">This is a
+useful alternative to -<b>f</b> on systems that support the
+<b>#!</b> &ldquo;magic number&rdquo; convention for
+executable scripts. Those implicitly pass the pathname of
+the script itself as the final parameter, and expect no more
+than one &ldquo;-&rdquo; option on the <b>#!</b> line.
+Because <b>mawk</b> can combine multiple -<b>W</b> options
+separated by commas, you can use this option when an
+additional -<b>W</b> option is needed.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="21%">
+
+
+<p style="margin-top: 1em">-<b>W</b> help</p></td>
+<td width="2%"></td>
+<td width="66%">
+
+
+<p style="margin-top: 1em">prints a usage message to stderr
+and exits (same as &ldquo;-<b>W&nbsp;</b>usage&rdquo;).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="21%">
+
+
+<p>-<b>W</b> interactive</p></td>
+<td width="2%"></td>
+<td width="66%">
+
+
+<p>sets unbuffered writes to stdout and line buffered reads
+from stdin. Records from stdin are lines regardless of the
+value of <b>RS</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="21%">
+
+
+<p>-<b>W</b> posix_space</p></td>
+<td width="2%"></td>
+<td width="66%">
+
+
+<p>forces <b>mawk</b> not to consider &rsquo;\n&rsquo; to
+be space.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="21%">
+
+
+<p>-<b>W</b> random=<i>num</i></p></td>
+<td width="2%"></td>
+<td width="66%">
+
+
+<p>calls <b>srand</b> with the given parameter (and
+overrides the auto-seeding behavior).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="21%">
+
+
+<p>-<b>W</b> sprintf=<i>num</i></p></td>
+<td width="2%"></td>
+<td width="66%">
+
+
+<p>adjusts the size of <b>mawk</b>&rsquo;s internal sprintf
+buffer to <i>num</i> bytes. More than rare use of this
+option indicates <b>mawk</b> should be recompiled.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="21%">
+
+
+<p>-<b>W</b> usage</p></td>
+<td width="2%"></td>
+<td width="66%">
+
+
+<p>prints a usage message to stderr and exits (same as
+&ldquo;-<b>W&nbsp;</b>help&rdquo;).</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="21%">
+
+
+<p>-<b>W</b> version</p></td>
+<td width="2%"></td>
+<td width="66%">
+
+
+<p><b>mawk</b> writes its version and copyright to stdout
+and compiled limits to stderr and exits 0.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><b>mawk</b>
+accepts abbreviations for any of these options, e.g.,
+&ldquo;-<b>W&nbsp;</b>v&rdquo; and &ldquo;-<b>W</b>v&rdquo;
+both tell <b>mawk</b> to show its version.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>mawk</b>
+allows multiple <b>-W</b> options to be combined by
+separating the options with commas, e.g.,
+-Wsprint=2000,posix. This is useful for executable <b>#!</b>
+&ldquo;magic number&rdquo; invocations in which only one
+argument is supported, e.g., -<b>Winteractive,exec</b>.</p>
+
+<h2>THE AWK LANGUAGE
+<a name="THE AWK LANGUAGE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>1. Program
+structure</b> <br>
+An AWK program is a sequence of <i>pattern {action}</i>
+pairs and user function definitions.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A pattern can
+be:</p>
+
+<p style="margin-left:18%;"><b>BEGIN <br>
+END</b> <br>
+expression <br>
+expression , expression</p>
+
+<p style="margin-left:11%; margin-top: 1em">One, but not
+both, of <i>pattern {action}</i> can be omitted. If
+<i>{action}</i> is omitted it is implicitly { print }. If
+<i>pattern</i> is omitted, then it is implicitly matched.
+<b>BEGIN</b> and <b>END</b> patterns require an action.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Statements are
+terminated by newlines, semi-colons or both. Groups of
+statements such as actions or loop bodies are blocked via
+{&nbsp;...&nbsp;} as in C. The last statement in a block
+doesn&rsquo;t need a terminator. Blank lines have no
+meaning; an empty statement is terminated with a semi-colon.
+Long statements can be continued with a backslash, \. A
+statement can be broken without a backslash after a comma,
+left brace, &amp;&amp;, ||, <b>do</b>, <b>else</b>, the
+right parenthesis of an <b>if</b>, <b>while</b> or
+<b>for</b> statement, and the right parenthesis of a
+function definition. A comment starts with # and extends to,
+but does not include the end of line.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+statements control program flow inside blocks.</p>
+
+<p style="margin-left:18%; margin-top: 1em"><b>if</b> (
+<i>expr</i> ) <i>statement</i></p>
+
+<p style="margin-left:18%; margin-top: 1em"><b>if</b> (
+<i>expr</i> ) <i>statement</i> <b>else</b>
+<i>statement</i></p>
+
+<p style="margin-left:18%; margin-top: 1em"><b>while</b> (
+<i>expr</i> ) <i>statement</i></p>
+
+<p style="margin-left:18%; margin-top: 1em"><b>do</b>
+<i>statement</i> <b>while</b> ( <i>expr</i> )</p>
+
+<p style="margin-left:18%; margin-top: 1em"><b>for</b> (
+<i>opt_expr</i> ; <i>opt_expr</i> ; <i>opt_expr</i> )
+<i>statement</i></p>
+
+<p style="margin-left:18%; margin-top: 1em"><b>for</b> (
+<i>var</i> <b>in</b> <i>array</i> ) <i>statement</i></p>
+
+
+<p style="margin-left:18%; margin-top: 1em"><b>continue</b></p>
+
+
+<p style="margin-left:18%; margin-top: 1em"><b>break</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>2. Data
+types, conversion and comparison</b> <br>
+There are two basic data types, numeric and string. Numeric
+constants can be integer like -2, decimal like 1.08, or in
+scientific notation like -1.1e4 or .28E-3. All numbers are
+represented internally and all computations are done in
+floating point arithmetic. So for example, the expression
+0.2e2 == 20 is true and true is represented as 1.0.</p>
+
+<p style="margin-left:11%; margin-top: 1em">String
+constants are enclosed in double quotes.</p>
+
+<p align="center" style="margin-top: 1em">&quot;This is a
+string with a newline at the end.\n&quot;</p>
+
+<p style="margin-top: 1em">Strings can be continued across
+a line by escaping (\) the newline. The following escape
+sequences are recognized.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+
+
+<p>\\</p></td>
+<td width="8%">
+</td>
+<td width="69%">
+
+
+<p>\</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+
+
+<p>\&quot;</p></td>
+<td width="8%">
+</td>
+<td width="69%">
+
+
+<p>&quot;</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+
+
+<p>\a</p></td>
+<td width="8%">
+</td>
+<td width="69%">
+
+
+<p>alert, ascii 7</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+
+
+<p>\b</p></td>
+<td width="8%">
+</td>
+<td width="69%">
+
+
+<p>backspace, ascii 8</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+
+
+<p>\t</p></td>
+<td width="8%">
+</td>
+<td width="69%">
+
+
+<p>tab, ascii 9</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+
+
+<p>\n</p></td>
+<td width="8%">
+</td>
+<td width="69%">
+
+
+<p>newline, ascii 10</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+
+
+<p>\v</p></td>
+<td width="8%">
+</td>
+<td width="69%">
+
+
+<p>vertical tab, ascii 11</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+
+
+<p>\f</p></td>
+<td width="8%">
+</td>
+<td width="69%">
+
+
+<p>formfeed, ascii 12</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+
+
+<p>\r</p></td>
+<td width="8%">
+</td>
+<td width="69%">
+
+
+<p>carriage return, ascii 13</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+
+
+<p>\ddd</p></td>
+<td width="8%">
+</td>
+<td width="69%">
+
+
+<p>1, 2 or 3 octal digits for ascii ddd</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+
+
+<p>\xhh</p></td>
+<td width="8%">
+</td>
+<td width="69%">
+
+
+<p>1 or 2 hex digits for ascii hh</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">If you escape
+any other character \c, you get \c, i.e., <b>mawk</b>
+ignores the escape.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There are
+really three basic data types; the third is <i>number and
+string</i> which has both a numeric value and a string value
+at the same time. User defined variables come into existence
+when first referenced and are initialized to <i>null</i>, a
+number and string value which has numeric value 0 and string
+value &quot;&quot;. Non-trivial number and string typed data
+come from input and are typically stored in fields. (See
+section 4).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The type of an
+expression is determined by its context and automatic type
+conversion occurs if needed. For example, to evaluate the
+statements</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>y = x + 2 ; z = x &quot;hello&quot;</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The value
+stored in variable y will be typed numeric. If x is not
+numeric, the value read from x is converted to numeric
+before it is added to 2 and stored in y. The value stored in
+variable z will be typed string, and the value of x will be
+converted to string if necessary and concatenated with
+&quot;hello&quot;. (Of course, the value and type stored in
+x is not changed by any conversions.) A string expression is
+converted to numeric using its longest numeric prefix as
+with <b>atof</b>(3). A numeric expression is converted to
+string by replacing <i>expr</i> with <b>sprintf(CONVFMT</b>,
+<i>expr</i>), unless <i>expr</i> can be represented on the
+host machine as an exact integer then it is converted to
+<b>sprintf</b>(&quot;%d&quot;, <i>expr</i>).
+<b>Sprintf()</b> is an AWK built-in that duplicates the
+functionality of <b>sprintf</b>(3), and <b>CONVFMT</b> is a
+built-in variable used for internal conversion from number
+to string and initialized to &quot;%.6g&quot;. Explicit type
+conversions can be forced, <i>expr</i> &quot;&quot; is
+string and <i>expr</i>+0 is numeric.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To evaluate,
+<i>expr</i>1 <b>rel-op</b> <i>expr</i>2, if both operands
+are numeric or number and string then the comparison is
+numeric; if both operands are string the comparison is
+string; if one operand is string, the non-string operand is
+converted and the comparison is string. The result is
+numeric, 1 or 0.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In boolean
+contexts such as, <b>if</b> ( <i>expr</i> )
+<i>statement</i>, a string expression evaluates true if and
+only if it is not the empty string &quot;&quot;; numeric
+values if and only if not numerically zero.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>3. Regular
+expressions</b> <br>
+In the AWK language, records, fields and strings are often
+tested for matching a <i>regular expression</i>. Regular
+expressions are enclosed in slashes, and</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p><i>expr</i> ~ /<i>r</i>/</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">is an AWK
+expression that evaluates to 1 if <i>expr</i>
+&ldquo;matches&rdquo; <i>r</i>, which means a substring of
+<i>expr</i> is in the set of strings defined by <i>r</i>.
+With no match the expression evaluates to 0; replacing ~
+with the &ldquo;not match&rdquo; operator, !~ , reverses the
+meaning. As pattern-action pairs,</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>/<i>r</i>/ { <i>action</i> } and <b>$0</b> ~ /<i>r</i>/
+{ <i>action</i> }</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">are the same,
+and for each input record that matches <i>r</i>,
+<i>action</i> is executed. In fact, /<i>r</i>/ is an AWK
+expression that is equivalent to (<b>$0</b> ~ /<i>r</i>/)
+anywhere except when on the right side of a match operator
+or passed as an argument to a built-in function that expects
+a regular expression argument.</p>
+
+<p style="margin-left:11%; margin-top: 1em">AWK uses
+extended regular expressions as with the <b>-E</b> option of
+<b>grep</b>(1). The regular expression metacharacters, i.e.,
+those with special meaning in regular expressions are</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>\ ^ $ . [ ] | ( ) * + ?</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Regular
+expressions are built up from characters as follows:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="19%">
+
+
+<p style="margin-top: 1em"><i>c</i></p></td>
+<td width="1%"></td>
+<td width="62%">
+
+
+<p style="margin-top: 1em">matches any non-metacharacter
+<i>c</i>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="19%">
+
+
+<p>\<i>c</i></p></td>
+<td width="1%"></td>
+<td width="62%">
+
+
+<p>matches a character defined by the same escape sequences
+used in string constants or the literal character <i>c</i>
+if \<i>c</i> is not an escape sequence.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="19%">
+
+
+<p>.</p></td>
+<td width="1%"></td>
+<td width="62%">
+
+
+<p>matches any character (including newline).</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="19%">
+
+
+<p>^</p></td>
+<td width="1%"></td>
+<td width="62%">
+
+
+<p>matches the front of a string.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="19%">
+
+
+<p>$</p></td>
+<td width="1%"></td>
+<td width="62%">
+
+
+<p>matches the back of a string.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="19%">
+
+
+<p>[c1c2c3...]</p></td>
+<td width="1%"></td>
+<td width="62%">
+
+
+<p>matches any character in the class c1c2c3...&nbsp;. An
+interval of characters is denoted c1-c2 inside a class
+[...].</p> </td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="19%">
+
+
+<p>[^c1c2c3...]</p></td>
+<td width="1%"></td>
+<td width="62%">
+
+
+<p>matches any character not in the class c1c2c3...</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Regular
+expressions are built up from other regular expressions as
+follows:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="11%">
+
+
+<p style="margin-top: 1em"><i>r</i>1<i>r</i>2</p></td>
+<td width="9%"></td>
+<td width="62%">
+
+
+<p style="margin-top: 1em">matches <i>r</i>1 followed
+immediately by <i>r</i>2 (concatenation).</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="11%">
+
+
+<p><i>r</i>1 | <i>r</i>2</p></td>
+<td width="9%"></td>
+<td width="62%">
+
+
+<p>matches <i>r</i>1 or <i>r</i>2 (alternation).</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="11%">
+
+
+<p><i>r</i>*</p></td>
+<td width="9%"></td>
+<td width="62%">
+
+
+<p>matches <i>r</i> repeated zero or more times.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="11%">
+
+
+<p><i>r</i>+</p></td>
+<td width="9%"></td>
+<td width="62%">
+
+
+<p>matches <i>r</i> repeated one or more times.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="11%">
+
+
+<p><i>r</i>?</p></td>
+<td width="9%"></td>
+<td width="62%">
+
+
+<p>matches <i>r</i> zero or once.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="11%">
+
+
+<p>(<i>r</i>)</p></td>
+<td width="9%"></td>
+<td width="62%">
+
+
+<p>matches <i>r</i>, providing grouping.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The increasing
+precedence of operators is alternation, concatenation and
+unary (*, + or ?).</p>
+
+<p style="margin-left:11%; margin-top: 1em">For
+example,</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">/^[_a-zA-Z][_a-zA-Z0-9]*$/
+and</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+
+<p>/^[-+]?([0-9]+\.?|\.[0-9])[0-9]*([eE][-+]?[0-9]+)?$/</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">are matched by
+AWK identifiers and AWK numeric constants respectively. Note
+that &ldquo;.&rdquo; has to be escaped to be recognized as a
+decimal point, and that metacharacters are not special
+inside character classes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Any expression
+can be used on the right hand side of the ~ or !~ operators
+or passed to a built-in that expects a regular expression.
+If needed, it is converted to string, and then interpreted
+as a regular expression. For example,</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>BEGIN { identifier = &quot;[_a-zA-Z][_a-zA-Z0-9]*&quot;
+}</p> </td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>$0 ~ &quot;^&quot; identifier</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">prints all
+lines that start with an AWK identifier.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>mawk</b>
+recognizes the empty regular expression, //, which matches
+the empty string and hence is matched by any string at the
+front, back and between every character. For example,</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>echo abc | mawk { gsub(//, &quot;X&quot;) ; print }</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>XaXbXcX</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><b>4. Records
+and fields</b> <br>
+Records are read in one at a time, and stored in the
+<i>field</i> variable <b>$0</b>. The record is split into
+<i>fields</i> which are stored in <b>$1</b>, <b>$2</b>, ...,
+<b>$NF</b>. The built-in variable <b>NF</b> is set to the
+number of fields, and <b>NR</b> and <b>FNR</b> are
+incremented by 1. Fields above <b>$NF</b> are set to
+&quot;&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Assignment to
+<b>$0</b> causes the fields and <b>NF</b> to be recomputed.
+Assignment to <b>NF</b> or to a field causes <b>$0</b> to be
+reconstructed by concatenating the <b>$i&rsquo;s</b>
+separated by <b>OFS</b>. Assignment to a field with index
+greater than <b>NF</b>, increases <b>NF</b> and causes
+<b>$0</b> to be reconstructed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Data input
+stored in fields is string, unless the entire field has
+numeric form and then the type is number and string. For
+example,</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>echo 24 24E |</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>mawk &rsquo;{ print($1&gt;100, $1&gt;&quot;100&quot;,
+$2&gt;100, $2&gt;&quot;100&quot;) }&rsquo;</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>0 1 1 1</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><b>$0</b> and
+<b>$2</b> are string and <b>$1</b> is number and string. The
+first comparison is numeric, the second is string, the third
+is string (100 is converted to &quot;100&quot;), and the
+last is string.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>5.
+Expressions and operators</b> <br>
+The expression syntax is similar to C. Primary expressions
+are numeric constants, string constants, variables, fields,
+arrays and function calls. The identifier for a variable,
+array or function can be a sequence of letters, digits and
+underscores, that does not start with a digit. Variables are
+not declared; they exist when first referenced and are
+initialized to <i>null</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">New expressions
+are composed with the following operators in order of
+increasing precedence.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p><i>assignment</i></p></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+
+
+<p>= += -= *= /= %= ^=</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p><i>conditional</i></p></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+
+
+<p>? :</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p><i>logical or</i></p></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+
+
+<p>||</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p><i>logical and</i></p></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+
+
+<p>&amp;&amp;</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p><i>array membership</i></p></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+
+
+<p><b>in</b></p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p><i>matching</i></p></td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="62%">
+
+
+<p>~ !~</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p><i>relational</i></p></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+
+
+<p>&lt; &gt; &lt;= &gt;= == !=</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p><i>concatenation</i></p></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+
+
+<p>(no explicit operator)</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p><i>add ops</i></p></td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+
+
+<p>+ -</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p><i>mul ops</i></p></td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+
+
+<p>* / %</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p><i>unary</i></p></td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+
+
+<p>+ -</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p><i>logical not</i></p></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+
+
+<p>!</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p><i>exponentiation</i></p></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+
+
+<p>^</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p><i>inc and dec</i></p></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+
+
+<p>++ -- (both post and pre)</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p><i>field</i></p></td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+
+
+<p>$</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Assignment,
+conditional and exponentiation associate right to left; the
+other operators associate left to right. Any expression can
+be parenthesized.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>6.
+Arrays</b> <br>
+Awk provides one-dimensional arrays. Array elements are
+expressed as <i>array</i>[<i>expr</i>]. <i>Expr</i> is
+internally converted to string type, so, for example, A[1]
+and A[&quot;1&quot;] are the same element and the actual
+index is &quot;1&quot;. Arrays indexed by strings are called
+associative arrays. Initially an array is empty; elements
+exist when first accessed. An expression, <i>expr</i>
+<b>in</b> <i>array</i> evaluates to 1 if
+<i>array</i>[<i>expr</i>] exists, else to 0.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There is a form
+of the <b>for</b> statement that loops over each index of an
+array.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p><b>for</b> ( <i>var</i> <b>in</b> <i>array</i> )
+<i>statement</i></p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">sets <i>var</i>
+to each index of <i>array</i> and executes <i>statement</i>.
+The order that <i>var</i> transverses the indices of
+<i>array</i> is not defined.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The statement,
+<b>delete</b> <i>array</i>[<i>expr</i>], causes
+<i>array</i>[<i>expr</i>] not to exist. <b>mawk</b> supports
+an extension, <b>delete</b> <i>array</i>, which deletes all
+elements of <i>array</i>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">Multidimensional
+arrays are synthesized with concatenation using the built-in
+variable <b>SUBSEP</b>.
+<i>array</i>[<i>expr</i>1,<i>expr</i>2] is equivalent to
+<i>array</i>[<i>expr</i>1 <b>SUBSEP</b> <i>expr</i>2].
+Testing for a multidimensional element uses a parenthesized
+index, such as</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>if ( (i, j) in A ) print A[i, j]</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><b>7.
+Builtin-variables</b> <br>
+The following variables are built-in and initialized before
+program execution.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="13%">
+
+
+<p style="margin-top: 1em"><b>ARGC</b></p></td>
+<td width="3%"></td>
+<td width="66%">
+
+
+<p style="margin-top: 1em">number of command line
+arguments.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="13%">
+
+
+<p><b>ARGV</b></p></td>
+<td width="3%"></td>
+<td width="66%">
+
+
+<p>array of command line arguments, 0..ARGC-1.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="13%">
+
+
+<p><b>CONVFMT</b></p></td>
+<td width="3%"></td>
+<td width="66%">
+
+
+<p>format for internal conversion of numbers to string,
+initially = &quot;%.6g&quot;.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="13%">
+
+
+<p><b>ENVIRON</b></p></td>
+<td width="3%"></td>
+<td width="66%">
+
+
+<p>array indexed by environment variables. An environment
+string, <i>var=value</i> is stored as
+<b>ENVIRON</b>[<i>var</i>] = <i>value</i>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="13%">
+
+
+<p><b>FILENAME</b></p></td>
+<td width="3%"></td>
+<td width="66%">
+
+
+<p>name of the current input file.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="13%">
+
+
+<p><b>FNR</b></p></td>
+<td width="3%"></td>
+<td width="66%">
+
+
+<p>current record number in <b>FILENAME</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="13%">
+
+
+<p><b>FS</b></p></td>
+<td width="3%"></td>
+<td width="66%">
+
+
+<p>splits records into fields as a regular expression.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="13%">
+
+
+<p><b>NF</b></p></td>
+<td width="3%"></td>
+<td width="66%">
+
+
+<p>number of fields in the current record.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="13%">
+
+
+<p><b>NR</b></p></td>
+<td width="3%"></td>
+<td width="66%">
+
+
+<p>current record number in the total input stream.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="13%">
+
+
+<p><b>OFMT</b></p></td>
+<td width="3%"></td>
+<td width="66%">
+
+
+<p>format for printing numbers; initially =
+&quot;%.6g&quot;.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="13%">
+
+
+<p><b>OFS</b></p></td>
+<td width="3%"></td>
+<td width="66%">
+
+
+<p>inserted between fields on output, initially = &quot;
+&quot;.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="13%">
+
+
+<p><b>ORS</b></p></td>
+<td width="3%"></td>
+<td width="66%">
+
+
+<p>terminates each record on output, initially =
+&quot;\n&quot;.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="13%">
+
+
+<p><b>RLENGTH</b></p></td>
+<td width="3%"></td>
+<td width="66%">
+
+
+<p>length set by the last call to the built-in function,
+<b>match()</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="13%">
+
+
+<p><b>RS</b></p></td>
+<td width="3%"></td>
+<td width="66%">
+
+
+<p>input record separator, initially = &quot;\n&quot;.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="13%">
+
+
+<p><b>RSTART</b></p></td>
+<td width="3%"></td>
+<td width="66%">
+
+
+<p>index set by the last call to <b>match()</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="13%">
+
+
+<p><b>SUBSEP</b></p></td>
+<td width="3%"></td>
+<td width="66%">
+
+
+<p>used to build multiple array subscripts, initially =
+&quot;\034&quot;.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><b>8. Built-in
+functions</b> <br>
+String functions</p>
+
+<p style="margin-left:18%;">gsub(<i>r,s,t</i>)
+gsub(<i>r,s</i>)</p>
+
+<p style="margin-left:29%;">Global substitution, every
+match of regular expression <i>r</i> in variable <i>t</i> is
+replaced by string <i>s</i>. The number of replacements is
+returned. If <i>t</i> is omitted, <b>$0</b> is used. An
+&amp; in the replacement string <i>s</i> is replaced by the
+matched substring of <i>t</i>. \&amp; and \\ put literal
+&amp; and \, respectively, in the replacement string.</p>
+
+<p style="margin-left:18%;">index(<i>s,t</i>)</p>
+
+<p style="margin-left:29%;">If <i>t</i> is a substring of
+<i>s</i>, then the position where <i>t</i> starts is
+returned, else 0 is returned. The first character of
+<i>s</i> is in position 1.</p>
+
+<p style="margin-left:18%;">length(<i>s</i>)</p>
+
+<p style="margin-left:29%;">Returns the length of string or
+array. <i>s</i>.</p>
+
+<p style="margin-left:18%;">match(<i>s,r</i>)</p>
+
+<p style="margin-left:29%;">Returns the index of the first
+longest match of regular expression <i>r</i> in string
+<i>s</i>. Returns 0 if no match. As a side effect,
+<b>RSTART</b> is set to the return value. <b>RLENGTH</b> is
+set to the length of the match or -1 if no match. If the
+empty string is matched, <b>RLENGTH</b> is set to 0, and 1
+is returned if the match is at the front, and
+length(<i>s</i>)+1 is returned if the match is at the
+back.</p>
+
+<p style="margin-left:18%;">split(<i>s,A,r</i>)
+split(<i>s,A</i>)</p>
+
+<p style="margin-left:29%;">String <i>s</i> is split into
+fields by regular expression <i>r</i> and the fields are
+loaded into array <i>A</i>. The number of fields is
+returned. See section 11 below for more detail. If <i>r</i>
+is omitted, <b>FS</b> is used.</p>
+
+
+<p style="margin-left:18%;">sprintf(<i>format,expr-list</i>)</p>
+
+<p style="margin-left:29%;">Returns a string constructed
+from <i>expr-list</i> according to <i>format</i>. See the
+description of printf() below.</p>
+
+<p style="margin-left:18%;">sub(<i>r,s,t</i>)
+sub(<i>r,s</i>)</p>
+
+<p style="margin-left:29%;">Single substitution, same as
+gsub() except at most one substitution.</p>
+
+<p style="margin-left:18%;">substr(<i>s,i,n</i>)
+substr(<i>s,i</i>)</p>
+
+<p style="margin-left:29%;">Returns the substring of string
+<i>s</i>, starting at index <i>i</i>, of length <i>n</i>. If
+<i>n</i> is omitted, the suffix of <i>s</i>, starting at
+<i>i</i> is returned.</p>
+
+<p style="margin-left:18%;">tolower(<i>s</i>)</p>
+
+<p style="margin-left:29%;">Returns a copy of <i>s</i> with
+all upper case characters converted to lower case.</p>
+
+<p style="margin-left:18%;">toupper(<i>s</i>)</p>
+
+<p style="margin-left:29%;">Returns a copy of <i>s</i> with
+all lower case characters converted to upper case.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Time
+functions</p>
+
+<p style="margin-left:11%; margin-top: 1em">These are
+available on systems which support the corresponding C
+<b>mktime</b> and <b>strftime</b> functions:</p>
+
+
+<p style="margin-left:18%;">mktime(<i>specification</i>)</p>
+
+<p style="margin-left:29%;">converts a date specification
+to a timestamp with the same units as <b>systime</b>. The
+date specification is a string containing the components of
+the date as decimal integers: <br>
+YYYY</p>
+
+<p style="margin-left:34%;">the year, e.g., 2012</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="3%">
+
+
+<p>MM</p></td>
+<td width="2%"></td>
+<td width="54%">
+
+
+<p>the month of the year starting at 1</p></td>
+<td width="12%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="3%">
+
+
+<p>DD</p></td>
+<td width="2%"></td>
+<td width="54%">
+
+
+<p>the day of the month starting at 1</p></td>
+<td width="12%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="3%">
+
+
+<p>HH</p></td>
+<td width="2%"></td>
+<td width="54%">
+
+
+<p>hour (0-23)</p></td>
+<td width="12%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="3%">
+
+
+<p>MM</p></td>
+<td width="2%"></td>
+<td width="54%">
+
+
+<p>minute (0-59)</p></td>
+<td width="12%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="3%">
+
+
+<p>SS</p></td>
+<td width="2%"></td>
+<td width="54%">
+
+
+<p>seconds (0-59)</p></td>
+<td width="12%">
+</td></tr>
+</table>
+
+<p style="margin-left:29%;">DST</p>
+
+<p style="margin-left:34%;">tells how to treat timezone
+versus daylight savings time:</p>
+
+<p style="margin-left:37%;">positive</p>
+
+<p style="margin-left:42%;">DST is in effect</p>
+
+<p style="margin-left:37%;">zero (default)</p>
+
+<p style="margin-left:42%;">DST is not in effect</p>
+
+<p style="margin-left:37%;">negative</p>
+
+<p style="margin-left:42%;">mktime() should (use timezone
+information and system databases to) attempt to determine
+whether DST is in effect at the specified time.</p>
+
+<p style="margin-left:18%;">strftime([<i>format</i> [,
+<i>timestamp</i> [, <i>utc</i> ]]])</p>
+
+<p style="margin-left:29%;">formats the given timestamp
+using the format (passed to the C <b>strftime</b>
+function):</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="2%">
+
+
+<p>&bull;</p></td>
+<td width="4%"></td>
+<td width="65%">
+
+
+<p>If the <i>format</i> parameter is missing,
+&quot;%c&quot; is used.</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="2%">
+
+
+<p>&bull;</p></td>
+<td width="4%"></td>
+<td width="65%">
+
+
+<p>If the <i>timestamp</i> parameter is missing, the
+current value from <b>systime</b> is used.</p></td></tr>
+<tr valign="top" align="left">
+<td width="29%"></td>
+<td width="2%">
+
+
+<p>&bull;</p></td>
+<td width="4%"></td>
+<td width="65%">
+
+
+<p>If the <i>utc</i> parameter is present and nonzero, the
+result is in UTC. Otherwise local time is used.</p></td></tr>
+</table>
+
+<p style="margin-left:18%;">systime()</p>
+
+<p style="margin-left:29%;">returns the current time of day
+as the number of seconds since the Epoch (1970-01-01
+00:00:00 UTC on POSIX systems).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Arithmetic
+functions</p>
+
+
+<p style="margin-left:18%; margin-top: 1em">atan2(<i>y,x</i>)
+Arctan of <i>y</i>/<i>x</i> between -pi and pi.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>cos(<i>x</i>)</p></td>
+<td width="8%"></td>
+<td width="69%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="69%">
+
+
+<p>Cosine function, <i>x</i> in radians.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>exp(<i>x</i>)</p></td>
+<td width="8%"></td>
+<td width="69%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="69%">
+
+
+<p>Exponential function.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>int(<i>x</i>)</p></td>
+<td width="8%"></td>
+<td width="69%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="69%">
+
+
+<p>Returns <i>x</i> truncated towards zero.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>log(<i>x</i>)</p></td>
+<td width="8%"></td>
+<td width="69%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="69%">
+
+
+<p>Natural logarithm.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>rand()</p></td>
+<td width="8%"></td>
+<td width="69%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="69%">
+
+
+<p>Returns a random number between zero and one.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>sin(<i>x</i>)</p></td>
+<td width="8%"></td>
+<td width="69%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="69%">
+
+
+<p>Sine function, <i>x</i> in radians.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>sqrt(<i>x</i>)</p></td>
+<td width="8%"></td>
+<td width="69%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="-10%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="69%">
+
+
+<p>Returns square root of <i>x</i>.</p></td></tr>
+</table>
+
+<p style="margin-left:18%;">srand(<i>expr</i>) srand()</p>
+
+<p style="margin-left:29%;">Seeds the random number
+generator, using the clock if <i>expr</i> is omitted, and
+returns the value of the previous seed. Srand(<i>expr</i>)
+is useful for repeating pseudo random sequences.</p>
+
+<p style="margin-left:29%; margin-top: 1em">Note:
+<b>mawk</b> is normally configured to seed the random number
+generator from the clock at startup, making it unnecessary
+to call srand(). This feature can be suppressed via
+conditional compile, or overridden using the <b>-Wrandom</b>
+option.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>9. Input and
+output</b> <br>
+There are two output statements, <b>print</b> and
+<b>printf</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="8%">
+
+
+<p>print</p></td>
+<td width="3%"></td>
+<td width="53%">
+
+
+<p>writes <b>$0 ORS</b> to standard output.</p></td>
+<td width="18%">
+</td></tr>
+</table>
+
+<p style="margin-left:18%;">print <i>expr</i>1,
+<i>expr</i>2, ..., <i>expr</i>n</p>
+
+<p style="margin-left:29%;">writes <i>expr</i>1 <b>OFS</b>
+<i>expr</i>2 <b>OFS</b> ... <i>expr</i>n <b>ORS</b> to
+standard output. Numeric expressions are converted to string
+with <b>OFMT</b>.</p>
+
+<p style="margin-left:18%;">printf <i>format,
+expr-list</i></p>
+
+<p style="margin-left:29%;">duplicates the printf C library
+function writing to standard output. The complete ANSI C
+format specifications are recognized with conversions %c,
+%d, %e, %E, %f, %g, %G, %i, %o, %s, %u, %x, %X and %%, and
+conversion qualifiers h and l.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The argument
+list to print or printf can optionally be enclosed in
+parentheses. Print formats numbers using <b>OFMT</b> or
+&quot;%d&quot; for exact integers. &quot;%c&quot; with a
+numeric argument prints the corresponding 8 bit character,
+with a string argument it prints the first character of the
+string. The output of print and printf can be redirected to
+a file or command by appending &gt; <i>file</i>, &gt;&gt;
+<i>file</i> or | <i>command</i> to the end of the print
+statement. Redirection opens <i>file</i> or <i>command</i>
+only once, subsequent redirections append to the already
+open stream. By convention, <b>mawk</b> associates the
+filename</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="2%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="49%">
+
+
+<p>&quot;/dev/stderr&quot; with stderr,</p></td>
+<td width="29%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="2%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="49%">
+
+
+<p>&quot;/dev/stdout&quot; with stdout,</p></td>
+<td width="29%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="2%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="49%">
+
+
+<p>&quot;-&quot; and &quot;/dev/stdin&quot; with stdin.</p></td>
+<td width="29%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The association
+with stderr is especially useful because it allows print and
+printf to be redirected to stderr. These names can also be
+passed to functions.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The input
+function <b>getline</b> has the following variations.</p>
+
+<p style="margin-left:18%;">getline</p>
+
+<p style="margin-left:29%;">reads into <b>$0</b>, updates
+the fields, <b>NF</b>, <b>NR</b> and <b>FNR</b>.</p>
+
+<p style="margin-left:18%;">getline &lt; <i>file</i></p>
+
+<p style="margin-left:29%;">reads into <b>$0</b> from
+<i>file</i>, updates the fields and <b>NF</b>.</p>
+
+<p style="margin-left:18%;">getline <i>var</i></p>
+
+<p style="margin-left:29%;">reads the next record into
+<i>var</i>, updates <b>NR</b> and <b>FNR</b>.</p>
+
+<p style="margin-left:18%;">getline <i>var</i> &lt;
+<i>file</i></p>
+
+<p style="margin-left:29%;">reads the next record of
+<i>file</i> into <i>var</i>.</p>
+
+<p style="margin-left:18%;"><i>command</i> | getline</p>
+
+<p style="margin-left:29%;">pipes a record from
+<i>command</i> into <b>$0</b> and updates the fields and
+<b>NF</b>.</p>
+
+<p style="margin-left:18%;"><i>command</i> | getline
+<i>var</i></p>
+
+<p style="margin-left:29%;">pipes a record from
+<i>command</i> into <i>var</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Getline returns
+0 on end-of-file, -1 on error, otherwise 1.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Commands on the
+end of pipes are executed by /bin/sh.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The function
+<b>close</b>(<i>expr</i>) closes the file or pipe associated
+with <i>expr</i>. Close returns 0 if <i>expr</i> is an open
+file, the exit status if <i>expr</i> is a piped command, and
+-1 otherwise. Close is used to reread a file or command,
+make sure the other end of an output pipe is finished or
+conserve file resources.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The function
+<b>fflush</b>(<i>expr</i>) flushes the output file or pipe
+associated with <i>expr</i>. Fflush returns 0 if <i>expr</i>
+is an open output stream else -1. Fflush without an argument
+flushes stdout. Fflush with an empty argument (&quot;&quot;)
+flushes all open output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The function
+<b>system</b>(<i>expr</i>) uses the C runtime <b>system</b>
+call to execute <i>expr</i> and returns the corresponding
+wait status of the command as follows:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>if the <b>system</b> call failed, setting the status to
+-1, <i>mawk</i> returns that value.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>if the command exited normally, <i>mawk</i> returns its
+exit-status.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>if the command exited due to a signal such as
+<b>SIGHUP</b>, <i>mawk</i> returns the signal number plus
+256.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Changes made to
+the <b>ENVIRON</b> array are not passed to commands executed
+with <b>system</b> or pipes.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>10. User
+defined functions</b> <br>
+The syntax for a user defined function is</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>function</b>
+name( <i>args</i> ) { <i>statements</i> }</p>
+
+<p style="margin-left:11%; margin-top: 1em">The function
+body can contain a return statement</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>return</b>
+<i>opt_expr</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">A return
+statement is not required. Function calls may be nested or
+recursive. Functions are passed expressions by value and
+arrays by reference. Extra arguments serve as local
+variables and are initialized to <i>null</i>. For example,
+csplit(<i>s,A</i>) puts each character of <i>s</i> into
+array <i>A</i> and returns the length of <i>s</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">function
+csplit(s, A, n, i)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>{</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>n = length(s)</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>for( i = 1 ; i &lt;= n ; i++ ) A[i] = substr(s, i,
+1)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>return n</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>}</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Putting extra
+space between passed arguments and local variables is
+conventional. Functions can be referenced before they are
+defined, but the function name and the &rsquo;(&rsquo; of
+the arguments must touch to avoid confusion with
+concatenation.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A function
+parameter is normally a scalar value (number or string). If
+there is a forward reference to a function using an array as
+a parameter, the function&rsquo;s corresponding parameter
+will be treated as an array.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>11.
+Splitting strings, records and files</b> <br>
+Awk programs use the same algorithm to split strings into
+arrays with split(), and records into fields on <b>FS</b>.
+<b>mawk</b> uses essentially the same algorithm to split
+files into records on <b>RS</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">Split(<i>expr,A,sep</i>)
+works as follows:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="5%">
+
+
+<p style="margin-top: 1em">(1)</p></td>
+<td width="3%"></td>
+<td width="77%">
+
+
+<p style="margin-top: 1em">If <i>sep</i> is omitted, it is
+replaced by <b>FS</b>. <i>Sep</i> can be an expression or
+regular expression. If it is an expression of non-string
+type, it is converted to string.</p></td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="5%">
+
+
+<p>(2)</p></td>
+<td width="3%"></td>
+<td width="77%">
+
+
+<p>If <i>sep</i> = &quot; &quot; (a single space), then
+&lt;SPACE&gt; is trimmed from the front and back of
+<i>expr</i>, and <i>sep</i> becomes &lt;SPACE&gt;.
+<b>mawk</b> defines &lt;SPACE&gt; as the regular expression
+/[&nbsp;\t\n]+/. Otherwise <i>sep</i> is treated as a
+regular expression, except that meta-characters are ignored
+for a string of length 1, e.g., split(x, A, &quot;*&quot;)
+and split(x, A, /\*/) are the same.</p></td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="5%">
+
+
+<p>(3)</p></td>
+<td width="3%"></td>
+<td width="77%">
+
+
+<p>If <i>expr</i> is not string, it is converted to string.
+If <i>expr</i> is then the empty string &quot;&quot;,
+split() returns 0 and <i>A</i> is set empty. Otherwise, all
+non-overlapping, non-null and longest matches of <i>sep</i>
+in <i>expr</i>, separate <i>expr</i> into fields which are
+loaded into <i>A</i>. The fields are placed in A[1], A[2],
+..., A[n] and split() returns n, the number of fields which
+is the number of matches plus one. Data placed in <i>A</i>
+that looks numeric is typed number and string.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Splitting
+records into fields works the same except the pieces are
+loaded into <b>$1</b>, <b>$2</b>,..., <b>$NF</b>. If
+<b>$0</b> is empty, <b>NF</b> is set to 0 and all <b>$i</b>
+to &quot;&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>mawk</b>
+splits files into records by the same algorithm, but with
+the slight difference that <b>RS</b> is really a terminator
+instead of a separator. (<b>ORS</b> is really a terminator
+too).</p>
+
+<p style="margin-left:18%; margin-top: 1em">E.g., if
+<b>FS</b> = &ldquo;:+&rdquo; and <b>$0</b> =
+&ldquo;a::b:&rdquo; , then <b>NF</b> = 3 and <b>$1</b> =
+&ldquo;a&rdquo;, <b>$2</b> = &ldquo;b&rdquo; and <b>$3</b> =
+&quot;&quot;, but if &ldquo;a::b:&rdquo; is the contents of
+an input file and <b>RS</b> = &ldquo;:+&rdquo;, then there
+are two records &ldquo;a&rdquo; and &ldquo;b&rdquo;.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>RS</b> =
+&quot; &quot; is not special.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If <b>FS</b> =
+&quot;&quot;, then <b>mawk</b> breaks the record into
+individual characters, and, similarly,
+split(<i>s,A,</i>&quot;&quot;) places the individual
+characters of <i>s</i> into <i>A</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>12.
+Multi-line records</b> <br>
+Since <b>mawk</b> interprets <b>RS</b> as a regular
+expression, multi-line records are easy. Setting <b>RS</b> =
+&quot;\n\n+&quot;, makes one or more blank lines separate
+records. If <b>FS</b> = &quot; &quot; (the default), then
+single newlines, by the rules for &lt;SPACE&gt; above,
+become space and single newlines are field separators.</p>
+
+<p style="margin-left:18%; margin-top: 1em">For example,
+if</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="2%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="35%">
+
+
+<p style="margin-top: 1em">a file is
+&quot;a&nbsp;b\nc\n\n&quot;,</p> </td>
+<td width="40%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="2%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="35%">
+
+
+<p><b>RS</b> = &quot;\n\n+&quot; and</p></td>
+<td width="40%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="2%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="35%">
+
+
+<p><b>FS</b> = &quot;&nbsp;&quot;,</p></td>
+<td width="40%">
+</td></tr>
+</table>
+
+<p style="margin-left:18%; margin-top: 1em">then there is
+one record &ldquo;a&nbsp;b\nc&rdquo; with three fields
+&ldquo;a&rdquo;, &ldquo;b&rdquo; and &ldquo;c&rdquo;:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="2%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="75%">
+
+
+<p style="margin-top: 1em">Changing <b>FS</b> =
+&ldquo;\n&rdquo;, gives two fields &ldquo;a b&rdquo; and
+&ldquo;c&rdquo;;</p> </td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="2%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="75%">
+
+
+<p>changing <b>FS</b> = &ldquo;&rdquo;, gives one field
+identical to the record.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">If you want
+lines with spaces or tabs to be considered blank, set
+<b>RS</b> = &ldquo;\n([&nbsp;\t]*\n)+&rdquo;. For
+compatibility with other awks, setting <b>RS</b> =
+&quot;&quot; has the same effect as if blank lines are
+stripped from the front and back of files and then records
+are determined as if <b>RS</b> = &ldquo;\n\n+&rdquo;. POSIX
+requires that &ldquo;\n&rdquo; always separates records when
+<b>RS</b> = &quot;&quot; regardless of the value of
+<b>FS</b>. <b>mawk</b> does not support this convention,
+because defining &ldquo;\n&rdquo; as &lt;SPACE&gt; makes it
+unnecessary.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Most of the
+time when you change <b>RS</b> for multi-line records, you
+will also want to change <b>ORS</b> to &ldquo;\n\n&rdquo; so
+the record spacing is preserved on output.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>13. Program
+execution</b> <br>
+This section describes the order of program execution. First
+<b>ARGC</b> is set to the total number of command line
+arguments passed to the execution phase of the program.
+<b>ARGV[0]</b> is set the name of the AWK interpreter and
+<b>ARGV[1]</b> ... <b>ARGV[ARGC-1]</b> holds the remaining
+command line arguments exclusive of options and program
+source. For example with</p>
+
+<p style="margin-left:11%; margin-top: 1em">mawk -f prog
+v=1 A t=hello B</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ARGC</b> = 5
+with <b>ARGV[0]</b> = &quot;mawk&quot;, <b>ARGV[1]</b> =
+&quot;v=1&quot;, <b>ARGV[2]</b> = &quot;A&quot;,
+<b>ARGV[3]</b> = &quot;t=hello&quot; and <b>ARGV[4]</b> =
+&quot;B&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Next, each
+<b>BEGIN</b> block is executed in order. If the program
+consists entirely of <b>BEGIN</b> blocks, then execution
+terminates, else an input stream is opened and execution
+continues. If <b>ARGC</b> equals 1, the input stream is set
+to stdin, else the command line arguments <b>ARGV[1]</b> ...
+<b>ARGV[ARGC-1]</b> are examined for a file argument.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The command
+line arguments divide into three sets: file arguments,
+assignment arguments and empty strings &quot;&quot;. An
+assignment has the form <i>var</i>=<i>string</i>. When an
+<b>ARGV[i]</b> is examined as a possible file argument, if
+it is empty it is skipped; if it is an assignment argument,
+the assignment to <i>var</i> takes place and <b>i</b> skips
+to the next argument; else <b>ARGV[i]</b> is opened for
+input. If it fails to open, execution terminates with exit
+code 2. If no command line argument is a file argument, then
+input comes from stdin. Getline in a <b>BEGIN</b> action
+opens input. &ldquo;-&rdquo; as a file argument denotes
+stdin.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Once an input
+stream is open, each input record is tested against each
+<i>pattern</i>, and if it matches, the associated
+<i>action</i> is executed. An expression pattern matches if
+it is boolean true (see the end of section 2). A
+<b>BEGIN</b> pattern matches before any input has been read,
+and an <b>END</b> pattern matches after all input has been
+read. A range pattern, <i>expr</i>1,<i>expr</i>2 , matches
+every record between the match of <i>expr</i>1 and the match
+<i>expr</i>2 inclusively.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When end of
+file occurs on the input stream, the remaining command line
+arguments are examined for a file argument, and if there is
+one it is opened, else the <b>END</b> <i>pattern</i> is
+considered matched and all <b>END</b> <i>actions</i> are
+executed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the example,
+the assignment v=1 takes place after the <b>BEGIN</b>
+<i>actions</i> are executed, and the data placed in v is
+typed number and string. Input is then read from file A. On
+end of file A, t is set to the string &quot;hello&quot;, and
+B is opened for input. On end of file B, the <b>END</b>
+<i>actions</i> are executed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Program flow at
+the <i>pattern {action}</i> level can be changed with
+the</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>next</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p><b>nextfile</b></p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p><b>exit</b> <i>opt_expr</i></p></td></tr>
+</table>
+
+
+<p style="margin-left:11%; margin-top: 1em">statements:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">A <b>next</b> statement causes
+the next input record to be read and pattern testing to
+restart with the first <i>pattern {action}</i> pair in the
+program.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>A <b>nextfile</b> statement tells <b>mawk</b> to stop
+processing the current input file. It then updates FILENAME
+to the next file listed on the command line, and resets FNR
+to 1.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>An <b>exit</b> statement causes immediate execution of
+the <b>END</b> actions or program termination if there are
+none or if the <b>exit</b> occurs in an <b>END</b> action.
+The <i>opt_expr</i> sets the exit value of the program
+unless overridden by a later <b>exit</b> or subsequent
+error.</p> </td></tr>
+</table>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">1. emulate
+cat.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>{ print }</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">2. emulate
+wc.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>{ chars += length($0) + 1 # add one for the \n</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>words += NF</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>}</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>END{ print NR, words, chars }</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">3. count the
+number of unique &ldquo;real words&rdquo;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>BEGIN { FS = &quot;[^A-Za-z]+&quot; }</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>{ for(i = 1 ; i &lt;= NF ; i++) word[$i] = &quot;&quot;
+}</p> </td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>END { delete word[&quot;&quot;]</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>for ( i in word ) cnt++</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>print cnt</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>}</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">4. sum the
+second field of every record based on the first field.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>$1 ~ /credit|gain/ { sum += $2 }</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>$1 ~ /debit|loss/ { sum -= $2 }</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>END { print sum }</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">5. sort a file,
+comparing as string</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>{ line[NR] = $0 &quot;&quot; } # make sure of comparison
+type</p> </td>
+<td width="8%"></td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="46%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+</td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="46%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%">
+
+
+<p># in case some lines look numeric</p></td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="46%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>END { isort(line, NR)</p></td>
+<td width="8%"></td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="46%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>for(i = 1 ; i &lt;= NR ; i++) print line[i]</p></td>
+<td width="8%"></td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="46%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>}</p></td>
+<td width="8%"></td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="46%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>#insertion sort of A[1..n]</p></td>
+<td width="8%"></td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="46%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+
+
+<p>function isort( A, n,</p></td>
+<td width="8%"></td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="46%">
+
+
+<p>i, j, hold)</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>{</p></td>
+<td width="8%"></td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="46%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>for( i = 2 ; i &lt;= n ; i++)</p></td>
+<td width="8%"></td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="46%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>{</p></td>
+<td width="8%"></td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="46%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>hold = A[j = i]</p></td>
+<td width="8%"></td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="46%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>while ( A[j-1] &gt; hold )</p></td>
+<td width="8%"></td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="46%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>{ j-- ; A[j+1] = A[j] }</p></td>
+<td width="8%"></td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="46%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>A[j] = hold</p></td>
+<td width="8%"></td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="46%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>}</p></td>
+<td width="8%"></td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="46%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p># sentinel A[0] = &quot;&quot; will be created if
+needed</p> </td>
+<td width="8%"></td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="46%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>}</p></td>
+<td width="8%"></td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="46%">
+</td></tr>
+</table>
+
+<h2>COMPATIBILITY ISSUES
+<a name="COMPATIBILITY ISSUES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>MAWK 1.3.3
+versus POSIX 1003.2 Draft 11.3</b> <br>
+The POSIX 1003.2(draft 11.3) definition of the AWK language
+is AWK as described in the AWK book with a few extensions
+that appeared in SystemVR4 nawk. The extensions are:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="2%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">New functions: toupper() and
+tolower().</p> </td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="2%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>New variables: ENVIRON[] and CONVFMT.</p></td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="2%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>ANSI C conversion specifications for printf() and
+sprintf().</p> </td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="2%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>New command options: -v var=value, multiple -f options
+and implementation options as arguments to -W.</p></td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="2%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>For systems (MS-DOS or Windows) which provide a
+<i>setmode</i> function, an environment variable MAWKBINMODE
+and a built-in variable BINMODE. The bits of the BINMODE
+value tell <i>mawk</i> how to modify the <b>RS</b> and
+<b>ORS</b> variables:</p></td></tr>
+</table>
+
+<p style="margin-left:22%;">0</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%"></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p style="margin-top: 1em">set standard input to binary
+mode, and if BIT-2 is unset, set <b>RS</b> to
+&quot;\r\n&quot; (CR/LF) rather than &quot;\n&quot;
+(LF).</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>1</p></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p>set standard output to binary mode, and if BIT-2 is
+unset, set <b>ORS</b> to &quot;\r\n&quot; (CR/LF) rather
+than &quot;\n&quot; (LF).</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>2</p></td>
+<td width="3%"></td>
+<td width="74%">
+
+
+<p>suppress the assignment to <b>RS</b> and <b>ORS</b> of
+CR/LF, making it possible to run scripts and generate output
+compatible with Unix line-endings.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">POSIX AWK is
+oriented to operate on files a line at a time. <b>RS</b> can
+be changed from &quot;\n&quot; to another single character,
+but it is hard to find any use for this &mdash; there are no
+examples in the AWK book. By convention, <b>RS</b> =
+&quot;&quot;, makes one or more blank lines separate
+records, allowing multi-line records. When <b>RS</b> =
+&quot;&quot;, &quot;\n&quot; is always a field separator
+regardless of the value in <b>FS</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>mawk</b>, on
+the other hand, allows <b>RS</b> to be a regular expression.
+When &quot;\n&quot; appears in records, it is treated as
+space, and <b>FS</b> always determines fields.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Removing the
+line at a time paradigm can make some programs simpler and
+can often improve performance. For example, redoing example
+3 from above,</p>
+
+<p style="margin-left:11%; margin-top: 1em">BEGIN { RS =
+&quot;[^A-Za-z]+&quot; }</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>{ word[ $0 ] = &quot;&quot; }</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>END { delete word[ &quot;&quot; ]</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>for( i in word ) cnt++</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>print cnt</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>}</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">counts the
+number of unique words by making each word a record. On
+moderate size files, <b>mawk</b> executes twice as fast,
+because of the simplified inner loop.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+program replaces each comment by a single space in a C
+program file,</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>BEGIN {</p></td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>RS = &quot;/\*([^*]|\*+[^/*])*\*+/&quot;</p></td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="77%">
+
+
+<p># comment is record separator</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>ORS = &quot; &quot;</p></td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>getline hold</p></td>
+<td width="77%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;">}</p>
+
+<p style="margin-left:11%; margin-top: 1em">{ print hold ;
+hold = $0 }</p>
+
+<p style="margin-left:11%; margin-top: 1em">END { printf
+&quot;%s&quot; , hold }</p>
+
+<p style="margin-left:11%; margin-top: 1em">Buffering one
+record is needed to avoid terminating the last record with a
+space.</p>
+
+<p style="margin-left:11%; margin-top: 1em">With
+<b>mawk</b>, the following are all equivalent,</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>x ~ /a\+b/ x ~ &quot;a\+b&quot; x ~
+&quot;a\\+b&quot;</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The strings get
+scanned twice, once as string and once as regular
+expression. On the string scan, <b>mawk</b> ignores the
+escape on non-escape characters while the AWK book advocates
+<i>\c</i> be recognized as <i>c</i> which necessitates the
+double escaping of meta-characters in strings. POSIX
+explicitly declines to define the behavior which passively
+forces programs that must run under a variety of awks to use
+the more portable but less readable, double escape.</p>
+
+<p style="margin-left:11%; margin-top: 1em">POSIX AWK does
+not recognize &quot;/dev/std{in,out,err}&quot;. Some systems
+provide an actual device for this, allowing AWKs which do
+not implement the feature directly to support it.</p>
+
+<p style="margin-left:11%; margin-top: 1em">POSIX AWK does
+not recognize \x hex escape sequences in strings. Unlike
+ANSI C, <b>mawk</b> limits the number of digits that follows
+\x to two as the current implementation only supports 8 bit
+characters. The built-in <b>fflush</b> first appeared in a
+recent (1993) AT&amp;T awk released to netlib, and is not
+part of the POSIX standard. Aggregate deletion with
+<b>delete</b> <i>array</i> is not part of the POSIX
+standard.</p>
+
+<p style="margin-left:11%; margin-top: 1em">POSIX
+explicitly leaves the behavior of <b>FS</b> = &quot;&quot;
+undefined, and mentions splitting the record into characters
+as a possible interpretation, but currently this use is not
+portable across implementations.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Random
+numbers</b> <br>
+POSIX does not prescribe a method for initializing random
+numbers at startup.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In practice,
+most implementations do nothing special, which makes
+<b>srand</b> and <b>rand</b> follow the C runtime library,
+making the initial seed value 1. Some implementations
+(Solaris XPG4 and Tru64) return 0 from the first call to
+<b>srand</b>, although the results from <b>rand</b> behave
+as if the initial seed is 1. Other implementations return
+1.</p>
+
+<p style="margin-left:11%; margin-top: 1em">While
+<b>mawk</b> can call <b>srand</b> at startup with no
+parameter (initializing random numbers from the clock), this
+feature may be suppressed using conditional compilation.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Extensions
+added for compatibility for GAWK and BWK <br>
+Nextfile</b> is a <b>gawk</b> extension (also implemented by
+BWK awk), is not yet part of the POSIX standard (as of
+October 2012), although it has been accepted for the next
+revision of the standard.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Mktime</b>,
+<b>strftime&nbsp;</b>and <b>systime</b> are <b>gawk</b>
+extensions.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;/dev/stdin&quot; feature was added to <b>mawk</b>
+after 1.3.4, for compatibility with <b>gawk</b> and BWK awk.
+The corresponding &quot;-&quot; (alias for /dev/stdin) was
+present in mawk 1.3.3.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Subtle
+Differences not in POSIX or the AWK Book</b> <br>
+Finally, here is how <b>mawk</b> handles exceptional cases
+not discussed in the AWK book or the POSIX draft. It is
+unsafe to assume consistency across awks and safe to skip to
+the next section.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="2%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">substr(s, i, n) returns the
+characters of s in the intersection of the closed interval
+[1, length(s)] and the half-open interval [i, i+n). When
+this intersection is empty, the empty string is returned; so
+substr(&quot;ABC&quot;, 1, 0) = &quot;&quot; and
+substr(&quot;ABC&quot;, -4, 6) = &quot;A&quot;.</p></td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="2%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Every string, including the empty string, matches the
+empty string at the front so, s ~ // and s ~ &quot;&quot;,
+are always 1 as is match(s, //) and match(s, &quot;&quot;).
+The last two set <b>RLENGTH</b> to 0.</p></td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="2%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>index(s, t) is always the same as match(s, t1) where t1
+is the same as t with metacharacters escaped. Hence
+consistency with match requires that index(s, &quot;&quot;)
+always returns 1. Also the condition, index(s,t) != 0 if and
+only t is a substring of s, requires
+index(&quot;&quot;,&quot;&quot;) = 1.</p></td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="2%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>If getline encounters end of file, getline var, leaves
+var unchanged. Similarly, on entry to the <b>END</b>
+actions, <b>$0</b>, the fields and <b>NF</b> have their
+value unaltered from the last record.</p></td></tr>
+</table>
+
+<h2>ENVIRONMENT VARIABLES
+<a name="ENVIRONMENT VARIABLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Mawk</b>
+recognizes these variables:</p>
+
+<p style="margin-left:15%;">MAWKBINMODE</p>
+
+<p style="margin-left:20%;">(see <b>COMPATIBILITY
+ISSUES</b>)</p>
+
+<p style="margin-left:15%;">MAWK_LONG_OPTIONS</p>
+
+<p style="margin-left:20%;">If this is set, <b>mawk</b>
+uses its value to decide what to do with GNU-style long
+options:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="9%">
+
+
+<p>allow</p></td>
+<td width="2%"></td>
+<td width="66%">
+
+
+<p><b>Mawk</b> allows the option to be checked against the
+(small) set of long options it recognizes.</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="9%">
+
+
+<p>error</p></td>
+<td width="2%"></td>
+<td width="66%">
+
+
+<p><b>Mawk</b> prints an error message and exits. This is
+the default.</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="9%">
+
+
+<p>ignore</p></td>
+<td width="2%"></td>
+<td width="66%">
+
+
+<p><b>Mawk</b> ignores the option.</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="9%">
+
+
+<p>warn</p></td>
+<td width="2%"></td>
+<td width="66%">
+
+
+<p>Print an warning message and otherwise ignore the
+option.</p> </td></tr>
+</table>
+
+<p style="margin-left:20%; margin-top: 1em">If the variable
+is unset, <b>mawk</b> prints an error message and exits.</p>
+
+<p style="margin-left:15%;">WHINY_USERS</p>
+
+<p style="margin-left:20%;">This is an undocumented
+<b>gawk</b> feature. It tells <b>mawk</b> to sort array
+indices before it starts to iterate over the elements of an
+array.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>grep</b>(1)</p>
+
+<p style="margin-left:11%; margin-top: 1em">Aho, Kernighan
+and Weinberger, <i>The AWK Programming Language</i>,
+Addison-Wesley Publishing, 1988, (the AWK book), defines the
+language, opening with a tutorial and advancing to many
+interesting programs that delve into issues of software
+design and analysis relevant to programming in any
+language.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>The GAWK
+Manual</i>, The Free Software Foundation, 1991, is a
+tutorial and language reference that does not attempt the
+depth of the AWK book and assumes the reader may be a novice
+programmer. The section on AWK arrays is excellent. It also
+discusses POSIX requirements for AWK.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mawk</b>
+implements printf() and sprintf() using the C library
+functions, printf and sprintf, so full ANSI compatibility
+requires an ANSI C library. In practice this means the h
+conversion qualifier may not be available. Also <b>mawk</b>
+inherits any bugs or limitations of the library
+functions.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Implementors of
+the AWK language have shown a consistent lack of imagination
+when naming their programs.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Mike Brennan
+(brennan@whidbey.com). <br>
+Thomas E. Dickey &lt;dickey@invisible-island.net&gt;.</p>
+<hr>
+</body>
+</html>

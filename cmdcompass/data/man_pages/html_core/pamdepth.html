@@ -1,0 +1,165 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:25 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamdepth User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamdepth User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamdepth -
+change the depth (color resolution) in a Netpbm image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamdepth</b>
+<i>newmaxval</i> [<i>netpbmfile</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamdepth</b>
+reads a Netpbm image as input, changes its depth (color
+resolution), and writes out the resulting Netpbm image. I.e.
+the output has a different maxval from the input, but all
+the same colors (apart from rounding error).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Reducing the
+depth results in some loss of information.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Here is an
+example of the effect at the image format level: Assume you
+start with an image with maxval 100 and sample values of 50
+and 100. You tell <b>pamdepth</b> to change it to depth 150.
+The output has maxval 200 and sample values 75 and 150.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This program
+works on multi-image streams.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Be careful of
+off-by-one errors when choosing the new maxval. For
+instance, if you want the color values to be five bits wide,
+use a maxval of 31, not 32.</p>
+
+<p style="margin-left:11%; margin-top: 1em">One important
+use of <b>pamdepth</b> is to convert a new format
+2-byte-per-sample PNM file to the older 1-byte-per-sample
+format. Before April 2000, essentially all raw (binary)
+format PNM files had a maxval less than 256 and one byte per
+sample, and many programs may rely on that. If you specify a
+<i>newmaxval</i> less than 256, the resulting file should be
+readable by any program that worked with PNM files before
+April 2000.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Output
+Format</b> <br>
+The output format (PBM, etc.) and, in the case of PAM, tuple
+type, of the output is usually the same as the input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">However,
+changing the depth of a black and white image does not make
+sense, except to turn it into a grayscale image, so if the
+input is a black and white image, <b>pamdepth</b> makes the
+output grayscale. To be more precise, if the input is a PBM
+image, the output is PGM, and if the input is a PAM with
+tuple type BLACK_AND_WHITE or BLACK_AND_WHITE_ALPHA, the
+output is a PAM with tuple type GRAYSCALE or
+GRAYSCALE_ALPHA, respectively.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This conversion
+happens even if the new maxval is 1.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Before Netpbm
+10.92 (September 2020), <b>pamdepth</b> failed if the input
+was PAM with a black and white tuple type and the new maxval
+was anything but 1. But it always promoted PBM to PGM.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">There are no
+command line options defined specifically for
+<b>pamdepth</b>, but it recognizes the options common to all
+programs based on libnetpbm (See
+<a href="index.html#commonoptions"> Common Options</a>
+.)</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnm</b>(1),
+<b>pam</b>(1), <b>pnmquant</b>(1), <b>ppmdither</b>(1)
+<b>pambrighten</b>(1) <b>pamfunc</b>(1)</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamdepth</b>
+was new in Netpbm 10.32 (February 2006). It replaced
+<b>pnmdepth</b>, by Jef Poskanzer. <b>pamdepth</b> is
+backward compatible with <b>pnmdepth</b> and adds the
+ability to process arbitrary PAM images and the ability to
+process multi-image input streams. <b>pnmdepth</b> handled
+only PNM images and ignored all but the first in any
+stream.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamdepth.html</b></p>
+<hr>
+</body>
+</html>

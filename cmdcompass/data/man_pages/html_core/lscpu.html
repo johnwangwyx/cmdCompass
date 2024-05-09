@@ -1,0 +1,314 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:15 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>LSCPU</title>
+
+</head>
+<body>
+
+<h1 align="center">LSCPU</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#AVAILABILITY">AVAILABILITY</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">lscpu - display
+information about the CPU architecture</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>lscpu</b>
+[options]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>lscpu</b>
+gathers CPU architecture information from <i>sysfs</i>,
+<i>/proc/cpuinfo</i> and any applicable
+architecture-specific libraries (e.g. <b>librtas</b> on
+Powerpc). The command output can be optimized for parsing or
+for easy readability by humans. The information includes,
+for example, the number of CPUs, threads, cores, sockets,
+and Non-Uniform Memory Access (NUMA) nodes. There is also
+information about the CPU caches and cache sharing, family,
+model, bogoMIPS, byte order, and stepping.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The default
+output formatting on terminal is subject to change and maybe
+optimized for better readability. The output for
+non-terminals (e.g., pipes) is never affected by this
+optimization and it is always in &quot;Field: data\n&quot;
+format. Use for example &quot;<b>lscpu | less</b>&quot; to
+see the default output without optimizations.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In virtualized
+environments, the CPU architecture information displayed
+reflects the configuration of the guest operating system
+which is typically different from the physical (host)
+system. On architectures that support retrieving physical
+topology information, <b>lscpu</b> also displays the number
+of physical sockets, chips, cores in the host system.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Options that
+result in an output table have a <i>list</i> argument. Use
+this argument to customize the command output. Specify a
+comma-separated list of column labels to limit the output
+table to only the specified columns, arranged in the
+specified order. See <b>COLUMNS</b> for a list of valid
+column labels. The column labels are not case sensitive.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Not all columns
+are supported on all architectures. If an unsupported column
+is specified, <b>lscpu</b> prints the column but does not
+provide any data for it.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The cache sizes
+are reported as summary from all CPUs. The versions before
+v2.34 reported per-core sizes, but this output was confusing
+due to complicated CPUs topology and the way how caches are
+shared between CPUs. For more details about caches see
+<b>--cache</b>. Since version v2.37 <b>lscpu</b> follows
+cache IDs as provided by Linux kernel and it does not always
+start from zero.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-a</b>,
+<b>--all</b></p>
+
+<p style="margin-left:17%;">Include lines for online and
+offline CPUs in the output (default for <b>-e</b>). This
+option may only be specified together with option <b>-e</b>
+or <b>-p</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-B</b>,
+<b>--bytes</b></p>
+
+<p style="margin-left:17%;">Print the sizes in bytes rather
+than in a human-readable format.</p>
+
+<p style="margin-left:17%; margin-top: 1em">By default, the
+unit, sizes are expressed in, is byte, and unit prefixes are
+in power of 2^10 (1024). Abbreviations of symbols are
+exhibited truncated in order to reach a better readability,
+by exhibiting alone the first letter of them; examples:
+&quot;1 KiB&quot; and &quot;1 MiB&quot; are respectively
+exhibited as &quot;1 K&quot; and &quot;1 M&quot;, then
+omitting on purpose the mention &quot;iB&quot;, which is
+part of these abbreviations.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-b</b>,
+<b>--online</b></p>
+
+<p style="margin-left:17%;">Limit the output to online CPUs
+(default for <b>-p</b>). This option may only be specified
+together with option <b>-e</b> or <b>-p</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-C</b>,
+<b>--caches</b>[=<i>list</i>]</p>
+
+<p style="margin-left:17%;">Display details about CPU
+caches. For details about available information see
+<b>--help</b> output.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If the
+<i>list</i> argument is omitted, all columns for which data
+is available are included in the command output.</p>
+
+<p style="margin-left:17%; margin-top: 1em">When specifying
+the <i>list</i> argument, the string of option, equal sign
+(=), and <i>list</i> must not contain any blanks or other
+whitespace. Examples: <b>-C=NAME,ONE-SIZE</b> or
+<b>--caches=NAME,ONE-SIZE</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The default
+list of columns may be extended if list is specified in the
+format +list (e.g., <b>lscpu -C=+ALLOC-POLICY</b>).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-c</b>,
+<b>--offline</b></p>
+
+<p style="margin-left:17%;">Limit the output to offline
+CPUs. This option may only be specified together with option
+<b>-e</b> or <b>-p</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-e</b>,
+<b>--extended</b>[=<i>list</i>]</p>
+
+<p style="margin-left:17%;">Display the CPU information in
+human-readable format.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If the
+<i>list</i> argument is omitted, the default columns are
+included in the command output. The default output is
+subject to change.</p>
+
+<p style="margin-left:17%; margin-top: 1em">When specifying
+the <i>list</i> argument, the string of option, equal sign
+(=), and <i>list</i> must not contain any blanks or other
+whitespace. Examples: '<b>-e=cpu,node</b>' or
+'<b>--extended=cpu,node</b>'.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The default
+list of columns may be extended if list is specified in the
+format +list (e.g., lscpu -e=+MHZ).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-J</b>,
+<b>--json</b></p>
+
+<p style="margin-left:17%;">Use JSON output format for the
+default summary or extended output (see
+<b>--extended</b>).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-p</b>,
+<b>--parse</b>[=<i>list</i>]</p>
+
+<p style="margin-left:17%;">Optimize the command output for
+easy parsing.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If the
+<i>list</i> argument is omitted, the command output is
+compatible with earlier versions of <b>lscpu</b>. In this
+compatible format, two commas are used to separate CPU cache
+columns. If no CPU caches are identified the cache column is
+omitted. If the <i>list</i> argument is used, cache columns
+are separated with a colon (:).</p>
+
+<p style="margin-left:17%; margin-top: 1em">When specifying
+the <i>list</i> argument, the string of option, equal sign
+(=), and <i>list</i> must not contain any blanks or other
+whitespace. Examples: '<b>-p=cpu,node</b>' or
+'<b>--parse=cpu,node</b>'.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The default
+list of columns may be extended if list is specified in the
+format +list (e.g., lscpu -p=+MHZ).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-s</b>,
+<b>--sysroot</b> <i>directory</i></p>
+
+<p style="margin-left:17%;">Gather CPU data for a Linux
+instance other than the instance from which the <b>lscpu</b>
+command is issued. The specified <i>directory</i> is the
+system root of the Linux instance to be inspected.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-x</b>,
+<b>--hex</b></p>
+
+<p style="margin-left:17%;">Use hexadecimal masks for CPU
+sets (for example &quot;ff&quot;). The default is to print
+the sets in list format (for example 0,1). Note that before
+version 2.30 the mask has been printed with 0x prefix.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-y</b>,
+<b>--physical</b></p>
+
+<p style="margin-left:17%;">Display physical IDs for all
+columns with topology elements (core, socket, etc.). Other
+than logical IDs, which are assigned by <b>lscpu</b>,
+physical IDs are platform-specific values that are provided
+by the kernel. Physical IDs are not necessarily unique and
+they might not be arranged sequentially. If the kernel could
+not retrieve a physical ID for an element <b>lscpu</b>
+prints the dash (-) character.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The CPU logical
+numbers are not affected by this option.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--output-all</b></p>
+
+<p style="margin-left:17%;">Output all available columns.
+This option must be combined with either <b>--extended</b>,
+<b>--parse</b> or <b>--caches</b>.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The basic
+overview of CPU family, model, etc. is always based on the
+first CPU only.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Sometimes in
+Xen Dom0 the kernel reports wrong data.</p>
+
+<p style="margin-left:11%; margin-top: 1em">On virtual
+hardware the number of cores per socket, etc. can be
+wrong.</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Cai Qian</i>
+&lt;qcai@redhat.com&gt;, <i>Karel Zak</i>
+&lt;kzak@redhat.com&gt;, <i>Heiko Carstens</i>
+&lt;heiko.carstens@de.ibm.com&gt;</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>chcpu</b>(8)</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For bug
+reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+
+<h2>AVAILABILITY
+<a name="AVAILABILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>lscpu</b> command is part of the util-linux package which
+can be downloaded from <i>Linux Kernel Archive</i>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,830 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:46 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SED</title>
+
+</head>
+<body>
+
+<h1 align="center">SED</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#COMMAND SYNOPSIS">COMMAND SYNOPSIS</a><br>
+<a href="#Addresses">Addresses</a><br>
+<a href="#REGULAR EXPRESSIONS">REGULAR EXPRESSIONS</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">sed - stream
+editor for filtering and transforming text</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">sed [-V]
+[--version] [--help] [-n] [--quiet] [--silent] <br>
+[-l N] [--line-length=N] [-u] [--unbuffered] <br>
+[-E] [-r] [--regexp-extended] <br>
+[-e script] [--expression=script] <br>
+[-f script-file] [--file=script-file] <br>
+[script-if-no-other-script] <br>
+[file...]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Sed</i> is a
+stream editor. A stream editor is used to perform basic text
+transformations on an input stream (a file or input from a
+pipeline). While in some ways similar to an editor which
+permits scripted edits (such as <i>ed</i>), <i>sed</i> works
+by making only one pass over the input(s), and is
+consequently more efficient. But it is <i>sed</i>&rsquo;s
+ability to filter text in a pipeline which particularly
+distinguishes it from other types of editors.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="32%">
+
+
+<p style="margin-top: 1em"><b>-n</b>, <b>--quiet</b>,
+<b>--silent</b></p> </td>
+<td width="57%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">suppress
+automatic printing of pattern space</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p style="margin-top: 1em"><b>--debug</b></p></td>
+<td width="78%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">annotate
+program execution</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="46%">
+
+
+<p style="margin-top: 1em"><b>-e</b> script,
+<b>--expression</b>=<i>script</i></p> </td>
+<td width="43%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">add the script
+to the commands to be executed</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="52%">
+
+
+<p style="margin-top: 1em"><b>-f</b> script-file,
+<b>--file</b>=<i>script-file</i></p> </td>
+<td width="37%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">add the
+contents of script-file to the commands to be executed</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="26%">
+
+
+<p style="margin-top: 1em"><b>--follow-symlinks</b></p></td>
+<td width="63%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">follow symlinks
+when processing in place</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="47%">
+
+
+<p style="margin-top: 1em"><b>-i[SUFFIX]</b>,
+<b>--in-place</b>[=<i>SUFFIX</i>]</p> </td>
+<td width="42%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">edit files in
+place (makes backup if SUFFIX supplied)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="32%">
+
+
+<p style="margin-top: 1em"><b>-l</b> N,
+<b>--line-length</b>=<i>N</i></p> </td>
+<td width="57%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">specify the
+desired line-wrap length for the &rsquo;l&rsquo; command</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p style="margin-top: 1em"><b>--posix</b></p></td>
+<td width="78%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">disable all GNU
+extensions.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="38%">
+
+
+<p style="margin-top: 1em"><b>-E</b>, <b>-r</b>,
+<b>--regexp-extended</b></p> </td>
+<td width="51%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">use extended
+regular expressions in the script (for portability use POSIX
+<b>-E</b>).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="21%">
+
+
+<p style="margin-top: 1em"><b>-s</b>, <b>--separate</b></p></td>
+<td width="68%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">consider files
+as separate rather than as a single, continuous long
+stream.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p style="margin-top: 1em"><b>--sandbox</b></p></td>
+<td width="75%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">operate in
+sandbox mode (disable e/r/w commands).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="24%">
+
+
+<p style="margin-top: 1em"><b>-u</b>,
+<b>--unbuffered</b></p> </td>
+<td width="65%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">load minimal
+amounts of data from the input files and flush the output
+buffers more often</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="23%">
+
+
+<p style="margin-top: 1em"><b>-z</b>,
+<b>--null-data</b></p> </td>
+<td width="66%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">separate lines
+by NUL characters</p>
+
+<p><b>--help</b></p></table>
+
+<p style="margin-left:22%;">display this help and exit</p>
+
+<p style="margin-left:11%;"><b>--version</b></p>
+
+<p style="margin-left:22%;">output version information and
+exit</p>
+
+<p style="margin-left:11%; margin-top: 1em">If no
+<b>-e</b>, <b>--expression</b>, <b>-f</b>, or <b>--file</b>
+option is given, then the first non-option argument is taken
+as the sed script to interpret. All remaining arguments are
+names of input files; if no input files are specified, then
+the standard input is read.</p>
+
+<p style="margin-left:11%; margin-top: 1em">GNU sed home
+page: &lt;https://www.gnu.org/software/sed/&gt;. General
+help using GNU software:
+&lt;https://www.gnu.org/gethelp/&gt;. E-mail bug reports to:
+&lt;bug-sed@gnu.org&gt;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Packaged by
+Debian Copyright &copy; 2022 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later
+&lt;https://gnu.org/licenses/gpl.html&gt;. This is free
+software: you are free to change and redistribute it. There
+is NO WARRANTY, to the extent permitted by law.</p>
+
+<h2>COMMAND SYNOPSIS
+<a name="COMMAND SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This is just a
+brief synopsis of <i>sed</i> commands to serve as a reminder
+to those who already know <i>sed</i>; other documentation
+(such as the texinfo document) must be consulted for fuller
+descriptions.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Zero-address
+&rsquo;&rsquo;commands&rsquo;&rsquo;</b> <br>
+:&nbsp;<i>label</i></p>
+
+<p style="margin-left:22%;">Label for <b>b</b> and <b>t</b>
+commands.</p>
+
+<p style="margin-left:11%;">#<i>comment</i></p>
+
+<p style="margin-left:22%;">The comment extends until the
+next newline (or the end of a <b>-e</b> script
+fragment).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>}</p></td>
+<td width="10%"></td>
+<td width="53%">
+
+
+<p>The closing bracket of a { } block.</p></td>
+<td width="25%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Zero- or
+One- address commands</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p style="margin-top: 1em">=</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Print the current line
+number.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>a \</p></td>
+<td width="5%"></td>
+<td width="78%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><i>text</i></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Append <i>text</i>, which has each embedded newline
+preceded by a backslash.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>i \</p></td>
+<td width="5%"></td>
+<td width="78%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><i>text</i></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Insert <i>text</i>, which has each embedded newline
+preceded by a backslash.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">q [<i>exit-code</i>]</p>
+
+<p style="margin-left:22%;">Immediately quit the <i>sed</i>
+script without processing any more input, except that if
+auto-print is not disabled the current pattern space will be
+printed. The exit code argument is a GNU extension.</p>
+
+<p style="margin-left:11%;">Q [<i>exit-code</i>]</p>
+
+<p style="margin-left:22%;">Immediately quit the <i>sed</i>
+script without processing any more input. This is a GNU
+extension.</p>
+
+<p style="margin-left:11%;">r&nbsp;<i>filename</i></p>
+
+<p style="margin-left:22%;">Append text read from
+<i>filename</i>.</p>
+
+<p style="margin-left:11%;">R&nbsp;<i>filename</i></p>
+
+<p style="margin-left:22%;">Append a line read from
+<i>filename</i>. Each invocation of the command reads a line
+from the file. This is a GNU extension.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Commands
+which accept address ranges</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>{</p></td>
+<td width="10%"></td>
+<td width="63%">
+
+
+<p>Begin a block of commands (end with a }).</p></td>
+<td width="15%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;">b&nbsp;<i>label</i></p>
+
+<p style="margin-left:22%;">Branch to <i>label</i>; if
+<i>label</i> is omitted, branch to end of script.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>c \</p></td>
+<td width="5%"></td>
+<td width="78%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><i>text</i></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Replace the selected lines with <i>text</i>, which has
+each embedded newline preceded by a backslash.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>d</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Delete pattern space. Start next cycle.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>D</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>If pattern space contains no newline, start a normal new
+cycle as if the d command was issued. Otherwise, delete text
+in the pattern space up to the first newline, and restart
+cycle with the resultant pattern space, without reading a
+new line of input.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>h H</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Copy/append pattern space to hold space.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>g G</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Copy/append hold space to pattern space.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>l</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>List out the current line in a &rsquo;&rsquo;visually
+unambiguous&rsquo;&rsquo; form.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">l&nbsp;<i>width</i></p>
+
+<p style="margin-left:22%;">List out the current line in a
+&rsquo;&rsquo;visually unambiguous&rsquo;&rsquo; form,
+breaking it at <i>width</i> characters. This is a GNU
+extension.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>n N</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Read/append the next line of input into the pattern
+space.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>p</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Print the current pattern space.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>P</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Print up to the first embedded newline of the current
+pattern space.</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%;">s/<i>regexp</i>/<i>replacement</i>/</p>
+
+<p style="margin-left:22%;">Attempt to match <i>regexp</i>
+against the pattern space. If successful, replace that
+portion matched with <i>replacement</i>. The
+<i>replacement</i> may contain the special character
+<b>&amp;</b> to refer to that portion of the pattern space
+which matched, and the special escapes \1 through \9 to
+refer to the corresponding matching sub-expressions in the
+<i>regexp</i>.</p>
+
+<p style="margin-left:11%;">t&nbsp;<i>label</i></p>
+
+<p style="margin-left:22%;">If a s/// has done a successful
+substitution since the last input line was read and since
+the last t or T command, then branch to <i>label</i>; if
+<i>label</i> is omitted, branch to end of script.</p>
+
+<p style="margin-left:11%;">T&nbsp;<i>label</i></p>
+
+<p style="margin-left:22%;">If no s/// has done a
+successful substitution since the last input line was read
+and since the last t or T command, then branch to
+<i>label</i>; if <i>label</i> is omitted, branch to end of
+script. This is a GNU extension.</p>
+
+<p style="margin-left:11%;">w&nbsp;<i>filename</i></p>
+
+<p style="margin-left:22%;">Write the current pattern space
+to <i>filename</i>.</p>
+
+<p style="margin-left:11%;">W&nbsp;<i>filename</i></p>
+
+<p style="margin-left:22%;">Write the first line of the
+current pattern space to <i>filename</i>. This is a GNU
+extension.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>x</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Exchange the contents of the hold and pattern
+spaces.</p> </td></tr>
+</table>
+
+
+<p style="margin-left:11%;">y/<i>source</i>/<i>dest</i>/</p>
+
+<p style="margin-left:22%;">Transliterate the characters in
+the pattern space which appear in <i>source</i> to the
+corresponding character in <i>dest</i>.</p>
+
+<h2>Addresses
+<a name="Addresses"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Sed</i>
+commands can be given with no addresses, in which case the
+command will be executed for all input lines; with one
+address, in which case the command will only be executed for
+input lines which match that address; or with two addresses,
+in which case the command will be executed for all input
+lines which match the inclusive range of lines starting from
+the first address and continuing to the second address.
+Three things to note about address ranges: the syntax is
+<i>addr1</i>,<i>addr2</i> (i.e., the addresses are separated
+by a comma); the line which <i>addr1</i> matched will always
+be accepted, even if <i>addr2</i> selects an earlier line;
+and if <i>addr2</i> is a <i>regexp</i>, it will not be
+tested against the line that <i>addr1</i> matched.</p>
+
+<p style="margin-left:11%; margin-top: 1em">After the
+address (or address-range), and before the command, a
+<b>!</b> may be inserted, which specifies that the command
+shall only be executed if the address (or address-range)
+does <b>not</b> match.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+address types are supported:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><i>number</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Match only the specified line <i>number</i> (which
+increments cumulatively across files, unless the <b>-s</b>
+option is specified on the command line).</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><i>first</i>~<i>step</i></p>
+
+<p style="margin-left:22%;">Match every
+<i>step</i>&rsquo;th line starting with line <i>first</i>.
+For example, &rsquo;&rsquo;sed -n 1~2p&rsquo;&rsquo; will
+print all the odd-numbered lines in the input stream, and
+the address 2~5 will match every fifth line, starting with
+the second. <i>first</i> can be zero; in this case,
+<i>sed</i> operates as if it were equal to <i>step</i>.
+(This is an extension.)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>$</p></td>
+<td width="10%"></td>
+<td width="30%">
+
+
+<p>Match the last line.</p></td>
+<td width="48%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;">/<i>regexp</i>/</p>
+
+<p style="margin-left:22%;">Match lines matching the
+regular expression <i>regexp</i>. Matching is performed on
+the current pattern space, which can be modified with
+commands such as &rsquo;&rsquo;s///&rsquo;&rsquo;.</p>
+
+
+<p style="margin-left:11%;">\<b>c</b><i>regexp</i><b>c</b></p>
+
+<p style="margin-left:22%;">Match lines matching the
+regular expression <i>regexp</i>. The <b>c</b> may be any
+character.</p>
+
+<p style="margin-left:11%; margin-top: 1em">GNU <i>sed</i>
+also supports some special 2-address forms: <br>
+0,<i>addr2</i></p>
+
+<p style="margin-left:22%;">Start out in &quot;matched
+first address&quot; state, until <i>addr2</i> is found. This
+is similar to 1,<i>addr2</i>, except that if <i>addr2</i>
+matches the very first line of input the 0,<i>addr2</i> form
+will be at the end of its range, whereas the 1,<i>addr2</i>
+form will still be at the beginning of its range. This works
+only when <i>addr2</i> is a regular expression.</p>
+
+<p style="margin-left:11%;"><i>addr1</i>,+<i>N</i></p>
+
+<p style="margin-left:22%;">Will match <i>addr1</i> and the
+<i>N</i> lines following <i>addr1</i>.</p>
+
+<p style="margin-left:11%;"><i>addr1</i>,~<i>N</i></p>
+
+<p style="margin-left:22%;">Will match <i>addr1</i> and the
+lines following <i>addr1</i> until the next line whose input
+line number is a multiple of <i>N</i>.</p>
+
+<h2>REGULAR EXPRESSIONS
+<a name="REGULAR EXPRESSIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">POSIX.2 BREs
+<i>should</i> be supported, but they aren&rsquo;t completely
+because of performance problems. The <b>\n</b> sequence in a
+regular expression matches the newline character, and
+similarly for <b>\a</b>, <b>\t</b>, and other sequences. The
+<i>-E</i> option switches to using extended regular
+expressions instead; it has been supported for years by GNU
+sed, and is now included in POSIX.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">E-mail bug
+reports to <b>bug-sed@gnu.org</b>. Also, please include the
+output of &rsquo;&rsquo;sed --version&rsquo;&rsquo; in the
+body of your report if at all possible.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Written by Jay
+Fenlason, Tom Lord, Ken Pizzini, Paolo Bonzini, Jim
+Meyering, and Assaf Gordon.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This sed
+program was built with SELinux support. SELinux is disabled
+on this system.</p>
+
+<p style="margin-left:11%; margin-top: 1em">GNU sed home
+page: &lt;https://www.gnu.org/software/sed/&gt;. General
+help using GNU software:
+&lt;https://www.gnu.org/gethelp/&gt;. E-mail bug reports to:
+&lt;bug-sed@gnu.org&gt;.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>awk</b>(1),
+<b>ed</b>(1), <b>grep</b>(1), <b>tr</b>(1),
+<b>perlre</b>(1), sed.info, any of various books on
+<i>sed</i>, the <i>sed</i> FAQ
+(http://sed.sf.net/grabbag/tutorials/sedfaq.txt),
+http://sed.sf.net/grabbag/.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The full
+documentation for <b>sed</b> is maintained as a Texinfo
+manual. If the <b>info</b> and <b>sed</b> programs are
+properly installed at your site, the command</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>info
+sed</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">should give you
+access to the complete manual.</p>
+<hr>
+</body>
+</html>

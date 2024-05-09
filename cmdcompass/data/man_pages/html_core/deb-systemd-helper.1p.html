@@ -1,0 +1,130 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:00 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>DEB-SYSTEMD-HELPER</title>
+
+</head>
+<body>
+
+<h1 align="center">DEB-SYSTEMD-HELPER</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">deb-systemd-helper
+- subset of systemctl for machines not running systemd</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>deb-systemd-helper</b>
+enable | disable | purge | mask | unmask | is-enabled |
+was-enabled | debian-installed | update-state | reenable
+<i>unit&Acirc;&nbsp;file</i>&Acirc;&nbsp;...</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>deb-systemd-helper</b>
+is a Debian-specific helper script which re-implements the
+enable, disable, is-enabled and reenable commands from
+systemctl.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;enable&quot; action will only be performed once (when
+first installing the package). On the first
+&quot;enable&quot;, a state file is created which will be
+deleted upon &quot;purge&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;mask&quot; action will keep state on whether the
+service was enabled/disabled before and will properly return
+to that state on &quot;unmask&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;was-enabled&quot; action is not present in systemctl,
+but is required in Debian so that we can figure out whether
+a service was enabled before we installed an updated service
+file. See http://bugs.debian.org/717603 for details.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;debian-installed&quot; action is also not present in
+systemctl. It returns 0 if the state file of at least one of
+the given units is present.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;update-state&quot; action is also not present in
+systemctl. It updates <b>deb-systemd-helper</b>&rsquo;s
+state file, removing obsolete entries (e.g. service files
+that are no longer shipped by the package) and adding new
+entries (e.g. new service files shipped by the package)
+without enabling them.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>deb-systemd-helper</b>
+is intended to be used from maintscripts to enable systemd
+unit files. It is specifically <small>NOT</small> intended
+to be used interactively by users. Instead, users should run
+systemd and use systemctl, or not bother about the systemd
+enabled state in case they are not running systemd.</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>_DEB_SYSTEMD_HELPER_DEBUG</b></p>
+
+<p style="margin-left:17%;">If you export
+_DEB_SYSTEMD_HELPER_DEBUG=1, deb-systemd-helper will print
+debug messages to stderr (thus visible in dpkg runs). Please
+include these when filing a bugreport.</p>
+
+
+<p style="margin-left:11%;"><b><small>DPKG_ROOT</small></b></p>
+
+<p style="margin-left:17%;">Instead of working on the
+filesystem root /, perform all operations on a chroot system
+in the directory given by <small>DPKG_ROOT.</small></p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Michael
+Stapelberg &lt;stapelberg@debian.org&gt;</p>
+<hr>
+</body>
+</html>

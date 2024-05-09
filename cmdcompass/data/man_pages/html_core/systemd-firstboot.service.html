@@ -1,0 +1,467 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:52 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SYSTEMD-FIRSTBOOT</title>
+
+</head>
+<body>
+
+<h1 align="center">SYSTEMD-FIRSTBOOT</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#CREDENTIALS">CREDENTIALS</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#KERNEL COMMAND LINE">KERNEL COMMAND LINE</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#NOTES">NOTES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">systemd-firstboot,
+systemd-firstboot.service - Initialize basic system settings
+on or before the first boot-up of a system</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="46%">
+
+
+<p style="margin-top: 1em"><b>systemd-firstboot</b>
+[OPTIONS...]</p> </td>
+<td width="43%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%; margin-top: 1em">systemd-firstboot.service</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-firstboot</b>
+initializes the most basic system settings interactively on
+the first boot, or optionally non-interactively when a
+system image is created. The service is started if
+<i>ConditionFirstBoot=yes</i> is satisfied. This essentially
+means that /etc/ is empty, see <b>systemd.unit</b>(5) for
+details.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+settings may be set up:</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; The
+system locale, more specifically the two locale variables
+<i>LANG=</i> and <i>LC_MESSAGES</i></p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; The
+system keyboard map</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; The
+system time zone</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; The
+system hostname</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; The
+machine ID of the system</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; The root
+user's password</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each of the
+fields may either be queried interactively by users, set
+non-interactively on the tool's command line, or be copied
+from a host system that is used to set up the system
+image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If a setting is
+already initialized, it will not be overwritten and the user
+will not be prompted for the setting.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that this
+tool operates directly on the file system and does not
+involve any running system services, unlike
+<b>localectl</b>(1), <b>timedatectl</b>(1) or
+<b>hostnamectl</b>(1). This allows <b>systemd-firstboot</b>
+to operate on mounted but not booted disk images and in
+early boot. It is not recommended to use
+<b>systemd-firstboot</b> on the running system while it is
+up.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+options are understood:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--root=</b><i>root</i></p>
+
+<p style="margin-left:17%;">Takes a directory path as an
+argument. All paths will be prefixed with the given
+alternate <i>root</i> path, including config search paths.
+This is useful to operate on a system image mounted to the
+specified directory instead of the host system itself.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--image=</b><i>path</i></p>
+
+<p style="margin-left:17%;">Takes a path to a disk image
+file or block device node. If specified all operations are
+applied to file system in the indicated disk image. This is
+similar to <b>--root=</b> but operates on file systems
+stored in disk images or block devices. The disk image
+should either contain just a file system or a set of file
+systems within a GPT partition table, following the
+<b><font color="#0000FF">Discoverable Partitions
+Specification</font></b>
+<small><font color="#000000">[1]</font></small>
+<font color="#000000">. For further information on supported
+disk images, see <b>systemd-nspawn</b>(1)'s switch of the
+same name.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--locale=</b><i>LOCALE</i>,
+<b>--locale-messages=</b><i>LOCALE</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Sets the
+system locale, more specifically the <i>LANG=</i> and
+<i>LC_MESSAGES</i> settings. The argument should be a valid
+locale identifier, such as &quot;de_DE.UTF-8&quot;. This
+controls the <b>locale.conf</b>(5) configuration
+file.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--keymap=</b><i>KEYMAP</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Sets the
+system keyboard layout. The argument should be a valid
+keyboard map, such as &quot;de-latin1&quot;. This controls
+the &quot;KEYMAP&quot; entry in the <b>vconsole.conf</b>(5)
+configuration file.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--timezone=</b><i>TIMEZONE</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Sets the
+system time zone. The argument should be a valid time zone
+identifier, such as &quot;Europe/Berlin&quot;. This controls
+the <b>localtime</b>(5) symlink.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--hostname=</b><i>HOSTNAME</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Sets the
+system hostname. The argument should be a hostname,
+compatible with DNS. This controls the <b>hostname</b>(5)
+configuration file.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--machine-id=</b><i>ID</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Sets the
+system's machine ID. This controls the <b>machine-id</b>(5)
+file.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--root-password=</b><i>PASSWORD</i>,
+<b>--root-password-file=</b><i>PATH</i>,
+<b>--root-password-hashed=</b><i>HASHED_PASSWORD</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Sets the
+password of the system's root user. This creates/modifies
+the <b>passwd</b>(5) and <b>shadow</b>(5) files. This
+setting exists in three forms: <b>--root-password=</b>
+accepts the password to set directly on the command line,
+<b>--root-password-file=</b> reads it from a file and
+<b>--root-password-hashed=</b> accepts an already hashed
+password on the command line. See <b>shadow</b>(5) for more
+information on the format of the hashed password. Note that
+it is not recommended to specify plaintext passwords on the
+command line, as other users might be able to see them
+simply by invoking <b>ps</b>(1).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--root-shell=</b><i>SHELL</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Sets the
+shell of the system's root user. This creates/modifies the
+<b>passwd</b>(5) file.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--kernel-command-line=</b><i>CMDLINE</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Sets the
+system's kernel command line. This controls the
+/etc/kernel/cmdline file which is used by
+<b>kernel-install</b>(8).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--prompt-locale</b>,
+<b>--prompt-keymap</b>, <b>--prompt-timezone</b>,
+<b>--prompt-hostname</b>, <b>--prompt-root-password</b>,
+<b>--prompt-root-shell</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Prompt
+the user interactively for a specific basic setting. Note
+that any explicit configuration settings specified on the
+command line take precedence, and the user is not prompted
+for it.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--prompt</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Query the
+user for locale, keymap, timezone, hostname, root's
+password, and root's shell. This is equivalent to specifying
+<b>--prompt-locale</b>, <b>--prompt-keymap</b>,
+<b>--prompt-timezone</b>, <b>--prompt-hostname</b>,
+<b>--prompt-root-password</b>, <b>--prompt-root-shell</b> in
+combination.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--copy-locale</b>,
+<b>--copy-keymap</b>, <b>--copy-timezone</b>,
+<b>--copy-root-password</b>,
+<b>--copy-root-shell</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Copy a
+specific basic setting from the host. This only works in
+combination with <b>--root=</b> (see above).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--copy</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Copy
+locale, keymap, time zone, root password and shell from the
+host. This is equivalent to specifying <b>--copy-locale</b>,
+<b>--copy-keymap</b>, <b>--copy-timezone</b>,
+<b>--copy-root-password</b>, <b>--copy-root-shell</b> in
+combination.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--setup-machine-id</b></font></p>
+
+
+<p style="margin-left:17%;"><font color="#000000">Initialize
+the system's machine ID to a random ID. This only works in
+combination with <b>--root=</b>.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--force</b></font></p>
+
+
+<p style="margin-left:17%;"><font color="#000000">systemd-firstboot
+doesn't modify existing files unless <b>--force</b> is
+specified. For modifications to /etc/passwd and /etc/shadow,
+systemd-firstboot only modifies the entry of the
+&quot;root&quot; user instead of overwriting the entire
+file.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--delete-root-password</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Removes
+the password of the system's root user, enabling login as
+root without a password unless the root account is locked.
+Note that this is extremely insecure and hence this option
+should not be used lightly.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--welcome=</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Takes a
+boolean argument. By default when prompting the user for
+configuration options a brief welcome text is shown before
+the first question is asked. Pass false to this option to
+turn off the welcome text.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>-h</b>,
+<b>--help</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Print a
+short help text and exit.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--version</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Print a
+short version string and exit.</font></p>
+
+<h2>CREDENTIALS
+<a name="CREDENTIALS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>systemd-firstboot</b>
+supports the service credentials logic as implemented by
+<i>LoadCredential=</i>/<i>SetCredential=</i> (see
+<b>systemd.exec</b>(1) for details). The following
+credentials are used when passed in:</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">&quot;passwd.hashed-password.root&quot;,
+&quot;passwd.plaintext-password.root&quot;</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">A hashed
+or plaintext version of the root password to use, in place
+of prompting the user. These credentials are equivalent to
+the same ones defined for the
+<b>systemd-sysusers.service</b>(8) service.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">&quot;passwd.shell.root&quot;</font></p>
+
+
+<p style="margin-left:17%;"><font color="#000000">Specifies
+the shell binary to use for the specified account.
+Equivalent to the credential of the same name defined for
+the <b>systemd-sysusers.service</b>(8) service.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">&quot;firstboot.locale&quot;,
+&quot;firstboot.locale-messages&quot;</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">These
+credentials specify the locale settings to set during first
+boot, in place of prompting the user.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">&quot;firstboot.keymap&quot;</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">This
+credential specifies the keyboard setting to set during
+first boot, in place of prompting the user.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">&quot;firstboot.timezone&quot;</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">This
+credential specifies the system timezone setting to set
+during first boot, in place of prompting the
+user.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Note
+that by default the systemd-firstboot.service unit file is
+set up to inherit the listed credentials from the service
+manager. Thus, when invoking a container with an unpopulated
+/etc/ for the first time it is possible to configure the
+root user's password to be &quot;systemd&quot; like
+this:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">#
+systemd-nspawn --image=...
+--set-credential=firstboot.locale:de_DE.UTF-8 ...</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Note
+that these credentials are only read and applied during the
+first boot process. Once they are applied they remain
+applied for subsequent boots, and the credentials are not
+considered anymore.</font></p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">On
+success, 0 is returned, a non-zero failure code
+otherwise.</font></p>
+
+<h2>KERNEL COMMAND LINE
+<a name="KERNEL COMMAND LINE"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>systemd.firstboot=</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Takes a
+boolean argument, defaults to on. If off,
+systemd-firstboot.service won't interactively query the user
+for basic settings at first boot, even if those settings are
+not initialized yet.</font></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>systemd</b>(1),
+<b>locale.conf</b>(5), <b>vconsole.conf</b>(5),
+<b>localtime</b>(5), <b>hostname</b>(5),
+<b>machine-id</b>(5), <b>shadow</b>(5),
+<b>systemd-machine-id-setup</b>(1), <b>localectl</b>(1),
+<b>timedatectl</b>(1), <b>hostnamectl</b>(1)</font></p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">1.</font></p> </td>
+<td width="2%"></td>
+<td width="57%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">Discoverable
+Partitions Specification</font></p></td>
+<td width="26%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">https://systemd.io/DISCOVERABLE_PARTITIONS</font></p>
+<hr>
+</body>
+</html>

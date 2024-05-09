@@ -1,0 +1,203 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:49 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title></title>
+</head>
+<body>
+
+<hr>
+
+
+<p>SSH-COPY-ID(1) BSD General Commands Manual
+SSH-COPY-ID(1)</p>
+
+<p style="margin-top: 1em"><b>NAME</b></p>
+
+<p style="margin-left:6%;"><b>ssh-copy-id</b> &mdash; use
+locally available keys to authorise logins on a remote
+machine</p>
+
+<p style="margin-top: 1em"><b>SYNOPSIS</b></p>
+
+<p style="margin-left:22%;"><b>ssh-copy-id</b> [<b>-f</b>]
+[<b>-n</b>] [<b>-s</b>]
+[<b>-i&nbsp;</b>[<i>identity_file</i>]]
+[<b>-p&nbsp;</b><i>port</i>]
+[<b>-o&nbsp;</b><i>ssh_option</i>]
+[<i>user</i>@]<i>hostname</i> <b><br>
+ssh-copy-id -h</b> | <b>-</b>?</p>
+
+<p style="margin-top: 1em"><b>DESCRIPTION</b></p>
+
+<p style="margin-left:6%;"><b>ssh-copy-id</b> is a script
+that uses ssh(1) to log into a remote machine (presumably
+using a login password, so password authentication should be
+enabled, unless you&rsquo;ve done some clever use of
+multiple identities). It assembles a list of one or more
+fingerprints (as described below) and tries to log in with
+each key, to see if any of them are already installed (of
+course, if you are not using ssh-agent(1) this may result in
+you being repeatedly prompted for pass-phrases). It then
+assembles a list of those that failed to log in, and using
+ssh, enables logins with those keys on the remote server. By
+default it adds the keys by appending them to the remote
+user&rsquo;s <i>~/.ssh/authorized_keys</i> (creating the
+file, and directory, if necessary). It is also capable of
+detecting if the remote system is a NetScreen, and using its
+&rsquo;set ssh pka-dsa key ...&rsquo; command instead.</p>
+
+<p style="margin-left:6%; margin-top: 1em">The options are
+as follows:</p>
+
+<p style="margin-top: 1em"><b>-i</b>
+<i>identity_file</i></p>
+
+<p style="margin-left:17%;">Use only the key(s) contained
+in <i>identity_file</i> (rather than looking for identities
+via ssh-add(1) or in the <b>default_ID_file</b>). If the
+filename does not end in <i>.pub</i> this is added. If the
+filename is omitted, the <b>default_ID_file</b> is used.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note that this
+can be used to ensure that the keys copied have the comment
+one prefers and/or extra options applied, by ensuring that
+the key file has these set as preferred before the copy is
+attempted.</p>
+
+<p style="margin-top: 1em"><b>-f</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Forced mode:
+doesn&rsquo;t check if the keys are present on the remote
+server. This means that it does not need the private key. Of
+course, this can result in more than one copy of the key
+being installed on the remote system.</p>
+
+<p style="margin-top: 1em"><b>-n</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">do a dry-run.
+Instead of installing keys on the remote system simply
+prints the key(s) that would have been installed.</p>
+
+<p style="margin-top: 1em"><b>-s</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">SFTP mode:
+usually the public keys are installed by executing commands
+on the remote side. With this option the user&rsquo;s
+<i>~/.ssh/authorized_keys</i> file will be downloaded,
+modified locally and uploaded with sftp. This option is
+useful if the server has restrictions on commands which can
+be used on the remote side.</p>
+
+<p style="margin-top: 1em"><b>-h</b>, <b>-</b>?</p>
+
+<p style="margin-left:17%; margin-top: 1em">Print Usage
+summary</p>
+
+<p style="margin-top: 1em"><b>-p</b> <i>port</i>, <b>-o</b>
+<i>ssh_option</i></p>
+
+<p style="margin-left:17%;">These two options are simply
+passed through untouched, along with their argument, to
+allow one to set the port or other ssh(1) options,
+respectively.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Rather than
+specifying these as command line options, it is often better
+to use (per-host) settings in ssh(1)&rsquo;s configuration
+file: ssh_config(5).</p>
+
+<p style="margin-left:6%; margin-top: 1em">Default
+behaviour without <b>-i</b>, is to check if &rsquo;ssh-add
+-L&rsquo; provides any output, and if so those keys are
+used. Note that this results in the comment on the key being
+the filename that was given to ssh-add(1) when the key was
+loaded into your ssh-agent(1) rather than the comment
+contained in that file, which is a bit of a shame.
+Otherwise, if ssh-add(1) provides no keys contents of the
+<b>default_ID_file</b> will be used.</p>
+
+<p style="margin-left:6%; margin-top: 1em">The
+<b>default_ID_file</b> is the most recent file that matches:
+<i>~/.ssh/id*.pub</i>, (excluding those that match
+<i>~/.ssh/*-cert.pub</i>) so if you create a key that is not
+the one you want <b>ssh-copy-id</b> to use, just use
+touch(1) on your preferred key&rsquo;s <i>.pub</i> file to
+reinstate it as the most recent.</p>
+
+<p style="margin-top: 1em"><b>EXAMPLES</b></p>
+
+<p style="margin-left:6%;">If you have already installed
+keys from one system on a lot of remote hosts, and you then
+create a new key, on a new client machine, say, it can be
+difficult to keep track of which systems on which
+you&rsquo;ve installed the new key. One way of dealing with
+this is to load both the new key and old key(s) into your
+ssh-agent(1). Load the new key first, without the <b>-c</b>
+option, then load one or more old keys into the agent,
+possibly by ssh-ing to the client machine that has that old
+key, using the <b>-A</b> option to allow agent
+forwarding:</p>
+
+
+<p style="margin-left:14%; margin-top: 1em">user@newclient$
+ssh-add <br>
+user@newclient$ ssh -A old.client <br>
+user@oldl$ ssh-add -c <br>
+... prompt for pass-phrase ... <br>
+user@old$ logoff <br>
+user@newclient$ ssh someserver</p>
+
+<p style="margin-left:6%; margin-top: 1em">now, if the new
+key is installed on the server, you&rsquo;ll be allowed in
+unprompted, whereas if you only have the old key(s) enabled,
+you&rsquo;ll be asked for confirmation, which is your cue to
+log back out and run</p>
+
+
+<p style="margin-left:14%; margin-top: 1em">user@newclient$
+ssh-copy-id -i someserver</p>
+
+<p style="margin-left:6%; margin-top: 1em">The reason you
+might want to specify the -i option in this case is to
+ensure that the comment on the installed key is the one from
+the <i>.pub</i> file, rather than just the filename that was
+loaded into your agent. It also ensures that only the id you
+intended is installed, rather than all the keys that you
+have in your ssh-agent(1). Of course, you can specify
+another id, or use the contents of the ssh-agent(1) as you
+prefer.</p>
+
+<p style="margin-left:6%; margin-top: 1em">Having mentioned
+ssh-add(1)&rsquo;s <b>-c</b> option, you might consider
+using this whenever using agent forwarding to avoid your key
+being hijacked, but it is much better to instead use
+ssh(1)&rsquo;s <i>ProxyCommand</i> and <b>-W</b> option, to
+bounce through remote servers while always doing direct
+end-to-end authentication. This way the middle hop(s)
+don&rsquo;t get access to your ssh-agent(1). A web search
+for &rsquo;ssh proxycommand nc&rsquo; should prove
+enlightening (N.B. the modern approach is to use the
+<b>-W</b> option, rather than nc(1)).</p>
+
+<p style="margin-top: 1em"><b>SEE ALSO</b></p>
+
+<p style="margin-left:6%;">ssh(1), ssh-agent(1),
+sshd(8)</p>
+
+<p style="margin-left:6%; margin-top: 1em">BSD
+June&nbsp;17, 2010 BSD</p>
+<hr>
+</body>
+</html>

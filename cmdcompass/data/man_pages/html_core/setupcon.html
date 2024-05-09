@@ -1,0 +1,222 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:47 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SETUPCON</title>
+
+</head>
+<body>
+
+<h1 align="center">SETUPCON</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">setupcon - sets
+up the font and the keyboard on the console</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>setupcon</b>
+[<i>OPTION</i>]...&nbsp;[<i>VARIANT</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>setupcon</b>
+is a program for fast and easy setup of the font and the
+keyboard on the console. Most of the time you invoke
+<b>setupcon</b> without arguments. The keyboard
+configuration is specified in <i>~/.keyboard</i> or
+<i>/etc/default/keyboard</i>. The font configuration is
+specified in <i>~/.console-setup</i> or
+<i>/etc/default/console-setup</i>. Consult
+<b>keyboard</b>(5) and <b>console-setup</b>(5) for
+instructions how to configure these two files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you have to
+switch often between different encodings, keyboards or
+languages, you can prepare several alternative configuration
+files for <b>setupcon</b>. Suppose that most of the time you
+will use Greek language with Greek keyboard layout, but
+sometimes you need to type in German with German keyboard
+layout. In this situation you should customize the main
+configuration files (<i>keyboard</i> and
+<i>console-setup</i>) for Greek. Also, create alternative
+configuration files for German named <i>keyboard.german</i>
+and <i>console-setup.german</i>. Then in order to configure
+the console for Greek you will simply run the command with
+no arguments: <i>setupcon</i> and in order to configure the
+console for German you will use
+<i>setupcon&nbsp;german</i>.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>VARIANT</i></p>
+
+<p style="margin-left:22%;">Specifies which configuration
+file to use. With no variant, the configuration files of
+<b>setupcon</b> are named <i>console-setup</i> and
+<i>keyboard</i>. On the other hand, if you use e.g.
+<i>chukchi</i> as <i>VARIANT</i> then the configuration
+files are <i>console-setup.chukchi</i> and
+<i>keyboard.chukchi</i>. In this way you can have easy
+access to several different configurations - for example one
+for the Chukchi language and another for the default
+configuration.</p>
+
+
+<p style="margin-left:11%;"><b>-v</b>,&nbsp;<b>--verbose</b></p>
+
+<p style="margin-left:22%;">Be more verbose. Use this
+option if something goes wrong or while experimenting with
+the configuration files.</p>
+
+
+<p style="margin-left:11%;"><b>-k</b>,&nbsp;<b>--keyboard-only</b></p>
+
+<p style="margin-left:22%;">Setup the keyboard only, do not
+setup the font or the terminal. On Linux it is enough to do
+this configuration only once.</p>
+
+
+<p style="margin-left:11%;"><b>-f</b>,&nbsp;<b>--font-only</b></p>
+
+<p style="margin-left:22%;">Setup the font only, do not
+setup the keyboard or the terminal. On Linux this
+configuration should be repeated each time a new console
+driver is activated (for example when the frame buffer
+becomes active).</p>
+
+
+<p style="margin-left:11%;"><b>-t</b>,&nbsp;<b>--terminal-only</b></p>
+
+<p style="margin-left:22%;">Setup the terminal only, do not
+setup the keyboard or the font.</p>
+
+<p style="margin-left:11%;"><b>--current-tty</b></p>
+
+<p style="margin-left:22%;">Setup the only the current
+virtual terminal.</p>
+
+<p style="margin-left:11%;"><b>--force</b></p>
+
+<p style="margin-left:22%;">Do not check whether we are on
+the console. Notice that you can be forced to hard-reboot
+your computer if you run <b>setupcon</b> with this option
+and the screen is controlled by a X server.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--save</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>This option can be useful if you want to use
+<b>setupcon</b> early in the boot process while <i>/usr</i>
+is not yet mounted and the required data are not available.
+This option will make <b>setupcon</b> copy the required
+files in <i>/etc/console-setup/</i> in order to make them
+available before <i>/usr</i> is mounted. If you use
+<b>setupcon</b> early in the boot process, then you should
+run it with this option after every change of the console
+configuration.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--save-only</b></p>
+
+<p style="margin-left:22%;">The same as <i>--save</i>, but
+does not setup anything. This option can be useful if you
+want to save the required files while the screen is
+controlled by a X server.</p>
+
+
+<p style="margin-left:11%;"><b>--save-keyboard&nbsp;</b><i>FILE</i></p>
+
+<p style="margin-left:22%;">For use by initrd builders. Do
+not configure anything. Save an usable keyboard layout in
+<i>FILE</i>.</p>
+
+
+<p style="margin-left:11%;"><b>--setup-dir&nbsp;</b><i>DIR</i></p>
+
+<p style="margin-left:22%;">For use by initrd builders. Do
+not configure anything. Arrange in the directory <i>DIR</i>
+everything necessary in order to configure the console. The
+file <i>DIR/morefiles</i> lists all binaries the initrd
+builder has to install in the initrd image. All other files
+in <i>DIR</i> have to be copied unchanged in the initrd. In
+order to configure the console one has to run the script
+<i>DIR/bin/setupcon</i>.</p>
+
+
+<p style="margin-left:11%;"><b>-h</b>,&nbsp;<b>--help</b></p>
+
+<p style="margin-left:22%;">Display usage information.</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>~/.console-setup
+<br>
+~/.keyboard <br>
+/etc/default/console-setup <br>
+/etc/default/keyboard <br>
+/etc/default/console-setup.VARIANT <br>
+/etc/default/keyboard.VARIANT <br>
+/etc/console-setup/</i></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i><b>keyboard</b></i>(5),
+<b>console-setup</b>(5)</p>
+<hr>
+</body>
+</html>

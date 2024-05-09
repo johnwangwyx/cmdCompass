@@ -1,0 +1,297 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:35 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pnmmontage User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pnmmontage User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pnmmontage -
+create a montage of PNM images</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmmontage</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-header=</b><i>headerfile</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-quality=</b><i>n</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-prefix=</b><i>prefix</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-0</b>|<b>-1</b>|<b>-2</b>|<b>...</b>|<b>-9</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-data=</b><i>filename</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>pnmfile</i>...</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmmontage</b>
+packs images of differing sizes into a minimum-area
+composite image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Areas of the
+output that cannot be occupied by an image are black.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pnmmontage</b> recognizes the following command line
+options: <b><br>
+-data=</b><i>filename</i></p>
+
+<p style="margin-left:22%;">This option causes
+<b>pnmmontage</b> to write a file that describes in
+machine-readable form the positions of the original images
+within the packed image. Here is an example:</p>
+
+<p style="margin-left:22%; margin-top: 1em">:0:0:227:298
+<br>
+../image1.ppm:0:0:227:149 <br>
+../image2.ppm:0:149:227:149</p>
+
+<p style="margin-left:22%; margin-top: 1em">There is a line
+for each component image and one for the composite.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The 5 fields on
+each line are:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>source image name (or null string indicating the line
+for the composite image)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Column number of upper left corner of the image</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Row number of upper left corner of the image</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>width of the image (columns)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>height of the image (rows)</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.6 (July 2002).</p>
+
+
+<p style="margin-left:11%;"><b>-header=</b><i>filename</i></p>
+
+<p style="margin-left:22%;">Tells <b>pnmmontage</b> to
+write a C header file of the locations of the original
+images within the packed image. Each original image
+generates four #defines within the packed file: xxxX, xxxY,
+xxxSZX, and xxxSZY, where xxx is the name of the file,
+converted to all uppercase. The output also includes
+#defines OVERALLX and OVERALLY, which specifies the total
+size of the montage image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Here is an
+example:</p>
+
+<p style="margin-left:22%; margin-top: 1em">#define
+OVERALLX 227 <br>
+#define OVERALLY 298</p>
+
+<p style="margin-left:22%; margin-top: 1em">#define X 0
+<br>
+#define Y 0 <br>
+#define SZX 227 <br>
+#define SZY 149</p>
+
+<p style="margin-left:22%; margin-top: 1em">#define X 0
+<br>
+#define Y 149 <br>
+#define SZX 227 <br>
+#define SZY 149</p>
+
+<p style="margin-left:11%;"><b>-prefix</b></p>
+
+<p style="margin-left:22%;">Tells <b>pnmmontage</b> to use
+the specified prefix on all of the #defines it
+generates.</p>
+
+<p style="margin-left:11%;"><b>-quality</b></p>
+
+<p style="margin-left:22%;">Before attempting to place the
+subimages, <b>pnmmontage</b> will calculate a minimum
+possible area for the montage; this is either the total of
+the areas of all the subimages, or the width of the widest
+subimage times the height of the tallest subimage, whichever
+is greater. <b>pnmmontage</b> then initiates a problem-space
+search to find the best packing; if it finds a solution that
+is (at least) as good as the minimum area times the quality
+as a percent, it will break out of the search. Thus,
+<b>-quality=100</b> will find the best possible solution;
+however, it may take a very long time to do so. The default
+is <b>-quality=200.</b></p>
+
+<p style="margin-left:11%;"><b>-0</b>, <b>-1</b>, ...
+<b>-9</b></p>
+
+<p style="margin-left:22%;">These options control the
+quality at a higher level than <b>-quality</b>; <b>-0</b> is
+the worst quality (pick the first solution found), while
+<b>-9</b> is the best quality (perform an exhaustive search
+of problem space for the absolute best packing). The higher
+the number, the slower the computation. The default is
+<b>-5</b>.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Using <b>-9</b>
+is very slow on all but the smallest image sets.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The minimum
+area arrangement is often not a convenient shape. For
+example, it might be a tall, thin column of images, when
+you&rsquo;d rather have something more square. To force a
+minimum width or height, you can include a strut image - a
+black image that wide and one pixel high. Similarly, you can
+use a vertical strut to force a minimum height.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmcat</b>(1),
+<b>pnmindex</b>(1), <b>pnm</b>(1), <b>pam</b>(1),
+<b>pbm</b>(1), <b>pgm</b>(1), <b>ppm</b>(1)</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmmontage</b>
+was new in Netpbm 9.10 (January 2001).</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+2000 by Ben Olmstead.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pnmmontage.html</b></p>
+<hr>
+</body>
+</html>

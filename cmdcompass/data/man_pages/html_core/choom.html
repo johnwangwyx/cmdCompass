@@ -1,0 +1,179 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:33:57 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>CHOOM</title>
+
+</head>
+<body>
+
+<h1 align="center">CHOOM</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#AVAILABILITY">AVAILABILITY</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">choom - display
+and adjust OOM-killer score.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>choom -p</b>
+<i>PID</i></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>choom -p</b>
+<i>PID</i> <b>-n</b> <i>number</i></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>choom -n</b>
+<i>number</i> [--] <i>command</i> [<i>argument</i> ...]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>choom</b> command displays and adjusts Out-Of-Memory
+killer score setting.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-p</b>,
+<b>--pid</b> <i>pid</i></p>
+
+<p style="margin-left:17%;">Specifies process ID.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-n</b>,
+<b>--adjust</b> <i>value</i></p>
+
+<p style="margin-left:17%;">Specify the adjust score
+value.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Display help text and exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-V</b>,
+<b>--version</b></p>
+
+<p style="margin-left:17%;">Print version and exit.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Linux kernel
+uses the badness heuristic to select which process gets
+killed in out of memory conditions.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The badness
+heuristic assigns a value to each candidate task ranging
+from 0 (never kill) to 1000 (always kill) to determine which
+process is targeted. The units are roughly a proportion
+along that range of allowed memory the process may allocate
+from based on an estimation of its current memory and swap
+use. For example, if a task is using all allowed memory, its
+badness score will be 1000. If it is using half of its
+allowed memory, its score will be 500.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There is an
+additional factor included in the badness score: the current
+memory and swap usage is discounted by 3% for root
+processes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The amount of
+&quot;allowed&quot; memory depends on the context in which
+the oom killer was called. If it is due to the memory
+assigned to the allocating task&rsquo;s cpuset being
+exhausted, the allowed memory represents the set of mems
+assigned to that cpuset. If it is due to a mempolicy&rsquo;s
+node(s) being exhausted, the allowed memory represents the
+set of mempolicy nodes. If it is due to a memory limit (or
+swap limit) being reached, the allowed memory is that
+configured limit. Finally, if it is due to the entire system
+being out of memory, the allowed memory represents all
+allocatable resources.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The adjust
+score value is added to the badness score before it is used
+to determine which task to kill. Acceptable values range
+from -1000 to +1000. This allows userspace to polarize the
+preference for oom killing either by always preferring a
+certain task or completely disabling it. The lowest possible
+value, -1000, is equivalent to disabling oom killing
+entirely for that task since it will always report a badness
+score of 0.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Setting an
+adjust score value of +500, for example, is roughly
+equivalent to allowing the remainder of tasks sharing the
+same system, cpuset, mempolicy, or memory controller
+resources to use at least 50% more memory. A value of -500,
+on the other hand, would be roughly equivalent to
+discounting 50% of the task&rsquo;s allowed memory from
+being considered as scoring against the task.</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Karel
+Zak</i> &lt;kzak@redhat.com&gt;</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>proc</b>(5)</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For bug
+reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+
+<h2>AVAILABILITY
+<a name="AVAILABILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>choom</b> command is part of the util-linux package which
+can be downloaded from <i>Linux Kernel Archive</i>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>
+<hr>
+</body>
+</html>

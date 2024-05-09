@@ -1,0 +1,431 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:06 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>getent</title>
+
+</head>
+<body>
+
+<h1 align="center">getent</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">getent - get
+entries from Name Service Switch libraries</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>getent
+[</b><i>option</i><b>]...</b> <i>database
+key</i><b>...</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>getent</b> command displays entries from databases
+supported by the Name Service Switch libraries, which are
+configured in <i>/etc/nsswitch.conf</i>. If one or more
+<i>key</i> arguments are provided, then only the entries
+that match the supplied keys will be displayed. Otherwise,
+if no <i>key</i> is provided, all entries will be displayed
+(unless the database does not support enumeration).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>database</i> may be any of those supported by the GNU C
+Library, listed below:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="13%">
+
+
+<p><b>ahosts</b></p></td>
+<td width="3%"></td>
+<td width="69%">
+
+
+<p>When no <i>key</i> is provided, use
+<b>sethostent</b>(3), <b>gethostent</b>(3), and
+<b>endhostent</b>(3) to enumerate the hosts database. This
+is identical to using <b>hosts</b>. When one or more
+<i>key</i> arguments are provided, pass each <i>key</i> in
+succession to <b>getaddrinfo</b>(3) with the address family
+<b>AF_UNSPEC</b>, enumerating each socket address structure
+returned.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="13%">
+
+
+<p><b>ahostsv4</b></p></td>
+<td width="3%"></td>
+<td width="69%">
+
+
+<p>Same as <b>ahosts</b>, but use the address family
+<b>AF_INET</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="13%">
+
+
+<p><b>ahostsv6</b></p></td>
+<td width="3%"></td>
+<td width="69%">
+
+
+<p>Same as <b>ahosts</b>, but use the address family
+<b>AF_INET6</b>. The call to <b>getaddrinfo</b>(3) in this
+case includes the <b>AI_V4MAPPED</b> flag.</p></td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="13%">
+
+
+<p><b>aliases</b></p></td>
+<td width="3%"></td>
+<td width="69%">
+
+
+<p>When no <i>key</i> is provided, use
+<b>setaliasent</b>(3), <b>getaliasent</b>(3), and
+<b>endaliasent</b>(3) to enumerate the aliases database.
+When one or more <i>key</i> arguments are provided, pass
+each <i>key</i> in succession to <b>getaliasbyname</b>(3)
+and display the result.</p></td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="13%">
+
+
+<p><b>ethers</b></p></td>
+<td width="3%"></td>
+<td width="69%">
+
+
+<p>When one or more <i>key</i> arguments are provided, pass
+each <i>key</i> in succession to <b>ether_aton</b>(3) and
+<b>ether_hostton</b>(3) until a result is obtained, and
+display the result. Enumeration is not supported on
+<b>ethers</b>, so a <i>key</i> must be provided.</p></td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="13%">
+
+
+<p><b>group</b></p></td>
+<td width="3%"></td>
+<td width="69%">
+
+
+<p>When no <i>key</i> is provided, use <b>setgrent</b>(3),
+<b>getgrent</b>(3), and <b>endgrent</b>(3) to enumerate the
+group database. When one or more <i>key</i> arguments are
+provided, pass each numeric <i>key</i> to <b>getgrgid</b>(3)
+and each nonnumeric <i>key</i> to <b>getgrnam</b>(3) and
+display the result.</p></td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="13%">
+
+
+<p><b>gshadow</b></p></td>
+<td width="3%"></td>
+<td width="69%">
+
+
+<p>When no <i>key</i> is provided, use <b>setsgent</b>(3),
+<b>getsgent</b>(3), and <b>endsgent</b>(3) to enumerate the
+gshadow database. When one or more <i>key</i> arguments are
+provided, pass each <i>key</i> in succession to
+<b>getsgnam</b>(3) and display the result.</p></td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="13%">
+
+
+<p><b>hosts</b></p></td>
+<td width="3%"></td>
+<td width="69%">
+
+
+<p>When no <i>key</i> is provided, use
+<b>sethostent</b>(3), <b>gethostent</b>(3), and
+<b>endhostent</b>(3) to enumerate the hosts database. When
+one or more <i>key</i> arguments are provided, pass each
+<i>key</i> to <b>gethostbyaddr</b>(3) or
+<b>gethostbyname2</b>(3), depending on whether a call to
+<b>inet_pton</b>(3) indicates that the <i>key</i> is an IPv6
+or IPv4 address or not, and display the result.</p></td></tr>
+</table>
+
+<p style="margin-left:15%;"><b>initgroups</b></p>
+
+<p style="margin-left:31%;">When one or more <i>key</i>
+arguments are provided, pass each <i>key</i> in succession
+to <b>getgrouplist</b>(3) and display the result.
+Enumeration is not supported on <b>initgroups</b>, so a
+<i>key</i> must be provided.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="14%">
+
+
+<p><b>netgroup</b></p></td>
+<td width="2%"></td>
+<td width="69%">
+
+
+<p>When one <i>key</i> is provided, pass the <i>key</i> to
+<b>setnetgrent</b>(3) and, using <b>getnetgrent</b>(3)
+display the resulting string triple (<i>hostname</i>,
+<i>username</i>, <i>domainname</i>). Alternatively, three
+<i>keys</i> may be provided, which are interpreted as the
+<i>hostname</i>, <i>username</i>, and <i>domainname</i> to
+match to a netgroup name via <b>innetgr</b>(3). Enumeration
+is not supported on <b>netgroup</b>, so either one or three
+<i>keys</i> must be provided.</p></td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="14%">
+
+
+<p><b>networks</b></p></td>
+<td width="2%"></td>
+<td width="69%">
+
+
+<p>When no <i>key</i> is provided, use <b>setnetent</b>(3),
+<b>getnetent</b>(3), and <b>endnetent</b>(3) to enumerate
+the networks database. When one or more <i>key</i> arguments
+are provided, pass each numeric <i>key</i> to
+<b>getnetbyaddr</b>(3) and each nonnumeric <i>key</i> to
+<b>getnetbyname</b>(3) and display the result.</p></td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="14%">
+
+
+<p><b>passwd</b></p></td>
+<td width="2%"></td>
+<td width="69%">
+
+
+<p>When no <i>key</i> is provided, use <b>setpwent</b>(3),
+<b>getpwent</b>(3), and <b>endpwent</b>(3) to enumerate the
+passwd database. When one or more <i>key</i> arguments are
+provided, pass each numeric <i>key</i> to <b>getpwuid</b>(3)
+and each nonnumeric <i>key</i> to <b>getpwnam</b>(3) and
+display the result.</p></td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="14%">
+
+
+<p><b>protocols</b></p></td>
+<td width="2%"></td>
+<td width="69%">
+
+
+<p>When no <i>key</i> is provided, use
+<b>setprotoent</b>(3), <b>getprotoent</b>(3), and
+<b>endprotoent</b>(3) to enumerate the protocols database.
+When one or more <i>key</i> arguments are provided, pass
+each numeric <i>key</i> to <b>getprotobynumber</b>(3) and
+each nonnumeric <i>key</i> to <b>getprotobyname</b>(3) and
+display the result.</p></td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="14%">
+
+
+<p><b>rpc</b></p></td>
+<td width="2%"></td>
+<td width="69%">
+
+
+<p>When no <i>key</i> is provided, use <b>setrpcent</b>(3),
+<b>getrpcent</b>(3), and <b>endrpcent</b>(3) to enumerate
+the rpc database. When one or more <i>key</i> arguments are
+provided, pass each numeric <i>key</i> to
+<b>getrpcbynumber</b>(3) and each nonnumeric <i>key</i> to
+<b>getrpcbyname</b>(3) and display the result.</p></td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="14%">
+
+
+<p><b>services</b></p></td>
+<td width="2%"></td>
+<td width="69%">
+
+
+<p>When no <i>key</i> is provided, use
+<b>setservent</b>(3), <b>getservent</b>(3), and
+<b>endservent</b>(3) to enumerate the services database.
+When one or more <i>key</i> arguments are provided, pass
+each numeric <i>key</i> to <b>getservbynumber</b>(3) and
+each nonnumeric <i>key</i> to <b>getservbyname</b>(3) and
+display the result.</p></td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="14%">
+
+
+<p><b>shadow</b></p></td>
+<td width="2%"></td>
+<td width="69%">
+
+
+<p>When no <i>key</i> is provided, use <b>setspent</b>(3),
+<b>getspent</b>(3), and <b>endspent</b>(3) to enumerate the
+shadow database. When one or more <i>key</i> arguments are
+provided, pass each <i>key</i> in succession to
+<b>getspnam</b>(3) and display the result.</p></td></tr>
+</table>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-s&nbsp;</b><i>service</i>,
+<b>--service&nbsp;</b><i>service</i></p>
+
+<p style="margin-left:22%;">Override all databases with the
+specified service. (Since glibc 2.2.5.)</p>
+
+
+<p style="margin-left:11%;"><b>-s&nbsp;</b><i>database</i><b>:</b><i>service</i>,
+<b>--service&nbsp;</b><i>database</i><b>:</b><i>service</i></p>
+
+<p style="margin-left:22%;">Override only specified
+databases with the specified service. The option may be used
+multiple times, but only the last service for each database
+will be used. (Since glibc 2.4.)</p>
+
+<p style="margin-left:11%;"><b>-i</b>, <b>--no-idn</b></p>
+
+<p style="margin-left:22%;">Disables IDN encoding in
+lookups for <b>ahosts</b>/<b>getaddrinfo</b>(3) (Since
+glibc-2.13.)</p>
+
+<p style="margin-left:11%;"><b>-?</b>, <b>--help</b></p>
+
+<p style="margin-left:22%;">Print a usage summary and
+exit.</p>
+
+<p style="margin-left:11%;"><b>--usage</b></p>
+
+<p style="margin-left:22%;">Print a short usage summary and
+exit.</p>
+
+<p style="margin-left:11%;"><b>-V</b>, <b>--version</b></p>
+
+<p style="margin-left:22%;">Print the version number,
+license, and disclaimer of warranty for <b>getent</b>.</p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">One of the
+following exit values can be returned by <b>getent</b>:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="2%">
+
+
+<p><b>0</b></p></td>
+<td width="9%"></td>
+<td width="74%">
+
+
+<p>Command completed successfully.</p></td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="2%">
+
+
+<p><b>1</b></p></td>
+<td width="9%"></td>
+<td width="74%">
+
+
+<p>Missing arguments, or <i>database</i> unknown.</p></td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="2%">
+
+
+<p><b>2</b></p></td>
+<td width="9%"></td>
+<td width="74%">
+
+
+<p>One or more supplied <i>key</i> could not be found in
+the <i>database</i>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="2%">
+
+
+<p><b>3</b></p></td>
+<td width="9%"></td>
+<td width="74%">
+
+
+<p>Enumeration not supported on this <i>database</i>.</p></td></tr>
+</table>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>nsswitch.conf</b>(5)</p>
+<hr>
+</body>
+</html>

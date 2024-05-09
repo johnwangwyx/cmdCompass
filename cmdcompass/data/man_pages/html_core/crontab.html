@@ -1,0 +1,246 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:33:59 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>CRONTAB</title>
+
+</head>
+<body>
+
+<h1 align="center">CRONTAB</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#DEBIAN SPECIFIC">DEBIAN SPECIFIC</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#STANDARDS">STANDARDS</a><br>
+<a href="#DIAGNOSTICS">DIAGNOSTICS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">crontab -
+maintain crontab files for individual users (Vixie Cron)</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">crontab [ -h]
+<br>
+crontab [ -u user ] [-n] file <br>
+crontab [ -u user ] [ -i ] { -e | -l | -r }</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>crontab</i>
+is the program used to install, deinstall or list the tables
+used to drive the <i>cron</i>(8) daemon in Vixie Cron. Each
+user can have their own crontab, and though these are files
+in /var/spool/cron/crontabs, they are not intended to be
+edited directly.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the
+<i>/etc/cron.allow</i> file exists, then you must be listed
+(one user per line) therein in order to be allowed to use
+this command. If the <i>/etc/cron.allow</i> file does not
+exist but the <i>/etc/cron.deny</i> file does exist, then
+you must <b>not</b> be listed in the <i>/etc/cron.deny</i>
+file in order to use this command.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If neither of
+these files exists, then depending on site-dependent
+configuration parameters, only the super user will be
+allowed to use this command, or all users will be able to
+use this command.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If both files
+exist then <i>/etc/cron.allow</i> takes precedence. Which
+means that <i>/etc/cron.deny</i> is not considered and your
+user must be listed in <i>/etc/cron.allow</i> in order to be
+able to use the crontab.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Regardless of
+the existence of any of these files, the root administrative
+user is always allowed to setup a crontab. For standard
+Debian systems, all users may use this command.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the
+<i>-h</i> option is given, <i>crontab</i> shows a help
+message and quits immediately.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the
+<i>-u</i> option is given, it specifies the name of the user
+whose crontab is to be used (when listing) or modified (when
+editing). If this option is not given, <i>crontab</i>
+examines &quot;your&quot; crontab, i.e., the crontab of the
+person executing the command. Note that <i>su</i>(8) can
+confuse <i>crontab</i> and that if you are running inside of
+<i>su</i>(8) you should always use the <i>-u</i> option for
+safety&rsquo;s sake.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The first form
+of this command is used to install a new crontab from some
+named file or standard input if the pseudo-filename
+&rsquo;&rsquo;-&rsquo;&rsquo; is given.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the
+<i>-n</i> option is given, it means &quot;dry run&quot;:
+<i>crontab</i> examines &quot;your&quot; crontab for its
+syntax, and outputs a success message if this syntax is
+correct, but nothing is written to any crontab.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <i>-l</i>
+option causes the current crontab to be displayed on
+standard output. See the note under <b>DEBIAN SPECIFIC</b>
+below.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <i>-r</i>
+option causes the current crontab to be removed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <i>-e</i>
+option is used to edit the current crontab using the editor
+specified by the <small>VISUAL</small> or
+<small>EDITOR</small> environment variables. After you exit
+from the editor, the modified crontab will be installed
+automatically. If neither of the environment variables is
+defined, then the default editor /usr/bin/editor is
+used.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <i>-i</i>
+option modifies the -r option to prompt the user for a
+&rsquo;y/Y&rsquo; response before actually removing the
+crontab.</p>
+
+<h2>DEBIAN SPECIFIC
+<a name="DEBIAN SPECIFIC"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;out-of-the-box&quot; behaviour for <i>crontab -l</i>
+is to display the three line &quot;DO NOT EDIT THIS
+FILE&quot; header that is placed at the beginning of the
+crontab when it is installed. The problem is that it makes
+the sequence</p>
+
+<p style="margin-left:11%; margin-top: 1em">crontab -l |
+crontab -</p>
+
+<p style="margin-left:11%; margin-top: 1em">non-idempotent
+&mdash; you keep adding copies of the header. This causes
+pain to scripts that use sed to edit a crontab. Therefore,
+the default behaviour of the <b>-l</b> option has been
+changed to not output such header. You may obtain the
+original behaviour by setting the environment variable
+<b>CRONTAB_NOHEADER</b> to &rsquo;N&rsquo;, which will cause
+the <i>crontab -l</i> command to emit the extraneous
+header.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">crontab(5),
+cron(8)</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">/etc/cron.allow
+<br>
+/etc/cron.deny <br>
+/var/spool/cron/crontabs</p>
+
+<p style="margin-left:11%; margin-top: 1em">The files
+<i>/etc/cron.allow</i> and <i>/etc/cron.deny</i> if, they
+exist, must be either world-readable, or readable by group
+&rsquo;&rsquo;crontab&rsquo;&rsquo;. If they are not, then
+cron will deny access to all users until the permissions are
+fixed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There is one
+file for each user&rsquo;s crontab under the
+/var/spool/cron/crontabs directory. Users are not allowed to
+edit the files under that directory directly to ensure that
+only users allowed by the system to run periodic tasks can
+add them, and only syntactically correct crontabs will be
+written there. This is enforced by having the directory
+writable only by the <i>crontab</i> group and configuring
+<i>crontab</i> command with the setgid bid set for that
+specific group.</p>
+
+<h2>STANDARDS
+<a name="STANDARDS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>crontab</i> command conforms to IEEE Std1003.2-1992
+(&rsquo;&rsquo;POSIX&rsquo;&rsquo;). This new command syntax
+differs from previous versions of Vixie Cron, as well as
+from the classic SVR3 syntax.</p>
+
+<h2>DIAGNOSTICS
+<a name="DIAGNOSTICS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">A fairly
+informative usage message appears if you run it with a bad
+command line.</p>
+
+<p style="margin-left:11%; margin-top: 1em">cron requires
+that each entry in a crontab end in a newline character. If
+the last entry in a crontab is missing the newline, cron
+will consider the crontab (at least partially) broken and
+refuse to install it.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The files under
+<i>/var/spool/cron/crontabs</i> are named based on the
+user&rsquo;s account name. Crontab jobs will not be run for
+users whose accounts have been renamed either due to changes
+in the local system or because they are managed through a
+central user database (external to the system, for example
+an LDAP directory).</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Paul Vixie
+&lt;paul@vix.com&gt; is the author of <i>cron</i> and
+original creator of this manual page. This page has also
+been modified for Debian by Steve Greenland, Javier
+Fernandez-Sanguino and Christian Kastner.</p>
+<hr>
+</body>
+</html>

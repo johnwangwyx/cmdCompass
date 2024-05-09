@@ -1,0 +1,255 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:00 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>DBUS-UPDATE-ACTIVA</title>
+
+</head>
+<body>
+
+<h1 align="center">DBUS-UPDATE-ACTIVA</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#LIMITATIONS">LIMITATIONS</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">dbus-update-activation-environment
+- update environment used for D-Bus session services</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+
+<p style="margin-top: 1em"><b>dbus-update-activation-environment</b>
+[--systemd] [--verbose] --all | <i>VAR</i>... |
+<i>VAR</i>=<i>VAL</i>...</p> </td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dbus-update-activation-environment</b>
+updates the list of environment variables used by
+<b>dbus-daemon --session</b> when it activates session
+services without using <b>systemd</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">With the
+<b>--systemd</b> option, if an instance of <b>systemd
+--user</b> is available on D-Bus, it also updates the list
+of environment variables used by <b>systemd --user</b> when
+it activates user services, including D-Bus session services
+for which <b>dbus-daemon</b> has been configured to delegate
+activation to <b>systemd</b>. This is very similar to the
+<b>import-environment</b> command provided by
+<b>systemctl</b>(1)).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Variables that
+are special to <b>dbus-daemon</b> or <b>systemd</b> may be
+set, but their values will be overridden when a service is
+started. For instance, it is not useful to add
+<b>DBUS_SESSION_BUS_ADDRESS</b> to <b>dbus-daemon</b>'s
+activation environment, although it might still be useful to
+add it to <b>systemd</b>'s activation environment.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--all</b></p>
+
+<p style="margin-left:17%;">Set all environment variables
+present in the environment used by
+<b>dbus-update-activation-environment</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--systemd</b></p>
+
+<p style="margin-left:17%;">Set environment variables for
+systemd user services as well as for traditional D-Bus
+session services.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--verbose</b></p>
+
+<p style="margin-left:17%;">Output messages to standard
+error explaining what dbus-update-activation-environment is
+doing.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>VAR</i></p>
+
+<p style="margin-left:17%;">If <i>VAR</i> is present in the
+environment of <b>dbus-update-activation-environment</b>,
+set it to the same value for D-Bus services. Its value must
+be UTF-8 (if not, it is skipped with a warning). If
+<i>VAR</i> is not present in the environment, this argument
+is silently ignored.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>VAR</i>=<i>VAL</i></p>
+
+<p style="margin-left:17%;">Set <i>VAR</i> to <i>VAL</i>,
+which must be UTF-8.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dbus-update-activation-environment</b>
+is primarily designed to be used in Linux distributions' X11
+session startup scripts, in conjunction with the &quot;user
+bus&quot; design.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To propagate
+<b>DISPLAY</b> and <b>XAUTHORITY</b> to <b>dbus-daemon</b>
+and, if present, <b>systemd</b>, and propagate
+<b>DBUS_SESSION_BUS_ADDRESS</b> to <b>systemd</b>:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">dbus-update-activation-environment
+--systemd \ <br>
+DBUS_SESSION_BUS_ADDRESS DISPLAY XAUTHORITY</p>
+
+<p style="margin-left:11%; margin-top: 1em">To propagate
+all environment variables except <b>XDG_SEAT</b>,
+<b>XDG_SESSION_ID</b> and <b>XDG_VTNR</b> to
+<b>dbus-daemon</b> (and, if present, <b>systemd</b>) for
+compatibility with legacy X11 session startup scripts:</p>
+
+<p style="margin-left:17%; margin-top: 1em"># in a subshell
+so the variables remain set in the <br>
+# parent script <br>
+( <br>
+unset XDG_SEAT <br>
+unset XDG_SESSION_ID <br>
+unset XDG_VTNR</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">dbus-update-activation-environment
+--systemd --all <br>
+)</p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dbus-update-activation-environment</b>
+exits with status 0 on success, EX_USAGE (64) on invalid
+command-line options, EX_OSERR (71) if unable to connect to
+the session bus, or EX_UNAVAILABLE (69) if unable to set the
+environment variables. Other nonzero exit codes might be
+added in future versions.</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>DBUS_SESSION_BUS_ADDRESS</b>,
+<b>XDG_RUNTIME_DIR</b> and/or <b>DISPLAY</b> are used to
+find the address of the session bus.</p>
+
+<h2>LIMITATIONS
+<a name="LIMITATIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dbus-daemon</b>
+does not provide a way to unset environment variables after
+they have been set (although <b>systemd</b> does), so
+<b>dbus-update-activation-environment</b> does not offer
+this functionality either.</p>
+
+<p style="margin-left:11%; margin-top: 1em">POSIX does not
+specify the encoding of non-ASCII environment variable names
+or values and allows them to contain any non-zero byte, but
+neither <b>dbus-daemon</b> nor <b>systemd</b> supports
+environment variables with non-UTF-8 names or values.
+Accordingly, <b>dbus-update-activation-environment</b>
+assumes that any name or value that appears to be valid
+UTF-8 is intended to be UTF-8, and ignores other names or
+values with a warning.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Please send bug
+reports to the D-Bus bug tracker or mailing list. See
+<b><font color="#0000FF">http://www.freedesktop.org/software/dbus/</font></b><font color="#000000">.</font></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>dbus-daemon</b>(1),
+<b>systemd</b>(1), the <b>import-environment</b> command of
+<b>systemctl</b>(1)</font></p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Copyright
+&copy; 2015 Collabora Ltd.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">This
+man page is distributed under the same terms as
+dbus-update-activation-environment (MIT/X11). There is NO
+WARRANTY, to the extent permitted by law.</font></p>
+<hr>
+</body>
+</html>

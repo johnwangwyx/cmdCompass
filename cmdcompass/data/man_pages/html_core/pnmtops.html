@@ -1,0 +1,789 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:36 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pnmtops User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pnmtops User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#LIMITATIONS">LIMITATIONS</a><br>
+<a href="#APPLICATIONS">APPLICATIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#Table Of Contents">Table Of Contents</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pnmtops -
+convert PNM image to Postscript</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmtops</b>
+[<b>-scale=</b><i>s</i>]
+[<b>-dpi=</b><i>N</i>[<b>x</b><i>N</i>]]
+[<b>-imagewidth=</b><i>n</i>] [<b>-imageheight=</b><i>n</i>]
+[<b>-width=</b><i>N</i>] [<b>-height=</b><i>N</i>]
+[<b>-equalpixels</b>] [<b>-bitspersample=</b><i>N</i>]
+[<b>-turn</b>|<b>-noturn</b>]
+[<b>-rle</b>|<b>-runlength</b>] [<b>-flate</b>]
+[<b>-ascii85</b>] [<b>-nocenter</b>|<b>-center</b>]
+[<b>-nosetpage</b>|<b>-setpage</b>] [<b>-level=</b><i>N</i>]
+[<b>-dict</b>] [<b>-vmreclaim</b>] [<b>-psfilter</b>]
+[<b>-noshowpage</b>] [<b>-verbose</b>] [<i>pnmfile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">All options can
+be abbreviated to their shortest unique prefix. You may use
+two hyphens instead of one. You may separate an option name
+and its value with white space instead of an equals
+sign.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmtops</b>
+reads a Netpbm image stream as input and produces
+Encapsulated Postscript (EPSF) as output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">(Note: people
+usually render the name as &quot;PostScript,&quot; but we
+use standard typography in the Netpbm manual, so capitalize
+only the first letter).</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the input
+file is in color (PPM), <b>pnmtops</b> generates a color
+Postscript file. Some Postscript interpreters can&rsquo;t
+handle color Postscript. If you have one of these you will
+need to run your image through <b>ppmtopgm</b> first.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you specify
+no output dimensioning options, the output image is
+dimensioned as if you had specified <b>-scale=1.0</b>, which
+means approximately 72 pixels of the input image generate
+one inch of output (if that fits the page).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Use
+<b>-imagewidth</b>, <b>-imageheight</b>,
+<b>-equalpixels</b>, <b>-width</b>, <b>-height</b>, and
+<b>-scale</b> to adjust that.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each image in
+the input stream becomes one complete one-page Postscript
+program in the output. (This may not be the best way to
+create a multi-page Postscript stream; someone who knows
+Postscript should work on this).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The line at the
+top of the file produced by <b>pnmtops</b> is either
+&quot;%!PS-Adobe-3.0 EPSF-3.0&quot; or just
+&quot;%!PS-Adobe-3.0&quot;. The numbers do not reflect the
+Postscript language level, but the version of the DSC
+comment specification and EPS specification implemented. The
+Postscript language level is in the
+&quot;%%LanguageLevel:&quot; comment. <b>pnmtops</b> omits
+&quot;EPSF-3.0&quot; if you specify <b>-setpage</b>, because
+it is incorrect to claim EPS compliance if the file uses
+<b>setpagedevice</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>What is
+Encapsulated Postscript?</b> <br>
+Encapsulated Postscript (EPSF) is a subset of Postscript
+(i.e. the set of streams that conform to EPSF is a subset of
+those that conform to Postscript). It is designed so that an
+EPSF stream can be embedded in another Postscript stream. A
+typical reason to do that is to have an EPSF stream that
+describes a picture you can put in a larger document.</p>
+
+<p style="margin-left:11%; margin-top: 1em">But EPSF is not
+an image format -- converting from Netpbm format to EPSF
+really means generating a program to print that Netpbm image
+on paper. Note that there are myriad ways to print an image
+on paper; <b>pnmtops</b> command line options let you
+control some of them.</p>
+
+<p style="margin-left:11%; margin-top: 1em">An Encapsulated
+Postscript document conforms to the DSC (Document
+Structuring Convention). The DSC defines some Postscript
+comments (they&rsquo;re comments from a Postscript point of
+view, but have semantic value from a DSC point of view).</p>
+
+<p style="margin-left:11%; margin-top: 1em">More
+information about Encapsulated Postscript is at
+http://www.tailrecursive.org/postscript/eps.html&quot;
+(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Many of the
+ideas in <b>pnmtops</b> come from Dirk Krause&rsquo;s
+<b>bmeps</b>. See <a href="#seealso">SEE ALSO</a> .</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pnmtops</b> recognizes the following command line
+options: <b><br>
+-imagewidth</b>, <b>-imageheight</b></p>
+
+<p style="margin-left:22%;">Tells how wide and high you
+want the image on the page, in inches. The aspect ratio of
+the image is preserved, so if you specify both of these, the
+image on the page will be the largest image that will fit
+within the box of those dimensions.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If these
+dimensions are greater than the page size, you get
+Postscript output that runs off the page.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You cannot use
+<b>imagewidth</b> or <b>imageheight</b> with <b>-scale</b>
+or <b>-equalpixels</b>.</p>
+
+<p style="margin-left:11%;"><b>-equalpixels</b></p>
+
+<p style="margin-left:22%;">This option causes the output
+image to have the same number of pixels as the input image.
+So if the output device is 600 dpi and your image is 3000
+pixels wide, the output image would be 5 inches wide.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You cannot use
+<b>-equalpixels</b> with <b>-imagewidth</b>,
+<b>-imageheight</b>, or <b>-scale</b>.</p>
+
+
+<p style="margin-left:11%;"><b>-bitspersample=</b><i>N</i></p>
+
+<p style="margin-left:22%;">This option selects the number
+of bits for each component of each pixel in the Postscript
+output. By default, <b>pnmtops</b> chooses the value that
+corresponds to the maxval of the PNM input, subject to
+constraints of the Postscript language. In particular, if
+you don&rsquo;t select Postscript level 2 (<b>-level</b>)
+with built-in Postscript (<b>-psfilter</b>), the most bits
+per pixel you can have is 8.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The value must
+be 1, 2, 4, 8, or 12, with 12 being restricted to the case
+described above.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.51 (June 2010).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-scale</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>tells how big you want the image on the page. The value
+is the number of inches of output image that you want 72
+pixels of the input to generate.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">But
+<b>pnmtops</b> rounds the number to something that is an
+integral number of output device pixels. E.g. if the output
+device is 300 dpi and you specify <b>-scale=1.0</b>, then 75
+(not 72) pixels of input becomes one inch of output (4
+output pixels for each input pixel). Note that the
+<b>-dpi</b> option tells <b>pnmtops</b> how many pixels per
+inch the output device generates.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If the size so
+specified does not fit on the page (as measured either by
+the <b>-width</b> and <b>-height</b> options or the default
+page size of 8.5 inches by 11 inches), <b>pnmtops</b>
+ignores the <b>-scale</b> option, issues a warning, and
+scales the image to fit on the page.</p>
+
+
+<p style="margin-left:11%;"><b>-dpi=</b><i>N</i>[<b>x</b><i>N</i>]</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+specifies the dots per inch resolution of your output
+device. The default is 300 dpi. In theory PostScript is
+device-independent and you don&rsquo;t have to worry about
+this, but in practice its raster rendering can have
+unsightly bands if the device pixels and the image pixels
+aren&rsquo;t in sync.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Also this
+option is crucial to the working of the <b>equalpixels</b>
+option.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you specify
+<i>N</i><b>x</b><i>N</i>, the first number is the horizontal
+resolution and the second number is the vertical resolution.
+If you specify just a single number <i>N</i>, that is the
+resolution in both directions.</p>
+
+<p style="margin-left:11%;"><b>-width</b>,
+<b>-height</b></p>
+
+<p style="margin-left:22%;">These options specify the
+dimensions, in inches, of the page on which the output is to
+be printed. This can affect the size of the output
+image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The page size
+has no effect, however, when you specify the
+<b>-imagewidth</b>, <b>-imageheight</b>, or
+<b>-equalpixels</b> options.</p>
+
+<p style="margin-left:22%; margin-top: 1em">These options
+may also affect positioning of the image on the page and
+even the paper selected (or cut) by the printer/plotter when
+the output is printed. See the <b>-nosetpage</b> option.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+8.5 inches by 11 inches.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-turn</b></p></td>
+<td width="82%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-noturn</b></p>
+
+<p style="margin-left:22%;">These options control whether
+the image gets turned 90 degrees. Normally, if an image fits
+the page better when turned (e.g. the image is wider than it
+is tall, but the page is taller than it is wide), it gets
+turned automatically to better fit the page. If you specify
+the <b>-turn</b> option, <b>pnmtops</b> turns the image no
+matter what its shape; If you specify <b>-noturn</b>,
+<b>pnmtops</b> does <i>not</i> turn it no matter what its
+shape.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-rle</b></p></td>
+<td width="83%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-runlength</b></p>
+
+<p style="margin-left:22%;">These identical options tell
+<b>pnmtops</b> to use run length compression in encoding the
+image in the Postscript program. This may save time if the
+host-to-printer link is slow; but normally the
+printer&rsquo;s processing time dominates, so <b>-rle</b>
+has no effect (and in the absence of buffering, may make
+things slower).</p>
+
+<p style="margin-left:22%; margin-top: 1em">This may,
+however, make the Postscript program considerable
+smaller.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This usually
+doesn&rsquo;t help at all with a color image and
+<b>-psfilter</b>, because in that case, the Postscript
+program <b>pnmtops</b> creates has the red, green, and blue
+values for each pixel together, which means you would see
+long runs of identical bytes only in the unlikely event that
+the red, green, and blue values for a bunch of adjacent
+pixels are all the same. But without <b>-psfilter</b>, the
+Postscript program has all the red values, then all the
+green values, then all the blue values, so long runs appear
+wherever there are long stretches of the same color.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Here is an
+explanation by Jef Poskanzer of why he invented the
+<b>-rle</b> option:</p>
+
+<p style="margin-left:22%; margin-top: 1em">I just spent a
+few hours modifying my pbmtops filter to produce run length
+encoded PostScript output. The results are not spectacular
+for me - yes, the files are smaller, but the printing times
+are about the same. But I&rsquo;m printing over the network.
+If you were stuck with the serial line, this would be a big
+win. I&rsquo;ve appended a sample program generated by my
+filter. If anyone sees ways to improve the code, please let
+me know, I&rsquo;m not much of a PostScript hacker. This
+version of pbmtops will be distributed to comp.sources.misc
+and expo.lcs.mit.edu sometime in October. - Jef</p>
+
+<p style="margin-left:11%; margin-top: 1em">This is from
+<a href="http://www.lngpstscrpt.tk/re-postscript-run-length-encoding-again">a
+forum about Postscript</a> , extracted in October 2010. Jef
+added -rle in August 1988. In those days, RS-232 lines
+(referred to as &quot;serial&quot; in the quotation) were
+typically 9600bps. 2400 bps lines were still around. What
+the quotation calls &quot;the network&quot; is probably a 10
+Mbps Ethernet connection.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-flate</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>This option tells <b>pnmtops</b> to use
+&quot;flate&quot; compression (i.e. compression via the
+&quot;Z&quot; library -- the same as PNG).</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">See the
+<b>-rle</b> option for information about compression in
+general.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You must
+specify <b>-psfilter</b> if you specify <b>-flate</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">There exist
+modern versions of <b>pnmtops</b> that cannot do flate
+compression; these versions were built without the Z library
+and built not to require the Z library. If you have such a
+version, it fails with an explanatory error message when you
+specify <b>-flate</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netbpm 10.27 (March 2005).</p>
+
+<p style="margin-left:22%; margin-top: 1em">Before Netpbm
+10.32 (February 2006), you could not specify <b>-rle</b> and
+<b>-flate</b> together.</p>
+
+<p style="margin-left:11%;"><b>-ascii85</b></p>
+
+<p style="margin-left:22%;">By default, <b>pnmtops</b> uses
+&quot;asciihex&quot; encoding of the image raster. The image
+raster is a stream of bits, while a Postscript program is
+text, so there has to be an encoding from bits to text.
+Asciihex encoding is just the common hexadecimal
+representation of bits. E.g. 8 1 bits would be encoded as
+the two characters &quot;FF&quot;.</p>
+
+<p style="margin-left:22%; margin-top: 1em">With the
+<b>-ascii85</b> option, <b>pnmtops</b> uses
+&quot;ascii85&quot; encoding instead. This is an encoding in
+which 32 bits are encoded into five characters of text.
+Thus, it produces less text for the same raster than
+asciihex. But ascii85 is not available in Postscript Level
+1, whereas asciihex is.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netbpm 10.27 (March 2005).</p>
+
+<p style="margin-left:11%;"><b>-psfilter</b></p>
+
+<p style="margin-left:22%;"><b>pnmtops</b> can generate two
+different kinds of Encapsulated Postscript programs to
+represent an image. By default, it generates a program that
+redefines <b>readstring</b> in a custom manner and
+doesn&rsquo;t rely on any built-in Postscript filters. But
+with the <b>-psfilter</b> option, <b>pnmtops</b> leaves
+<b>readstring</b> alone and uses the built-in Postscript
+filters <b>/ASCII85Decode</b>, <b>/ASCIIHexDecode</b>,
+<b>/RunLengthDecode</b>, and <b>/FlateDecode</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netbpm 10.27 (March 2005). Before that,
+<b>pnmtops</b> always used the custom <b>readstring</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The custom code
+can&rsquo;t do flate or ascii85 encoding, so you must use
+<b>-psfilter</b> if you want those (see <b>-flate</b>,
+<b>-ascii85</b>).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-level</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>This option determines the level (version number) of
+Postscript that <b>pnmtops</b> uses. By default,
+<b>pnmtops</b> uses Level 2. Some features of <b>pnmtops</b>
+are available only in higher Postscript levels, so if you
+specify too low a level for your image and your options,
+<b>pnmtops</b> fails. For example, <b>pnmtops</b> cannot do
+a color image in Level 1.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.27 (March 2005). Before that,
+<b>pnmtops</b> always used Level 2.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em"><b>-dict</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">This causes the Postscript
+program create a separated dictionary for its local
+variables and remove it from the stack as it exits.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netbpm 10.27 (March 2005).</p>
+
+<p style="margin-left:11%;"><b>-vmreclaim</b></p>
+
+<p style="margin-left:22%;">This option causes the
+Postscript program to force a memory garbage collection as
+it exits.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netbpm 10.27 (March 2005).</p>
+
+<p style="margin-left:11%;"><b>-nocenter</b></p>
+
+<p style="margin-left:22%;">By default, <b>pnmtops</b>
+centers the image on the output page. <br>
+You can cause <b>pnmtops</b> to instead put the image
+against the <br>
+lower left corner of the page with the <b>-nocenter</b> <br>
+option. This is useful for programs which can include <br>
+PostScript files, but can&rsquo;t cope with pictures which
+are not <br>
+positioned in the lower left corner.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you want to
+position an image on the page arbitrarily, use <b><br>
+pamcomp</b> to create an image of the full page with the
+image in <br>
+question at the proper place and the rest of the page white,
+and use <b><br>
+pnmtops</b> to convert the composed result to Encapsulated
+Postscript.</p>
+
+<p style="margin-left:22%; margin-top: 1em">For backward
+compatibility, <b>pnmtops</b> accepts the option <b><br>
+-center</b>, but it has no effect.</p>
+
+<p style="margin-left:11%;"><b>-setpage</b></p>
+
+<p style="margin-left:22%;">This causes <b>pnmtops</b> to
+include a &quot;setpagedevice&quot; <br>
+directive in the output. This causes the output to violate
+specifications <br>
+of EPSF encapsulated Postscript, but if you&rsquo;re not
+using it in an <br>
+encapsulated way, may be what you need. The directive tells
+the <br>
+printer/plotter what size paper to use (or cut). The
+dimensions it <br>
+specifies on this directive are those selected by the
+<b><br>
+-width</b> and <b>-height</b> options or defaulted.</p>
+
+<p style="margin-left:22%; margin-top: 1em">From January
+through May 2002, the default was to include <br>
+&quot;setpagedevice&quot; and this option did not exist.
+Before <br>
+January 2002, there was no way to include
+&quot;setpagedevice&quot; <br>
+and neither the <b>-setpage</b> nor <b>-nosetpage</b> option
+existed.</p>
+
+<p style="margin-left:11%;"><b>-nosetpage</b></p>
+
+<p style="margin-left:22%;">This tells <b>pnmtops</b> not
+to include a &quot;setpagedevice&quot; <br>
+directive in the output. This is the default, so the option
+has no <br>
+effect.</p>
+
+<p style="margin-left:22%; margin-top: 1em">See the
+<b>-setpage</b> option for the history of this option.</p>
+
+<p style="margin-left:11%;"><b>-noshowpage</b></p>
+
+<p style="margin-left:22%;">This tells <b>pnmtops</b> not
+to include a &quot;showpage&quot; <br>
+directive in the output. By default, <b>pnmtops</b> includes
+a <br>
+&quot;showpage&quot; at the end of the EPSF program.
+According to <br>
+EPSF specs, this is OK, and the program that includes the
+EPSF is <br>
+supposed to redefine showpage so this doesn&rsquo;t cause
+undesirable <br>
+behavior. But it&rsquo;s often easier just not to have the
+showpage.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This options
+was new in Netpbm 10.27 (March 2005). Earlier <br>
+versions of <b>pnmtops</b> always include the showpage.</p>
+
+<p style="margin-left:11%;"><b>-showpage</b></p>
+
+<p style="margin-left:22%;">This tells <b>pnmtops</b> to
+include a &quot;showpage&quot; directive <br>
+at the end of the EPSF output. This is the default, so the
+option has <br>
+no effect.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.27 (March 2005).</p>
+
+<p style="margin-left:11%;"><b>-verbose</b></p>
+
+<p style="margin-left:22%;">This causes informational
+messages about the conversion process and <br>
+result.</p>
+
+<h2>LIMITATIONS
+<a name="LIMITATIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If the PNM
+image has a maxval greater than 255, <b>pnmtops</b> will
+produce output with 8 bits per sample resolution unless you
+specify -psfilter, even though Postscript Level 2 has a 12
+bits per sample format. <b>pnmtops</b>&rsquo;s custom
+raster-generating code just doesn&rsquo;t know the 12 bit
+format.</p>
+
+<h2>APPLICATIONS
+<a name="APPLICATIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">You can use the
+Postscript output a number of ways. Many printers take
+Postscript input (but you still need some kind of printer
+driver to transport the Postscript to the printer).</p>
+
+<p style="margin-left:11%; margin-top: 1em">There is also
+the Ghostscript program (not part of Netpbm), which takes
+Postscript as input and generates an output stream to
+control any of myriad models of printer (but you still need
+some kind of printer driver to transport that stream to the
+printer).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Ghostscript
+also can convert the Postscript file to PDF, which is a very
+popular document and image format. Use Ghostscript&rsquo;s
+<b>pdfwrite</b> output device type. The program
+<b>ps2pdf</b> (distributed with Ghostscript) is a convenient
+way to run Ghostscript with <b>pdfwrite</b>.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>bmpp</b>(1)
+converts from Netpbm and other formats to Encapsulated
+Postscript.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>bmpp</b> has
+a few functions <b>pnmtops</b> does not, such as the ability
+to use LZW compression.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnm</b>(1),
+<b>gs</b>, <b>psidtopgm</b>(1), <b>pstopnm</b>(1),
+<b>pbmtolps</b>(1), <b>pbmtoepsi</b>(1),
+<b>pbmtopsg3</b>(1), <b>ppmtopgm</b>(1),</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1989, 1991 by Jef Poskanzer.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Modified
+November 1993 by Wolfgang Stuerzlinger,
+<i>wrzl@gup.uni-linz.ac.at</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">The program was
+originally <b>pbmtops</b>. It became <b>pgmtops</b> in
+October 1988 and was merged with <b>ppmtops</b> to form
+<b>pnmtops</b> in January 1991. <b>ppmtops</b> came into
+being some time before September 1989.</p>
+
+<h2>Table Of Contents
+<a name="Table Of Contents"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="18%">
+
+
+
+<p style="margin-top: 1em"><a href="#synopsis">SYNOPSIS</a></p> </td>
+<td width="60%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="18%">
+
+
+<p><a href="#description">DESCRIPTION</a></p></td>
+<td width="60%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="18%">
+
+
+<p><a href="#options">OPTIONS</a></p></td>
+<td width="60%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="18%">
+
+
+<p><a href="#limitations">LIMITATIONS</a></p></td>
+<td width="60%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="18%">
+
+
+<p><a href="#applications">APPLICATIONS</a></p></td>
+<td width="60%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="18%">
+
+
+<p><a href="#seealso">SEE ALSO</a></p></td>
+<td width="60%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="18%">
+
+
+<p><a href="#history">HISTORY</a></p></td>
+<td width="60%">
+</td></tr>
+</table>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pnmtops.html</b></p>
+<hr>
+</body>
+</html>

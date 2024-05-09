@@ -1,0 +1,232 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:35 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>PnmMercator User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">PnmMercator User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#PARAMETERS">PARAMETERS</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pnmmercator -
+transform a worldmap from rectangular projection to Mercator
+projection and vice-versa</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmmercator</b>
+[<b>-inverse</b>] [<b>-nomix</b>] [<b>-[v]verbose</b>]
+[<i>filename]</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviation of option is acceptable. You may use double
+hyphens instead of single hyphen to denote options.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>pnmmercator</b> utility, converts a rectangular
+projection worldmap to a Mercator projection format, as used
+for maps.google.com and many other online maps. The map used
+as input for <b>pnmmercator</b> must have rows for -90 to 90
+degrees latitude and columns for -180 to +180 degrees
+longitude. The file will typically be twice as wide as high,
+but this is not a requirement. The output file will be using
+the
+<a href="http://en.wikipedia.org/wiki/Mercator_projection">Mercator
+projection</a> and will get double the height of the input
+file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Maps using the
+Mercator projection are stretched more the closer a row is
+to the North or South Pole. The last few degrees (&gt; 85 or
+&lt; -85 degrees) are not part of a Mercator map at all
+because they would be stretched too much and the rows close
+to the edge will show banding, because they originate from
+the same row in the original map.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To overcome
+this, the program will by default do interpolation of pixel
+colors, which will eliminate the banding effect, but will
+cause some blurring of the output. With the -nomix option,
+this interpolation of colors isn&rsquo;t applied. You can
+obtain the highest quality output by starting with an input
+map of high resolution, so that you can follow the
+<b>pnmmercator</b> transformation with a <b>pamscale</b>
+reduction in size.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This program
+can also convert a Mercator projection map back to a
+rectangular projection based. As said, the Mercator map
+doesn&rsquo;t have information about the latitudes close to
+the poles. Therefore the top rows in the output image will
+be identical and copied from the row corresponding with
+latitude of 85 degrees. The same at the bottom of the
+map.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Pnmmercator
+doesn&rsquo;t have any provision for scaling the image. You
+can scale by piping the output of the program through Netpbm
+programs such as <b>pamscale</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can find
+maps to be used as input at
+<b>flatplanet.sourceforge.net</b>(1) or
+<a href="http://www.evl.uic.edu/pape/data/Earth/">uic.edu/pape</a>
+.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The point of a
+Mercator projection map is that compass directions work on
+it. If you draw a straight line northeast from some point on
+the Mercator map, the line traces the course you would sail
+if you sailed a compass bearing of northeast from that spot.
+Naturally, primitive navigators appreciated that. The
+biggest drawback of Mercator is that areas to the north and
+south appear much larger than they are in real life. For
+example, Greenland appears to be larger than South America
+even though it only a ninth as large. Note that areas away
+from the equator are stretched north-south as well as
+east-west.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A rectangular
+projection is one where vertical distance is proportional to
+angular latitude distance of the represented area and
+horizontal distance is proportional to angular
+longitude.</p>
+
+<h2>PARAMETERS
+<a name="PARAMETERS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>filename is
+the name of the input file. If you don&rsquo;t specify
+this,</i> <b>pnmmercator</b> <i>reads the image from
+standard Input.</i></p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pnmmercator</b> recognizes the following command line
+options: <b><br>
+-inverse</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">With this
+option a conversion from Mercator to degrees is applied.The
+output image will have half the height of the input map.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-nomix</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Default behaviour is that color blending is applied in
+between two adjacent rows. If you specify the -nomix
+parameter there is no blending. The consequence is a banding
+at the top and bottom of the map. With this option, the
+output map will also consist of exactly the same colors as
+the input.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-verbose</b> and
+<b>-vverbose</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This parameter
+outputs some additional information. If you double the
+&rsquo;v&rsquo;, it will output debug data about the
+lat/long degree and Mercator conversions.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnm</b>(1)
+and <b>pamscale</b>(1) <b>ppmglobe</b>(1)</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmmercator</b>
+was new in Netpbm 10.49 (December 2009).</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Willem van
+Schaik</i> (of <b>pnmtopng</b>/<b>pngtopnm</b> fame) wrote
+this program in October 2009 and suggested it for inclusion
+in Netpbm.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pnmmercator.html</b></p>
+<hr>
+</body>
+</html>

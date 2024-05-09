@@ -1,0 +1,217 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:32 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pgmhist User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pgmhist User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pgmhist - print
+a histogram of the values in a PGM image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pgmhist</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-median</b>,
+<b>-quartile</b>, <b>-decile</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-forensic</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-machine</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<i>pgmfile</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pgmhist</b>
+reads a PGM image as input and prints a histogram of the
+gray values or other gray value distribution metrics.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you specify
+none of <b>-median</b>, <b>-quartile</b>, or <b>-decile</b>,
+<b>pgmhist</b> prints a complete histogram showing how many
+pixels of each possible gray value exist in the image. Along
+with each gray value, it tells you how many pixels are at
+lest as black as it and how many are at least as white.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-median</b>,
+<b>-quartile</b>, and <b>-decile</b> options cause
+<b>pgmhist</b> instead to print the indicated quantiles.
+Each quantile is a gray value that actually appears in the
+image (as opposed to fractional values that are sometimes
+used for quantiles). The 3rd quartile is the least gray
+value for which at least 75% of the pixels are as dark or
+darker than it. The 4th quartile is the brightest gray value
+that appears in the image.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pgmhist</b> recognizes the following command line
+options:</p>
+
+<p style="margin-left:11%; margin-top: 1em">You may specify
+at most one of <b>-median</b>, <b>-quartile</b>, and
+<b>-decile</b>. If none of these is specified <b>pgmhist</b>
+prints a histogram of gray values. <b><br>
+-median</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+causes <b>pgmhist</b> to print the median gray value.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.61 (December 2012).</p>
+
+<p style="margin-left:11%;"><b>-quartile</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+causes <b>pgmhist</b> to print the four quartile gray
+values.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.61 (December 2012).</p>
+
+<p style="margin-left:11%;"><b>-decile</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+causes <b>pgmhist</b> to print the ten decile gray
+values.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.61 (December 2012).</p>
+
+<p style="margin-left:11%;"><b>-forensic</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">With this
+option, <b>pgmhist</b> works on images that contain invalid
+gray values. Normally, like most Netpbm programs,
+<b>pgmhist</b> fails if it encounters a gray value greater
+than the maxval that the image declares. The presence of
+such a value means the image is invalid, so the pixels have
+no meaning. But with <b>-forensic</b>, <b>pgmhist</b>
+produces a histogram of the actual gray values without
+regard to maxval. It issues messages summarizing the invalid
+pixels if there are any.</p>
+
+<p style="margin-left:22%; margin-top: 1em">One use for
+this is to diagnose the problem that caused the invalid
+Netpbm image to exist.</p>
+
+<p style="margin-left:22%; margin-top: 1em">There is a
+small exception to the ability of <b>pgmhist</b> to process
+invalid pixels even with <b>-forensic</b>: it can never
+process a gray value greater than 65535. Note that in the
+rarely used Plain PGM format, it is possible for a number
+greater than that to appear where a gray value belongs.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.66 (March 2014). But Netpbm older than
+10.66 does not properly reject invalid sample values, so the
+effect is very similar to <b>-forensic</b>.</p>
+
+<p style="margin-left:11%;"><b>-machine</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+causes <b>pgmhist</b> to print the information in a way
+easily digestible by a machine as opposed to a human.</p>
+
+<p style="margin-left:22%; margin-top: 1em">For the
+quantiles, there is one line per quantile, in quantile
+order, and it consists of the gray value of the quantile in
+decimal with no leading zeroes.</p>
+
+<p style="margin-left:22%; margin-top: 1em">For the full
+histogram output, it consists of one line per possible gray
+value (whether that value appears in the image or not), in
+order of the gray values. The line consists of two tokens
+separated by a space. The first is the gray value; the
+second is the number of pixels in the image that have that
+gray value. Both are decimal numbers without leading
+zeroes.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.61 (December 2012).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmnorm</b>(1),
+<b>ppmhist</b>(1), <b>pgm</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1989 by Jef Poskanzer.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pgmhist.html</b></p>
+<hr>
+</body>
+</html>

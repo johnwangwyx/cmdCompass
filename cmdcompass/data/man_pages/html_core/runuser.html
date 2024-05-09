@@ -1,0 +1,374 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:45 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>RUNUSER</title>
+
+</head>
+<body>
+
+<h1 align="center">RUNUSER</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#CONFIG FILES">CONFIG FILES</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#AVAILABILITY">AVAILABILITY</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">runuser - run a
+command with substitute user and group ID</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>runuser</b>
+[options] <b>-u</b> <i>user</i> [[--] <i>command</i>
+[<i>argument</i>...]]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>runuser</b>
+[options] [<b>-</b>] [<i>user</i> [<i>argument</i>...]]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>runuser</b>
+can be used to run commands with a substitute user and group
+ID. If the option <b>-u</b> is not given, <b>runuser</b>
+falls back to <b>su</b>-compatible semantics and a shell is
+executed. The difference between the commands <b>runuser</b>
+and <b>su</b> is that <b>runuser</b> does not ask for a
+password (because it may be executed by the root user only)
+and it uses a different PAM configuration. The command
+<b>runuser</b> does not have to be installed with
+set-user-ID permissions.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the PAM
+session is not required, then the recommended solution is to
+use the <b>setpriv</b>(1) command.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When called
+without arguments, <b>runuser</b> defaults to running an
+interactive shell as <i>root</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For backward
+compatibility, <b>runuser</b> defaults to not changing the
+current directory and to setting only the environment
+variables <b>HOME</b> and <b>SHELL</b> (plus <b>USER</b> and
+<b>LOGNAME</b> if the target <i>user</i> is not root). This
+version of <b>runuser</b> uses PAM for session
+management.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that
+<b>runuser</b> in all cases use PAM (pam_getenvlist()) to do
+the final environment modification. Command-line options
+such as <b>--login</b> and <b>--preserve-environment</b>
+affect the environment before it is modified by PAM.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Since version
+2.38 <b>runuser</b> resets process resource limits
+RLIMIT_NICE, RLIMIT_RTPRIO, RLIMIT_FSIZE, RLIMIT_AS and
+RLIMIT_NOFILE.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-c</b>,
+<b>--command</b>=<i>command</i></p>
+
+<p style="margin-left:17%;">Pass <i>command</i> to the
+shell with the <b>-c</b> option.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-f</b>,
+<b>--fast</b></p>
+
+<p style="margin-left:17%;">Pass <b>-f</b> to the shell,
+which may or may not be useful, depending on the shell.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-g</b>,
+<b>--group</b>=<i>group</i></p>
+
+<p style="margin-left:17%;">The primary group to be used.
+This option is allowed for the root user only.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-G</b>,
+<b>--supp-group</b>=<i>group</i></p>
+
+<p style="margin-left:17%;">Specify a supplementary group.
+This option is available to the root user only. The first
+specified supplementary group is also used as a primary
+group if the option <b>--group</b> is not specified.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-</b>,
+<b>-l</b>, <b>--login</b></p>
+
+<p style="margin-left:17%;">Start the shell as a login
+shell with an environment similar to a real login:</p>
+
+<p style="margin-left:23%; margin-top: 1em">&bull; clears
+all the environment variables except for <b>TERM</b> and
+variables specified by <b>--whitelist-environment</b></p>
+
+<p style="margin-left:23%; margin-top: 1em">&bull;
+initializes the environment variables <b>HOME</b>,
+<b>SHELL</b>, <b>USER</b>, <b>LOGNAME</b>, and
+<b>PATH</b></p>
+
+<p style="margin-left:23%; margin-top: 1em">&bull; changes
+to the target user&rsquo;s home directory</p>
+
+<p style="margin-left:23%; margin-top: 1em">&bull; sets
+argv[0] of the shell to '<b>-</b>' in order to make the
+shell a login shell</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-P</b>,
+<b>--pty</b></p>
+
+<p style="margin-left:17%;">Create a pseudo-terminal for
+the session. The independent terminal provides better
+security as the user does not share a terminal with the
+original session. This can be used to avoid TIOCSTI ioctl
+terminal injection and other security attacks against
+terminal file descriptors. The entire session can also be
+moved to the background (e.g., <b>runuser --pty -u</b>
+<i>username</i> <b>--</b> <i>command</i> <b>&amp;</b>). If
+the pseudo-terminal is enabled, then <b>runuser</b> works as
+a proxy between the sessions (sync stdin and stdout).</p>
+
+<p style="margin-left:17%; margin-top: 1em">This feature is
+mostly designed for interactive sessions. If the standard
+input is not a terminal, but for example a pipe (e.g.,
+<b>echo &quot;date&quot; | runuser --pty -u</b>
+<i>user</i>), then the <b>ECHO</b> flag for the
+pseudo-terminal is disabled to avoid messy output.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-m</b>,
+<b>-p</b>, <b>--preserve-environment</b></p>
+
+<p style="margin-left:17%;">Preserve the entire
+environment, i.e., do not set <b>HOME</b>, <b>SHELL</b>,
+<b>USER</b> or <b>LOGNAME</b>. The option is ignored if the
+option <b>--login</b> is specified.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-s</b>,
+<b>--shell</b>=<i>shell</i></p>
+
+<p style="margin-left:17%;">Run the specified <i>shell</i>
+instead of the default. The shell to run is selected
+according to the following rules, in order:</p>
+
+<p style="margin-left:23%; margin-top: 1em">&bull; the
+shell specified with <b>--shell</b></p>
+
+<p style="margin-left:23%; margin-top: 1em">&bull; the
+shell specified in the environment variable <b>SHELL</b> if
+the <b>--preserve-environment</b> option is used</p>
+
+<p style="margin-left:23%; margin-top: 1em">&bull; the
+shell listed in the passwd entry of the target user</p>
+
+<p style="margin-left:23%; margin-top: 1em">&bull;
+/bin/sh</p>
+
+<p style="margin-left:23%; margin-top: 1em">If the target
+user has a restricted shell (i.e., not listed in
+<i>/etc/shells</i>), then the <b>--shell</b> option and the
+<b>SHELL</b> environment variables are ignored unless the
+calling user is root.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--session-command=</b><i>command</i></p>
+
+<p style="margin-left:17%;">Same as <b>-c</b>, but do not
+create a new session. (Discouraged.)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-w</b>,
+<b>--whitelist-environment</b>=<i>list</i></p>
+
+<p style="margin-left:17%;">Don&rsquo;t reset the
+environment variables specified in the comma-separated
+<i>list</i> when clearing the environment for
+<b>--login</b>. The whitelist is ignored for the environment
+variables <b>HOME</b>, <b>SHELL</b>, <b>USER</b>,
+<b>LOGNAME</b>, and <b>PATH</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Display help text and exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-V</b>,
+<b>--version</b></p>
+
+<p style="margin-left:17%;">Print version and exit.</p>
+
+<h2>CONFIG FILES
+<a name="CONFIG FILES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>runuser</b>
+reads the <i>/etc/default/runuser</i> and
+<i>/etc/login.defs</i> configuration files. The following
+configuration items are relevant for <b>runuser</b>:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ENV_PATH</b>
+(string)</p>
+
+<p style="margin-left:17%;">Defines the PATH environment
+variable for a regular user. The default value is
+<i>/usr/local/bin:/bin:/usr/bin</i>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ENV_ROOTPATH</b>
+(string), <b>ENV_SUPATH</b> (string)</p>
+
+<p style="margin-left:17%;">Defines the <b>PATH</b>
+environment variable for root. <b>ENV_SUPATH</b> takes
+precedence. The default value is
+<i>/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin</i>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ALWAYS_SET_PATH</b>
+(boolean)</p>
+
+<p style="margin-left:17%;">If set to <i>yes</i> and
+<b>--login</b> and <b>--preserve-environment</b> were not
+specified <b>runuser</b> initializes <b>PATH</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The environment
+variable <b>PATH</b> may be different on systems where
+<i>/bin</i> and <i>/sbin</i> are merged into <i>/usr</i>;
+this variable is also affected by the <b>--login</b>
+command-line option and the PAM system setting (e.g.,
+<b>pam_env</b>(8)).</p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>runuser</b>
+normally returns the exit status of the command it executed.
+If the command was killed by a signal, <b>runuser</b>
+returns the number of the signal plus 128.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Exit status
+generated by <b>runuser</b> itself:</p>
+
+<p style="margin-left:11%; margin-top: 1em">1</p>
+
+<p style="margin-left:17%;">Generic error before executing
+the requested command</p>
+
+<p style="margin-left:11%; margin-top: 1em">126</p>
+
+<p style="margin-left:17%;">The requested command could not
+be executed</p>
+
+<p style="margin-left:11%; margin-top: 1em">127</p>
+
+<p style="margin-left:17%;">The requested command was not
+found</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/etc/pam.d/runuser</i></p>
+
+<p style="margin-left:17%;">default PAM configuration
+file</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/etc/pam.d/runuser-l</i></p>
+
+<p style="margin-left:17%;">PAM configuration file if
+<b>--login</b> is specified</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/etc/default/runuser</i></p>
+
+<p style="margin-left:17%;">runuser specific logindef
+config file</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/etc/login.defs</i></p>
+
+<p style="margin-left:17%;">global logindef config file</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This
+<b>runuser</b> command was derived from coreutils'
+<b>su</b>, which was based on an implementation by David
+MacKenzie, and the Fedora <b>runuser</b> command by Dan
+Walsh.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>setpriv</b>(1),
+<b>su</b>(1), <b>login.defs</b>(5), <b>shells</b>(5),
+<b>pam</b>(8)</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For bug
+reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+
+<h2>AVAILABILITY
+<a name="AVAILABILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>runuser</b> command is part of the util-linux package
+which can be downloaded from <i>Linux Kernel Archive</i>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>
+<hr>
+</body>
+</html>

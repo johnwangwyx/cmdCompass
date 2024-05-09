@@ -1,0 +1,468 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:35 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pnmpad User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pnmpad User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#REPORT ONLY">REPORT ONLY</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pnmpad - add
+borders to a PNM image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmpad</b>
+[<b>-white</b>|<b>-black</b>] [<b>-width=</b><i>pixels</i>]
+[<b>-halign=</b><i>ratio</i>] [<b>-mwidth=</b><i>pixels</i>]
+[<b>-left=</b><i>pixels</i>] [<b>-right=</b><i>pixels</i>]
+[<b>-height=</b><i>pixels</i>] [<b>-valign=</b><i>ratio</i>]
+[<b>-mheight=</b><i>pixels</i>] [<b>-top=</b><i>pixels</i>]
+[<b>-bottom=</b><i>pixels</i>] [<b>-reportonly</b>]
+[<b>-verbose</b>] [<i>pnmfile</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmpad</b>
+reads a PNM image as input and outputs a PNM image that is
+the input image plus black or white borders of the sizes
+specified.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you just
+need to convert an image to a certain size regardless of the
+original dimensions, <b>pamcut</b> with the <b>-pad</b>
+option may be a better choice.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmmargin</b>
+does essentially the same thing, but allows you to add
+borders of any color and requires all four borders to be the
+same size.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can use
+<b>pamcomp</b> to add borders of any content - solid color,
+<br>
+pattern, or whatever. For example, if you wanted to add 10
+pixels of red <br>
+borders to the top and bottom of a 100x100 image, you could
+create a <br>
+100x120 red image (e.g. with <b>ppmmake</b>) and then use
+<b>pamcomp</b> <br>
+to insert your 100x100 image into the center of it.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pnmpad</b> recognizes the following command line
+options:</p>
+
+<p style="margin-left:11%; margin-top: 1em">All options can
+be abbreviated to their shortest unique prefix. You may use
+two hyphens instead of one to designate an option. You may
+use either white space or an equals sign between an option
+name and its value.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-white</b></p></td>
+<td width="2%"></td>
+<td width="52%">
+</td>
+<td width="26%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-black</b></p></td>
+<td width="2%"></td>
+<td width="52%">
+
+
+<p>Set pad color. Default is <b>-black</b>.</p></td>
+<td width="26%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-left=</b><i>pixels</i>
+<b><br>
+-right=</b><i>pixels</i> <b><br>
+-width=</b><i>width</i> <b><br>
+-halign=</b><i>ratio</i> <b><br>
+-mwidth=</b><i>pixels</i></p>
+
+<p style="margin-left:22%;">Specify amount of left and
+right padding in pixels.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>-left</b>
+and <b>-right</b> directly specify the amount of padding
+added to the left and right sides, respectively, of the
+image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Alternatively,
+you can specify <b>-width</b> and just one of <b>-left</b>
+and <b>-right</b> and <b>pnmpad</b> calculates the required
+padding on the other side to make the output <i>width</i>
+pixels wide. If the <b>-width</b> value is less than the
+width of the input image plus the specified padding,
+<b>pnmpad</b> ignores <b>-width</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you specify
+all three of <b>-width</b>, <b>-left</b>, and <b>-right</b>,
+you must ensure that the <b>-left</b> and <b>-right</b>
+padding are sufficient to make the image at least as wide as
+<b>-width</b> specifies. Otherwise, <b>pnmpad</b> fails.</p>
+
+<p style="margin-left:22%; margin-top: 1em">When you
+specify <b>-width</b> without <b>-left</b> or <b>-right</b>,
+and <b>-width</b> is larger than the input image,
+<b>pnmpad</b> chooses left and right padding amounts in a
+certain ratio. That ratio defaults to half, but you can set
+it to anything (from 0 to 1) with the <b>-halign</b> option.
+If the input image is already at least as wide as
+<b>-width</b> specifies, <b>pnmpad</b> adds no padding.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Common values
+for <b>-halign</b> are:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>0.0</b></p></td>
+<td width="7%"></td>
+<td width="36%">
+
+
+<p>left aligned</p></td>
+<td width="42%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>0.5</b></p></td>
+<td width="7%"></td>
+<td width="36%">
+
+
+<p>center aligned (default)</p></td>
+<td width="42%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>1.0</b></p></td>
+<td width="7%"></td>
+<td width="36%">
+
+
+<p>right aligned</p></td>
+<td width="42%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>-mwidth=</b><i>pixels</i>
+says to pad to a multiple of <i>pixels</i> pixels. E.g. if
+<i>pixels</i> is 10, the output image width will be a
+multiple of 10 pixels. <b>pnmpad</b> adds to whatever
+padding the other options say to do to get to this multiple.
+It divides that padding between the left and right sides of
+the image to maintain the ratio the other options produce.
+E.g. if you say <b>-left=10 -right=10 -mwidth=50</b> with a
+100-pixel image, you end up with a 150-pixel image with the
+extra padding split evenly between left and right for a
+total of 25 pixels of padding on the left and 25 on the
+right. If the other options indicate no padding,
+<b>pnmpad</b> adds padding in the ratio specified by
+<b>-halign</b> and if <b>-halign</b> is not specified,
+equally on both sides.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Before Netpbm
+10.97 (December 2021), <b>pnmpad</b> does not allow
+<b>-halign</b> with <b>-mwidth</b> and adds padding only on
+the right when <b>-mwidth</b> is specified and the other
+options indicate no padding.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Before Netpbm
+10.72 (September 2015), there is no <b>-mwidth</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Before Netpbm
+10.23 (July 2004), <b>pnmpad</b> did not allow the
+<b>-left</b> or <b>-right</b> option together with
+<b>-width</b>.</p>
+
+<p style="margin-left:11%;"><b>-top=</b><i>pixels</i>
+<b><br>
+-bottom=</b><i>pixels</i> <b><br>
+-height=</b><i>height</i> <b><br>
+-valign=</b><i>ratio</i> <b><br>
+-mheight=</b><i>pixels</i></p>
+
+<p style="margin-left:22%;">These options determine the
+vertical padding. They are analogous to the horizontal
+padding options above.</p>
+
+<p style="margin-left:11%;"><b>-reportonly</b></p>
+
+<p style="margin-left:22%;">This causes <b>pnmpad</b> to
+write to Standard Output a description of the <br>
+padding it would have done instead of producing an output
+image. See <br>
+<a href="#reportonly">below</a> for a description of this
+output and ways <br>
+to use it.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.89 (December 2019).</p>
+
+<p style="margin-left:11%;"><b>-verbose</b></p>
+
+<p style="margin-left:22%;">This causes verbose
+messages.</p>
+
+<h2>REPORT ONLY
+<a name="REPORT ONLY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">When you
+specify <b>-reportonly</b>, <b>pnmpad</b> does not produce
+an <br>
+output image. Instead, it writes to Standard Output a
+description of the <br>
+padding it would have done without <b>-reportonly</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">That
+description is one line of text, containing 6 decimal
+numbers of <br>
+pixels, separated by spaces:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="21%">
+
+
+<p>left padding</p></td>
+<td width="57%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="21%">
+
+
+<p>right padding</p></td>
+<td width="57%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="21%">
+
+
+<p>top padding</p></td>
+<td width="57%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="21%">
+
+
+<p>bottom padding</p></td>
+<td width="57%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="21%">
+
+
+<p>output width</p></td>
+<td width="57%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="21%">
+
+
+<p>output height</p></td>
+<td width="57%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Example:</p>
+
+<p style="margin-left:11%; margin-top: 1em">4 3 0 2 100
+100</p>
+
+<p style="margin-left:11%; margin-top: 1em">One use for
+this is to make padding which is fancier than the black and
+<br>
+white that <b>pnmpad</b> can do.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the
+following example, we pad an image with 10 pixels of gray
+all <br>
+around, without knowing the original image dimensions
+beforehand. We do <br>
+this by generating a gray image with <b>pbmmake</b> and then
+pasting the <br>
+subject image into the middle of it.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The example
+uses shell arrays, such as exist in Bash, but not Dash.</p>
+
+<p style="margin-left:11%; margin-top: 1em">pad=($(pnmpad
+-reportonly -left=10 -right=10 -top=10 -bottom=10
+input.ppm)) <br>
+pbmmake -gray ${pad[4]} ${pad[5]} | \ <br>
+pnmpaste input.ppm ${pad[0]} ${pad[2]} -</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Before February
+2002, <b>pnmpad</b> had a different option syntax which was
+less expressive and not like conventional Netpbm programs.
+That syntax is still understood by <b>pnmpad</b> for
+backward compatibility, but not documented or supported for
+future use.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbmmake</b>(1),
+<b>pnmpaste</b>(1), <b>pamcut</b>(1), <b>pnmcrop</b>(1),
+<b>pamcomp</b>(1), <b>pnmmargin</b>(1), <b>pbm</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+2002 by Martin van Beilen</p>
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1990 by Angus Duggan</p>
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1989 by Jef Poskanzer.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Permission to
+use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby
+granted, provided that the above copyright notice appear in
+all copies and that both that copyright notice and this
+permission notice appear in supporting documentation. This
+software is provided &quot;as is&quot; without express or
+implied warranty.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pnmpad.html</b></p>
+<hr>
+</body>
+</html>

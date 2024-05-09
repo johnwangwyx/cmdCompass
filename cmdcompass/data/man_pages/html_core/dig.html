@@ -1,0 +1,1258 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:00 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>DIG</title>
+
+</head>
+<body>
+
+<h1 align="center">DIG</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#SIMPLE USAGE">SIMPLE USAGE</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#QUERY OPTIONS">QUERY OPTIONS</a><br>
+<a href="#MULTIPLE QUERIES">MULTIPLE QUERIES</a><br>
+<a href="#IDN SUPPORT">IDN SUPPORT</a><br>
+<a href="#RETURN CODES">RETURN CODES</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">dig - DNS
+lookup utility</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dig</b>
+[@server] [<b>-b</b> address] [<b>-c</b> class] [<b>-f</b>
+filename] [<b>-k</b> filename] [<b>-m</b>] [<b>-p</b> port#]
+[<b>-q</b> name] [<b>-t</b> type] [<b>-v</b>] [<b>-x</b>
+addr] [<b>-y</b> [hmac:]name:key] [ [<b>-4</b>] |
+[<b>-6</b>] ] [name] [type] [class] [queryopt...]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>dig</b>
+[<b>-h</b>]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>dig</b>
+[global-queryopt...] [query...]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dig</b> is a
+flexible tool for interrogating DNS name servers. It
+performs DNS lookups and displays the answers that are
+returned from the name server(s) that were queried. Most DNS
+administrators use <b>dig</b> to troubleshoot DNS problems
+because of its flexibility, ease of use, and clarity of
+output. Other lookup tools tend to have less functionality
+than <b>dig</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Although
+<b>dig</b> is normally used with command-line arguments, it
+also has a batch mode of operation for reading lookup
+requests from a file. A brief summary of its command-line
+arguments and options is printed when the <i>-h</i> option
+is given. The BIND 9 implementation of <b>dig</b> allows
+multiple lookups to be issued from the command line.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Unless it is
+told to query a specific name server, <b>dig</b> tries each
+of the servers listed in <b>/etc/resolv.conf</b>. If no
+usable server addresses are found, <b>dig</b> sends the
+query to the local host.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When no
+command-line arguments or options are given, <b>dig</b>
+performs an NS query for &quot;.&quot; (the root).</p>
+
+<p style="margin-left:11%; margin-top: 1em">It is possible
+to set per-user defaults for <b>dig</b> via
+<b>${HOME}/.digrc</b>. This file is read and any options in
+it are applied before the command-line arguments. The
+<i>-r</i> option disables this feature, for scripts that
+need predictable behavior.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The IN and CH
+class names overlap with the IN and CH top-level domain
+names. Either use the <i>-t</i> and <i>-c</i> options to
+specify the type and class, use the <i>-q</i> to specify the
+domain name, or use &quot;IN.&quot; and &quot;CH.&quot; when
+looking up these top-level domains.</p>
+
+<h2>SIMPLE USAGE
+<a name="SIMPLE USAGE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">A typical
+invocation of <b>dig</b> looks like:</p>
+
+<pre style="margin-left:15%; margin-top: 1em">dig @server name type</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">where:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>server</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>is the name or IP address of the name server to query.
+This can be an IPv4 address in dotted-decimal notation or an
+IPv6 address in colon-delimited notation. When the supplied
+<b>server</b> argument is a hostname, <b>dig</b> resolves
+that name before querying that name server.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">If no
+<b>server</b> argument is provided, <b>dig</b> consults
+<b>/etc/resolv.conf</b>; if an address is found there, it
+queries the name server at that address. If either of the
+<i>-4</i> or <i>-6</i> options are in use, then only
+addresses for the corresponding transport are tried. If no
+usable addresses are found, <b>dig</b> sends the query to
+the local host. The reply from the name server that responds
+is displayed.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p style="margin-top: 1em"><b>name</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">is the name of the resource
+record that is to be looked up.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>type</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>indicates what type of query is required - ANY, A, MX,
+SIG, etc. <b>type</b> can be any valid query type. If no
+<b>type</b> argument is supplied, <b>dig</b> performs a
+lookup for an A record.</p></td></tr>
+</table>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-4</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">This option indicates that only
+IPv4 should be used.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-6</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>This option indicates that only IPv6 should be used.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-b address[#port]</b></p>
+
+<p style="margin-left:22%;">This option sets the source IP
+address of the query. The <b>address</b> must be a valid
+address on one of the host's network interfaces, or
+&quot;0.0.0.0&quot; or &quot;::&quot;. An optional port may
+be specified by appending <b>#port</b>.</p>
+
+<p style="margin-left:11%;"><b>-c class</b></p>
+
+<p style="margin-left:22%;">This option sets the query
+class. The default <b>class</b> is IN; other classes are HS
+for Hesiod records or CH for Chaosnet records.</p>
+
+<p style="margin-left:11%;"><b>-f file</b></p>
+
+<p style="margin-left:22%;">This option sets batch mode, in
+which <b>dig</b> reads a list of lookup requests to process
+from the given <b>file</b>. Each line in the file should be
+organized in the same way it would be presented as a query
+to <b>dig</b> using the command-line interface.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-h</b></p></td>
+<td width="8%"></td>
+<td width="33%">
+
+
+<p>Print a usage summary.</p></td>
+<td width="45%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-k keyfile</b></p>
+
+<p style="margin-left:22%;">This option tells <b>dig</b> to
+sign queries using TSIG or SIG(0) using a key read from the
+given file. Key files can be generated using
+<i>tsig-keygen</i>. When using TSIG authentication with
+<b>dig</b>, the name server that is queried needs to know
+the key and algorithm that is being used. In BIND, this is
+done by providing appropriate <b>key</b> and <b>server</b>
+statements in <i>named.conf</i> for TSIG and by looking up
+the KEY record in zone data for SIG(0).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-m</b></p></td>
+<td width="8%"></td>
+<td width="66%">
+
+
+<p>This option enables memory usage debugging.</p></td>
+<td width="12%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-p port</b></p>
+
+<p style="margin-left:22%;">This option sends the query to
+a non-standard port on the server, instead of the default
+port 53. This option is used to test a name server that has
+been configured to listen for queries on a non-standard port
+number.</p>
+
+<p style="margin-left:11%;"><b>-q name</b></p>
+
+<p style="margin-left:22%;">This option specifies the
+domain name to query. This is useful to distinguish the
+<b>name</b> from other arguments.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-r</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>This option indicates that options from
+<b>${HOME}/.digrc</b> should not be read. This is useful for
+scripts that need predictable behavior.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-t type</b></p>
+
+<p style="margin-left:22%;">This option indicates the
+resource record type to query, which can be any valid query
+type. If it is a resource record type supported in BIND 9,
+it can be given by the type mnemonic (such as <b>NS</b> or
+<b>AAAA</b>). The default query type is <b>A</b>, unless the
+<i>-x</i> option is supplied to indicate a reverse lookup. A
+zone transfer can be requested by specifying a type of AXFR.
+When an incremental zone transfer (IXFR) is required, set
+the <b>type</b> to <b>ixfr=N</b>. The incremental zone
+transfer contains all changes made to the zone since the
+serial number in the zone's SOA record was <b>N</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">All resource
+record types can be expressed as <b>TYPEnn</b>, where
+<b>nn</b> is the number of the type. If the resource record
+type is not supported in BIND 9, the result is displayed as
+described in <i>RFC 3597</i>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-u</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>This option indicates that print query times should be
+provided in microseconds instead of milliseconds.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-v</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>This option prints the version number and exits.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-x addr</b></p>
+
+<p style="margin-left:22%;">This option sets simplified
+reverse lookups, for mapping addresses to names. The
+<b>addr</b> is an IPv4 address in dotted-decimal notation,
+or a colon-delimited IPv6 address. When the <i>-x</i> option
+is used, there is no need to provide the <b>name</b>,
+<b>class</b>, and <b>type</b> arguments. <b>dig</b>
+automatically performs a lookup for a name like
+<b>94.2.0.192.in-addr.arpa</b> and sets the query type and
+class to PTR and IN respectively. IPv6 addresses are looked
+up using nibble format under the IP6.ARPA domain.</p>
+
+<p style="margin-left:11%;"><b>-y
+[hmac:]keyname:secret</b></p>
+
+<p style="margin-left:22%;">This option signs queries using
+TSIG with the given authentication key. <b>keyname</b> is
+the name of the key, and <b>secret</b> is the base64-encoded
+shared secret. <b>hmac</b> is the name of the key algorithm;
+valid choices are <b>hmac-md5</b>, <b>hmac-sha1</b>,
+<b>hmac-sha224</b>, <b>hmac-sha256</b>, <b>hmac-sha384</b>,
+or <b>hmac-sha512</b>. If <b>hmac</b> is not specified, the
+default is <b>hmac-md5</b>; if MD5 was disabled, the default
+is <b>hmac-sha256</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>NOTE:</b></p>
+
+<p style="margin-left:15%;">Only the <i>-k</i> option
+should be used, rather than the <i>-y</i> option, because
+with <i>-y</i> the shared secret is supplied as a
+command-line argument in clear text. This may be visible in
+the output from <b>ps1</b> or in a history file maintained
+by the user's shell.</p>
+
+<h2>QUERY OPTIONS
+<a name="QUERY OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dig</b>
+provides a number of query options which affect the way in
+which lookups are made and the results displayed. Some of
+these set or reset flag bits in the query header, some
+determine which sections of the answer get printed, and
+others determine the timeout and retry strategies.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each query
+option is identified by a keyword preceded by a plus sign
+(<b>+</b>). Some keywords set or reset an option; these may
+be preceded by the string <b>no</b> to negate the meaning of
+that keyword. Other keywords assign values to options, like
+the timeout interval. They have the form
+<b>+keyword=value</b>. Keywords may be abbreviated, provided
+the abbreviation is unambiguous; for example, <i>+cd</i> is
+equivalent to <i>+cdflag</i>. The query options are: <b><br>
++aaflag, +noaaflag</b></p>
+
+<p style="margin-left:22%;">This option is a synonym for
+<i>+aaonly</i>, <i>+noaaonly</i>.</p>
+
+<p style="margin-left:11%;"><b>+aaonly, +noaaonly</b></p>
+
+<p style="margin-left:22%;">This option sets the <b>aa</b>
+flag in the query.</p>
+
+<p style="margin-left:11%;"><b>+additional,
++noadditional</b></p>
+
+<p style="margin-left:22%;">This option displays [or does
+not display] the additional section of a reply. The default
+is to display it.</p>
+
+<p style="margin-left:11%;"><b>+adflag, +noadflag</b></p>
+
+<p style="margin-left:22%;">This option sets [or does not
+set] the AD (authentic data) bit in the query. This requests
+the server to return whether all of the answer and authority
+sections have been validated as secure, according to the
+security policy of the server. <b>AD=1</b> indicates that
+all records have been validated as secure and the answer is
+not from a OPT-OUT range. <b>AD=0</b> indicates that some
+part of the answer was insecure or not validated. This bit
+is set by default.</p>
+
+<p style="margin-left:11%;"><b>+all, +noall</b></p>
+
+<p style="margin-left:22%;">This option sets or clears all
+display flags.</p>
+
+<p style="margin-left:11%;"><b>+answer, +noanswer</b></p>
+
+<p style="margin-left:22%;">This option displays [or does
+not display] the answer section of a reply. The default is
+to display it.</p>
+
+<p style="margin-left:11%;"><b>+authority,
++noauthority</b></p>
+
+<p style="margin-left:22%;">This option displays [or does
+not display] the authority section of a reply. The default
+is to display it.</p>
+
+<p style="margin-left:11%;"><b>+badcookie,
++nobadcookie</b></p>
+
+<p style="margin-left:22%;">This option retries the lookup
+with a new server cookie if a BADCOOKIE response is
+received.</p>
+
+<p style="margin-left:11%;"><b>+besteffort,
++nobesteffort</b></p>
+
+<p style="margin-left:22%;">This option attempts to display
+the contents of messages which are malformed. The default is
+to not display malformed answers.</p>
+
+<p style="margin-left:11%;"><b>+bufsize[=B]</b></p>
+
+<p style="margin-left:22%;">This option sets the UDP
+message buffer size advertised using EDNS0 to <b>B</b>
+bytes. The maximum and minimum sizes of this buffer are
+65535 and 0, respectively. <b>+bufsize</b> restores the
+default buffer size.</p>
+
+<p style="margin-left:11%;"><b>+cd, +cdflag,
++nocdflag</b></p>
+
+<p style="margin-left:22%;">This option sets [or does not
+set] the CD (checking disabled) bit in the query. This
+requests the server to not perform DNSSEC validation of
+responses.</p>
+
+<p style="margin-left:11%;"><b>+class, +noclass</b></p>
+
+<p style="margin-left:22%;">This option displays [or does
+not display] the CLASS when printing the record.</p>
+
+<p style="margin-left:11%;"><b>+cmd, +nocmd</b></p>
+
+<p style="margin-left:22%;">This option toggles the
+printing of the initial comment in the output, identifying
+the version of <b>dig</b> and the query options that have
+been applied. This option always has a global effect; it
+cannot be set globally and then overridden on a per-lookup
+basis. The default is to print this comment.</p>
+
+<p style="margin-left:11%;"><b>+comments,
++nocomments</b></p>
+
+<p style="margin-left:22%;">This option toggles the display
+of some comment lines in the output, with information about
+the packet header and OPT pseudosection, and the names of
+the response section. The default is to print these
+comments.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Other types of
+comments in the output are not affected by this option, but
+can be controlled using other command-line switches. These
+include <i>+cmd</i>, <i>+question</i>, <i>+stats</i>, and
+<i>+rrcomments</i>.</p>
+
+<p style="margin-left:11%;"><b>+cookie=####,
++nocookie</b></p>
+
+<p style="margin-left:22%;">This option sends [or does not
+send] a COOKIE EDNS option, with an optional value.
+Replaying a COOKIE from a previous response allows the
+server to identify a previous client. The default is
+<b>+cookie</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>+cookie</b>
+is also set when <i>+trace</i> is set to better emulate the
+default queries from a nameserver.</p>
+
+<p style="margin-left:11%;"><b>+crypto, +nocrypto</b></p>
+
+<p style="margin-left:22%;">This option toggles the display
+of cryptographic fields in DNSSEC records. The contents of
+these fields are unnecessary for debugging most DNSSEC
+validation failures and removing them makes it easier to see
+the common failures. The default is to display the fields.
+When omitted, they are replaced by the string
+<b>[omitted]</b> or, in the DNSKEY case, the key ID is
+displayed as the replacement, e.g. <b>[ key id = value
+]</b>.</p>
+
+<p style="margin-left:11%;"><b>+defname, +nodefname</b></p>
+
+<p style="margin-left:22%;">This option, which is
+deprecated, is treated as a synonym for <i>+search</i>,
+<i>+nosearch</i>.</p>
+
+<p style="margin-left:11%;"><b>+dns64prefix,
++nodns64prefix</b></p>
+
+<p style="margin-left:22%;">Lookup IPV4ONLY.ARPA AAAA and
+print any DNS64 prefixes found.</p>
+
+<p style="margin-left:11%;"><b>+dnssec, +do, +nodnssec,
++nodo</b></p>
+
+<p style="margin-left:22%;">This option requests that
+DNSSEC records be sent by setting the DNSSEC OK (DO) bit in
+the OPT record in the additional section of the query.</p>
+
+<p style="margin-left:11%;"><b>+domain=somename</b></p>
+
+<p style="margin-left:22%;">This option sets the search
+list to contain the single domain <b>somename</b>, as if
+specified in a <b>domain</b> directive in
+<b>/etc/resolv.conf</b>, and enables search list processing
+as if the <i>+search</i> option were given.</p>
+
+<p style="margin-left:11%;"><b>+dscp=value</b></p>
+
+<p style="margin-left:22%;">This option formerly set the
+DSCP value used when sending a query. It is now obsolete,
+and has no effect.</p>
+
+<p style="margin-left:11%;"><b>+edns[=#], +noedns</b></p>
+
+<p style="margin-left:22%;">This option specifies the EDNS
+version to query with. Valid values are 0 to 255. Setting
+the EDNS version causes an EDNS query to be sent.
+<b>+noedns</b> clears the remembered EDNS version. EDNS is
+set to 0 by default.</p>
+
+<p style="margin-left:11%;"><b>+ednsflags[=#],
++noednsflags</b></p>
+
+<p style="margin-left:22%;">This option sets the
+must-be-zero EDNS flags bits (Z bits) to the specified
+value. Decimal, hex, and octal encodings are accepted.
+Setting a named flag (e.g., DO) is silently ignored. By
+default, no Z bits are set.</p>
+
+<p style="margin-left:11%;"><b>+ednsnegotiation,
++noednsnegotiation</b></p>
+
+<p style="margin-left:22%;">This option enables/disables
+EDNS version negotiation. By default, EDNS version
+negotiation is enabled.</p>
+
+<p style="margin-left:11%;"><b>+ednsopt[=code[:value]],
++noednsopt</b></p>
+
+<p style="margin-left:22%;">This option specifies the EDNS
+option with code point <b>code</b> and an optional payload
+of <b>value</b> as a hexadecimal string. <b>code</b> can be
+either an EDNS option name (for example, <b>NSID</b> or
+<b>ECS</b>) or an arbitrary numeric value. <b>+noednsopt</b>
+clears the EDNS options to be sent.</p>
+
+<p style="margin-left:11%;"><b>+expire, +noexpire</b></p>
+
+<p style="margin-left:22%;">This option sends an EDNS
+Expire option.</p>
+
+<p style="margin-left:11%;"><b>+fail, +nofail</b></p>
+
+<p style="margin-left:22%;">This option indicates that
+<i>named</i> should try [or not try] the next server if a
+SERVFAIL is received. The default is to not try the next
+server, which is the reverse of normal stub resolver
+behavior.</p>
+
+<p style="margin-left:11%;"><b>+fuzztime[=value],
++nofuzztime</b></p>
+
+<p style="margin-left:22%;">This option allows the signing
+time to be specified when generating signed messages. If a
+value is specified it is the seconds since 00:00:00 January
+1, 1970 UTC ignoring leap seconds. If no value is specified
+1646972129 (Fri 11 Mar 2022 04:15:29 UTC) is used. The
+default is <b>+nofuzztime</b> and the current time is
+used.</p>
+
+<p style="margin-left:11%;"><b>+header-only,
++noheader-only</b></p>
+
+<p style="margin-left:22%;">This option sends a query with
+a DNS header without a question section. The default is to
+add a question section. The query type and query name are
+ignored when this is set.</p>
+
+<p style="margin-left:11%;"><b>+https[=value],
++nohttps</b></p>
+
+<p style="margin-left:22%;">This option indicates whether
+to use DNS over HTTPS (DoH) when querying name servers. When
+this option is in use, the port number defaults to 443. The
+HTTP POST request mode is used when sending the query.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If <b>value</b>
+is specified, it will be used as the HTTP endpoint in the
+query URI; the default is <b>/dns-query</b>. So, for
+example, <b>dig @example.com +https</b> will use the URI
+<b>https://example.com/dns-query</b>.</p>
+
+<p style="margin-left:11%;"><b>+https-get[=value],
++nohttps-get</b></p>
+
+<p style="margin-left:22%;">Similar to <i>+https</i>,
+except that the HTTP GET request mode is used when sending
+the query.</p>
+
+<p style="margin-left:11%;"><b>+https-post[=value],
++nohttps-post</b></p>
+
+<p style="margin-left:22%;">Same as <i>+https</i>.</p>
+
+<p style="margin-left:11%;"><b>+http-plain[=value],
++nohttp-plain</b></p>
+
+<p style="margin-left:22%;">Similar to <i>+https</i>,
+except that HTTP queries will be sent over a non-encrypted
+channel. When this option is in use, the port number
+defaults to 80 and the HTTP request mode is POST.</p>
+
+<p style="margin-left:11%;"><b>+http-plain-get[=value],
++nohttp-plain-get</b></p>
+
+<p style="margin-left:22%;">Similar to <i>+http-plain</i>,
+except that the HTTP request mode is GET.</p>
+
+<p style="margin-left:11%;"><b>+http-plain-post[=value],
++nohttp-plain-post</b></p>
+
+<p style="margin-left:22%;">Same as <i>+http-plain</i>.</p>
+
+<p style="margin-left:11%;"><b>+identify,
++noidentify</b></p>
+
+<p style="margin-left:22%;">This option shows [or does not
+show] the IP address and port number that supplied the
+answer, when the <i>+short</i> option is enabled. If short
+form answers are requested, the default is not to show the
+source address and port number of the server that provided
+the answer.</p>
+
+<p style="margin-left:11%;"><b>+idnin, +noidnin</b></p>
+
+<p style="margin-left:22%;">This option processes [or does
+not process] IDN domain names on input. This requires <b>IDN
+SUPPORT</b> to have been enabled at compile time.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+to process IDN input when standard output is a tty. The IDN
+processing on input is disabled when <b>dig</b> output is
+redirected to files, pipes, and other non-tty file
+descriptors.</p>
+
+<p style="margin-left:11%;"><b>+idnout, +noidnout</b></p>
+
+<p style="margin-left:22%;">This option converts [or does
+not convert] puny code on output. This requires <b>IDN
+SUPPORT</b> to have been enabled at compile time.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+to process puny code on output when standard output is a
+tty. The puny code processing on output is disabled when
+<b>dig</b> output is redirected to files, pipes, and other
+non-tty file descriptors.</p>
+
+<p style="margin-left:11%;"><b>+ignore, +noignore</b></p>
+
+<p style="margin-left:22%;">This option ignores [or does
+not ignore] truncation in UDP responses instead of retrying
+with TCP. By default, TCP retries are performed.</p>
+
+<p style="margin-left:11%;"><b>+keepalive,
++nokeepalive</b></p>
+
+<p style="margin-left:22%;">This option sends [or does not
+send] an EDNS Keepalive option.</p>
+
+<p style="margin-left:11%;"><b>+keepopen,
++nokeepopen</b></p>
+
+<p style="margin-left:22%;">This option keeps [or does not
+keep] the TCP socket open between queries, and reuses it
+rather than creating a new TCP socket for each lookup. The
+default is <b>+nokeepopen</b>.</p>
+
+<p style="margin-left:11%;"><b>+multiline,
++nomultiline</b></p>
+
+<p style="margin-left:22%;">This option prints [or does not
+print] records, like the SOA records, in a verbose
+multi-line format with human-readable comments. The default
+is to print each record on a single line to facilitate
+machine parsing of the <b>dig</b> output.</p>
+
+<p style="margin-left:11%;"><b>+ndots=D</b></p>
+
+<p style="margin-left:22%;">This option sets the number of
+dots (<b>D</b>) that must appear in <b>name</b> for it to be
+considered absolute. The default value is that defined using
+the <b>ndots</b> statement in <b>/etc/resolv.conf</b>, or 1
+if no <b>ndots</b> statement is present. Names with fewer
+dots are interpreted as relative names, and are searched for
+in the domains listed in the <b>search</b> or <b>domain</b>
+directive in <b>/etc/resolv.conf</b> if <i>+search</i> is
+set.</p>
+
+<p style="margin-left:11%;"><b>+nsid, +nonsid</b></p>
+
+<p style="margin-left:22%;">When enabled, this option
+includes an EDNS name server ID request when sending a
+query.</p>
+
+<p style="margin-left:11%;"><b>+nssearch,
++nonssearch</b></p>
+
+<p style="margin-left:22%;">When this option is set,
+<b>dig</b> attempts to find the authoritative name servers
+for the zone containing the name being looked up, and
+display the SOA record that each name server has for the
+zone. Addresses of servers that did not respond are also
+printed.</p>
+
+<p style="margin-left:11%;"><b>+onesoa, +noonesoa</b></p>
+
+<p style="margin-left:22%;">When enabled, this option
+prints only one (starting) SOA record when performing an
+AXFR. The default is to print both the starting and ending
+SOA records.</p>
+
+<p style="margin-left:11%;"><b>+opcode=value,
++noopcode</b></p>
+
+<p style="margin-left:22%;">When enabled, this option sets
+(restores) the DNS message opcode to the specified value.
+The default value is QUERY (0).</p>
+
+<p style="margin-left:11%;"><b>+padding=value</b></p>
+
+<p style="margin-left:22%;">This option pads the size of
+the query packet using the EDNS Padding option to blocks of
+<b>value</b> bytes. For example, <b>+padding=32</b> causes a
+48-byte query to be padded to 64 bytes. The default block
+size is 0, which disables padding; the maximum is 512.
+Values are ordinarily expected to be powers of two, such as
+128; however, this is not mandatory. Responses to padded
+queries may also be padded, but only if the query uses TCP
+or DNS COOKIE.</p>
+
+<p style="margin-left:11%;"><b>+qid=value</b></p>
+
+<p style="margin-left:22%;">This option specifies the query
+ID to use when sending queries.</p>
+
+<p style="margin-left:11%;"><b>+qr, +noqr</b></p>
+
+<p style="margin-left:22%;">This option toggles the display
+of the query message as it is sent. By default, the query is
+not printed.</p>
+
+<p style="margin-left:11%;"><b>+question,
++noquestion</b></p>
+
+<p style="margin-left:22%;">This option toggles the display
+of the question section of a query when an answer is
+returned. The default is to print the question section as a
+comment.</p>
+
+<p style="margin-left:11%;"><b>+raflag, +noraflag</b></p>
+
+<p style="margin-left:22%;">This option sets [or does not
+set] the RA (Recursion Available) bit in the query. The
+default is <b>+noraflag</b>. This bit is ignored by the
+server for QUERY.</p>
+
+<p style="margin-left:11%;"><b>+rdflag, +nordflag</b></p>
+
+<p style="margin-left:22%;">This option is a synonym for
+<i>+recurse</i>, <i>+norecurse</i>.</p>
+
+<p style="margin-left:11%;"><b>+recurse, +norecurse</b></p>
+
+<p style="margin-left:22%;">This option toggles the setting
+of the RD (recursion desired) bit in the query. This bit is
+set by default, which means <b>dig</b> normally sends
+recursive queries. Recursion is automatically disabled when
+the <i>+nssearch</i> or <i>+trace</i> query option is
+used.</p>
+
+<p style="margin-left:11%;"><b>+retry=T</b></p>
+
+<p style="margin-left:22%;">This option sets the number of
+times to retry UDP and TCP queries to server to <b>T</b>
+instead of the default, 2. Unlike <i>+tries</i>, this does
+not include the initial query.</p>
+
+<p style="margin-left:11%;"><b>+rrcomments,
++norrcomments</b></p>
+
+<p style="margin-left:22%;">This option toggles the display
+of per-record comments in the output (for example,
+human-readable key information about DNSKEY records). The
+default is not to print record comments unless multiline
+mode is active.</p>
+
+<p style="margin-left:11%;"><b>+search, +nosearch</b></p>
+
+<p style="margin-left:22%;">This option uses [or does not
+use] the search list defined by the searchlist or domain
+directive in <b>resolv.conf</b>, if any. The search list is
+not used by default.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>ndots</b>
+from <b>resolv.conf</b> (default 1), which may be overridden
+by <i>+ndots</i>, determines whether the name is treated as
+relative and hence whether a search is eventually
+performed.</p>
+
+<p style="margin-left:11%;"><b>+short, +noshort</b></p>
+
+<p style="margin-left:22%;">This option toggles whether a
+terse answer is provided. The default is to print the answer
+in a verbose form. This option always has a global effect;
+it cannot be set globally and then overridden on a
+per-lookup basis.</p>
+
+<p style="margin-left:11%;"><b>+showbadcookie,
++noshowbadcookie</b></p>
+
+<p style="margin-left:22%;">This option toggles whether to
+show the message containing the BADCOOKIE rcode before
+retrying the request or not. The default is to not show the
+messages.</p>
+
+<p style="margin-left:11%;"><b>+showsearch,
++noshowsearch</b></p>
+
+<p style="margin-left:22%;">This option performs [or does
+not perform] a search showing intermediate results.</p>
+
+<p style="margin-left:11%;"><b>+sigchase,
++nosigchase</b></p>
+
+<p style="margin-left:22%;">This feature is now obsolete
+and has been removed; use <i>delv</i> instead.</p>
+
+<p style="margin-left:11%;"><b>+split=W</b></p>
+
+<p style="margin-left:22%;">This option splits long hex- or
+base64-formatted fields in resource records into chunks of
+<b>W</b> characters (where <b>W</b> is rounded up to the
+nearest multiple of 4). <b>+nosplit</b> or <b>+split=0</b>
+causes fields not to be split at all. The default is 56
+characters, or 44 characters when multiline mode is
+active.</p>
+
+<p style="margin-left:11%;"><b>+stats, +nostats</b></p>
+
+<p style="margin-left:22%;">This option toggles the
+printing of statistics: when the query was made, the size of
+the reply, etc. The default behavior is to print the query
+statistics as a comment after each lookup.</p>
+
+
+<p style="margin-left:11%;"><b>+subnet=addr[/prefix-length],
++nosubnet</b></p>
+
+<p style="margin-left:22%;">This option sends [or does not
+send] an EDNS CLIENT-SUBNET option with the specified IP
+address or network prefix.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>dig
++subnet=0.0.0.0/0</b>, or simply <b>dig +subnet=0</b> for
+short, sends an EDNS CLIENT-SUBNET option with an empty
+address and a source prefix-length of zero, which signals a
+resolver that the client's address information must
+<i>not</i> be used when resolving this query.</p>
+
+<p style="margin-left:11%;"><b>+tcflag, +notcflag</b></p>
+
+<p style="margin-left:22%;">This option sets [or does not
+set] the TC (TrunCation) bit in the query. The default is
+<b>+notcflag</b>. This bit is ignored by the server for
+QUERY.</p>
+
+<p style="margin-left:11%;"><b>+tcp, +notcp</b></p>
+
+<p style="margin-left:22%;">This option indicates whether
+to use TCP when querying name servers. The default behavior
+is to use UDP unless a type <b>any</b> or <b>ixfr=N</b>
+query is requested, in which case the default is TCP. AXFR
+queries always use TCP. To prevent retry over TCP when TC=1
+is returned from a UDP query, use <b>+ignore</b>.</p>
+
+<p style="margin-left:11%;"><b>+timeout=T</b></p>
+
+<p style="margin-left:22%;">This option sets the timeout
+for a query to <b>T</b> seconds. The default timeout is 5
+seconds. An attempt to set <b>T</b> to less than 1 is
+silently set to 1.</p>
+
+<p style="margin-left:11%;"><b>+tls, +notls</b></p>
+
+<p style="margin-left:22%;">This option indicates whether
+to use DNS over TLS (DoT) when querying name servers. When
+this option is in use, the port number defaults to 853.</p>
+
+<p style="margin-left:11%;"><b>+tls-ca[=file-name],
++notls-ca</b></p>
+
+<p style="margin-left:22%;">This option enables remote
+server TLS certificate validation for DNS transports,
+relying on TLS. Certificate authorities certificates are
+loaded from the specified PEM file (<b>file-name</b>). If
+the file is not specified, the default certificates from the
+global certificates store are used.</p>
+
+<p style="margin-left:11%;"><b>+tls-certfile=file-name,
++tls-keyfile=file-name, +notls-certfile, <br>
++notls-keyfile</b></p>
+
+<p style="margin-left:22%;">These options set the state of
+certificate-based client authentication for DNS transports,
+relying on TLS. Both certificate chain file and private key
+file are expected to be in PEM format. Both options must be
+specified at the same time.</p>
+
+<p style="margin-left:11%;"><b>+tls-hostname=hostname,
++notls-hostname</b></p>
+
+<p style="margin-left:22%;">This option makes <b>dig</b>
+use the provided hostname during remote server TLS
+certificate verification. Otherwise, the DNS server name is
+used. This option has no effect if <i>+tls-ca</i> is not
+specified.</p>
+
+<p style="margin-left:11%;"><b>+topdown, +notopdown</b></p>
+
+<p style="margin-left:22%;">This feature is related to
+<i>dig +sigchase</i>, which is obsolete and has been
+removed. Use <i>delv</i> instead.</p>
+
+<p style="margin-left:11%;"><b>+trace, +notrace</b></p>
+
+<p style="margin-left:22%;">This option toggles tracing of
+the delegation path from the root name servers for the name
+being looked up. Tracing is disabled by default. When
+tracing is enabled, <b>dig</b> makes iterative queries to
+resolve the name being looked up. It follows referrals from
+the root servers, showing the answer from each server that
+was used to resolve the lookup.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If
+<b>@server</b> is also specified, it affects only the
+initial query for the root zone name servers.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>+dnssec</i>
+is also set when <i>+trace</i> is set, to better emulate the
+default queries from a name server.</p>
+
+<p style="margin-left:11%;"><b>+tries=T</b></p>
+
+<p style="margin-left:22%;">This option sets the number of
+times to try UDP and TCP queries to server to <b>T</b>
+instead of the default, 3. If <b>T</b> is less than or equal
+to zero, the number of tries is silently rounded up to
+1.</p>
+
+<p style="margin-left:11%;"><b>+trusted-key=####</b></p>
+
+<p style="margin-left:22%;">This option formerly specified
+trusted keys for use with <i>dig +sigchase</i>. This feature
+is now obsolete and has been removed; use <i>delv</i>
+instead.</p>
+
+<p style="margin-left:11%;"><b>+ttlid, +nottlid</b></p>
+
+<p style="margin-left:22%;">This option displays [or does
+not display] the TTL when printing the record.</p>
+
+<p style="margin-left:11%;"><b>+ttlunits,
++nottlunits</b></p>
+
+<p style="margin-left:22%;">This option displays [or does
+not display] the TTL in friendly human-readable time units
+of <b>s</b>, <b>m</b>, <b>h</b>, <b>d</b>, and <b>w</b>,
+representing seconds, minutes, hours, days, and weeks. This
+implies <i>+ttlid</i>.</p>
+
+<p style="margin-left:11%;"><b>+unknownformat,
++nounknownformat</b></p>
+
+<p style="margin-left:22%;">This option prints all RDATA in
+unknown RR type presentation format (<i>RFC 3597</i>). The
+default is to print RDATA for known types in the type's
+presentation format.</p>
+
+<p style="margin-left:11%;"><b>+vc, +novc</b></p>
+
+<p style="margin-left:22%;">This option uses [or does not
+use] TCP when querying name servers. This alternate syntax
+to <i>+tcp</i> is provided for backwards compatibility. The
+<b>vc</b> stands for &quot;virtual circuit.&quot;</p>
+
+<p style="margin-left:11%;"><b>+yaml, +noyaml</b></p>
+
+<p style="margin-left:22%;">When enabled, this option
+prints the responses (and, if <i>+qr</i> is in use, also the
+outgoing queries) in a detailed YAML format.</p>
+
+<p style="margin-left:11%;"><b>+zflag, +nozflag</b></p>
+
+<p style="margin-left:22%;">This option sets [or does not
+set] the last unassigned DNS header flag in a DNS query.
+This flag is off by default.</p>
+
+<h2>MULTIPLE QUERIES
+<a name="MULTIPLE QUERIES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The BIND 9
+implementation of <b>dig</b> supports specifying multiple
+queries on the command line (in addition to supporting the
+<i>-f</i> batch file option). Each of those queries can be
+supplied with its own set of flags, options, and query
+options.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In this case,
+each <b>query</b> argument represents an individual query in
+the command-line syntax described above. Each consists of
+any of the standard options and flags, the name to be looked
+up, an optional query type and class, and any query options
+that should be applied to that query.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A global set of
+query options, which should be applied to all queries, can
+also be supplied. These global query options must precede
+the first tuple of name, class, type, options, flags, and
+query options supplied on the command line. Any global query
+options (except <i>+cmd</i> and <i>+short</i> options) can
+be overridden by a query-specific set of query options. For
+example:</p>
+
+<pre style="margin-left:15%; margin-top: 1em">dig +qr www.isc.org any -x 127.0.0.1 isc.org ns +noqr</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">shows how
+<b>dig</b> can be used from the command line to make three
+lookups: an ANY query for <b>www.isc.org</b>, a reverse
+lookup of 127.0.0.1, and a query for the NS records of
+<b>isc.org</b>. A global query option of <i>+qr</i> is
+applied, so that <b>dig</b> shows the initial query it made
+for each lookup. The final query has a local query option of
+<i>+noqr</i> which means that <b>dig</b> does not print the
+initial query when it looks up the NS records for
+<b>isc.org</b>.</p>
+
+<h2>IDN SUPPORT
+<a name="IDN SUPPORT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If <b>dig</b>
+has been built with IDN (internationalized domain name)
+support, it can accept and display non-ASCII domain names.
+<b>dig</b> appropriately converts character encoding of a
+domain name before sending a request to a DNS server or
+displaying a reply from the server. To turn off IDN support,
+use the parameters <i>+idnin</i> and <i>+idnout</i>, or
+define the <b>IDN_DISABLE</b> environment variable.</p>
+
+<h2>RETURN CODES
+<a name="RETURN CODES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dig</b>
+return codes are:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>0</b></p></td>
+<td width="8%"></td>
+<td width="73%">
+
+
+<p>DNS response received, including NXDOMAIN status</p></td>
+<td width="5%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>1</b></p></td>
+<td width="8%"></td>
+<td width="73%">
+
+
+<p>Usage error</p></td>
+<td width="5%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>8</b></p></td>
+<td width="8%"></td>
+<td width="73%">
+
+
+<p>Couldn't open batch file</p></td>
+<td width="5%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>9</b></p></td>
+<td width="8%"></td>
+<td width="73%">
+
+
+<p>No reply from server</p></td>
+<td width="5%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>10</b></p></td>
+<td width="8%"></td>
+<td width="73%">
+
+
+<p>Internal error</p></td>
+<td width="5%">
+</td></tr>
+</table>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>/etc/resolv.conf</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>${HOME}/.digrc</b></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><i>delv(1)</i></b>,
+<i>host(1)</i>, <i>named(8)</i>, <i>dnssec-keygen(8)</i>,
+<i>RFC 1035</i>.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">There are
+probably too many query options.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Internet
+Systems Consortium</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">2024, Internet
+Systems Consortium</p>
+<hr>
+</body>
+</html>

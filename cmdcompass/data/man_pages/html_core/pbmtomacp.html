@@ -1,0 +1,201 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:30 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pbmtomacp User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pbmtomacp User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pbmtomacp -
+convert a PBM image to a MacPaint file</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbmtomacp</b>
+[<b>-left</b> <i>left</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-right</b>
+<i>right</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-top</b>
+<i>top</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-bottom</b>
+<i>bottom</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<i>pbmfile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">All options can
+be abbreviated to their shortest unique prefix. You may use
+two hyphens instead of one to designate an option. You may
+use either white space or equals signs between an option
+name and its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbmtomacp</b>
+reads a PBM image as input and produces a MacPaint file as
+output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you do not
+specify <i>pbmfile</i>, <b>pbmtomacp</b> uses Standard
+Input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The generated
+file is only the data fork of a picture. You will need a
+program such as <b>mcvert</b> to generate a Macbinary or a
+BinHex file that contains the necessary information to
+identify the file as a PNTG file to MacOS.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pbmtomacp</b> recognizes the following command line
+options:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-norle</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>This option tells <b>pbmtomacp</b> not to use any run
+length encoding compression in the MacPaint image it
+produces. This output, while not normal, conforms to
+MacPaint specifications and can be read by any MacPaint
+decoder without any special settings.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">The only value
+of this option is testing and experimentation. The option
+causes every output image to contain exactly 53072 bytes,
+which is the theoretical maximum size for a MacPaint
+image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Without
+<b>-norle</b>, MacPaint compresses the image as much as
+possible and the output size depends on the nature of the
+input.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em"><b>-left</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em"><b>-right -top -bottom</b> These
+options let you define a rectangle within the image to
+convert. The default is the whole file. If the specified
+image is too large for a MacPaint-file, <b>pbmtomacp</b>
+cuts the image to fit, starting at the specified top left
+corner.</p> </td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">These options
+exist for backward compatibility with an unfortunate
+original design. They do the same thing that you can do in a
+more Netpbm-like way and more flexibly by processing the
+input through <b>pamcut</b>.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>macptopbm</b>(1),
+<b>ppmtopict</b>(1), <b>pamcut</b>(1), <b>pbm</b>(1),
+<b>mcvert</b> documentation</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbmtomacp</b>
+was added to Netpbm in 1988, written by Douwe van der Schaaf
+(...!mcvax!uvapsy!vdschaaf).</p>
+
+<p style="margin-left:11%; margin-top: 1em">In 2015, Akira
+Urushibata replaced the program with the current version,
+using different logic and none of the original code. The new
+version used the &quot;packed PBM&quot; facilities of the
+Netpbm library and the shhopt method of command line
+parsing.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pbmtomacp.html</b></p>
+<hr>
+</body>
+</html>

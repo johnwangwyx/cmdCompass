@@ -1,0 +1,530 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:14 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>LESSKEY</title>
+
+</head>
+<body>
+
+<h1 align="center">LESSKEY</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS (deprecated)">SYNOPSIS (deprecated)</a><br>
+<a href="#SCOPE">SCOPE</a><br>
+<a href="#FILE FORMAT">FILE FORMAT</a><br>
+<a href="#COMMAND SECTION">COMMAND SECTION</a><br>
+<a href="#EXAMPLE">EXAMPLE</a><br>
+<a href="#PRECEDENCE">PRECEDENCE</a><br>
+<a href="#LINE EDITING SECTION">LINE EDITING SECTION</a><br>
+<a href="#EXAMPLE">EXAMPLE</a><br>
+<a href="#LESS ENVIRONMENT VARIABLES">LESS ENVIRONMENT VARIABLES</a><br>
+<a href="#EXAMPLE">EXAMPLE</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#WARNINGS">WARNINGS</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">lesskey -
+specify key bindings for less</p>
+
+<h2>SYNOPSIS (deprecated)
+<a name="SYNOPSIS (deprecated)"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>lesskey [-o
+output] [--] [input] <br>
+lesskey [--output=output] [--] [input] <br>
+lesskey -V <br>
+lesskey --version</b></p>
+
+<h2>SCOPE
+<a name="SCOPE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This document
+describes the format of the <i>lesskey</i> source file,
+which is used by <i>less</i> version 582 and later. In
+previous versions of <i>less</i>, a separate program called
+<i>lesskey</i> was used to compile the <i>lesskey</i> source
+file into a format understood by <i>less</i>. This
+compilation step is no longer required and the
+<i>lesskey</i> program is therefore deprecated although the
+file format remains supported by <i>less</i> itself.</p>
+
+<h2>FILE FORMAT
+<a name="FILE FORMAT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The input file
+consists of one or more <i>sections.</i> Each section starts
+with a line that identifies the type of section. Possible
+sections are: <br>
+#command</p>
+
+<p style="margin-left:22%;">Defines new command keys.</p>
+
+<p style="margin-left:11%;">#line-edit</p>
+
+<p style="margin-left:22%;">Defines new line-editing
+keys.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>#env</p></td>
+<td width="5%"></td>
+<td width="46%">
+
+
+<p>Defines environment variables.</p></td>
+<td width="32%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Blank lines and
+lines which start with a pound sign (#) are ignored, except
+for the special section header lines.</p>
+
+<h2>COMMAND SECTION
+<a name="COMMAND SECTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The command
+section begins with the line</p>
+
+<p style="margin-left:11%; margin-top: 1em">#command</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the command
+section is the first section in the file, this line may be
+omitted. The command section consists of lines of the
+form:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>string</i>
+&lt;whitespace&gt; <i>action</i> [extra-string]
+&lt;newline&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">Whitespace is
+any sequence of one or more spaces and/or tabs. The
+<i>string</i> is the command key(s) which invoke the action.
+The <i>string</i> may be a single command key, or a sequence
+of up to 15 keys. The <i>action</i> is the name of the less
+action, from the list below. The characters in the
+<i>string</i> may appear literally, or be prefixed by a
+caret to indicate a control key. A backslash followed by one
+to three octal digits may be used to specify a character by
+its octal value. A backslash followed by certain characters
+specifies input characters as follows:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p style="margin-top: 1em">\b</p></td>
+<td width="7%"></td>
+<td width="16%">
+
+
+<p style="margin-top: 1em">BACKSPACE</p></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>\e</p></td>
+<td width="7%"></td>
+<td width="16%">
+
+
+<p>ESCAPE</p></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>\n</p></td>
+<td width="7%"></td>
+<td width="16%">
+
+
+<p>NEWLINE</p></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>\r</p></td>
+<td width="7%"></td>
+<td width="16%">
+
+
+<p>RETURN</p></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>\t</p></td>
+<td width="7%"></td>
+<td width="16%">
+
+
+<p>TAB</p></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>\ku</p></td>
+<td width="7%"></td>
+<td width="16%">
+
+
+<p>UP ARROW</p></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>\kd</p></td>
+<td width="7%"></td>
+<td width="16%">
+
+
+<p>DOWN ARROW</p></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>\kr</p></td>
+<td width="7%"></td>
+<td width="16%">
+
+
+<p>RIGHT ARROW</p></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>\kl</p></td>
+<td width="7%"></td>
+<td width="16%">
+
+
+<p>LEFT ARROW</p></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>\kU</p></td>
+<td width="7%"></td>
+<td width="16%">
+
+
+<p>PAGE UP</p></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>\kD</p></td>
+<td width="7%"></td>
+<td width="16%">
+
+
+<p>PAGE DOWN</p></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>\kh</p></td>
+<td width="7%"></td>
+<td width="16%">
+
+
+<p>HOME</p></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>\ke</p></td>
+<td width="7%"></td>
+<td width="16%">
+
+
+<p>END</p></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>\kx</p></td>
+<td width="7%"></td>
+<td width="16%">
+
+
+<p>DELETE</p></td>
+<td width="62%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">A backslash
+followed by any other character indicates that character is
+to be taken literally. Characters which must be preceded by
+backslash include caret, space, tab and the backslash
+itself.</p>
+
+<p style="margin-left:11%; margin-top: 1em">An action may
+be followed by an &quot;extra&quot; string. When such a
+command is entered while running <i>less</i>, the action is
+performed, and then the extra string is parsed, just as if
+it were typed in to <i>less</i>. This feature can be used in
+certain cases to extend the functionality of a command. For
+example, see the &quot;{&quot; and &quot;:t&quot; commands
+in the example below. The extra string has a special meaning
+for the &quot;quit&quot; action: when <i>less</i> quits, the
+first character of the extra string is used as its exit
+status.</p>
+
+<h2>EXAMPLE
+<a name="EXAMPLE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+input file describes the set of default command keys used by
+less:</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-89131.png" alt="Image grohtml-89131.png"></p>
+
+<h2>PRECEDENCE
+<a name="PRECEDENCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Commands
+specified by <i>lesskey</i> take precedence over the default
+commands. A default command key may be disabled by including
+it in the input file with the action &quot;invalid&quot;.
+Alternatively, a key may be defined to do nothing by using
+the action &quot;noaction&quot;. &quot;noaction&quot; is
+similar to &quot;invalid&quot;, but <i>less</i> will give an
+error beep for an &quot;invalid&quot; command, but not for a
+&quot;noaction&quot; command. In addition, ALL default
+commands may be disabled by adding this control line to the
+input file:</p>
+
+<p style="margin-left:11%; margin-top: 1em">#stop</p>
+
+<p style="margin-left:11%; margin-top: 1em">This will cause
+all default commands to be ignored. The #stop line should be
+the last line in that section of the file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Be aware that
+#stop can be dangerous. Since all default commands are
+disabled, you must provide sufficient commands before the
+#stop line to enable all necessary actions. For example,
+failure to provide a &quot;quit&quot; command can lead to
+frustration.</p>
+
+<h2>LINE EDITING SECTION
+<a name="LINE EDITING SECTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+line-editing section begins with the line:</p>
+
+<p style="margin-left:11%; margin-top: 1em">#line-edit</p>
+
+<p style="margin-left:11%; margin-top: 1em">This section
+specifies new key bindings for the line editing commands, in
+a manner similar to the way key bindings for ordinary
+commands are specified in the #command section. The
+line-editing section consists of a list of keys and actions,
+one per line as in the example below.</p>
+
+<h2>EXAMPLE
+<a name="EXAMPLE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+input file describes the set of default line-editing keys
+used by less:</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-89132.png" alt="Image grohtml-89132.png"></p>
+
+<h2>LESS ENVIRONMENT VARIABLES
+<a name="LESS ENVIRONMENT VARIABLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The environment
+variable section begins with the line</p>
+
+<p style="margin-left:11%; margin-top: 1em">#env</p>
+
+<p style="margin-left:11%; margin-top: 1em">Following this
+line is a list of environment variable assignments. Each
+line consists of an environment variable name, an equals
+sign (=) and the value to be assigned to the environment
+variable. White space before and after the equals sign is
+ignored. Variables assigned in this way are visible only to
+<i>less</i>. If a variable is specified in the system
+environment and also in a lesskey file, the value in the
+lesskey file takes precedence. Although the lesskey file can
+be used to override variables set in the environment, the
+main purpose of assigning variables in the lesskey file is
+simply to have all <i>less</i> configuration information
+stored in one file.</p>
+
+<h2>EXAMPLE
+<a name="EXAMPLE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+input file sets the -i option whenever <i>less</i> is run,
+and specifies the character set to be
+&quot;latin1&quot;:</p>
+
+<p style="margin-left:11%; margin-top: 1em">#env</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>LESS = -i</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>LESSCHARSET = latin1</p></td></tr>
+</table>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>less</b>(1)</p>
+
+<h2>WARNINGS
+<a name="WARNINGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">On MS-DOS and
+OS/2 systems, certain keys send a sequence of characters
+which start with a NUL character (0). This NUL character
+should be represented as \340 in a lesskey file.</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1984-2021 Mark Nudelman</p>
+
+<p style="margin-left:11%; margin-top: 1em">less is part of
+the GNU project and is free software. You can redistribute
+it and/or modify it under the terms of either (1) the GNU
+General Public License as published by the Free Software
+Foundation; or (2) the Less License. See the file README in
+the less distribution for more details regarding
+redistribution. You should have received a copy of the GNU
+General Public License along with the source for less; see
+the file COPYING. If not, write to the Free Software
+Foundation, 59 Temple Place, Suite 330, Boston, MA
+02111-1307, USA. You should also have received a copy of the
+Less License; see the file LICENSE.</p>
+
+<p style="margin-left:11%; margin-top: 1em">less is
+distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Mark Nudelman
+<br>
+Report bugs at https://github.com/gwsw/less/issues.</p>
+<hr>
+</body>
+</html>

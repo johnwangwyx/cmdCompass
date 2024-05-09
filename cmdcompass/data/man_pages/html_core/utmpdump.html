@@ -1,0 +1,177 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:58 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>UTMPDUMP</title>
+
+</head>
+<body>
+
+<h1 align="center">UTMPDUMP</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#AVAILABILITY">AVAILABILITY</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">utmpdump - dump
+UTMP and WTMP files in raw format</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>utmpdump</b>
+[options] <i>filename</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i><b>utmpdump</b></i>
+is a simple program to dump UTMP and WTMP files in raw
+format, so they can be examined. <b>utmpdump</b> reads from
+stdin unless a <i>filename</i> is passed.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-f</b>,
+<b>--follow</b></p>
+
+<p style="margin-left:17%;">Output appended data as the
+file grows.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-o</b>,
+<b>--output</b> <i>file</i></p>
+
+<p style="margin-left:17%;">Write command output to
+<i>file</i> instead of standard output.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-r</b>,
+<b>--reverse</b></p>
+
+<p style="margin-left:17%;">Undump, write back edited login
+information into the utmp or wtmp files.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Display help text and exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-V</b>,
+<b>--version</b></p>
+
+<p style="margin-left:17%;">Print version and exit.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>utmpdump</b>
+can be useful in cases of corrupted utmp or wtmp entries. It
+can dump out utmp/wtmp to an ASCII file, which can then be
+edited to remove bogus entries, and reintegrated using:</p>
+
+<p style="margin-left:15%; margin-top: 1em"><b>utmpdump -r
+&lt; ascii_file &gt; wtmp</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">But be warned,
+<b>utmpdump</b> was written for debugging purposes only.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>File
+formats</b> <br>
+Only the binary version of the <b>utmp</b>(5) is
+standardised. Textual dumps may become incompatible in
+future.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The version
+2.28 was the last one that printed text output using
+<b>ctime</b>(3) timestamp format. Newer dumps use
+millisecond precision ISO-8601 timestamp format in UTC-0
+timezone. Conversion from former timestamp format can be
+made to binary, although attempt to do so can lead the
+timestamps to drift amount of timezone offset.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">You may
+<b>not</b> use the <b>-r</b> option, as the format for the
+utmp/wtmp files strongly depends on the input format. This
+tool was <b>not</b> written for normal use, but for
+debugging only.</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Michael
+Krapp</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>last</b>(1),
+<b>w</b>(1), <b>who</b>(1), <b>utmp</b>(5)</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For bug
+reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+
+<h2>AVAILABILITY
+<a name="AVAILABILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>utmpdump</b> command is part of the util-linux package
+which can be downloaded from <i>Linux Kernel Archive</i>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,538 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:36 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pnmtopclxl User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pnmtopclxl User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pnmtopclxl -
+convert a PNM image to an HP LaserJet PCL XL printer
+stream</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmtopclxl</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">{
+[<b>-dpi=</b><i>N</i>] [<b>-xoffs=</b><i>N</i>]
+[<b>-yoffs=</b><i>N</i>] [<b>-center</b>]
+[<b>-duplex=</b>{<b>vertical</b>|<b>horizontal</b>}]
+[<b>-format=</b><i>paperformat</i>]
+[<b>-feeder=</b><i>N</i>] [<b>-copies=</b><i>N</i>]
+[<b>-rendergray</b>] [<b>-jobsetup=</b><i>filename</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">|
+<b>-embedded</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">}
+[<b>-colorok</b>] <i>pnmfile1 pnmfile2</i> ...</p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviation of option is acceptable. You may use double
+hyphens instead of single hyphen to denote options. You may
+use white space in place of the equals sign to separate an
+option name from its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmtopclxl</b>
+reads one or more PNM input streams, each containing one or
+more PNM images, and generates a sequence of output pages in
+the HP PCL-XL (formerly named PCL 6) printer control
+language. You can send this stream to a PCL-XL printer to
+print the images.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Alternatively,
+you can make <b>pnmtopclxl</b> generate just the PCL-XL
+instructions to print an image, which you can embed in your
+own PCL-XL stream to place an image on one of your pages.
+(<b>-embedded</b> option).</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the input is
+PPM, the output is a color printer stream (the PCL color
+space is RGB). Otherwise, the output is grayscale (the PCL
+color space is grayscale). If you want a grayscale output
+from a color input, run your input through
+<b>ppmtopgm</b>(1). See the <b>-colorok</b> option for more
+information about choosing between color and grayscale.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The output goes
+to Standard Output. All of the pages go to one file,
+concatenated in the same order as the input images.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pnmtopclxl</b> recognizes the following command line
+options:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-dpi=</b><i>N</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>This option selects the resolution of the image (not the
+printer!). <i>N</i> is the resolution in dots per inch, from
+1 to 65535. The default is 300.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-xoffs=</b><i>N</i></p>
+
+<p style="margin-left:22%;">This option and <b>-yoffs</b>
+determine the location on the page of the upper left corner
+of each image. Note that the image may have built in borders
+too, which would make the main image within more left and
+down that what you specify here.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>-xoffs</b>
+and <b>-yoffs</b> specify the distance from the left of the
+page and from the top of the page, respectively, in inches,
+of the upper left corner of the image. The default for each
+is zero.</p>
+
+<p style="margin-left:22%; margin-top: 1em">These options
+are meaningless if you specify <b>-center</b>.</p>
+
+<p style="margin-left:11%;"><b>-yoffs</b> <i>N</i></p>
+
+<p style="margin-left:22%;">See <b>-xoffs</b>.</p>
+
+<p style="margin-left:11%;"><b>-center</b></p>
+
+<p style="margin-left:22%;">This option tells
+<b>pnmtopclxl</b> to center each image on the page. If you
+don&rsquo;t specify this option, the position of an image on
+the page is determined by <b>-xoffs</b> and <b>-yoffs</b>
+(or their defaults).</p>
+
+
+<p style="margin-left:11%;"><b>-duplex=</b>{<b>vertical</b>|<b>horizontal</b>}</p>
+
+<p style="margin-left:22%;">This option causes
+<b>pnmtopclxl</b> to create a printer stream that prints
+pages on both sides of the sheet of paper. <b>vertical</b>
+means to print them so that the left edge of both pages is
+on the same edge of the sheet, while <b>horizontal</b> means
+the more usual duplexing where the top of both pages is on
+the same edge of the sheet.</p>
+
+
+<p style="margin-left:11%;"><b>-format=</b><i>paperformat</i></p>
+
+<p style="margin-left:22%;">This option selects the media
+(e.g. paper size) that the printer control stream specifies.
+<i>paperformat</i> is one of the following self-explanatory
+keywords:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="23%">
+
+
+<p>letter</p></td>
+<td width="55%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="23%">
+
+
+<p>legal</p></td>
+<td width="55%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="23%">
+
+
+<p>a3</p></td>
+<td width="55%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="23%">
+
+
+<p>a4</p></td>
+<td width="55%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="23%">
+
+
+<p>a5</p></td>
+<td width="55%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="23%">
+
+
+<p>a6</p></td>
+<td width="55%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="23%">
+
+
+<p>jb4</p></td>
+<td width="55%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="23%">
+
+
+<p>jb5</p></td>
+<td width="55%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="23%">
+
+
+<p>jb6</p></td>
+<td width="55%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="23%">
+
+
+<p>exec</p></td>
+<td width="55%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="23%">
+
+
+<p>ledger</p></td>
+<td width="55%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="23%">
+
+
+<p>b5envelope</p></td>
+<td width="55%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="23%">
+
+
+<p>c5envelope</p></td>
+<td width="55%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="23%">
+
+
+<p>com10envelope</p></td>
+<td width="55%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="23%">
+
+
+<p>monarchenvelope</p></td>
+<td width="55%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="23%">
+
+
+<p>dlenvelope</p></td>
+<td width="55%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="23%">
+
+
+<p>jpostcard</p></td>
+<td width="55%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="23%">
+
+
+<p>jdoublepostcard</p></td>
+<td width="55%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+<b>letter</b>.</p>
+
+<p style="margin-left:11%;"><b>-feeder=</b><i>N</i></p>
+
+<p style="margin-left:22%;">This options selects the media
+source (e.g. paper tray) that the printer control stream
+specifies.</p>
+
+<p style="margin-left:11%;"><b>-copies=</b><i>N</i></p>
+
+<p style="margin-left:22%;">This option specifies the
+number of copies that the printer control stream tells the
+printer to print.</p>
+
+<p style="margin-left:11%;"><b>-rendergray</b></p>
+
+<p style="margin-left:22%;">This option causes
+<b>pnmtopclxl</b> to include in the output stream a command
+to set the RENDERMODE environment variable to GRAYSCALE,
+which typically causes the printer to print in grayscale
+regardless of the colors in the input, and may cause it to
+run much faster even if the image is grayscale anyway.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.29 (August 2005).</p>
+
+
+<p style="margin-left:11%;"><b>-jobsetup=</b><i>filename</i></p>
+
+<p style="margin-left:22%;">This option causes
+<b>pnmtopclxl</b> to include arbitrary job setup PJL
+commands at the beginning of the output stream. It reads
+them from the named file.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>pnmtopclxl</b>
+does not inspect these commands in any way, but it does
+expect them to be job setup commands. If you have garbage in
+your file, you will hear from the printer.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.29 (August 2005).</p>
+
+<p style="margin-left:11%;"><b>-colorok</b></p>
+
+<p style="margin-left:22%;">This option simply tells
+<b>pnmtopclxl</b> not to warn you if you supply a color
+input and therefore get color output. By default,
+<b>pnmtopclxl</b> issues a warning any time it produces a
+color printer stream because it is usually a mistake.
+It&rsquo;s a mistake because PCL XL is mainly used for laser
+printers, and laser printers are mainly black and white. If
+you send a color print stream to a black and white printer,
+it typically refuses to print anything, and even if it
+manages to convert it to black and white and print it, it
+takes 3 times as long to transmit a color stream to the
+printer than to transmit the grayscale image that gives the
+same result.</p>
+
+<p style="margin-left:11%;"><b>-embedded</b></p>
+
+<p style="margin-left:22%;">Without this option,
+<b>pnmtopclxl</b> generates an entire printer control stream
+that sets up the printer, ejects pages, and places a lone
+image on each page. With the option, <b>pnmtopclxl</b>
+generates only the instructions to generate the image
+itself. This is not useful all by itself, but you can embed
+it in a suitable PCL-XL stream in order to add an image to
+it.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This makes
+sense only for a single image, so you cannot specify
+multiple input files and if an input file has multiple
+images in it, <b>pnmtopclxl</b> ignores any after the first
+(it won&rsquo;t even read them).</p>
+
+<p style="margin-left:22%; margin-top: 1em">All the options
+that control the printer control stream outside the image
+itself, such as <b>-xoffs</b> and <b>-feeder</b> are invalid
+with <b>-embedded</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.54 (March 2011).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmtolj</b>(1),
+<b>pbmtolj</b>(1), <b>ppmtopj</b>(1), <b>ppmtopjxl</b>(1),
+<b>thinkjettopbm</b>(1), <b>ppm</b>(1)</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmtopclxl</b>
+was added to Netpbm in Release 10.6 (July 2002). It was
+contributed by <i>Jochen Karrer</i>.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pnmtopclxl.html</b></p>
+<hr>
+</body>
+</html>

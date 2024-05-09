@@ -1,0 +1,264 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:46 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SCRIPTREPLAY</title>
+
+</head>
+<body>
+
+<h1 align="center">SCRIPTREPLAY</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#AVAILABILITY">AVAILABILITY</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">scriptreplay -
+play back typescripts, using timing information</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>scriptreplay</b>
+[options] [<b>-t</b>] <i>timingfile</i> [<i>typescript</i>
+[<i>divisor</i>]]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program
+replays a typescript, using timing information to ensure
+that output happens in the same rhythm as it originally
+appeared when the script was recorded.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The replay
+simply displays the information again; the programs that
+were run when the typescript was being recorded are <b>not
+run again</b>. Since the same information is simply being
+displayed, <b>scriptreplay</b> is only guaranteed to work
+properly if run on the same type of terminal the typescript
+was recorded on. Otherwise, any escape characters in the
+typescript may be interpreted differently by the terminal to
+which <b>scriptreplay</b> is sending its output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The timing
+information is what <b>script</b>(1) outputs to file
+specified by <b>--log-timing</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">By default, the
+typescript to display is assumed to be named
+<i>typescript</i>, but other filenames may be specified, as
+the second parameter or with option <b>--log-out</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the third
+parameter or <b>--divisor</b> is specified, it is used as a
+speed-up multiplier. For example, a speed-up of 2 makes
+<b>scriptreplay</b> go twice as fast, and a speed-down of
+0.1 makes it go ten times slower than the original
+session.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-I</b>,
+<b>--log-in</b> <i>file</i></p>
+
+<p style="margin-left:17%;">File containing <b>script</b>'s
+terminal input.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-O</b>,
+<b>--log-out</b> <i>file</i></p>
+
+<p style="margin-left:17%;">File containing <b>script</b>'s
+terminal output.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-B</b>,
+<b>--log-io</b> <i>file</i></p>
+
+<p style="margin-left:17%;">File containing <b>script</b>'s
+terminal output and input.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-t</b>,
+<b>--timing</b> <i>file</i></p>
+
+<p style="margin-left:17%;">File containing <b>script</b>'s
+timing output. This option overrides old-style
+arguments.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-T</b>,
+<b>--log-timing</b> <i>file</i></p>
+
+<p style="margin-left:17%;">This is an alias for <b>-t</b>,
+maintained for compatibility with <b>script</b>(1)
+command-line options.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-s</b>,
+<b>--typescript</b> <i>file</i></p>
+
+<p style="margin-left:17%;">File containing <b>script</b>'s
+terminal output. Deprecated alias to <b>--log-out</b>. This
+option overrides old-style arguments.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-c</b>,
+<b>--cr-mode</b> <i>mode</i></p>
+
+<p style="margin-left:17%;">Specifies how to use the CR
+(0x0D, carriage return) character from log files. The
+default mode is <i>auto</i>, in this case CR is replaced
+with line break for stdin log, because otherwise
+<b>scriptreplay</b> would overwrite the same line. The other
+modes are <i>never</i> and <i>always</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-d</b>,
+<b>--divisor</b> <i>number</i></p>
+
+<p style="margin-left:17%;">Speed up the replay displaying
+this <i>number</i> of times. The argument is a
+floating-point number. It&rsquo;s called divisor because it
+divides the timings by this factor. This option overrides
+old-style arguments.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-m</b>,
+<b>--maxdelay</b> <i>number</i></p>
+
+<p style="margin-left:17%;">Set the maximum delay between
+updates to <i>number</i> of seconds. The argument is a
+floating-point number. This can be used to avoid long pauses
+in the typescript replay.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--summary</b></p>
+
+<p style="margin-left:17%;">Display details about the
+session recorded in the specified timing file and exit. The
+session has to be recorded using <i>advanced</i> format (see
+<b>script</b>(1) option <b>--logging-format</b> for more
+details).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-x</b>,
+<b>--stream</b> <i>type</i></p>
+
+<p style="margin-left:17%;">Forces <b>scriptreplay</b> to
+print only the specified stream. The supported stream types
+are <i>in</i>, <i>out</i>, <i>signal</i>, or <i>info</i>.
+This option is recommended for multi-stream logs (e.g.,
+<b>--log-io</b>) in order to print only specified data.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Display help text and exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-V</b>,
+<b>--version</b></p>
+
+<p style="margin-left:17%;">Print version and exit.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:17%; margin-top: 1em">% script
+--log-timing file.tm --log-out script.out <br>
+Script started, file is script.out <br>
+% ls <br>
+&lt;etc, etc&gt; <br>
+% exit <br>
+Script done, file is script.out <br>
+% scriptreplay --log-timing file.tm --log-out script.out</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The original
+<b>scriptreplay</b> program was written by <i>Joey Hess</i>
+&lt;joey@kitenet.net&gt;. The program was re-written in C by
+<i>James Youngman</i> &lt;jay@gnu.org&gt; and <i>Karel
+Zak</i> &lt;kzak@redhat.com&gt;</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+&Acirc;&copy; 2008 James Youngman</p>
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+&Acirc;&copy; 2008-2019 Karel Zak</p>
+
+<p style="margin-left:11%; margin-top: 1em">This is free
+software; see the source for copying conditions. There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Released under
+the GNU General Public License version 2 or later.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>script</b>(1),
+<b>scriptlive</b>(1)</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For bug
+reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+
+<h2>AVAILABILITY
+<a name="AVAILABILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>scriptreplay</b> command is part of the util-linux
+package which can be downloaded from <i>Linux Kernel
+Archive</i>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>
+<hr>
+</body>
+</html>

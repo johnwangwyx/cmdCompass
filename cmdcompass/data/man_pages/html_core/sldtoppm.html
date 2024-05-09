@@ -1,0 +1,272 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:48 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Sldtoppm User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Sldtoppm User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#LIMITATIONS">LIMITATIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">sldtoppm -
+convert an AutoCAD slide file to a PPM image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>sldtoppm</b>
+[<b>-adjust</b>] [<b>-dir</b>]
+[{<b>-height</b>|<b>-ysize</b>} <i>s</i>] [<b>-info</b>]
+[{<b>-lib</b>|<b>-Lib</b>} <i>name</i>] [<b>-scale</b>
+<i>s</i>] [<b>-verbose</b>] [{<b>-width</b>|<b>-xsize</b>}
+<i>s</i>] [<i>slidefile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">All options can
+be abbreviated to their shortest unique prefix.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>sldtoppm</b>
+reads an AutoCAD&reg; slide file and outputs a PPM image. If
+you don&rsquo;t specify <i>slidefile</i>, <b>sldtoppm</b>
+reads input from Standard Input. <b>sldtoppm</b> uses the
+<b>ppmdraw</b> library to convert the vector and polygon
+information in the slide file to a raster; see the file
+<b>ppmdraw.h</b> for details on this package.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>sldtoppm</b> recognizes the following command line
+options: <b><br>
+-adjust</b></p>
+
+<p style="margin-left:22%;">If the display on which the
+slide file was created had non-square pixels, when you
+process the slide with <b>sldtoppm</b> and don&rsquo;t
+specify <b>-adjust</b>, <b>sldtoppm</b> issues the following
+warning;</p>
+
+<p style="margin-left:22%; margin-top: 1em">Warning -
+pixels on source screen were non-square.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Specifying
+<b>-adjust</b> will correct the image width to compensate.
+Specifying the <b>-adjust</b> option causes <b>sldtoppm</b>
+to scale the width of the image so that pixels in the
+resulting PPM image are square (and hence circles appear as
+true circles, not ellipses). The scaling is performed in the
+vector domain, before scan converting the objects. The
+results are, therefore, superior in appearance to what
+you&rsquo;d obtain were you to perform the equivalent
+scaling with <b>pamscale</b> after the bitmap had been
+created.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-dir</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>The input is assumed to be an AutoCAD slide library
+file. A directory listing each slide in the library is
+printed on standard error.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-height</b> <i>size</i></p>
+
+<p style="margin-left:22%;">Scales the image in the vector
+domain so it is <i>size</i> pixels in height. If you
+don&rsquo;t specify <b>-width</b> or <b>-xsize</b>,
+<b>sldtoppm</b> adjusts the width to preserve the pixel
+aspect ratio.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-info</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Dump the slide file header on standard error, displaying
+the original screen size and aspect ratio among other
+information.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-lib</b> <i>name</i></p>
+
+<p style="margin-left:22%;">Extracts the slide with the
+given <i>name</i> from the slide library given as input.
+<b>sldtoppm</b> converts the specified <i>name</i> to upper
+case.</p>
+
+<p style="margin-left:11%;"><b>-Lib</b> <i>name</i></p>
+
+<p style="margin-left:22%;">Extracts the slide with the
+given <i>name</i> from the slide library given as input.
+<b>sldtoppm</b> uses <i>name</i> in the case specified; it
+does not convert it to upper case.</p>
+
+<p style="margin-left:11%;"><b>-scale</b> <i>s</i></p>
+
+<p style="margin-left:22%;">Scales the image by factor
+<i>s</i>, which may be any floating point value greater than
+zero. <b>sldtoppm</b> does the scaling after aspect ratio
+adjustment, if any. Since it does the scaling in the vector
+domain, before rasterisation, the results look much better
+than running the output of <b>sldtoppm</b> through
+<b>pamscale</b>.</p>
+
+<p style="margin-left:11%;"><b>-verbose</b></p>
+
+<p style="margin-left:22%;">Dumps the slide file header and
+lists every vector and polygon to Standard Error.</p>
+
+<p style="margin-left:11%;"><b>-width</b> <i>size</i></p>
+
+<p style="margin-left:22%;">Scales the image in the vector
+domain so it is <i>size</i> pixels wide. If you don&rsquo;t
+specify <b>-height</b> or <b>-ysize</b>, <b>sldtoppm</b>
+adjusts the height to preserve the pixel aspect ratio.</p>
+
+<p style="margin-left:11%;"><b>-xsize</b> <i>size</i></p>
+
+<p style="margin-left:22%;">Scales the image in the vector
+domain so it is <i>size</i> pixels wide. If you don&rsquo;t
+specify <b>-height</b> or <b>-ysize</b>, <b>sldtoppm</b>
+adjusts the height to preserve the pixel aspect ratio.</p>
+
+<p style="margin-left:11%;"><b>-ysize</b> <i>size</i></p>
+
+<p style="margin-left:22%;">Scales the image in the vector
+domain so it is <i>size</i> pixels in height. If you
+don&rsquo;t specify <b>-width</b> or <b>-xsize</b>,
+<b>sldtoppm</b> adjusts the width to preserve the pixel
+aspect ratio.</p>
+
+<h2>LIMITATIONS
+<a name="LIMITATIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>sldtoppm</b>
+can convert only Level 2 slides. Level 1 format has been
+obsolete since the advent of AutoCAD Release 9 in 1987, and
+was not portable across machine architectures.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Slide library
+items with names containing 8 bit (such as ISO) or 16 bit
+(Kanji, for example) characters may not be found when chosen
+with the <b>-lib</b> option unless <b>sldtoppm</b> was built
+with character set conversion functions appropriate to the
+locale. You can always retrieve slides from libraries
+regardless of the character set by using the <b>-Lib</b>
+option and specifying the precise name of library member.
+Use the <b>-dir</b> option to list the slides in a library
+if you&rsquo;re unsure of the exact name.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">AutoCAD
+Reference Manual: <i>Slide File Format</i>,
+<b>pamscale</b>(1), <b>ppm</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">John Walker
+<br>
+Autodesk SA <br>
+Avenue des Champs-Montants 14b <br>
+CH-2074 MARIN <br>
+Suisse/Schweiz/Svizzera/Svizra/Switzerland <b><br>
+Usenet:</b><i>kelvin@Autodesk.com</i> <b><br>
+Fax:</b>038/33 88 15 <b><br>
+Voice:</b>038/33 76 33</p>
+
+<p style="margin-left:11%; margin-top: 1em">Permission to
+use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby
+granted, without any conditions or restrictions. This
+software is provided &quot;as is&quot; without express or
+implied warranty.</p>
+
+<p style="margin-left:11%; margin-top: 1em">AutoCAD and
+Autodesk are registered trademarks of Autodesk, Inc.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/sldtoppm.html</b></p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,376 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:25 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamfile User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamfile User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamfile -
+describe a Netpbm (PAM or PNM) file</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamfile</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-allimages</b>]
+[<b>-comments</b>] [<b>-count</b>] [<b>-machine</b>]
+[<b>-size</b>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">[<i>file</i>
+...]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviations of options are acceptable. You may use double
+hyphens instead of single hyphen to denote options. You may
+use white space in place of the equals sign to separate an
+option name from its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamfile</b>
+reads one or more Netpbm files as input and writes out short
+descriptions of the image type, size, etc. This is partly
+for use in shell scripts, so the format is not particularly
+pretty.</p>
+
+<p style="margin-left:11%; margin-top: 1em">By default,
+<b>pamfile</b> reads only the header of the input file. If
+that file is a pipe, that might cause problems for the
+process that is feeding the pipe. In that case, see the
+<b>-allimages</b> option.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamfile</b> recognizes the following command line
+options: <b><br>
+-allimages</b></p>
+
+<p style="margin-left:22%;">This option causes
+<b>pamfile</b> to describe every image in each input file.
+Without this option, <b>pamfile</b> describes only the first
+image in each input file.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+also causes <b>pamfile</b> to read all the images from the
+input stream, whereas without it, <b>pamfile</b> reads only
+the header of the first one. If the input stream is from a
+pipe, the process that is feeding the pipe might require the
+entire stream to be consumed. In that case, use this option
+even if the stream contains only one image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option has
+no effect if you also specify <b>-count</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Note that
+before July 2000, a file could not contain more than one
+image and many programs ignore all but the first.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 9.5 (July 2000).</p>
+
+<p style="margin-left:11%;"><b>-comments</b></p>
+
+<p style="margin-left:22%;">This option causes
+<b>pamfile</b> to include for each PAM image a report of the
+comments from the header of the image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">For a PBM, PGM,
+or PPM image, <b>pamfile</b> reports there are no comments,
+even if there are.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.35 (August 2006).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-count</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>This option causes <b>pamfile</b> to display only a
+count of how many images are in each input file.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">As with
+<b>-allimages</b>, this causes <b>pamfile</b> to read all
+the images.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You may specify
+at most one of <b>-count</b>, <b>-machine</b>, and
+<b>-size</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new with Netpbm 10.31 (December 2005).</p>
+
+<p style="margin-left:11%;"><b>-machine</b></p>
+
+<p style="margin-left:22%;">This makes the output more
+convenient for a machine to use, while <br>
+less convenient for a human. <b>pamfile</b> reports the same
+information <br>
+as with no options.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The output is
+one line of ASCII text per image. Each line consists of <br>
+the file name, followed by a colon, followed by a space,
+then the <br>
+following tokens with a space in between:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="47%">
+
+
+<p>Format: &rsquo;PAM&rsquo;, &rsquo;PBM&rsquo;,
+&rsquo;PGM&rsquo;, or</p></td>
+<td width="31%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%;">&rsquo;PPM&rsquo;,</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="69%">
+
+
+<p style="margin-top: 1em">Subformat: &rsquo;PLAIN&rsquo;
+or &rsquo;RAW&rsquo;</p></td>
+<td width="9%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="69%">
+
+
+<p>Width: in pixels, in decimal</p></td>
+<td width="9%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="69%">
+
+
+<p>Height: in pixels, in decimal</p></td>
+<td width="9%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="69%">
+
+
+<p>Depth: in decimal</p></td>
+<td width="9%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="69%">
+
+
+<p>Maxval: in decimal (1 if image is PBM)</p></td>
+<td width="9%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="69%">
+
+
+<p>Tuple type (emulated if the image is not PAM)</p></td>
+<td width="9%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">You may specify
+at most one of <b>-count</b>, <b>-machine</b>, and
+<b>-size</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.86 (March 2019).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em"><b>-size</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">This makes the output contain
+only the height and width of the image, in a form convenient
+for machine processing.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">There is one
+line of output per image, consising of two blank-delimited
+tokens:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="44%">
+
+
+<p style="margin-top: 1em">Width: in pixels, in decimal</p></td>
+<td width="34%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="44%">
+
+
+<p>Height: in pixels, in decimal</p></td>
+<td width="34%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">Note that there
+is no way to tell which image is in which file, if you have
+multiple input files with multiple images. If that is your
+case, use <b>-machine</b> instead.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You may specify
+at most one of <b>-count</b>, <b>-machine</b>, and
+<b>-size</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.86 (March 2019).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pam</b>(1),
+<b>ppmhist</b>(1), <b>file</b></p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1991 by Jef Poskanzer.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamfile.html</b></p>
+<hr>
+</body>
+</html>

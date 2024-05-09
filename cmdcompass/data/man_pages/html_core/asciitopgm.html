@@ -1,0 +1,160 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:33:54 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Asciitopgm User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Asciitopgm User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">asciitopgm -
+convert ASCII graphics into a PGM</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>asciitopgm</b>
+[<b>-d</b> <i>divisor</i>] <i>height width</i>
+[<i>asciifile</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>asciitopgm</b>
+reads ASCII data as input and produces a PGM image with
+pixel values which are an approximation of the
+&quot;brightness&quot; of the ASCII characters, assuming
+black-on-white printing. In other words, a capital M is very
+dark, a period is very light, and a space is white.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Obviously,
+<b>asciitopgm</b> assumes a certain font in assigning a
+brightness value to a character.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>asciitopgm</b>
+considers ASCII control characters to be all white. For a
+lower case character, It assigns a special brightnesses
+which has nothing to do with what it looks like printed.
+<b>asciitopgm</b> takes the ASCII character code from the
+lower 7 bits of each input byte. But it warns you if the
+most significant bit of any input byte is not zero.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The output
+image is <i>height</i> pixels high by <i>width</i> pixels
+wide, truncating and padding with white on the right and
+bottom as necessary.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>divisor</i> value is an integer (decimal) by which the
+blackness of an input character is divided. You can use this
+to adjust the brightness of the output: for example, if the
+image is too bright, increase the divisor.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In a sort of
+reminiscence of Fortran line printer carriage control, where
+a line starts with <b>+</b> (plus), <b>asciitopgm</b>
+combines it with the previous row of output instead of
+generating a new row. This allows a larger range of gray
+values. (In Fortran carriage control, the first character of
+every line sent to the printer tells how much to advance the
+paper, with <b>+</b> meaning not at all, so that the rest of
+the characters on the line overstrike the ones already on
+the paper. What <b>asciitopgm</b> does is rather different
+in that <b>asciitopgm</b> does not reserve the first
+character of every line that way. If the first character is
+anything but <b>+</b>, <b>asciitopgm</b> considers it just
+to be first character of the image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you&rsquo;re
+looking for something that creates an image of text, with
+that text specified in ASCII, that is something quite
+different. Use <b>pbmtext</b> for that.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>asciitopgm</b> recognizes the following command line
+option: <b><br>
+-d</b> <i>divisor</i></p>
+
+<p style="margin-left:22%;">Specify the value by which the
+blackness of an input character is divided. This is an
+integer value. Default value is 1. Larger values produce
+darker output images.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbmtoascii</b>(1),
+<b>pbmtext</b>(1), <b>pgm</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Wilson H. Bent.
+Jr. (<i>whb@usc.edu</i>)</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/asciitopgm.html</b></p>
+<hr>
+</body>
+</html>

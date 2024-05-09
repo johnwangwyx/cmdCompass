@@ -1,0 +1,242 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:37 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Ppmchange User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Ppmchange User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ppmchange -
+change all pixels of one color to another in a PPM image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmchange</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-closeness=</b><i>closeness_percent</i>]
+[<b>-remainder=</b><i>remainder_color</i>] [<b>-closeok</b>]
+[<i>oldcolor newcolor</i>] ... [<i>ppmfile</i>]</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmchange
+red blue redimage.ppm &gt;blueimage.ppm</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmchange
+red red -remainder=black myimage.ppm
+&gt;redblack.ppm</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmchange
+-closeness=10 white white black black</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmchange</b>
+reads a PPM image as input and changes all pixels of color
+<i>oldcolor</i> to color <i>newcolor</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You may specify
+up to 256 oldcolor/newcolor pairs on the command line.
+<b>ppmchange</b> leaves all colors not mentioned unchanged,
+unless you specify the <b>-remainder</b> option, in which
+case they are all changed to the single specified color.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can specify
+that colors similar, but not identical, to the ones you
+specify get replaced by specifying a &quot;closeness&quot;
+factor.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Specify the
+colors as described for the
+<a href="libnetpbm_image.html#colorname">argument of the
+<b>pnm_parsecolor()</b> library routine</a> .</p>
+
+<p style="margin-left:11%; margin-top: 1em">If a pixel
+matches two different <i>oldcolor</i>s, <b>ppmchange</b>
+replaces it with the <i>newcolor</i> of the leftmost
+specified one.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The maxval of
+the output image is the same as that of the input image. If
+a <i>newcolor</i> you specify cannot be exactly represented
+in that maxval, <b>ppmchange</b> assumes a color that is as
+close as possible to what you specified but can be
+represented with your maxval. Unless you specify the
+<b>-closeok</b> option, <b>ppmchange</b> issues a warning
+that it is using an approximation.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A common way
+that you can have this maxval problem, where the color you
+specify cannot be represented with your maxval, is that your
+input is a PBM (black and white) image that you are
+colorizing. The maxval in this case is 1, which severely
+limits the colors to which you can change. To avoid this
+problem, use <b>pamdepth</b> to make the maxval of your
+input something consistent with your colors. 255 is usually
+a good choice.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Before Netpbm
+10.22 (April 2004), <b>ppmchange</b> always behaved as if
+the user specified <b>-closeok</b>, and there was no
+<b>-closeok</b> option.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>ppmchange</b> recognizes the following command line
+options: <b><br>
+-closeness</b> <i>closeness_percent</i></p>
+
+<p style="margin-left:22%;"><i>closeness</i> is a
+percentage indicating how close to the color you specified a
+pixel must be to get replaced. By default, it is 0, which
+means the pixel must be the exact color you specified.</p>
+
+<p style="margin-left:22%; margin-top: 1em">A pixel gets
+replaced if the distance in color between it and the color
+you specified is less than or equal to <i>closeness</i> per
+cent of the maxval.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+&quot;distance&quot; in color is defined as the Cartesian
+sum of the individual differences in red, green, and blue
+intensities between the two pixels, normalized so that the
+difference between black and white is 100%.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This is
+probably simpler than what you want most the time. You
+probably would like to change colors that have similar
+chrominance, regardless of their intensity. So if
+there&rsquo;s a red barn that is variously shadowed, you
+want the entire barn changed. But because the shadowing
+significantly changes the color according to
+<b>ppmchange</b>&rsquo;s distance formula, parts of the barn
+are probably about as distant in color from other parts of
+the barn as they are from green grass next to the barn.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Maybe
+<b>ppmchange</b> will be enhanced some day to do chrominance
+analysis.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 9.8 (September 2000).</p>
+
+<p style="margin-left:11%;"><b>-closeok</b></p>
+
+<p style="margin-left:22%;">This option affects how
+<b>ppmchange</b> interprets a color you specify in the
+arguments. When you specify this option, <b>ppmchange</b>
+may use a color close to, but not the same as what you
+specify. See <a href="#description">the description
+section</a> for details.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.22 (April 2004). Before that,
+<b>ppmchange</b> always behaved as if you specified this
+option.</p>
+
+<p style="margin-left:11%;"><b>-remainder</b>
+<i>color</i></p>
+
+<p style="margin-left:22%;"><b>ppmchange</b> changes all
+pixels which are not of a color for which you specify an
+explicit replacement color on the command line to color
+<i>color</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">An example
+application of this is</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>ppmchange
+-remainder=black red red</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">to lift only
+the red portions from an image, or <b><br>
+ppmchange -remainder=black red white | ppmtopgm</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">to create a
+mask file for the red portions of the image.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pgmtoppm</b>(1),
+<b>ppmcolormask</b>(1), <b>ppm</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Wilson H. Bent.
+Jr. (<i>whb@usc.edu</i>) with modifications by Alberto
+Accomazzi (<i>alberto@cfa.harvard.edu</i>)</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/ppmchange.html</b></p>
+<hr>
+</body>
+</html>

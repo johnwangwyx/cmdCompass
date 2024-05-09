@@ -1,0 +1,160 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:26 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pammixinterlace User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pammixinterlace User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">pammixinterlace
+- mix adjacent lines to merge interlaced images</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pammixinterlace</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-filter=</b>{<b>linear</b>,
+<b>fir</b>, <b>ffmpeg</b>}]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-adaptive</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<i>infile</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pammixinterlace</b>
+is meant to operate on an image which is the interlacing of
+two images, where raster rows 0, 2, 4, etc. are from one
+image and rows 1, 3, 5, etc. are from another. (See below
+for why you might expect to encounter such an image).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pammixinterlace</b>
+makes each row of the output a mixture of the corresponding
+row of the input and its two neighbors. It uses half of the
+main row and a quarter each of the two neighbor rows.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This can be
+useful if the image is a video capture from an interlaced
+video source. In that case, each row shows the subject 1/60
+second before or after the two rows that surround it. If the
+subject is moving, this can detract from the quality of the
+image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In video data
+streams, you often find each frame contains only half the
+rows of the image -- the odd half or the even half. The
+displayer of the stream displays the rows in their proper
+positions on a CRT as they come in. When you display the
+rows in this order, the CRT has less flicker because a
+particular area of the screen gets refreshed twice as often.
+In the process of capturing such a stream, computers often
+generate the interlaced image of the type that
+<b>pammixinterlace</b> works with. But this interlaced
+image, when displayed on a CRT, does not look the same as if
+a displayer were rendering the stream directly on a CRT as
+it arrived, because of the timing of when the various pixels
+get drawn and subsequently fade. That&rsquo;s why you need
+something like <b>pammixinterlace</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You may prefer
+the effect of simply extracting one of two images. You can
+do that with <b>pamdeinterlace</b>.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pammixinterlace</b> recognizes the following command line
+options: <b><br>
+-filter=</b>{<b>linear</b>,<b>fir</b>,<b>ffmpeg</b>}</p>
+
+<p style="margin-left:22%;">This option chooses between one
+of the three filtering mechanisms. <b>linear</b> is a
+linear-blend formula. <b>fir</b> is a size-5 FIR low-pass
+filter, and <b>ffmpeg</b> is a formula pulled from the
+documentation of the program
+<a href="http://ffmpeg.mplayerhq.hu"><b>ffmpeg</b></a> .</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+<b>fir</b>.</p>
+
+<p style="margin-left:11%;"><b>-adaptive</b></p>
+
+<p style="margin-left:22%;">This option turns on
+&quot;adaptive&quot; filtering mode. In this mode
+<b>pammixinterlace</b> modifies only pixels that are
+obviously part of a &quot;comb&quot; pattern.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamdeinterlace</b>(1),
+<b>pam</b>(1) <b>pnm</b>(1)</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pammixinterlace.html</b></p>
+<hr>
+</body>
+</html>

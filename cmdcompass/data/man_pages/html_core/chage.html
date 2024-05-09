@@ -1,0 +1,288 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:33:56 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>CHAGE</title>
+
+</head>
+<body>
+
+<h1 align="center">CHAGE</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#NOTE">NOTE</a><br>
+<a href="#CONFIGURATION">CONFIGURATION</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#EXIT VALUES">EXIT VALUES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">chage - change
+user password expiry information</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="32%">
+
+
+<p style="margin-top: 1em"><b>chage</b> [<i>options</i>]
+<i>LOGIN</i></p> </td>
+<td width="57%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>chage</b> command changes the number of days between
+password changes and the date of the last password change.
+This information is used by the system to determine when a
+user must change their password.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The options
+which apply to the <b>chage</b> command are:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-d</b>,
+<b>--lastday&nbsp;</b><i>LAST_DAY</i></p>
+
+<p style="margin-left:17%;">Set the number of days since
+January 1st, 1970 when the password was last changed. The
+date may also be expressed in the format YYYY-MM-DD (or the
+format more commonly used in your area). If the
+<i>LAST_DAY</i> is set to <i>0</i> the user is forced to
+change his password on the next log on.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-E</b>,
+<b>--expiredate&nbsp;</b><i>EXPIRE_DATE</i></p>
+
+<p style="margin-left:17%;">Set the date or number of days
+since January 1, 1970 on which the user's account will no
+longer be accessible. The date may also be expressed in the
+format YYYY-MM-DD (or the format more commonly used in your
+area). A user whose account is locked must contact the
+system administrator before being able to use the system
+again.</p>
+
+<p style="margin-left:17%; margin-top: 1em">For example the
+following can be used to set an account to expire in 180
+days:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>chage -E $(date -d +180days +%Y-%m-%d)</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Passing the
+number <i>-1</i> as the <i>EXPIRE_DATE</i> will remove an
+account expiration date.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Display help message and
+exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-i</b>,
+<b>--iso8601</b></p>
+
+<p style="margin-left:17%;">When printing dates, use
+YYYY-MM-DD format.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-I</b>,
+<b>--inactive&nbsp;</b><i>INACTIVE</i></p>
+
+<p style="margin-left:17%;">Set the number of days of
+inactivity after a password has expired before the account
+is locked. The <i>INACTIVE</i> option is the number of days
+of inactivity. A user whose account is locked must contact
+the system administrator before being able to use the system
+again.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Passing the
+number <i>-1</i> as the <i>INACTIVE</i> will remove an
+account's inactivity.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-l</b>,
+<b>--list</b></p>
+
+<p style="margin-left:17%;">Show account aging
+information.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-m</b>,
+<b>--mindays&nbsp;</b><i>MIN_DAYS</i></p>
+
+<p style="margin-left:17%;">Set the minimum number of days
+between password changes to <i>MIN_DAYS</i>. A value of zero
+for this field indicates that the user may change their
+password at any time.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-M</b>,
+<b>--maxdays&nbsp;</b><i>MAX_DAYS</i></p>
+
+<p style="margin-left:17%;">Set the maximum number of days
+during which a password is valid. When <i>MAX_DAYS</i> plus
+<i>LAST_DAY</i> is less than the current day, the user will
+be required to change their password before being able to
+use their account. This occurrence can be planned for in
+advance by use of the <b>-W</b> option, which provides the
+user with advance warning.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Passing the
+number <i>-1</i> as <i>MAX_DAYS</i> will remove checking a
+password's validity.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-R</b>,
+<b>--root&nbsp;</b><i>CHROOT_DIR</i></p>
+
+<p style="margin-left:17%;">Apply changes in the
+<i>CHROOT_DIR</i> directory and use the configuration files
+from the <i>CHROOT_DIR</i> directory. Only absolute paths
+are supported.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-W</b>,
+<b>--warndays&nbsp;</b><i>WARN_DAYS</i></p>
+
+<p style="margin-left:17%;">Set the number of days of
+warning before a password change is required. The
+<i>WARN_DAYS</i> option is the number of days prior to the
+password expiring that a user will be warned their password
+is about to expire.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If none of the
+options are selected, <b>chage</b> operates in an
+interactive fashion, prompting the user with the current
+values for all of the fields. Enter the new value to change
+the field, or leave the line blank to use the current value.
+The current value is displayed between a pair of <i>[ ]</i>
+marks.</p>
+
+<h2>NOTE
+<a name="NOTE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>chage</b> program requires a shadow password file to be
+available.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The chage
+program will report only the information from the shadow
+password file. This implies that configuration from other
+sources (e.g. LDAP or empty password hash field from the
+passwd file) that affect the user's login will not be shown
+in the chage output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>chage</b> program will also not report any inconsistency
+between the shadow and passwd files (e.g. missing x in the
+passwd file). The <b>pwck</b> can be used to check for this
+kind of inconsistencies.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>chage</b> command is restricted to the root user, except
+for the <b>-l</b> option, which may be used by an
+unprivileged user to determine when their password or
+account is due to expire.</p>
+
+<h2>CONFIGURATION
+<a name="CONFIGURATION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+configuration variables in /etc/login.defs change the
+behavior of this tool:</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">/etc/passwd</p>
+
+<p style="margin-left:17%;">User account information.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">/etc/shadow</p>
+
+<p style="margin-left:17%;">Secure user account
+information.</p>
+
+<h2>EXIT VALUES
+<a name="EXIT VALUES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>chage</b> command exits with the following values:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>0</i></p>
+
+<p style="margin-left:17%;">success</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>1</i></p>
+
+<p style="margin-left:17%;">permission denied</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>2</i></p>
+
+<p style="margin-left:17%;">invalid command syntax</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>15</i></p>
+
+<p style="margin-left:17%;">can't find the shadow password
+file</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>passwd</b>(5),
+<b>shadow</b>(5).</p>
+<hr>
+</body>
+</html>

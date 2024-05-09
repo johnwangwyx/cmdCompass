@@ -1,0 +1,354 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:52 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SYSTEMD-DETECT-VIRT</title>
+
+</head>
+<body>
+
+<h1 align="center">SYSTEMD-DETECT-VIRT</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#NOTES">NOTES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">systemd-detect-virt
+- Detect execution in a virtualized environment</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="49%">
+
+
+<p style="margin-top: 1em"><b>systemd-detect-virt</b>
+[OPTIONS...]</p> </td>
+<td width="40%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-detect-virt</b>
+detects execution in a virtualized environment. It
+identifies the virtualization technology and can distinguish
+full machine virtualization from container virtualization.
+systemd-detect-virt exits with a return value of 0 (success)
+if a virtualization technology is detected, and non-zero
+(error) otherwise. By default, any type of virtualization is
+detected, and the options <b>--container</b> and <b>--vm</b>
+can be used to limit what types of virtualization are
+detected.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When executed
+without <b>--quiet</b> will print a short identifier for the
+detected virtualization technology. The following
+technologies are currently identified:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Table&nbsp;1.&nbsp;Known
+virtualization technologies (both VM, i.e. full hardware
+virtualization, and container, i.e. shared kernel
+virtualization) <br>
+&nbsp;</b></p></table>
+
+
+<p align="center"><b><img src="grohtml-189251.png" alt="Image grohtml-189251.png"></b></p>
+
+<p style="margin-left:11%; margin-top: 1em">If multiple
+virtualization solutions are used, only the
+&quot;innermost&quot; is detected and identified. That means
+if both machine and container virtualization are used in
+conjunction, only the latter will be identified (unless
+<b>--vm</b> is passed).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Windows
+Subsystem for Linux is not a Linux container, but an
+environment for running Linux userspace applications on top
+of the Windows kernel using a Linux-compatible interface.
+WSL is categorized as a container for practical purposes.
+Multiple WSL environments share the same kernel and services
+should generally behave like when being run in a
+container.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+options are understood:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-c</b>,
+<b>--container</b></p>
+
+<p style="margin-left:17%;">Only detects container
+virtualization (i.e. shared kernel virtualization).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-v</b>,
+<b>--vm</b></p>
+
+<p style="margin-left:17%;">Only detects hardware
+virtualization.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-r</b>,
+<b>--chroot</b></p>
+
+<p style="margin-left:17%;">Detect whether invoked in a
+<b>chroot</b>(2) environment. In this mode, no output is
+written, but the return value indicates whether the process
+was invoked in a <b>chroot()</b> environment or not.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--private-users</b></p>
+
+<p style="margin-left:17%;">Detect whether invoked in a
+user namespace. In this mode, no output is written, but the
+return value indicates whether the process was invoked
+inside of a user namespace or not. See
+<b>user_namespaces</b>(7) for more information.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-q</b>,
+<b>--quiet</b></p>
+
+<p style="margin-left:17%;">Suppress output of the
+virtualization technology identifier.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--list</b></p>
+
+<p style="margin-left:17%;">Output all currently known and
+detectable container and VM environments.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Print a short help text and
+exit.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--version</b></p>
+
+<p style="margin-left:17%;">Print a short version string
+and exit.</p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If a
+virtualization technology is detected, 0 is returned, a
+non-zero code otherwise.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd</b>(1),
+<b>systemd-nspawn</b>(1), <b>chroot</b>(2),
+<b>namespaces</b>(7)</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em">1.</p></td>
+<td width="2%"></td>
+<td width="23%">
+
+
+<p style="margin-top: 1em">ACRN hypervisor</p></td>
+<td width="60%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%;">https://projectacrn.org</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em">2.</p></td>
+<td width="2%"></td>
+<td width="46%">
+
+
+<p style="margin-top: 1em">Apple virtualization
+framework</p> </td>
+<td width="37%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;">https://developer.apple.com/documentation/virtualization</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em">3.</p></td>
+<td width="2%"></td>
+<td width="29%">
+
+
+<p style="margin-top: 1em">LMHS SRE hypervisor</p></td>
+<td width="54%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;">https://www.lockheedmartin.com/en-us/products/Hardened-Security-for-Intel-Processors.html</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em">4.</p></td>
+<td width="2%"></td>
+<td width="32%">
+
+
+<p style="margin-top: 1em">Google Compute Engine</p></td>
+<td width="51%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;">https://cloud.google.com/compute</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em">5.</p></td>
+<td width="2%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em">Podman</p></td>
+<td width="74%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%;">https://podman.io</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em">6.</p></td>
+<td width="2%"></td>
+<td width="41%">
+
+
+<p style="margin-top: 1em">Windows Subsystem for Linux</p></td>
+<td width="42%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;">https://docs.microsoft.com/en-us/windows/wsl/about</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em">7.</p></td>
+<td width="2%"></td>
+<td width="8%">
+
+
+<p style="margin-top: 1em">proot</p></td>
+<td width="75%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;">https://proot-me.github.io/</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em">8.</p></td>
+<td width="2%"></td>
+<td width="8%">
+
+
+<p style="margin-top: 1em">Pouch</p></td>
+<td width="75%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;">https://github.com/alibaba/pouch</p>
+<hr>
+</body>
+</html>

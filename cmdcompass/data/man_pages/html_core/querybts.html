@@ -1,0 +1,228 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:44 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>querybts</title>
+
+</head>
+<body>
+
+<h1 align="center">querybts</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#CONFIGURATION FILES">CONFIGURATION FILES</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">querybts - view
+outstanding bug reports on a debbugs server</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>querybts</b>
+<i>[options] &lt;package | number [number2]...&gt;</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i><b>querybts</b></i>
+is designed to provide a convenient and easy-to-use
+interface to the Debbugs bug tracking system, as used by
+Debian and several other projects. You can specify a package
+name or one or more report numbers.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The program
+follows the usual GNU command line syntax, with long options
+starting with two dashes (&rsquo;<b>--</b>&rsquo;). A
+summary of options are included below. <b><br>
+-h, --help</b></p>
+
+<p style="margin-left:22%;">Show summary of options.</p>
+
+<p style="margin-left:11%;"><b>--version</b></p>
+
+<p style="margin-left:22%;">Show the version of
+<b>querybts</b> and exit.</p>
+
+<p style="margin-left:11%;"><b>-A, --archive</b></p>
+
+<p style="margin-left:22%;">Browse archived bugs instead of
+current reports. Debbugs servers clear out closed reports
+after 28 days and place them in a separate archive; this
+option allows those older, resolved reports to be viewed (at
+least for servers that maintain an archive).</p>
+
+<p style="margin-left:11%;"><b>-B SYSTEM,
+--bts=SYSTEM</b></p>
+
+<p style="margin-left:22%;">Instead of the Debian bug
+server, use the server specified by <b>SYSTEM</b>. Valid
+options are <b>default</b> and <b>debian</b> but check
+<b>--help</b> for an updated list.</p>
+
+<p style="margin-left:11%;"><b>-b, --buglist</b></p>
+
+<p style="margin-left:22%;">Display a bugs list for the
+given package.</p>
+
+<p style="margin-left:11%;"><b>--latest-first</b></p>
+
+<p style="margin-left:22%;">Display the bug reports list
+sorted and with the latest reports at the top.</p>
+
+
+<p style="margin-left:11%;"><b>--mbox-reader-cmd=MBOX_READER_CMD</b></p>
+
+<p style="margin-left:22%;">Specify a command to open the
+bug reports mbox file. You can use <b>%s</b> to substitute
+the mbox file to be used, and <b>%%</b> to insert a literal
+percent sign. If no <b>%s</b> is specified, the mbox file
+name is supplied at the end of the argument list.</p>
+
+<p style="margin-left:11%;"><b>-m, --mbox</b></p>
+
+<p style="margin-left:22%;">Retrieve the given bug
+number(s) or package name(s) as a mailbox file, instead of
+viewing it. It will be dumped to standard output.</p>
+
+<p style="margin-left:11%;"><b>--proxy=PROXY,
+--http_proxy=PROXY</b></p>
+
+<p style="margin-left:22%;">Specify the WWW proxy server to
+use to handle the queries to the bug tracking system. You
+should only need this parameter if you are behind a
+firewall.</p>
+
+<p style="margin-left:11%;"><b>-s, --source</b></p>
+
+<p style="margin-left:22%;">Query on source packages,
+rather than binary packages.</p>
+
+<p style="margin-left:11%;"><b>--timeout=SECONDS</b></p>
+
+<p style="margin-left:22%;">Specify the network timeout,
+the number of seconds to wait for a resource to respond. If
+nothing is specified, a default timeout of 1 minute is
+selected.</p>
+
+<p style="margin-left:22%; margin-top: 1em">In case of a
+network error, there are chances it&rsquo;s due to a too low
+timeout: try passing the --timeout option with a higher
+value than default.</p>
+
+<p style="margin-left:11%;"><b>-u INTERFACE,
+--ui=INTERFACE, --interface=INTERFACE</b></p>
+
+<p style="margin-left:22%;">Specify the user interface to
+use. Valid options are <b>text</b>, <b>urwid</b>,
+<b>gtk</b>; default is taken from the reportbug
+configuration files.</p>
+
+<p style="margin-left:11%;"><b>-w, --web</b></p>
+
+<p style="margin-left:22%;">Launch a web browser to view
+bug reports, instead of using the internal interface. This
+will also allow you to see the whole discussion about a
+particular bug at once, instead of one message at a time as
+<b>querybts</b> would do. (Only the first bug number on the
+command line will be opened.)</p>
+
+<h2>CONFIGURATION FILES
+<a name="CONFIGURATION FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>querybts</b>
+supports a simple run control file syntax. Commands are read
+from <b>/etc/reportbug.conf</b> and
+<b>$HOME/.reportbugrc</b> with commands in the latter
+overriding those in the former.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Commands are
+not case sensitive, and currently take 0 or 1 argument;
+arguments containing whitespace must be enclosed in
+quotes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Any line
+starting with # is taken to be a comment and will be
+ignored.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Generally,
+options corresponding to the long options for
+<b>querybts</b> are supported, without leading <b>--</b>
+sequences. See the default <b>/etc/reportbug.conf</b> for
+all acceptable options and <b>reportbug.conf(5)</b> for all
+acceptable options and detailed information.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Options only
+supported by <b>reportbug</b> will be silently ignored.</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>http_proxy</b></p>
+
+<p style="margin-left:22%;">Provides the address of a proxy
+server to handle the BTS query. This should be a valid
+<b>http</b> URL for a proxy server, including any required
+port number (simply specifying a hostname, or omitting a
+port other than 80, WILL NOT WORK).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">reportbug(1),
+reportbug.conf(5)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Chris Lawrence
+&lt;lawrencc@debian.org&gt;, Sandro Tosi
+&lt;morph@debian.org&gt;.</p>
+<hr>
+</body>
+</html>

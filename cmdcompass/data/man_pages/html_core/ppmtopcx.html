@@ -1,0 +1,309 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:39 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Ppmtopcx User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Ppmtopcx User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ppmtopcx -
+convert a PPM image to a PCX file</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmtopcx</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-24bit</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-8bit</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-packed</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-stdpalette</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-palette=</b><i>palettefile</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-planes=</b><i>planes</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-xpos=</b><i>cols</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-ypos=</b><i>rows</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<i>ppmfile</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmtopcx</b>
+reads a PPM image as input and produces a PCX file as
+output. The type of the PCX file depends on the number of
+colors in the input image: <br>
+16 colors or fewer:</p>
+
+<p style="margin-left:22%;">1 bit/pixel, 1-4 planes,
+colormap in header</p>
+
+<p style="margin-left:11%;">more than 16 colors, but no
+more than 256:</p>
+
+<p style="margin-left:22%;">8 bits/pixel, 1 plane, colormap
+at the end of the file.</p>
+
+<p style="margin-left:11%;">More than 256 colors:</p>
+
+<p style="margin-left:22%;">24bit truecolor file (8
+bits/pixel, 3 planes).</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can
+override some of that and explicitly choose the format with
+the options below.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>ppmtopcx</b> recognizes the following command line
+options:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-24bit</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Produce a 24bit truecolor PCX file, even if the image
+has 256 colors or fewer.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-8bit</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Produce an 8bit (256 colors) PCX file, even if the image
+has 16 colors or fewer.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+added in Netpbm 10.18 (August 2003).</p>
+
+<p style="margin-left:11%;"><b>-packed</b></p>
+
+<p style="margin-left:22%;">Use &quot;packed pixel&quot;
+format for files with 16 colors or fewer: 1, 2, or 4
+bits/pixel, 1 plane.</p>
+
+<p style="margin-left:11%;"><b>-stdpalette</b></p>
+
+<p style="margin-left:22%;">Instead of computing a palette
+from the colors in the image, use a standard, built-in 16
+color palette. If the image contains a color that is not in
+the standard palette, <b>ppmtopcx</b> fails.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The standard
+palette is not only a set of colors, but a specific mapping
+of palette indexes to colors. E.g. red is 4.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You can use
+<b>pnmremap</b> with a suitable PPM image of the standard
+palette to adapt your image to use exactly those colors in
+the palette so that <b>ppmtopcx -stdpalette</b> will work on
+it.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The file
+<b>pcxstd.ppm</b>, part of Netpbm, contains the standard
+palette.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Although the
+PCX header tells exactly what palette is used in the file,
+some older PCX interpreters do not use that information.
+They instead assume the standard palette. If you don&rsquo;t
+use the <b>-stdpalette</b> option, <b>ppmtopcx</b>,
+<b>ppmtopcx</b> may create an image that uses a different
+palette (a rearrangement of the same colors) and then one of
+these older interpreters would interpret the colors in the
+image wrong.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You cannot
+specify this option along with <b>-palette</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.22 (April 2004).</p>
+
+
+<p style="margin-left:11%;"><b>-palette=</b><i>palettefile</i></p>
+
+<p style="margin-left:22%;">Instead of computing the
+palette from the colors in the image, use the palette from
+the file <i>palettefile</i>. If the palette contains a color
+that is not in that palette, <b>ppmtopcx</b> fails.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The palette
+file must be a PPM image that contains one pixel for each
+color in the palette. It doesn&rsquo;t matter what the
+aspect ratio of the palette image is. The order of the
+colors in the PCX palette is the order of the pixels in the
+PPM image in standard western reading order (left to right,
+top to bottom). If there is a duplicate color in the
+palette, <b>ppmtopcx</b> chooses between them arbitrarily in
+building the PCX raster.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You would need
+this only if you have a PCX reader that can&rsquo;t read the
+palette that is in the PCX file and instead assumes some
+particular palette. See also the <b>-stdpalette</b>
+option.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If your input
+image might contain colors other than those in your palette,
+you can convert the input image to one that contains only
+those colors in your palette with <b>pnmremap</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You cannot
+specify this along with <b>-stdpalette</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbhm 10.25 (October 2004).</p>
+
+
+<p style="margin-left:11%;"><b>-planes=</b><i>planes</i></p>
+
+<p style="margin-left:22%;">Generate a PCX file with
+<i>planes</i> planes, even though the number of colors in
+the image could be represented in fewer. This makes the file
+larger, but some PCX interpreters are capable of processing
+only certain numbers of planes.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This is
+meaningful only when <b>ppmtopcx</b> generates an image in
+the 16 color palette format without packed pixels.
+Consequently, you cannot specify this option together with
+<b>-24bit</b> or <b>-8bit</b> or <b>-packed</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The valid
+values for <i>planes</i> are 1, 2, 3, and 4. By default,
+<b>ppmtopcx</b> chooses the smallest number of planes that
+can represent the colors in the image. E.g. if there are 5
+colors, <b>ppmtopcx</b> chooses 3 planes.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.21 (March 2004).</p>
+
+<p style="margin-left:11%;"><b>-xpos=</b><i>cols</i>
+<b><br>
+-ypos=</b><i>rows</i></p>
+
+<p style="margin-left:22%;">These options set the position
+of the image in some field (e.g. on a screen) in columns to
+the right of the left edge and rows below the top edge. The
+PCX format contains image position information. Don&rsquo;t
+confuse this with the position of an area of interest within
+the image. For example, using <b>pnmpad</b> to add a 10
+pixel left border to an image and then converting that image
+to PCX with xpos = 0 is not the same as converting the
+original image to PCX and setting xpos = 10.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The values may
+be from -32767 to 32768.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default for
+each is zero.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pcxtoppm</b>(1),
+<b>ppm</b>(1)</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1994 by Ingo Wilken
+(<i>Ingo.Wilken@informatik.uni-oldenburg.de</i>)</p>
+
+<p style="margin-left:11%; margin-top: 1em">Based on
+previous work by Michael Davidson.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/ppmtopcx.html</b></p>
+<hr>
+</body>
+</html>

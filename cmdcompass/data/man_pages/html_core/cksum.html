@@ -1,0 +1,357 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:33:57 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>CKSUM</title>
+
+</head>
+<body>
+
+<h1 align="center">CKSUM</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">cksum - compute
+and verify file checksums</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>cksum</b>
+[<i>OPTION</i>]... [<i>FILE</i>]...</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Print or verify
+checksums. By default use the 32 bit CRC algorithm.</p>
+
+<p style="margin-left:11%; margin-top: 1em">With no FILE,
+or when FILE is -, read standard input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Mandatory
+arguments to long options are mandatory for short options
+too. <b><br>
+-a</b>, <b>--algorithm</b>=<i>TYPE</i></p>
+
+<p style="margin-left:22%;">select the digest type to use.
+See DIGEST below.</p>
+
+<p style="margin-left:11%;"><b>-c</b>, <b>--check</b></p>
+
+<p style="margin-left:22%;">read checksums from the FILEs
+and check them</p>
+
+<p style="margin-left:11%;"><b>-l</b>,
+<b>--length</b>=<i>BITS</i></p>
+
+<p style="margin-left:22%;">digest length in bits; must not
+exceed the max for the blake2 algorithm and must be a
+multiple of 8</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>--tag</b></p></td>
+<td width="4%"></td>
+<td width="63%">
+
+
+<p>create a BSD-style checksum (the default)</p></td>
+<td width="15%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--untagged</b></p>
+
+<p style="margin-left:22%;">create a reversed style
+checksum, without digest type</p>
+
+<p style="margin-left:11%;"><b>-z</b>, <b>--zero</b></p>
+
+<p style="margin-left:22%;">end each output line with NUL,
+not newline, and disable file name escaping</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>The
+following five options are useful only when verifying
+checksums: <br>
+--ignore-missing</b></p>
+
+<p style="margin-left:22%;">don&rsquo;t fail or report
+status for missing files</p>
+
+<p style="margin-left:11%;"><b>--quiet</b></p>
+
+<p style="margin-left:22%;">don&rsquo;t print OK for each
+successfully verified file</p>
+
+<p style="margin-left:11%;"><b>--status</b></p>
+
+<p style="margin-left:22%;">don&rsquo;t output anything,
+status code shows success</p>
+
+<p style="margin-left:11%;"><b>--strict</b></p>
+
+<p style="margin-left:22%;">exit non-zero for improperly
+formatted checksum lines</p>
+
+<p style="margin-left:11%;"><b>-w</b>, <b>--warn</b></p>
+
+<p style="margin-left:22%;">warn about improperly formatted
+checksum lines</p>
+
+<p style="margin-left:11%;"><b>--debug</b></p>
+
+<p style="margin-left:22%;">indicate which implementation
+used</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--help</b></p></td>
+<td width="2%"></td>
+<td width="40%">
+
+
+<p>display this help and exit</p></td>
+<td width="38%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--version</b></p>
+
+<p style="margin-left:22%;">output version information and
+exit</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>DIGEST
+determines the digest algorithm and default output
+format:</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>sysv</p></td>
+<td width="2%"></td>
+<td width="38%">
+
+
+<p>(equivalent to sum <b>-s</b>)</p></td>
+<td width="40%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>bsd</p></td>
+<td width="2%"></td>
+<td width="38%">
+
+
+<p>(equivalent to sum <b>-r</b>)</p></td>
+<td width="40%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>crc</p></td>
+<td width="2%"></td>
+<td width="38%">
+
+
+<p>(equivalent to cksum)</p></td>
+<td width="40%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>md5</p></td>
+<td width="2%"></td>
+<td width="38%">
+
+
+<p>(equivalent to md5sum)</p></td>
+<td width="40%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>sha1</p></td>
+<td width="2%"></td>
+<td width="38%">
+
+
+<p>(equivalent to sha1sum)</p></td>
+<td width="40%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>sha224</p></td>
+<td width="2%"></td>
+<td width="38%">
+
+
+<p>(equivalent to sha224sum)</p></td>
+<td width="40%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>sha256</p></td>
+<td width="2%"></td>
+<td width="38%">
+
+
+<p>(equivalent to sha256sum)</p></td>
+<td width="40%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>sha384</p></td>
+<td width="2%"></td>
+<td width="38%">
+
+
+<p>(equivalent to sha384sum)</p></td>
+<td width="40%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>sha512</p></td>
+<td width="2%"></td>
+<td width="38%">
+
+
+<p>(equivalent to sha512sum)</p></td>
+<td width="40%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;">blake2b</p>
+
+<p style="margin-left:22%;">(equivalent to b2sum)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>sm3</p></td>
+<td width="7%"></td>
+<td width="46%">
+
+
+<p>(only available through cksum)</p></td>
+<td width="32%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">When checking,
+the input should be a former output of this program, or
+equivalent standalone program.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Written by
+Padraig Brady and Q. Frank Xia.</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">GNU coreutils
+online help: &lt;https://www.gnu.org/software/coreutils/&gt;
+<br>
+Report any translation bugs to
+&lt;https://translationproject.org/team/&gt;</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+&copy; 2022 Free Software Foundation, Inc. License GPLv3+:
+GNU GPL version 3 or later
+&lt;https://gnu.org/licenses/gpl.html&gt;. <br>
+This is free software: you are free to change and
+redistribute it. There is NO WARRANTY, to the extent
+permitted by law.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Full
+documentation
+&lt;https://www.gnu.org/software/coreutils/cksum&gt; <br>
+or available locally via: info '(coreutils) cksum
+invocation'</p>
+<hr>
+</body>
+</html>

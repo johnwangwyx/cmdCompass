@@ -1,0 +1,512 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:10 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>HEXDUMP</title>
+
+</head>
+<body>
+
+<h1 align="center">HEXDUMP</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#FORMATS">FORMATS</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#COLORS">COLORS</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#AVAILABILITY">AVAILABILITY</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">hexdump -
+display file contents in hexadecimal, decimal, octal, or
+ascii</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>hexdump</b>
+<i>options file</i> ...</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>hd</b>
+<i>options file</i> ...</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>hexdump</b> utility is a filter which displays the
+specified files, or standard input if no files are
+specified, in a user-specified format.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Below, the
+<i>length</i> and <i>offset</i> arguments may be followed by
+the multiplicative suffixes KiB (=1024), MiB (=1024*1024),
+and so on for GiB, TiB, PiB, EiB, ZiB and YiB (the
+&quot;iB&quot; is optional, e.g., &quot;K&quot; has the same
+meaning as &quot;KiB&quot;), or the suffixes KB (=1000), MB
+(=1000*1000), and so on for GB, TB, PB, EB, ZB and YB.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-b</b>,
+<b>--one-byte-octal</b></p>
+
+<p style="margin-left:17%;"><i>One-byte octal display</i>.
+Display the input offset in hexadecimal, followed by sixteen
+space-separated, three-column, zero-filled bytes of input
+data, in octal, per line.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-c</b>,
+<b>--one-byte-char</b></p>
+
+<p style="margin-left:17%;"><i>One-byte character
+display</i>. Display the input offset in hexadecimal,
+followed by sixteen space-separated, three-column,
+space-filled characters of input data per line.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-C</b>,
+<b>--canonical</b></p>
+
+<p style="margin-left:17%;"><i>Canonical hex+ASCII
+display</i>. Display the input offset in hexadecimal,
+followed by sixteen space-separated, two-column, hexadecimal
+bytes, followed by the same sixteen bytes in <b>%_p</b>
+format enclosed in <b>|</b> characters. Invoking the program
+as <b>hd</b> implies this option.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-d</b>,
+<b>--two-bytes-decimal</b></p>
+
+<p style="margin-left:17%;"><i>Two-byte decimal
+display</i>. Display the input offset in hexadecimal,
+followed by eight space-separated, five-column, zero-filled,
+two-byte units of input data, in unsigned decimal, per
+line.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-e</b>,
+<b>--format</b> <i>format_string</i></p>
+
+<p style="margin-left:17%;">Specify a format string to be
+used for displaying data.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-f</b>,
+<b>--format-file</b> <i>file</i></p>
+
+<p style="margin-left:17%;">Specify a file that contains
+one or more newline-separated format strings. Empty lines
+and lines whose first non-blank character is a hash mark (#)
+are ignored.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-L</b>,
+<b>--color</b>[=<i>when</i>]</p>
+
+<p style="margin-left:17%;">Accept color units for the
+output. The optional argument <i>when</i> can be
+<b>auto</b>, <b>never</b> or <b>always</b>. If the
+<i>when</i> argument is omitted, it defaults to <b>auto</b>.
+The colors can be disabled; for the current built-in default
+see the <b>--help</b> output. See also the <b>Colors</b>
+subsection and the <b>COLORS</b> section below.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-n</b>,
+<b>--length</b> <i>length</i></p>
+
+<p style="margin-left:17%;">Interpret only <i>length</i>
+bytes of input.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-o</b>,
+<b>--two-bytes-octal</b></p>
+
+<p style="margin-left:17%;"><i>Two-byte octal display</i>.
+Display the input offset in hexadecimal, followed by eight
+space-separated, six-column, zero-filled, two-byte
+quantities of input data, in octal, per line.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-s</b>,
+<b>--skip</b> <i>offset</i></p>
+
+<p style="margin-left:17%;">Skip <i>offset</i> bytes from
+the beginning of the input.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-v</b>,
+<b>--no-squeezing</b></p>
+
+<p style="margin-left:17%;">The <b>-v</b> option causes
+<b>hexdump</b> to display all input data. Without the
+<b>-v</b> option, any number of groups of output lines which
+would be identical to the immediately preceding group of
+output lines (except for the input offsets), are replaced
+with a line comprised of a single asterisk.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-x</b>,
+<b>--two-bytes-hex</b></p>
+
+<p style="margin-left:17%;"><i>Two-byte hexadecimal
+display</i>. Display the input offset in hexadecimal,
+followed by eight space-separated, four-column, zero-filled,
+two-byte quantities of input data, in hexadecimal, per
+line.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Display help text and exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-V</b>,
+<b>--version</b></p>
+
+<p style="margin-left:17%;">Print version and exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For each input
+file, <b>hexdump</b> sequentially copies the input to
+standard output, transforming the data according to the
+format strings specified by the <b>-e</b> and <b>-f</b>
+options, in the order that they were specified.</p>
+
+<h2>FORMATS
+<a name="FORMATS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">A format string
+contains any number of format units, separated by
+whitespace. A format unit contains up to three items: an
+iteration count, a byte count, and a format.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The iteration
+count is an optional positive integer, which defaults to
+one. Each format is applied iteration count times.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The byte count
+is an optional positive integer. If specified it defines the
+number of bytes to be interpreted by each iteration of the
+format.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If an iteration
+count and/or a byte count is specified, a single slash must
+be placed after the iteration count and/or before the byte
+count to disambiguate them. Any whitespace before or after
+the slash is ignored.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The format is
+required and must be surrounded by double quote (&quot;
+&quot;) marks. It is interpreted as a fprintf-style format
+string (see <b>fprintf</b>(3)), with the following
+exceptions:</p>
+
+<p style="margin-left:11%; margin-top: 1em">1.</p>
+
+<p style="margin-left:17%;">An asterisk (*) may not be used
+as a field width or precision.</p>
+
+<p style="margin-left:11%; margin-top: 1em">2.</p>
+
+<p style="margin-left:17%;">A byte count or field precision
+<i>is</i> required for each <b>s</b> conversion character
+(unlike the <b>fprintf</b>(3) default which prints the
+entire string if the precision is unspecified).</p>
+
+<p style="margin-left:11%; margin-top: 1em">3.</p>
+
+<p style="margin-left:17%;">The conversion characters
+<b>h</b>, <b>l</b>, <b>n</b>, <b>p</b>, and <b>q</b> are not
+supported.</p>
+
+<p style="margin-left:11%; margin-top: 1em">4.</p>
+
+<p style="margin-left:17%;">The single character escape
+sequences described in the C standard are supported:</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-79871.png" alt="Image grohtml-79871.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Conversion
+strings</b> <br>
+The <b>hexdump</b> utility also supports the following
+additional conversion strings.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>_a[dox]</b></p>
+
+<p style="margin-left:17%;">Display the input offset,
+cumulative across input files, of the next byte to be
+displayed. The appended characters <b>d</b>, <b>o</b>, and
+<b>x</b> specify the display base as decimal, octal or
+hexadecimal respectively.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>_A[dox]</b></p>
+
+<p style="margin-left:17%;">Almost identical to the
+<b>_a</b> conversion string except that it is only performed
+once, when all of the input data has been processed.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>_c</b></p>
+
+<p style="margin-left:17%;">Output characters in the
+default character set. Non-printing characters are displayed
+in three-character, zero-padded octal, except for those
+representable by standard escape notation (see above), which
+are displayed as two-character strings.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>_p</b></p>
+
+<p style="margin-left:17%;">Output characters in the
+default character set. Non-printing characters are displayed
+as a single '<b>.</b>'.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>_u</b></p>
+
+<p style="margin-left:17%;">Output US ASCII characters,
+with the exception that control characters are displayed
+using the following, lower-case, names. Characters greater
+than 0xff, hexadecimal, are displayed as hexadecimal
+strings.</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-79872.png" alt="Image grohtml-79872.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Colors</b>
+<br>
+When put at the end of a format specifier, <b>hexdump</b>
+highlights the respective string with the color specified.
+Conditions, if present, are evaluated prior to
+highlighting.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>_L[color_unit_1,color_unit_2,...,color_unit_n]</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">The full syntax
+of a color unit is as follows:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>[!]COLOR[:VALUE][@OFFSET_START[-END]]</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>!</b></p>
+
+<p style="margin-left:17%;">Negate the condition. Please
+note that it only makes sense to negate a unit if both a
+value/string and an offset are specified. In that case the
+respective output string will be highlighted if and only if
+the value/string does not match the one at the offset.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>COLOR</b></p>
+
+<p style="margin-left:17%;">One of the 8 basic shell
+colors.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>VALUE</b></p>
+
+<p style="margin-left:17%;">A value to be matched specified
+in hexadecimal, or octal base, or as a string. Please note
+that the usual C escape sequences are not interpreted by
+<b>hexdump</b> inside the color_units.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OFFSET</b></p>
+
+<p style="margin-left:17%;">An offset or an offset range at
+which to check for a match. Please note that lone
+OFFSET_START uses the same value as END offset.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Counters</b>
+<br>
+The default and supported byte counts for the conversion
+characters are as follows:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>%_c</b>,
+<b>%_p</b>, <b>%_u</b>, <b>%c</b></p>
+
+<p style="margin-left:17%;">One byte counts only.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>%d</b>,
+<b>%i</b>, <b>%o</b>, <b>%u</b>, <b>%X</b>, <b>%x</b></p>
+
+<p style="margin-left:17%;">Four byte default, one, two and
+four byte counts supported.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>%E</b>,
+<b>%e</b>, <b>%f</b>, <b>%G</b>, <b>%g</b></p>
+
+<p style="margin-left:17%;">Eight byte default, four byte
+counts supported.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The amount of
+data interpreted by each format string is the sum of the
+data required by each format unit, which is the iteration
+count times the byte count, or the iteration count times the
+number of bytes required by the format if the byte count is
+not specified.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The input is
+manipulated in <i>blocks</i>, where a block is defined as
+the largest amount of data specified by any format string.
+Format strings interpreting less than an input block&rsquo;s
+worth of data, whose last format unit both interprets some
+number of bytes and does not have a specified iteration
+count, have the iteration count incremented until the entire
+input block has been processed or there is not enough data
+remaining in the block to satisfy the format string.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If, either as a
+result of user specification or <b>hexdump</b> modifying the
+iteration count as described above, an iteration count is
+greater than one, no trailing whitespace characters are
+output during the last iteration.</p>
+
+<p style="margin-left:11%; margin-top: 1em">It is an error
+to specify a byte count as well as multiple conversion
+characters or strings unless all but one of the conversion
+characters or strings is <b>_a</b> or <b>_A</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If, as a result
+of the specification of the <b>-n</b> option or end-of-file
+being reached, input data only partially satisfies a format
+string, the input block is zero-padded sufficiently to
+display all available data (i.e., any format units
+overlapping the end of data will display some number of the
+zero bytes).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Further output
+by such format strings is replaced by an equivalent number
+of spaces. An equivalent number of spaces is defined as the
+number of spaces output by an <b>s</b> conversion character
+with the same field width and precision as the original
+conversion character or conversion string but with any
+'<b>+</b>', ' ', '<b>#</b>' conversion flag characters
+removed, and referencing a NULL string.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If no format
+strings are specified, the default display is very similar
+to the <b>-x</b> output format (the <b>-x</b> option causes
+more space to be used between format units than in the
+default output).</p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>hexdump</b>
+exits 0 on success and &gt; 0 if an error occurred.</p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>hexdump</b> utility is expected to be IEEE Std 1003.2
+(&quot;POSIX.2&quot;) compatible.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Display the
+input in perusal format:</p>
+
+<p style="margin-left:17%; margin-top: 1em">&quot;%06.6_ao
+&quot; 12/1 &quot;%3_u &quot; <br>
+&quot;\t&quot; &quot;%_p &quot; <br>
+&quot;\n&quot;</p>
+
+<p style="margin-left:11%; margin-top: 1em">Implement the
+<b>-x</b> option:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&quot;%07.7_Ax\n&quot;
+<br>
+&quot;%07.7_ax &quot; 8/2 &quot;%04x &quot;
+&quot;\n&quot;</p>
+
+<p style="margin-left:11%; margin-top: 1em">MBR Boot
+Signature example: Highlight the addresses cyan and the
+bytes at offsets 510 and 511 green if their value is 0xAA55,
+red otherwise.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">&quot;%07.7_Ax_L[cyan]\n&quot;
+<br>
+&quot;%07.7_ax_L[cyan] &quot; 8/2 &quot;
+%04x_L[green:0xAA55@510-511,!red:0xAA55@510-511] &quot;
+&quot;\n&quot;</p>
+
+<h2>COLORS
+<a name="COLORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The output
+colorization is implemented by <b>terminal-colors.d</b>(5)
+functionality. Implicit coloring can be disabled by an empty
+file</p>
+
+
+<p style="margin-left:15%; margin-top: 1em"><i>/etc/terminal-colors.d/hexdump.disable</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">for the
+<b>hexdump</b> command or for all tools by</p>
+
+
+<p style="margin-left:15%; margin-top: 1em"><i>/etc/terminal-colors.d/disable</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+user-specific <i>$XDG_CONFIG_HOME/terminal-colors.d</i> or
+<i>$HOME/.config/terminal-colors.d</i> overrides the global
+setting.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that the
+output colorization may be enabled by default, and in this
+case <i>terminal-colors.d</i> directories do not have to
+exist yet.</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For bug
+reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+
+<h2>AVAILABILITY
+<a name="AVAILABILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>hexdump</b> command is part of the util-linux package
+which can be downloaded from <i>Linux Kernel Archive</i>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>
+<hr>
+</body>
+</html>

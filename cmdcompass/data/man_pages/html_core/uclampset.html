@@ -1,0 +1,274 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:56 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>UCLAMPSET</title>
+
+</head>
+<body>
+
+<h1 align="center">UCLAMPSET</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#USAGE">USAGE</a><br>
+<a href="#PERMISSIONS">PERMISSIONS</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#AVAILABILITY">AVAILABILITY</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">uclampset -
+manipulate the utilization clamping attributes of the system
+or a process</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>uclampset</b>
+[options] [<b>-m</b> <i>uclamp_min</i>] [<b>-M</b>
+<i>uclamp_max] _command argument</i></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>uclampset</b>
+[options] [<b>-m</b> <i>uclamp_min</i>] [<b>-M</b>
+<i>uclamp_max</i>] <b>-p</b> <i>PID</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i><b>uclampset</b></i>
+sets or retrieves the utilization clamping attributes of an
+existing <i>PID</i>, or runs <i>command</i> with the given
+attributes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Utilization
+clamping is a new feature added in v5.3. It gives a hint to
+the scheduler about the allowed range of utilization the
+task should be operating at.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The utilization
+of the task affects frequency selection and task placement.
+Only schedutil cpufreq governor understands handling util
+clamp hints at the time of writing. Consult your kernel docs
+for further info about other cpufreq governors support.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you&rsquo;re
+running on asymmetric heterogeneous system like Arm&rsquo;s
+big.LITTLE. Utilization clamping can help bias task
+placement. If the task is boosted such that <i>util_min</i>
+value is higher than the little cores' capacity, then the
+scheduler will do its best to place it on a big core.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Similarly, if
+<i>util_max</i> is smaller than or equal the capacity of the
+little cores, then the scheduler can still choose to place
+it there even if the actual utilization of the task is at
+max.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Setting a
+task&rsquo;s <i>uclamp_min</i> to a none zero value will
+effectively boost the task as when it runs it&rsquo;ll
+always start from this utilization value.</p>
+
+<p style="margin-left:11%; margin-top: 1em">By setting a
+task&rsquo;s <i>uclamp_max</i> below 1024, this will
+effectively cap the task as when it runs it&rsquo;ll never
+be able to go above this utilization value.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The full
+utilization range is: [0:1024]. The special value -1 is used
+to reset to system&rsquo;s default.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-m</b></p>
+
+<p style="margin-left:17%;">Set <i>util_min</i> value.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-M</b></p>
+
+<p style="margin-left:17%;">Set <i>util_max</i> value.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-a</b>,
+<b>--all-tasks</b></p>
+
+<p style="margin-left:17%;">Set or retrieve the utilization
+clamping attributes of all the tasks (threads) for a given
+PID.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-p</b>,
+<b>--pid</b></p>
+
+<p style="margin-left:17%;">Operate on an existing PID and
+do not launch a new task.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-s</b>,
+<b>--system</b></p>
+
+<p style="margin-left:17%;">Set or retrieve the system-wide
+utilization clamping attributes.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-R</b>,
+<b>--reset-on-fork</b></p>
+
+<p style="margin-left:17%;">Set
+<b>SCHED_FLAG_RESET_ON_FORK</b> flag.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-v</b>,
+<b>--verbose</b></p>
+
+<p style="margin-left:17%;">Show status information.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Display help text and exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-V</b>,
+<b>--version</b></p>
+
+<p style="margin-left:17%;">Print version and exit.</p>
+
+<h2>USAGE
+<a name="USAGE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The default
+behavior is to run a new command:</p>
+
+<p style="margin-left:17%;"><b>uclampset</b> <i>[-m
+uclamp_min] [-M uclamp_max] command</i>
+[<i>arguments</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can also
+retrieve the utilization clamping attributes of an existing
+task:</p>
+
+<p style="margin-left:17%;"><b>uclampset -p</b>
+<i>PID</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">Or set
+them:</p>
+
+<p style="margin-left:17%;"><b>uclampset -p</b> <i>PID [-m
+uclamp_min] [-M uclamp_max]</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">Or control the
+system-wide attributes:</p>
+
+<p style="margin-left:17%;"><b>uclampset -s</b> <i>[-m
+uclamp_min] [-M uclamp_max]</i></p>
+
+<h2>PERMISSIONS
+<a name="PERMISSIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">A user must
+possess <b>CAP_SYS_NICE</b> to change the scheduling
+attributes of a process. Any user can retrieve the
+scheduling information.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The system wide
+utilization clamp attributes are there to control the
+<i>allowed</i> range the tasks can use. By default both
+<i>uclamp_min</i> and <i>uclamp_max</i> are set to 1024.
+This means users can set the utilization clamp values for
+their task across the full range [0:1024].</p>
+
+<p style="margin-left:11%; margin-top: 1em">For
+example:</p>
+
+<p style="margin-left:17%;"><b>uclampset -s</b> -m 512 -M
+700</p>
+
+<p style="margin-left:11%; margin-top: 1em">will prevent
+any task from being boosted higher than 512. And all tasks
+in the systems are capped to a utilization of 700.
+Effectively rendering the maximum performance of the system
+to 700.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Consult your
+kernel docs for the exact expected behavior on that
+kernel.</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Qais
+Yousef</i> &lt;qais.yousef@arm.com&gt;</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>nice</b>(1),
+<b>renice</b>(1), <b>taskset</b>(1), <b>sched</b>(7)</p>
+
+<p style="margin-left:11%; margin-top: 1em">See
+<b>sched_setscheduler</b>(2) and <b>sched_setattr</b>(2) for
+a description of the Linux scheduling scheme.</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For bug
+reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+
+<h2>AVAILABILITY
+<a name="AVAILABILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>uclampset</b> command is part of the util-linux package
+which can be downloaded from <i>Linux Kernel Archive</i>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>
+<hr>
+</body>
+</html>

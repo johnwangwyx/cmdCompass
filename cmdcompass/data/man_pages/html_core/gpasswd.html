@@ -1,0 +1,318 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:06 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GPASSWD</title>
+
+</head>
+<body>
+
+<h1 align="center">GPASSWD</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#CAVEATS">CAVEATS</a><br>
+<a href="#CONFIGURATION">CONFIGURATION</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">gpasswd -
+administer /etc/group and /etc/gshadow</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="34%">
+
+
+<p style="margin-top: 1em"><b>gpasswd</b> [<i>option</i>]
+<i>group</i></p> </td>
+<td width="55%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>gpasswd</b> command is used to administer /etc/group, and
+/etc/gshadow. Every group can have administrators, members
+and a password.</p>
+
+<p style="margin-left:11%; margin-top: 1em">System
+administrators can use the <b>-A</b> option to define group
+administrator(s) and the <b>-M</b> option to define members.
+They have all rights of group administrators and
+members.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>gpasswd</b>
+called by a group administrator with a group name only
+prompts for the new password of the <i>group</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If a password
+is set the members can still use <b>newgrp</b>(1) without a
+password, and non-members must supply the password.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Notes about
+group passwords</b> <br>
+Group passwords are an inherent security problem since more
+than one person is permitted to know the password. However,
+groups are a useful tool for permitting co-operation between
+different users.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Except for the
+<b>-A</b> and <b>-M</b> options, the options cannot be
+combined.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The options
+which apply to the <b>gpasswd</b> command are:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-a</b>,
+<b>--add&nbsp;</b><i>user</i></p>
+
+<p style="margin-left:17%;">Add the <i>user</i> to the
+named <i>group</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-d</b>,
+<b>--delete&nbsp;</b><i>user</i></p>
+
+<p style="margin-left:17%;">Remove the <i>user</i> from the
+named <i>group</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Display help message and
+exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-Q</b>,
+<b>--root&nbsp;</b><i>CHROOT_DIR</i></p>
+
+<p style="margin-left:17%;">Apply changes in the
+<i>CHROOT_DIR</i> directory and use the configuration files
+from the <i>CHROOT_DIR</i> directory. Only absolute paths
+are supported.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-r</b>,
+<b>--remove-password</b></p>
+
+<p style="margin-left:17%;">Remove the password from the
+named <i>group</i>. The group password will be empty. Only
+group members will be allowed to use <b>newgrp</b> to join
+the named <i>group</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-R</b>,
+<b>--restrict</b></p>
+
+<p style="margin-left:17%;">Restrict the access to the
+named <i>group</i>. The group password is set to
+&quot;!&quot;. Only group members with a password will be
+allowed to use <b>newgrp</b> to join the named
+<i>group</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-A</b>,
+<b>--administrators&nbsp;</b><i>user</i>,...</p>
+
+<p style="margin-left:17%;">Set the list of administrative
+users.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-M</b>,
+<b>--members&nbsp;</b><i>user</i>,...</p>
+
+<p style="margin-left:17%;">Set the list of group
+members.</p>
+
+<h2>CAVEATS
+<a name="CAVEATS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This tool only
+operates on the /etc/group and /etc/gshadow files. Thus you
+cannot change any NIS or LDAP group. This must be performed
+on the corresponding server.</p>
+
+<h2>CONFIGURATION
+<a name="CONFIGURATION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+configuration variables in /etc/login.defs change the
+behavior of this tool:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ENCRYPT_METHOD</b>
+(string)</p>
+
+<p style="margin-left:17%;">This defines the system default
+encryption algorithm for encrypting passwords (if no
+algorithm are specified on the command line).</p>
+
+<p style="margin-left:17%; margin-top: 1em">It can take one
+of these values: <i>DES</i> (default), <i>MD5</i>,
+<i>SHA256</i>, <i>SHA512</i>. MD5 and DES should not be used
+for new hashes, see crypt(5) for recommendations.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note: this
+parameter overrides the <b>MD5_CRYPT_ENAB</b> variable.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note: This only
+affect the generation of group passwords. The generation of
+user passwords is done by PAM and subject to the PAM
+configuration. It is recommended to set this variable
+consistently with the PAM configuration.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>MAX_MEMBERS_PER_GROUP</b>
+(number)</p>
+
+<p style="margin-left:17%;">Maximum members per group
+entry. When the maximum is reached, a new group entry (line)
+is started in /etc/group (with the same name, same password,
+and same GID).</p>
+
+<p style="margin-left:17%; margin-top: 1em">The default
+value is 0, meaning that there are no limits in the number
+of members in a group.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This feature
+(split group) permits to limit the length of lines in the
+group file. This is useful to make sure that lines for NIS
+groups are not larger than 1024 characters.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If you need to
+enforce such limit, you can use 25.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note: split
+groups may not be supported by all tools (even in the Shadow
+toolsuite). You should not use this variable unless you
+really need it.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>MD5_CRYPT_ENAB</b>
+(boolean)</p>
+
+<p style="margin-left:17%;">Indicate if passwords must be
+encrypted using the MD5-based algorithm. If set to
+<i>yes</i>, new passwords will be encrypted using the
+MD5-based algorithm compatible with the one used by recent
+releases of FreeBSD. It supports passwords of unlimited
+length and longer salt strings. Set to <i>no</i> if you need
+to copy encrypted passwords to other systems which don't
+understand the new algorithm. Default is <i>no</i>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This variable
+is superseded by the <b>ENCRYPT_METHOD</b> variable or by
+any command line option used to configure the encryption
+algorithm.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This variable
+is deprecated. You should use <b>ENCRYPT_METHOD</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note: This only
+affect the generation of group passwords. The generation of
+user passwords is done by PAM and subject to the PAM
+configuration. It is recommended to set this variable
+consistently with the PAM configuration.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>SHA_CRYPT_MIN_ROUNDS</b>
+(number), <b>SHA_CRYPT_MAX_ROUNDS</b> (number)</p>
+
+<p style="margin-left:17%;">When <b>ENCRYPT_METHOD</b> is
+set to <i>SHA256</i> or <i>SHA512</i>, this defines the
+number of SHA rounds used by the encryption algorithm by
+default (when the number of rounds is not specified on the
+command line).</p>
+
+<p style="margin-left:17%; margin-top: 1em">With a lot of
+rounds, it is more difficult to brute forcing the password.
+But note also that more CPU resources will be needed to
+authenticate users.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If not
+specified, the libc will choose the default number of rounds
+(5000), which is orders of magnitude too low for modern
+hardware.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The values must
+be inside the 1000-999,999,999 range.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If only one of
+the <b>SHA_CRYPT_MIN_ROUNDS</b> or
+<b>SHA_CRYPT_MAX_ROUNDS</b> values is set, then this value
+will be used.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If
+<b>SHA_CRYPT_MIN_ROUNDS</b> &gt;
+<b>SHA_CRYPT_MAX_ROUNDS</b>, the highest value will be
+used.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note: This only
+affect the generation of group passwords. The generation of
+user passwords is done by PAM and subject to the PAM
+configuration. It is recommended to set this variable
+consistently with the PAM configuration.</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">/etc/group</p>
+
+<p style="margin-left:17%;">Group account information.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">/etc/gshadow</p>
+
+<p style="margin-left:17%;">Secure group account
+information.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>newgrp</b>(1),
+<b>groupadd</b>(8), <b>groupdel</b>(8), <b>groupmod</b>(8),
+<b>grpck</b>(8), <b>group</b>(5), <b>gshadow</b>(5).</p>
+<hr>
+</body>
+</html>

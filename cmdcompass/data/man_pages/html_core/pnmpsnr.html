@@ -1,0 +1,324 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:35 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pnmpsnr User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pnmpsnr User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pnmpsnr -
+compute the difference between two images (the PSNR)</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmpsnr</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<i>pnmfile1</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<i>pnmfile2</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-rgb</b>]
+[<b>-machine</b>] [<b>-max=</b><i>n</i>]
+[<b>-target=</b><i>n</i>] [<b>-target1=</b><i>n</i>]
+[<b>-target2=</b><i>n</i>] [<b>-target3=</b><i>n</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviations of options are acceptable. You may use double
+hyphens instead of single hyphen to denote options. You may
+use white space in place of the equals sign to separate an
+option name from its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmpsnr</b>
+reads two PBM, PGM, or PPM files, or PAM equivalents, as
+input and computes the magnitude of difference between the
+two images as a peak signal-to-noise ratio (PSNR) This
+metric is typically used in image compression papers to rate
+the distortion between original and decoded image.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmpsnr</b>
+either prints these values or compares them to thresholds
+you specify.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The PSNR of a
+given component is the ratio of the maximum mean square
+difference of component values that could exist between the
+two images (a measure of the information content in an
+image) to the actual mean square difference for the two
+subject images. It is expressed as a decibel value.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The mean square
+difference of a component for two images is the mean square
+difference of the component value, comparing each pixel with
+the pixel in the same position of the other image. For the
+purposes of this computation, components are normalized to
+the scale [0..1].</p>
+
+<p style="margin-left:11%; margin-top: 1em">The maximum
+mean square difference is identically 1.</p>
+
+<p style="margin-left:11%; margin-top: 1em">So the higher
+the PSNR, the closer the images are. A luminance PSNR of 20
+means the mean square difference of the luminances of the
+pixels is 100 times less than the maximum possible
+difference, i.e. 0.01.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that the
+word &quot;peak&quot; is a misnomer; there is no maximum
+involved; the metric is a mean. But &quot;peak signal to
+noise ratio&quot; is for some reason the common term for
+this measurement.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the inputs
+are PBM or PGM, <b>pnmpsnr</b> computes the PSNR of the
+luminance only. Otherwise, it computes three separate PSNRs:
+either the luminance, and chrominance (Cb and Cr) components
+of the colors or the red, green, and blue components.</p>
+
+<p style="margin-left:11%; margin-top: 1em">By default, the
+program prints the PSNRs to Standard Output in
+human-friendly form.</p>
+
+<p style="margin-left:11%; margin-top: 1em">With the
+<b>-machine</b> option, the program prints the PSNRs, but in
+machine-friendly form.</p>
+
+<p style="margin-left:11%; margin-top: 1em">With a
+<b>-target</b>[<i>x</i>] option, the program just prints
+&rsquo;match&rsquo; or &rsquo;nomatch&rsquo;, depending on
+whether the PSNRs exceed targets you specify.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmpsnr</b>
+reports the PSNR either in human-friendly form or in
+machine-friendly form (see <b>-machine</b>).</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pnmpsnr</b> recognizes the following command line
+options:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-rgb</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>This option causes <b>pnmpsnr</b> to compare the red,
+green, and blue components of the color rather than the
+luminance and chrominance components. It has no effect on a
+monotone image.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.71 (June 2015).</p>
+
+<p style="margin-left:11%;"><b>-machine</b></p>
+
+<p style="margin-left:22%;">This option causes
+<b>pnmpsnr</b> to report the PSNRs in machine-friendly form,
+so another program can easily use the information.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The output is a
+single line. It contains one floating point decimal number
+for each color component, with a single space between every
+two. (This means there are either 1 or 3 numbers). For the
+YCbCr color space (no <b>-rgb</b>), they are in the order Y,
+Cb, Cr. For the RGB color space (<b>-rgb</b>), they are in
+R, G, B order. For a monotone image, there is one
+number.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Where the
+component does not differ between the images, so the PSNR is
+infinite, the number is <b>inf</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">But note that
+the number displayed is also modified by the effect of
+<b>-max</b>. In particular, with <b>-max</b>, you will never
+see <b>inf</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option has
+no effect when you also specify
+<b>-target</b>[<i>n</i>].</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.74 (March 2016).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-max=</b><i>n</i></p></td>
+<td width="2%"></td>
+<td width="58%">
+
+
+<p>This is meaningful only with <b>-machine</b>.</p></td>
+<td width="20%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">It specifies
+the maximum number <b>pnmpsnr</b> will print as a PSNR. If
+the PSNR is greater than <i>n</i>, <b>pnmpsnr</b> just
+prints <i>n</i>. <i>n</i> is a decimal floating point
+number. An infinite PSNR is considered greater than any
+number.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This is mainly
+useful to deal with infinite PSNRs. It is often much more
+convenient to have a program process only numbers than to
+make it deal with infinity, and often a very large number
+has the same effect on a program as infinity.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Note that the
+output is logarithmic, which means you will not see really
+large but finite numbers. If you specify <b>-max=1000</b>,
+the only way you will see 1000 in the output is if the PSNR
+is really infinite. Two images with as many pixels as there
+are electrons in the universe, differing in only one pixel,
+and only in the smallest amount representable in the Netpbm
+format, have a PSNR less than 1000.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.74 (March 2016).</p>
+
+<p style="margin-left:11%;"><b>-target</b>=<i>n</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+causes <b>pnmpsnr</b> to run in comparison mode - rather
+than print the PSNRs, it just tells you whether the PSNRs
+exceed <i>n</i> (a floating point number), i.e. whether the
+compared images are the same within a given margin of error.
+If all the computed PSNRs (luminance for a PBM or PGM;
+luminance and chrominance or red, green, and blue for PPM)
+exceed <i>n</i>, the program prints &rsquo;match&rsquo; to
+Standard Output. Otherwise, it prints
+&rsquo;nomatch&rsquo;.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you also
+specify any of <b>-target1</b>, <b>-target2</b>, or
+<b>-target3</b>, and the images are color, <b>pnmpsnr</b>
+ignores <b>-target</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This is mainly
+useful for use in a program. If you&rsquo;re running
+<b>pnmpsnr</b> manually, you could just run <b>pnmpsnr</b>
+without <b>-target</b> and compare the PSNRs to your targets
+yourself.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.82 (March 2018).</p>
+
+
+<p style="margin-left:11%;"><b>-target</b>{<b>1</b>,<b>2</b>,<b>3</b>}=<i>n</i></p>
+
+<p style="margin-left:22%;">Like <b>-target</b>, these
+options cause <b>pnmpsnr</b> to run in comparison mode. But
+they provide separate targets for the individual color
+component PSNRs. <b>-target1</b>, <b>target-2</b>, and
+<b>-target3</b> are for either the Y, Cb, and Cr components,
+respectively, or the red, green, and blue components,
+respectively, depending upon whether you specified
+<b>-rgb</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you
+don&rsquo;t specify the corresponding <b>-target</b><i>n</i>
+option for a component, <b>pnmpsnr</b> ignores the PSNR of
+that component in deciding whether the images match.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If the image is
+a PBM or PGM, these options have no effect, except that it
+stilll selects comparison mode, so if you don&rsquo;t
+<i>also</i> specify <b>-target</b>, and the image is PBM or
+PGM, the program fails.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Note that the
+options are defined so that you could code a <b>pnmpsnr</b>
+command in a program that works on both color and monotone
+images, specifying individual PSNR targets for use on the
+color images and the single target for use on the monotone
+images.</p>
+
+<p style="margin-left:22%; margin-top: 1em">These options
+were new in Netpbm 10.82 (March 2018).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnm</b>(1)</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pnmpsnr.html</b></p>
+<hr>
+</body>
+</html>

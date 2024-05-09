@@ -1,0 +1,275 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:28 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamtotga User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamtotga User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamtotga -
+convert a Netpbm image to a TrueVision Targa file</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtotga</b>
+[<b>-mono|-cmap|-cmap16|-rgb</b>] [<b>-norle</b>]
+[<b>-name=</b><i>name</i> [<b>-verhose</b>]
+[<i>pamfile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">All options can
+be abbreviated to their shortest unique prefix. You may use
+two hyphens instead of one to designate an option. You may
+use either white space or equals signs between an option
+name and its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtotga</b>
+reads a PBM, PGM, PPM, or PAM image as input and produces a
+TrueVision Targa file as output. The PAM image may be either
+a BLACKANDWHITE, GRAYSCALE, RGB, or RGB_ALPHA image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To create a TGA
+image with transparency (i.e. with a transparency mask), use
+RGB_ALPHA PAM input. Some Netpbm programs that generate
+images with transparency masks generate them in that format.
+For another way to create the proper input stream, see
+<b>pamstack</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em">It is unclear
+that anything except <b>pamtotga</b> knows about TGAs with
+transparency. The history behind this feature of
+<b>pamtotga</b> is not clear. The format <b>pamtotga</b>
+produces is simply the same as an ordinary RGB TGA image
+except with a 4th plane added for transparency. The
+PixelSize field of the TGA header specifies 32 bits instead
+of 24 and the raster has an extra byte added to each pixel,
+at the tail end. The value of that byte has the same meaning
+as in a PAM image with maxval 255.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamtotga</b> recognizes the following command line
+options:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-cmap</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Make output Targa file use a color map (palette) to make
+the output smaller.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">Each color in
+the color map is 3 bytes, 8 bits each of red, green, and
+blue, unless the input is black and white or grayscale, in
+which case each color in the palette is represented by one
+byte.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Input must
+contain no more than 256 distinct colors and must not
+contain transparency information.</p>
+
+<p style="margin-left:22%; margin-top: 1em">(The
+transparency limitation is not a limitation of the format,
+but of <b>pamtotga</b>. Implementing a color map that
+contains transparency information is harder to
+implement).</p>
+
+<p style="margin-left:11%;"><b>-cmap16</b></p>
+
+<p style="margin-left:22%;">Same as <b>-cmap</b>, except a
+color map entry for full color input is 5 bits each of red,
+green, and blue, stored as two bytes (16 bits).</p>
+
+<p style="margin-left:22%; margin-top: 1em">Restrictions
+are the same as for <b>-cmap</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.85 (December 2018).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-mono</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Make output Targa file of type 8 bit monochrome. Input
+must be PBM or PGM or a PAM with BLACKANDWHITE or GRAYSCALE
+tuple type. See <b>-cmap</b>.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">You may specify
+at most one of <b>-mono</b>, <b>-cmap</b>, and <b>-rgb</b>.
+If you specify neither, the default image type is the most
+highly constrained compatible type is used, where monochrome
+is more constrained than colormapped which is in turn more
+constrained than unmapped.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>-rgb</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Make output Targa file of type
+24 bit unmapped color. See <b>-cmap</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-norle</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Do not use run-length encoding in the output Targa file.
+Run-length encoded files are smaller, but Some Targa readers
+can&rsquo;t read run-length encoded files.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-name=</b><i>name</i></p>
+
+<p style="margin-left:22%;">This is the value for the image
+ID stated in the header of the TGA output file.
+<b>pamtotga</b> truncates it as necessary to meet TGA
+standards.</p>
+
+<p style="margin-left:22%; margin-top: 1em">By default,
+<b>pamtotga</b> uses the input file name argument, up to the
+first period (or the whole thing if there is no period). It
+truncates it as necessary to meet TGA standards. If you
+specify (or default to) Standard Input, <b>pamtotga</b>
+omits the image ID from the TGA header.</p>
+
+<p style="margin-left:11%;"><b>-verbose</b></p>
+
+<p style="margin-left:22%;">This causes <b>pamtotga</b> to
+issues messages about the conversion process.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>tgatoppm</b>(1),
+<b>pnmquant</b>(1), <b>pamstack</b>(1), <b>pam</b>(1)
+<b>pnm</b>(1)</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program
+was called <b>ppmtotga</b> until Netpbm 10.6 (July 2002).
+That was always a misnomer, though, because a PPM class
+program would not be able to tell the difference between PGM
+and PPM input (it would all look like PPM), and thus could
+not choose the output Targa image type based on the type of
+the input. Netpbm 10.6 also added the ability to handle a
+transparency channel, so it became a PAM class program.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In Netpbm 10.15
+(April 2003), the program became the first in the Netpbm
+package to recognize a transparency channel in a PAM. It
+recognized tuple type &quot;RGBA&quot;. But when this kind
+of PAM image was later added to the PAM specification, it
+was specified with tuple type &quot;RGB_ALPHA&quot;. So in
+Netpbm 10.26 (January 2005), <b>pamtotga</b> changed to
+recognize &quot;RGB_ALPHA&quot; instead of
+&quot;RGBA&quot;.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1989, 1991 by Mark Shand and Jef Poskanzer.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamtotga.html</b></p>
+<hr>
+</body>
+</html>

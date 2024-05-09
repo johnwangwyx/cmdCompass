@@ -1,0 +1,234 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:37 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Ppmglobe User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Ppmglobe User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#PARAMETERS">PARAMETERS</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ppmglobe -
+generate strips to glue onto a sphere</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmglobe</b>
+[<b>-background=</b><i>colorname</i>] [<b>-closeok</b>]
+<i>stripcount</i> [<i>filename</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviation of option is acceptable. You may use double
+hyphens instead of single hyphen to denote options. You may
+use white space in place of the equals sign to separate an
+option name from its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmglobe</b>
+does the inverse of a cylindrical projection of a sphere.
+Starting with a cylindrical projection, it produces an image
+you can cut up and glue onto a sphere to obtain the
+spherical image of which it is the cylindrical
+projection.</p>
+
+<p style="margin-left:11%; margin-top: 1em">What is a
+cylindrical projection? Imagine a map of the Earth on flat
+paper. There are lots of different ways cartographers show
+the three dimensional information in such a two dimensional
+map. The cylindrical projection is one. You could make a
+cylindrical projection by tracing as folows: wrap a
+rectangular sheet of paper around the globe, touching the
+globe at the Equator. For each point of color on the globe,
+run a horizontal line from the axis of the globe through
+that point and out to the paper. Mark the same color on the
+paper there. Lay the paper out flat and you have a
+cylindrical projection.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Here&rsquo;s
+where <b>ppmglobe</b> comes in: Pass the image on that paper
+through <b>ppmglobe</b> and what comes out the other side
+looks something like this:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example of
+map of the earth run through ppmglobe</b>
+<img src="-C" alt="Image -C" width="100" height="100"></p>
+
+<p style="margin-left:11%; margin-top: 1em">You could cut
+out the strips and glue it onto a sphere and you&rsquo;d
+have a copy of the original globe.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that
+cylindrical projections are not what you normally see as
+maps of the Earth. You&rsquo;re more likely to see a
+Mercator projection. In the Mercator projection, the Earth
+gets stretched North-South as well as East-West as you move
+away from the Equator. It was invented for use in
+navigation, because you can draw straight compass courses on
+it, but is used today because it is pretty.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can find
+maps of planets at
+<a href="http://maps.jpl.nasa.gov">maps.jpl.nasa.gov</a>
+.</p>
+
+<h2>PARAMETERS
+<a name="PARAMETERS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>stripcount</i>
+is the number of strips <b>ppmglobe</b> is to generate in
+the output. More strips makes it easier to fit onto a sphere
+(less stretching, tearing, and crumpling of paper), but
+makes you do more cutting out of the strips.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The strips are
+all the same width. If the number of columns of pixels in
+the image doesn&rsquo;t evenly divide by the number of
+strips, <b>ppmglobe</b> truncates the image on the right to
+create nothing but whole strips. In the pathological case
+that there are fewer columns of pixels than the number of
+strips you asked for, <b>ppmglobe</b> fails.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Before Netpbm
+10.32 (February 2006), instead of truncating the image on
+the right, <b>ppmglobe</b> produces a fractional strip on
+the right.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>filename</i>
+is the name of the input file. If you don&rsquo;t specify
+this, <b>ppmglobe</b> reads the image from Standard
+Input.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>ppmglobe</b> recognizes the following command line
+options: <b><br>
+-background=</b><i>colorname</i></p>
+
+<p style="margin-left:22%;">This specifies the color that
+goes between the strips.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Specify the
+color (<i>color</i>) as described for the
+<a href="libnetpbm_image.html#colorname">argument of the
+<b>pnm_parsecolor()</b> library routine</a> .</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+black.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.31 (December 2005). Before that, the
+background is always black.</p>
+
+<p style="margin-left:11%;"><b>-closeok</b></p>
+
+<p style="margin-left:22%;">This means it is OK if the
+background isn&rsquo;t exactly the color you specify.
+Sometimes, it is impossible to represent a named color
+exactly because of the precision (i.e. maxval) of the
+image&rsquo;s color space. If you specify <b>-closeok</b>
+and <b>ppmglobe</b> can&rsquo;t represent the color you name
+exactly, it will use instead the closest color to it that is
+possible. If you don&rsquo;t specify <b>closeok</b>,
+<b>ppmglobe</b> fails in that situation.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.31 (December 2005).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppm</b>(1)
+<b>pnmmercator</b>(1)</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmglobe</b>
+was new in Netpbm 10.16 (June 2003).</p>
+
+<p style="margin-left:11%; margin-top: 1em">It is derived
+from Max Gensthaler&rsquo;s <b>ppmglobemap</b>.</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Max
+Gensthaler</i> wrote a program he called <b>ppmglobemap</b>
+in June 2003 and suggested it for inclusion in Netpbm. Bryan
+Henderson modified the code slightly and included it in
+Netpbm as <b>ppmglobe</b>.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/ppmglobe.html</b></p>
+<hr>
+</body>
+</html>

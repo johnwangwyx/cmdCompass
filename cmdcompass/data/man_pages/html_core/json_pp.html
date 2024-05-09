@@ -1,0 +1,191 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:13 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>JSON_PP</title>
+
+</head>
+<body>
+
+<h1 align="center">JSON_PP</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#COPYRIGHT AND LICENSE">COPYRIGHT AND LICENSE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">json_pp -
+JSON::PP command utility</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">json_pp [-v]
+[-f from_format] [-t to_format] [-json_opt
+options_to_json1[,options_to_json2[,...]]]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">json_pp
+converts between some input and output formats (one of them
+is <small>JSON</small> ). This program was copied from
+json_xs and modified.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The default
+input format is json and the default output format is json
+with pretty option.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-f</b> <br>
+-f from_format</p>
+
+<p style="margin-left:11%; margin-top: 1em">Reads a data in
+the given format from <small>STDIN.</small></p>
+
+<p style="margin-left:11%; margin-top: 1em">Format types:
+<br>
+json</p>
+
+<p style="margin-left:17%;">as <small>JSON</small></p>
+
+<p style="margin-left:11%;">eval</p>
+
+<p style="margin-left:17%;">as Perl code</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-t</b> <br>
+Writes a data in the given format to <small>STDOUT.</small>
+<br>
+null</p>
+
+<p style="margin-left:17%;">no action.</p>
+
+<p style="margin-left:11%;">json</p>
+
+<p style="margin-left:17%;">as <small>JSON</small></p>
+
+<p style="margin-left:11%;">dumper</p>
+
+<p style="margin-left:17%;">as Data::Dumper</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-json_opt</b>
+<br>
+options to <small>JSON::PP</small></p>
+
+<p style="margin-left:11%; margin-top: 1em">Acceptable
+options are:</p>
+
+<p style="margin-left:11%; margin-top: 1em">ascii latin1
+utf8 pretty indent space_before space_after relaxed
+canonical allow_nonref <br>
+allow_singlequote allow_barekey allow_bignum loose
+escape_slash indent_length</p>
+
+<p style="margin-left:11%; margin-top: 1em">Multiple
+options must be separated by commas:</p>
+
+<p style="margin-left:11%; margin-top: 1em">Right:
+-json_opt pretty,canonical <br>
+Wrong: -json_opt pretty -json_opt canonical</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-v</b> <br>
+Verbose option, but currently no action in fact.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-V</b> <br>
+Prints version and exits.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">$ perl -e'print
+q|{&quot;foo&quot;:&quot;&atilde;&atilde;&quot;,&quot;bar&quot;:1234567890000000000000000}|'
+|\ <br>
+json_pp -f json -t dumper -json_opt pretty,utf8,allow_bignum
+<br>
+$VAR1 = { <br>
+'bar' =&gt; bless( { <br>
+'value' =&gt; [ <br>
+'0000000', <br>
+'0000000', <br>
+'5678900', <br>
+'1234' <br>
+], <br>
+'sign' =&gt; '+' <br>
+}, 'Math::BigInt' ), <br>
+'foo' =&gt; &quot;\x{3042}\x{3044}&quot; <br>
+}; <br>
+$ perl -e'print
+q|{&quot;foo&quot;:&quot;&atilde;&atilde;&quot;,&quot;bar&quot;:1234567890000000000000000}|'
+|\ <br>
+json_pp -f json -t dumper -json_opt pretty <br>
+$VAR1 = { <br>
+'bar' =&gt; '1234567890000000000000000', <br>
+'foo' =&gt; &quot;\x{e3}\x{81}\x{82}\x{e3}\x{81}\x{84}&quot;
+<br>
+};</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><small>JSON::PP</small>
+, json_xs</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Makamaka
+Hannyaharamitu, &lt;makamaka[at]cpan.org&gt;</p>
+
+<h2>COPYRIGHT AND LICENSE
+<a name="COPYRIGHT AND LICENSE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright 2010
+by Makamaka Hannyaharamitu</p>
+
+<p style="margin-left:11%; margin-top: 1em">This library is
+free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.</p>
+<hr>
+</body>
+</html>

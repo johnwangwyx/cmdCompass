@@ -1,0 +1,844 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:28 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamtotiff User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamtotiff User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamtotiff -
+convert a Netpbm image to a TIFF file</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtotiff</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-none</b> |
+<b>-packbits</b> | <b>-lzw</b> | <b>-g3</b> | <b>-g4</b> |
+<b>-flate</b> | <b>-adobeflate</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-2d</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-fill</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-predictor=</b><i>n</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-msb2lsb</b>|<b>-lsb2msb</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-rowsperstrip=</b><i>n</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-minisblack</b>|<b>-miniswhite</b>|<b>mb</b>|<b>mw</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-truecolor</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-color</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-indexbits=</b><i>bitwidthlist</i>]
+[<b>-xresolution=</b><i>xres</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-yresolution=</b><i>yres</i>]
+[<b>-resolutionunit=</b>{<b>inch</b> | <b>centimeter</b> |
+<b>none</b> | <b>in</b> | <b>cm</b> | <b>no</b>}]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-append</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-tag=</b><i>taglist</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<i>pamfile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can use the
+minimum unique abbreviation of the options. You can use two
+hyphens instead of one. You can separate an option name from
+its value with white space instead of an equals sign.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtotiff</b>
+reads a PNM or PAM image as input and produces a TIFF file
+as output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Actually, it
+handles multi-image Netpbm streams, producing multi-image
+TIFF streams (i.e. a TIFF stream with multiple
+&quot;directories&quot;). But before Netpbm 10.27 (March
+2005), it ignored all but the first Netpbm image in the
+input stream.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>The Output
+File</b> <br>
+By default, the output goes to Standard Output.
+Alternatively, you can specify an output file with the
+<b>-output</b> option and <b>pamtotiff</b> will write its
+output directly to that file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Because of the
+way the TIFF library (which <b>pamtotiff</b> uses) works,
+when the program writes to Standard Output, it generates the
+entire TIFF image in a temporary file and then copies it to
+Standard Output; you may see negative performance effects of
+this.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>-output</b> method avoids the performance effects of the
+copy through the temporary file, but there are restrictions
+on the output file: it must be seekable and it must be
+readable. The program fails if it is not. With Standard
+Output, neither of those restrictions applies.</p>
+
+<p style="margin-left:11%; margin-top: 1em">With
+<b>-output</b>, if the file already exists and has data in
+it, <b>pamtotiff</b> appends the image to the existing TIFF
+file. (A TIFF file may contain multiple images).</p>
+
+<p style="margin-left:11%; margin-top: 1em">By default,
+<b>pamtotiff</b> creates the file named by <b>-output</b> if
+it does not already exist. But if you also specify
+<b>-append</b>, the program fails if the file named by
+<b>-output</b> does not already exist.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Before Netpbm
+10.67 (June 2014), there is no <b>-output</b> option and
+Standard Output must be seekable. So pipes are out.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Before Netpbm
+10.67 (June 2014), you could append to Standard Output. See
+below. The current program does not have the ability; you
+must use <b>-output</b> to append to an existing TIFF
+file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The difference
+above means current <b>pamtotiff</b> is actually not
+backward compatible, which is a rare thing for Netpbm. But
+it&rsquo;s a good thing because the previous function was
+very strange and probably hardly ever exploited.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Old
+Versions</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">As alluded to
+above, <b>pamtotiff</b> does output very differently in
+releases before 10.67. The following describes the old
+function, which is unusual both for Netpbm and for Unix
+programs in general.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>The output file must be seekable. <b>pamtotiff</b> does
+not write it sequentially. Therefore, you can&rsquo;t use a
+pipe; you can&rsquo;t pipe the output of <b>pamtotiff</b> to
+some other program. But any regular file should work.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>If the output file descriptor is readable, you must
+either specify <b>-append</b> so as to add to the existing
+file, or make sure the file is empty. Otherwise,
+<b>pamtotiff</b> will fail with an unhelpful message telling
+you that a TIFF library function failed to open the TIFF
+output stream.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>If you are converting multiple images (your input stream
+contains multiple images), the output file must be both
+readable and writable.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">If you&rsquo;re
+using a Unix command shell to run <b>pamtotiff</b>, you use
+facilities of your shell to set up Standard Output. In Bash,
+for example, you would set up a write-only Standard Output
+to the file /tmp/myimage.tiff like this:</p>
+
+<p style="margin-left:11%; margin-top: 1em">$ pamtotiff
+myimage.pnm &gt;/tmp/myimage.tiff</p>
+
+<p style="margin-left:11%; margin-top: 1em">In Bash, you
+would set up a read/write Standard Output to the file
+/tmp/myimage.tiff like this:</p>
+
+<p style="margin-left:11%; margin-top: 1em">$ pamtotiff
+myimage.pnm 1&lt;&gt;/tmp/myimage.tiff</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>TIFF
+Capability <br>
+pamtotiff</b> uses the Libtiff.org TIFF library (or whatever
+equivalent you provide) to generate the TIFF output. Details
+of the format it produces are therefore controlled by that
+library.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamtotiff</b> recognizes the following command line
+options:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Compression</b>
+<br>
+By default, <b>pamtotiff</b> creates a TIFF file with no
+compression. This is your best bet most of the time. If you
+want to try another compression scheme or tweak some of the
+other even more obscure output options, there are a number
+of options which to play.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Before Netpbm
+8.4 (April 2000), the default was to use LZW compression.
+But then new releases of the TIFF library started omitting
+the LZW compression capability because of concern about
+patents on LZW. So since then, the default has been no
+compression. The LZW patents have now expired and new TIFF
+libraries do LZW, but the <b>pamtotiff</b> behavior remains
+the same for compatibility with older TIFF libraries and
+applications of <b>pamtotiff</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>-none</b>, <b>-packbits</b>, <b>-lzw</b>, <b>-g3</b>,
+<b>-g4</b>, <b>-flate</b>, and <b>-adobeflate</b> options
+are used to override the default and set the compression
+scheme used in creating the output file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>-predictor</b> option is meaningful only with LZW
+compression: a predictor value of 2 causes each scanline of
+the output image to undergo horizontal differencing before
+it is encoded; a value of 1 forces each scanline to be
+encoded without differencing. By default, <b>pamtotiff</b>
+creates a TIFF file with msb-to-lsb fill order. The
+<b>-msb2lsb</b> and <b>-lsb2msb</b> options are used to
+override the default and set the fill order used in creating
+the file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">With some older
+TIFF libraries, <b>-lzw</b> doesn&rsquo;t work because the
+TIFF library doesn&rsquo;t do LZW compression. This is
+because of concerns about Unisys&rsquo;s patent on LZW which
+was then in force. Actually, with very old TIFF libraries,
+<b>-lzw</b> works because no distributors of the TIFF
+library were sensitive yet to the patent issue.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-flate</b>
+chooses &quot;flate&quot; compression, which is the
+patent-free compression common in the Unix world implemented
+by the &quot;Z&quot; library. It is what the PNG format
+uses.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Fax
+Compression</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">If you have
+bilevel data (e.g. PBM), you can generate a TIFF that uses
+the same compression scheme specified for use by fax
+machines. See the <b>Fax Format</b>(1) page for more
+information on these compression schemes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">These formats
+all relate to ITU Group 3 and Group 4 fax machine
+standards.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <b>-g3</b>
+option chooses MH or MR compression: MR with the additional
+option <b>-2d</b>; MH without it. <b>-g4</b> selects MMR.
+The option names are a little unfortunate and historical,
+but are consistent with the TIFF specification.</p>
+
+<p style="margin-left:11%; margin-top: 1em">MMR has a
+better compression ratio than the other two.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-fill</b>
+specifies that for MH or MR compression, each encoded
+scanline shall be zero-filled to a byte boundary.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-2d</b> and
+<b>-fill</b> are meaningful only with <b>-g3</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Fill
+Order</b> <br>
+The <b>-msb2lsb</b> and <b>lsb2msb</b> options control the
+fill order.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The fill order
+is the order in which pixels are packed into a byte in the
+Tiff raster, in the case that there are multiple pixels per
+byte. msb-to-lsb means that the leftmost columns go into the
+most significant bits of the byte in the Tiff image.
+However, there is considerable confusion about the meaning
+of fill order. Some believe it means whether 16 bit sample
+values in the Tiff image are little-endian or big-endian.
+This is totally erroneous (The endianness of integers in a
+Tiff image is designated by the image&rsquo;s magic number).
+However, ImageMagick and older Netpbm both have been known
+to implement that interpretation. 2001.09.06.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the image
+does not have sub-byte pixels, these options have no effect
+other than to set the value of the FILLORDER tag in the Tiff
+image (which may be useful for those programs that
+misinterpret the tag with reference to 16 bit samples).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Color Space
+<br>
+-color</b> tells <b>pamtotiff</b> to produce a color, as
+opposed to grayscale, TIFF image if the input is PPM, even
+if it contains only shades of gray. Without this option,
+<b>pamtotiff</b> produces a grayscale TIFF image if the
+input is PPM and contains only shades of gray, and at most
+256 shades. Otherwise, it produces a color TIFF output. For
+PBM and PGM input, <b>pamtotiff</b> always produces
+grayscale TIFF output and this option has no effect.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>-color</b> option can prevent <b>pamtotiff</b> from
+making two passes through the input file, thus improving
+speed and memory usage. See <a href="#multipass">Multiple
+Passes</a> .</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-truecolor</b>
+tells <b>pamtotiff</b> to produce the 24-bit RGB form of
+TIFF output if it is producing a color TIFF image. Without
+this option, <b>pamtotiff</b> produces a colormapped
+(paletted) TIFF image unless there are more than 256 colors
+(and in the latter case, issues a warning).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>-truecolor</b> option can prevent <b>pamtotiff</b> from
+making two passes through the input file, thus improving
+speed and memory usage. See <a href="#multipass">Multiple
+Passes</a> .</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>-color</b> and <b>-truecolor</b> options did not exist
+before Netpbm 9.21 (December 2001).</p>
+
+<p style="margin-left:11%; margin-top: 1em">If
+<b>pamtotiff</b> produces a grayscale TIFF image, this
+option has no effect.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>-minisblack</b> and <b>-miniswhite</b> options force the
+output image to have a &quot;minimum is black&quot; or
+&quot;minimum is white&quot; photometric, respectively. If
+you don&rsquo;t specify either, <b>pamtotiff</b> uses
+minimum is black except when using Group 3 or Group 4
+compression, in which case <b>pamtotiff</b> follows CCITT
+fax standards and uses &quot;minimum is white.&quot; This
+usually results in better compression and is generally
+preferred for bilevel coding. These photometrics are for
+grayscale images, so these options are invalid if the image
+is color (but only if it is truly color; they are valid
+with, for example, a PPM image that contains only shades of
+gray).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Before Netpbm
+9.11 (February 200)1, <b>pamtotiff</b> always produced
+&quot;minimum is black,&quot; because of a bug. In either
+case, <b>pamtotiff</b> sets the photometric interpretation
+tag in the TIFF output according to which photometric is
+actually used.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Before Netpbm
+10.78 (March 2017), <b>pamtotiff</b> respected
+<b>-miniswhite</b> and <b>-minisblack</b> even with color
+images, producing invalid TIFF images that have the
+indicated photometric but red, green, and blue raster
+planes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>-indexbits</b> option is meaningful only for a
+colormapped (paletted) image. In this kind of image, the
+raster contains values which are indexes into a table of
+colors, with the indexes normally taking less space that the
+color description in the table. <b>pamtotiff</b> can
+generate indexes of 1, 2, 4, or 8 bits. By default, it will
+use 8, because many programs that interpret TIFF images
+can&rsquo;t handle any other width.</p>
+
+<p style="margin-left:11%; margin-top: 1em">But if you have
+a small number of colors, you can make your image
+considerably smaller by allowing fewer than 8 bits per
+index, using the <b>-indexbits</b> option. The value is a
+comma-separated list of the bit widths you allow.
+<b>pamtotiff</b> chooses the smallest width you allow that
+allows it to index the entire color table. If you
+don&rsquo;t allow any such width, <b>pamtotiff</b> fails.
+Normally, the only useful value for this option is
+<b>1,2,4,8</b>, because a program either understands the 8
+bit width (default) or understands them all.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In a Baseline
+TIFF image, according to the 1992 TIFF 6.0 specification, 4
+and 8 are the only valid widths. There are no formal
+standards that allow any other values.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This option was
+added in June 2002. Before that, only 8 bit indices were
+possible.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Extra
+Tags</b> <br>
+There are lots of tag types in the TIFF format that
+don&rsquo;t correspond to any information in the PNM format
+or to anything in the conversion process. For example, a
+TIFF_ARTIST tag names the artist who created the image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can tell
+<b>pamtotiff</b> explicitly to include tags such as this in
+its output with the <b>-tag</b> option. You identify a list
+of tag types and values and <b>pamtotiff</b> includes a tag
+in the output for each item in your list.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The value of
+<b>-tag</b> is the list of tags, like this example:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">-tag=subfiletype=reducedimage,documentname=Fred,xposition=25</p>
+
+<p style="margin-left:11%; margin-top: 1em">As you see, it
+is a list of tag specifications separated by commas. Each
+tag specification is a name and a value separated by an
+equal sign. The name is the name of the tag type, except in
+arbitrary upper/lower case. One place to see the names of
+TIFF tag types is in the TIFF library&rsquo;s <b>tiff.h</b>
+file, where there is a macro defined for each consisting of
+&quot;TIFF_&quot; plus the name. E.g. for the SUBFILETYPE
+tag type, there is a macro TIFF_SUBFILETYPE.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The format of
+the value specification for a tag (stuff after the equal
+sign) depends upon what kind of value the tag type has:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Integer: a decimal number</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Floating point number: a decimal number</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>String: a string</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Enumerated (For example, a &rsquo;subfiletype&rsquo; tag
+takes an enumerated value. Its possible values are
+REDUCEDIMAGE, PAGE, and MASK.): The name of the value. You
+can see the possible value names in the TIFF library&rsquo;s
+<b>tiff.h</b> file, where there is a macro defined for each
+consisting of a qualifier plus the value name. E.g. for the
+REDUCEDIMAGE value of a SUBFILETYPE tag, you see the macro
+FILETYPE_REDUCEDIMAGE.</p> </td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">The TIFF format
+assigns a unique number to each enumerated value and you can
+specify that number, in decimal, as an alternative. This is
+useful if you are using an extension of TIFF that
+<b>pamtotiff</b> doesn&rsquo;t know about.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you specify
+a tag type with <b>-tag</b> that is not independent of the
+content of your PNM source image and
+<b>pamtotiff</b>&rsquo;s conversion process (i.e. a tag type
+in which <b>pamtotiff</b> is interested), <b>pamtotiff</b>
+fails. For example, you cannot specify an IMAGEWIDTH tag
+with <b>-tag</b>, because <b>pamtotiff</b> generates an
+IMAGEWIDTH tag that gives the actual width of the image.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-tag</b> was
+new in Netpbm 10.31 (December 2005).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Output</b>
+<br>
+See <a href="#output">The Output File</a> .</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-output</b>
+names the output file. Without this option <b>pamtotiff</b>
+writes to Standard Output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>-append</b> option tells <b>pamtotiff</b> only to append
+to the file named by <b>output</b>; not create it. Without
+this option, the program creates the file it does not
+already exist. But even then, if the file does already
+exist, the program appends the image to what is in the file
+already. (A TIFF file may contain multiple images).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-append</b>
+has no effect if you don&rsquo;t also specify
+<b>-output</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Before Netpbm
+10.67 (June 2014), <b>-append</b> means something rather
+different: it means to append the image to the output TIFF
+file (which is always Standard Output in 10.67) instead of
+replacing its contents.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-append</b>
+was new in Netpbm 10.27 (March 2005).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Other</b>
+<br>
+You can use the <b>-rowsperstrip</b> option to set the
+number of rows (scanlines) in each strip of data in the
+output file. By default, the output file has the number of
+rows per strip set to a value that will ensure each strip is
+no more than 8 kilobytes long.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">There are
+myriad variations of the TIFF format, and this program
+generates only a few of them. <b>pamtotiff</b> creates a
+grayscale TIFF file if its input is a PBM (monochrome) or
+PGM (grayscale) or equivalent PAM file. <b>pamtotiff</b>
+also creates a grayscale file if it input is PPM (color) or
+equivalent PAM, but there is only one color in the
+image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the input is
+a PPM (color) file and there are 256 colors or fewer, but
+more than 1, <b>pamtotiff</b> generates a color palette TIFF
+file. If there are more colors than that, <b>pamtotiff</b>
+generates an RGB (not RGBA) single plane TIFF file. Use
+<b>pnmtotiffcmyk</b> to generate the
+cyan-magenta-yellow-black ink color separation TIFF
+format.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The number of
+bits per sample in the TIFF output is determined by the
+maxval of the Netpbm input. If the maxval is less than 256,
+the bits per sample in the output is the smallest number
+that can encode the maxval. If the maxval is greater than or
+equal to 256, there are 16 bits per sample in the
+output.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Extra
+Channels</b> <br>
+Like most Netpbm programs, <b>pamtotiff</b>&rsquo;s function
+is mostly undefined if the input is PAM image with tuple
+type other than BLACKANDWHITE, GRAYSCALE, or RGB. Most of
+the statements in this manual assume the input is not such
+an exotic PAM. But there is a little defined processing of
+other PAM subformats.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtotiff</b>
+assumes any 1 plane PAM image is BLACKANDWHITE or GRAYSCALE
+(and doesn&rsquo;t distinguish between those two).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtotiff</b>
+assumes a PAM with more than 1 plane is of tuple type RGB
+except with that number of planes instead of 3.
+<b>pamtotiff</b> doesn&rsquo;t really understand red, green,
+and blue, so it has no trouble with a 2-component or
+5-component color space. The TIFF format allows an arbitrary
+number of color components, so <b>pamtotiff</b> simply maps
+the PAM planes directly to TIFF color components. I
+don&rsquo;t know if the meanings of 5 components in a TIFF
+image are standard at all, but the function is there if you
+want to use it.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that
+<b>pamtotiff</b> may generate either a truecolor or
+colormapped image with an arbitrary number of color
+components. In the truecolor case, the raster has that
+number of planes. In the colormapped case, the raster has of
+course 1 plane, but the color map has all the color
+components in it.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The most common
+reason for a PAM to have extra planes is when the tuple type
+is xxx_ALPHA, which means the highest numbered plane is a
+transparency plane (alpha channel). At least one user found
+that a TIFF with an extra plane for transparency was
+useful.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that the
+grayscale detection works on N-component colors, so if your
+planes aren&rsquo;t really color components, you&rsquo;ll
+want to disable this via the <b>-color</b> option.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Multiple
+Passes <br>
+pamtotiff</b> reads the input image once if it can, and
+otherwise twice. It needs that second pass (which happens
+before the main pass, of course) to analyze the colors in
+the image and generate a color map (palette) and determine
+if the image is grayscale. So the second pass happens only
+when the input is PPM. And you can avoid it then by
+specifying both the <b>-truecolor</b> and <b>-color</b>
+options.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the input
+image is small enough to fit in your system&rsquo;s file
+cache, the second pass is very fast. If not, it requires
+reading from disk twice, which can be slow.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When the input
+is from a file that cannot be rewound and reread,
+<b>pamtotiff</b> reads the entire input image into a
+temporary file which can, and works from that. Even if it
+needs only one pass.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Before Netpbm
+9.21 (December 2001), <b>pamtotiff</b> always read the
+entire image into virtual memory and then did one, two, or
+three passes through the memory copy. The <b>-truecolor</b>
+and <b>-color</b> options did not exist. The passes through
+memory would involve page faults if the entire image did not
+fit into real memory. The image in memory required
+considerably more memory (12 bytes per pixel) than the
+cached file version of the image would.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Resolution</b>
+<br>
+A Tiff image may contain information about the resolution of
+the image, which means how big in real dimensions
+(centimeters, etc.) each pixel in the raster is. That
+information is in the TIFF XRESOLUTION, YRESOLUTION, and
+RESOLUTIONUNIT tags. By default, <b>pamtotiff</b> does not
+include any tags of these types, but you can specify them
+with the <b>-tags</b> option.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There are also
+options <b>-xresolution</b>, <b>-yresolution</b>, and
+<b>-resolutionunit</b>, but those are obsolete. Before
+<b>-tags</b> existed (before Netpbm 10.31 (December 2005),
+they were the only way.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that the
+number of pixels in the image and how much information each
+contains is determined independently from the setting of the
+resolution tags. The number of pixels in the output is the
+same as in the input, and each pixel contains the same
+information. For your resolution tags to be meaningful, they
+have to consistent with whatever created the PNM input. E.g.
+if a scanner turned a 10 centimeter wide image into a 1000
+pixel wide PNM image, then your horizontal resolution is 100
+pixels per centimeter, and if your XRESOLUTION tag says
+anything else, something that prints your TIFF image
+won&rsquo;t print the proper 10 centimeter image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The value of
+the XRESOLUTION tag is a floating point decimal number that
+tells how many pixels there are per unit of distance in the
+horizontal direction. <b>-yresolution</b> is analogous for
+the vertical direction.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The unit of
+distance is given by the value of the RESOLUTIONUNIT option.
+That value is either INCH, CENTIMETER, or NONE. NONE means
+the unit is arbitrary or unspecified. This could mean that
+the creator and user of the image have a separate agreement
+as to what the unit is. But usually, it just means that the
+horizontal and vertical resolution values cannot be used for
+anything except to determine aspect ratio (because even
+though the unit is arbitrary or unspecified, it has to be
+the same for both resolution numbers).</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you
+<i>don&rsquo;t</i> use a <b>-tag</b> option to specify the
+resolution tag and use the obsolete options instead, note
+the following:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">If you don&rsquo;t include an
+specify <b>-xresolution</b>, the Tiff image does not contain
+horizontal resolution information. Likewise for
+<b>-yresolution</b>. If you don&rsquo;t specify
+<b>-resolutionunit</b>, the default is inches.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Before Netpbm 10.16 (June 2003), <b>-resolutionunit</b>
+did not exist and the resolution unit was always inches.</p></td></tr>
+</table>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtotiff</b>
+was originally <b>pnmtotiff</b> and did not handle PAM
+input. It was extended and renamed in Netpbm 10.30 (October
+2005).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>tifftopnm</b>(1),
+<b>pnmtotiffcmyk</b>(1), <b>pamdepth</b>(1),
+<b>pamtopnm</b>(1), <b>pam</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Derived by Jef
+Poskanzer from ras2tiff.c, which is Copyright (c) 1990 by
+Sun Microsystems, Inc. Author: Patrick J. Naughton
+(<i>naughton@wind.sun.com</i>).</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamtotiff.html</b></p>
+<hr>
+</body>
+</html>

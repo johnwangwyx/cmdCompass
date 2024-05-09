@@ -1,0 +1,203 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:33 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>PICONV</title>
+
+</head>
+<body>
+
+<h1 align="center">PICONV</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">piconv --
+iconv(1), reinvented in perl</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">piconv [-f
+from_encoding] [-t to_encoding] <br>
+[-p|--perlqq|--htmlcref|--xmlcref] [-C N|-c] [-D] [-S
+scheme] <br>
+[-s string|file...] <br>
+piconv -l <br>
+piconv -r encoding_alias <br>
+piconv -h</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>piconv</b>
+is perl version of <b>iconv</b>, a character encoding
+converter widely available for various Unixen today. This
+script was primarily a technology demonstrator for Perl
+5.8.0, but you can use piconv in the place of iconv for
+virtually any case.</p>
+
+<p style="margin-left:11%; margin-top: 1em">piconv converts
+the character encoding of either <small>STDIN</small> or
+files specified in the argument and prints out to
+<small>STDOUT.</small></p>
+
+<p style="margin-left:11%; margin-top: 1em">Here is the
+list of options. Some options can be in short format (-f) or
+long (--from) one. <br>
+-f,--from <i>from_encoding</i></p>
+
+<p style="margin-left:17%;">Specifies the encoding you are
+converting from. Unlike <b>iconv</b>, this option can be
+omitted. In such cases, the current locale is used.</p>
+
+<p style="margin-left:11%;">-t,--to <i>to_encoding</i></p>
+
+<p style="margin-left:17%;">Specifies the encoding you are
+converting to. Unlike <b>iconv</b>, this option can be
+omitted. In such cases, the current locale is used.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Therefore, when
+both -f and -t are omitted, <b>piconv</b> just acts like
+<b>cat</b>.</p>
+
+<p style="margin-left:11%;">-s,--string <i>string</i></p>
+
+<p style="margin-left:17%;">uses <i>string</i> instead of
+file for the source of text.</p>
+
+<p style="margin-left:11%;">-l,--list</p>
+
+<p style="margin-left:17%;">Lists all available encodings,
+one per line, in case-insensitive order. Note that only the
+canonical names are listed; many aliases exist. For example,
+the names are case-insensitive, and many standard and common
+aliases work, such as &quot;latin1&quot; for &quot;
+<small>ISO-8859-1&quot;,</small> or &quot;ibm850&quot;
+instead of &quot;cp850&quot;, or &quot;winlatin1&quot; for
+&quot;cp1252&quot;. See Encode::Supported for a full
+discussion.</p>
+
+<p style="margin-left:11%;">-r,--resolve
+<i>encoding_alias</i></p>
+
+<p style="margin-left:17%;">Resolve <i>encoding_alias</i>
+to Encode canonical encoding name.</p>
+
+<p style="margin-left:11%;">-C,--check <i>N</i></p>
+
+<p style="margin-left:17%;">Check the validity of the
+stream if <i>N</i> = 1. When <i>N</i> = -1, something
+interesting happens when it encounters an invalid
+character.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>-c</p></td>
+<td width="3%"></td>
+<td width="23%">
+
+
+<p>Same as &quot;-C 1&quot;.</p></td>
+<td width="60%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;">-p,--perlqq</p>
+
+<p style="margin-left:17%;">Transliterate characters
+missing in encoding to \x{ <small>HHHH</small> } where
+<small>HHHH</small> is the hexadecimal Unicode code
+point.</p>
+
+<p style="margin-left:11%;">--htmlcref</p>
+
+<p style="margin-left:17%;">Transliterate characters
+missing in encoding to &amp;#NNN; where <small>NNN</small>
+is the decimal Unicode code point.</p>
+
+<p style="margin-left:11%;">--xmlcref</p>
+
+<p style="margin-left:17%;">Transliterate characters
+missing in encoding to &amp;#xHHHH; where
+<small>HHHH</small> is the hexadecimal Unicode code
+point.</p>
+
+<p style="margin-left:11%;">-h,--help</p>
+
+<p style="margin-left:17%;">Show usage.</p>
+
+<p style="margin-left:11%;">-D,--debug</p>
+
+<p style="margin-left:17%;">Invokes debugging mode.
+Primarily for Encode hackers.</p>
+
+<p style="margin-left:11%;">-S,--scheme <i>scheme</i></p>
+
+<p style="margin-left:17%;">Selects which scheme is to be
+used for conversion. Available schemes are as follows: <br>
+from_to</p>
+
+<p style="margin-left:23%;">Uses Encode::from_to for
+conversion. This is the default.</p>
+
+<p style="margin-left:17%;">decode_encode</p>
+
+<p style="margin-left:23%;">Input strings are
+<b>decode()</b>d then <b>encode()</b>d. A straight two-step
+implementation.</p>
+
+<p style="margin-left:17%;">perlio</p>
+
+<p style="margin-left:23%;">The new perlIO layer is used.
+<small>NI-S</small> &rsquo; favorite.</p>
+
+<p style="margin-left:23%; margin-top: 1em">You should use
+this option if you are using <small>UTF-16</small> and
+others which linefeed is not $/.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Like the
+<i>-D</i> option, this is also for Encode hackers.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>iconv</b>(1)
+<b>locale</b>(3) Encode Encode::Supported Encode::Alias
+PerlIO</p>
+<hr>
+</body>
+</html>

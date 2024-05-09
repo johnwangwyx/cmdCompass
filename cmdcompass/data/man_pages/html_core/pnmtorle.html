@@ -1,0 +1,207 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:36 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pnmtorle User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pnmtorle User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pnmtorle -
+convert a Netpbm image file into an RLE image file.</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmtorle</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-header</b>]
+[<b>-verbose</b>] [<b>-alpha</b>]
+[<b>-outfile=</b><i>outfile</i>] [<i>pnmfile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviation of option is acceptable. You may use double
+hyphens instead of single hyphen to denote options. You may
+use white space in place of the equals sign to separate an
+option name from its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em">This program
+converts Netpbm image files into Utah RLE image files. You
+can include a transparency mask. If the input is a multiple
+image file, the output consists of several concatenated RLE
+images.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>pnmfile</i>
+is the name of the Netpbm image input file. If you
+don&rsquo;t specify this argument, input is from Standard
+Input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The RLE file
+will contain either a three channel color image (24 bits) or
+a single channel grayscale image (8 bits) depending upon the
+type of Netpbm input. If the Netpbm input is color, the RLE
+output is 3 channel 24 bit color. If the Netpbm input is
+grayscale or black and white, the RLE output is single
+channel grayscale.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pnmtorle</b> recognizes the following command line
+options: <b><br>
+-verbose</b></p>
+
+<p style="margin-left:22%;">This option will cause
+<b>pnmtorle</b> to operate in verbose mode. The <br>
+program writes header information to Standard Error.
+Actually, there is not <br>
+much header information stored in a Netpbm file, so this
+information is <br>
+minimal.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Before Netpbm
+10.98 (March 2022), this option is just <b>-v</b>.</p>
+
+<p style="margin-left:11%;"><b>-header</b></p>
+
+<p style="margin-left:22%;">This option causes the program
+to dump the header of the Netpbm image to be Standard Error
+without converting the file. It is equivalent to using the
+<b>-verbose</b> option except that no file conversion takes
+place.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Before Netpbm
+10.98 (March 2022), this option is just <b>-h</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-alpha</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>This option causes <b>pnmtorle</b> to include a
+transparency channel in the output image. The transparency
+channel is based on the image: Wherever a pixel is black,
+the corresponding trasparency value is transparent.
+Everywhere else, the transparency value is fully opaque.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-outfile</b>
+<i>outfile</i></p>
+
+<p style="margin-left:22%;">If you specify this option,
+<b>pnmtorle</b> writes the output to this file. If
+<i>outfile</i> is <b>-</b> or you don&rsquo;t specify
+<b>-outfile</b>, <b>pnmtorle</b> writes the output to
+Standard Output.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Before Netpbm
+10.98 (March 2022), this option is just <b>-o</b>.and <br>
+must be separated from its value by a space, not an equal
+sign.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pnmtorle
+-verbose file.ppm -outfile=file.rle</p>
+
+<p style="margin-left:11%; margin-top: 1em">While running
+in verbose mode, convert file.ppm to RLE format and store
+resulting data in file.rle.</p>
+
+<p style="margin-left:11%; margin-top: 1em">pnmtorle
+-header file.pgm</p>
+
+<p style="margin-left:11%; margin-top: 1em">Dump the header
+information of the Netpbm file called file.pgm.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>rletopnm</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Wes Barris,
+<br>
+Army High Performance Computing Research Center (AHPCRC)
+<br>
+Minnesota Supercomputer Center, Inc.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pnmtorle.html</b></p>
+<hr>
+</body>
+</html>

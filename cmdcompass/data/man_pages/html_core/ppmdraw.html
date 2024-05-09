@@ -1,0 +1,460 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:37 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Ppmdraw User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Ppmdraw User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SCRIPT">SCRIPT</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ppmdraw - draw
+lines, text, etc on a PPM image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmdraw</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">{
+<b>-script=</b><i>script</i> |
+<b>-scriptfile=</b><i>filename</i> } [<b>-verbose</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<i>ppmfile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">All options can
+be abbreviated to their shortest unique prefix. You may use
+two hyphens instead of one to designate an option. You may
+use either white space or an equals sign between an option
+name and its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmdraw</b>
+draws lines, shapes, text, etc. on a PPM image. It is
+essentially an easy-to-program front end to
+<b>libnetpbm</b>&rsquo;s &quot;ppmd&quot; subroutines. It
+lets you create a human-friendly script to describe the
+drawing rather than write a C program.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You supply
+drawing instructions with a script, which you supply either
+in a file named by a <b>-scriptfile</b> option or as the
+value of a <b>-script</b> option. Here is an example
+script:</p>
+
+<p style="margin-left:11%; margin-top: 1em">setpos 50 50;
+<br>
+text_here 10 30 &quot;hello&quot;; <br>
+setcolor black; <br>
+text_here 10 0 &quot;there&quot;; <br>
+line_here 5 20;</p>
+
+<p style="margin-left:11%; margin-top: 1em">This example
+starts at Column 50, Row 50 of the input image and writes
+the word &quot;hello&quot; there in 10 pixel high white
+letters at a 30 degree angle up from horizontal. Then, from
+where that leaves off, the script writes &quot;there&quot;
+in 10 pixel high black letters horizontally. Finally, it
+draws a black line to a point 5 pixels over and 20 pixels
+down from the end of &quot;there.&quot;</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you
+don&rsquo;t specify <i>ppmfile</i>, <b>ppmdraw</b> reads its
+input PPM image from Standard Input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The output
+image goes to Standard Output.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmdraw</b>
+works on multi-image streams. It executes the same script on
+each input image and produces an output stream with one
+image for each input image. But before Netpbm 10.32
+(February 2006), <b>ppmdraw</b> ignored every image after
+the first.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you just
+want to add a single line of text to an image,
+<b>ppmlabel</b> may be more what you want.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>ppmdraw</b> recognizes the following command line
+options: <b><br>
+-script=</b><i>script</i></p>
+
+<p style="margin-left:22%;">This option gives the script.
+See <a href="#script">Script</a> .</p>
+
+<p style="margin-left:22%; margin-top: 1em">You may not
+specify both <b>-script</b> and <b>-scriptfile</b>.</p>
+
+
+<p style="margin-left:11%;"><b>-scriptfile=</b><i>filename</i></p>
+
+<p style="margin-left:22%;">This option names a file that
+contains the script. <b>-</b> means Standard Input.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You may not
+specify both <b>-script</b> and <b>-scriptfile</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You may not
+specify <b>-</b> (Standard Input) for both
+<b>-scriptfile</b> and the input image file.</p>
+
+<h2>SCRIPT
+<a name="SCRIPT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The heart of
+<b>ppmdraw</b> function is its script. The script is a
+character stream. The stream consists of commands. Commands
+are separated by semicolons. White space is regarded just
+like in C: Any contiguous stretch of unquoted white space is
+equivalent to a single space character. Note that this means
+newlines have no particular significance.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A command is
+composed of tokens, separated from each other by white
+space. To write a token that contains white space, enclose
+it in double quotes. Everything between two matched
+quotation marks is one token.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The first token
+of a command is the verb, which determines the basic
+function of the command. The rest of the tokens of the
+command are arguments, the meaning of which depends upon the
+verb. The following list gives all the valid verbs, and for
+each its meaning and its arguments.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Many command
+have arguments that specify a position on the canvas, which
+you specify by row and column. Row 0 is the top row. Column
+0 is the leftmost column. You may specify negative numbers
+(but such a position would necessarily be off the
+canvas).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Your drawing
+instructions may involve positions not on the canvas. But
+any pixels you draw there just get discarded.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>setpos</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Set the &quot;current position&quot; in the image. This
+affects where subsequent commands draw things. The 2
+arguments are the column and row number.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">At the start of
+the script, the current position is (0,0).</p>
+
+<p style="margin-left:11%;">setlinetype</p>
+
+<p style="margin-left:22%;">The 1 argument is
+&quot;normal&quot; or &quot;nodiag.&quot;. This effects a
+<b>ppmd_setlinetype()</b> call. Further details are not yet
+documented.</p>
+
+<p style="margin-left:11%;">setlineclip</p>
+
+<p style="margin-left:22%;">This effects a
+<b>ppmd_setlineclip()</b> call. Not yet documented.</p>
+
+<p style="margin-left:11%;">setcolor</p>
+
+<p style="margin-left:22%;">This sets the &quot;current
+color&quot;, which determines the color in which subsequent
+drawing commands draw. Before the first <b>setcolor</b>, the
+current color is white.</p>
+
+<p style="margin-left:22%; margin-top: 1em">There is one
+argument. It specifies the color as described for the
+<a href="libnetpbm_image.html#colorname">argument of the
+<b>pnm_parsecolor()</b> library routine</a> .</p>
+
+<p style="margin-left:11%;">setfont</p>
+
+<p style="margin-left:22%;">This sets the &quot;current
+font&quot;, which determines the font in which subsequent
+text drawing commands draw. Before the first <b>setfont</b>,
+the current font is a built in font called
+&quot;standard.&quot;</p>
+
+<p style="margin-left:22%; margin-top: 1em">The argument of
+this command is a file name. It is the name of a Netpbm PPMD
+font file.</p>
+
+<p style="margin-left:22%; margin-top: 1em">A Netpbm PPMD
+font file typically has a name that ends in
+&quot;.ppmdfont&quot; and its first 8 bytes are the ASCII
+encoding of &quot;ppmdfont&quot;.</p>
+
+<p style="margin-left:22%; margin-top: 1em">There is only
+one of these fonts as far as we know. It is distributed with
+Netpbm as the file <b>standard.ppmdfont</b>, but you
+don&rsquo;t need to use that file because the same font is
+built into the Netpbm library and is the default. If you
+want to make a new font, you can find the format of a
+ppmdfont file in the Netpbm interface header file
+<b>ppmdfont.h</b>, but you&rsquo;ll have to make your own
+tools to build it. The program <b>ppmdmkfont</b> generates
+<b>standard.ppmdfont</b>, so you can use that as an
+example.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>line</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>This draws a one pixel wide line in the current color.
+The 4 arguments are: starting column, starting row, ending
+column, ending row.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">This command
+does not affect the current position.</p>
+
+<p style="margin-left:11%;">line_here</p>
+
+<p style="margin-left:22%;">This is like <b>line</b>,
+except it works in a more relative way.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The line starts
+at the current point. The two arguments are the rightward
+and downward displacement from there to the terminal point.
+The command moves the current position to the terminal point
+after drawing.</p>
+
+<p style="margin-left:11%;">spline3</p>
+
+<p style="margin-left:22%;">This draws a spline in the
+current color between 2 points, using a third as a control
+point. It approximates a cubic spline segment.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The shape of
+the curve is such that it passes through the specified
+endpoints, and lines tangent to the curve at those endpoints
+intersect at the control point. Controlling the tangents
+allows you to connect this curve to other curves generated
+the same way without having corners at the connection
+points.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The 6 arguments
+are the starting point column, starting point row, control
+point column, control point row, ending point column, and
+ending point row.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This command
+does not affect the current position.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>circle</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>This command draws a circle in the current color. The
+three arguments are the column number and row number of the
+center of the circle and the radius of the circle in
+pixels.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;">filledrectangle</p>
+
+<p style="margin-left:22%;">This command draws a rectangle
+filled with the current color.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The 4 arguments
+are the column and row numbers of the upper left corner of
+the rectangle, the width of the rectangle, and the height of
+the rectangle.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>text</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>This command draws text in the current color in the
+built-in font. The 5 arguments are:</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>column number of starting point of baseline</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>row number of starting point of baseline</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>height of characters, in pixels</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>angle of baseline in degrees elevated from the
+horizontal</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>text</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">Note that if
+your text contains white space, you&rsquo;ll have to use
+double quotes to cause it to be a single token.</p>
+
+<p style="margin-left:11%;">text_here</p>
+
+<p style="margin-left:22%;">This is like <b>text</b>,
+except that the baseline starts at the current position and
+the command updates the current position to the other end of
+the baseline after it draws.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Bear in mind
+that a script starts with the current position in the top
+line, so if you leave it there, only the bottom line of your
+text will be within the image!</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmdraw</b>
+was new in Netpbm 10.29 (August 2005).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmlabel</b>(1),
+<b>ppm</b>(1) <b>libnetpbm_draw</b>(1)</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/ppmdraw.html</b></p>
+<hr>
+</body>
+</html>

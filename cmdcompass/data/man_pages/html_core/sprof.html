@@ -1,0 +1,386 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:49 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>sprof</title>
+
+</head>
+<body>
+
+<h1 align="center">sprof</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#STANDARDS">STANDARDS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">sprof - read
+and display shared object profiling data</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>sprof</b>
+[<i>option</i>]... <i>shared-object-path</i>
+[<i>profile-data-path</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>sprof</b> command displays a profiling summary for the
+shared object (shared library) specified as its first
+command-line argument. The profiling summary is created
+using previously generated profiling data in the (optional)
+second command-line argument. If the profiling data pathname
+is omitted, then <b>sprof</b> will attempt to deduce it
+using the soname of the shared object, looking for a file
+with the name <i>&lt;soname&gt;.profile</i> in the current
+directory.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+command-line options specify the profile output to be
+produced: <b><br>
+-c</b>, <b>--call-pairs</b></p>
+
+<p style="margin-left:22%;">Print a list of pairs of call
+paths for the interfaces exported by the shared object,
+along with the number of times each path is used.</p>
+
+<p style="margin-left:11%;"><b>-p</b>,
+<b>--flat-profile</b></p>
+
+<p style="margin-left:22%;">Generate a flat profile of all
+of the functions in the monitored object, with counts and
+ticks.</p>
+
+<p style="margin-left:11%;"><b>-q</b>, <b>--graph</b></p>
+
+<p style="margin-left:22%;">Generate a call graph.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If none of the
+above options is specified, then the default behavior is to
+display a flat profile and a call graph.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+additional command-line options are available: <b><br>
+-?</b>, <b>--help</b></p>
+
+<p style="margin-left:22%;">Display a summary of
+command-line options and arguments and exit.</p>
+
+<p style="margin-left:11%;"><b>--usage</b></p>
+
+<p style="margin-left:22%;">Display a short usage message
+and exit.</p>
+
+<p style="margin-left:11%;"><b>-V</b>, <b>--version</b></p>
+
+<p style="margin-left:22%;">Display the program version and
+exit.</p>
+
+<h2>STANDARDS
+<a name="STANDARDS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>sprof</b> command is a GNU extension, not present in
+POSIX.1.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+example demonstrates the use of <b>sprof</b>. The example
+consists of a main program that calls two functions in a
+shared object. First, the code of the main program:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>cat
+prog.c</b> <br>
+#include &lt;stdlib.h&gt;</p>
+
+<p style="margin-left:17%; margin-top: 1em">void x1(void);
+<br>
+void x2(void);</p>
+
+<p style="margin-left:17%; margin-top: 1em">int <br>
+main(int argc, char *argv[]) <br>
+{ <br>
+x1(); <br>
+x2(); <br>
+exit(EXIT_SUCCESS); <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">The functions
+<i>x1</i>() and <i>x2</i>() are defined in the following
+source file that is used to construct the shared object:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>cat
+libdemo.c</b> <br>
+#include &lt;unistd.h&gt;</p>
+
+<p style="margin-left:17%; margin-top: 1em">void <br>
+consumeCpu1(int lim) <br>
+{ <br>
+for (unsigned int j = 0; j &lt; lim; j++)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>getppid();</p></td></tr>
+</table>
+
+<p style="margin-left:17%;">}</p>
+
+<p style="margin-left:17%; margin-top: 1em">void <br>
+x1(void) { <br>
+for (unsigned int j = 0; j &lt; 100; j++)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>consumeCpu1(200000);</p></td></tr>
+</table>
+
+<p style="margin-left:17%;">}</p>
+
+<p style="margin-left:17%; margin-top: 1em">void <br>
+consumeCpu2(int lim) <br>
+{ <br>
+for (unsigned int j = 0; j &lt; lim; j++)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>getppid();</p></td></tr>
+</table>
+
+<p style="margin-left:17%;">}</p>
+
+<p style="margin-left:17%; margin-top: 1em">void <br>
+x2(void) <br>
+{ <br>
+for (unsigned int j = 0; j &lt; 1000; j++)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>consumeCpu2(10000);</p></td></tr>
+</table>
+
+<p style="margin-left:17%;">}</p>
+
+<p style="margin-left:11%; margin-top: 1em">Now we
+construct the shared object with the real name
+<i>libdemo.so.1.0.1</i>, and the soname
+<i>libdemo.so.1</i>:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>cc -g
+-fPIC -shared -Wl,-soname,libdemo.so.1 \ <br>
+-o libdemo.so.1.0.1 libdemo.c</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Then we
+construct symbolic links for the library soname and the
+library linker name:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>ln -sf
+libdemo.so.1.0.1 libdemo.so.1</b> <br>
+$ <b>ln -sf libdemo.so.1 libdemo.so</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Next, we
+compile the main program, linking it against the shared
+object, and then list the dynamic dependencies of the
+program:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>cc -g -o
+prog prog.c -L. -ldemo</b> <br>
+$ <b>ldd prog</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>linux-vdso.so.1 =&gt; (0x00007fff86d66000)</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>libdemo.so.1 =&gt; not found</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>libc.so.6 =&gt; /lib64/libc.so.6
+(0x00007fd4dc138000)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>/lib64/ld-linux-x86-64.so.2 (0x00007fd4dc51f000)</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">In order to get
+profiling information for the shared object, we define the
+environment variable <b>LD_PROFILE</b> with the soname of
+the library:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>export
+LD_PROFILE=libdemo.so.1</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">We then define
+the environment variable <b>LD_PROFILE_OUTPUT</b> with the
+pathname of the directory where profile output should be
+written, and create that directory if it does not exist
+already:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>export
+LD_PROFILE_OUTPUT=$(pwd)/prof_data</b> <br>
+$ <b>mkdir -p $LD_PROFILE_OUTPUT</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>LD_PROFILE</b>
+causes profiling output to be <i>appended</i> to the output
+file if it already exists, so we ensure that there is no
+preexisting profiling data:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>rm -f
+$LD_PROFILE_OUTPUT/$LD_PROFILE.profile</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">We then run the
+program to produce the profiling output, which is written to
+a file in the directory specified in
+<b>LD_PROFILE_OUTPUT</b>:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$
+<b>LD_LIBRARY_PATH=. ./prog</b> <br>
+$ <b>ls prof_data</b> <br>
+libdemo.so.1.profile</p>
+
+<p style="margin-left:11%; margin-top: 1em">We then use the
+<b>sprof -p</b> option to generate a flat profile with
+counts and ticks:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>sprof -p
+libdemo.so.1 $LD_PROFILE_OUTPUT/libdemo.so.1.profile</b>
+<br>
+Flat profile:</p>
+
+<p style="margin-left:17%; margin-top: 1em">Each sample
+counts as 0.01 seconds. <br>
+% cumulative self self total <br>
+time seconds seconds calls us/call us/call name <br>
+60.00 0.06 0.06 100 600.00 consumeCpu1 <br>
+40.00 0.10 0.04 1000 40.00 consumeCpu2 <br>
+0.00 0.10 0.00 1 0.00 x1 <br>
+0.00 0.10 0.00 1 0.00 x2</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <b>sprof
+-q</b> option generates a call graph:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>sprof -q
+libdemo.so.1 $LD_PROFILE_OUTPUT/libdemo.so.1.profile</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">index % time
+self children called name</p>
+
+<p style="margin-left:17%; margin-top: 1em">0.00 0.00
+100/100 x1 [1] <br>
+[0] 100.0 0.00 0.00 100 consumeCpu1 [0] <br>
+----------------------------------------------- <br>
+0.00 0.00 1/1 &lt;UNKNOWN&gt; <br>
+[1] 0.0 0.00 0.00 1 x1 [1] <br>
+0.00 0.00 100/100 consumeCpu1 [0] <br>
+----------------------------------------------- <br>
+0.00 0.00 1000/1000 x2 [3] <br>
+[2] 0.0 0.00 0.00 1000 consumeCpu2 [2] <br>
+----------------------------------------------- <br>
+0.00 0.00 1/1 &lt;UNKNOWN&gt; <br>
+[3] 0.0 0.00 0.00 1 x2 [3] <br>
+0.00 0.00 1000/1000 consumeCpu2 [2] <br>
+-----------------------------------------------</p>
+
+<p style="margin-left:11%; margin-top: 1em">Above and
+below, the &quot;&lt;UNKNOWN&gt;&quot; strings represent
+identifiers that are outside of the profiled object (in this
+example, these are instances of <i>main()</i>).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <b>sprof
+-c</b> option generates a list of call pairs and the number
+of their occurrences:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>sprof -c
+libdemo.so.1 $LD_PROFILE_OUTPUT/libdemo.so.1.profile</b>
+<br>
+&lt;UNKNOWN&gt; x1 1 <br>
+x1 consumeCpu1 100 <br>
+&lt;UNKNOWN&gt; x2 1 <br>
+x2 consumeCpu2 1000</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gprof</b>(1),
+<b>ldd</b>(1), <b>ld.so</b>(8)</p>
+<hr>
+</body>
+</html>

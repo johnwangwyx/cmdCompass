@@ -1,0 +1,848 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:26 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamperspective User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamperspective User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#OPTION USAGE">OPTION USAGE</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#HINTS">HINTS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamperspective
+- a reverse scanline renderer for Netpbm images</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamperspective</b>
+<br>
+[<b>--bottom_margin=</b><i>num</i>] <br>
+[<b>--detail=</b><i>num</i>] <br>
+[<b>--frame_include=</b><i>bool</i>] <br>
+[<b>--height=</b><i>num</i>] <br>
+[<b>--include=[</b><i>x1</i>,<i>y1</i>;<i>x2</i>,<i>y2</i>;
+...]] <br>
+[<b>--input_system=</b><i>spec</i>] <br>
+[<b>--input_unit=</b><i>spec</i>] <br>
+[<b>--interpolation=</b><i>spec</i>] <br>
+[<b>--left_margin=</b><i>num</i>] <br>
+[<b>--margin=</b><i>num</i>] <br>
+[<b>--output_system=</b><i>spec</i>] <br>
+[<b>--proportion=</b><i>spec</i>] <br>
+[<b>--ratio=</b><i>num</i>] <br>
+[<b>--right_margin=</b><i>num</i>] <br>
+[<b>--top_margin=</b><i>num</i>] <br>
+[<b>--width=</b><i>num</i>] <br>
+{ <br>
+{ <i><br>
+upper_left_x upper_left_y upper_right_x upper_right_y <br>
+lower_left_x lower_left_y lower_right_x lower_right_y</i>
+<br>
+} <br>
+| <br>
+{ <br>
+
+{<b>--upper_left_x</b>|<b>--ulx</b>}<b>=</b><i>upper_left_x</i>
+<br>
+
+{<b>--upper_left_y</b>|<b>--uly</b>}<b>=</b><i>upper_left_y</i>
+<br>
+
+{<b>--upper_right_x</b>|<b>--urx</b>}<b>=</b><i>upper_right_x</i>
+<br>
+
+{<b>--upper_right_y</b>|<b>--ury</b>}<b>=</b><i>upper_right_y</i>
+<br>
+
+{<b>--lower_left_x</b>|<b>--llx</b>}<b>=</b><i>lower_left_x</i>
+<br>
+
+{<b>--lower_left_y</b>|<b>--lly</b>}<b>=</b><i>lower_left_y</i>
+<br>
+
+{<b>--lower_right_x</b>|<b>--lrx</b>}<b>=</b><i>lower_right_x</i>
+<br>
+
+{<b>--lower_right_y</b>|<b>--lry</b>}<b>=</b><i>lower_right_y</i>
+<br>
+} <br>
+} <br>
+[<i>infile</i>]</p>
+
+<h2>OPTION USAGE
+<a name="OPTION USAGE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviation of option is acceptable. (But note that
+shortest unique prefixes might be longer in future versions
+of the program.) You may use single hyphens instead of
+double hyphen to denote options. You may use white space in
+place of the equals sign to separate an option name from its
+value. All options starting with hyphens may be given in any
+order.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamperspective</b>
+reads a Netpbm image as input and produces a Netpbm image of
+the same format as output.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamperspective</b>
+interprets the input image as a perspective projection of
+another image which is in a plane oblique to that of the
+input image. For example, a photograph of a painting, taken
+at an angle. The arguments <i>upper_left_x</i> ...
+<i>lower_right_y</i> specify a quadrilateral in the
+photograph that <b>pamperspective</b> assumes corresponds to
+a parallelogram in the painting. The output image consists
+of this parallelogram, sheared to a rectangle. In this way
+<b>pamperspective</b> undoes the effect of a raytracer or
+scanline renderer.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that if
+the input image is a projection of a solid scene, rather
+than a plane, the result is like a different camera angle on
+that scene, to the extent that the scene is shallow from the
+other angle.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The input is
+from <i>infile</i>, or from Standard Input, if <i>infile</i>
+is not specified. The output is to Standard Output.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamperspective</b> recognizes the following command line
+options:</p>
+
+<p style="margin-left:11%; margin-top: 1em">For options of
+the form <b>--name=</b><i>num</i>, You can specify the value
+<i>num</i> in any of the traditional ways. Additionally, you
+can specify it as <i>num1</i>/<i>num2</i>, where <i>num1</i>
+and <i>num2</i> are specified traditionally. This is useful
+for specifying a width/height ratio of 4/3, without having
+to write infinitely many digits. Where <i>num</i> is
+supposed to be a natural number, <b>pamperspective</b> does
+not allow this format.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Quadrilateral
+Specification Options <br>
+--upper_left_x=</b><i>num</i> <b><br>
+--ulx=</b><i>num</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">This specifies
+the horizontal coordinate of the upper left <br>
+vertex of the quadrilateral. The meaning of &rsquo;upper
+left&rsquo; is <br>
+relative to the output image. The interpretation of
+<i>num</i> <br>
+depends on the values for <b>--input_system</b> and <b><br>
+--input_unit</b>.</p>
+
+
+<p style="margin-left:11%;"><b>--upper_left_y=</b><i>num</i>
+<b><br>
+--uly=</b><i>num</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">This specifies
+the vertical coordinate of the upper left vertex <br>
+of the quadrilateral. The meaning of &rsquo;upper
+left&rsquo; is relative to <br>
+the output image. The interpretation of <i>num</i> depends
+on the <br>
+values for <b>--input_system</b> and
+<b>--input_unit</b>.</p>
+
+
+<p style="margin-left:11%;"><b>--upper_right_x=</b><i>num</i>
+<b><br>
+--urx=</b><i>num</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">This specifies
+the horizontal coordinate of the upper right <br>
+vertex of the quadrilateral. The meaning of &rsquo;upper
+right&rsquo; is <br>
+relative to the output image. The interpretation of
+<i>num</i> <br>
+depends on the values for <b>--input_system</b> and <b><br>
+--input_unit</b>.</p>
+
+
+<p style="margin-left:11%;"><b>--upper_right_y=</b><i>num</i>
+<b><br>
+--ury=</b><i>num</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">This specifies
+the vertical coordinate of the upper right vertex <br>
+of the quadrilateral. The meaning of &rsquo;upper
+right&rsquo; is relative to <br>
+the output image. The interpretation of <i>num</i> depends
+on the <br>
+values for <b>--input_system</b> and
+<b>--input_unit</b>.</p>
+
+
+<p style="margin-left:11%;"><b>--lower_left_x=</b><i>num</i>
+<b><br>
+--llx=</b><i>num</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">This specifies
+the horizontal coordinate of the lower left <br>
+vertex of the quadrilateral. The meaning of &rsquo;lower
+left&rsquo; is <br>
+relative to the output image. The interpretation of
+<i>num</i> <br>
+depends on the values for <b>--input_system</b> and <b><br>
+--input_unit</b>.</p>
+
+
+<p style="margin-left:11%;"><b>--lower_left_y=</b><i>num</i>
+<b><br>
+--lly=</b><i>num</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">This specifies
+the vertical coordinate of the lower left vertex <br>
+of the quadrilateral. The meaning of &rsquo;lower
+left&rsquo; is relative to <br>
+the output image. The interpretation of <i>num</i> depends
+on the <br>
+values for <b>--input_system</b> and
+<b>--input_unit</b>.</p>
+
+
+<p style="margin-left:11%;"><b>--lower_right_x=</b><i>num</i>
+<b><br>
+--lrx=</b><i>num</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">This specifies
+the horizontal coordinate of the lower right <br>
+vertex of the quadrilateral. The meaning of &rsquo;lower
+right&rsquo; is <br>
+relative to the output image. The interpretation of
+<i>num</i> <br>
+depends on the values for <b>--input_system</b> and <b><br>
+--input_unit</b>.</p>
+
+
+<p style="margin-left:11%;"><b>--lower_right_y=</b><i>num</i>
+<b><br>
+--lry=</b><i>num</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">This specifies
+the vertical coordinate of the lower right vertex <br>
+of the quadrilateral. The meaning of &rsquo;lower
+right&rsquo; is relative to <br>
+the output image. The interpretation of <i>num</i> depends
+on the <br>
+values for <b>--input_system</b> and
+<b>--input_unit</b>.</p>
+
+
+<p style="margin-left:11%;"><b>--input_system=</b><i>system</i>
+<b><br>
+--input_unit=</b><i>unit</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">The input image
+consists of pixels, which are, from the point of <br>
+view of a scanline renderer, solid squares. These options
+specify <br>
+how the coordinates are interpreted:</p>
+
+<p style="margin-left:11%;"><i>system</i>=<b>lattice</b>,
+<i>unit</i>=<b>image</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">(0,0) refers to
+the upper left corner of the upper left pixel <br>
+and (1,1) refers to the lower right corner of the lower
+right <br>
+pixel.</p>
+
+<p style="margin-left:11%;"><i>system</i>=<b>lattice</b>,
+<i>unit</i>=<b>pixel</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">(0,0) refers to
+the upper left corner of the upper left pixel <br>
+and (<i>width</i>,<i>height</i>) refers to the lower right
+corner <br>
+of the lower right pixel. Here <i>width</i> and
+<i>height</i> are <br>
+the width and height of the input image.</p>
+
+<p style="margin-left:11%;"><i>system</i>=<b>pixel</b>,
+<i>unit</i>=<b>image</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">(0,0) refers to
+the center of the upper left pixel and (1,1) <br>
+refers to the center of the lower right pixel.</p>
+
+<p style="margin-left:11%;"><i>system</i>=<b>pixel</b>,
+<i>unit</i>=<b>pixel</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">(0,0) refers to
+the center of the upper left pixel and <br>
+(<i>width</i>-1,<i>height</i>-1) refers to the center of the
+lower <br>
+right pixel. Here <i>width</i> and <i>height</i> are the
+width <br>
+and height of the input image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The defaults
+are <b>--input_system</b>=<b>lattice</b> and <b><br>
+--input_unit</b>=<b>pixel</b>. Point-and-click front ends
+should <br>
+use <b>--input_system</b>=<b>pixel</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Frame
+Options</b> <br>
+By default <b>pamperspective</b> outputs exactly the above
+parallelogram, sheared to a rectangle. With the following
+options, it is possible to make <b>pamperspective</b> output
+a larger or smaller portion, which we call the &quot;visible
+part.&quot; We refer to the default rectangle as the
+&quot;frame.&quot; The visible part is always a rectangle
+the axes of which are parallel to those of the frame.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The frame
+options are additive. All the parts of the image specified
+by either margin options, <b>--include_frame</b>, or
+<b>--include</b> (or their defaults) are in the visible
+part. The visible part is the smallest possible rectangle
+that contains the parts specified those three ways.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The visible
+part must have nonzero size. That means if you specify
+<b>--frame_include=no</b> (overriding the default),
+you&rsquo;ll need to specify other frame options in order to
+have something in the visible part. <br>
+[<b>--margin=</b><i>num</i>]</p>
+
+<p style="margin-left:22%; margin-top: 1em">This specifies
+an area surrounding the frame that is to be <br>
+included in the visible part. The units of <i>num</i> are
+the width <br>
+of the frame for the horizontal extensions and the height of
+the <br>
+frame for vertical extensions.</p>
+
+<p style="margin-left:22%; margin-top: 1em">For example,
+<b>--margin=1</b> makes the visible part 9 times as large,
+<br>
+because it makes the visible part extend one frame&rsquo;s
+worth to the left <br>
+of the frame, one frame&rsquo;s worth to the right, one
+frame&rsquo;s worth above <br>
+the frame, and one frame&rsquo;s worth below the frame, for
+a total of <br>
+3 frames&rsquo; worth in both dimensions.</p>
+
+<p style="margin-left:22%; margin-top: 1em">A negative
+value has an effect only if you specify <b><br>
+--frame_include=no</b>. The default is no margin.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The individual
+margin options below override this common margin <br>
+setting.</p>
+
+
+<p style="margin-left:11%;">[<b>--top_margin=</b><i>num</i>]
+<br>
+[<b>--left_margin=</b><i>num</i>] <br>
+[<b>--right_margin=</b><i>num</i>] <br>
+[<b>--bottom_margin=</b><i>num</i>]</p>
+
+<p style="margin-left:22%; margin-top: 1em">These are like
+<b>--margin</b>, but they specify only one of <br>
+the 4 sides. The default value for each is the value (or
+default) of <b><br>
+--margin</b>.</p>
+
+
+<p style="margin-left:11%;">[<b>--frame_include=</b><i>bool</i>]</p>
+
+<p style="margin-left:22%; margin-top: 1em">Valid values
+for <i>bool</i> are:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>yes</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>true</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>on</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>The frame itself is in the visible part.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>no</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>false</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>off</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>The frame itself is not necessarily in the visible
+part</p> </td></tr>
+</table>
+
+<p style="margin-left:22%;">(but it could be if other
+options cause it to be).</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default
+value is <b>yes</b></p>
+
+
+<p style="margin-left:11%;"><b>--include=[</b><i>x1</i>,<i>y1</i>;<i>x2</i>,<i>y2</i>;
+...]</p>
+
+<p style="margin-left:22%; margin-top: 1em">The visible
+part is made large enough such that every point <br>
+(<i>x1</i>,<i>y1</i>), (<i>x2</i>,<i>y2</i>), of the
+<i>input</i> image is <br>
+visible. The meaning of <i>x</i> and <i>y</i> is determined
+by <b><br>
+--input_system</b> and <b>--input_unit</b>. You can specify
+any <br>
+number of semicolon-delimited points, including zero.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you&rsquo;re
+supplying these options via a Unix command shell, be <br>
+sure to use proper quoting, because semicolon (<b>;</b>) is
+usually <br>
+a shell control character.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The frame
+options were new in Netpbm 10.25 (October 2004).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Output Size
+Options <br>
+--width=</b><i>width</i> <b><br>
+--height=</b><i>height</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">These specify
+the size of the output image in horizontal and <br>
+vertical direction. The values are numbers of pixels, so
+only <br>
+natural numbers are valid. These values override the default
+<br>
+means to determine the output size.</p>
+
+<p style="margin-left:11%;"><b>--detail=</b><i>num</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">If you do not
+specify <b>--width</b>, <b>pamperspective</b> <br>
+determines the width of the output image such that moving
+<i>num</i> <br>
+output pixels horizontally does not change the corresponding
+pixel <br>
+coordinates of the input image by more than 1. <b><br>
+pamperspective</b> determines the height of the output image
+<br>
+analogously. The default value is 1.</p>
+
+
+<p style="margin-left:11%;"><b>--proportion=</b><i>prop</i>
+<b><br>
+--ratio=</b><i>ratio</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Valid values
+for <i>prop</i> are:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>free</b></p></td>
+<td width="4%"></td>
+<td width="70%">
+
+
+<p>In this case <b>--ratio</b> does not have any
+effect.</p> </td>
+<td width="8%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>fixed</b></p></td>
+<td width="4%"></td>
+<td width="70%">
+
+
+<p>After the width and height are determined</p></td>
+<td width="8%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%;">according to <b>--detail</b>,
+one of both will be increased, in <br>
+order to obtain width/height=<i>ratio</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The defaults
+are <b>--proportion</b>=<b>free</b> and <b><br>
+--ratio</b>=1.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Output
+Options <br>
+--output_system=</b><i>spec</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">The output
+image consists of pixels, which are, from the point <br>
+of view of a scanline renderer, solid squares. This option
+<br>
+specifies how the four vertices of the quadrilateral
+correspond to <br>
+the pixels of the output image. Valid values for <i>spec</i>
+are:</p>
+
+<p style="margin-left:11%;"><b>lattice</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">The upper left
+vertex corresponds to the upper left corner of <br>
+the upper left pixel and The lower right vertex corresponds
+to the <br>
+lower right corner of the lower right <br>
+pixel.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>pixel</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>The upper left vertex corresponds to the center of the
+upper</p> </td></tr>
+</table>
+
+<p style="margin-left:22%;">left pixel and The lower right
+vertex corresponds to the center of <br>
+the lower right pixel.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default
+value is <b>lattice</b>. Point-and-click front ends <br>
+should use <b>pixel</b>.</p>
+
+
+<p style="margin-left:11%;"><b>--interpolation=</b><i>spec</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Usually
+(centers of) output pixels do not exactly correspond to <br>
+(centers of) input pixels. This option determines how the
+program <br>
+will choose the new pixels. Valid values for <i>spec</i>
+are:</p>
+
+<p style="margin-left:11%;"><b>nearest</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">The output
+pixel will be identical to the nearest input <br>
+pixel.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>linear</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The output pixel will be a bilinear interpolation of the
+four</p> </td></tr>
+</table>
+
+<p style="margin-left:22%;">surrounding input pixels.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default
+value is <b>nearest</b>.</p>
+
+<h2>HINTS
+<a name="HINTS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">It might be
+tempting always to use the options <b>--include
+0,0;0,1;1,0;1,1</b> (assuming <b>--input_system=lattice</b>
+and <b>--input_unit=image</b>), so that no part of the input
+image is missing in the output. There are problems with
+that:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">If the three dimensional plane
+defined by the quadrilateral has a</p></td></tr>
+</table>
+
+<p style="margin-left:22%;">visible horizon in the input
+image, then the above asks <b>pamperspective</b> <br>
+to include points that cannot ever be part of the
+output.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">If the horizon is not visible,
+but close to the border of the</p></td></tr>
+</table>
+
+<p style="margin-left:22%;">input image, this may result in
+<i>very</i> large output <br>
+files. Consider a picture of a road. If you ask for a point
+close to <br>
+the horizon to be included, then this point is far away from
+the <br>
+viewer. The output will cover many kilometers of road, while
+<b><br>
+--detail</b> perhaps makes a pixel represent a square
+centimeter.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When working
+with large files <b>pamperspective</b>&rsquo;s memory usage
+might be an issue. In order to keep it small, you should
+minimize each of the following:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">The vertical range that the top
+output line consumes in the</p></td></tr>
+</table>
+
+<p style="margin-left:22%;">input image;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">The vertical range that the
+bottom output line consumes in the</p></td></tr>
+</table>
+
+<p style="margin-left:22%;">input image;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">The vertical range from the
+topmost (with respect to the</p></td></tr>
+</table>
+
+<p style="margin-left:22%;">input image) quadrilateral
+point to the top (with respect to the output <br>
+image) output line.</p>
+
+<p style="margin-left:22%; margin-top: 1em">For this
+purpose you can use <b>pamflip</b> before and/or after
+<b>pamperspective</b>. Example: Instead of</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>pamperspective
+10 0 100 50 0 20 95 100 infile &gt; outfile</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">you can use</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>pamflip
+-rotate90 infile | <br>
+pamperspective 50 0 100 5 0 90 20 100 | <br>
+pamflip -rotate270 &gt; outfile</b></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>netpbm</b>(1),
+<b>pam</b>(1), <b>pnm</b>(1), <b>pamcut</b>(1),
+<b>pamflip</b>(1), <b>pnmrotate</b>(1), <b>pamscale</b>(1),
+<b>pnmshear</b>(1), <b>pamhomography</b>(1),
+<b>pnmstitch</b>(1)</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Mark Weyer
+wrote <b>pamperspective</b> in March 2004.</p>
+
+<p style="margin-left:11%; margin-top: 1em">It was new in
+Netpbm 10.22 (April 2004).</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This
+documentation was written by Mark Weyer. Permission is
+granted to copy, distribute and/or modify this document
+under the terms of the GNU General Public License, Version 2
+or any later version published by the Free Software
+Foundation.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamperspective.html</b></p>
+<hr>
+</body>
+</html>

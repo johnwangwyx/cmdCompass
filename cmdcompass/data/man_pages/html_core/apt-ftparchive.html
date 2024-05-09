@@ -1,0 +1,841 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:33:53 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>APT-FTPARCHIVE</title>
+
+</head>
+<body>
+
+<h1 align="center">APT-FTPARCHIVE</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#THE GENERATE CONFIGURATION">THE GENERATE CONFIGURATION</a><br>
+<a href="#THE BINARY OVERRIDE FILE">THE BINARY OVERRIDE FILE</a><br>
+<a href="#THE SOURCE OVERRIDE FILE">THE SOURCE OVERRIDE FILE</a><br>
+<a href="#THE EXTRA OVERRIDE FILE">THE EXTRA OVERRIDE FILE</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#DIAGNOSTICS">DIAGNOSTICS</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#NOTES">NOTES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">apt-ftparchive
+- Utility to generate index files</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em"><b>apt-ftparchive</b>
+[<b>-dsq</b>] [<b>--md5</b>] [<b>--delink</b>]
+[<b>--readonly</b>] [<b>--contents</b>]
+[<b>--arch&nbsp;</b><i>architecture</i>]
+[<b>-o=</b><i>config_string</i>]
+[<b>-c=</b><i>config_file</i>]
+{packages&nbsp;<i>path&nbsp;</i>[<i>override-file&nbsp;</i>[<i>pathprefix</i>]]
+|
+sources&nbsp;<i>path&nbsp;</i>[<i>override-file&nbsp;</i>[<i>pathprefix</i>]]
+| contents&nbsp;<i>path</i> | release&nbsp;<i>path</i> |
+generate&nbsp;<i>config_file&nbsp;section</i>... |
+clean&nbsp;<i>config_file</i> | {-v&nbsp;|&nbsp;--version} |
+{-h&nbsp;|&nbsp;--help}}</p> </td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>apt-ftparchive</b>
+is the command line tool that generates the index files that
+APT uses to access a distribution source. The index files
+should be generated on the origin site based on the content
+of that site.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>apt-ftparchive</b>
+is a superset of the <b>dpkg-scanpackages</b>(1) program,
+incorporating its entire functionality via the packages
+command. It also contains a contents file generator,
+contents, and an elaborate means to 'script' the generation
+process for a complete archive.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Internally
+<b>apt-ftparchive</b> can make use of binary databases to
+cache the contents of a .deb file and it does not rely on
+any external programs aside from <b>gzip</b>(1). When doing
+a full generate it automatically performs file-change checks
+and builds the desired compressed output files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Unless the
+<b>-h</b>, or <b>--help</b> option is given, one of the
+commands below must be present.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>packages</b></p>
+
+<p style="margin-left:17%;">The packages command generates
+a package file from a directory tree. It takes the given
+directory and recursively searches it for .deb files,
+emitting a package record to stdout for each. This command
+is approximately equivalent to
+<b>dpkg-scanpackages</b>(1).</p>
+
+<p style="margin-left:17%; margin-top: 1em">The option
+<b>--db</b> can be used to specify a binary caching DB.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>sources</b></p>
+
+<p style="margin-left:17%;">The sources command generates a
+source index file from a directory tree. It takes the given
+directory and recursively searches it for .dsc files,
+emitting a source record to stdout for each. This command is
+approximately equivalent to <b>dpkg-scansources</b>(1).</p>
+
+<p style="margin-left:17%; margin-top: 1em">If an override
+file is specified then a source override file will be looked
+for with an extension of .src. The --source-override option
+can be used to change the source override file that will be
+used.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>contents</b></p>
+
+<p style="margin-left:17%;">The contents command generates
+a contents file from a directory tree. It takes the given
+directory and recursively searches it for .deb files, and
+reads the file list from each file. It then sorts and writes
+to stdout the list of files matched to packages. Directories
+are not written to the output. If multiple packages own the
+same file then each package is separated by a comma in the
+output.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The option
+<b>--db</b> can be used to specify a binary caching DB.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>release</b></p>
+
+<p style="margin-left:17%;">The release command generates a
+Release file from a directory tree. It recursively searches
+the given directory for uncompressed and compressed
+Packages, Sources, Contents, Components and icons files as
+well as Release, Index and md5sum.txt files by default
+(APT::FTPArchive::Release::Default-Patterns). Additional
+filename patterns can be added by listing them in
+APT::FTPArchive::Release::Patterns. It then writes to stdout
+a Release file containing (by default) an MD5, SHA1, SHA256
+and SHA512 digest for each file.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Values for the
+additional metadata fields in the Release file are taken
+from the corresponding variables under
+APT::FTPArchive::Release, e.g.
+APT::FTPArchive::Release::Origin. The supported fields are
+Origin, Label, Suite, Version, Codename, Date, NotAutomatic,
+ButAutomaticUpgrades, Acquire-By-Hash, Valid-Until,
+Signed-By, Architectures, Components and Description.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>generate</b></p>
+
+<p style="margin-left:17%;">The generate command is
+designed to be runnable from a cron script and builds
+indexes according to the given config file. The config
+language provides a flexible means of specifying which index
+files are built from which directories, as well as providing
+a simple means of maintaining the required settings.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>clean</b></p>
+
+<p style="margin-left:17%;">The clean command tidies the
+databases used by the given configuration file by removing
+any records that are no longer necessary.</p>
+
+<h2>THE GENERATE CONFIGURATION
+<a name="THE GENERATE CONFIGURATION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The generate
+command uses a configuration file to describe the archives
+that are going to be generated. It follows the typical ISC
+configuration format as seen in ISC tools like bind 8 and
+dhcpd. <b>apt.conf</b>(5) contains a description of the
+syntax. Note that the generate configuration is parsed in
+sectional manner, but <b>apt.conf</b>(5) is parsed in a tree
+manner. This only effects how the scope tag is handled.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The generate
+configuration has four separate sections, each described
+below.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Dir
+Section</b> <br>
+The Dir section defines the standard directories needed to
+locate the files required during the generation process.
+These directories are prepended certain relative paths
+defined in later sections to produce a complete an absolute
+path.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ArchiveDir</b></p>
+
+<p style="margin-left:17%;">Specifies the root of the FTP
+archive, in a standard Debian configuration this is the
+directory that contains the ls-LR and dist nodes.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>OverrideDir</b></p>
+
+<p style="margin-left:17%;">Specifies the location of the
+override files.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>CacheDir</b></p>
+
+<p style="margin-left:17%;">Specifies the location of the
+cache files.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>FileListDir</b></p>
+
+<p style="margin-left:17%;">Specifies the location of the
+file list files, if the FileList setting is used below.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Default
+Section</b> <br>
+The Default section specifies default values, and settings
+that control the operation of the generator. Other sections
+may override these defaults with a per-section setting.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Packages::Compress</b></p>
+
+<p style="margin-left:17%;">Sets the default compression
+schemes to use for the package index files. It is a string
+that contains a space separated list of at least one of the
+compressors configured via the <b>APT::Compressor</b>
+configuration scope. The default for all compression schemes
+is '. gzip'.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Packages::Extensions</b></p>
+
+<p style="margin-left:17%;">Sets the default list of file
+extensions that are package files. This defaults to
+'.deb'.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Sources::Compress</b></p>
+
+<p style="margin-left:17%;">This is similar to
+Packages::Compress except that it controls the compression
+for the Sources files.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Sources::Extensions</b></p>
+
+<p style="margin-left:17%;">Sets the default list of file
+extensions that are source files. This defaults to
+'.dsc'.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Contents::Compress</b></p>
+
+<p style="margin-left:17%;">This is similar to
+Packages::Compress except that it controls the compression
+for the Contents files.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Translation::Compress</b></p>
+
+<p style="margin-left:17%;">This is similar to
+Packages::Compress except that it controls the compression
+for the Translation-en master file.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>DeLinkLimit</b></p>
+
+<p style="margin-left:17%;">Specifies the number of
+kilobytes to delink (and replace with hard links) per run.
+This is used in conjunction with the per-section
+External-Links setting.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>FileMode</b></p>
+
+<p style="margin-left:17%;">Specifies the mode of all
+created index files. It defaults to 0644. All index files
+are set to this mode with no regard to the umask.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>LongDescription</b></p>
+
+<p style="margin-left:17%;">Specifies whether long
+descriptions should be included in the Packages file or
+split out into a master Translation-en file.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>TreeDefault
+Section</b> <br>
+Sets defaults specific to Tree sections. All of these
+variables are substitution variables and have the strings
+$(DIST), $(SECTION) and $(ARCH) replaced with their
+respective values.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>MaxContentsChange</b></p>
+
+<p style="margin-left:17%;">Sets the number of kilobytes of
+contents files that are generated each day. The contents
+files are round-robined so that over several days they will
+all be rebuilt.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ContentsAge</b></p>
+
+<p style="margin-left:17%;">Controls the number of days a
+contents file is allowed to be checked without changing. If
+this limit is passed the mtime of the contents file is
+updated. This case can occur if the package file is changed
+in such a way that does not result in a new contents file
+[override edit for instance]. A hold off is allowed in hopes
+that new .debs will be installed, requiring a new file
+anyhow. The default is 10, the units are in days.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Directory</b></p>
+
+<p style="margin-left:17%;">Sets the top of the .deb
+directory tree. Defaults to
+$(DIST)/$(SECTION)/binary-$(ARCH)/</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>SrcDirectory</b></p>
+
+<p style="margin-left:17%;">Sets the top of the source
+package directory tree. Defaults to
+$(DIST)/$(SECTION)/source/</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Packages</b></p>
+
+<p style="margin-left:17%;">Sets the output Packages file.
+Defaults to $(DIST)/$(SECTION)/binary-$(ARCH)/Packages</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Sources</b></p>
+
+<p style="margin-left:17%;">Sets the output Sources file.
+Defaults to $(DIST)/$(SECTION)/source/Sources</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Translation</b></p>
+
+<p style="margin-left:17%;">Sets the output Translation-en
+master file with the long descriptions if they should be not
+included in the Packages file. Defaults to
+$(DIST)/$(SECTION)/i18n/Translation-en</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>InternalPrefix</b></p>
+
+<p style="margin-left:17%;">Sets the path prefix that
+causes a symlink to be considered an internal link instead
+of an external link. Defaults to $(DIST)/$(SECTION)/</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Contents</b></p>
+
+<p style="margin-left:17%;">Sets the output Contents file.
+Defaults to $(DIST)/$(SECTION)/Contents-$(ARCH). If this
+setting causes multiple Packages files to map onto a single
+Contents file (as is the default) then <b>apt-ftparchive</b>
+will integrate those package files together
+automatically.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Contents::Header</b></p>
+
+<p style="margin-left:17%;">Sets header file to prepend to
+the contents output.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>BinCacheDB</b></p>
+
+<p style="margin-left:17%;">Sets the binary cache database
+to use for this section. Multiple sections can share the
+same database.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>FileList</b></p>
+
+<p style="margin-left:17%;">Specifies that instead of
+walking the directory tree, <b>apt-ftparchive</b> should
+read the list of files from the given file. Relative files
+names are prefixed with the archive directory.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>SourceFileList</b></p>
+
+<p style="margin-left:17%;">Specifies that instead of
+walking the directory tree, <b>apt-ftparchive</b> should
+read the list of files from the given file. Relative files
+names are prefixed with the archive directory. This is used
+when processing source indexes.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Tree
+Section</b> <br>
+The Tree section defines a standard Debian file tree which
+consists of a base directory, then multiple sections in that
+base directory and finally multiple Architectures in each
+section. The exact pathing used is defined by the Directory
+substitution variable.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The Tree
+section takes a scope tag which sets the $(DIST) variable
+and defines the root of the tree (the path is prefixed by
+ArchiveDir). Typically this is a setting such as
+dists/bookworm.</p>
+
+<p style="margin-left:11%; margin-top: 1em">All of the
+settings defined in the TreeDefault section can be used in a
+Tree section as well as three new variables.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When processing
+a Tree section <b>apt-ftparchive</b> performs an operation
+similar to:</p>
+
+<p style="margin-left:17%; margin-top: 1em">for i in
+Sections do <br>
+for j in Architectures do <br>
+Generate for DIST=scope SECTION=i ARCH=j</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Sections</b></p>
+
+<p style="margin-left:17%;">This is a space separated list
+of sections which appear under the distribution; typically
+this is something like main contrib non-free
+non-free-firmware</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Architectures</b></p>
+
+<p style="margin-left:17%;">This is a space separated list
+of all the architectures that appear under search section.
+The special architecture 'source' is used to indicate that
+this tree has a source archive. The architecture 'all'
+signals that architecture specific files like Packages
+should not include information about architecture all
+packages in all files as they will be available in a
+dedicated file.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>LongDescription</b></p>
+
+<p style="margin-left:17%;">Specifies whether long
+descriptions should be included in the Packages file or
+split out into a master Translation-en file.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>BinOverride</b></p>
+
+<p style="margin-left:17%;">Sets the binary override file.
+The override file contains section, priority and maintainer
+address information.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>SrcOverride</b></p>
+
+<p style="margin-left:17%;">Sets the source override file.
+The override file contains section information.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ExtraOverride</b></p>
+
+<p style="margin-left:17%;">Sets the binary extra override
+file.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>SrcExtraOverride</b></p>
+
+<p style="margin-left:17%;">Sets the source extra override
+file.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>BinDirectory
+Section</b> <br>
+The bindirectory section defines a binary directory tree
+with no special structure. The scope tag specifies the
+location of the binary directory and the settings are
+similar to the Tree section with no substitution variables
+or SectionArchitecture settings.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Packages</b></p>
+
+<p style="margin-left:17%;">Sets the Packages file
+output.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Sources</b></p>
+
+<p style="margin-left:17%;">Sets the Sources file output.
+At least one of Packages or Sources is required.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Contents</b></p>
+
+<p style="margin-left:17%;">Sets the Contents file output
+(optional).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>BinOverride</b></p>
+
+<p style="margin-left:17%;">Sets the binary override
+file.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>SrcOverride</b></p>
+
+<p style="margin-left:17%;">Sets the source override
+file.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ExtraOverride</b></p>
+
+<p style="margin-left:17%;">Sets the binary extra override
+file.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>SrcExtraOverride</b></p>
+
+<p style="margin-left:17%;">Sets the source extra override
+file.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>BinCacheDB</b></p>
+
+<p style="margin-left:17%;">Sets the cache DB.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>PathPrefix</b></p>
+
+<p style="margin-left:17%;">Appends a path to all the
+output paths.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>FileList</b>,
+<b>SourceFileList</b></p>
+
+<p style="margin-left:17%;">Specifies the file list
+file.</p>
+
+<h2>THE BINARY OVERRIDE FILE
+<a name="THE BINARY OVERRIDE FILE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The binary
+override file is fully compatible with
+<b>dpkg-scanpackages</b>(1). It contains four fields
+separated by spaces. The first field is the package name,
+the second is the priority to force that package to, the
+third is the section to force that package to and the final
+field is the maintainer permutation field.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The general
+form of the maintainer field is:</p>
+
+<p style="margin-left:17%; margin-top: 1em">old [// oldn]*
+=&gt; new</p>
+
+<p style="margin-left:11%; margin-top: 1em">or simply,</p>
+
+<p style="margin-left:17%; margin-top: 1em">new</p>
+
+<p style="margin-left:11%; margin-top: 1em">The first form
+allows a double-slash separated list of old email addresses
+to be specified. If any of those are found then new is
+substituted for the maintainer field. The second form
+unconditionally substitutes the maintainer field.</p>
+
+<h2>THE SOURCE OVERRIDE FILE
+<a name="THE SOURCE OVERRIDE FILE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The source
+override file is fully compatible with
+<b>dpkg-scansources</b>(1). It contains two fields separated
+by spaces. The first field is the source package name, the
+second is the section to assign it.</p>
+
+<h2>THE EXTRA OVERRIDE FILE
+<a name="THE EXTRA OVERRIDE FILE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The extra
+override file allows any arbitrary tag to be added or
+replaced in the output. It has three columns, the first is
+the package, the second is the tag and the remainder of the
+line is the new value.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">All command
+line options may be set using the configuration file, the
+descriptions indicate the configuration option to set. For
+boolean options you can override the config file by using
+something like <b>-f-</b>,<b>--no-f</b>, <b>-f=no</b> or
+several other variations.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--md5</b>,
+<b>--sha1</b>, <b>--sha256</b>, <b>--sha512</b></p>
+
+<p style="margin-left:17%;">Generate the given checksum.
+These options default to on, when turned off the generated
+index files will not have the checksum fields where
+possible. Configuration Items:
+APT::FTPArchive::<i>Checksum</i> and
+APT::FTPArchive::<i>Index</i>::<i>Checksum</i> where
+<i>Index</i> can be Packages, Sources or Release and
+<i>Checksum</i> can be MD5, SHA1, SHA256 or SHA512.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-d</b>,
+<b>--db</b></p>
+
+<p style="margin-left:17%;">Use a binary caching DB. This
+has no effect on the generate command. Configuration Item:
+APT::FTPArchive::DB.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-q</b>,
+<b>--quiet</b></p>
+
+<p style="margin-left:17%;">Quiet; produces output suitable
+for logging, omitting progress indicators. More q's will
+produce more quiet up to a maximum of 2. You can also use
+<b>-q=#</b> to set the quiet level, overriding the
+configuration file. Configuration Item: quiet.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--delink</b></p>
+
+<p style="margin-left:17%;">Perform Delinking. If the
+External-Links setting is used then this option actually
+enables delinking of the files. It defaults to on and can be
+turned off with <b>--no-delink</b>. Configuration Item:
+APT::FTPArchive::DeLinkAct.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--contents</b></p>
+
+<p style="margin-left:17%;">Perform contents generation.
+When this option is set and package indexes are being
+generated with a cache DB then the file listing will also be
+extracted and stored in the DB for later use. When using the
+generate command this option also allows the creation of any
+Contents files. The default is on. Configuration Item:
+APT::FTPArchive::Contents.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-s</b>,
+<b>--source-override</b></p>
+
+<p style="margin-left:17%;">Select the source override file
+to use with the sources command. Configuration Item:
+APT::FTPArchive::SourceOverride.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--readonly</b></p>
+
+<p style="margin-left:17%;">Make the caching databases read
+only. Configuration Item: APT::FTPArchive::ReadOnlyDB.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-a</b>,
+<b>--arch</b></p>
+
+<p style="margin-left:17%;">Accept in the packages and
+contents commands only package files matching *_arch.deb or
+*_all.deb instead of all package files in the given path.
+Configuration Item: APT::FTPArchive::Architecture.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>APT::FTPArchive::AlwaysStat</b></p>
+
+<p style="margin-left:17%;"><b>apt-ftparchive</b>(1) caches
+as much as possible of metadata in a cachedb. If packages
+are recompiled and/or republished with the same version
+again, this will lead to problems as the now outdated cached
+metadata like size and checksums will be used. With this
+option enabled this will no longer happen as it will be
+checked if the file was changed. Note that this option is
+set to &quot;false&quot; by default as it is not recommend
+to upload multiple versions/builds of a package with the
+same version number, so in theory nobody will have these
+problems and therefore all these extra checks are
+useless.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>APT::FTPArchive::LongDescription</b></p>
+
+<p style="margin-left:17%;">This configuration option
+defaults to &quot;true&quot; and should only be set to
+&quot;false&quot; if the Archive generated with
+<b>apt-ftparchive</b>(1) also provides Translation files.
+Note that the Translation-en master file can only be created
+in the generate command.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Show a short usage summary.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-v</b>,
+<b>--version</b></p>
+
+<p style="margin-left:17%;">Show the program version.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-c</b>,
+<b>--config-file</b></p>
+
+<p style="margin-left:17%;">Configuration File; Specify a
+configuration file to use. The program will read the default
+configuration file and then this configuration file. If
+configuration settings need to be set before the default
+configuration files are parsed specify a file with the
+<b>APT_CONFIG</b> environment variable. See
+<b>apt.conf</b>(5) for syntax information.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-o</b>,
+<b>--option</b></p>
+
+<p style="margin-left:17%;">Set a Configuration Option;
+This will set an arbitrary configuration option. The syntax
+is <b>-o Foo::Bar=bar</b>. <b>-o</b> and <b>--option</b> can
+be used multiple times to set different options.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">To create a
+compressed Packages file for a directory containing binary
+packages (.deb):</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b>apt-ftparchive</b>
+packages <i>directory</i> | <b>gzip</b> &gt; Packages.gz</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>apt.conf</b>(5)</p>
+
+<h2>DIAGNOSTICS
+<a name="DIAGNOSTICS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>apt-ftparchive</b>
+returns zero on normal operation, decimal 100 on error.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><font color="#0000FF">APT
+bug page</font></b>
+<small><font color="#000000">[1]</font></small>
+<font color="#000000">. If you wish to report a bug in APT,
+please see /usr/share/doc/debian/bug-reporting.txt or the
+<b>reportbug</b>(1) command.</font></p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Jason
+Gunthorpe</b></font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>APT
+team</b></font></p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">1.</font></p> </td>
+<td width="2%"></td>
+<td width="18%">
+
+
+<p style="margin-top: 1em"><font color="#000000">APT bug
+page</font></p> </td>
+<td width="65%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">http://bugs.debian.org/src:apt</font></p>
+<hr>
+</body>
+</html>

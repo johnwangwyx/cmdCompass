@@ -1,0 +1,497 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:25 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamflip User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamflip User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamflip - flip
+or rotate a PAM or PNM image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamflip</b>
+{ <b>-leftright</b> | <b>-lr</b> | <b>-topbottom</b> |
+<b>-tb</b> | <b>-transpose</b> | <b>-xy</b> |
+<b>-rotate90</b> | <b>-r90</b> | <b>-cw</b> |
+<b>-rotate270</b> | <b>-r270</b> | <b>-ccw</b> |
+<b>-rotate180</b> | <b>-r180 -null</b> |
+<b>-xform=</b><i>xform1</i><b>,</b><i>xform2</i>... }
+[<b>-memsize=</b><i>mebibytes</i>]
+[<b>-pagesize=</b><i>bytes</i>] [<i>pamfile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">All options can
+be abbreviated to their shortest unique prefix. You may use
+two hyphens instead of one to designate an option. You may
+use either white space or an equals sign between an option
+name and its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamflip</b>
+flips a PAM or PNM image top for bottom or left for right,
+or transposes it horizontal for vertical, or rotates it 1,
+2, or 3 quarter turns.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To rotate at
+other angles, use <b>pnmrotate</b>. It is much slower,
+though.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The input image
+is <i>pamfile</i>, or Standard Input if <i>pamfile</i> is
+not specified.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To flip/rotate
+a JFIF (JPEG) image losslessly, use <b>jpegtran</b>.
+<b>jpegtran</b> is part of the Independent Jpeg
+Group&rsquo;s compression library package, not part of
+Netpbm. The normal Netpbm way to flip a JFIF file would be
+to convert it to PNM, use <b>pamflip</b>, and convert back
+to JFIF. But since JPEG compression is lossy, the resulting
+image would have less quality than the original.
+<b>jpegtran</b>, on the other hand, can do this particular
+transformation directly on the compressed data without
+loss.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamflip</b> recognizes the following command line
+options:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Specifying
+the Transformation</b> <br>
+You must supply exactly one of the following options:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamflip</b>&rsquo;s
+predecessor (before Netpbm 10.7 - August 2002)
+<b>pnmflip</b> did not have the <b>-xform</b> option and
+instead allowed you to specify any number of the other
+options, including zero. It applied all the indicated
+transformations, in the order given, just like with
+<b>pamflip</b>&rsquo;s <b>-xform</b> option. (Reason for the
+change: this kind of interpretation of options is
+inconsistent with the rest of Netpbm and most of the Unix
+world, and thus hard to understand and to implement).
+<b><br>
+-leftright</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>-lr</b></p></td>
+<td width="7%"></td>
+<td width="30%">
+
+
+<p>Flip left for right.</p></td>
+<td width="48%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-topbottom</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>-tb</b></p></td>
+<td width="7%"></td>
+<td width="30%">
+
+
+<p>Flip top for bottom.</p></td>
+<td width="48%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-transpose</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>-xy</b></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Transpose horizontal for vertical. I.e. make the pixel
+at (x,y) be at (y,x).</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-rotate90</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-r90</b></p></td>
+<td width="5%"></td>
+<td width="53%">
+</td>
+<td width="25%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-ccw</b></p></td>
+<td width="5%"></td>
+<td width="53%">
+
+
+<p>Rotate counterclockwise 90 degrees.</p></td>
+<td width="25%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-rotate180</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-r180</b></p></td>
+<td width="4%"></td>
+<td width="29%">
+
+
+<p>Rotate 180 degrees.</p></td>
+<td width="49%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-rotate270</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-r270</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-cw</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Rotate counterclockwise 270 degrees (clockwise 90
+degrees)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-null</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>No change. (The purpose of this option is the
+convenience of programs that invoke <b>pamflip</b> after
+computing the kind of transformation desired, including none
+at all).</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.13 (December 2002).</p>
+
+
+<p style="margin-left:11%;"><b>-xform=</b><i>xform1</i><b>,</b><i>xform2</i>...</p>
+
+<p style="margin-left:22%;">Apply all the transforms
+listed, in order. The valid values for the transforms are as
+follows and have the same meanings as the identically named
+options above.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="13%">
+
+
+<p>leftright</p></td>
+<td width="65%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="13%">
+
+
+<p>topbottom</p></td>
+<td width="65%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="13%">
+
+
+<p>transpose</p></td>
+<td width="65%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.13 (December 2002).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Memory
+Management</b> <br>
+The following options help <b>pamflip</b> use memory
+efficiently. Some flipping operations on very large images
+can cause <b>pamflip</b> to have a very large working set,
+which means if you don&rsquo;t have enough real memory, the
+program can page thrash, which means it takes a ridiculous
+amount time to run. If your entire image fits in real
+memory, you don&rsquo;t have a problem. If you&rsquo;re just
+flipping top for bottom or left for right, you don&rsquo;t
+have a problem. Otherwise, pay attention. If you&rsquo;re
+interested in the details of the thrashing problem and how
+<b>pamflip</b> approaches it, you&rsquo;re invited to read a
+complete explanation in comments in the source code. <b><br>
+-memsize=</b><i>mebibytes</i></p>
+
+<p style="margin-left:22%;"><i>mebibytes</i> is the size in
+mebibytes (aka megabytes) of memory available for
+<b>pamflip</b>. It is the lesser of the amount of real or
+virtual memory available.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>pamflip</b>
+does nothing special to allocate real memory or control
+it&rsquo;s allocation -- it gets whatever it gets just by
+referencing virtual memory normally. The real memory figure
+in question is the maximum amount that <b>pamflip</b> can be
+expected to end up with by doing that. This is just about
+impossible for you to know, of course, but you can estimate.
+The total real memory in your system should be a major
+factor in your estimate.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If
+<b>pamflip</b> cannot fit the entire image in the amount of
+memory you specify, it does the transformation in chunks,
+using temporary files for intermediate results.</p>
+
+<p style="margin-left:22%; margin-top: 1em">In strict
+horizontal transformations (left for right) or the null
+transformation, <b>pamflip</b> never keeps more than one row
+in memory, so the memory size is irrelevant and
+<b>pamflip</b> doesn&rsquo;t use temporary files.</p>
+
+<p style="margin-left:22%; margin-top: 1em">In strict
+vertical transformations (top for bottom), even when you
+allow <b>pamflip</b> enough memory to keep the entire image
+in virtual memory, it accesses it in a single pass, which
+does not cause any thrashing; the chunks in temporary files
+thus don&rsquo;t help.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The real memory
+is important when you do a column for row type of
+transformation (e.g. <b>-rotate90</b>). In that case, even
+if <b>pamflip</b> can fit the entire image in virtual memory
+at once, if it does not also fit in real memory, the program
+will thrash like crazy because of the order in which
+<b>pamflip</b> accesses the pixels, and that means it will
+take a ridiculously long time to run. A proper
+<b>-memsize</b> drastically reduces the paging.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you specify
+<b>-memsize</b> too large, <b>pamflip</b> may attempt to get
+more virtual memory than the system allows it and fail. If
+it can get the virtual memory, but <b>-memsize</b> is larger
+than the amount of real memory the system allows it and the
+transformation is row for column, it will page thrash and
+run very slowly. A value even slightly too high is the same
+as infinity.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you specify
+<b>-memsize</b> too small, the program will run slightly
+more slowly because of extra overhead in manipulating
+temporary files. Also, if your environment isn&rsquo;t set
+up to make temporary files possible, <b>pamflip</b> will
+fail.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Doing the
+entire transformation &quot;in memory&quot; doesn&rsquo;t
+speed things up as much as you might think, because even
+with the temporary files, the data is just as likely to be
+in memory. Virtual memory gets paged to disk and disk files
+get cached in memory. In fact, the pixels fit much more
+compactly into memory when stored in a temporary file than
+when stored &quot;in memory&quot; because <b>pamflip</b>
+uses a more efficient format. So you&rsquo;re likely to have
+<i>less</i> disk I/O when you allow <b>pamflip</b> less
+memory.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you do not
+specify <b>-memsize</b>, <b>pamflip</b> assumes
+infinity.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option did
+not exist before Netpbm 10.7 (August 2002).</p>
+
+<p style="margin-left:22%; margin-top: 1em">Before Netpbm
+10.42 (March 2008), this option applied only to real memory.
+<b>pamflip</b> would always keep the entire image in virtual
+memory and if it could not get enough virtual memory, it
+failed. <b>pamflip</b> accessed the pixels in an order
+designed to keep real memory use within the specified
+amount.</p>
+
+
+<p style="margin-left:11%;"><b>-pagesize=</b><i>bytes</i></p>
+
+<p style="margin-left:22%;"><i>bytes</i> is the size in
+bytes of a paging unit -- the amount of memory that gets
+paged in or out as an indivisible unit -- in your system.
+The default is 4KiB.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option has
+no effect.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Before Netpbm
+10.42 (March 2008), <b>pamflip</b> used it to control its
+use of real memory.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option did
+not exist before Netpbm 10.7 (August 2002).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Miscellaneous
+<br>
+-verbose</b></p>
+
+<p style="margin-left:22%;">This option causes
+<b>pamflip</b> to issue messages to Standard Error about its
+progress.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmrotate</b>(1),
+<b>pnm</b>(1), <b>pam</b>(1), <b>jpegtran</b> manual</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamflip</b>
+replaced <b>pnmflip</b> in Netpbm 10.13 (December 2002).
+<b>pamflip</b> is backward compatible, but also works on PAM
+images.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1989 by Jef Poskanzer.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamflip.html</b></p>
+<hr>
+</body>
+</html>

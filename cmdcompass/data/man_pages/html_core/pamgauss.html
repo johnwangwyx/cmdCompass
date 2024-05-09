@@ -1,0 +1,261 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:25 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamgauss User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamgauss User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamgauss</b>
+- create a two-dimensional Gaussian function as a PAM
+image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamgauss</b>
+<i>width height</i> <b>-sigma=</b><i>number</i>
+[<b>-maxval=</b><i>number</i>]
+[<b>-tupletype=</b><i>string</i>] [<b>-maximize</b>]
+[<b>-oversample=</b><i>number</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviation of option is acceptable. You may use double
+hyphens instead of single hyphen to denote options. You may
+use white space in place of the equals sign to separate an
+option name from its value.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamgauss 7 7
+-sigma=.5 -maximize -tupletype=GRAYSCALE | pamtopnm
+&gt;gauss.pgm <br>
+pnmconvol -nooffset -normalize gauss.pgm myimage.ppm
+&gt;blurred.ppm</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamgauss</b>
+generates a one-plane PAM image whose samples are a Gaussian
+function of their distance from the center of the image.
+I.e. the sample value is highest in the center and goes
+down, in a bell curve shape, as you move away from the
+center.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can use
+this image as a convolution kernel with <b>pnmconvol</b> to
+blur an image. (This technique is known as Gaussian
+blurring).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>width</i>
+and <i>height</i> are the dimensions of the image that
+<b>pamgauss</b> generates. Mathematically speaking, they are
+the domain of the two-dimensional Gaussian function. If you
+want to be sure you get a whole Gaussian function, make sure
+that you choose a standard deviation and image dimensions so
+that if you made it any larger, the sample values at the
+edges would be zero.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The output
+image is PAM. To make it usable with <b>pnmconvol</b>,
+specify <b>-tupletype=GRAYSCALE</b> so <b>pnmconvol</b> can
+use it as if it were PGM. You must use the <b>-nooffset</b>
+option on <b>pnmconvol</b> because zero means zero in the
+PAM that <b>pamgauss</b> generates.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Without
+<b>-maximize</b>, the sum of all the samples is equal to the
+image&rsquo;s maxval (within rounding error). This is true
+even if you clip the Gaussian function by making the image
+too small. This is what is normally required of a
+convolution kernel.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamgauss</b>
+oversamples and averages to represent the continuous
+Gaussian function in discrete samples in the PAM output.
+Consider an image 11 samples wide and an oversampling factor
+of 10. The samples can be thought of as contiguous squares
+one unit wide. The center of the image is thus the center of
+the 6th sample from the left. The 3rd sample from the left
+covers a range of distances from 3 to 4 units from the
+center of the image. Because the oversampling factor is 10,
+<b>pamgauss</b> computes the value of the Gaussian function
+at 10 points evenly spaced between 3 and 4 units from the
+center of the image and assigns the 3rd sample from the left
+the mean of those 10 values.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamgauss</b> recognizes the following command line
+options: <b><br>
+-sigma=</b><i>number</i></p>
+
+<p style="margin-left:22%;">This is the standard deviation
+of the Gaussian function. The higher the number, the more
+spread out the function is. Normally, you want to make this
+number low enough that the function reaches zero value
+before the edge of your image.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>number</i>
+is in units of samples.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option is
+required. There is no default.</p>
+
+<p style="margin-left:11%;"><b>-maximize</b></p>
+
+<p style="margin-left:22%;">Causes <b>pamgauss</b> to use
+the whole dynamic range available in the output PAM image by
+choosing an amplitude for the Gaussian function that causes
+the maximum value in the image to be the maxval of the
+image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you select
+this, you probably want to normalize the output (scale the
+samples down so the volume under the surface of the
+two-dimensional Gaussian function is the maxval) before you
+use it, for example with <b>pnmconvol</b>&rsquo;s
+<b>-normalize</b> option. The reason this is different from
+just not using <b>-maximize</b> is that this subsequent
+normalization can be done with much more precision than can
+be represented in a PAM image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Without this
+option, <b>pamgauss</b> uses an amplitude that makes the
+volume under the surface of the two-dimensional Gaussian
+function the maxval of the image. This means all the samples
+in the image are normally considerably less than the
+maxval.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.79 (June 2017).</p>
+
+
+<p style="margin-left:11%;"><b>-maxval=</b><i>number</i></p>
+
+<p style="margin-left:22%;">This is the maxval for the
+output image. 65535 is almost always the best value to use.
+But there may be some programs (not part of Netpbm) that
+can&rsquo;t handle a maxval greater than 255.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+255.</p>
+
+
+<p style="margin-left:11%;"><b>-tupletype=</b><i>string</i></p>
+
+<p style="margin-left:22%;">This is the value of the
+&quot;tuple_type&quot; attribute of the created PAM image.
+It can be any string up to 255 characters.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you
+don&rsquo;t specify this, <b>pamgauss</b> generates a PAM
+with unspecified tuple type.</p>
+
+
+<p style="margin-left:11%;"><b>-oversample=</b><i>number</i></p>
+
+<p style="margin-left:22%;">This sets the oversampling
+factor. <b>pamgauss</b> samples the Gaussian function this
+many times, both horizontally and vertically, to get the
+value of each sample in the output.</p>
+
+<p style="margin-left:22%; margin-top: 1em">An oversampling
+factor of 1 means no oversampling, which means each sample
+is based only on the value of the Gaussian function at the
+center of the sample.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+5 divided by the standard deviation, rounded up to a whole
+number.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.79 (June 2017). Before that, it is
+essentially 1 - there is no oversampling.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmconvol</b>(1),
+<b>pamtopnm</b>(1), <b>pgmkernel</b>(1), <b>pamseq</b>(1),
+<b>pam</b>(1)</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamgauss</b>
+was new in Netpbm 10.23 (July 2004).</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamgauss.html</b></p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:34 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pnmcat User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pnmcat User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pnmcat -
+concatenate Netpbm images</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmcat</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">{<b>-leftright</b>
+| <b>-lr</b> | <b>-topbottom</b> | <b>-tb</b>}</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-white</b>|<b>-black</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-jtop</b>|<b>-jbottom</b>|<b>-jcenter</b>]
+[<b>-jleft</b>|<b>-jright</b>|<b>-jcenter</b>]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>pnmfile</i>
+...</p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviation of option is acceptable. You may use double
+hyphens instead of single hyphen to denote options. You may
+use white space in place of the equals sign to separate an
+option name from its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmcat</b>
+reads one or more PNM images as input, concatenates them
+either left to right or top to bottom, and produces a single
+PNM image as output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The arguments
+are names of input files. Any one of these, but not more
+than one, may be &quot;-&quot; to indicate Standard Input.
+If you have no arguments, that means a single input image
+from Standard Input (and that is pointless - the output is
+the same as the input).</p>
+
+<p style="margin-left:11%; margin-top: 1em">To assemble a
+regular grid of images, you can use <b>pamundice</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To do the
+reverse, you might use <b>pamdice</b> to split an image up
+into smaller ones of equal size or <b>pamcut</b> to chop off
+part of an image or extract part of an image.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmtile</b>
+concatenates a single input image to itself repeatedly.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pnmcat</b> recognizes the following command line
+options:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Direction
+<br>
+-topbottom</b>, <b>-tb</b></p>
+
+<p style="margin-left:22%;">Combine images vertically, top
+to bottom.</p>
+
+<p style="margin-left:11%;"><b>-leftright</b>,
+<b>-lr</b></p>
+
+<p style="margin-left:22%;">Combine images horizontally,
+left to right.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You must
+specify the direction by specifying one of the above.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Justification
+<br>
+-jleft</b>, <b>-jcenter</b>, <b>-jright</b></p>
+
+<p style="margin-left:22%;">If the PNM images are not all
+the same height when you&rsquo;re concatenating left <br>
+to right or width when you&rsquo;re concatenating top to
+bottom, the smaller ones <br>
+have to be justified with the largest. By default,
+<b>pnmcat</b> centers <br>
+them, but you can specify justification to one side or the
+other with one of <br>
+the <b>-j</b><i>xxx</i> options. So, <b>-topbottom
+-jleft</b> would stack the PNMs on top of each other, flush
+with the left edge. <b>-leftright -jbottom</b> would line up
+the images left to right with their bottom edges aligned as
+if sitting on a table.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Margin Color
+<br>
+-white</b>, <b>-black</b></p>
+
+<p style="margin-left:22%;">These options specify what
+color to use to fill in the extra space when doing the
+justification. If neither is specified, <b>pnmcat</b>
+chooses whichever seems to be right for the images.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamundice</b>(1),
+<b>pamdice</b>(1), <b>pnmtile</b>(1), <b>pamcut</b>(1),
+<b>pnm</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1989 by Jef Poskanzer.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pnmcat.html</b></p>
+<hr>
+</body>
+</html>

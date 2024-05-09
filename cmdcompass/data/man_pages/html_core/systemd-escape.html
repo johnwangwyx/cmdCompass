@@ -1,0 +1,242 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:52 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SYSTEMD-ESCAPE</title>
+
+</head>
+<body>
+
+<h1 align="center">SYSTEMD-ESCAPE</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">systemd-escape
+- Escape strings for usage in systemd unit names</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="60%">
+
+
+<p style="margin-top: 1em"><b>systemd-escape</b>
+[OPTIONS...] [STRING...]</p></td>
+<td width="29%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-escape</b>
+may be used to escape strings for inclusion in systemd unit
+names. The command may be used to escape and to undo
+escaping of strings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The command
+takes any number of strings on the command line, and will
+process them individually, one after another. It will output
+them separated by spaces to stdout.</p>
+
+<p style="margin-left:11%; margin-top: 1em">By default,
+this command will escape the strings passed, unless
+<b>--unescape</b> is passed which results in the inverse
+operation being applied. If <b>--mangle</b> is given, a
+special mode of escaping is applied instead, which assumes
+the string is already escaped but will escape everything
+that appears obviously non-escaped.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For details on
+the escaping and unescaping algorithms see the relevant
+section in <b>systemd.unit</b>(5).</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+options are understood:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--suffix=</b></p>
+
+<p style="margin-left:17%;">Appends the specified unit type
+suffix to the escaped string. Takes one of the unit types
+supported by systemd, such as &quot;service&quot; or
+&quot;mount&quot;. May not be used in conjunction with
+<b>--template=</b>, <b>--unescape</b> or
+<b>--mangle</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--template=</b></p>
+
+<p style="margin-left:17%;">Inserts the escaped strings in
+a unit name template. Takes a unit name template such as
+foobar@.service. With <b>--unescape</b>, expects
+instantiated unit names for this template and extracts and
+unescapes just the instance part. May not be used in
+conjunction with <b>--suffix=</b>, <b>--instance</b> or
+<b>--mangle</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--path</b>,
+<b>-p</b></p>
+
+<p style="margin-left:17%;">When escaping or unescaping a
+string, assume it refers to a file system path. This
+eliminates leading, trailing or duplicate &quot;/&quot;
+characters and rejects &quot;.&quot; and &quot;..&quot; path
+components. This is particularly useful for generating
+strings suitable for unescaping with the &quot;%f&quot;
+specifier in unit files, see <b>systemd.unit</b>(5).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--unescape</b>,
+<b>-u</b></p>
+
+<p style="margin-left:17%;">Instead of escaping the
+specified strings, undo the escaping, reversing the
+operation. May not be used in conjunction with
+<b>--suffix=</b> or <b>--mangle</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--mangle</b>,
+<b>-m</b></p>
+
+<p style="margin-left:17%;">Like <b>--escape</b>, but only
+escape characters that are obviously not escaped yet, and
+possibly automatically append an appropriate unit type
+suffix to the string. May not be used in conjunction with
+<b>--suffix=</b>, <b>--template=</b> or
+<b>--unescape</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--instance</b></p>
+
+<p style="margin-left:17%;">With <b>--unescape</b>,
+unescape and print only the instance part of an instantiated
+unit name template. Results in an error for an
+uninstantiated template like ssh@.service or a non-template
+name like ssh.service. Must be used in conjunction with
+<b>--unescape</b> and may not be used in conjunction with
+<b>--template</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Print a short help text and
+exit.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--version</b></p>
+
+<p style="margin-left:17%;">Print a short version string
+and exit.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">To escape a
+single string:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$
+systemd-escape 'Hall&Atilde;&para;chen, Meister' <br>
+Hall\xc3\xb6chen\x2c\x20Meister</p>
+
+<p style="margin-left:11%; margin-top: 1em">To undo
+escaping on a single string:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$
+systemd-escape -u 'Hall\xc3\xb6chen\x2c\x20Meister' <br>
+Hall&Atilde;&para;chen, Meister</p>
+
+<p style="margin-left:11%; margin-top: 1em">To generate the
+mount unit for a path:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$
+systemd-escape -p --suffix=mount
+&quot;/tmp//waldi/foobar/&quot; <br>
+tmp-waldi-foobar.mount</p>
+
+<p style="margin-left:11%; margin-top: 1em">To generate
+instance names of three strings:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$
+systemd-escape --template=systemd-nspawn@.service 'My
+Container 1' 'containerb' 'container/III' <br>
+systemd-nspawn@My\x20Container\x201.service
+systemd-nspawn@containerb.service
+systemd-nspawn@container-III.service</p>
+
+<p style="margin-left:11%; margin-top: 1em">To extract the
+instance part of an instantiated unit:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$
+systemd-escape -u --instance
+'systemd-nspawn@My\x20Container\x201.service' <br>
+My Container 1</p>
+
+<p style="margin-left:11%; margin-top: 1em">To extract the
+instance part of an instance of a particular template:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$
+systemd-escape -u --template=systemd-nspawn@.service
+'systemd-nspawn@My\x20Container\x201.service' <br>
+My Container 1</p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">On success, 0
+is returned, a non-zero failure code otherwise.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd</b>(1),
+<b>systemd.unit</b>(5), <b>systemctl</b>(1)</p>
+<hr>
+</body>
+</html>

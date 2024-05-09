@@ -1,0 +1,298 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:38 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Ppmlabel User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Ppmlabel User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#EXAMPLE">EXAMPLE</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#LIMITATIONS">LIMITATIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ppmlabel - add
+text to a PPM image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmlabel</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-angle</b>
+<i>angle</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-background</b>
+{ <b>transparent</b> | <i>color</i> } ]</p>
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-color</b>
+<i>color</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-file</b>
+<i>filename</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-size</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>textsize</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-text</b>
+<i>text_string</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-x</b>
+<i>column</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-y</b>
+<i>row</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">...</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<i>ppmfile</i>]</p>
+
+<h2>EXAMPLE
+<a name="EXAMPLE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ppmlabel -x 50
+-y 50 -text hello \ <br>
+-angle -30 -text there \ <br>
+testimg.ppm</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmlabel</b>
+uses the text drawing facilities of <b>libnetpbm</b>&rsquo;s
+&quot;ppmd&quot; component to add text to a PBM image. You
+control the location, size, baseline angle, color of the
+text, and background color (if any) with command line
+arguments. You can specify the text on the command line or
+supply it in files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can add any
+number of separate labels in a single invocation of
+<b>ppmlabel</b>, limited only by any restrictions your
+environment has on the number and size of program arguments
+(e.g. a shell&rsquo;s command size limit).</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you
+don&rsquo;t specify <i>ppmfile</i>, <b>ppmlabel</b> reads
+its input PPM image from Standard Input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The output
+image goes to Standard Output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A more
+sophisticated way to add a label to an image is to use
+<b>pbmtext</b> or <b>pbmtextps</b> to create an image of the
+text, then <b>pamcomp</b> to overlay it onto the base
+image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Another more
+general program is <b>ppmdraw</b>. It is slightly harder to
+use for simple labelling.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>ppmlabel</b> recognizes the following command line
+options:</p>
+
+<p style="margin-left:11%; margin-top: 1em">The arguments
+on the <b>ppmlabel</b> command line are not options in the
+strict sense; they are commands which control the placement
+and appearance of the text being added to the input image.
+They are executed left to right, and any number of arguments
+may appear.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can
+abbreviate any option to its shortest unique prefix. <b><br>
+-angle</b> <i>angle</i></p>
+
+<p style="margin-left:22%;">This option sets the angle of
+the baseline of subsequent text. <i>angle</i> is an integral
+number of degrees, measured counterclockwise from the row
+axis of the image.</p>
+
+<p style="margin-left:11%;"><b>-background</b> {
+<b>transparent</b> | <i>color</i> }</p>
+
+<p style="margin-left:22%;">If the argument is
+<b>transparent</b>, <b>ppmlabel</b> draws the text over the
+existing pixels in the image. If you specify a <i>color</i>
+(see the <b>-color</b> option below for information on how
+to specify colors), <b>ppmlabel</b> generates background
+rectangles enclosing subsequent text, and those rectangles
+are filled with that color.</p>
+
+<p style="margin-left:11%;"><b>-color</b> <i>color</i></p>
+
+<p style="margin-left:22%;">This option sets the color for
+subsequent text.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Specify the
+color (<i>color</i>) as described for the
+<a href="libnetpbm_image.html#colorname">argument of the
+<b>pnm_parsecolor()</b> library routine</a> .</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>-colour</b>
+is an acceptable alternate spelling.</p>
+
+<p style="margin-left:11%;"><b>-file</b>
+<i>filename</i></p>
+
+<p style="margin-left:22%;">This option causes
+<b>ppmlabel</b> to read lines of text from the file named
+<i>filename</i> and draw it on successive lines.</p>
+
+<p style="margin-left:11%;"><b>-size</b>
+<i>textsize</i></p>
+
+<p style="margin-left:22%;">This option sets the height of
+the tallest characters above the baseline to <i>textsize</i>
+pixels.</p>
+
+<p style="margin-left:11%;"><b>-text</b>
+<i>text_string</i></p>
+
+<p style="margin-left:22%;">This option causes
+<b>ppmlabel</b> to draw the specified text string. It
+advances the location for subsequent text down 1.75 times
+the current <i>textsize</i>. That lets you draw multiple
+lines of text in a reasonable manner without specifying the
+position of each line.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Note that if
+you invoke <b>ppmlabel</b> via a shell command and your text
+string contains spaces, you&rsquo;ll have to quote it so the
+shell treats the whole string as a single token. E.g. <br>
+$ ppmlabel -text &quot;this is my text&quot; baseimage.ppm
+&gt;annotatedimage.ppm</p>
+
+<p style="margin-left:11%;"><b>-x</b> <i>column</i></p>
+
+<p style="margin-left:22%;">This option sets the pixel
+column at which subsequent text will be left justified.
+Depending on the shape of the first character, the actual
+text may begin a few pixels to the right of this point.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-y</b> <i>row</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>This option sets the pixel row which will form the
+baseline of subsequent text. Characters with descenders,
+such as &quot;y,&quot; will extend below this line.</p></td></tr>
+</table>
+
+<h2>LIMITATIONS
+<a name="LIMITATIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Text strings
+are restricted to 7 bit ASCII. The text font used by
+<b>ppmlabel</b> doesn&rsquo;t include definitions for 8 bit
+ISO 8859/1 characters.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When drawing
+multiple lines of text with a non-transparent background, it
+should probably fill the space between the lines with the
+background color. This is tricky to get right when the text
+is rotated to a non-orthogonal angle.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmmake</b>(1),
+<b>ppmdraw</b>(1), <b>pbmtext</b>(1), <b>pbmtextps</b>(1),
+<b>pamcomp</b>(1), <b>ppm</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1995 by John Walker (<i>kelvin@fourmilab.ch</i>) WWW home
+page:
+<a href="http://www.fourmilab.ch/">http://www.fourmilab.ch/</a></p>
+
+<p style="margin-left:11%; margin-top: 1em">Permission to
+use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby
+granted, without any conditions or restrictions. This
+software is provided &rsquo;&rsquo;as is&rsquo;&rsquo;
+without express or implied warranty.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/ppmlabel.html</b></p>
+<hr>
+</body>
+</html>

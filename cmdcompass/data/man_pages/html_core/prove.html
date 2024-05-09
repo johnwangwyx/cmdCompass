@@ -1,0 +1,613 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:41 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>PROVE</title>
+
+</head>
+<body>
+
+<h1 align="center">PROVE</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#USAGE">USAGE</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#FORMATTERS">FORMATTERS</a><br>
+<a href="#SOURCE HANDLERS">SOURCE HANDLERS</a><br>
+<a href="#PLUGINS">PLUGINS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">prove - Run
+tests through a TAP harness.</p>
+
+<h2>USAGE
+<a name="USAGE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">prove [options]
+[files or directories]</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Boolean
+options:</p>
+
+<p style="margin-left:11%; margin-top: 1em">-v, --verbose
+Print all test lines. <br>
+-l, --lib Add 'lib' to the path for your tests (-Ilib). <br>
+-b, --blib Add 'blib/lib' and 'blib/arch' to the path for
+<br>
+your tests <br>
+-s, --shuffle Run the tests in random order. <br>
+-c, --color Colored test output (default). <br>
+--nocolor Do not color test output. <br>
+--count Show the X/Y test count when not verbose <br>
+(default) <br>
+--nocount Disable the X/Y test count. <br>
+-D --dry Dry run. Show test that would have run. <br>
+-f, --failures Show failed tests. <br>
+-o, --comments Show comments. <br>
+--ignore-exit Ignore exit status from test scripts. <br>
+-m, --merge Merge test scripts' STDERR with their STDOUT.
+<br>
+-r, --recurse Recursively descend into directories. <br>
+--reverse Run the tests in reverse order. <br>
+-q, --quiet Suppress some test output while running tests.
+<br>
+-Q, --QUIET Only print summary results. <br>
+-p, --parse Show full list of TAP parse errors, if any. <br>
+--directives Only show results with TODO or SKIP directives.
+<br>
+--timer Print elapsed time after each test. <br>
+--trap Trap Ctrl-C and print summary on interrupt. <br>
+--normalize Normalize TAP output in verbose output <br>
+-T Enable tainting checks. <br>
+-t Enable tainting warnings. <br>
+-W Enable fatal warnings. <br>
+-w Enable warnings. <br>
+-h, --help Display this help <br>
+-?, Display this help <br>
+-V, --version Display the version <br>
+-H, --man Longer manpage for prove <br>
+--norc Don't process default .proverc</p>
+
+<p style="margin-left:11%; margin-top: 1em">Options that
+take arguments:</p>
+
+<p style="margin-left:11%; margin-top: 1em">-I Library
+paths to include. <br>
+-P Load plugin (searches App::Prove::Plugin::*.) <br>
+-M Load a module. <br>
+-e, --exec Interpreter to run the tests ('' for compiled
+<br>
+tests.) <br>
+--ext Set the extension for tests (default '.t') <br>
+--harness Define test harness to use. See TAP::Harness. <br>
+--formatter Result formatter to use. See FORMATTERS. <br>
+--source Load and/or configure a SourceHandler. See <br>
+SOURCE HANDLERS. <br>
+-a, --archive out.tgz Store the resulting TAP in an archive
+file. <br>
+-j, --jobs N Run N test jobs in parallel (try 9.) <br>
+--state=opts Control prove's persistent state. <br>
+--statefile=file Use `file` instead of `.prove` for state
+<br>
+--rc=rcfile Process options from rcfile <br>
+--rules Rules for parallel vs sequential processing.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>.proverc</b>
+<br>
+If <i>~/.proverc</i> or <i>./.proverc</i> exist they will be
+read and any options they contain processed before the
+command line options. Options in <i>.proverc</i> are
+specified in the same way as command line options:</p>
+
+<p style="margin-left:11%; margin-top: 1em"># .proverc <br>
+--state=hot,fast,save <br>
+-j9</p>
+
+<p style="margin-left:11%; margin-top: 1em">Additional
+option files may be specified with the &quot;--rc&quot;
+option. Default option file processing is disabled by the
+&quot;--norc&quot; option.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Under Windows
+and <small>VMS</small> the option file is named
+<i>_proverc</i> rather than <i>.proverc</i> and is sought
+only in the current directory.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Reading from
+&quot;STDIN&quot;</b> <br>
+If you have a list of tests (or URLs, or anything else you
+want to test) in a file, you can add them to your tests by
+using a &rsquo;-&rsquo;:</p>
+
+<p style="margin-left:11%; margin-top: 1em">prove - &lt;
+my_list_of_things_to_test.txt</p>
+
+<p style="margin-left:11%; margin-top: 1em">See the
+&quot;README&quot; in the &quot;examples&quot; directory of
+this distribution.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Default Test
+Directory</b> <br>
+If no files or directories are supplied, &quot;prove&quot;
+looks for all files matching the pattern
+&quot;t/*.t&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Colored Test
+Output</b> <br>
+Colored test output using TAP::Formatter::Color is the
+default, but if output is not to a terminal, color is
+disabled. You can override this by adding the
+&quot;--color&quot; switch.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Color support
+requires Term::ANSIColor and, on windows platforms, also
+Win32::Console::ANSI. If the necessary module(s) are not
+installed colored output will not be available.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Exit
+Code</b> <br>
+If the tests fail &quot;prove&quot; will exit with non-zero
+status.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Arguments to
+Tests</b> <br>
+It is possible to supply arguments to tests. To do so
+separate them from prove&rsquo;s own arguments with the
+arisdottle, &rsquo;::&rsquo;. For example</p>
+
+<p style="margin-left:11%; margin-top: 1em">prove -v
+t/mytest.t :: --url http://example.com</p>
+
+<p style="margin-left:11%; margin-top: 1em">would run
+<i>t/mytest.t</i> with the options &rsquo;--url
+http://example.com&rsquo;. When running multiple tests they
+will each receive the same arguments.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>&quot;--exec&quot;</b>
+<br>
+Normally you can just pass a list of Perl tests and the
+harness will know how to execute them. However, if your
+tests are not written in Perl or if you want all tests
+invoked exactly the same way, use the &quot;-e&quot;, or
+&quot;--exec&quot; switch:</p>
+
+<p style="margin-left:11%; margin-top: 1em">prove --exec
+'/usr/bin/ruby -w' t/ <br>
+prove --exec '/usr/bin/perl -Tw -mstrict -Ilib' t/ <br>
+prove --exec '/path/to/my/customer/exec'</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>&quot;--merge&quot;</b>
+<br>
+If you need to make sure your diagnostics are displayed in
+the correct order relative to test results you can use the
+&quot;--merge&quot; option to merge the test scripts&rsquo;
+<small>STDERR</small> into their <small>STDOUT.</small></p>
+
+<p style="margin-left:11%; margin-top: 1em">This guarantees
+that <small>STDOUT</small> (where the test results appear)
+and <small>STDERR</small> (where the diagnostics appear)
+will stay in sync. The harness will display any diagnostics
+your tests emit on <small>STDERR.</small></p>
+
+<p style="margin-left:11%; margin-top: 1em">Caveat: this is
+a bit of a kludge. In particular note that if anything that
+appears on <small>STDERR</small> looks like a test result
+the test harness will get confused. Use this option only if
+you understand the consequences and can live with the
+risk.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>&quot;--trap&quot;</b>
+<br>
+The &quot;--trap&quot; option will attempt to trap
+<small>SIGINT</small> (Ctrl-C) during a test run and display
+the test summary even if the run is interrupted</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>&quot;--state&quot;</b>
+<br>
+You can ask &quot;prove&quot; to remember the state of
+previous test runs and select and/or order the tests to be
+run based on that saved state.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;--state&quot; switch requires an argument which must
+be a comma separated list of one or more of the following
+options. <br>
+&quot;last&quot;</p>
+
+<p style="margin-left:17%;">Run the same tests as the last
+time the state was saved. This makes it possible, for
+example, to recreate the ordering of a shuffled test.</p>
+
+<p style="margin-left:17%; margin-top: 1em"># Run all tests
+in random order <br>
+$ prove -b --state=save --shuffle <br>
+# Run them again in the same order <br>
+$ prove -b --state=last</p>
+
+<p style="margin-left:11%;">&quot;failed&quot;</p>
+
+<p style="margin-left:17%;">Run only the tests that failed
+on the last run.</p>
+
+<p style="margin-left:17%; margin-top: 1em"># Run all tests
+<br>
+$ prove -b --state=save <br>
+# Run failures <br>
+$ prove -b --state=failed</p>
+
+<p style="margin-left:17%; margin-top: 1em">If you also
+specify the &quot;save&quot; option newly passing tests will
+be excluded from subsequent runs.</p>
+
+<p style="margin-left:17%; margin-top: 1em"># Repeat until
+no more failures <br>
+$ prove -b --state=failed,save</p>
+
+<p style="margin-left:11%;">&quot;passed&quot;</p>
+
+<p style="margin-left:17%;">Run only the passed tests from
+last time. Useful to make sure that no new problems have
+been introduced.</p>
+
+<p style="margin-left:11%;">&quot;all&quot;</p>
+
+<p style="margin-left:17%;">Run all tests in normal order.
+Multiple options may be specified, so to run all tests with
+the failures from last time first:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ prove -b
+--state=failed,all,save</p>
+
+<p style="margin-left:11%;">&quot;hot&quot;</p>
+
+<p style="margin-left:17%;">Run the tests that most
+recently failed first. The last failure time of each test is
+stored. The &quot;hot&quot; option causes tests to be run in
+most-recent- failure order.</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ prove -b
+--state=hot,save</p>
+
+<p style="margin-left:17%; margin-top: 1em">Tests that have
+never failed will not be selected. To run all tests with the
+most recently failed first use</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ prove -b
+--state=hot,all,save</p>
+
+<p style="margin-left:17%; margin-top: 1em">This
+combination of options may also be specified thus</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ prove -b
+--state=adrian</p>
+
+<p style="margin-left:11%;">&quot;todo&quot;</p>
+
+<p style="margin-left:17%;">Run any tests with todos.</p>
+
+<p style="margin-left:11%;">&quot;slow&quot;</p>
+
+<p style="margin-left:17%;">Run the tests in slowest to
+fastest order. This is useful in conjunction with the
+&quot;-j&quot; parallel testing switch to ensure that your
+slowest tests start running first.</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ prove -b
+--state=slow -j9</p>
+
+<p style="margin-left:11%;">&quot;fast&quot;</p>
+
+<p style="margin-left:17%;">Run test tests in fastest to
+slowest order.</p>
+
+<p style="margin-left:11%;">&quot;new&quot;</p>
+
+<p style="margin-left:17%;">Run the tests in newest to
+oldest order based on the modification times of the test
+scripts.</p>
+
+<p style="margin-left:11%;">&quot;old&quot;</p>
+
+<p style="margin-left:17%;">Run the tests in oldest to
+newest order.</p>
+
+<p style="margin-left:11%;">&quot;fresh&quot;</p>
+
+<p style="margin-left:17%;">Run those test scripts that
+have been modified since the last test run.</p>
+
+<p style="margin-left:11%;">&quot;save&quot;</p>
+
+<p style="margin-left:17%;">Save the state on exit. The
+state is stored in a file called <i>.prove</i>
+(<i>_prove</i> on Windows and <small>VMS</small> ) in the
+current directory.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;--state&quot; switch may be used more than once.</p>
+
+<p style="margin-left:11%; margin-top: 1em">$ prove -b
+--state=hot --state=all,save</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--rules</b>
+<br>
+The &quot;--rules&quot; option is used to control which
+tests are run sequentially and which are run in parallel, if
+the &quot;--jobs&quot; option is specified. The option may
+be specified multiple times, and the order matters.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The most
+practical use is likely to specify that some tests are not
+&quot;parallel-ready&quot;. Since mentioning a file with
+--rules doesn&rsquo;t cause it to be selected to run as a
+test, you can &quot;set and forget&quot; some rules
+preferences in your .proverc file. Then you&rsquo;ll be able
+to take maximum advantage of the performance benefits of
+parallel testing, while some exceptions are still run in
+parallel.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>--rules
+examples</i></p>
+
+<p style="margin-left:11%; margin-top: 1em"># All tests are
+allowed to run in parallel, except those starting with
+&quot;p&quot; <br>
+--rules='seq=t/p*.t' --rules='par=**' <br>
+# All tests must run in sequence except those starting with
+&quot;p&quot;, which should be run parallel <br>
+--rules='par=t/p*.t'</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>--rules
+resolution</i></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>By default, all tests are eligible to be run in
+parallel. Specifying any of your own rules removes this
+one.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>&quot;First match wins&quot;. The first rule that
+matches a test will be the one that applies.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>Any test which does not match a rule will be run in
+sequence at the end of the run.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>The existence of a rule does not imply selecting a test.
+You must still specify the tests to run.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>Specifying a rule to allow tests to run in parallel does
+not make them run in parallel. You still need specify the
+number of parallel &quot;jobs&quot; in your Harness
+object.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><i>--rules
+Glob-style pattern matching</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">We implement
+our own glob-style pattern matching for --rules. Here are
+the supported patterns:</p>
+
+<p style="margin-left:11%; margin-top: 1em">** is any
+number of characters, including /, within a pathname <br>
+* is zero or more characters within a filename/directory
+name <br>
+? is exactly one character within a filename/directory name
+<br>
+{foo,bar,baz} is any of foo, bar or baz. <br>
+\ is an escape character</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>More
+advanced specifications for parallel vs sequence run
+rules</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">If you need
+more advanced management of what runs in parallel vs in
+sequence, see the associated &rsquo;rules&rsquo;
+documentation in TAP::Harness and TAP::Parser::Scheduler. If
+what&rsquo;s possible directly through &quot;prove&quot; is
+not sufficient, you can write your own harness to access
+these features directly.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>@INC</b>
+<br>
+prove introduces a separation between &quot;options passed
+to the perl which runs prove&quot; and &quot;options passed
+to the perl which runs tests&quot;; this distinction is by
+design. Thus the perl which is running a test starts with
+the default @INC. Additional library directories can be
+added via the &quot;PERL5LIB&quot; environment variable, via
+-Ifoo in &quot;PERL5OPT&quot; or via the &quot;-Ilib&quot;
+option to <i>prove</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Taint
+Mode</b> <br>
+Normally when a Perl program is run in taint mode the
+contents of the &quot;PERL5LIB&quot; environment variable do
+not appear in @INC.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Because
+&quot;PERL5LIB&quot; is often used during testing to add
+build directories to @INC prove passes the names of any
+directories found in &quot;PERL5LIB&quot; as -I switches.
+The net effect of this is that &quot;PERL5LIB&quot; is
+honoured even when prove is run in taint mode.</p>
+
+<h2>FORMATTERS
+<a name="FORMATTERS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">You can load a
+custom TAP::Parser::Formatter:</p>
+
+<p style="margin-left:11%; margin-top: 1em">prove
+--formatter MyFormatter</p>
+
+<h2>SOURCE HANDLERS
+<a name="SOURCE HANDLERS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">You can load
+custom TAP::Parser::SourceHandlers, to change the way the
+parser interprets particular <i>sources</i> of
+<small>TAP.</small></p>
+
+<p style="margin-left:11%; margin-top: 1em">prove --source
+MyHandler --source YetAnother t</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you want to
+provide config to the source you can use:</p>
+
+<p style="margin-left:11%; margin-top: 1em">prove --source
+MyCustom \ <br>
+--source Perl --perl-option 'foo=bar baz' --perl-option
+avg=0.278 \ <br>
+--source File --file-option extensions=.txt --file-option
+extensions=.tmp t <br>
+--source pgTAP --pgtap-option pset=format=html
+--pgtap-option pset=border=2</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each
+&quot;--$source-option&quot; option must specify a key/value
+pair separated by an &quot;=&quot;. If an option can take
+multiple values, just specify it multiple times, as with the
+&quot;extensions=&quot; examples above. If the option should
+be a hash reference, specify the value as a second pair
+separated by a &quot;=&quot;, as in the &quot;pset=&quot;
+examples above (escape &quot;=&quot; with a backslash).</p>
+
+<p style="margin-left:11%; margin-top: 1em">All
+&quot;--sources&quot; are combined into a hash, and passed
+to &quot;new&quot; in TAP::Harness&rsquo;s
+&quot;sources&quot; parameter.</p>
+
+<p style="margin-left:11%; margin-top: 1em">See
+TAP::Parser::IteratorFactory for more details on how
+configuration is passed to <i>SourceHandlers</i>.</p>
+
+<h2>PLUGINS
+<a name="PLUGINS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Plugins can be
+loaded using the &quot;-P<i>plugin</i>&quot; syntax, eg:</p>
+
+<p style="margin-left:11%; margin-top: 1em">prove
+-PMyPlugin</p>
+
+<p style="margin-left:11%; margin-top: 1em">This will
+search for a module named
+&quot;App::Prove::Plugin::MyPlugin&quot;, or failing that,
+&quot;MyPlugin&quot;. If the plugin can&rsquo;t be found,
+&quot;prove&quot; will complain &amp; exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can pass
+arguments to your plugin by appending
+&quot;=arg1,arg2,etc&quot; to the plugin name:</p>
+
+<p style="margin-left:11%; margin-top: 1em">prove
+-PMyPlugin=fou,du,fafa</p>
+
+<p style="margin-left:11%; margin-top: 1em">Please check
+individual plugin documentation for more details.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Available
+Plugins</b> <br>
+For an up-to-date list of plugins available, please check
+<small>CPAN:</small></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">&lt;http://search.cpan.org/search?query=App%3A%3AProve+Plugin&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Writing
+Plugins</b> <br>
+Please see &quot; <small>PLUGINS&quot;</small> in
+App::Prove.</p>
+<hr>
+</body>
+</html>

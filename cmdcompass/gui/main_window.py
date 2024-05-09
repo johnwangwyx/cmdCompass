@@ -11,13 +11,14 @@ from cmdcompass.gui.manpagebox import ManPageBox
 from CTkToolTip import CTkToolTip
 
 from CTkMessagebox import CTkMessagebox
+DEFAULT_BUTTON_COLOR = "blue"
 
 
 class MainWindow(ctk.CTk):
     def __init__(self):
         super().__init__()
         self.title("cmdCompass")
-        self.geometry("900x670")
+        self.geometry("1000x670")
 
         # Load data
         self.data_manager = DataManager()
@@ -123,6 +124,9 @@ class MainWindow(ctk.CTk):
                                                  command=lambda: self.switch_tab("man_page"), height=20)
         self.comment_tab_button.grid(row=0, column=0, padx=10, pady=(10, 0), sticky="nsew")
         self.man_page_tab_button.grid(row=0, column=1, padx=10, pady=(10, 0), sticky="nsew")
+        global DEFAULT_BUTTON_COLOR
+        DEFAULT_BUTTON_COLOR = self.man_page_tab_button._fg_color[0]
+        print(DEFAULT_BUTTON_COLOR)
 
         # Comment Box
         self.comment_box = CommentBox(self.tab_control_frame)
@@ -160,17 +164,19 @@ class MainWindow(ctk.CTk):
             self.comment_box.set_comment(self.selected_command.comment)
             # Load and display man page
             self.man_page_box.set_man_page(self.selected_command.command_str)
+            self.utility_box.set_command(self.selected_command)
         else:
             self.command_body_box.set_command(None)
             self.comment_box.set_comment(None)
+            self.utility_box.set_command(None)
 
     def update_tab_button_states(self):
         if self.active_tab == "comment":
             self.comment_tab_button.configure(state="disabled", fg_color="gray")
-            self.man_page_tab_button.configure(state="normal")
+            self.man_page_tab_button.configure(state="normal", fg_color=DEFAULT_BUTTON_COLOR)
         elif self.active_tab == "man_page":
             self.man_page_tab_button.configure(state="disabled", fg_color="gray")
-            self.comment_tab_button.configure(state="normal")
+            self.comment_tab_button.configure(state="normal", fg_color=DEFAULT_BUTTON_COLOR)
 
     def open_tag_creation_window(self):
         tag_creation_window = GlobalTagWindow(self, self.data_manager)

@@ -1,0 +1,257 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:05 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GDIFFMK</title>
+
+</head>
+<body>
+
+<h1 align="center">GDIFFMK</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">gdiffmk - mark
+differences between groff/nroff/troff files</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p style="margin-top: 1em"><b>gdiffmk</b></p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p style="margin-top: 1em">[<b>-a&nbsp;</b><i>addmark</i>]
+[<b>-c&nbsp;</b><i>changemark</i>]
+[<b>-d&nbsp;</b><i>deletemark</i>] [<b>-D</b> [<b>-B</b>]
+[<b>-M</b> <i>mark1 mark2</i>]]
+[<b>-x&nbsp;</b><i>diffcmd</i>] [<b>--</b>] <i>file1
+file2</i> [<i>output</i>]</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p style="margin-top: 1em"><b>gdiffmk</b></p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p style="margin-top: 1em"><b>--help</b></p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p style="margin-top: 1em"><b>gdiffmk</b></p></td>
+<td width="1%"></td>
+<td width="77%">
+
+
+<p style="margin-top: 1em"><b>--version</b></p></td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gdiffmk</b>
+compares two <b>groff</b>(1), <b>nroff</b>(1), or
+<b>troff</b>(1) documents, <i>file1</i> and <i>file2</i>,
+and creates an output which is <i>file2</i> with added
+&ldquo;margin character&rdquo; (.mc) commands that indicate
+the differences.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the
+<i>output</i> filename is present, the output is written
+there. If it is <b>-</b> or absent the output is written to
+the standard output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the
+<i>file1</i> or <i>file2</i> argument is <b>-</b> the
+standard input is read for that input. Clearly both cannot
+be <b>-</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that the
+output is not necessarily compatible with all macro packages
+and all preprocessors. See section &ldquo;Bugs&rdquo;
+below.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-a</b><i>addmark</i></p>
+
+<p style="margin-left:22%;">Use the <i>addmark</i> for
+source lines not in <i>file1</i> but present in
+<i>file2</i>. Default: <b>+</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-B</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>By default, the deleted texts marked by the <b>-D</b>
+option end with an added troff break command, <b>.br</b>, to
+ensure that the deletions are marked properly. This is the
+only way to guarantee that deletions and small changes get
+flagged. This option directs the program not to insert these
+breaks; it makes no sense to use it without <b>-D</b>.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-c</b><i>changemark</i></p>
+
+<p style="margin-left:22%;">Use the <i>changemark</i> for
+changed source lines. Default: <b>|</b>.</p>
+
+<p style="margin-left:11%;"><b>-d</b><i>deletemark</i></p>
+
+<p style="margin-left:22%;">Use the <i>deletemark</i> for
+deleted source lines. Default: <b>*</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-D</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Show the deleted portions from changed and deleted text.
+Default delimiting marks: <b>[[</b> ... <b>]]</b>.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-M</b><i>mark1 mark2</i></p>
+
+<p style="margin-left:22%;">Change the delimiting marks for
+the <b>-D</b> option. It makes no sense to use this option
+without <b>-D</b>.</p>
+
+<p style="margin-left:11%;"><b>-x</b><i>diffcmd</i></p>
+
+<p style="margin-left:22%;">Use the <i>diffcmd</i> command
+to perform the comparison of <i>file1</i> and <i>file2</i>.
+In particular, <i>diffcmd</i> should accept the GNU <b>diff
+-D</b><i>name</i> option. Default: <b>diff</b>(1).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>All the following arguments are treated as file names,
+even if they begin with <b>-</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--help</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Print a usage message on standard error output and
+exit.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--version</b></p>
+
+<p style="margin-left:22%;">Print version information on
+the standard output and exit.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The output is
+not necessarily compatible with all macro packages and all
+preprocessors. A workaround that is often successful against
+preprocessor problems is to run <b>gdiffmk</b> on the output
+of all the preprocessors instead of the input source.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>gdiffmk</b>
+relies on the <b>-D</b><i>name</i> option of GNU
+<b>diff</b>(1) to make a merged &ldquo;#ifdef&rdquo; output
+format. It hasn&rsquo;t been tested whether other versions
+of <b>diff</b>(1) do support this option. See also the
+<b>-x</b><i>diffcmd</i> option.</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gdiffmk</b>
+was written and is maintained by
+<a href="mailto:MBianchi@Foveal.com">Mike Bianchi</a>.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>groff</b>(1),
+<b>nroff</b>(1), <b>gtroff</b>(1), <b>diff</b>(1)</p>
+<hr>
+</body>
+</html>

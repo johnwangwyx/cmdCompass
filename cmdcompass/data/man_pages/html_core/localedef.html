@@ -1,0 +1,613 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:15 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>localedef</title>
+
+</head>
+<body>
+
+<h1 align="center">localedef</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#STANDARDS">STANDARDS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">localedef -
+compile locale definition files</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p style="margin-top: 1em"><b>localedef</b></p></td>
+<td width="1%"></td>
+<td width="71%">
+
+
+<p style="margin-top: 1em">[<i>options</i>]
+<i>outputpath</i></p> </td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p style="margin-top: 1em"><b>localedef</b></p></td>
+<td width="1%"></td>
+<td width="71%">
+
+
+<p style="margin-top: 1em"><b>--add-to-archive</b>
+[<i>options</i>] <i>compiledpath</i></p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p style="margin-top: 1em"><b>localedef</b></p></td>
+<td width="1%"></td>
+<td width="71%">
+
+
+<p style="margin-top: 1em"><b>--delete-from-archive</b>
+[<i>options</i>] <i>localename</i> ...</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p style="margin-top: 1em"><b>localedef</b></p></td>
+<td width="1%"></td>
+<td width="71%">
+
+
+<p style="margin-top: 1em"><b>--list-archive</b>
+[<i>options</i>]</p> </td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p style="margin-top: 1em"><b>localedef</b></p></td>
+<td width="1%"></td>
+<td width="71%">
+
+
+<p style="margin-top: 1em"><b>--help</b></p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p style="margin-top: 1em"><b>localedef</b></p></td>
+<td width="1%"></td>
+<td width="71%">
+
+
+<p style="margin-top: 1em"><b>--usage</b></p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="14%">
+
+
+<p style="margin-top: 1em"><b>localedef</b></p></td>
+<td width="1%"></td>
+<td width="71%">
+
+
+<p style="margin-top: 1em"><b>--version</b></p></td>
+<td width="3%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>localedef</b> program reads the indicated <i>charmap</i>
+and <i>input</i> files, compiles them to a binary form
+quickly usable by the locale functions in the C library
+(<b>setlocale</b>(3), <b>localeconv</b>(3), etc.), and
+places the output in <i>outputpath</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>outputpath</i> argument is interpreted as follows:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p>If <i>outputpath</i> contains a slash character
+(&rsquo;/&rsquo;), it is interpreted as the name of the
+directory where the output definitions are to be stored. In
+this case, there is a separate output file for each locale
+category (<i>LC_TIME</i>, <i>LC_NUMERIC</i>, and so on).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p>If the <b>--no-archive</b> option is used,
+<i>outputpath</i> is the name of a subdirectory in
+<i>/usr/lib/locale</i> where per-category compiled files are
+placed.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p>Otherwise, <i>outputpath</i> is the name of a locale and
+the compiled locale data is added to the archive file
+<i>/usr/lib/locale/locale-archive</i>. A locale archive is a
+memory-mapped file which contains all the system-provided
+locales; it is used by all localized programs when the
+environment variable <b>LOCPATH</b> is not set.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">In any case,
+<b>localedef</b> aborts if the directory in which it tries
+to write locale files has not already been created.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If no
+<i>charmapfile</i> is given, the value <i>ANSI_X3.4-1968</i>
+(for ASCII) is used by default. If no <i>inputfile</i> is
+given, or if it is given as a dash (-), <b>localedef</b>
+reads from standard input.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Operation-selection
+options</b> <br>
+A few options direct <b>localedef</b> to do something other
+than compile locale definitions. Only one of these options
+should be used at a time. <b><br>
+--add-to-archive</b></p>
+
+<p style="margin-left:22%;">Add the <i>compiledpath</i>
+directories to the locale archive file. The directories
+should have been created by previous runs of
+<b>localedef</b>, using <b>--no-archive</b>.</p>
+
+
+<p style="margin-left:11%;"><b>--delete-from-archive</b></p>
+
+<p style="margin-left:22%;">Delete the named locales from
+the locale archive file.</p>
+
+<p style="margin-left:11%;"><b>--list-archive</b></p>
+
+<p style="margin-left:22%;">List the locales contained in
+the locale archive file.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Other
+options</b> <br>
+Some of the following options are sensible only for certain
+operations; generally, it should be self-evident which ones.
+Notice that <b>-f</b> and <b>-c</b> are reversed from what
+you might expect; that is, <b>-f</b> is not the same as
+<b>--force</b>. <b><br>
+-f</b> <i>charmapfile</i>,
+<b>--charmap=</b><i>charmapfile</i></p>
+
+<p style="margin-left:22%;">Specify the file that defines
+the character set that is used by the input file. If
+<i>charmapfile</i> contains a slash character
+(&rsquo;/&rsquo;), it is interpreted as the name of the
+character map. Otherwise, the file is sought in the current
+directory and the default directory for character maps. If
+the environment variable <b>I18NPATH</b> is set,
+<i>$I18NPATH/charmaps/</i> and <i>$I18NPATH/</i> are also
+searched after the current directory. The default directory
+for character maps is printed by <b>localedef
+--help</b>.</p>
+
+<p style="margin-left:11%;"><b>-i</b> <i>inputfile</i>,
+<b>--inputfile=</b><i>inputfile</i></p>
+
+<p style="margin-left:22%;">Specify the locale definition
+file to compile. The file is sought in the current directory
+and the default directory for locale definition files. If
+the environment variable <b>I18NPATH</b> is set,
+<i>$I18NPATH/locales/</i> and <i>$I18NPATH</i> are also
+searched after the current directory. The default directory
+for locale definition files is printed by <b>localedef
+--help</b>.</p>
+
+<p style="margin-left:11%;"><b>-u</b>
+<i>repertoirefile</i>,
+<b>--repertoire-map=</b><i>repertoirefile</i></p>
+
+<p style="margin-left:22%;">Read mappings from symbolic
+names to Unicode code points from <i>repertoirefile</i>. If
+<i>repertoirefile</i> contains a slash character
+(&rsquo;/&rsquo;), it is interpreted as the pathname of the
+repertoire map. Otherwise, the file is sought in the current
+directory and the default directory for repertoire maps. If
+the environment variable <b>I18NPATH</b> is set,
+<i>$I18NPATH/repertoiremaps/</i> and <i>$I18NPATH</i> are
+also searched after the current directory. The default
+directory for repertoire maps is printed by <b>localedef
+--help</b>.</p>
+
+<p style="margin-left:11%;"><b>-A</b> <i>aliasfile</i>,
+<b>--alias-file=</b><i>aliasfile</i></p>
+
+<p style="margin-left:22%;">Use <i>aliasfile</i> to look up
+aliases for locale names. There is no default aliases
+file.</p>
+
+<p style="margin-left:11%;"><b>-c</b>, <b>--force</b></p>
+
+<p style="margin-left:22%;">Write the output files even if
+warnings were generated about the input file.</p>
+
+<p style="margin-left:11%;"><b>-v</b>, <b>--verbose</b></p>
+
+<p style="margin-left:22%;">Generate extra warnings about
+errors that are normally ignored.</p>
+
+<p style="margin-left:11%;"><b>--big-endian</b></p>
+
+<p style="margin-left:22%;">Generate big-endian output.</p>
+
+<p style="margin-left:11%;"><b>--little-endian</b></p>
+
+<p style="margin-left:22%;">Generate little-endian
+output.</p>
+
+<p style="margin-left:11%;"><b>--no-archive</b></p>
+
+<p style="margin-left:22%;">Do not use the locale archive
+file, instead create <i>outputpath</i> as a subdirectory in
+the same directory as the locale archive file, and create
+separate output files for locale categories in it. This is
+helpful to prevent system locale archive updates from
+overwriting custom locales created with
+<b>localedef</b>.</p>
+
+<p style="margin-left:11%;"><b>--no-hard-links</b></p>
+
+<p style="margin-left:22%;">Do not create hard links
+between installed locales.</p>
+
+
+<p style="margin-left:11%;"><b>--no-warnings=</b><i>warnings</i></p>
+
+<p style="margin-left:22%;">Comma-separated list of
+warnings to disable. Supported warnings are <i>ascii</i> and
+<i>intcurrsym</i>.</p>
+
+<p style="margin-left:11%;"><b>--posix</b></p>
+
+<p style="margin-left:22%;">Conform strictly to POSIX.
+Implies <b>--verbose</b>. This option currently has no other
+effect. POSIX conformance is assumed if the environment
+variable <b>POSIXLY_CORRECT</b> is set.</p>
+
+
+<p style="margin-left:11%;"><b>--prefix=</b><i>pathname</i></p>
+
+<p style="margin-left:22%;">Set the prefix to be prepended
+to the full archive pathname. By default, the prefix is
+empty. Setting the prefix to <i>foo</i>, the archive would
+be placed in <i>foo/usr/lib/locale/locale-archive</i>.</p>
+
+<p style="margin-left:11%;"><b>--quiet</b></p>
+
+<p style="margin-left:22%;">Suppress all notifications and
+warnings, and report only fatal errors.</p>
+
+<p style="margin-left:11%;"><b>--replace</b></p>
+
+<p style="margin-left:22%;">Replace a locale in the locale
+archive file. Without this option, if the locale is in the
+archive file already, an error occurs.</p>
+
+
+<p style="margin-left:11%;"><b>--warnings=</b><i>warnings</i></p>
+
+<p style="margin-left:22%;">Comma-separated list of
+warnings to enable. Supported warnings are <i>ascii</i> and
+<i>intcurrsym</i>.</p>
+
+<p style="margin-left:11%;"><b>-?</b>, <b>--help</b></p>
+
+<p style="margin-left:22%;">Print a usage summary and exit.
+Also prints the default paths used by <b>localedef</b>.</p>
+
+<p style="margin-left:11%;"><b>--usage</b></p>
+
+<p style="margin-left:22%;">Print a short usage summary and
+exit.</p>
+
+<p style="margin-left:11%;"><b>-V</b>, <b>--version</b></p>
+
+<p style="margin-left:22%;">Print the version number,
+license, and disclaimer of warranty for
+<b>localedef</b>.</p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">One of the
+following exit values can be returned by
+<b>localedef</b>:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p><b>0</b></p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Command completed successfully.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p><b>1</b></p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Warnings or errors occurred, output files were
+written.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p><b>4</b></p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Errors encountered, no output created.</p></td></tr>
+</table>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>POSIXLY_CORRECT</b></p>
+
+<p style="margin-left:22%;">The <b>--posix</b> flag is
+assumed if this environment variable is set.</p>
+
+<p style="margin-left:11%;"><b>I18NPATH</b></p>
+
+<p style="margin-left:22%;">A colon-separated list of
+search directories for files.</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/usr/share/i18n/charmaps</i></p>
+
+<p style="margin-left:22%;">Usual default character map
+path.</p>
+
+
+<p style="margin-left:11%;"><i>/usr/share/i18n/locales</i></p>
+
+<p style="margin-left:22%;">Usual default path for locale
+definition files.</p>
+
+
+<p style="margin-left:11%;"><i>/usr/share/i18n/repertoiremaps</i></p>
+
+<p style="margin-left:22%;">Usual default repertoire map
+path.</p>
+
+
+<p style="margin-left:11%;"><i>/usr/lib/locale/locale-archive</i></p>
+
+<p style="margin-left:22%;">Usual default locale archive
+location.</p>
+
+<p style="margin-left:11%;"><i>/usr/lib/locale</i></p>
+
+<p style="margin-left:22%;">Usual default path for compiled
+individual locale data files.</p>
+
+
+<p style="margin-left:11%;"><i>outputpath/LC_ADDRESS</i></p>
+
+<p style="margin-left:22%;">An output file that contains
+information about formatting of addresses and
+geography-related items.</p>
+
+
+<p style="margin-left:11%;"><i>outputpath/LC_COLLATE</i></p>
+
+<p style="margin-left:22%;">An output file that contains
+information about the rules for comparing strings.</p>
+
+<p style="margin-left:11%;"><i>outputpath/LC_CTYPE</i></p>
+
+<p style="margin-left:22%;">An output file that contains
+information about character classes.</p>
+
+
+<p style="margin-left:11%;"><i>outputpath/LC_IDENTIFICATION</i></p>
+
+<p style="margin-left:22%;">An output file that contains
+metadata about the locale.</p>
+
+
+<p style="margin-left:11%;"><i>outputpath/LC_MEASUREMENT</i></p>
+
+<p style="margin-left:22%;">An output file that contains
+information about locale measurements (metric versus US
+customary).</p>
+
+
+<p style="margin-left:11%;"><i>outputpath/LC_MESSAGES/SYS_LC_MESSAGES</i></p>
+
+<p style="margin-left:22%;">An output file that contains
+information about the language messages should be printed
+in, and what an affirmative or negative answer looks
+like.</p>
+
+
+<p style="margin-left:11%;"><i>outputpath/LC_MONETARY</i></p>
+
+<p style="margin-left:22%;">An output file that contains
+information about formatting of monetary values.</p>
+
+<p style="margin-left:11%;"><i>outputpath/LC_NAME</i></p>
+
+<p style="margin-left:22%;">An output file that contains
+information about salutations for persons.</p>
+
+
+<p style="margin-left:11%;"><i>outputpath/LC_NUMERIC</i></p>
+
+<p style="margin-left:22%;">An output file that contains
+information about formatting of nonmonetary numeric
+values.</p>
+
+<p style="margin-left:11%;"><i>outputpath/LC_PAPER</i></p>
+
+<p style="margin-left:22%;">An output file that contains
+information about settings related to standard paper
+size.</p>
+
+
+<p style="margin-left:11%;"><i>outputpath/LC_TELEPHONE</i></p>
+
+<p style="margin-left:22%;">An output file that contains
+information about formats to be used with telephone
+services.</p>
+
+<p style="margin-left:11%;"><i>outputpath/LC_TIME</i></p>
+
+<p style="margin-left:22%;">An output file that contains
+information about formatting of data and time values.</p>
+
+<h2>STANDARDS
+<a name="STANDARDS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">POSIX.1-2008.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Compile the
+locale files for Finnish in the UTF-8 character set and add
+it to the default locale archive with the name
+<b>fi_FI.UTF-8</b>:</p>
+
+<p style="margin-left:17%; margin-top: 1em">localedef -f
+UTF-8 -i fi_FI fi_FI.UTF-8</p>
+
+<p style="margin-left:11%; margin-top: 1em">The next
+example does the same thing, but generates files into the
+<i>fi_FI.UTF-8</i> directory which can then be used by
+programs when the environment variable <b>LOCPATH</b> is set
+to the current directory (note that the last argument must
+contain a slash):</p>
+
+<p style="margin-left:17%; margin-top: 1em">localedef -f
+UTF-8 -i fi_FI ./fi_FI.UTF-8</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>locale</b>(1),
+<b>charmap</b>(5), <b>locale</b>(5),
+<b>repertoiremap</b>(5), <b>locale</b>(7)</p>
+<hr>
+</body>
+</html>

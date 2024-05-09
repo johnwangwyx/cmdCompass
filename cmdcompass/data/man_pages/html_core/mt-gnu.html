@@ -1,0 +1,307 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:19 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>MT</title>
+
+</head>
+<body>
+
+<h1 align="center">MT</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#BUG REPORTS">BUG REPORTS</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">mt - control
+magnetic tape drive operation</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mt</b>
+[<b>-V</b>] [<b>-f</b> <i>device</i>]
+[<b>--file=</b><i>device</i>]
+[<b>--rsh-command=</b><i>command</i>] [<b>--version</b>]
+<i>operation</i> [<i>count</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page documents the GNU version of <b>mt</b>. <b>mt</b>
+performs the given <i>operation</i>, which must be one of
+the tape operations listed below, on a tape drive.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The default
+tape device to operate on is taken from the file
+<b>/usr/include/sys/mtio.h</b> when <b>mt</b> is compiled.
+It can be overridden by giving a device file name in the
+environment variable <b>TAPE</b> or by a command line option
+(see below), which also overrides the environment
+variable.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The device must
+be either a character special file or a remote tape drive.
+To use a tape drive on another machine as the archive, use a
+filename that starts with &rsquo;HOSTNAME:&rsquo;. The
+hostname can be preceded by a username and an
+&rsquo;@&rsquo; to access the remote tape drive as that
+user, if you have permission to do so (typically an entry in
+that user&rsquo;s &rsquo;~/.rhosts&rsquo; file).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The available
+operations are listed below. Unique abbreviations are
+accepted. Not all operations are available on all systems,
+or work on all types of tape drives. Some operations
+optionally take a repeat count, which can be given after the
+operation name and defaults to 1. <b><br>
+eof</b>, <b>weof</b></p>
+
+<p style="margin-left:22%;">Write <i>count</i> EOF marks at
+current position.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>fsf</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Forward space <i>count</i> files. The tape is positioned
+on the first block of the next file.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>bsf</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Backward space <i>count</i> files. The tape is
+positioned on the first block of the next file.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>fsr</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Forward space <i>count</i> records.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>bsr</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Backward space <i>count</i> records.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>bsfm</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Backward space <i>count</i> file marks. The tape is
+positioned on the beginning-of-the-tape side of the file
+mark.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>fsfm</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Forward space <i>count</i> file marks. The tape is
+positioned on the beginning-of-the-tape side of the file
+mark.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>asf</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Absolute space to file number <i>count</i>. Equivalent
+to rewind followed by fsf <i>count</i>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>seek</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Seek to block number <i>count</i>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>eom</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Space to the end of the recorded media on the tape (for
+appending files onto tapes).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>rewind</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Rewind the tape.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>offline</b>,
+<b>rewoffl</b></p>
+
+<p style="margin-left:22%;">Rewind the tape and, if
+applicable, unload the tape.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>status</b></p></td>
+<td width="2%"></td>
+<td width="69%">
+
+
+<p>Print status information about the tape unit.</p></td>
+<td width="9%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>retension</b></p>
+
+<p style="margin-left:22%;">Rewind the tape, then wind it
+to the end of the reel, then rewind it again.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>erase</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Perform long erase of tape. If <i>count</i> is 0,
+perform short erase of tape (some devices do not support
+this).</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><b>mt</b> exits
+with a status of 0 if the operation succeeded, 1 if the
+operation or device name given was invalid, or 2 if the
+operation failed.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>OPTIONS <br>
+-f</b>, <b>--file=</b><i>device</i></p>
+
+<p style="margin-left:22%;">Use <i>device</i> as the file
+name of the tape drive to operate on. To use a tape drive on
+another machine, use a filename that starts with
+&rsquo;HOSTNAME:&rsquo;. The hostname can be preceded by a
+username and an &rsquo;@&rsquo; to access the remote tape
+drive as that user, if you have permission to do so
+(typically an entry in that user&rsquo;s
+&rsquo;~/.rhosts&rsquo; file).</p>
+
+
+<p style="margin-left:11%;"><b>--rsh-command=</b><i>command</i></p>
+
+<p style="margin-left:22%;">Notifies <b>mt</b> that it
+should use <i>command</i> to communicate with remote devices
+instead of <b>/usr/bin/ssh</b> or <b>/usr/bin/rsh</b>.</p>
+
+<p style="margin-left:11%;"><b>-V</b>, <b>--version</b></p>
+
+<p style="margin-left:22%;">Print the version number of
+<b>mt</b>.</p>
+
+<h2>BUG REPORTS
+<a name="BUG REPORTS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Report bugs to
+&lt;bug-cpio@gnu.org&gt;.</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+&copy; 2014 Free Software Foundation, Inc. <br>
+License GPLv3+: GNU GPL version 3 or later
+&lt;http://gnu.org/licenses/gpl.html&gt; <br>
+This is free software: you are free to change and
+redistribute it. There is NO WARRANTY, to the extent
+permitted by law.</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,241 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:14 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>LESSOPEN</title>
+
+</head>
+<body>
+
+<h1 align="center">LESSOPEN</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#USAGE">USAGE</a><br>
+<a href="#FILE TYPE RECOGNITION">FILE TYPE RECOGNITION</a><br>
+<a href="#USER DEFINED FILTERS">USER DEFINED FILTERS</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">lessfile,
+lesspipe - &quot;input preprocessor&quot; for less.</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>lessfile,
+lesspipe</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page documents briefly the <i>lessfile</i>, and
+<i>lesspipe</i> commands. This manual page was written for
+the Debian GNU/Linux distribution because the input
+preprocessor scripts are provided by Debian GNU/Linux and
+are not part of the original program.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>lessfile</i>
+and <i>lesspipe</i> are programs that can be used to modify
+the way the contents of a file are displayed in <i>less.</i>
+What this means is that <i>less</i> can automatically open
+up tar files, uncompress gzipped files, and even display
+something reasonable for graphics files.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>lesspipe</i>
+will toss the contents/info on STDOUT and <i>less</i> will
+read them as they come across. This means that you do not
+have to wait for the decoding to finish before less shows
+you the file. This also means that you will get a
+&rsquo;byte N&rsquo; instead of an N% as your file position.
+You can seek to the end and back to get the N% but that
+means you have to wait for the pipe to finish.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>lessfile</i>
+will toss the contents/info on a file which <i>less</i> will
+then read. After you are done, <i>lessfile</i> will then
+delete the file. This means that the process has to finish
+before you see it, but you get nice percentages (N%) up
+front.</p>
+
+<h2>USAGE
+<a name="USAGE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Just put one of
+the following two commands in your login script (e.g.
+~/.bash_profile):</p>
+
+<p style="margin-left:11%; margin-top: 1em">eval
+&quot;$(lessfile)&quot;</p>
+
+<p style="margin-left:11%; margin-top: 1em">or</p>
+
+<p style="margin-left:11%; margin-top: 1em">eval
+&quot;$(lesspipe)&quot;</p>
+
+<h2>FILE TYPE RECOGNITION
+<a name="FILE TYPE RECOGNITION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">File types are
+recognized by their extensions. This is a list of currently
+supported extensions (grouped by the programs that handle
+them):</p>
+
+<p style="margin-left:11%; margin-top: 1em">*.a <br>
+*.arj <br>
+*.tar.bz2 <br>
+*.bz <br>
+*.bz2 <br>
+*.deb, *.udeb, *.ddeb <br>
+*.doc <br>
+*.egg <br>
+*.gif, *.jpeg, *.jpg, *.pcd, *.png, *.tga, *.tiff, *.tif
+<br>
+*.iso, *.raw, *.bin <br>
+*.lha, *.lzh <br>
+*.tar.lz, *.tlz <br>
+*.lz <br>
+*.7z <br>
+*.pdf <br>
+*.rar, *.r[0-9][0-9] <br>
+*.rpm <br>
+*.tar.gz, *.tgz, *.tar.z, *.tar.dz <br>
+*.gz, *.z, *.dz <br>
+*.tar <br>
+*.tar.xz, *.xz <br>
+*.whl <br>
+*.jar, *.war, *.xpi, *.zip <br>
+*.zoo <br>
+*.tar.zst, *.tzst <br>
+*.zst</p>
+
+<h2>USER DEFINED FILTERS
+<a name="USER DEFINED FILTERS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">It is possible
+to extend and overwrite the default <i>lesspipe</i> and
+<i>lessfile</i> input processor if you have specialized
+requirements. Create an executable program with the name
+<i>.lessfilter</i> and put it into your home directory. This
+can be a shell script or a binary program.</p>
+
+<p style="margin-left:11%; margin-top: 1em">It is important
+that this program returns the correct exit code: return 0 if
+your filter handles the input, return 1 if the standard
+<i>lesspipe/lessfile</i> filter should handle the input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Here is an
+example script:</p>
+
+<p style="margin-left:11%; margin-top: 1em">#!/bin/sh</p>
+
+<p style="margin-left:11%; margin-top: 1em">case
+&quot;$1&quot; in <br>
+*.extension) <br>
+extension-handler &quot;$1&quot; <br>
+;; <br>
+*) <br>
+# We don&rsquo;t handle this format. <br>
+exit 1 <br>
+esac</p>
+
+<p style="margin-left:11%; margin-top: 1em"># No further
+processing by lesspipe necessary <br>
+exit 0</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>~/.lessfilter</i></p>
+
+<p style="margin-left:22%;">Executable file that can do
+user defined processing. See section USER DEFINED FILTERS
+for more information.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Sometimes, less
+does not display the contents file you want to view but
+output that is produced by your login scripts (~/.bashrc or
+~/.bash_profile). This happens because less uses your
+current shell to run the lesspipe filter. Bash first looks
+for the variable $BASH_ENV in the environment expands its
+value and uses the expanded value as the name of a file to
+read and execute. If this file produces any output less will
+display this. A way to solve this problem is to put the
+following lines on the top of your login script that
+produces output:</p>
+
+<p style="margin-left:11%; margin-top: 1em">if [ -z
+&quot;$PS1&quot; ]; then <br>
+exit <br>
+fi</p>
+
+<p style="margin-left:11%; margin-top: 1em">This tests
+whether the prompt variable $PS1 is set and if it
+isn&rsquo;t (which is the case for non-interactive shells)
+it will exit the script.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">less(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was written by Thomas Schoepf
+&lt;schoepf@debian.org&gt;, for the Debian GNU/Linux system
+(but may be used by others). Most of the text was copied
+from a description written by Darren Stalder
+&lt;torin@daft.com&gt;.</p>
+<hr>
+</body>
+</html>

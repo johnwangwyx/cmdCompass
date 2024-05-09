@@ -1,0 +1,244 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:28 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamunlookup User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamunlookup User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamunlookup -
+inverse of pamlookup</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamunlookup
+-lookupfile=</b><i>lookupfile inputfile</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">All options can
+be abbreviated to their shortest unique prefix. You may use
+two hyphens instead of one. You may separate an option name
+and its value with white space instead of an equals
+sign.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamunlookup</b>
+is best described as the inverse of <b>pamlookup</b>
+(without <b>-byplane</b>). For example, the following
+normally yields output identical the input:</p>
+
+<p style="margin-left:11%; margin-top: 1em">$ cat input.ppm
+| \ <br>
+pamunlookup -lookupfile=map.pam | \ <br>
+pamlookup -lookupfile=map.pam \ <br>
+&gt; output.ppm</p>
+
+<p style="margin-left:11%; margin-top: 1em">Specifically,
+<b>pamunlookup</b> takes an input image and produces an
+output image of the same width and height in which each
+tuple is a single number. That number is the index in a
+given lookup table of the tuple value that is in the same
+position in the input image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You specify the
+lookup table the same way as for
+<a href="pamlookup.html#lookupimage"><b>pamlookup</b></a>
+.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Where a tuple
+in the input image is not in the lookup table, the number
+<b>pamunlookup</b> places in the output index image is one
+greater than the highest index in the lookup table.
+Accordingly, the maxval of the output index image is the
+size of the lookup table.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example</b>
+<br>
+Here is an example of <b>pamunlookup</b>&rsquo;s
+function.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Consider an
+input image consisting of a 3x2 PPM as follows:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%">
+</td>
+<td width="7%"></td>
+<td width="62%">
+</td></tr>
+</table>
+
+
+<p align="center"><img src="grohtml-126341.png" alt="Image grohtml-126341.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em">and a lookup
+table consisting of a 3x1 PPM image as follows:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="69%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="69%">
+</td></tr>
+</table>
+
+
+<p align="center"><img src="grohtml-126342.png" alt="Image grohtml-126342.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em">The lookup
+table above says Index 0 corresponds to the color red, Index
+1 corresponds to yellow, and Index 2 corresponds to beige.
+The output of <b>pamunlookup</b> is the following index
+image:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="77%">
+</td></tr>
+</table>
+
+
+<p align="center"><img src="grohtml-126343.png" alt="Image grohtml-126343.png"></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Miscellaneous</b>
+<br>
+The <i>inputfile</i> argument identifies the file containing
+the index PAM or PNM image. <b>-</b> means Standard Input.
+It won&rsquo;t work if both the input image file and lookup
+table file are Standard Input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The output
+index image goes to Standard Output.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamunlookup</b> recognizes the following command line
+option: <b><br>
+-lookupfile=</b><i>lookupfile</i></p>
+
+<p style="margin-left:22%;"><i>lookupfile</i> names the
+file that contains the PAM or PNM image that is the lookup
+table. This option is mandatory.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamlookup</b>(1),
+<b>ppmchange</b>(1), <b>pnmcolormap</b>(1), <b>pnm</b>(1),
+<b>pam</b>(1)</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamunlookup</b>
+was new in Netpbm 10.72 (September 2015).</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamunlookup.html</b></p>
+<hr>
+</body>
+</html>

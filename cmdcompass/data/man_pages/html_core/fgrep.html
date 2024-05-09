@@ -1,0 +1,1199 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:04 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GREP</title>
+
+</head>
+<body>
+
+<h1 align="center">GREP</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#REGULAR EXPRESSIONS">REGULAR EXPRESSIONS</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#EXAMPLE">EXAMPLE</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">grep, egrep,
+fgrep, rgrep - print lines that match patterns</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>grep</b>
+[<i>OPTION</i>...] <i>PATTERNS</i> [<i>FILE</i>...] <b><br>
+grep</b> [<i>OPTION</i>...] <b>-e</b> <i>PATTERNS</i> ...
+[<i>FILE</i>...] <b><br>
+grep</b> [<i>OPTION</i>...] <b>-f</b> <i>PATTERN_FILE</i>
+... [<i>FILE</i>...]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>grep</b>
+searches for <i>PATTERNS</i> in each <i>FILE</i>.
+<i>PATTERNS</i> is one or more patterns separated by newline
+characters, and <b>grep</b> prints each line that matches a
+pattern. Typically <i>PATTERNS</i> should be quoted when
+<b>grep</b> is used in a shell command.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A <i>FILE</i>
+of &ldquo;<b>-</b>&rdquo; stands for standard input. If no
+<i>FILE</i> is given, recursive searches examine the working
+directory, and nonrecursive searches read standard
+input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Debian also
+includes the variant programs <b>egrep</b>, <b>fgrep</b> and
+<b>rgrep</b>. These programs are the same as
+<b>grep&nbsp;-E</b>, <b>grep&nbsp;-F</b>, and
+<b>grep&nbsp;-r</b>, respectively. These variants are
+deprecated upstream, but Debian provides for backward
+compatibility. For portability reasons, it is recommended to
+avoid the variant programs, and use <b>grep</b> with the
+related option instead.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Generic
+Program Information</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--help</b></p></td>
+<td width="2%"></td>
+<td width="49%">
+
+
+<p>Output a usage message and exit.</p></td>
+<td width="29%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-V</b>, <b>--version</b></p>
+
+<p style="margin-left:22%;">Output the version number of
+<b>grep</b> and exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Pattern
+Syntax <br>
+-E</b>, <b>--extended-regexp</b></p>
+
+<p style="margin-left:22%;">Interpret <i>PATTERNS</i> as
+extended regular expressions (EREs, see below).</p>
+
+<p style="margin-left:11%;"><b>-F</b>,
+<b>--fixed-strings</b></p>
+
+<p style="margin-left:22%;">Interpret <i>PATTERNS</i> as
+fixed strings, not regular expressions.</p>
+
+<p style="margin-left:11%;"><b>-G</b>,
+<b>--basic-regexp</b></p>
+
+<p style="margin-left:22%;">Interpret <i>PATTERNS</i> as
+basic regular expressions (BREs, see below). This is the
+default.</p>
+
+<p style="margin-left:11%;"><b>-P</b>,
+<b>--perl-regexp</b></p>
+
+<p style="margin-left:22%;">Interpret <i>PATTERNS</i> as
+Perl-compatible regular expressions (PCREs). This option is
+experimental when combined with the <b>-z</b>
+(<b>--null-data</b>) option, and <b>grep -P</b> may warn of
+unimplemented features.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Matching
+Control <br>
+-e</b> <i>PATTERNS</i>, <b>--regexp=</b><i>PATTERNS</i></p>
+
+<p style="margin-left:22%;">Use <i>PATTERNS</i> as the
+patterns. If this option is used multiple times or is
+combined with the <b>-f</b> (<b>--file</b>) option, search
+for all patterns given. This option can be used to protect a
+pattern beginning with &ldquo;-&rdquo;.</p>
+
+<p style="margin-left:11%;"><b>-f</b> <i>FILE</i>,
+<b>--file=</b><i>FILE</i></p>
+
+<p style="margin-left:22%;">Obtain patterns from
+<i>FILE</i>, one per line. If this option is used multiple
+times or is combined with the <b>-e</b> (<b>--regexp</b>)
+option, search for all patterns given. The empty file
+contains zero patterns, and therefore matches nothing.</p>
+
+<p style="margin-left:11%;"><b>-i</b>,
+<b>--ignore-case</b></p>
+
+<p style="margin-left:22%;">Ignore case distinctions in
+patterns and input data, so that characters that differ only
+in case match each other.</p>
+
+<p style="margin-left:11%;"><b>--no-ignore-case</b></p>
+
+<p style="margin-left:22%;">Do not ignore case distinctions
+in patterns and input data. This is the default. This option
+is useful for passing to shell scripts that already use
+<b>-i</b>, to cancel its effects because the two options
+override each other.</p>
+
+<p style="margin-left:11%;"><b>-v</b>,
+<b>--invert-match</b></p>
+
+<p style="margin-left:22%;">Invert the sense of matching,
+to select non-matching lines.</p>
+
+<p style="margin-left:11%;"><b>-w</b>,
+<b>--word-regexp</b></p>
+
+<p style="margin-left:22%;">Select only those lines
+containing matches that form whole words. The test is that
+the matching substring must either be at the beginning of
+the line, or preceded by a non-word constituent character.
+Similarly, it must be either at the end of the line or
+followed by a non-word constituent character.
+Word-constituent characters are letters, digits, and the
+underscore. This option has no effect if <b>-x</b> is also
+specified.</p>
+
+<p style="margin-left:11%;"><b>-x</b>,
+<b>--line-regexp</b></p>
+
+<p style="margin-left:22%;">Select only those matches that
+exactly match the whole line. For a regular expression
+pattern, this is like parenthesizing the pattern and then
+surrounding it with <b>^</b> and <b>$</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>General
+Output Control <br>
+-c</b>, <b>--count</b></p>
+
+<p style="margin-left:22%;">Suppress normal output; instead
+print a count of matching lines for each input file. With
+the <b>-v</b>, <b>--invert-match</b> option (see above),
+count non-matching lines.</p>
+
+
+<p style="margin-left:11%;"><b>--color</b>[<b>=</b><i>WHEN</i>],
+<b>--colour</b>[<b>=</b><i>WHEN</i>]</p>
+
+<p style="margin-left:22%;">Surround the matched
+(non-empty) strings, matching lines, context lines, file
+names, line numbers, byte offsets, and separators (for
+fields and groups of context lines) with escape sequences to
+display them in color on the terminal. The colors are
+defined by the environment variable <b>GREP_COLORS</b>.
+<i>WHEN</i> is <b>never</b>, <b>always</b>, or
+<b>auto</b>.</p>
+
+<p style="margin-left:11%;"><b>-L</b>,
+<b>--files-without-match</b></p>
+
+<p style="margin-left:22%;">Suppress normal output; instead
+print the name of each input file from which no output would
+normally have been printed.</p>
+
+<p style="margin-left:11%;"><b>-l</b>,
+<b>--files-with-matches</b></p>
+
+<p style="margin-left:22%;">Suppress normal output; instead
+print the name of each input file from which output would
+normally have been printed. Scanning each input file stops
+upon first match.</p>
+
+<p style="margin-left:11%;"><b>-m</b> <i>NUM</i>,
+<b>--max-count=</b><i>NUM</i></p>
+
+<p style="margin-left:22%;">Stop reading a file after
+<i>NUM</i> matching lines. If <i>NUM</i> is zero,
+<b>grep</b> stops right away without reading input. A
+<i>NUM</i> of -1 is treated as infinity and <b>grep</b> does
+not stop; this is the default. If the input is standard
+input from a regular file, and <i>NUM</i> matching lines are
+output, <b>grep</b> ensures that the standard input is
+positioned to just after the last matching line before
+exiting, regardless of the presence of trailing context
+lines. This enables a calling process to resume a search.
+When <b>grep</b> stops after <i>NUM</i> matching lines, it
+outputs any trailing context lines. When the <b>-c</b> or
+<b>--count</b> option is also used, <b>grep</b> does not
+output a count greater than <i>NUM</i>. When the <b>-v</b>
+or <b>--invert-match</b> option is also used, <b>grep</b>
+stops after outputting <i>NUM</i> non-matching lines.</p>
+
+<p style="margin-left:11%;"><b>-o</b>,
+<b>--only-matching</b></p>
+
+<p style="margin-left:22%;">Print only the matched
+(non-empty) parts of a matching line, with each such part on
+a separate output line.</p>
+
+<p style="margin-left:11%;"><b>-q</b>, <b>--quiet</b>,
+<b>--silent</b></p>
+
+<p style="margin-left:22%;">Quiet; do not write anything to
+standard output. Exit immediately with zero status if any
+match is found, even if an error was detected. Also see the
+<b>-s</b> or <b>--no-messages</b> option.</p>
+
+<p style="margin-left:11%;"><b>-s</b>,
+<b>--no-messages</b></p>
+
+<p style="margin-left:22%;">Suppress error messages about
+nonexistent or unreadable files.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Output Line
+Prefix Control <br>
+-b</b>, <b>--byte-offset</b></p>
+
+<p style="margin-left:22%;">Print the 0-based byte offset
+within the input file before each line of output. If
+<b>-o</b> (<b>--only-matching</b>) is specified, print the
+offset of the matching part itself.</p>
+
+<p style="margin-left:11%;"><b>-H</b>,
+<b>--with-filename</b></p>
+
+<p style="margin-left:22%;">Print the file name for each
+match. This is the default when there is more than one file
+to search. This is a GNU extension.</p>
+
+<p style="margin-left:11%;"><b>-h</b>,
+<b>--no-filename</b></p>
+
+<p style="margin-left:22%;">Suppress the prefixing of file
+names on output. This is the default when there is only one
+file (or only standard input) to search.</p>
+
+
+<p style="margin-left:11%;"><b>--label=</b><i>LABEL</i></p>
+
+<p style="margin-left:22%;">Display input actually coming
+from standard input as input coming from file <i>LABEL</i>.
+This can be useful for commands that transform a
+file&rsquo;s contents before searching, e.g., <b>gzip -cd
+foo.gz | grep --label=foo -H &rsquo;some pattern&rsquo;</b>.
+See also the <b>-H</b> option.</p>
+
+<p style="margin-left:11%;"><b>-n</b>,
+<b>--line-number</b></p>
+
+<p style="margin-left:22%;">Prefix each line of output with
+the 1-based line number within its input file.</p>
+
+<p style="margin-left:11%;"><b>-T</b>,
+<b>--initial-tab</b></p>
+
+<p style="margin-left:22%;">Make sure that the first
+character of actual line content lies on a tab stop, so that
+the alignment of tabs looks normal. This is useful with
+options that prefix their output to the actual content:
+<b>-H</b>,<b>-n</b>, and <b>-b</b>. In order to improve the
+probability that lines from a single file will all start at
+the same column, this also causes the line number and byte
+offset (if present) to be printed in a minimum size field
+width.</p>
+
+<p style="margin-left:11%;"><b>-Z</b>, <b>--null</b></p>
+
+<p style="margin-left:22%;">Output a zero byte (the ASCII
+<b>NUL</b> character) instead of the character that normally
+follows a file name. For example, <b>grep -lZ</b> outputs a
+zero byte after each file name instead of the usual newline.
+This option makes the output unambiguous, even in the
+presence of file names containing unusual characters like
+newlines. This option can be used with commands like <b>find
+-print0</b>, <b>perl -0</b>, <b>sort -z</b>, and <b>xargs
+-0</b> to process arbitrary file names, even those that
+contain newline characters.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Context Line
+Control <br>
+-A</b> <i>NUM</i>, <b>--after-context=</b><i>NUM</i></p>
+
+<p style="margin-left:22%;">Print <i>NUM</i> lines of
+trailing context after matching lines. Places a line
+containing a group separator (<b>--</b>) between contiguous
+groups of matches. With the <b>-o</b> or
+<b>--only-matching</b> option, this has no effect and a
+warning is given.</p>
+
+<p style="margin-left:11%;"><b>-B</b> <i>NUM</i>,
+<b>--before-context=</b><i>NUM</i></p>
+
+<p style="margin-left:22%;">Print <i>NUM</i> lines of
+leading context before matching lines. Places a line
+containing a group separator (<b>--</b>) between contiguous
+groups of matches. With the <b>-o</b> or
+<b>--only-matching</b> option, this has no effect and a
+warning is given.</p>
+
+<p style="margin-left:11%;"><b>-C</b> <i>NUM</i>,
+<b>-</b><i>NUM</i>, <b>--context=</b><i>NUM</i></p>
+
+<p style="margin-left:22%;">Print <i>NUM</i> lines of
+output context. Places a line containing a group separator
+(<b>--</b>) between contiguous groups of matches. With the
+<b>-o</b> or <b>--only-matching</b> option, this has no
+effect and a warning is given.</p>
+
+
+<p style="margin-left:11%;"><b>--group-separator=</b><i>SEP</i></p>
+
+<p style="margin-left:22%;">When <b>-A</b>, <b>-B</b>, or
+<b>-C</b> are in use, print <i>SEP</i> instead of <b>--</b>
+between groups of lines.</p>
+
+
+<p style="margin-left:11%;"><b>--no-group-separator</b></p>
+
+<p style="margin-left:22%;">When <b>-A</b>, <b>-B</b>, or
+<b>-C</b> are in use, do not print a separator between
+groups of lines.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>File and
+Directory Selection <br>
+-a</b>, <b>--text</b></p>
+
+<p style="margin-left:22%;">Process a binary file as if it
+were text; this is equivalent to the
+<b>--binary-files=text</b> option.</p>
+
+
+<p style="margin-left:11%;"><b>--binary-files=</b><i>TYPE</i></p>
+
+<p style="margin-left:22%;">If a file&rsquo;s data or
+metadata indicate that the file contains binary data, assume
+that the file is of type <i>TYPE</i>. Non-text bytes
+indicate binary data; these are either output bytes that are
+improperly encoded for the current locale, or null input
+bytes when the <b>-z</b> option is not given.</p>
+
+<p style="margin-left:22%; margin-top: 1em">By default,
+<i>TYPE</i> is <b>binary</b>, and <b>grep</b> suppresses
+output after null input binary data is discovered, and
+suppresses output lines that contain improperly encoded
+data. When some output is suppressed, <b>grep</b> follows
+any output with a message to standard error saying that a
+binary file matches.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If <i>TYPE</i>
+is <b>without-match</b>, when <b>grep</b> discovers null
+input binary data it assumes that the rest of the file does
+not match; this is equivalent to the <b>-I</b> option.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If <i>TYPE</i>
+is <b>text</b>, <b>grep</b> processes a binary file as if it
+were text; this is equivalent to the <b>-a</b> option.</p>
+
+<p style="margin-left:22%; margin-top: 1em">When
+<i>type</i> is <b>binary</b>, <b>grep</b> may treat non-text
+bytes as line terminators even without the <b>-z</b> option.
+This means choosing <b>binary</b> versus <b>text</b> can
+affect whether a pattern matches a file. For example, when
+<i>type</i> is <b>binary</b> the pattern <b>q$ might</b>
+match <b>q</b> immediately followed by a null byte, even
+though this is not matched when <i>type</i> is <b>text</b>.
+Conversely, when <i>type</i> is <b>binary</b> the pattern
+<b>.</b> (period) might not match a null byte.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><i>Warning:</i>
+The <b>-a</b> option might output binary garbage, which can
+have nasty side effects if the output is a terminal and if
+the terminal driver interprets some of it as commands. On
+the other hand, when reading files whose text encodings are
+unknown, it can be helpful to use <b>-a</b> or to set
+<b>LC_ALL=&rsquo;C&rsquo;</b> in the environment, in order
+to find more matches even if the matches are unsafe for
+direct display.</p>
+
+<p style="margin-left:11%;"><b>-D</b> <i>ACTION</i>,
+<b>--devices=</b><i>ACTION</i></p>
+
+<p style="margin-left:22%;">If an input file is a device,
+FIFO or socket, use <i>ACTION</i> to process it. By default,
+<i>ACTION</i> is <b>read</b>, which means that devices are
+read just as if they were ordinary files. If <i>ACTION</i>
+is <b>skip</b>, devices are silently skipped.</p>
+
+<p style="margin-left:11%;"><b>-d</b> <i>ACTION</i>,
+<b>--directories=</b><i>ACTION</i></p>
+
+<p style="margin-left:22%;">If an input file is a
+directory, use <i>ACTION</i> to process it. By default,
+<i>ACTION</i> is <b>read</b>, i.e., read directories just as
+if they were ordinary files. If <i>ACTION</i> is
+<b>skip</b>, silently skip directories. If <i>ACTION</i> is
+<b>recurse</b>, read all files under each directory,
+recursively, following symbolic links only if they are on
+the command line. This is equivalent to the <b>-r</b>
+option.</p>
+
+
+<p style="margin-left:11%;"><b>--exclude=</b><i>GLOB</i></p>
+
+<p style="margin-left:22%;">Skip any command-line file with
+a name suffix that matches the pattern <i>GLOB</i>, using
+wildcard matching; a name suffix is either the whole name,
+or a trailing part that starts with a non-slash character
+immediately after a slash (<b>/</b>) in the name. When
+searching recursively, skip any subfile whose base name
+matches <i>GLOB</i>; the base name is the part after the
+last slash. A pattern can use <b>*</b>, <b>?</b>, and
+<b>[</b>...<b>]</b> as wildcards, and <b>\</b> to quote a
+wildcard or backslash character literally.</p>
+
+
+<p style="margin-left:11%;"><b>--exclude-from=</b><i>FILE</i></p>
+
+<p style="margin-left:22%;">Skip files whose base name
+matches any of the file-name globs read from <i>FILE</i>
+(using wildcard matching as described under
+<b>--exclude</b>).</p>
+
+
+<p style="margin-left:11%;"><b>--exclude-dir=</b><i>GLOB</i></p>
+
+<p style="margin-left:22%;">Skip any command-line directory
+with a name suffix that matches the pattern <i>GLOB</i>.
+When searching recursively, skip any subdirectory whose base
+name matches <i>GLOB</i>. Ignore any redundant trailing
+slashes in <i>GLOB</i>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-I</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Process a binary file as if it did not contain matching
+data; this is equivalent to the
+<b>--binary-files=without-match</b> option.</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--include=</b><i>GLOB</i></p>
+
+<p style="margin-left:22%;">Search only files whose base
+name matches <i>GLOB</i> (using wildcard matching as
+described under <b>--exclude</b>). If contradictory
+<b>--include</b> and <b>--exclude</b> options are given, the
+last matching one wins. If no <b>--include</b> or
+<b>--exclude</b> options match, a file is included unless
+the first such option is <b>--include</b>.</p>
+
+<p style="margin-left:11%;"><b>-r</b>,
+<b>--recursive</b></p>
+
+<p style="margin-left:22%;">Read all files under each
+directory, recursively, following symbolic links only if
+they are on the command line. Note that if no file operand
+is given, <b>grep</b> searches the working directory. This
+is equivalent to the <b>-d recurse</b> option.</p>
+
+<p style="margin-left:11%;"><b>-R</b>,
+<b>--dereference-recursive</b></p>
+
+<p style="margin-left:22%;">Read all files under each
+directory, recursively. Follow all symbolic links, unlike
+<b>-r</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Other
+Options <br>
+--line-buffered</b></p>
+
+<p style="margin-left:22%;">Use line buffering on output.
+This can cause a performance penalty.</p>
+
+<p style="margin-left:11%;"><b>-U</b>, <b>--binary</b></p>
+
+<p style="margin-left:22%;">Treat the file(s) as binary. By
+default, under MS-DOS and MS-Windows, <b>grep</b> guesses
+whether a file is text or binary as described for the
+<b>--binary-files</b> option. If <b>grep</b> decides the
+file is a text file, it strips the CR characters from the
+original file contents (to make regular expressions with
+<b>^</b> and <b>$</b> work correctly). Specifying <b>-U</b>
+overrules this guesswork, causing all files to be read and
+passed to the matching mechanism verbatim; if the file is a
+text file with CR/LF pairs at the end of each line, this
+will cause some regular expressions to fail. This option has
+no effect on platforms other than MS-DOS and MS-Windows.</p>
+
+<p style="margin-left:11%;"><b>-z</b>,
+<b>--null-data</b></p>
+
+<p style="margin-left:22%;">Treat input and output data as
+sequences of lines, each terminated by a zero byte (the
+ASCII NUL character) instead of a newline. Like the
+<b>-Z</b> or <b>--null</b> option, this option can be used
+with commands like <b>sort -z</b> to process arbitrary file
+names.</p>
+
+<h2>REGULAR EXPRESSIONS
+<a name="REGULAR EXPRESSIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">A regular
+expression is a pattern that describes a set of strings.
+Regular expressions are constructed analogously to
+arithmetic expressions, by using various operators to
+combine smaller expressions.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>grep</b>
+understands three different versions of regular expression
+syntax: &ldquo;basic&rdquo; (BRE), &ldquo;extended&rdquo;
+(ERE) and &ldquo;perl&rdquo; (PCRE). In GNU <b>grep</b>
+there is no difference in available functionality between
+basic and extended syntax. In other implementations, basic
+regular expressions are less powerful. The following
+description applies to extended regular expressions;
+differences for basic regular expressions are summarized
+afterwards. Perl-compatible regular expressions give
+additional functionality, and are documented in
+<b>pcre2syntax</b>(3) and <b>pcre2pattern</b>(3), but work
+only if PCRE support is enabled.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The fundamental
+building blocks are the regular expressions that match a
+single character. Most characters, including all letters and
+digits, are regular expressions that match themselves. Any
+meta-character with special meaning may be quoted by
+preceding it with a backslash.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The period
+<b>.</b> matches any single character. It is unspecified
+whether it matches an encoding error.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Character
+Classes and Bracket Expressions</b> <br>
+A <i>bracket expression</i> is a list of characters enclosed
+by <b>[</b> and <b>]</b>. It matches any single character in
+that list. If the first character of the list is the caret
+<b>^</b> then it matches any character <i>not</i> in the
+list; it is unspecified whether it matches an encoding
+error. For example, the regular expression
+<b>[0123456789]</b> matches any single digit.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Within a
+bracket expression, a <i>range expression</i> consists of
+two characters separated by a hyphen. It matches any single
+character that sorts between the two characters, inclusive,
+using the locale&rsquo;s collating sequence and character
+set. For example, in the default C locale, <b>[a-d]</b> is
+equivalent to <b>[abcd]</b>. Many locales sort characters in
+dictionary order, and in these locales <b>[a-d]</b> is
+typically not equivalent to <b>[abcd]</b>; it might be
+equivalent to <b>[aBbCcDd]</b>, for example. To obtain the
+traditional interpretation of bracket expressions, you can
+use the C locale by setting the <b>LC_ALL</b> environment
+variable to the value <b>C</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Finally,
+certain named classes of characters are predefined within
+bracket expressions, as follows. Their names are self
+explanatory, and they are <b>[:alnum:]</b>,
+<b>[:alpha:]</b>, <b>[:blank:]</b>, <b>[:cntrl:]</b>,
+<b>[:digit:]</b>, <b>[:graph:]</b>, <b>[:lower:]</b>,
+<b>[:print:]</b>, <b>[:punct:]</b>, <b>[:space:]</b>,
+<b>[:upper:]</b>, and <b>[:xdigit:]</b>. For example,
+<b>[[:alnum:]]</b> means the character class of numbers and
+letters in the current locale. In the C locale and ASCII
+character set encoding, this is the same as
+<b>[0-9A-Za-z]</b>. (Note that the brackets in these class
+names are part of the symbolic names, and must be included
+in addition to the brackets delimiting the bracket
+expression.) Most meta-characters lose their special meaning
+inside bracket expressions. To include a literal <b>]</b>
+place it first in the list. Similarly, to include a literal
+<b>^</b> place it anywhere but first. Finally, to include a
+literal <b>-</b> place it last.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Anchoring</b>
+<br>
+The caret <b>^</b> and the dollar sign <b>$</b> are
+meta-characters that respectively match the empty string at
+the beginning and end of a line.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>The
+Backslash Character and Special Expressions</b> <br>
+The symbols <b>\&lt;</b> and <b>\&gt;</b> respectively match
+the empty string at the beginning and end of a word. The
+symbol <b>\b</b> matches the empty string at the edge of a
+word, and <b>\B</b> matches the empty string provided
+it&rsquo;s <i>not</i> at the edge of a word. The symbol
+<b>\w</b> is a synonym for <b>[_[:alnum:]]</b> and <b>\W</b>
+is a synonym for <b>[^_[:alnum:]]</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Repetition</b>
+<br>
+A regular expression may be followed by one of several
+repetition operators:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>?</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>The preceding item is optional and matched at most
+once.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>*</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>The preceding item will be matched zero or more
+times.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>+</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>The preceding item will be matched one or more
+times.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>{</b><i>n</i><b>}</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>The preceding item is matched exactly <i>n</i>
+times.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>{</b><i>n</i><b>,}</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>The preceding item is matched <i>n</i> or more
+times.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>{,</b><i>m</i><b>}</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>The preceding item is matched at most <i>m</i> times.
+This is a GNU extension.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>{</b><i>n</i><b>,</b><i>m</i><b>}</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>The preceding item is matched at least <i>n</i> times,
+but not more than <i>m</i> times.</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Concatenation</b>
+<br>
+Two regular expressions may be concatenated; the resulting
+regular expression matches any string formed by
+concatenating two substrings that respectively match the
+concatenated expressions.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Alternation</b>
+<br>
+Two regular expressions may be joined by the infix operator
+<b>|</b>; the resulting regular expression matches any
+string matching either alternate expression.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Precedence</b>
+<br>
+Repetition takes precedence over concatenation, which in
+turn takes precedence over alternation. A whole expression
+may be enclosed in parentheses to override these precedence
+rules and form a subexpression.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Back-references
+and Subexpressions</b> <br>
+The back-reference <b>\</b><i>n</i>, where <i>n</i> is a
+single digit, matches the substring previously matched by
+the <i>n</i>th parenthesized subexpression of the regular
+expression.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Basic vs
+Extended Regular Expressions</b> <br>
+In basic regular expressions the meta-characters <b>?</b>,
+<b>+</b>, <b>{</b>, <b>|</b>, <b>(</b>, and <b>)</b> lose
+their special meaning; instead use the backslashed versions
+<b>\?</b>, <b>\+</b>, <b>\{</b>, <b>\|</b>, <b>\(</b>, and
+<b>\)</b>.</p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Normally the
+exit status is 0 if a line is selected, 1 if no lines were
+selected, and 2 if an error occurred. However, if the
+<b>-q</b> or <b>--quiet</b> or <b>--silent</b> is used and a
+line is selected, the exit status is 0 even if an error
+occurred.</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The behavior of
+<b>grep</b> is affected by the following environment
+variables.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The locale for
+category <b>LC_</b><i>foo</i> is specified by examining the
+three environment variables <b>LC_ALL</b>,
+<b>LC_</b><i>foo</i>, <b>LANG</b>, in that order. The first
+of these variables that is set specifies the locale. For
+example, if <b>LC_ALL</b> is not set, but <b>LC_MESSAGES</b>
+is set to <b>pt_BR</b>, then the Brazilian Portuguese locale
+is used for the <b>LC_MESSAGES</b> category. The C locale is
+used if none of these environment variables are set, if the
+locale catalog is not installed, or if <b>grep</b> was not
+compiled with national language support (NLS). The shell
+command <b>locale -a</b> lists locales that are currently
+available. <b><br>
+GREP_COLORS</b></p>
+
+<p style="margin-left:22%;">Controls how the <b>--color</b>
+option highlights output. Its value is a colon-separated
+list of capabilities that defaults to
+<b>ms=01;31:mc=01;31:sl=:cx=:fn=35:ln=32:bn=32:se=36</b>
+with the <b>rv</b> and <b>ne</b> boolean capabilities
+omitted (i.e., false). Supported capabilities are as
+follows.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="4%">
+
+
+<p><b>sl=</b></p></td>
+<td width="6%"></td>
+<td width="68%">
+
+
+<p>SGR substring for whole selected lines (i.e., matching
+lines when the <b>-v</b> command-line option is omitted, or
+non-matching lines when <b>-v</b> is specified). If however
+the boolean <b>rv</b> capability and the <b>-v</b>
+command-line option are both specified, it applies to
+context matching lines instead. The default is empty (i.e.,
+the terminal&rsquo;s default color pair).</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="4%">
+
+
+<p><b>cx=</b></p></td>
+<td width="6%"></td>
+<td width="68%">
+
+
+<p>SGR substring for whole context lines (i.e.,
+non-matching lines when the <b>-v</b> command-line option is
+omitted, or matching lines when <b>-v</b> is specified). If
+however the boolean <b>rv</b> capability and the <b>-v</b>
+command-line option are both specified, it applies to
+selected non-matching lines instead. The default is empty
+(i.e., the terminal&rsquo;s default color pair).</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="4%">
+
+
+<p><b>rv</b></p></td>
+<td width="6%"></td>
+<td width="68%">
+
+
+<p>Boolean value that reverses (swaps) the meanings of the
+<b>sl=</b> and <b>cx=</b> capabilities when the <b>-v</b>
+command-line option is specified. The default is false
+(i.e., the capability is omitted).</p></td></tr>
+</table>
+
+<p style="margin-left:22%;"><b>mt=01;31</b></p>
+
+<p style="margin-left:32%;">SGR substring for matching
+non-empty text in any matching line (i.e., a selected line
+when the <b>-v</b> command-line option is omitted, or a
+context line when <b>-v</b> is specified). Setting this is
+equivalent to setting both <b>ms=</b> and <b>mc=</b> at once
+to the same value. The default is a bold red text foreground
+over the current line background.</p>
+
+<p style="margin-left:22%;"><b>ms=01;31</b></p>
+
+<p style="margin-left:32%;">SGR substring for matching
+non-empty text in a selected line. (This is only used when
+the <b>-v</b> command-line option is omitted.) The effect of
+the <b>sl=</b> (or <b>cx=</b> if <b>rv</b>) capability
+remains active when this kicks in. The default is a bold red
+text foreground over the current line background.</p>
+
+<p style="margin-left:22%;"><b>mc=01;31</b></p>
+
+<p style="margin-left:32%;">SGR substring for matching
+non-empty text in a context line. (This is only used when
+the <b>-v</b> command-line option is specified.) The effect
+of the <b>cx=</b> (or <b>sl=</b> if <b>rv</b>) capability
+remains active when this kicks in. The default is a bold red
+text foreground over the current line background.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>fn=35</b></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>SGR substring for file names prefixing any content line.
+The default is a magenta text foreground over the
+terminal&rsquo;s default background.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>ln=32</b></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>SGR substring for line numbers prefixing any content
+line. The default is a green text foreground over the
+terminal&rsquo;s default background.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>bn=32</b></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>SGR substring for byte offsets prefixing any content
+line. The default is a green text foreground over the
+terminal&rsquo;s default background.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>se=36</b></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>SGR substring for separators that are inserted between
+selected line fields (<b>:</b>), between context line
+fields, (<b>-</b>), and between groups of adjacent lines
+when nonzero context is specified (<b>--</b>). The default
+is a cyan text foreground over the terminal&rsquo;s default
+background.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>ne</b></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>Boolean value that prevents clearing to the end of line
+using Erase in Line (EL) to Right (<b>\33[K</b>) each time a
+colorized item ends. This is needed on terminals on which EL
+is not supported. It is otherwise useful on terminals for
+which the <b>back_color_erase</b> (<b>bce</b>) boolean
+terminfo capability does not apply, when the chosen
+highlight colors do not affect the background, or when EL is
+too slow or causes too much flicker. The default is false
+(i.e., the capability is omitted).</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">Note that
+boolean capabilities have no <b>=</b>... part. They are
+omitted (i.e., false) by default and become true when
+specified.</p>
+
+<p style="margin-left:22%; margin-top: 1em">See the Select
+Graphic Rendition (SGR) section in the documentation of the
+text terminal that is used for permitted values and their
+meaning as character attributes. These substring values are
+integers in decimal representation and can be concatenated
+with semicolons. <b>grep</b> takes care of assembling the
+result into a complete SGR sequence
+(<b>\33[</b>...<b>m</b>). Common values to concatenate
+include <b>1</b> for bold, <b>4</b> for underline, <b>5</b>
+for blink, <b>7</b> for inverse, <b>39</b> for default
+foreground color, <b>30</b> to <b>37</b> for foreground
+colors, <b>90</b> to <b>97</b> for 16-color mode foreground
+colors, <b>38;5;0</b> to <b>38;5;255</b> for 88-color and
+256-color modes foreground colors, <b>49</b> for default
+background color, <b>40</b> to <b>47</b> for background
+colors, <b>100</b> to <b>107</b> for 16-color mode
+background colors, and <b>48;5;0</b> to <b>48;5;255</b> for
+88-color and 256-color modes background colors.</p>
+
+<p style="margin-left:11%;"><b>LC_ALL</b>,
+<b>LC_COLLATE</b>, <b>LANG</b></p>
+
+<p style="margin-left:22%;">These variables specify the
+locale for the <b>LC_COLLATE</b> category, which determines
+the collating sequence used to interpret range expressions
+like <b>[a-z]</b>.</p>
+
+<p style="margin-left:11%;"><b>LC_ALL</b>, <b>LC_CTYPE</b>,
+<b>LANG</b></p>
+
+<p style="margin-left:22%;">These variables specify the
+locale for the <b>LC_CTYPE</b> category, which determines
+the type of characters, e.g., which characters are
+whitespace. This category also determines the character
+encoding, that is, whether text is encoded in UTF-8, ASCII,
+or some other encoding. In the C or POSIX locale, all
+characters are encoded as a single byte and every byte is a
+valid character.</p>
+
+<p style="margin-left:11%;"><b>LC_ALL</b>,
+<b>LC_MESSAGES</b>, <b>LANG</b></p>
+
+<p style="margin-left:22%;">These variables specify the
+locale for the <b>LC_MESSAGES</b> category, which determines
+the language that <b>grep</b> uses for messages. The default
+C locale uses American English messages.</p>
+
+<p style="margin-left:11%;"><b>POSIXLY_CORRECT</b></p>
+
+<p style="margin-left:22%;">If set, <b>grep</b> behaves as
+POSIX requires; otherwise, <b>grep</b> behaves more like
+other GNU programs. POSIX requires that options that follow
+file names must be treated as file names; by default, such
+options are permuted to the front of the operand list and
+are treated as options. Also, POSIX requires that
+unrecognized options be diagnosed as &ldquo;illegal&rdquo;,
+but since they are not really against the law the default is
+to diagnose them as &ldquo;invalid&rdquo;.
+<b>POSIXLY_CORRECT</b> also disables
+<b>_</b><i>N</i><b>_GNU_nonoption_argv_flags_</b>, described
+below.</p>
+
+
+<p style="margin-left:11%;"><b>_</b><i>N</i><b>_GNU_nonoption_argv_flags_</b></p>
+
+<p style="margin-left:22%;">(Here <i>N</i> is
+<b>grep</b>&rsquo;s numeric process ID.) If the <i>i</i>th
+character of this environment variable&rsquo;s value is
+<b>1</b>, do not consider the <i>i</i>th operand of
+<b>grep</b> to be an option, even if it appears to be one. A
+shell can put this variable in the environment for each
+command it runs, specifying which operands are the results
+of file name wildcard expansion and therefore should not be
+treated as options. This behavior is available only with the
+GNU C library, and only when <b>POSIXLY_CORRECT</b> is not
+set.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This man page
+is maintained only fitfully; the full documentation is often
+more up-to-date.</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+1998-2000, 2002, 2005-2022 Free Software Foundation,
+Inc.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This is free
+software; see the source for copying conditions. There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Reporting
+Bugs</b> <br>
+Email bug reports to <a href="mailto:bug-grep@gnu.org">the
+bug-reporting address</a>. An
+<a href="https://lists.gnu.org/mailman/listinfo/bug-grep">email
+archive</a> and a
+<a href="https://debbugs.gnu.org/cgi/pkgreport.cgi?package=grep">bug
+tracker</a> are available.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Known
+Bugs</b> <br>
+Large repetition counts in the
+<b>{</b><i>n</i><b>,</b><i>m</i><b>}</b> construct may cause
+<b>grep</b> to use lots of memory. In addition, certain
+other obscure regular expressions require exponential time
+and space, and may cause <b>grep</b> to run out of
+memory.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">Back-references
+are very slow, and may require exponential time.</p>
+
+<h2>EXAMPLE
+<a name="EXAMPLE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+example outputs the location and contents of any line
+containing &ldquo;f&rdquo; and ending in &ldquo;.c&rdquo;,
+within all files in the current directory whose names
+contain &ldquo;g&rdquo; and end in &ldquo;.h&rdquo;. The
+<b>-n</b> option outputs line numbers, the <b>--</b>
+argument treats expansions of &ldquo;*g*.h&rdquo; starting
+with &ldquo;-&rdquo; as file names not options, and the
+empty file /dev/null causes file names to be output even if
+only one file name happens to be of the form
+&ldquo;*g*.h&rdquo;.</p>
+
+<p style="margin-left:14%; margin-top: 1em">$ <b>grep</b>
+-n -- &rsquo;f.*\.c$&rsquo; *g*.h /dev/null <br>
+argmatch.h:1:/* definitions and prototypes for
+argmatch.c</p>
+
+<p style="margin-left:11%; margin-top: 1em">The only line
+that matches is line 1 of argmatch.h. Note that the regular
+expression syntax used in the pattern differs from the
+globbing syntax that the shell uses to match file names.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Regular
+Manual Pages <br>
+awk</b>(1), <b>cmp</b>(1), <b>diff</b>(1), <b>find</b>(1),
+<b>perl</b>(1), <b>sed</b>(1), <b>sort</b>(1),
+<b>xargs</b>(1), <b>read</b>(2), <b>pcre2</b>(3),
+<b>pcre2syntax</b>(3), <b>pcre2pattern</b>(3),
+<b>terminfo</b>(5), <b>glob</b>(7), <b>regex</b>(7)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Full
+Documentation</b> <br>
+A
+<a href="https://www.gnu.org/software/grep/manual/">complete
+manual</a> is available. If the <b>info</b> and <b>grep</b>
+programs are properly installed at your site, the
+command</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>info
+grep</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">should give you
+access to the complete manual.</p>
+<hr>
+</body>
+</html>

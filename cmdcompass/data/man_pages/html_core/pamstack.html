@@ -1,0 +1,174 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:27 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamstack User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamstack User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamstack -
+stack planes of multiple PAM images into one PAM image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamstack</b>
+[<b>-tupletype</b> <i>tupletype</i>] [<i>inputfilespec</i>
+...]</p>
+
+<p style="margin-left:11%; margin-top: 1em">All options may
+be abbreviated to the shortest unique prefix. You may use
+two hyphens instead of one. You may separate an option from
+its value with a space instead of <b>=</b>.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamstack</b>
+reads multiple PAM or PNM images as input and produces a PAM
+image as output, consisting of all the planes (channels) of
+the inputs, stacked in the order specified.</p>
+
+<p style="margin-left:11%; margin-top: 1em">It can also
+just change the tuple type of a single PAM image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For any one
+(but not more) of the input files, you may specify
+&quot;-&quot; to mean Standard Input. If you specify no
+arguments at all, the input is one file: Standard Input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The output is
+the same dimensions as the inputs, except that the depth is
+the sum of the depths of the inputs. It has the same maxval.
+<b>pamstack</b> fails if the inputs are not all the same
+width, height, and maxval. The tuple type is a null string
+unless you specify the <b>-tupletype</b> option.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamstack</b>
+works with multi-image streams. It stacks the 1st image in
+all the streams into one output image (the first one in the
+output stream), then stacks the 2nd image in all the streams
+into the 2nd image in the output stream, and so on, until
+one of the streams runs dry. It&rsquo;s like a matrix
+operation.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Before Netpbm
+10.32 (February 2006), <b>pamstack</b> ignored all but the
+first image in each input stream.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamchannel</b>
+does the opposite of <b>pamstack</b>: It extracts individual
+planes from a single PAM.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Use
+<b>pamtopnm</b>(1) to convert a suitable PAM image to a more
+traditional PNM (PBM, PGM, or PPM) image. (But there&rsquo;s
+no need to do that if you&rsquo;re going to feed it to a
+modern Netpbm program -- they all take suitable PAM input
+directly).</p>
+
+<p style="margin-left:11%; margin-top: 1em">One example of
+using <b>pamstack</b> is that some Netpbm programs accept as
+input a PAM that represents graphic image with transparency
+information. Taking a color image for example, this would be
+a PAM with tuple type &quot;RGB_ALPHA&quot;. In Netpbm, such
+images were traditionally represented as two images - a PPM
+for the color and a PGM for the transparency. To convert a
+PPM/PGM pair into PAM(RGB_ALPHA) input that newer programs
+require, do something like this:</p>
+
+<p style="margin-left:11%; margin-top: 1em">$ pamstack
+-tupletype=RGB_ALPHA myimage.ppm myalpha.pgm | \ <br>
+pamtouil &gt;myimage.uil</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamstack</b> recognizes the following command line
+option: <b><br>
+-tupletype</b> <i>tupletype</i></p>
+
+<p style="margin-left:22%;">This specifies the tuple type
+name to be recorded in the output. You may use any string up
+to 255 characters. Some programs recognize some names. If
+you omit this option, the default tuple type name is
+null.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pam</b>(1)
+<b>pamchannel</b>(1)</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamstack</b>
+was new in Netpbm 10.0 (June 2002).</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamstack.html</b></p>
+<hr>
+</body>
+</html>

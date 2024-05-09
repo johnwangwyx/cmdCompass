@@ -1,0 +1,168 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:40 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>RUN-MAILCAP</title>
+
+</head>
+<body>
+
+<h1 align="center">RUN-MAILCAP</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#SECURITY">SECURITY</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">run-mailcap,
+view, see, edit, compose, print - execute programs via
+entries in the <i>mailcap</i> file</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>run-mailcap</b>
+--action=ACTION [--option[=value]]
+[MIME-TYPE:[ENCODING:]]FILE [...]</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <b>see</b>,
+<b>edit</b>, <b>compose</b> and <b>print</b> versions are
+just aliases that default to the view, edit, compose, and
+print actions (respectively).</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>run-mailcap</b>
+(or any of its aliases) will use the given action to process
+each mime-type/file in turn. Each file is specified as its
+mime-type, its encoding (e.g. compression), and filename
+together, separated by colons. If the mime-type is omitted,
+an attempt to determine the type is made by trying to match
+the file&rsquo;s extension with those in the
+<i>mime.types</i> files. If no mime-type is found, a last
+attempt will be done by running the <b>file</b> command, if
+available. If the encoding is omitted, it will also be
+determined from the file&rsquo;s extensions. Currently
+supported encodings are <b>gzip</b> (.gz), <b>bzip2</b>
+(.bz2), <b>xz</b> (.xz), and <b>compress</b> (.Z). A
+filename of &quot;-&quot; can be used to mean &quot;standard
+input&quot;, but then a mime-type <b>must</b> be
+specified.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Both the
+user&rsquo;s files (~/.mailcap; ~/.mime.types) and the
+system files (/etc/mailcap; /etc/mime.types) are searched in
+turn for information.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>EXAMPLES</b>
+<br>
+see picture.jpg <br>
+print output.ps.gz <br>
+compose text/html:index.htm <br>
+extract-mail-attachment msg.txt | see image/tiff:gzip:-</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>OPTIONS</b>
+<br>
+All options are in the form --&lt;opt&gt;=&lt;value&gt;.
+<b><br>
+--action=&lt;action&gt;</b></p>
+
+<p style="margin-left:22%;">Performs the specified action
+on the files. Valid actions are <i>view</i>, <i>cat</i>
+(uses only &quot;copiousoutput&quot; rules and sends output
+to STDOUT) , <i>compose</i>, <i>composetyped</i>,
+<i>edit</i> and <i>print</i>. If no action is specified, the
+action will be determined by how the program was called.</p>
+
+<p style="margin-left:11%;"><b>--debug</b></p>
+
+<p style="margin-left:22%;">Turns on extra information to
+find out what is happening.</p>
+
+<p style="margin-left:11%;"><b>--nopager</b></p>
+
+<p style="margin-left:22%;">Ignores any
+&quot;copiousoutput&quot; directive and sends output to
+STDOUT.</p>
+
+<p style="margin-left:11%;"><b>--norun</b></p>
+
+<p style="margin-left:22%;">Displays the found command
+without actually executing it.</p>
+
+<h2>SECURITY
+<a name="SECURITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">A temporary
+symbolic link to the file is opened if the file name matches
+the Perl regular expression
+&quot;[^[:alnum:],.:/@%^+=_-]&quot;, in order to protect
+from the injection of shell commands, and to make sure that
+the name can always be displayed in the current locale. In
+addition, the file is opened using its absolute path to
+prevent the injection of command-line arguments, for
+instance using file names starting with dashes.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>file</b>(1)
+<b>mailcap</b>(5) <b>mailcap.order</b>(5)
+<b>update-mime</b>(8)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>run-mailcap</b>
+(and its aliases) was written by Brian White
+&lt;bcwhite@pobox.com&gt;.</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>run-mailcap</b>
+(and its aliases) is in the public domain (the only true
+&quot;free&quot;).</p>
+<hr>
+</body>
+</html>

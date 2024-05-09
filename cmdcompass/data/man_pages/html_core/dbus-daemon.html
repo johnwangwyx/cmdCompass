@@ -1,0 +1,1958 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:33:59 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>DBUS-DAEMON</title>
+
+</head>
+<body>
+
+<h1 align="center">DBUS-DAEMON</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#CONFIGURATION FILE">CONFIGURATION FILE</a><br>
+<a href="#INTEGRATING SESSION SERVICES">INTEGRATING SESSION SERVICES</a><br>
+<a href="#INTEGRATING SYSTEM SERVICES">INTEGRATING SYSTEM SERVICES</a><br>
+<a href="#SELINUX">SELINUX</a><br>
+<a href="#APPARMOR">APPARMOR</a><br>
+<a href="#DEBUGGING">DEBUGGING</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#NOTES">NOTES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">dbus-daemon -
+Message bus daemon</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em"><b>dbus-daemon</b></p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em"><b>dbus-daemon</b> [--version]
+[--session] [--system] [--config-file=<i>FILE</i>]
+[--print-address&nbsp;[<i>=DESCRIPTOR</i>]]
+[--print-pid&nbsp;[<i>=DESCRIPTOR</i>]] [--fork]
+[--nosyslog] [--syslog] [--syslog-only]
+[--ready-event-handle=value]</p> </td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dbus-daemon</b>
+is the D-Bus message bus daemon. See
+<b><font color="#0000FF">http://www.freedesktop.org/software/dbus/</font></b>
+<font color="#000000">for more information about the big
+picture. D-Bus is first a library that provides one-to-one
+communication between any two applications;
+<b>dbus-daemon</b> is an application that uses this library
+to implement a message bus daemon. Multiple programs connect
+to the message bus daemon and can exchange messages with one
+another.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">There
+are two standard message bus instances: the systemwide
+message bus (installed on many systems as the
+&quot;messagebus&quot; init service) and the
+per-user-login-session message bus (started each time a user
+logs in). <b>dbus-daemon</b> is used for both of these
+instances, but with a different configuration
+file.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+--session option is equivalent to
+&quot;--config-file=/usr/share/dbus-1/session.conf&quot; and
+the --system option is equivalent to
+&quot;--config-file=/usr/share/dbus-1/system.conf&quot;. By
+creating additional configuration files and using the
+--config-file option, additional special-purpose message bus
+daemons could be created.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+systemwide daemon is normally launched by an init script,
+standardly called simply &quot;messagebus&quot;.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+systemwide daemon is largely used for broadcasting system
+events, such as changes to the printer queue, or
+adding/removing devices.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+per-session daemon is used for various interprocess
+communication among desktop applications (however, it is not
+tied to X or the GUI in any way).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">SIGHUP
+will cause the D-Bus daemon to PARTIALLY reload its
+configuration file and to flush its user/group information
+caches. Some configuration changes would require kicking all
+apps off the bus; so they will only take effect if you
+restart the daemon. Policy changes should take effect with
+SIGHUP.</font></p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+following options are supported:</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--config-file=FILE</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Use the
+given configuration file.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--fork</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Force the
+message bus to fork and become a daemon, even if the
+configuration file does not specify that it should. In most
+contexts the configuration file already gets this right,
+though. This option is not supported on Windows.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--nofork</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Force the
+message bus not to fork and become a daemon, even if the
+configuration file specifies that it should. On Windows, the
+dbus-daemon never forks, so this option is allowed but does
+nothing.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--print-address[=DESCRIPTOR]</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Print the
+address of the message bus to standard output, or to the
+given file descriptor. This is used by programs that launch
+the message bus.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--print-pid[=DESCRIPTOR]</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Print the
+process ID of the message bus to standard output, or to the
+given file descriptor. This is used by programs that launch
+the message bus.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--session</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Use the
+standard configuration file for the per-login-session
+message bus.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--system</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Use the
+standard configuration file for the systemwide message
+bus.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--version</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Print the
+version of the daemon.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--introspect</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Print the
+introspection information for all D-Bus internal
+interfaces.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--address[=ADDRESS]</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Set the
+address to listen on. This option overrides the address
+configured in the configuration file via the &lt;listen&gt;
+directive. See the documentation of that directive for more
+details.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--systemd-activation</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Enable
+systemd-style service activation. Only useful in conjunction
+with the systemd system and session manager on
+Linux.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--nopidfile</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Don't
+write a PID file even if one is configured in the
+configuration files.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--syslog</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Force the
+message bus to use the system log for messages, in addition
+to writing to standard error, even if the configuration file
+does not specify that it should. On Unix, this uses the
+syslog; on Windows, this uses
+OutputDebugString().</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--syslog-only</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Force the
+message bus to use the system log for messages, and
+<i>not</i> duplicate them to standard error. On Unix, this
+uses the syslog; on Windows, this uses
+OutputDebugString().</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--nosyslog</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Force the
+message bus to use only standard error for messages, even if
+the configuration file specifies that it should use the
+system log.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--ready-event-handle=value</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">With this
+option, the dbus daemon raises an event when it is ready to
+process connections. The <i>handle</i> must be the Windows
+handle for an event object, in the format printed by the
+<b>printf</b> format string %p. The parent process must
+create this event object (for example with the
+<b>CreateEvent</b> function) in a nonsignaled state, then
+configure it to be inherited by the dbus-daemon process. The
+dbus-daemon will signal the event as if via <b>SetEvent</b>
+when it is ready to receive connections from clients. The
+parent process can wait for this to occur by using functions
+such as <b>WaitForSingleObject</b>. This option is only
+supported under Windows. On Unix platforms, a similar result
+can be achieved by waiting for the address and/or process ID
+to be printed to the inherited file descriptors used for
+<b>--print-address</b> and/or <b>--print-pid</b>.</font></p>
+
+<h2>CONFIGURATION FILE
+<a name="CONFIGURATION FILE"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">A
+message bus daemon has a configuration file that specializes
+it for a particular application. For example, one
+configuration file might set up the message bus to be a
+systemwide message bus, while another might set it up to be
+a per-user-login-session bus.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+configuration file also establishes resource limits,
+security parameters, and so forth.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+configuration file is not part of any interoperability
+specification and its backward compatibility is not
+guaranteed; this document is documentation, not
+specification.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+standard systemwide and per-session message bus setups are
+configured in the files
+&quot;/usr/share/dbus-1/system.conf&quot; and
+&quot;/usr/share/dbus-1/session.conf&quot;. These files
+normally &lt;include&gt; a system-local.conf or
+session-local.conf in /etc/dbus-1; you can put local
+overrides in those files to avoid modifying the primary
+configuration files.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+standard system bus normally reads additional XML files from
+/usr/share/dbus-1/system.d. Third-party packages should
+install the default policies necessary for correct operation
+into that directory, which has been supported since dbus
+1.10 (released in 2015).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+standard system bus normally also reads XML files from
+/etc/dbus-1/system.d, which should be used by system
+administrators if they wish to override default
+policies.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Third-party
+packages would historically install XML files into
+/etc/dbus-1/system.d, but this practice is now considered to
+be deprecated: that directory should be treated as reserved
+for the system administrator.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+configuration file is an XML document. It must have the
+following doctype declaration:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&lt;!DOCTYPE
+busconfig PUBLIC &quot;-//freedesktop//DTD D-Bus Bus
+Configuration 1.0//EN&quot; <br>
+
+&quot;</font><b><font color="#0000FF">http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd</font></b><font color="#000000">&quot;&gt;</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+following elements may be present in the configuration
+file.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+<i>&lt;busconfig&gt;</i></font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Root
+element.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+<i>&lt;type&gt;</i></font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+well-known type of the message bus. Currently known values
+are &quot;system&quot; and &quot;session&quot;; if other
+values are set, they should be either added to the D-Bus
+specification, or namespaced. The last &lt;type&gt; element
+&quot;wins&quot; (previous values are ignored). This element
+only controls which message bus specific environment
+variables are set in activated clients. Most of the policy
+that distinguishes a session bus from the system bus is
+controlled from the other elements in the configuration
+file.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">If
+the well-known type of the message bus is
+&quot;session&quot;, then the DBUS_STARTER_BUS_TYPE
+environment variable will be set to &quot;session&quot; and
+the DBUS_SESSION_BUS_ADDRESS environment variable will be
+set to the address of the session bus. Likewise, if the type
+of the message bus is &quot;system&quot;, then the
+DBUS_STARTER_BUS_TYPE environment variable will be set to
+&quot;system&quot; and the DBUS_SYSTEM_BUS_ADDRESS
+environment variable will be set to the address of the
+system bus (which is normally well known anyway).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Example:
+&lt;type&gt;session&lt;/type&gt;</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+<i>&lt;include&gt;</i></font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Include
+a file &lt;include&gt;filename.conf&lt;/include&gt; at this
+point. If the filename is relative, it is located relative
+to the configuration file doing the including.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">&lt;include&gt;
+has an optional attribute
+&quot;ignore_missing=(yes|no)&quot; which defaults to
+&quot;no&quot; if not provided. This attribute controls
+whether it's a fatal error for the included file to be
+absent.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+<i>&lt;includedir&gt;</i></font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Include
+all files in &lt;includedir&gt;foo.d&lt;/includedir&gt; at
+this point. Files in the directory are included in undefined
+order. Only files ending in &quot;.conf&quot; are
+included.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">This
+is intended to allow extension of the system bus by
+particular packages. For example, if CUPS wants to be able
+to send out notification of printer queue changes, it could
+install a file to /usr/share/dbus-1/system.d that allowed
+all apps to receive this message and allowed the printer
+daemon user to send it.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+<i>&lt;user&gt;</i></font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+user account the daemon should run as, as either a username
+or a UID. If the daemon cannot change to this UID on
+startup, it will exit. If this element is not present, the
+daemon will not change or care about its UID.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+last &lt;user&gt; entry in the file &quot;wins&quot;, the
+others are ignored.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+user is changed after the bus has completed initialization.
+So sockets etc. will be created before changing user, but no
+data will be read from clients before changing user. This
+means that sockets and PID files can be created in a
+location that requires root privileges for
+writing.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+<i>&lt;fork&gt;</i></font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">If
+present, the bus daemon becomes a real daemon (forks into
+the background, etc.). This is generally used rather than
+the --fork command line option.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+<i>&lt;keep_umask&gt;</i></font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">If
+present, the bus daemon keeps its original umask when
+forking. This may be useful to avoid affecting the behavior
+of child processes.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+<i>&lt;syslog&gt;</i></font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">If
+present, the bus daemon will log to syslog. The --syslog,
+--syslog-only and --nosyslog command-line options take
+precedence over this setting.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+<i>&lt;pidfile&gt;</i></font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">If
+present, the bus daemon will write its pid to the specified
+file. The --nopidfile command-line option takes precedence
+over this setting.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+<i>&lt;allow_anonymous&gt;</i></font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">If
+present, connections that authenticated using the ANONYMOUS
+mechanism will be authorized to connect. This option has no
+practical effect unless the ANONYMOUS mechanism has also
+been enabled using the <i>&lt;auth&gt;</i> element,
+described below.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Using
+this directive in the configuration of the well-known system
+bus or the well-known session bus will make that bus
+insecure and should never be done. Similarly, on custom bus
+types, using this directive will usually make the custom bus
+insecure, unless its configuration has been specifically
+designed to prevent anonymous users from causing damage or
+escalating privileges.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+<i>&lt;listen&gt;</i></font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Add
+an address that the bus should listen on. The address is in
+the standard D-Bus format that contains a transport name
+plus possible parameters/options.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">On
+platforms other than Windows, unix-based transports (unix,
+systemd, launchd) are the default for both the well-known
+system bus and the well-known session bus, and are strongly
+recommended.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">On
+Windows, unix-based transports are not available, so
+TCP-based transports must be used. Similar to remote X11,
+the tcp and nonce-tcp transports have no integrity or
+confidentiality protection, so they should normally only be
+used across the local loopback interface, for example using
+an address like tcp:host=127.0.0.1 or
+nonce-tcp:host=localhost. In particular, configuring the
+well-known system bus or the well-known session bus to
+listen on a non-loopback TCP address is insecure.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Developers
+are sometimes tempted to use remote TCP as a debugging tool.
+However, if this functionality is left enabled in finished
+products, the result will be dangerously insecure. Instead
+of using remote TCP, developers should</font>
+<b><font color="#0000FF">relay connections via Secure Shell
+or a similar protocol</font></b>
+<small><font color="#000000">[1]</font></small>
+<font color="#000000">.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Remote
+TCP connections were historically sometimes used to share a
+single session bus between login sessions of the same user
+on different machines within a trusted local area network,
+in conjunction with unencrypted remote X11, a NFS-shared
+home directory and NIS (YP) authentication. This is insecure
+against an attacker on the same LAN and should be considered
+strongly deprecated; more specifically, it is insecure in
+the same ways and for the same reasons as unencrypted remote
+X11 and NFSv2/NFSv3. The D-Bus maintainers recommend using a
+separate session bus per (user, machine) pair, only
+accessible from within that machine.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Example:
+&lt;listen&gt;unix:path=/tmp/foo&lt;/listen&gt;</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Example:
+&lt;listen&gt;tcp:host=localhost,port=1234&lt;/listen&gt;</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">If
+there are multiple &lt;listen&gt; elements, then the bus
+listens on multiple addresses. The bus will pass its address
+to started services or other interested parties with the
+last address given in &lt;listen&gt; first. That is, apps
+will try to connect to the last &lt;listen&gt; address
+first.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">tcp
+sockets can accept IPv4 addresses, IPv6 addresses or
+hostnames. If a hostname resolves to multiple addresses, the
+server will bind to all of them. The family=ipv4 or
+family=ipv6 options can be used to force it to bind to a
+subset of addresses</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Example:
+&lt;listen&gt;tcp:host=localhost,port=0,family=ipv4&lt;/listen&gt;</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">A
+special case is using a port number of zero (or omitting the
+port), which means to choose an available port selected by
+the operating system. The port number chosen can be obtained
+with the --print-address command line parameter and will be
+present in other cases where the server reports its own
+address, such as when DBUS_SESSION_BUS_ADDRESS is
+set.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Example:
+&lt;listen&gt;tcp:host=localhost,port=0&lt;/listen&gt;</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">tcp/nonce-tcp
+addresses also allow a bind=hostname option, used in a
+listenable address to configure the interface on which the
+server will listen: either the hostname is the IP address of
+one of the local machine's interfaces (most commonly
+127.0.0.1), a DNS name that resolves to one of those IP
+addresses, '0.0.0.0' to listen on all IPv4 interfaces
+simultaneously, or '::' to listen on all IPv4 and IPv6
+interfaces simultaneously (if supported by the OS). If not
+specified, the default is the same value as
+&quot;host&quot;.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Example:
+&lt;listen&gt;tcp:host=localhost,bind=0.0.0.0,port=0&lt;/listen&gt;</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+<i>&lt;auth&gt;</i></font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Lists
+permitted authorization mechanisms. If this element doesn't
+exist, then all known mechanisms are allowed. If there are
+multiple &lt;auth&gt; elements, all the listed mechanisms
+are allowed. The order in which mechanisms are listed is not
+meaningful.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">On
+non-Windows operating systems, allowing only the EXTERNAL
+authentication mechanism is strongly recommended. This is
+the default for the well-known system bus and for the
+well-known session bus.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Example:
+&lt;auth&gt;EXTERNAL&lt;/auth&gt;</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Example:
+&lt;auth&gt;DBUS_COOKIE_SHA1&lt;/auth&gt;</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+<i>&lt;servicedir&gt;</i></font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Adds
+a directory to search for .service files, which tell the
+dbus-daemon how to start a program to provide a particular
+well-known bus name. See the D-Bus Specification for more
+details about the contents of .service files.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">If
+a particular service is found in more than one
+&lt;servicedir&gt;, the first directory listed in the
+configuration file takes precedence. If two service files
+providing the same well-known bus name are found in the same
+directory, it is arbitrary which one will be chosen (this
+can only happen if at least one of the service files does
+not have the recommended name, which is its well-known bus
+name followed by &quot;.service&quot;).</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+<i>&lt;standard_session_servicedirs/&gt;</i></font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">&lt;standard_session_servicedirs/&gt;
+requests a standard set of session service directories. Its
+effect is similar to specifying a series of
+&lt;servicedir/&gt; elements for each of the data
+directories, in the order given here. It is not exactly
+equivalent, because there is currently no way to disable
+directory monitoring or enforce strict service file naming
+for a &lt;servicedir/&gt;.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">As
+with &lt;servicedir/&gt; elements, if a particular service
+is found in more than one service directory, the first
+directory takes precedence. If two service files providing
+the same well-known bus name are found in the same
+directory, it is arbitrary which one will be chosen (this
+can only happen if at least one of the service files does
+not have the recommended name, which is its well-known bus
+name followed by &quot;.service&quot;).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">On
+Unix, the standard session service directories
+are:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+<i>$XDG_RUNTIME_DIR</i>/dbus-1/services, if XDG_RUNTIME_DIR
+is set (see the XDG Base Directory Specification for details
+of XDG_RUNTIME_DIR): this location is suitable for transient
+services created at runtime by systemd generators (see
+<b>systemd.generator</b>(7)), session managers or other
+session infrastructure. It is an extension provided by the
+reference implementation of dbus-daemon, and is not
+standardized in the D-Bus Specification.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">Unlike
+the other standard session service directories, this
+directory enforces strict naming for the service files: the
+filename must be exactly the well-known bus name of the
+service, followed by &quot;.service&quot;.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">Also
+unlike the other standard session service directories, this
+directory is never monitored with <b>inotify</b>(7) or
+similar APIs. Programs that create service files in this
+directory while a dbus-daemon is running are expected to
+call the dbus-daemon's ReloadConfig() method after they have
+made changes.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+<i>$XDG_DATA_HOME</i>/dbus-1/services, where XDG_DATA_HOME
+defaults to ~/.local/share (see the XDG Base Directory
+Specification): this location is specified by the D-Bus
+Specification, and is suitable for per-user,
+locally-installed software.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+<i>directory</i>/dbus-1/services for each directory in
+XDG_DATA_DIRS, where XDG_DATA_DIRS defaults to
+/usr/local/share:/usr/share (see the XDG Base Directory
+Specification): these locations are specified by the D-Bus
+Specification. The defaults are suitable for software
+installed locally by a system administrator
+(/usr/local/share) or for software installed from operating
+system packages (/usr/share). Per-user or system-wide
+configuration that sets the XDG_DATA_DIRS environment
+variable can extend this search path to cover installations
+in other locations, for example
+~/.local/share/flatpak/exports/share/ and
+/var/lib/flatpak/exports/share/ when <b>flatpak</b>(1) is
+used.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+<i>${datadir}</i>/dbus-1/services for the <i>${datadir}</i>
+that was specified when dbus was compiled, typically
+/usr/share: this location is an extension provided by the
+reference dbus-daemon implementation, and is suitable for
+software stacks installed alongside dbus-daemon.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+&quot;XDG Base Directory Specification&quot; can be found
+at</font>
+<b><font color="#0000FF">http://freedesktop.org/wiki/Standards/basedir-spec</font></b>
+<font color="#000000">if it hasn't moved, otherwise try your
+favorite search engine.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">On
+Windows, the standard session service directories
+are:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+<i>%CommonProgramFiles%</i>/dbus-1/services if
+%CommonProgramFiles% is set: this location is suitable for
+system-wide installed software packages</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+A share/dbus-1/services directory found in the same
+directory hierarchy (prefix) as the dbus-daemon: this
+location is suitable for software stacks installed alongside
+dbus-daemon</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+&lt;standard_session_servicedirs/&gt; option is only
+relevant to the per-user-session bus daemon defined in
+/etc/dbus-1/session.conf. Putting it in any other
+configuration file would probably be nonsense.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+<i>&lt;standard_system_servicedirs/&gt;</i></font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">&lt;standard_system_servicedirs/&gt;
+specifies the standard system-wide activation directories
+that should be searched for service files. As with session
+services, the first directory listed has highest
+precedence.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">On
+Unix, the standard system service directories
+are:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+/usr/local/share/dbus-1/system-services: this location is
+specified by the D-Bus Specification, and is suitable for
+software installed locally by the system
+administrator</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+/usr/share/dbus-1/system-services: this location is
+specified by the D-Bus Specification, and is suitable for
+software installed by operating system packages</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+<i>${datadir}</i>/dbus-1/system-services for the
+<i>${datadir}</i> that was specified when dbus was compiled,
+typically /usr/share: this location is an extension provided
+by the reference dbus-daemon implementation, and is suitable
+for software stacks installed alongside
+dbus-daemon</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+/lib/dbus-1/system-services: this location is specified by
+the D-Bus Specification, and was intended for software
+installed by operating system packages and used during early
+boot (but it should be considered deprecated, because the
+reference dbus-daemon is not designed to be available during
+early boot)</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">On
+Windows, there is no standard system bus, so there are no
+standard system bus directories either.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+&lt;standard_system_servicedirs/&gt; option is only relevant
+to the per-system bus daemon defined in
+/usr/share/dbus-1/system.conf. Putting it in any other
+configuration file would probably be nonsense.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+<i>&lt;servicehelper/&gt;</i></font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">&lt;servicehelper/&gt;
+specifies the setuid helper that is used to launch system
+daemons with an alternate user. Typically this should be the
+dbus-daemon-launch-helper executable in located in
+libexec.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+&lt;servicehelper/&gt; option is only relevant to the
+per-system bus daemon defined in
+/usr/share/dbus-1/system.conf. Putting it in any other
+configuration file would probably be nonsense.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+<i>&lt;limit&gt;</i></font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">&lt;limit&gt;
+establishes a resource limit. For example:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&lt;limit
+name=&quot;max_message_size&quot;&gt;64&lt;/limit&gt; <br>
+&lt;limit
+name=&quot;max_completed_connections&quot;&gt;512&lt;/limit&gt;</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+name attribute is mandatory. Available limit names
+are:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&quot;max_incoming_bytes&quot;
+: total size in bytes of messages <br>
+incoming from a single connection <br>
+&quot;max_incoming_unix_fds&quot; : total number of unix fds
+of messages <br>
+incoming from a single connection <br>
+&quot;max_outgoing_bytes&quot; : total size in bytes of
+messages <br>
+queued up for a single connection <br>
+&quot;max_outgoing_unix_fds&quot; : total number of unix fds
+of messages <br>
+queued up for a single connection <br>
+&quot;max_message_size&quot; : max size of a single message
+in <br>
+bytes <br>
+&quot;max_message_unix_fds&quot; : max unix fds of a single
+message <br>
+&quot;service_start_timeout&quot; : milliseconds
+(thousandths) until <br>
+a started service has to connect <br>
+&quot;auth_timeout&quot; : milliseconds (thousandths) a <br>
+connection is given to <br>
+authenticate <br>
+&quot;pending_fd_timeout&quot; : milliseconds (thousandths)
+a <br>
+fd is given to be transmitted to <br>
+dbus-daemon before disconnecting the <br>
+connection <br>
+&quot;max_completed_connections&quot; : max number of
+authenticated connections <br>
+&quot;max_incomplete_connections&quot; : max number of
+unauthenticated <br>
+connections <br>
+&quot;max_connections_per_user&quot; : max number of
+completed connections from <br>
+the same user (only enforced on Unix OSs) <br>
+&quot;max_pending_service_starts&quot; : max number of
+service launches in <br>
+progress at the same time <br>
+&quot;max_names_per_connection&quot; : max number of names a
+single <br>
+connection can own <br>
+&quot;max_match_rules_per_connection&quot;: max number of
+match rules for a single <br>
+connection <br>
+&quot;max_replies_per_connection&quot; : max number of
+pending method <br>
+replies per connection <br>
+(number of calls-in-progress) <br>
+&quot;reply_timeout&quot; : milliseconds (thousandths) <br>
+until a method call times out</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+max incoming/outgoing queue sizes allow a new message to be
+queued if one byte remains below the max. So you can in fact
+exceed the max by max_message_size.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">max_completed_connections
+divided by max_connections_per_user is the number of users
+that can work together to denial-of-service all other users
+by using up all connections on the systemwide
+bus.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Limits
+are normally only of interest on the systemwide bus, not the
+user session buses.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+<i>&lt;policy&gt;</i></font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+&lt;policy&gt; element defines a security policy to be
+applied to a particular set of connections to the bus. A
+policy is made up of &lt;allow&gt; and &lt;deny&gt;
+elements. Policies are normally used with the systemwide
+bus; they are analogous to a firewall in that they allow
+expected traffic and prevent unexpected traffic.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Currently,
+the system bus has a default-deny policy for sending method
+calls and owning bus names, and a default-allow policy for
+receiving messages, sending signals, and sending a single
+success or error reply for each method call that does not
+have the NO_REPLY flag. Sending more than the expected
+number of replies is not allowed.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">In
+general, it is best to keep system services as small,
+targeted programs which run in their own process and provide
+a single bus name. Then, all that is needed is an
+&lt;allow&gt; rule for the &quot;own&quot; permission to let
+the process claim the bus name, and a
+&quot;send_destination&quot; rule to allow traffic from some
+or all uids to your service.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+&lt;policy&gt; element has one of four
+attributes:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">context=&quot;(default|mandatory)&quot;
+<br>
+at_console=&quot;(true|false)&quot; <br>
+user=&quot;username or userid&quot; <br>
+group=&quot;group name or gid&quot;</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Policies
+are applied to a connection as follows:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">-
+all context=&quot;default&quot; policies are applied <br>
+- all group=&quot;connection's user's group&quot; policies
+are applied <br>
+in undefined order <br>
+- all user=&quot;connection's auth user&quot; policies are
+applied <br>
+in undefined order <br>
+- all at_console=&quot;true&quot; policies are applied <br>
+- all at_console=&quot;false&quot; policies are applied <br>
+- all context=&quot;mandatory&quot; policies are
+applied</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Policies
+applied later will override those applied earlier, when the
+policies overlap. Multiple policies with the same
+user/group/context are applied in the order they appear in
+the config file.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>&lt;deny&gt;</i></font></p>
+
+
+<p style="margin-left:17%;"><font color="#000000"><i>&lt;allow&gt;</i></font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">A
+&lt;deny&gt; element appears below a &lt;policy&gt; element
+and prohibits some action. The &lt;allow&gt; element makes
+an exception to previous &lt;deny&gt; statements, and works
+just like &lt;deny&gt; but with the inverse
+meaning.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+possible attributes of these elements are:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">send_interface=&quot;interface_name&quot;
+| &quot;*&quot; <br>
+send_member=&quot;method_or_signal_name&quot; |
+&quot;*&quot; <br>
+send_error=&quot;error_name&quot; | &quot;*&quot; <br>
+send_broadcast=&quot;true&quot; | &quot;false&quot; <br>
+send_destination=&quot;name&quot; | &quot;*&quot; <br>
+send_destination_prefix=&quot;name&quot; <br>
+send_type=&quot;method_call&quot; |
+&quot;method_return&quot; | &quot;signal&quot; |
+&quot;error&quot; | &quot;*&quot; <br>
+send_path=&quot;/path/name&quot; | &quot;*&quot;</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">receive_interface=&quot;interface_name&quot;
+| &quot;*&quot; <br>
+receive_member=&quot;method_or_signal_name&quot; |
+&quot;*&quot; <br>
+receive_error=&quot;error_name&quot; | &quot;*&quot; <br>
+receive_sender=&quot;name&quot; | &quot;*&quot; <br>
+receive_type=&quot;method_call&quot; |
+&quot;method_return&quot; | &quot;signal&quot; |
+&quot;error&quot; | &quot;*&quot; <br>
+receive_path=&quot;/path/name&quot; |
+&quot;*&quot;</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">send_requested_reply=&quot;true&quot;
+| &quot;false&quot; <br>
+receive_requested_reply=&quot;true&quot; |
+&quot;false&quot;</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">eavesdrop=&quot;true&quot;
+| &quot;false&quot;</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">own=&quot;name&quot;
+| &quot;*&quot; <br>
+own_prefix=&quot;name&quot; <br>
+user=&quot;username&quot; | &quot;*&quot; <br>
+group=&quot;groupname&quot; | &quot;*&quot;</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Examples:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&lt;deny
+send_destination=&quot;org.freedesktop.Service&quot;
+send_interface=&quot;org.freedesktop.System&quot;
+send_member=&quot;Reboot&quot;/&gt; <br>
+&lt;deny
+send_destination=&quot;org.freedesktop.System&quot;/&gt;
+<br>
+&lt;deny
+receive_sender=&quot;org.freedesktop.System&quot;/&gt; <br>
+&lt;deny user=&quot;john&quot;/&gt; <br>
+&lt;deny group=&quot;enemies&quot;/&gt;</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+&lt;deny&gt; element's attributes determine whether the deny
+&quot;matches&quot; a particular action. If it matches, the
+action is denied (unless later rules in the config file
+allow it).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Rules
+with one or more of the send_* family of attributes are
+checked in order when a connection attempts to send a
+message. The last rule that matches the message determines
+whether it may be sent. The well-known session bus normally
+allows sending any message. The well-known system bus
+normally allows sending any signal, selected method calls to
+the <b>dbus-daemon</b>, and exactly one reply to each
+previously-sent method call (either success or an error).
+Either of these can be overridden by configuration; on the
+system bus, services that will receive method calls must
+install configuration that allows them to do so, usually via
+rules of the form &lt;policy
+context=&quot;default&quot;&gt;&lt;allow
+send_destination=&quot;...&quot;/&gt;&lt;policy&gt;.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Rules
+with one or more of the receive_* family of attributes, or
+with the eavesdrop attribute and no others, are checked for
+each recipient of a message (there might be more than one
+recipient if the message is a broadcast or a connection is
+eavesdropping). The last rule that matches the message
+determines whether it may be received. The well-known
+session bus normally allows receiving any message, including
+eavesdropping. The well-known system bus normally allows
+receiving any message that was not eavesdropped (any unicast
+message addressed to the recipient, and any broadcast
+message).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+eavesdrop, min_fds and max_fds attributes are modifiers that
+can be applied to either send_* or receive_* rules, and are
+documented below.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">send_destination
+and receive_sender rules mean that messages may not be sent
+to or received from the *owner* of the given name, not that
+they may not be sent *to that name*. That is, if a
+connection owns services A, B, C, and sending to A is
+denied, sending to B or C will not work either. As a special
+case, send_destination=&quot;*&quot; matches any message
+(whether it has a destination specified or not), and
+receive_sender=&quot;*&quot; similarly matches any
+message.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">A
+send_destination_prefix rule opens or closes the whole
+namespace for sending. It means that messages may or may not
+be sent to the <i>owner</i> of any name matching the prefix,
+regardless of whether it is the primary or the queued owner.
+In other words, for &lt;allow
+send_destination_prefix=&quot;a.b&quot;/&gt; rule and names
+&quot;a.b&quot;, &quot;a.b.c&quot;, and &quot;a.b.c.d&quot;
+present on the bus, it works the same as if three separate
+rules: &lt;allow send_destination=&quot;a.b&quot;/&gt;,
+&lt;allow send_destination=&quot;a.b.c&quot;/&gt;, and
+&lt;allow send_destination=&quot;a.b.c.d&quot;/&gt; had been
+defined. The rules for matching names are the same as in
+own_prefix (see below): a prefix of &quot;a.b&quot; matches
+names &quot;a.b&quot; or &quot;a.b.c&quot; or
+&quot;a.b.c.d&quot;, but not &quot;a.bc&quot; or
+&quot;a.c&quot;. The send_destination_prefix attribute
+cannot be combined with the send_destination attribute in
+the same rule.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Rules
+with send_broadcast=&quot;true&quot; match signal messages
+with no destination (broadcasts). Rules with
+send_broadcast=&quot;false&quot; are the inverse: they match
+any unicast destination (unicast signals, together with all
+method calls, replies and errors) but do not match messages
+with no destination (broadcasts). This is not the same as
+send_destination=&quot;*&quot;, which matches any sent
+message, regardless of whether it has a destination or
+not.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+other send_* and receive_* attributes are purely
+textual/by-value matches against the given field in the
+message header, except that for the attributes where it is
+allowed, * matches any message (whether it has the relevant
+header field or not). For example,
+send_interface=&quot;*&quot; matches any sent message, even
+if it does not contain an interface header field. More
+complex glob matching such as foo.bar.* is not
+allowed.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">&quot;Eavesdropping&quot;
+occurs when an application receives a message that was
+explicitly addressed to a name the application does not own,
+or is a reply to such a message. Eavesdropping thus only
+applies to messages that are addressed to services and
+replies to such messages (i.e. it does not apply to
+signals).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">For
+&lt;allow&gt;, eavesdrop=&quot;true&quot; indicates that the
+rule matches even when eavesdropping.
+eavesdrop=&quot;false&quot; is the default and means that
+the rule only allows messages to go to their specified
+recipient. For &lt;deny&gt;, eavesdrop=&quot;true&quot;
+indicates that the rule matches only when eavesdropping.
+eavesdrop=&quot;false&quot; is the default for &lt;deny&gt;
+also, but here it means that the rule applies always, even
+when not eavesdropping. The eavesdrop attribute can only be
+combined with send and receive rules (with send_* and
+receive_* attributes).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+[send|receive]_requested_reply attribute works similarly to
+the eavesdrop attribute. It controls whether the
+&lt;deny&gt; or &lt;allow&gt; matches a reply that is
+expected (corresponds to a previous method call message).
+This attribute only makes sense for reply messages (errors
+and method returns), and is ignored for other message
+types.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">For
+&lt;allow&gt;,
+[send|receive]_requested_reply=&quot;true&quot; is the
+default and indicates that only requested replies are
+allowed by the rule.
+[send|receive]_requested_reply=&quot;false&quot; means that
+the rule allows any reply even if unexpected.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">For
+&lt;deny&gt;,
+[send|receive]_requested_reply=&quot;false&quot; is the
+default but indicates that the rule matches only when the
+reply was not requested.
+[send|receive]_requested_reply=&quot;true&quot; indicates
+that the rule applies always, regardless of pending reply
+state.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+min_fds and max_fds attributes modify either send_* or
+receive_* rules. A rule with the min_fds attribute only
+matches messages if they have at least that many Unix file
+descriptors attached. Conversely, a rule with the max_fds
+attribute only matches messages if they have no more than
+that many file descriptors attached. In practice, rules with
+these attributes will most commonly take the form &lt;allow
+send_destination=&quot;...&quot; max_fds=&quot;0&quot;/&gt;,
+&lt;deny send_destination=&quot;...&quot;
+min_fds=&quot;1&quot;/&gt; or &lt;deny
+receive_sender=&quot;*&quot;
+min_fds=&quot;1&quot;/&gt;.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Rules
+with the user or group attribute are checked when a new
+connection to the message bus is established, and control
+whether the connection can continue. Each of these
+attributes cannot be combined with any other attribute. As a
+special case, both user=&quot;*&quot; and
+group=&quot;*&quot; match any connection. If there are no
+rules of this form, the default is to allow connections from
+the same user ID that owns the <b>dbus-daemon</b> process.
+The well-known session bus normally uses that default
+behaviour, while the well-known system bus normally allows
+any connection.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Rules
+with the own or own_prefix attribute are checked when a
+connection attempts to own a well-known bus names. As a
+special case, own=&quot;*&quot; matches any well-known bus
+name. The well-known session bus normally allows any
+connection to own any name, while the well-known system bus
+normally does not allow any connection to own any name,
+except where allowed by further configuration. System
+services that will own a name must install configuration
+that allows them to do so, usually via rules of the form
+&lt;policy user=&quot;some-system-user&quot;&gt;&lt;allow
+own=&quot;...&quot;/&gt;&lt;/policy&gt;.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">&lt;allow
+own_prefix=&quot;a.b&quot;/&gt; allows you to own the name
+&quot;a.b&quot; or any name whose first dot-separated
+elements are &quot;a.b&quot;: in particular, you can own
+&quot;a.b.c&quot; or &quot;a.b.c.d&quot;, but not
+&quot;a.bc&quot; or &quot;a.c&quot;. This is useful when
+services like Telepathy and ReserveDevice define a meaning
+for subtrees of well-known names, such as
+org.freedesktop.Telepathy.ConnectionManager.(anything) and
+org.freedesktop.ReserveDevice1.(anything).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">It
+does not make sense to deny a user or group inside a
+&lt;policy&gt; for a user or group; user/group denials can
+only be inside context=&quot;default&quot; or
+context=&quot;mandatory&quot; policies.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">A
+single &lt;deny&gt; rule may specify combinations of
+attributes such as send_destination and send_interface and
+send_type. In this case, the denial applies only if both
+attributes match the message being denied. e.g. &lt;deny
+send_interface=&quot;foo.bar&quot;
+send_destination=&quot;foo.blah&quot;/&gt; would deny
+messages with the given interface AND the given bus name. To
+get an OR effect you specify multiple &lt;deny&gt;
+rules.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">You
+can't include both send_ and receive_ attributes on the same
+rule, since &quot;whether the message can be sent&quot; and
+&quot;whether it can be received&quot; are evaluated
+separately.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Be
+careful with send_interface/receive_interface, because the
+interface field in messages is optional. In particular, do
+NOT specify &lt;deny
+send_interface=&quot;org.foo.Bar&quot;/&gt;! This will cause
+no-interface messages to be blocked for all services, which
+is almost certainly not what you intended. Always use rules
+of the form: &lt;deny send_interface=&quot;org.foo.Bar&quot;
+send_destination=&quot;org.foo.Service&quot;/&gt;</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+<i>&lt;selinux&gt;</i></font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+&lt;selinux&gt; element contains settings related to
+Security Enhanced Linux. More details below.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+<i>&lt;associate&gt;</i></font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">An
+&lt;associate&gt; element appears below an &lt;selinux&gt;
+element and creates a mapping. Right now only one kind of
+association is possible:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&lt;associate
+own=&quot;org.freedesktop.Foobar&quot;
+context=&quot;foo_t&quot;/&gt;</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">This
+means that if a connection asks to own the name
+&quot;org.freedesktop.Foobar&quot; then the source context
+will be the context of the connection and the target context
+will be &quot;foo_t&quot; - see the short discussion of
+SELinux below.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Note,
+the context here is the target context when requesting a
+name, NOT the context of the connection owning the
+name.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">There's
+currently no way to set a default for owning any name, if we
+add this syntax it will look like:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&lt;associate
+own=&quot;*&quot; context=&quot;foo_t&quot;/&gt;</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">If
+you find a reason this is useful, let the developers know.
+Right now the default will be the security context of the
+bus itself.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">If
+two &lt;associate&gt; elements specify the same name, the
+element appearing later in the configuration file will be
+used.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&bull;
+<i>&lt;apparmor&gt;</i></font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+&lt;apparmor&gt; element is used to configure AppArmor
+mediation on the bus. It can contain one attribute that
+specifies the mediation mode:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&lt;apparmor
+mode=&quot;(enabled|disabled|required)&quot;/&gt;</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+default mode is &quot;enabled&quot;. In &quot;enabled&quot;
+mode, AppArmor mediation will be performed if AppArmor
+support is available in the kernel. If it is not available,
+dbus-daemon will start but AppArmor mediation will not
+occur. In &quot;disabled&quot; mode, AppArmor mediation is
+disabled. In &quot;required&quot; mode, AppArmor mediation
+will be enabled if AppArmor support is available, otherwise
+dbus-daemon will refuse to start.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+AppArmor mediation mode of the bus cannot be changed after
+the bus starts. Modifying the mode in the configuration file
+and sending a SIGHUP signal to the daemon has no effect on
+the mediation mode.</font></p>
+
+<h2>INTEGRATING SESSION SERVICES
+<a name="INTEGRATING SESSION SERVICES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Integration
+files are not mandatory for session services: any program
+with access to the session bus can request a well-known name
+and provide D-Bus interfaces.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Many
+D-Bus session services support service activation, a
+mechanism in which the <b>dbus-daemon</b> can launch the
+service on-demand, either by running the session service
+itself or by communicating with <b>systemd --user</b>. This
+is set up by creating a service file in the directory
+<i>${datadir}</i>/dbus-1/services, for example:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">[D-BUS
+Service] <br>
+Name=<i>com.example.SessionService1</i> <br>
+Exec=<i>/usr/bin/example-session-service</i> <br>
+# Optional <br>
+SystemdService=<i>example-session-service</i></font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">See
+the</font> <b><font color="#0000FF">D-Bus
+Specification</font></b>
+<small><font color="#000000">[2]</font></small>
+<font color="#000000">for details of the contents and
+interpretation of service files.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">If
+there is a service file for
+<i>com.example.SessionService1</i>, it should be named
+<i>com.example.SessionService1</i>.service, although for
+compatibility with legacy services this is not
+mandatory.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Session
+services that declare the optional SystemdService must also
+provide a systemd user service unit file whose name or Alias
+matches the SystemdService (see <b>systemd.unit</b>(5),
+<b>systemd.service</b>(5) for further details on systemd
+service units), for example:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">[Unit]
+<br>
+Description=Example session service</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">[Service]
+<br>
+Type=dbus <br>
+BusName=<i>com.example.SessionService1</i> <br>
+
+ExecStart=<i>/usr/bin/example-session-service</i></font></p>
+
+<h2>INTEGRATING SYSTEM SERVICES
+<a name="INTEGRATING SYSTEM SERVICES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+standard system bus does not allow method calls or owning
+well-known bus names by default, so a useful D-Bus system
+service will normally need to configure a default security
+policy that allows it to work. D-Bus system services should
+install a default policy file in
+<i>${datadir}</i>/dbus-1/service.d, containing the policy
+rules necessary to make that system service functional. A
+best-practice policy file will often look like
+this:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&lt;?xml
+version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt; <br>
+&lt;!DOCTYPE busconfig PUBLIC <br>
+&quot;-//freedesktop//DTD D-BUS Bus Configuration
+1.0//EN&quot; <br>
+
+&quot;http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd&quot;&gt;
+<br>
+&lt;busconfig&gt; <br>
+&lt;policy user=&quot;<i>_example</i>&quot;&gt; <br>
+&lt;allow own=&quot;<i>com.example.Example1</i>&quot;/&gt;
+<br>
+&lt;/policy&gt;</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&lt;policy
+context=&quot;default&quot;&gt; <br>
+&lt;allow
+send_destination=&quot;<i>com.example.Example1</i>&quot;/&gt;
+<br>
+&lt;/policy&gt; <br>
+&lt;/busconfig&gt;</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">where
+<i>_example</i> is the username of the system uid that will
+run the system service daemon process, and
+<i>com.example.Example1</i> is its well-known bus
+name.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+policy file for <i>com.example.Example1</i> should normally
+be named <i>com.example.Example1</i>.conf.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Some
+existing system services rely on more complex &lt;policy&gt;
+rules to control the messages that the service can receive.
+However, the <b>dbus-daemon</b>'s policy language is not
+well-suited to finer-grained policies: any policy has to be
+expressed in terms of D-Bus interfaces and method names, not
+in terms of higher-level domain-specific concepts like
+removable or built-in devices. It is recommended that new
+services should normally accept method call messages from
+all callers, then apply a sysadmin-controllable policy to
+decide whether to obey the requests contained in those
+method call messages, for example by consulting</font>
+<b><font color="#0000FF">polkit</font></b>
+<small><font color="#000000">[3]</font></small>
+<font color="#000000">.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Like
+session services, many D-Bus system services support service
+activation, a mechanism in which the <b>dbus-daemon</b> can
+launch the service on-demand, either by running the system
+service itself or by communicating with <b>systemd</b>. This
+is set up by creating a service file in the directory
+<i>${datadir}</i>/dbus-1/system-services, for
+example:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">[D-BUS
+Service] <br>
+Name=<i>com.example.Example1</i> <br>
+Exec=<i>/usr/sbin/example-service</i> <br>
+User=<i>_example</i> <br>
+# Optional <br>
+
+SystemdService=<i>dbus-com.example.Example1.service</i></font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">See
+the</font> <b><font color="#0000FF">D-Bus
+Specification</font></b>
+<small><font color="#000000">[2]</font></small>
+<font color="#000000">for details of the contents and
+interpretation of service files.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">If
+there is a service file for <i>com.example.Example1</i>, it
+must be named
+<i>com.example.Example1</i>.service.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">System
+services that declare the optional SystemdService must also
+provide a systemd service unit file whose name or Alias
+matches the SystemdService (see <b>systemd.unit</b>(5),
+<b>systemd.service</b>(5) for further details on systemd
+service units), for example:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">[Unit]
+<br>
+Description=Example service</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">[Service]
+<br>
+Type=dbus <br>
+BusName=<i>com.example.Example1</i> <br>
+ExecStart=<i>/usr/sbin/example-service</i></font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">[Install]
+<br>
+WantedBy=multi-user.target <br>
+Alias=dbus-<i>com.example.Example1</i>.service</font></p>
+
+<h2>SELINUX
+<a name="SELINUX"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">See</font>
+<b><font color="#0000FF">http://www.nsa.gov/selinux/</font></b>
+<font color="#000000">for full details on SELinux. Some
+useful excerpts:</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Every
+subject (process) and object (e.g. file, socket, IPC object,
+etc) in the system is assigned a collection of security
+attributes, known as a security context. A security context
+contains all of the security attributes associated with a
+particular subject or object that are relevant to the
+security policy.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">In
+order to better encapsulate security contexts and to provide
+greater efficiency, the policy enforcement code of SELinux
+typically handles security identifiers (SIDs) rather than
+security contexts. A SID is an integer that is mapped by the
+security server to a security context at runtime.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">When
+a security decision is required, the policy enforcement code
+passes a pair of SIDs (typically the SID of a subject and
+the SID of an object, but sometimes a pair of subject SIDs
+or a pair of object SIDs), and an object security class to
+the security server. The object security class indicates the
+kind of object, e.g. a process, a regular file, a directory,
+a TCP socket, etc.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Access
+decisions specify whether or not a permission is granted for
+a given pair of SIDs and class. Each object class has a set
+of associated permissions defined to control operations on
+objects with that class.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">D-Bus
+performs SELinux security checks in two places.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">First,
+any time a message is routed from one connection to another
+connection, the bus daemon will check permissions with the
+security context of the first connection as source, security
+context of the second connection as target, object class
+&quot;dbus&quot; and requested permission
+&quot;send_msg&quot;.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">If
+a security context is not available for a connection
+(impossible when using UNIX domain sockets), then the target
+context used is the context of the bus daemon itself. There
+is currently no way to change this default, because we're
+assuming that only UNIX domain sockets will be used to
+connect to the systemwide bus. If this changes, we'll
+probably add a way to set the default connection
+context.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Second,
+any time a connection asks to own a name, the bus daemon
+will check permissions with the security context of the
+connection as source, the security context specified for the
+name in the config file as target, object class
+&quot;dbus&quot; and requested permission
+&quot;acquire_svc&quot;.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+security context for a bus name is specified with the
+&lt;associate&gt; element described earlier in this
+document. If a name has no security context associated in
+the configuration file, the security context of the bus
+daemon itself will be used.</font></p>
+
+<h2>APPARMOR
+<a name="APPARMOR"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+AppArmor confinement context is stored when applications
+connect to the bus. The confinement context consists of a
+label and a confinement mode. When a security decision is
+required, the daemon uses the confinement context to query
+the AppArmor policy to determine if the action should be
+allowed or denied and if the action should be
+audited.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+daemon performs AppArmor security checks in three
+places.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">First,
+any time a message is routed from one connection to another
+connection, the bus daemon will check permissions with the
+label of the first connection as source, label and/or
+connection name of the second connection as target, along
+with the bus name, the path name, the interface name, and
+the member name. Reply messages, such as method_return and
+error messages, are implicitly allowed if they are in
+response to a message that has already been
+allowed.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Second,
+any time a connection asks to own a name, the bus daemon
+will check permissions with the label of the connection as
+source, the requested name as target, along with the bus
+name.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Third,
+any time a connection attempts to eavesdrop, the bus daemon
+will check permissions with the label of the connection as
+the source, along with the bus name.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">AppArmor
+rules for bus mediation are not stored in the bus
+configuration files. They are stored in the application's
+AppArmor profile. Please see <i>apparmor.d(5)</i> for more
+details.</font></p>
+
+<h2>DEBUGGING
+<a name="DEBUGGING"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">If
+you're trying to figure out where your messages are going or
+why you aren't getting messages, there are several things
+you can try.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Remember
+that the system bus is heavily locked down and if you
+haven't installed a security policy file to allow your
+message through, it won't work. For the session bus, this is
+not a concern.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+simplest way to figure out what's happening on the bus is to
+run the <i>dbus-monitor</i> program, which comes with the
+D-Bus package. You can also send test messages with
+<i>dbus-send</i>. These programs have their own man
+pages.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">If
+you want to know what the daemon itself is doing, you might
+consider running a separate copy of the daemon to test
+against. This will allow you to put the daemon under a
+debugger, or run it with verbose output, without messing up
+your real session and system daemons.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">To
+run a separate test copy of the daemon, for example you
+might open a terminal and type:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">DBUS_VERBOSE=1
+dbus-daemon --session --print-address</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+test daemon address will be printed when the daemon starts.
+You will need to copy-and-paste this address and use it as
+the value of the DBUS_SESSION_BUS_ADDRESS environment
+variable when you launch the applications you want to test.
+This will cause those applications to connect to your test
+bus instead of the DBUS_SESSION_BUS_ADDRESS of your real
+session bus.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">DBUS_VERBOSE=1
+will have NO EFFECT unless your copy of D-Bus was compiled
+with verbose mode enabled. This is not recommended in
+production builds due to performance impact. You may need to
+rebuild D-Bus if your copy was not built with debugging in
+mind. (DBUS_VERBOSE also affects the D-Bus library and thus
+applications using D-Bus; it may be useful to see verbose
+output on both the client side and from the
+daemon.)</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">If
+you want to get fancy, you can create a custom bus
+configuration for your test bus (see the session.conf and
+system.conf files that define the two default configurations
+for example). This would allow you to specify a different
+directory for .service files, for example.</font></p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">See</font>
+<b><font color="#0000FF">http://www.freedesktop.org/software/dbus/doc/AUTHORS</font></b></p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Please
+send bug reports to the D-Bus mailing list or bug tracker,
+see</font>
+<b><font color="#0000FF">http://www.freedesktop.org/software/dbus/</font></b></p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">1.</font></p> </td>
+<td width="2%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em"><font color="#000000">relay
+connections via Secure Shell or a similar
+protocol</font></p> </td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">https://lists.freedesktop.org/archives/dbus/2018-April/017447.html</font></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">2.</font></p> </td>
+<td width="2%"></td>
+<td width="29%">
+
+
+<p style="margin-top: 1em"><font color="#000000">D-Bus
+Specification</font></p> </td>
+<td width="54%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">https://dbus.freedesktop.org/doc/dbus-specification.html</font></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">3.</font></p> </td>
+<td width="2%"></td>
+<td width="9%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">polkit</font></p> </td>
+<td width="74%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">https://www.freedesktop.org/wiki/Software/polkit/</font></p>
+<hr>
+</body>
+</html>

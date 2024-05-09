@@ -1,0 +1,338 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:10 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>HOSTNAMECTL</title>
+
+</head>
+<body>
+
+<h1 align="center">HOSTNAMECTL</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#COMMANDS">COMMANDS</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#NOTES">NOTES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">hostnamectl -
+Control the system hostname</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="52%">
+
+
+<p style="margin-top: 1em"><b>hostnamectl</b> [OPTIONS...]
+{COMMAND}</p> </td>
+<td width="37%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>hostnamectl</b>
+may be used to query and change the system hostname and
+related settings.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-hostnamed.service</b>(8)
+and this tool distinguish three different hostnames: the
+high-level &quot;pretty&quot; hostname which might include
+all kinds of special characters (e.g. &quot;Lennart's
+Laptop&quot;), the &quot;static&quot; hostname which is the
+user-configured hostname (e.g. &quot;lennarts-laptop&quot;),
+and the transient hostname which is a fallback value
+received from network configuration (e.g.
+&quot;node12345678&quot;). If a static hostname is set to a
+valid value, then the transient hostname is not used.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that the
+pretty hostname has little restrictions on the characters
+and length used, while the static and transient hostnames
+are limited to the usually accepted characters of Internet
+domain names, and 64 characters at maximum (the latter being
+a Linux limitation).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Use
+<b>systemd-firstboot</b>(1) to initialize the system
+hostname for mounted (but not booted) system images.</p>
+
+<h2>COMMANDS
+<a name="COMMANDS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+commands are understood:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>status</b></p>
+
+<p style="margin-left:17%;">Show system hostname and
+related information. If no command is specified, this is the
+implied default.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>hostname</b>
+[<i>NAME</i>]</p>
+
+<p style="margin-left:17%;">If no argument is given, print
+the system hostname. If an optional argument <i>NAME</i> is
+provided then the command changes the system hostname to
+<i>NAME</i>. By default, this will alter the pretty, the
+static, and the transient hostname alike; however, if one or
+more of <b>--static</b>, <b>--transient</b>, <b>--pretty</b>
+are used, only the selected hostnames are changed. If the
+pretty hostname is being set, and static or transient are
+being set as well, the specified hostname will be simplified
+in regards to the character set used before the latter are
+updated. This is done by removing special characters and
+spaces. This ensures that the pretty and the static hostname
+are always closely related while still following the
+validity rules of the specific name. This simplification of
+the hostname string is not done if only the transient and/or
+static hostnames are set, and the pretty hostname is left
+untouched.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The static and
+transient hostnames must each be either a single DNS label
+(a string composed of 7-bit ASCII lower-case characters and
+no spaces or dots, limited to the format allowed for DNS
+domain name labels), or a sequence of such labels separated
+by single dots that forms a valid DNS FQDN. The hostname
+must be at most 64 characters, which is a Linux limitation
+(DNS allows longer names).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>icon-name</b>
+[<i>NAME</i>]</p>
+
+<p style="margin-left:17%;">If no argument is given, print
+the icon name of the system. If an optional argument
+<i>NAME</i> is provided then the command changes the icon
+name to <i>NAME</i>. The icon name is used by some graphical
+applications to visualize this host. The icon name should
+follow the <b><font color="#0000FF">Icon Naming
+Specification</font></b>
+<small><font color="#000000">[1]</font></small>
+<font color="#000000">.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>chassis</b>
+[<i>TYPE</i>]</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">If no
+argument is given, print the chassis type. If an optional
+argument <i>TYPE</i> is provided then the command changes
+the chassis type to <i>TYPE</i>. The chassis type is used by
+some graphical applications to visualize the host or alter
+user interaction. Currently, the following chassis types are
+defined: &quot;desktop&quot;, &quot;laptop&quot;,
+&quot;convertible&quot;, &quot;server&quot;,
+&quot;tablet&quot;, &quot;handset&quot;, &quot;watch&quot;,
+&quot;embedded&quot;, as well as the special chassis types
+&quot;vm&quot; and &quot;container&quot; for virtualized
+systems that lack an immediate physical chassis.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>deployment</b>
+[<i>ENVIRONMENT</i>]</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">If no
+argument is given, print the deployment environment. If an
+optional argument <i>ENVIRONMENT</i> is provided then the
+command changes the deployment environment to
+<i>ENVIRONMENT</i>. Argument <i>ENVIRONMENT</i> must be a
+single word without any control characters. One of the
+following is suggested: &quot;development&quot;,
+&quot;integration&quot;, &quot;staging&quot;,
+&quot;production&quot;.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>location</b>
+[<i>LOCATION</i>]</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">If no
+argument is given, print the location string for the system.
+If an optional argument <i>LOCATION</i> is provided then the
+command changes the location string for the system to
+<i>LOCATION</i>. Argument <i>LOCATION</i> should be a
+human-friendly, free-form string describing the physical
+location of the system, if it is known and applicable. This
+may be as generic as &quot;Berlin, Germany&quot; or as
+specific as &quot;Left Rack, 2nd Shelf&quot;.</font></p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+following options are understood:</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--no-ask-password</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Do not
+query the user for authentication for privileged
+operations.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--static</b>,
+<b>--transient</b>, <b>--pretty</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">If
+<b>status</b> is invoked (or no explicit command is given)
+and one of these switches is specified, <b>hostnamectl</b>
+will print out just this selected hostname.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">If
+used with <b>set-hostname</b>, only the selected hostnames
+will be updated. When more than one of these switches are
+specified, all the specified hostnames will be
+updated.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>-H</b>,
+<b>--host=</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Execute
+the operation remotely. Specify a hostname, or a username
+and hostname separated by &quot;@&quot;, to connect to. The
+hostname may optionally be suffixed by a port ssh is
+listening on, separated by &quot;:&quot;, and then a
+container name, separated by &quot;/&quot;, which connects
+directly to a specific container on the specified host. This
+will use SSH to talk to the remote machine manager instance.
+Container names may be enumerated with <b>machinectl -H</b>
+<i>HOST</i>. Put IPv6 addresses in brackets.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>-M</b>,
+<b>--machine=</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Execute
+operation on a local container. Specify a container name to
+connect to, optionally prefixed by a user name to connect as
+and a separating &quot;@&quot; character. If the special
+string &quot;.host&quot; is used in place of the container
+name, a connection to the local system is made (which is
+useful to connect to a specific user's user bus:
+&quot;--user --machine=lennart@.host&quot;). If the
+&quot;@&quot; syntax is not used, the connection is made as
+root user. If the &quot;@&quot; syntax is used either the
+left hand side or the right hand side may be omitted (but
+not both) in which case the local user name and
+&quot;.host&quot; are implied.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>-h</b>,
+<b>--help</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Print a
+short help text and exit.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--version</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Print a
+short version string and exit.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--json=</b><i>MODE</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Shows
+output formatted as JSON. Expects one of &quot;short&quot;
+(for the shortest possible output without any redundant
+whitespace or line breaks), &quot;pretty&quot; (for a pretty
+version of the same, with indentation and line breaks) or
+&quot;off&quot; (to turn off JSON output, the
+default).</font></p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">On
+success, 0 is returned, a non-zero failure code
+otherwise.</font></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>systemd</b>(1),
+<b>hostname</b>(1), <b>hostname</b>(5),
+<b>machine-info</b>(5), <b>systemctl</b>(1),
+<b>systemd-hostnamed.service</b>(8),
+<b>systemd-firstboot</b>(1)</font></p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">1.</font></p> </td>
+<td width="2%"></td>
+<td width="38%">
+
+
+<p style="margin-top: 1em"><font color="#000000">Icon
+Naming Specification</font></p></td>
+<td width="45%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">https://standards.freedesktop.org/icon-naming-spec/icon-naming-spec-latest.html</font></p>
+<hr>
+</body>
+</html>

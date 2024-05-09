@@ -1,0 +1,623 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:33:53 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>APT-LISTCHANGES</title>
+
+</head>
+<body>
+
+<h1 align="center">APT-LISTCHANGES</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#AUTOMATIC FRONTEND OVERRIDE">AUTOMATIC FRONTEND OVERRIDE</a><br>
+<a href="#CONFIGURATION FILE">CONFIGURATION FILE</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">apt-listchanges
+- Show new changelog entries from Debian package
+archives</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em"><b>apt-listchanges</b>
+[[<i>options</i>...]] {[<b>--apt</b>] |
+[<i>package.deb</i>...]}</p> </td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>apt-listchanges</b>
+is a tool to show what has been changed in a new version of
+a Debian package, as compared to the version currently
+installed on the system.</p>
+
+<p style="margin-left:11%; margin-top: 1em">It does this by
+extracting the relevant entries from both the NEWS.Debian
+and changelog[.Debian] files, usually found in
+/usr/share/doc/<i>package</i>, from Debian package
+archives.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Please note
+that in the default installation if <b>apt-listchanges</b>
+is run during upgrades as an APT plugin, it displays
+NEWS.Debian entries only. This can be changed with the
+<b>--which</b> option.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If changelog
+entries are displayed and the <i>package</i> does not
+contain changelog[.Debian] file, <b>apt-listchanges</b>
+calls <b>apt-get changelog</b> command to download the
+changelog from network. This behavior can be disabled with
+the <b>--no-network</b> option.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Given a set of
+filenames as arguments (or read from apt when using
+<b>--apt</b>), <b>apt-listchanges</b> will scan the files
+(assumed to be Debian package archives) for the relevant
+changelog entries, and display them all in a summary grouped
+by source package. The groups are sorted by the urgency of
+the most urgent change, and than by the package name.
+Changes within each package group are displayed in the order
+of their appearance in the changelog files, i.e. starting
+from the latest to the oldest; the <b>--reverse</b> option
+can be used to alter this order.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>apt-listchanges</b>
+provides the following options to control its behavior. Most
+of them have their equivalent entries in the configuration
+file, see the &quot;CONFIGURATION FILE&quot; below for
+details.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--apt</b></p>
+
+<p style="margin-left:17%;">Read filenames from a
+specially-formatted pipeline (as provided by apt), rather
+than from command line arguments, and honor certain
+apt-specific options in the config file. This pipeline must
+be in &quot;version 2&quot; format, specified in the apt
+configuration.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-v,
+--verbose</b></p>
+
+<p style="margin-left:17%;">Display additional (usually
+unwanted) information. For instance, print a message when a
+package of the same or older version is to be installed, or
+when a package is to be newly installed.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-f,
+--frontend</b></p>
+
+<p style="margin-left:17%;">Select which frontend to use to
+display information to the user. Current frontends
+include:</p>
+
+<p style="margin-left:17%; margin-top: 1em">pager</p>
+
+<p style="margin-left:23%;">Uses <b>sensible-pager</b>(1)
+command to display output. The command uses PAGER
+environment variable to choose your favourite pager. The
+&quot;pager&quot; option may be specified in the
+configuration file to select a specific pager for use with
+apt-listchanges.</p>
+
+<p style="margin-left:17%; margin-top: 1em">browser</p>
+
+<p style="margin-left:23%;">Displays an HTML-formatted
+changelog with hyperlinks for bugs and email addresses using
+the <b>sensible-browser</b>(1) command that examines BROWSER
+environment variable to choose your favourite browser. The
+&quot;browser&quot; option may be specified in the
+configuration file to select a specific browser for use with
+apt-listchanges.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">xterm-pager</p>
+
+<p style="margin-left:23%;">Uses your favorite pager to
+display output, but does so in an xterm (using the
+x-terminal-emulator alternative) in the background. This
+allows you to go on with the upgrade if you like, and
+continue to browse the changelogs. You can override the
+terminal emulator to be used with the &quot;xterm&quot;
+configuration option.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">xterm-browser</p>
+
+<p style="margin-left:23%;">The logical combination of
+xterm-pager and browser. Only appropriate for text-mode
+browsers.</p>
+
+<p style="margin-left:17%; margin-top: 1em">text</p>
+
+<p style="margin-left:23%;">Dumps output to stdout, with no
+pauses.</p>
+
+<p style="margin-left:17%; margin-top: 1em">syslog</p>
+
+<p style="margin-left:23%;">Dumps output to syslog.
+Disabling the titled option is recommended.</p>
+
+<p style="margin-left:17%; margin-top: 1em">log</p>
+
+<p style="margin-left:23%;">Appends output to a log file,
+with an optional filter process. Disabling the titled option
+is recommended.</p>
+
+<p style="margin-left:17%; margin-top: 1em">mail</p>
+
+<p style="margin-left:23%;">Sends mail to the address
+specified with --email-address, and does not display
+changelogs.</p>
+
+<p style="margin-left:17%; margin-top: 1em">gtk</p>
+
+<p style="margin-left:23%;">Spawns a gtk window to display
+the changelogs. Needs python3-gi to be installed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">none</p>
+
+<p style="margin-left:23%;">Does nothing. Can be used to
+prevent apt-listchanges from running when configured to run
+automatically from apt.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Please note
+that apt-listchanges will try to switch to an unprivileged
+user before spawning commands in &quot;browser&quot;,
+&quot;xterm-browser&quot;, and &quot;xterm-pager&quot;
+frontends. However this currently does not apply to the
+&quot;pager&quot; frontend. See also &quot;ENVIRONMENT
+VARIABLES&quot; below.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--email-address=</b><i>address</i></p>
+
+<p style="margin-left:17%;">In addition to displaying it,
+mail a copy of the changelog data to the specified address.
+To only mail changelog entries, use this option with the
+special frontend 'mail'.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--email-format={text|html}</b></p>
+
+<p style="margin-left:17%;">If sending mail copies is
+enabled (see <b>--email-address</b> above), this option
+selects whether the mail should be sent as an old good plain
+text data (which is the default behavior), or as html data
+with clickable links, which might be more convenient for
+people using graphical mail clients.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-c,
+--confirm</b></p>
+
+<p style="margin-left:17%;">Once changelogs have been
+displayed, ask the user whether or not to proceed. If the
+user chooses not to proceed, a nonzero exit status will be
+returned, and apt will abort.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-a,
+--show-all</b></p>
+
+<p style="margin-left:17%;">Rather than trying to display
+changelog entries that are newer than the currently
+installed version of the package, simply display all
+changelog entries for all packages. This is useful for
+viewing the entire changelog of a .deb before extracting
+it.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-n,
+--no-network</b></p>
+
+<p style="margin-left:17%;">In rare cases when a binary
+package (or to be more precise: none of the binary packages
+built from the same source package that are processed
+together as a group) does not contain a changelog file,
+<b>apt-listchanges</b> by default executes <b>apt-get
+changelog</b> to download changelogs from the network
+servers usually provided by your operating system
+distribution. This option will disable this behavior, what
+might be useful for example for systems behind a
+firewall.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--save-seen=</b><i>file</i></p>
+
+<p style="margin-left:17%;">This option will cause
+apt-listchanges to keep track of the last version of a
+package for which changelogs have been displayed, to avoid
+redisplaying the same changelogs in a future invocation. The
+database is stored in the named file. Specify 'none' to
+disable this feature.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--dump-seen</b></p>
+
+<p style="margin-left:17%;">Display the contents of the
+seen database to standard output as a list of lines
+consisting of source package name and its latest seen
+version, separated by space. This option requires the path
+to the seen database to be known: please either specify it
+using <b>--save-seen</b> option or pass <b>--profile=apt</b>
+option to have it read from the configuration file.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--since=</b><i>version</i></p>
+
+<p style="margin-left:17%;">This option will cause
+apt-listchanges to show the entries later than the specified
+version. With this option, the only other argument you can
+pass is the path to a .deb file.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--latest=</b><i>N</i></p>
+
+<p style="margin-left:17%;">This option will cause
+apt-listchanges to show only the latest <i>N</i> entries.
+With this option, the only other argument you can pass is
+the path to a .deb file.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--which={news|changelogs|both}</b></p>
+
+<p style="margin-left:17%;">This option selects whether
+news (from NEWS.Debian et al.), changelogs (from
+changelog.Debian et al.) or both should be displayed. The
+default is to display only news.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--help</b></p>
+
+<p style="margin-left:17%;">Displays syntax
+information.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h,
+--headers</b></p>
+
+<p style="margin-left:17%;">These options will cause
+apt-listchanges to insert a header before each package's
+changelog showing the name of the package, and the names of
+the binary packages which are being upgraded (if there is
+more than one, or it differs from the source package
+name).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--debug</b></p>
+
+<p style="margin-left:17%;">Display some debugging
+information.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--profile=</b><i>name</i></p>
+
+<p style="margin-left:17%;">Select an option profile.
+<i>name</i> corresponds to a section in
+/etc/apt/listchanges.conf. The default when invoked from apt
+is &quot;apt&quot;, and &quot;cmdline&quot; otherwise.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--log=</b><i>file</i></p>
+
+<p style="margin-left:17%;">Select the file appended to by
+the log frontend. The default is
+/var/log/apt/listchanges.log. The filter command option can
+be used to modify the output before it is appended to the
+log file. Please ensure that you setup log rotation for this
+file.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--filter=</b><i>command</i></p>
+
+<p style="margin-left:17%;">Select the command used to
+filter output before it is appended to the log file by the
+log frontend. stdin will receive the <b>apt-listchanges</b>
+output and stdout will be appended to the log file. Separate
+arguments with spaces and quote arguments containing spaces.
+The command will not be run using the shell unless the shell
+is included in the command: <b>sh -c 'date ; cat'</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--reverse</b></p>
+
+<p style="margin-left:17%;">Show the changelog entries in
+reverse order.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--ignore-apt-assume</b>,
+<b>--ignore-debian-frontend</b></p>
+
+<p style="margin-left:17%;">Disable forcing non-interactive
+frontend in some of the cases described in the
+&quot;AUTOMATIC FRONTEND OVERRIDE&quot; section below.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--titled</b>,
+<b>--untitled</b></p>
+
+<p style="margin-left:17%;">Enable or disable the title at
+the beginning of the output.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--select-frontend</b></p>
+
+<p style="margin-left:17%;">Choose frontend interactively.
+This option is mainly for testing purposes, please do not
+use it.</p>
+
+<h2>AUTOMATIC FRONTEND OVERRIDE
+<a name="AUTOMATIC FRONTEND OVERRIDE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For a better
+integration with existing package management tools,
+<b>apt-listchanges</b> tries to detect if package upgrades
+are done in a non-interactive way, and automatically
+switches its frontend to 'text' when <i>any</i> of the
+following conditions is satisfied:</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; the
+standard output is not connected to terminal;</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; the
+<b>--quiet</b> (<b>-q</b>) option is given to
+<b>apt-get</b>(8) (or <b>aptitude</b>(8)); note however that
+when the option is used more than once, apt-listchanges
+switches the frontend to 'mail';</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; the
+<b>--assume-yes</b> (<b>-y</b>) option is given to
+<b>apt-get</b>(8);</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; the
+<b>DEBIAN_FRONTEND</b> environment variable is set to
+&quot;noninteractive&quot;, and
+<b>APT_LISTCHANGES_FRONTED</b> is not set.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For backward
+compatibility purposes the last two of the above checks can
+be disabled either with &quot;ignore_apt_assume=true&quot;
+or &quot;ignore_debian_frontend=true&quot; configuration
+file entries (see &quot;CONFIGURATION FILE&quot; below) or
+by using the command line options:
+<b>--ignore-apt-assume</b> or
+<b>--ignore-debian-frontend</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Please also
+note that the &quot;mail&quot; frontend is already
+non-interactive one, so it is never switched to the
+&quot;text&quot; frontend.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Additionally
+<b>apt-listchanges</b> overrides X11-based frontends
+(&quot;gtk&quot;, &quot;xterm-pager&quot;,
+&quot;xterm-browser&quot;) with &quot;pager&quot; (or
+&quot;browser&quot; in case of &quot;xterm-browser&quot;)
+when the environment variable <b>DISPLAY</b> is not set.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Please note
+that these silent frontends are not subject to the
+overrides: syslog log</p>
+
+<h2>CONFIGURATION FILE
+<a name="CONFIGURATION FILE"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>apt-listchanges</b>
+reads its configuration from the /etc/apt/listchanges.conf.
+The file consists of <i>sections</i> with names enclosed in
+the square brackets. Each section should contain lines in
+the <i>key</i>=<i>value</i> format. Lines starting with the
+&quot;#&quot; sign are treated as comments and ignored.
+Files named <i>name</i>.conf in the
+/etc/apt/listchanges.conf.d directory are also read in the
+same way and override values set in the main configuration
+file.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Section</i>
+is a name of profile that can be used as parameter of the
+<b>--profile</b> option.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+configuration of the &quot;apt&quot; section can be managed
+by <b>debconf</b>(7), and most of the settings there can be
+changed with the help of the <b>dpkg-reconfigure
+apt-listchanges</b> command.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Key</i> is a
+name of some command-line option (except for <b>--apt</b>,
+<b>--profile</b>, <b>--help</b>) with the initial hyphens
+removed, and the remaining hyphens translated to
+underscores, for example: &quot;email_format&quot; or
+&quot;save_seen&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Value</i>
+represents the value of the corresponding option. For
+command-line options that do not take argument, like
+&quot;confirm&quot; or &quot;headers&quot;, the <i>value</i>
+should be set either to &quot;1&quot;, &quot;yes&quot;,
+&quot;true&quot;, and &quot;on&quot; in order to enable the
+option, or to &quot;0&quot;, &quot;no&quot;,
+&quot;false&quot;, and &quot;off&quot; to disable it.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Additionally
+<i>key</i> can be one of the following keywords:
+&quot;browser&quot;, &quot;pager&quot; or &quot;xterm&quot;.
+The <i>value</i> of such configuration entry should be the
+name of an appropriate command, eventually followed by its
+arguments, for example: &quot;pager=less -R&quot;.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&Acirc;&nbsp;1.&Acirc;&nbsp;Example
+configuration file</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">[cmdline] <br>
+frontend=pager</p>
+
+<p style="margin-left:17%; margin-top: 1em">[apt] <br>
+frontend=xterm-pager <br>
+email_address=root <br>
+confirm=1</p>
+
+<p style="margin-left:17%; margin-top: 1em">[custom] <br>
+frontend=browser <br>
+browser=mozilla</p>
+
+<p style="margin-left:11%; margin-top: 1em">The above
+configuration file specifies that in command-line mode, the
+default frontend should be &quot;pager&quot;. In apt mode,
+the xterm-pager frontend is default, a copy of the
+changelogs (if any) should be emailed to root, and
+apt-listchanges should ask for confirmation. If
+apt-listchanges is invoked with --profile=custom, the
+browser frontend will be used, and invoke mozilla.</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">APT_LISTCHANGES_FRONTEND</p>
+
+<p style="margin-left:17%;">Frontend to use.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">APT_LISTCHANGES_USER,
+SUDO_USER, USERNAME</p>
+
+<p style="margin-left:17%;">The value of the first existing
+of the above variables will be used as the name of user to
+switch to when running commands spawned by the
+&quot;browser&quot;, &quot;xterm-browser&quot;, and
+&quot;xterm-pager&quot; frontends if <b>apt-listchanges</b>
+is started by a privileged user.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">DEBIAN_FRONTEND</p>
+
+<p style="margin-left:17%;">If set to
+&quot;noninteractive&quot;, then it can force
+<b>apt-listchanges</b> to use non-interactive frontend, see
+the &quot;AUTOMATIC FRONTEND OVERRIDE&quot; section for
+details.</p>
+
+<p style="margin-left:11%; margin-top: 1em">BROWSER</p>
+
+<p style="margin-left:17%;">Used by the browser frontend,
+should be set to a command expecting a file: URL for an HTML
+file to display.</p>
+
+<p style="margin-left:11%; margin-top: 1em">PAGER</p>
+
+<p style="margin-left:17%;">Used by the pager frontend.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">APT_HOOK_INFO_FD</p>
+
+<p style="margin-left:17%;">File descriptor to read package
+names from in the <b>--apt</b> mode. (Apt is expected to set
+this variable to a proper file descriptor number).</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">/etc/apt/listchanges.conf</p>
+
+<p style="margin-left:17%;">Configuration file.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">/etc/apt/listchanges.conf.d/*.conf</p>
+
+<p style="margin-left:17%;">Configuration file override
+files.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">/etc/apt/apt.conf.d/20listchanges</p>
+
+<p style="margin-left:17%;">File used for registering
+apt-listchanges into apt system.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">/var/lib/apt/listchanges.db</p>
+
+<p style="margin-left:17%;">Database used for
+save-seen.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">apt-listchanges
+was written by Matt Zimmerman &lt;mdz@debian.org&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">The current
+maintainer is Robert Luberda &lt;robert@debian.org&gt;</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>sensible-pager</b>(1),
+<b>sensible-browser</b>(1), <b>apt-get</b>(8),
+<b>aptitude</b>(8)</p>
+<hr>
+</body>
+</html>

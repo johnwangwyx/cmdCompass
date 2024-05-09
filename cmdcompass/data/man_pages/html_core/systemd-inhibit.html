@@ -1,0 +1,461 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:52 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SYSTEMD-INHIBIT</title>
+
+</head>
+<body>
+
+<h1 align="center">SYSTEMD-INHIBIT</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#EXAMPLE">EXAMPLE</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#NOTES">NOTES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">systemd-inhibit
+- Execute a program with an inhibition lock taken</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="81%">
+
+
+<p style="margin-top: 1em"><b>systemd-inhibit [OPTIONS...]
+[COMMAND] [ARGUMENTS...]</b></p></td>
+<td width="8%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="81%">
+
+
+<p style="margin-top: 1em"><b>systemd-inhibit [OPTIONS...]
+--list</b></p> </td>
+<td width="8%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-inhibit</b>
+may be used to execute a program with a shutdown, sleep, or
+idle inhibitor lock taken. The lock will be acquired before
+the specified command line is executed and released
+afterwards.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Inhibitor locks
+may be used to block or delay system sleep and shutdown
+requests from the user, as well as automatic idle handling
+of the OS. This is useful to avoid system suspends while an
+optical disc is being recorded, or similar operations that
+should not be interrupted.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For more
+information see the <b><font color="#0000FF">Inhibitor Lock
+Developer Documentation</font></b>
+<small><font color="#000000">[1]</font></small>
+<font color="#000000">.</font></p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+following options are understood:</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--what=</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Takes a
+colon-separated list of one or more operations to inhibit:
+&quot;shutdown&quot;, &quot;sleep&quot;, &quot;idle&quot;,
+&quot;handle-power-key&quot;,
+&quot;handle-suspend-key&quot;,
+&quot;handle-hibernate-key&quot;,
+&quot;handle-lid-switch&quot;, for inhibiting
+reboot/power-off/halt/kexec, suspending/hibernating, the
+automatic idle detection, or the low-level handling of the
+power/sleep key and the lid switch, respectively. If
+omitted, defaults to
+&quot;idle:sleep:shutdown&quot;.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--who=</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Takes a
+short, human-readable descriptive string for the program
+taking the lock. If not passed, defaults to the command line
+string.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--why=</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Takes a
+short, human-readable descriptive string for the reason for
+taking the lock. Defaults to &quot;Unknown
+reason&quot;.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--mode=</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Takes
+either &quot;block&quot; or &quot;delay&quot; and describes
+how the lock is applied. If &quot;block&quot; is used (the
+default), the lock prohibits any of the requested operations
+without time limit, and only privileged users may override
+it. If &quot;delay&quot; is used, the lock can only delay
+the requested operations for a limited time. If the time
+elapses, the lock is ignored and the operation executed. The
+time limit may be specified in <b>logind.conf</b>(5). Note
+that &quot;delay&quot; is only available for
+&quot;sleep&quot; and &quot;shutdown&quot;.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--list</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Lists all
+active inhibition locks instead of acquiring one.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--no-pager</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Do not
+pipe output into a pager.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--no-legend</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Do not
+print the legend, i.e. column headers and the footer with
+hints.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>-h</b>,
+<b>--help</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Print a
+short help text and exit.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--version</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Print a
+short version string and exit.</font></p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Returns
+the exit status of the executed program.</font></p>
+
+<h2>EXAMPLE
+<a name="EXAMPLE"></a>
+</h2>
+
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">#
+systemd-inhibit wodim foobar.iso</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">This
+burns the ISO image foobar.iso on a CD using
+<b>wodim</b>(1), and inhibits system sleeping, shutdown and
+idle while doing so.</font></p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>$SYSTEMD_LOG_LEVEL</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">The
+maximum log level of emitted messages (messages with a
+higher log level, i.e. less important ones, will be
+suppressed). Either one of (in order of decreasing
+importance) <b>emerg</b>, <b>alert</b>, <b>crit</b>,
+<b>err</b>, <b>warning</b>, <b>notice</b>, <b>info</b>,
+<b>debug</b>, or an integer in the range 0...7. See
+<b>syslog</b>(3) for more information.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>$SYSTEMD_LOG_COLOR</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">A
+boolean. If true, messages written to the tty will be
+colored according to priority.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">This
+setting is only useful when messages are written directly to
+the terminal, because <b>journalctl</b>(1) and other tools
+that display logs will color messages based on the log level
+on their own.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>$SYSTEMD_LOG_TIME</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">A
+boolean. If true, console log messages will be prefixed with
+a timestamp.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">This
+setting is only useful when messages are written directly to
+the terminal or a file, because <b>journalctl</b>(1) and
+other tools that display logs will attach timestamps based
+on the entry metadata on their own.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>$SYSTEMD_LOG_LOCATION</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">A
+boolean. If true, messages will be prefixed with a filename
+and line number in the source code where the message
+originates.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">Note
+that the log location is often attached as metadata to
+journal entries anyway. Including it directly in the message
+text can nevertheless be convenient when debugging
+programs.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>$SYSTEMD_LOG_TID</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">A
+boolean. If true, messages will be prefixed with the current
+numerical thread ID (TID).</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">Note
+that the this information is attached as metadata to journal
+entries anyway. Including it directly in the message text
+can nevertheless be convenient when debugging
+programs.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>$SYSTEMD_LOG_TARGET</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">The
+destination for log messages. One of <b>console</b> (log to
+the attached tty), <b>console-prefixed</b> (log to the
+attached tty but with prefixes encoding the log level and
+&quot;facility&quot;, see <b>syslog</b>(3), <b>kmsg</b> (log
+to the kernel circular log buffer), <b>journal</b> (log to
+the journal), <b>journal-or-kmsg</b> (log to the journal if
+available, and to kmsg otherwise), <b>auto</b> (determine
+the appropriate log target automatically, the default),
+<b>null</b> (disable log output).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>$SYSTEMD_PAGER</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Pager to
+use when <b>--no-pager</b> is not given; overrides
+<i>$PAGER</i>. If neither <i>$SYSTEMD_PAGER</i> nor
+<i>$PAGER</i> are set, a set of well-known pager
+implementations are tried in turn, including <b>less</b>(1)
+and <b>more</b>(1), until one is found. If no pager
+implementation is discovered no pager is invoked. Setting
+this environment variable to an empty string or the value
+&quot;cat&quot; is equivalent to passing
+<b>--no-pager</b>.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">Note:
+if <i>$SYSTEMD_PAGERSECURE</i> is not set,
+<i>$SYSTEMD_PAGER</i> (as well as <i>$PAGER</i>) will be
+silently ignored.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>$SYSTEMD_LESS</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Override
+the options passed to <b>less</b> (by default
+&quot;FRSXMK&quot;).</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">Users
+might want to change two options in particular:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000"><b>K</b></font></p>
+
+<p style="margin-left:23%;"><font color="#000000">This
+option instructs the pager to exit immediately when Ctrl+C
+is pressed. To allow <b>less</b> to handle Ctrl+C itself to
+switch back to the pager command prompt, unset this
+option.</font></p>
+
+
+<p style="margin-left:23%; margin-top: 1em"><font color="#000000">If
+the value of <i>$SYSTEMD_LESS</i> does not include
+&quot;K&quot;, and the pager that is invoked is <b>less</b>,
+Ctrl+C will be ignored by the executable, and needs to be
+handled by the pager.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000"><b>X</b></font></p>
+
+<p style="margin-left:23%;"><font color="#000000">This
+option instructs the pager to not send termcap
+initialization and deinitialization strings to the terminal.
+It is set by default to allow command output to remain
+visible in the terminal even after the pager exits.
+Nevertheless, this prevents some pager functionality from
+working, in particular paged output cannot be scrolled with
+the mouse.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">See
+<b>less</b>(1) for more discussion.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>$SYSTEMD_LESSCHARSET</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Override
+the charset passed to <b>less</b> (by default
+&quot;utf-8&quot;, if the invoking terminal is determined to
+be UTF-8 compatible).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>$SYSTEMD_PAGERSECURE</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Takes a
+boolean argument. When true, the &quot;secure&quot; mode of
+the pager is enabled; if false, disabled. If
+<i>$SYSTEMD_PAGERSECURE</i> is not set at all, secure mode
+is enabled if the effective UID is not the same as the owner
+of the login session, see <b>geteuid</b>(2) and
+<b>sd_pid_get_owner_uid</b>(3). In secure mode,
+<b>LESSSECURE=1</b> will be set when invoking the pager, and
+the pager shall disable commands that open or create new
+files or start new subprocesses. When
+<i>$SYSTEMD_PAGERSECURE</i> is not set at all, pagers which
+are not known to implement secure mode will not be used.
+(Currently only <b>less</b>(1) implements secure
+mode.)</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">Note:
+when commands are invoked with elevated privileges, for
+example under <b>sudo</b>(8) or <b>pkexec</b>(1), care must
+be taken to ensure that unintended interactive features are
+not enabled. &quot;Secure&quot; mode for the pager may be
+enabled automatically as describe above. Setting
+<i>SYSTEMD_PAGERSECURE=0</i> or not removing it from the
+inherited environment allows the user to invoke arbitrary
+commands. Note that if the <i>$SYSTEMD_PAGER</i> or
+<i>$PAGER</i> variables are to be honoured,
+<i>$SYSTEMD_PAGERSECURE</i> must be set too. It might be
+reasonable to completely disable the pager using
+<b>--no-pager</b> instead.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>$SYSTEMD_COLORS</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Takes a
+boolean argument. When true, <b>systemd</b> and related
+utilities will use colors in their output, otherwise the
+output will be monochrome. Additionally, the variable can
+take one of the following special values: &quot;16&quot;,
+&quot;256&quot; to restrict the use of colors to the base 16
+or 256 ANSI colors, respectively. This can be specified to
+override the automatic decision based on <i>$TERM</i> and
+what the console is connected to.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>$SYSTEMD_URLIFY</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">The value
+must be a boolean. Controls whether clickable links should
+be generated in the output for terminal emulators supporting
+this. This can be specified to override the decision that
+<b>systemd</b> makes based on <i>$TERM</i> and other
+conditions.</font></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>systemd</b>(1),
+<b>logind.conf</b>(5)</font></p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">1.</font></p> </td>
+<td width="2%"></td>
+<td width="58%">
+
+
+<p style="margin-top: 1em"><font color="#000000">Inhibitor
+Lock Developer Documentation</font></p></td>
+<td width="25%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">https://www.freedesktop.org/wiki/Software/systemd/inhibit</font></p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:30 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pbmtolj User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pbmtolj User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pbmtolj -
+convert a PBM image to HP LaserJet format</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbmtolj</b>
+[<b>-resolution</b> <i>N</i>] [<b>-float</b>]
+[<b>-noreset</b>] [<b>-packbits</b>] [<b>-delta</b>]
+[<b>-compress</b>] [<i>pbmfile</i>] [<b>-copies</b>
+<i>N</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can
+abbreviate any option to its shortest unique prefix.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbmtolj</b>
+reads a PBM image as input and produces HP LaserJet data as
+output. You can send this data to a LaserJet or DeskJet
+printer (at least some of them).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each pixel in
+the input PBM image becomes one dot in the printed output.
+Therefore, you must make sure the width and height of the
+input are appropriate for the print resolution you choose
+and the print area you want. E.g. if you print at 300 dpi
+and want the image to print as 8 inches by 10, you must
+supply a PBM that is 2400 pixels wide by 3000 pixels high.
+You can adjust the size of the input with <b>pamscale</b>,
+<b>pamstretch</b>, <b>pbmreduce</b>, or
+<b>pamenlarge</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The input may
+be a multi-image PBM stream. Each input image becomes a page
+of output. But before Netpbm 10.28 (June 2005), images after
+the first one are ignored.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that there
+is no ljtopbm tool.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pbmtolj</b> recognizes the following command line
+options: <b><br>
+-resolution</b></p>
+
+<p style="margin-left:22%;">Specifies the resolution of the
+output device, in dpi. Another way to look at this is as a
+declaration of the resolution of the input image (PBM images
+don&rsquo;t have inherent resolution). Typical values are
+75, 100, 150, 300, and 600. The default is 75.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-float</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Suppresses positioning commands. By default,
+<b>pbmtolj</b> places the sequence <i>ESC &amp; l 0 E</i> in
+the output, which means to force the top margin to zero.
+With <b>-float</b>, <b>pbmtolj</b> omits that command.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-noreset</b></p>
+
+<p style="margin-left:22%;">Prevents pbmtolj from writing
+the reset sequences to the beginning and end of the output
+file.</p>
+
+<p style="margin-left:11%;"><b>-packbits</b></p>
+
+<p style="margin-left:22%;">Enables use of TIFF packbits
+compression.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-delta</b></p></td>
+<td width="2%"></td>
+<td width="70%">
+
+
+<p>Enables use of delta-between-rows compression.</p></td>
+<td width="8%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-compress</b></p>
+
+<p style="margin-left:22%;">Enables use of both TIFF
+packbits, and delta-between-rows compression.</p>
+
+<p style="margin-left:11%;"><b>-copies</b></p>
+
+<p style="margin-left:22%;">Specifies the number of copies.
+The default is 1. This option controls the &quot;number of
+copies&quot; printer control; <b>pbmtolj</b> generates only
+one copy of the image.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmtopclxl</b>(1),
+<b>ppmtolj</b>(1), <b>pjtoppm</b>(1), <b>ppmtopj</b>(1),
+<b>ppmtopjxl</b>(1), <b>thinkjettopbm</b>(1),
+<b>pbm</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1988 by Jef Poskanzer and Michael Haberler. <b>-float</b>
+and <b>-noreset</b> options added by Wim Lewis.
+<b>-delta</b>, <b>-packbits</b>, and <b>-compress</b>
+options added by Dave Platt.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pbmtolj.html</b></p>
+<hr>
+</body>
+</html>

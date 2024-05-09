@@ -1,0 +1,345 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:09 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>HARDLINK</title>
+
+</head>
+<body>
+
+<h1 align="center">HARDLINK</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#ARGUMENTS">ARGUMENTS</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#AVAILABILITY">AVAILABILITY</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">hardlink - link
+multiple copies of a file</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>hardlink</b>
+[options] [<i>directory</i>|<i>file</i>]...</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>hardlink</b>
+is a tool that replaces copies of a file with either
+hardlinks or copy-on-write clones, thus saving space.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>hardlink</b>
+first creates a binary tree of file sizes and then compares
+the content of files that have the same size. There are two
+basic content comparison methods. The <b>memcmp</b> method
+directly reads data blocks from files and compares them. The
+other method is based on checksums (like SHA256); in this
+case for each data block a checksum is calculated by the
+Linux kernel crypto API, and this checksum is stored in
+userspace and used for file comparisons.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For each file
+also an &quot;intro&quot; buffer (32 bytes) is cached. This
+buffer is used independently from the comparison method and
+requested cache-size and io-size. The &quot;intro&quot;
+buffer dramatically reduces operations with data content as
+files are very often different from the beginning.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Display help text and exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-V</b>,
+<b>--version</b></p>
+
+<p style="margin-left:17%;">Print version and exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-v</b>,
+<b>--verbose</b></p>
+
+<p style="margin-left:17%;">Verbose output, explain to the
+user what is being done. If specified once, every hardlinked
+file is displayed. If specified twice, it also shows every
+comparison.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-q</b>,
+<b>--quiet</b></p>
+
+<p style="margin-left:17%;">Quiet mode, don&rsquo;t print
+anything.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-n</b>,
+<b>--dry-run</b></p>
+
+<p style="margin-left:17%;">Do not act, just print what
+would happen.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-y</b>,
+<b>--method</b> <i>name</i></p>
+
+<p style="margin-left:17%;">Set the file content comparison
+method. The currently supported methods are sha256, sha1,
+crc32c and memcmp. The default is sha256, or memcmp if Linux
+Crypto API is not available. The methods based on checksums
+are implemented in zero-copy way, in this case file contents
+are not copied to the userspace and all calculation is done
+in kernel.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--reflink</b>[=<i>when</i>]</p>
+
+<p style="margin-left:17%;">Create copy-on-write clones
+(aka reflinks) rather than hardlinks. The reflinked files
+share only on-disk data, but the file mode and owner can be
+different. It&rsquo;s recommended to use it with
+<b>--ignore-owner</b> and <b>--ignore-mode</b> options. This
+option implies <b>--skip-reflinks</b> to ignore already
+cloned files.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The optional
+argument <i>when</i> can be <b>never</b>, <b>always</b>, or
+<b>auto</b>. If the <i>when</i> argument is omitted, it
+defaults to <b>auto</b>, in this case, <b>hardlink</b>
+checks filesystem type and uses reflinks on BTRFS and XFS
+only, and fallback to hardlinks when creating reflink is
+impossible. The argument <b>always</b> disables filesystem
+type detection and fallback to hardlinks, in this case, only
+reflinks are allowed.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--skip-reflinks</b></p>
+
+<p style="margin-left:17%;">Ignore already cloned files.
+This option may be used without <b>--reflink</b> when
+creating classic hardlinks.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-f</b>,
+<b>--respect-name</b></p>
+
+<p style="margin-left:17%;">Only try to link files with the
+same (base)name. It&rsquo;s strongly recommended to use long
+options rather than <b>-f</b> which is interpreted in a
+different way by other <b>hardlink</b> implementations.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-p</b>,
+<b>--ignore-mode</b></p>
+
+<p style="margin-left:17%;">Link and compare files even if
+their mode is different. Results may be slightly
+unpredictable.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-o</b>,
+<b>--ignore-owner</b></p>
+
+<p style="margin-left:17%;">Link and compare files even if
+their owner information (user and group) differs. Results
+may be unpredictable.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-t</b>,
+<b>--ignore-time</b></p>
+
+<p style="margin-left:17%;">Link and compare files even if
+their time of modification is different. This is usually a
+good choice.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-c
+--content</b></p>
+
+<p style="margin-left:17%;">Consider only file content, not
+attributes, when determining whether two files are equal.
+Same as <b>-pot</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-X</b>,
+<b>--respect-xattrs</b></p>
+
+<p style="margin-left:17%;">Only try to link files with the
+same extended attributes.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-m</b>,
+<b>--maximize</b></p>
+
+<p style="margin-left:17%;">Among equal files, keep the
+file with the highest link count.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-M</b>,
+<b>--minimize</b></p>
+
+<p style="margin-left:17%;">Among equal files, keep the
+file with the lowest link count.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-O</b>,
+<b>--keep-oldest</b></p>
+
+<p style="margin-left:17%;">Among equal files, keep the
+oldest file (least recent modification time). By default,
+the newest file is kept. If <b>--maximize</b> or
+<b>--minimize</b> is specified, the link count has a higher
+precedence than the time of modification.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-x</b>,
+<b>--exclude</b> <i>regex</i></p>
+
+<p style="margin-left:17%;">A regular expression which
+excludes files from being compared and linked.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-i</b>,
+<b>--include</b> <i>regex</i></p>
+
+<p style="margin-left:17%;">A regular expression to include
+files. If the option <b>--exclude</b> has been given, this
+option re-includes files which would otherwise be excluded.
+If the option is used without <b>--exclude</b>, only files
+matched by the pattern are included.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-s</b>,
+<b>--minimum-size</b> <i>size</i></p>
+
+<p style="margin-left:17%;">The minimum size to consider.
+By default this is 1, so empty files will not be linked. The
+<i>size</i> argument may be followed by the multiplicative
+suffixes KiB (=1024), MiB (=1024*1024), and so on for GiB,
+TiB, PiB, EiB, ZiB and YiB (the &quot;iB&quot; is optional,
+e.g., &quot;K&quot; has the same meaning as
+&quot;KiB&quot;).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-S</b>,
+<b>--maximum-size</b> <i>size</i></p>
+
+<p style="margin-left:17%;">The maximum size to consider.
+By default this is 0 and 0 has the special meaning of
+unlimited. The <i>size</i> argument may be followed by the
+multiplicative suffixes KiB (=1024), MiB (=1024*1024), and
+so on for GiB, TiB, PiB, EiB, ZiB and YiB (the
+&quot;iB&quot; is optional, e.g., &quot;K&quot; has the same
+meaning as &quot;KiB&quot;).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-b</b>,
+<b>--io-size</b> <i>size</i></p>
+
+<p style="margin-left:17%;">The size of the <b>read</b>(2)
+or <b>sendfile</b>(2) buffer used when comparing file
+contents. The <i>size</i> argument may be followed by the
+multiplicative suffixes KiB, MiB, etc. The &quot;iB&quot; is
+optional, e.g., &quot;K&quot; has the same meaning as
+&quot;KiB&quot;. The default is 8KiB for memcmp method and
+1MiB for the other methods. The only memcmp method uses
+process memory for the buffer, other methods use zero-copy
+way and I/O operation is done in the kernel. The size may be
+altered on the fly to fit a number of cached content
+checksums.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-r</b>,
+<b>--cache-size</b> <i>size</i></p>
+
+<p style="margin-left:17%;">The size of the cache for
+content checksums. All non-memcmp methods calculate checksum
+for each file content block (see <b>--io-size</b>), these
+checksums are cached for the next comparison. The size is
+important for large files or a large sets of files of the
+same size. The default is 10MiB.</p>
+
+<h2>ARGUMENTS
+<a name="ARGUMENTS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>hardlink</b>
+takes one or more directories which will be searched for
+files to be linked.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The original
+<b>hardlink</b> implementation uses the option <b>-f</b> to
+force hardlinks creation between filesystem. This very
+rarely usable feature is no more supported by the current
+<b>hardlink</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>hardlink</b>
+assumes that the trees it operates on do not change during
+operation. If a tree does change, the result is undefined
+and potentially dangerous. For example, if a regular file is
+replaced by a device, <b>hardlink</b> may start reading from
+the device. If a component of a path is replaced by a
+symbolic link or file permissions change, security may be
+compromised. Do not run <b>hardlink</b> on a changing tree
+or on a tree controlled by another user.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">There are
+multiple <b>hardlink</b> implementations. The very first
+implementation is from Jakub Jelinek for Fedora
+distribution, this implementation has been used in
+util-linux between versions v2.34 to v2.36. The current
+implementations is based on Debian version from Julian
+Andres Klode.</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For bug
+reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+
+<h2>AVAILABILITY
+<a name="AVAILABILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>hardlink</b> command is part of the util-linux package
+which can be downloaded from <i>Linux Kernel Archive</i>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>
+<hr>
+</body>
+</html>

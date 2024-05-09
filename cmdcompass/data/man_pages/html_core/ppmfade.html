@@ -1,0 +1,278 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:37 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Ppmfade User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Ppmfade User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ppmfade -
+generate a transition between two image files using special
+effects</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmfade</b>
+[<b>-f</b> <i>first.ppm</i>] [<b>-l</b> <i>last.ppm</i>]
+[<b>-mix</b>|<b>-spread</b>|<b>-shift</b>|
+<b>-relief</b>|<b>-oil</b>|<b>-edge</b>|<b>-bentley</b>|<b>-block</b>]
+[<b>-base</b> <i>name</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmfade</b>generates
+a transition between either two input images or between one
+input image and black. You can use the 30 intermediate
+images generated to show a smooth transition between
+segments of a movie. The input and output images are in the
+PPM format. If you specify both input images, they should
+both be the same size. If you want to fade from black to an
+image, specify only the last image. If you want to fade from
+an image to black, specify only the first image.
+<b>ppmfade</b> names the resulting image files
+<i>base</i><b>.</b><i>nnnn</i><b>.ppm</b>, where <i>nnnn</i>
+is a number varying between 0001 and 0030 and <i>base</i> is
+what you specify with via the <b>-base</b> option (default
+<b>fade</b>).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Another way to
+convert by steps from one image to another is morphing. You
+can use <b>xmorph</b> to do that.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>ppmfade</b> recognizes the following command line
+options: <b><br>
+-f</b> <i>first.ppm</i></p>
+
+<p style="margin-left:22%;">This is the image file (PPM
+format) to be used at the beginning of the transition. If
+you don&rsquo;t specify this, the fade will start from
+black.</p>
+
+<p style="margin-left:11%;"><b>-l</b> <i>last.ppm</i></p>
+
+<p style="margin-left:22%;">This is the image file (PPM
+format) to be used at the ending of the transition. If you
+don&rsquo;t specify this, the fade will end with black.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-mix</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>The two images are superimposed with the brightness of
+the first image decreasing from full to none and the
+brightness of the final image increasing from none to full.
+The transition is quadratic in brightness with faster
+transition in the beginning and slower at the end.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-spread</b></p>
+
+<p style="margin-left:22%;">The pixels in the first image
+will be moved (spread) further and further from their
+original location and then moved into the proper location in
+the final image. This is the default transition.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-shift</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The pixels in the first image will be shifted further
+and further horizontally from their original location and
+then moved into the proper location in the final image.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-relief</b></p>
+
+<p style="margin-left:22%;">The first image is faded to a
+Laplacian relief filtered version of the first image. This
+is then faded to a Laplacian relief filtered version of the
+second image and finally faded to the final image.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-oil</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>The first image is faded to an &quot;oil transfer&quot;
+version of the first image. This is then faded to an
+&quot;oil transfer&quot; version of the second image and
+finally faded to the final image.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-edge</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>The first image is faded to an edge detected version of
+the first image. This is then faded to an edge detected
+version of the second image and finally faded to the final
+image.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-bentley</b></p>
+
+<p style="margin-left:22%;">The first image is faded to a
+&quot;Bentley Effect&quot; version of the first image. This
+is then faded to a &quot;Bentley Effect&quot; version of the
+second image and finally faded to the final image.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-block</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The first image is defocused to small blocks. The small
+blocks are converted to match a defocused version of the
+last image. The block version of the last image is then
+focused to the final image.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-base</b> <i>name</i></p>
+
+<p style="margin-left:22%;">This forms part of the output
+filenames, as described above.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmfade -f
+teapot.ppm -l pyr.ppm</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Fade from
+teapot.ppm to pyr.ppm generating fade.0001.ppm to
+fade.0030.ppm using the &quot;spread&quot; transition.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmfade -l
+teapot.ppm</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Fade from black
+to teapot.ppm generating fade.0001.ppm to fade.0030.ppm.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmfade -f
+teapot.ppm -base end</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Fade from
+teapot.ppm to black generating end.0001.ppm to
+end.0030.ppm.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>tontsc</b>
+manual, <b>sgifade</b> manual, <b>smart_vfr</b> manual,
+<b>xmorph</b> manual, <b>ppm</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Bryan
+Henderson, Olympia WA; April 2000</p>
+
+<p style="margin-left:11%; margin-top: 1em">Inspired by and
+intended as a replacement for <b>pbmfade</b> (not a Netpbm
+program) by Wesley C. Barris.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/ppmfade.html</b></p>
+<hr>
+</body>
+</html>

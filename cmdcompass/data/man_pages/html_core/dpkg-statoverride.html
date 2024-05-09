@@ -1,0 +1,335 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:02 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>dpkg-statoverride</title>
+
+</head>
+<body>
+
+<h1 align="center">dpkg-statoverride</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#COMMANDS">COMMANDS</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">dpkg-statoverride
+- override ownership and mode of files</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dpkg-statoverride</b>
+[<i>option</i>...] <i>command</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">&ldquo;<b>stat
+overrides</b>&rdquo; are a way to tell <b>dpkg</b>(1) to use
+a different owner or mode for a path when a package is
+installed (this applies to any filesystem object that
+<b>dpkg</b> handles, including directories, devices, etc.).
+This can be used to force programs that are normally setuid
+to be install without a setuid flag, or only executable by a
+certain group.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dpkg-statoverride</b>
+is a utility to manage the list of stat overrides. It has
+three basic functions: adding, removing and listing
+overrides.</p>
+
+<h2>COMMANDS
+<a name="COMMANDS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--add</b>
+<i>user group mode path</i></p>
+
+<p style="margin-left:17%;">Add an override for
+<i>path</i>. <i>path</i> does not need to exist nor be known
+to <b>dpkg</b> when this command is used; the override will
+be stored and used later. Users and groups can be specified
+by their name (for example <b>root</b> or <b>nobody</b>), or
+by their number by prepending the number with a
+&rsquo;<b>#</b>&rsquo; (for example <b>#0</b> or
+<b>#65534</b>). The <i>mode</i> needs to be specified in
+octal.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If
+<b>--update</b> is specified and <i>path</i> exists, it is
+immediately set to the new owner and mode.</p>
+
+<p style="margin-left:11%;"><b>--remove</b> <i>path</i></p>
+
+<p style="margin-left:17%;">Remove an override for
+<i>path</i>, the status of <i>path</i> is left unchanged by
+this command.</p>
+
+<p style="margin-left:11%;"><b>--list</b>
+[<i>glob-pattern</i>]</p>
+
+<p style="margin-left:17%;">List all overrides. If a glob
+pattern is specified restrict the output to overrides which
+match the glob.</p>
+
+<p style="margin-left:11%;"><b>--help</b></p>
+
+<p style="margin-left:17%;">Show the usage message and
+exit.</p>
+
+<p style="margin-left:11%;"><b>--force-help</b></p>
+
+<p style="margin-left:17%;">Give help about the
+<b>--force-</b><i>thing</i> options (since dpkg 1.19.5).</p>
+
+<p style="margin-left:11%;"><b>--version</b></p>
+
+<p style="margin-left:17%;">Show the version and exit.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--admindir</b>
+<i>directory</i></p>
+
+<p style="margin-left:17%;">Set the administrative
+directory to <i>directory</i>. This is where the
+<i>statoverride</i> file is stored. Defaults to
+&laquo;<i>/var/lib/dpkg</i>&raquo; if
+<b><small>DPKG_ADMINDIR</small></b> has not been set.</p>
+
+<p style="margin-left:11%;"><b>--instdir</b>
+<i>directory</i></p>
+
+<p style="margin-left:17%;">Set the installation directory,
+which refers to the directory where packages get installed
+(since dpkg 1.19.2). Defaults to &laquo;<i>/</i>&raquo; if
+<b><small>DPKG_ROOT</small></b> has not been set.</p>
+
+<p style="margin-left:11%;"><b>--root</b>
+<i>directory</i></p>
+
+<p style="margin-left:17%;">Set the root directory to
+<b>directory</b>, which sets the installation directory to
+&laquo;<i>directory</i>&raquo; and the administrative
+directory to
+&laquo;<i>directory</i><b>/var/lib/dpkg</b>&raquo; (since
+dpkg 1.19.2) if <b><small>DPKG_ROOT</small></b> has not been
+set.</p>
+
+<p style="margin-left:11%;"><b>--force-</b><i>things</i>
+<b><br>
+--no-force-</b><i>things</i>,
+<b>--refuse-</b><i>things</i></p>
+
+<p style="margin-left:17%;">Force or refuse
+(<b>no-force</b> and <b>refuse</b> mean the same thing) to
+do some things (since dpkg 1.19.5). <i>things</i> is a comma
+separated list of things specified below.
+<b>--force-help</b> displays a message describing them.
+Things marked with (*) are forced by default.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>Warning:
+These options are mostly intended to be used by experts
+only. Using them without fully understanding their effects
+may break your whole system.</i></p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>all</b>:
+Turns on (or off) all force options.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b>statoverride-add</b>:
+Overwrite an existing stat override when adding it (since
+dpkg 1.19.5).</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b>statoverride-remove</b>:
+Ignore a missing stat override when removing it (since dpkg
+1.19.5).</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b>security-mac</b>(*):
+Use platform-specific Mandatory Access Controls (
+<small>MAC</small> ) based security when installing files
+into the filesystem (since dpkg 1.19.5). On Linux systems
+the implementation uses SELinux.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b>not-root</b>:
+Try to (de)install things even when not root (since dpkg
+1.21.8).</p>
+
+<p style="margin-left:11%;"><b>--force</b></p>
+
+<p style="margin-left:17%;">Force an action, even if a
+sanity check would otherwise prohibit it. This is necessary
+to override an existing override. This option is deprecated
+(since dpkg 1.19.5), it is replaced by
+<b>--force-all</b>.</p>
+
+<p style="margin-left:11%;"><b>--update</b></p>
+
+<p style="margin-left:17%;">Immediately try to change the
+<i>path</i> to the new owner and mode if it exists.</p>
+
+<p style="margin-left:11%;"><b>--quiet</b></p>
+
+<p style="margin-left:17%;">Be less verbose about what we
+do.</p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em"><b>0</b></p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">The requested action was
+successfully performed.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p><b>1</b></p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>For <b>--list</b>, if there are no overrides or none
+match the supplied glob.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p><b>2</b></p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>Fatal or unrecoverable error due to invalid command-line
+usage, or interactions with the system, such as accesses to
+the database, memory allocations, etc.</p></td></tr>
+</table>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><small>DPKG_ROOT</small></b></p>
+
+<p style="margin-left:17%;">If set and the <b>--instdir</b>
+or <b>--root</b> options have not been specified, it will be
+used as the filesystem root directory (since dpkg
+1.19.2).</p>
+
+
+<p style="margin-left:11%;"><b><small>DPKG_ADMINDIR</small></b></p>
+
+<p style="margin-left:17%;">If set and the
+<b>--admindir</b> or <b>--root</b> options have not been
+specified, it will be used as the <b>dpkg</b> data
+directory.</p>
+
+
+<p style="margin-left:11%;"><b><small>DPKG_DEBUG</small></b></p>
+
+<p style="margin-left:17%;">Sets the debug mask (since dpkg
+1.21.10) from an octal value. The currently accepted flags
+are described in the <b>dpkg --debug</b> option, but not all
+these flags might have an effect on this program.</p>
+
+
+<p style="margin-left:11%;"><b><small>DPKG_FORCE</small></b></p>
+
+<p style="margin-left:17%;">If set and none of the
+<b>--force-</b><i>...</i> options have been specified, it
+will be used as the force options to use (since dpkg
+1.19.5).</p>
+
+
+<p style="margin-left:11%;"><b><small>DPKG_COLORS</small></b></p>
+
+<p style="margin-left:17%;">Sets the color mode (since dpkg
+1.18.5). The currently accepted values are: <b>auto</b>
+(default), <b>always</b> and <b>never</b>.</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/var/lib/dpkg/statoverride</i></p>
+
+<p style="margin-left:17%;">File which contains the current
+list of stat overrides of the system. It is located in the
+<b>dpkg</b> administration directory, along with other files
+important to <b>dpkg</b>, such as <i>status</i> or
+<i>available</i>.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>Note:
+dpkg-statoverride</b> preserves the old copy of this file,
+with extension &ldquo;-old&rdquo;, before replacing it with
+the new one.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dpkg</b>(1).</p>
+<hr>
+</body>
+</html>

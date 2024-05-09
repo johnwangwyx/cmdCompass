@@ -1,0 +1,220 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:35:00 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Xwdtopnm User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Xwdtopnm User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">xwdtopnm -
+convert an X11 or X10 window dump file to a PNM image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>xwdtopnm</b>
+[<b>-verbose</b>] [<b>-headerdump</b>] [<i>xwdfile</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>xwdtopnm</b>
+reads an X11 or X10 window dump file as input and produces a
+PNM image as output. The type of the output image depends on
+the input file - if it&rsquo;s black and white, the output
+is PBM. If it&rsquo;s grayscale, the output is PGM.
+Otherwise, it&rsquo;s PPM. The program tells you which type
+it is writing.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Using this
+program, you can convert anything you can display on an X
+workstation&rsquo;s screen into a PNM image. Just display
+whatever you&rsquo;re interested in, run the <b>xwd</b>
+program to capture the contents of the window, run it
+through <b>xwdtopnm</b>, and then use <b>pamcut</b> to
+select the part you want.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that a
+pseudocolor XWD image (typically what you get when you make
+a dump of a pseudocolor X window) has maxval 65535, which
+means the PNM file that <b>xwdtopnm</b> generates has maxval
+65535. Many older image processing programs (that
+aren&rsquo;t part of the Netpbm package and don&rsquo;t use
+the Netpbm programming library) don&rsquo;t know how to
+handle a PNM image with maxval greater than 255 (because
+there are two bytes instead of one for each sample in the
+image). So you may want to run the output of <b>xwdtopnm</b>
+through <b>pamdepth</b> before feeding it to one of these
+old programs.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>xwdtopnm</b>
+can&rsquo;t convert every kind of XWD image (which
+essentially means it can&rsquo;t convert an XWD created from
+every kind of X display configuration). In particular, it
+cannot convert one with more than 24 bits per pixel.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>xwdtopnm</b> recognizes the following command line
+options: <b><br>
+-verbose</b></p>
+
+<p style="margin-left:22%;">This option causes
+<b>xwdtopnm</b> to display handy information about the input
+image and the conversion process</p>
+
+<p style="margin-left:11%;"><b>-headerdump</b></p>
+
+<p style="margin-left:22%;">This option causes
+<b>xwdtopnm</b> to display the contents of the X11 header.
+It has no effect when the input is X10. This option was new
+in Netpbm 10.26 (December 2004).</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Two Byte
+Samples <br>
+xwdtopnm</b> sometimes produces output with a maxval greater
+than 255, which means the maximum value of a sample (one
+intensity value, e.g. the red component of a pixel) is
+greater than 255 and therefore each sample takes 2 bytes to
+represent. This can be a problem because some programs
+expect those bytes in a different order from what the Netpbm
+format specs say, which is what <b>xwdtopnm</b> produces,
+which means they will see totally different colors than they
+should. <b>xv</b> is one such program.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If this is a
+problem (e.g. you want to look at the output of
+<b>xwdtopnm</b> with <b>xv</b>), there are two ways to fix
+it:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Pass the output through <b>pamendian</b> to produce the
+format the program expects.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Pass the output through <b>pamdepth</b> to reduce the
+maxval below 256 so there is only one byte per sample.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Often, there is
+no good reason to have a maxval greater than 255. It happens
+because in XWD, but not PNM, each color component of a pixel
+can have different resolution, for example 5 bits for blue
+(maxval 31), 5 bits for red (maxval 31), and 6 bits for
+green (maxval 63), for a total of 16 bits per pixel. In
+order to reproduce the colors as closely as possible,
+<b>xwdtopnm</b> has to use a large maxval. In this example,
+it would use 31 * 63 = 1953, and use 48 bits per pixel.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Because this is
+a common and frustrating problem when using <b>xwdtopnm</b>,
+the program issues a warning whenever it generates output
+with two byte samples. You can quiet this warning with the
+<b>-quiet</b> <a href="index.html#commonoptions">common
+option</a> . The warning was new in Netpbm 10.46 (March
+2009).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmtoxwd</b>(1),
+<b>pamendian</b>(1), <b>pamdepth</b>(1), <b>pnm</b>(1),
+<b>xwd</b> man page</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1989, 1991 by Jef Poskanzer.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/xwdtopnm.html</b></p>
+<hr>
+</body>
+</html>

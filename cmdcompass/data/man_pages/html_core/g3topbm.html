@@ -1,0 +1,216 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:05 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>G3topbm User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">G3topbm User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">g3topbm -
+convert a Group 3 fax file into a PBM image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>g3topbm</b>
+[<b>-kludge</b>] [<b>-reversebits</b>] [<b>-stretch</b>]
+[<b>-width=</b><i>pixels</i> | paper_size={A3|A4|A5|A6|B4}]
+[<b>-stop_error</b>] [<i>g3file</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviation of option is acceptable. You may use double
+hyphens instead of single hyphen to denote options. You may
+use white space in place of the equals sign to separate an
+option name from its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>g3topbm</b>
+reads a Group 3 fax file with MH (Modified Huffman)
+compression as input and produces a PBM image as output.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>g3topbm</b>
+tolerates various deviations from the standard, so as to
+recover some of the image if there was a transmission error.
+One thing it tolerates is lines of varying length. The
+standard requires all the lines to be the same length;
+<b>g3topbm</b> makes the output image as wide as the longest
+line in the input and pads the others on the right. It warns
+you when it does this.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can use the
+<b>stop_error</b> option to make <b>g3topbm</b> insist on
+valid input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There is no
+Netpbm program that understands the other G3 fax compression
+methods: MR (Modified Read) and MMR (Modified Modified
+Read).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that the
+Group 3 fax file format does not include any kind of a
+signature so that <b>g3topbm</b> might verify it&rsquo;s
+actually looking at a G3 file or that the compression method
+is MH. The program will interpret any sequence of bytes you
+give it as if it is G3 and, while typically issuing a lot of
+error messages about the file not conforming to the G3 MH
+format, will produce output (unless you use
+<b>-stoperror</b>). In particular, if you feed
+<b>g3topbm</b> an MR or MMR file, it will not tell you of
+your mistake.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There are
+subformats of TIFF that use the Group 3 fax encodings
+inside. See <b>tifftopnm</b>.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>g3topbm</b> recognizes the following command line
+options: <b><br>
+-kludge</b></p>
+
+<p style="margin-left:22%;">Tells <b>g3topbm</b> to ignore
+the first few lines of the file; sometimes fax files have
+some junk at the beginning.</p>
+
+<p style="margin-left:11%;"><b>-reversebits</b></p>
+
+<p style="margin-left:22%;">Tells <b>g3topbm</b> to
+interpret bits least-significant first, instead of the
+default most-significant first. Apparently some fax modems
+do it one way and others do it the other way. If you get a
+whole bunch of &quot;bad code word&quot; messages, try using
+this option.</p>
+
+<p style="margin-left:11%;"><b>-stretch</b></p>
+
+<p style="margin-left:22%;">This option tells
+<b>g3topbm</b> to stretch the image vertically by
+duplicating each row. This is for the low-quality
+transmission mode.</p>
+
+
+<p style="margin-left:11%;"><b>-width=</b><i>pixels</i></p>
+
+<p style="margin-left:22%;">This option tells
+<b>g3topbm</b> that the image is supposed to be
+<i>pixels</i> pixels wide. If any line in it is not that
+size, <b>g3topbm</b> issues a warning or fails, depending on
+whether you specify <b>-stop_error</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You cannot
+specify both <b>-width</b> and <b>-paper_size</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.33 (March 2006).</p>
+
+
+<p style="margin-left:11%;"><b>-paper_size=</b>{<b>A3</b>,<b>A4</b>,<b>A5</b>,<b>A6</b>,<b>B4</b>}</p>
+
+<p style="margin-left:22%;">This option tells
+<b>g3topbm</b> for what size paper this image is supposed to
+be formatted. <b>g3topbm</b> uses the width of the paper the
+same way as with the <b>-width</b> option. <b>g3topbm</b>
+does not use the height of the paper for anything.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You cannot
+specify both <b>-width</b> and <b>-paper_size</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.33 (March 2006).</p>
+
+<p style="margin-left:11%;"><b>-stop_error</b></p>
+
+<p style="margin-left:22%;">This option tells
+<b>g3topbm</b> to fail when it finds a problem in the input.
+&quot;Fail&quot; means it terminates with a nonzero status
+code with the contents of the output file undefined.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you
+don&rsquo;t specify this option, <b>g3topbm</b> does its
+best to work around input errors and salvage as much of the
+image as possible in the output image. It first tries to
+resynchronize to a later line by searching for the next End
+Of Line marker, skipping any lines or partial lines in
+between. It saves the beginning of the line in which it
+encountered the problem. If the input file ends prematurely,
+<b>g3topbm</b> produces output containing the lines up to
+where it encountered the problem.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>g3topbm</b>
+issues warning messages when it continues in spite of input
+errors.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.24 (August 2004). Before that,
+<b>g3topbm</b> always failed when it encountered premature
+EOF and never failed when it encountered other problems.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbmtog3</b>(1),
+<b>tifftopnm</b>(1), <b>pbm</b>(1), <b>fax
+formats</b>(1)</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/g3topbm.html</b></p>
+<hr>
+</body>
+</html>

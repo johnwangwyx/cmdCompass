@@ -1,0 +1,312 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:54 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>TIMEOUT</title>
+
+</head>
+<body>
+
+<h1 align="center">TIMEOUT</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">timeout - run a
+command with a time limit</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>timeout</b>
+[<i>OPTION</i>] <i>DURATION COMMAND</i> [<i>ARG</i>]...
+<b><br>
+timeout</b> [<i>OPTION</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Start COMMAND,
+and kill it if still running after DURATION.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Mandatory
+arguments to long options are mandatory for short options
+too.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="26%">
+
+
+<p style="margin-top: 1em"><b>--preserve-status</b></p></td>
+<td width="63%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">exit with the
+same status as COMMAND, even when the</p>
+
+<p style="margin-left:22%; margin-top: 1em">command times
+out</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="18%">
+
+
+<p style="margin-top: 1em"><b>--foreground</b></p></td>
+<td width="71%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">when not
+running timeout directly from a shell prompt,</p>
+
+<p style="margin-left:22%; margin-top: 1em">allow COMMAND
+to read from the TTY and get TTY signals; in this mode,
+children of COMMAND will not be timed out</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="38%">
+
+
+<p style="margin-top: 1em"><b>-k</b>,
+<b>--kill-after</b>=<i>DURATION</i></p> </td>
+<td width="51%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">also send a
+KILL signal if COMMAND is still running</p>
+
+<p style="margin-left:22%; margin-top: 1em">this long after
+the initial signal was sent</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="29%">
+
+
+<p style="margin-top: 1em"><b>-s</b>,
+<b>--signal</b>=<i>SIGNAL</i></p> </td>
+<td width="60%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">specify the
+signal to be sent on timeout;</p>
+
+<p style="margin-left:22%; margin-top: 1em">SIGNAL may be a
+name like &rsquo;HUP&rsquo; or a number; see &rsquo;kill
+<b>-l</b>&rsquo; for a list of signals</p>
+
+<p><b>-v</b>, <b>--verbose</b></p></table>
+
+<p style="margin-left:22%;">diagnose to stderr any signal
+sent upon timeout</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--help</b></p></td>
+<td width="2%"></td>
+<td width="40%">
+
+
+<p>display this help and exit</p></td>
+<td width="38%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--version</b></p>
+
+<p style="margin-left:22%;">output version information and
+exit</p>
+
+<p style="margin-left:11%; margin-top: 1em">DURATION is a
+floating point number with an optional suffix:
+&rsquo;s&rsquo; for seconds (the default), &rsquo;m&rsquo;
+for minutes, &rsquo;h&rsquo; for hours or &rsquo;d&rsquo;
+for days. A duration of 0 disables the associated
+timeout.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Upon timeout,
+send the TERM signal to COMMAND, if no other SIGNAL
+specified. The TERM signal kills any process that does not
+block or catch that signal. It may be necessary to use the
+KILL signal, since this signal can&rsquo;t be caught.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>EXIT
+status:</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>124</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>if COMMAND times out, and <b>--preserve-status</b> is
+not specified</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>125</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>if the timeout command itself fails</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>126</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>if COMMAND is found but cannot be invoked</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>127</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>if COMMAND cannot be found</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>137</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>if COMMAND (or timeout itself) is sent the KILL (9)
+signal (128+9)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>-</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>the exit status of COMMAND otherwise</p></td></tr>
+</table>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Some platforms
+don&rsquo;t currently support timeouts beyond the year
+2038.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Written by
+Padraig Brady.</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">GNU coreutils
+online help: &lt;https://www.gnu.org/software/coreutils/&gt;
+<br>
+Report any translation bugs to
+&lt;https://translationproject.org/team/&gt;</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+&copy; 2022 Free Software Foundation, Inc. License GPLv3+:
+GNU GPL version 3 or later
+&lt;https://gnu.org/licenses/gpl.html&gt;. <br>
+This is free software: you are free to change and
+redistribute it. There is NO WARRANTY, to the extent
+permitted by law.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>kill</b>(1)</p>
+
+<p style="margin-left:11%; margin-top: 1em">Full
+documentation
+&lt;https://www.gnu.org/software/coreutils/timeout&gt; <br>
+or available locally via: info '(coreutils) timeout
+invocation'</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,400 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:27 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamsistoaglyph User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamsistoaglyph User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamsistoaglyph
+- convert a single-image stereogram to a red/cyan anaglyphic
+image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamsistoaglyph</b>
+[--<b>invert</b>] [--<b>sep</b>=<i>number</i>]
+[--<b>minsep</b>=<i>number</i>]
+[--<b>gray</b>=<i>number</i>] [<i>in_netpbmfile</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">All options can
+be abbreviated to their shortest unique prefix. You may use
+either white space or an equals sign between an option name
+and its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamsistoaglyph</b>
+reads a Netpbm image as input and produces a Netpbm image as
+output.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamsistoaglyph</b>
+takes a single-image stereogram (SIS) such as those produced
+by <b>pamstereogram</b>(1) and converts it to a red/cyan
+anaglyphic image such as those produced by <b>ppm3d</b>(1).
+Many people have trouble tricking their eyes into focusing
+beyond the image in front of them and are therefore unable
+to perceive the 3-D shape hidden within a single-image
+stereogram. Anaglyphic stereograms are easier to perceive in
+3-D but require a pair of red/cyan glasses such as those
+often used to watch 3-D movies. The goal of
+<b>pamsistoaglyph</b> is to help people who have trouble
+viewing single-image stereograms see the intriguing 3-D
+effect.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamsistoaglyph</b>
+can convert single-image random-dot stereograms (SIRDS),
+wallpaper stereograms, and even dual-image stereograms to
+anaglyphic images.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamsistoaglyph</b> recognizes the following command line
+options:</p>
+
+<p style="margin-left:11%; margin-top: 1em">For most
+images, no command-line options need to be specified. The
+following options are available, however, for unusual
+circumstances. <b><br>
+--invert</b></p>
+
+<p style="margin-left:22%;">Swap the left- and right-eye
+<br>
+images. <b>pamsistoaglyph</b> assumes that its input <br>
+represents a wall-eyed stereogram and generates the
+anaglyphic <br>
+image accordingly. If the generated image appears to recede
+into <br>
+the page where it should pop out of the page (and vice
+versa), <br>
+this typically implies that the input image represents a
+<br>
+cross-eyed stereogram. Use <b>--invert</b> to correct <br>
+the image depth.</p>
+
+<p style="margin-left:11%;"><b>--sep</b>=<i>number</i></p>
+
+<p style="margin-left:22%;">Specify the distance in pixels
+between the left- and right-eye <br>
+images. Essentially, this corresponds to the distance
+between <br>
+repetitions of the background pattern. The <b>--sep</b> <br>
+option should rarely be necessary <br>
+as <b>pamsistoaglyph</b> is fairly good at determining <br>
+automatically the eye-separation distance.</p>
+
+
+<p style="margin-left:11%;"><b>--minsep</b>=<i>number</i></p>
+
+<p style="margin-left:22%;">This option is similar to
+<b>--sep</b> but <br>
+constrains <b>pamsistoaglyph</b> only to <br>
+a <i>minimum</i> eye-separation distance. Any distance
+larger <br>
+than <i>number</i> is acceptable. The <b>--minsep</b> <br>
+option should rarely be necessary <br>
+as <b>pamsistoaglyph</b> is fairly good at determining <br>
+automatically the eye-separation distance. The default value
+for <br>
+the minimum eye-separation distance is 10% of the image
+width; <br>
+this value seems to work well in practice.</p>
+
+
+<p style="margin-left:11%;"><b>--gray</b>=<i>number</i></p>
+
+<p style="margin-left:22%;">Limit the number of gray levels
+to use when searching for the <br>
+optimal eye-separation <br>
+distance. Because <b>pamsistoaglyph</b> looks for <br>
+repeated patterns, it is vulnerable to being confused by
+slight <br>
+variations in color. By reducing the input image to
+grayscale and <br>
+capping the number of gray levels, <b><br>
+pamsistoaglyph</b> ameliorates the effects of <br>
+unintentional color variations (such as those caused by
+conversion <br>
+from a low-quality JPEG image, for example). The default of
+63 <br>
+seems to work well so the <b>--gray</b> option should <br>
+rarely be necessary.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+registration algorithm used by <b>pamsistoaglyph</b> was
+developed specifically for this program. As far as the
+author knows, there are no existing algorithms for
+converting stereograms to anaglyphs. The algorithm works as
+follows:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Convert the image to grayscale to increase the ability
+to identify</p></td></tr>
+</table>
+
+<p style="margin-left:22%;">matches.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Count the number of pixels that
+match <i>N</i> pixels ahead in the</p></td></tr>
+</table>
+
+<p style="margin-left:22%;">image for all <i>N</i> in [1,
+<i>width</i>/2].</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Maintain a running mean (mu) and
+standard deviation (sigma) of</p></td></tr>
+</table>
+
+<p style="margin-left:22%;">the number of matched
+pixels.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Store the <i>N</i> corresponding
+to each spike in the number of</p></td></tr>
+</table>
+
+<p style="margin-left:22%;">matched pixels. A spike is
+defined as a tally that exceeds the <br>
+mean plus one, two, or three standard deviations. Only the
+first <br>
+spike of a given standard-deviation multiplier is
+stored.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">If a tally greater than
+mu+3sigma was encountered, return the</p></td></tr>
+</table>
+
+<p style="margin-left:22%;">corresponding <i>N</i>. If not,
+then if a tally greater than <br>
+mu+2sigma was encountered, return the <br>
+corresponding <i>N</i>. If not, then if a tally greater than
+<br>
+mu+sigma was encountered, return the <br>
+corresponding <i>N</i>. If not, then return the <i>N</i>
+that <br>
+produces the minimum average distance between matched pixels
+<br>
+(i.e.,&nbsp;<i>#matches</i> divided by <i>#pixels</i>). If
+no <br>
+such <i>N</i> exceeds the minimum allowable eye-separation
+value, <br>
+return zero to indicate failure.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">If the algorithm returned zero,
+rerun the algorithm independently</p></td></tr>
+</table>
+
+<p style="margin-left:22%;">on each row of the input image
+and return the median of <br>
+all <i>N</i> that exceed the minimum allowable
+eye-separation <br>
+value. If no such <i>N</i> exists, abort with an error <br>
+message.</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Scott Pakin
+wrote <b>pamsistoaglyph</b> in April 2009. It first appeared
+in Netpbm in Release 10.47 (June 2009).</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+2009 Scott Pakin, <i>scott+pbm@pakin.org</i></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="60%">
+
+
+<p style="margin-top: 1em"><b>pamstereogram</b>(1)</p></td>
+<td width="18%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="60%">
+
+
+<p><b>ppm3d</b>(1),</p></td>
+<td width="18%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="60%">
+
+
+
+<p><a href="http://en.wikipedia.org/wiki/Stereogram">http://en.wikipedia.org/wiki/Stereogram</a></p> </td>
+<td width="18%">
+</td></tr>
+</table>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamsistoaglyph.html</b></p>
+<hr>
+</body>
+</html>

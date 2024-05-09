@@ -1,0 +1,252 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:49 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title></title>
+</head>
+<body>
+
+<hr>
+
+
+<p>SSH-AGENT(1) BSD General Commands Manual
+SSH-AGENT(1)</p>
+
+<p style="margin-top: 1em"><b>NAME</b></p>
+
+<p style="margin-left:6%;"><b>ssh-agent</b> &mdash; OpenSSH
+authentication agent</p>
+
+<p style="margin-top: 1em"><b>SYNOPSIS</b></p>
+
+<p style="margin-left:19%;"><b>ssh-agent</b>
+[<b>-c&nbsp;</b>|&nbsp;<b>-s</b>] [<b>-Dd</b>]
+[<b>-a&nbsp;</b><i>bind_address</i>]
+[<b>-E&nbsp;</b><i>fingerprint_hash</i>]
+[<b>-O&nbsp;</b><i>option</i>]
+[<b>-P&nbsp;</b><i>allowed_providers</i>]
+[<b>-t&nbsp;</b><i>life</i>] <b><br>
+ssh-agent</b> [<b>-a&nbsp;</b><i>bind_address</i>]
+[<b>-E&nbsp;</b><i>fingerprint_hash</i>]
+[<b>-O&nbsp;</b><i>option</i>]
+[<b>-P&nbsp;</b><i>allowed_providers</i>]
+[<b>-t&nbsp;</b><i>life</i>] <i>command</i> [<i>arg ...</i>]
+<b><br>
+ssh-agent</b> [<b>-c&nbsp;</b>|&nbsp;<b>-s</b>]
+<b>-k</b></p>
+
+<p style="margin-top: 1em"><b>DESCRIPTION</b></p>
+
+<p style="margin-left:6%;"><b>ssh-agent</b> is a program to
+hold private keys used for public key authentication.
+Through use of environment variables the agent can be
+located and automatically used for authentication when
+logging in to other machines using ssh(1).</p>
+
+<p style="margin-left:6%; margin-top: 1em">The options are
+as follows:</p>
+
+<p style="margin-top: 1em"><b>-a</b>
+<i>bind_address</i></p>
+
+<p style="margin-left:17%;">Bind the agent to the
+UNIX-domain socket <i>bind_address</i>. The default is
+<i>$TMPDIR/ssh-XXXXXXXXXX/agent.&lt;ppid&gt;</i>.</p>
+
+<p style="margin-top: 1em"><b>-c</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Generate
+C-shell commands on stdout. This is the default if SHELL
+looks like it&rsquo;s a csh style of shell.</p>
+
+<p style="margin-top: 1em"><b>-D</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Foreground
+mode. When this option is specified, <b>ssh-agent</b> will
+not fork.</p>
+
+<p style="margin-top: 1em"><b>-d</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Debug mode.
+When this option is specified, <b>ssh-agent</b> will not
+fork and will write debug information to standard error.</p>
+
+<p style="margin-top: 1em"><b>-E</b>
+<i>fingerprint_hash</i></p>
+
+<p style="margin-left:17%;">Specifies the hash algorithm
+used when displaying key fingerprints. Valid options are:
+&ldquo;md5&rdquo; and &ldquo;sha256&rdquo;. The default is
+&ldquo;sha256&rdquo;.</p>
+
+<p style="margin-top: 1em"><b>-k</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Kill the
+current agent (given by the SSH_AGENT_PID environment
+variable).</p>
+
+<p style="margin-top: 1em"><b>-O</b> <i>option</i></p>
+
+<p style="margin-left:17%;">Specify an option when starting
+<b>ssh-agent</b>. Currently two options are supported:
+<b>allow-remote-pkcs11</b> and
+<b>no-restrict-websafe</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The
+<b>allow-remote-pkcs11</b> option allows clients of a
+forwarded <b>ssh-agent</b> to load PKCS#11 or FIDO provider
+libraries. By default only local clients may perform this
+operation. Note that signalling that a <b>ssh-agent</b>
+client remote is performed by ssh(1), and use of other tools
+to forward access to the agent socket may circumvent this
+restriction.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The
+<b>no-restrict-websafe</b>, instructs <b>ssh-agent</b> to
+permit signatures using FIDO keys that might be web
+authentication requests. By default, <b>ssh-agent</b>
+refuses signature requests for FIDO keys where the key
+application string does not start with &ldquo;ssh:&rdquo;
+and when the data to be signed does not appear to be a
+ssh(1) user authentication request or a ssh-keygen(1)
+signature. The default behaviour prevents forwarded access
+to a FIDO key from also implicitly forwarding the ability to
+authenticate to websites.</p>
+
+<p style="margin-top: 1em"><b>-P</b>
+<i>allowed_providers</i></p>
+
+<p style="margin-left:17%;">Specify a pattern-list of
+acceptable paths for PKCS#11 provider and FIDO authenticator
+middleware shared libraries that may be used with the
+<b>-S</b> or <b>-s</b> options to ssh-add(1). Libraries that
+do not match the pattern list will be refused. See PATTERNS
+in ssh_config(5) for a description of pattern-list syntax.
+The default list is
+&ldquo;/usr/lib/*,/usr/local/lib/*&rdquo;.</p>
+
+<p style="margin-top: 1em"><b>-s</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Generate Bourne
+shell commands on stdout. This is the default if SHELL does
+not look like it&rsquo;s a csh style of shell.</p>
+
+<p style="margin-top: 1em"><b>-t</b> <i>life</i></p>
+
+<p style="margin-left:17%;">Set a default value for the
+maximum lifetime of identities added to the agent. The
+lifetime may be specified in seconds or in a time format
+specified in sshd_config(5). A lifetime specified for an
+identity with ssh-add(1) overrides this value. Without this
+option the default maximum lifetime is forever.</p>
+
+<p style="margin-top: 1em"><i>command</i> [<i>arg
+...</i>]</p>
+
+<p style="margin-left:17%;">If a command (and optional
+arguments) is given, this is executed as a subprocess of the
+agent. The agent exits automatically when the command given
+on the command line terminates.</p>
+
+<p style="margin-left:6%; margin-top: 1em">There are two
+main ways to get an agent set up. The first is at the start
+of an X session, where all other windows or programs are
+started as children of the <b>ssh-agent</b> program. The
+agent starts a command under which its environment variables
+are exported, for example <b>ssh-agent xterm &amp;</b>. When
+the command terminates, so does the agent.</p>
+
+<p style="margin-left:6%; margin-top: 1em">The second
+method is used for a login session. When <b>ssh-agent</b> is
+started, it prints the shell commands required to set its
+environment variables, which in turn can be evaluated in the
+calling shell, for example <b>eval &rsquo;ssh-agent
+-s&rsquo;</b>.</p>
+
+<p style="margin-left:6%; margin-top: 1em">In both cases,
+ssh(1) looks at these environment variables and uses them to
+establish a connection to the agent.</p>
+
+<p style="margin-left:6%; margin-top: 1em">The agent
+initially does not have any private keys. Keys are added
+using ssh-add(1) or by ssh(1) when <b>AddKeysToAgent</b> is
+set in ssh_config(5). Multiple identities may be stored in
+<b>ssh-agent</b> concurrently and ssh(1) will automatically
+use them if present. ssh-add(1) is also used to remove keys
+from <b>ssh-agent</b> and to query the keys that are held in
+one.</p>
+
+<p style="margin-left:6%; margin-top: 1em">Connections to
+<b>ssh-agent</b> may be forwarded from further remote hosts
+using the <b>-A</b> option to ssh(1) (but see the caveats
+documented therein), avoiding the need for authentication
+data to be stored on other machines. Authentication
+passphrases and private keys never go over the network: the
+connection to the agent is forwarded over SSH remote
+connections and the result is returned to the requester,
+allowing the user access to their identities anywhere in the
+network in a secure fashion.</p>
+
+<p style="margin-top: 1em"><b>ENVIRONMENT</b> <br>
+SSH_AGENT_PID</p>
+
+<p style="margin-left:26%; margin-top: 1em">When
+<b>ssh-agent</b> starts, it stores the name of the
+agent&rsquo;s process ID (PID) in this variable.</p>
+
+<p style="margin-top: 1em">SSH_AUTH_SOCK</p>
+
+<p style="margin-left:26%; margin-top: 1em">When
+<b>ssh-agent</b> starts, it creates a UNIX-domain socket and
+stores its pathname in this variable. It is accessible only
+to the current user, but is easily abused by root or another
+instance of the same user.</p>
+
+<p style="margin-left:6%; margin-top: 1em">In Debian,
+<b>ssh-agent</b> is installed with the set-group-id bit set,
+to prevent ptrace(2) attacks retrieving private key
+material. This has the side-effect of causing the run-time
+linker to remove certain environment variables which might
+have security implications for set-id programs, including
+LD_PRELOAD, LD_LIBRARY_PATH, and TMPDIR. If you need to set
+any of these environment variables, you will need to do so
+in the program executed by ssh-agent.</p>
+
+<p style="margin-top: 1em"><b>FILES</b> <br>
+$TMPDIR/ssh-XXXXXXXXXX/agent.&lt;ppid&gt;</p>
+
+<p style="margin-left:17%;">UNIX-domain sockets used to
+contain the connection to the authentication agent. These
+sockets should only be readable by the owner. The sockets
+should get automatically removed when the agent exits.</p>
+
+<p style="margin-top: 1em"><b>SEE ALSO</b></p>
+
+<p style="margin-left:6%;">ssh(1), ssh-add(1),
+ssh-keygen(1), ssh_config(5), sshd(8)</p>
+
+<p style="margin-top: 1em"><b>AUTHORS</b></p>
+
+<p style="margin-left:6%;">OpenSSH is a derivative of the
+original and free ssh 1.2.12 release by Tatu Ylonen. Aaron
+Campbell, Bob Beck, Markus Friedl, Niels Provos, Theo de
+Raadt and Dug Song removed many bugs, re-added newer
+features and created OpenSSH. Markus Friedl contributed the
+support for SSH protocol versions 1.5 and 2.0.</p>
+
+<p style="margin-left:6%; margin-top: 1em">BSD
+October&nbsp;7, 2022 BSD</p>
+<hr>
+</body>
+</html>

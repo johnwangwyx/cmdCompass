@@ -1,0 +1,280 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:25 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamlevels User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamlevels User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamlevels -
+effect a &rsquo;levels&rsquo; transformation</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamlevels
+-from1</b> <i>from1</i> <b>-to1</b> <i>to1</i> <b>-from2</b>
+<i>from2</i> <b>-to2</b> <i>to2</i> [<b>-from3</b>
+<i>from3</i> <b>-to3</b> <i>to3</i>] [<b>-linear</b>]
+[<b>-fitbrightness</b>] [<i>pamfile</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamlevels</b>
+reads a Netpbm image from <i>pamfile</i> or standard input,
+applies a &rsquo;levels&rsquo; transformation, and sends the
+result to standard output. It finds a unique transformation
+that maps color <i>from1</i> to <i>to1</i>, color
+<i>from2</i> to <i>to2</i>, and-if <b>-from3</b> and
+<b>-to3</b> are supplied-color <i>from3</i> to <i>to3</i>.
+Transformations based on two mappings are linear in light
+intensity and those based on three mappings quadratic. The
+color-mapping options may be shortened to
+<b>-f1</b>...<b>-f3</b> and <b>-t1</b>...<b>-t3</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Color values
+have the following format: <i>color</i>[:<i>scale</i>],
+where <i>color</i> is a <a href="libppm.html#colorname">
+Netpbm color specification</a> and <i>scale</i> an optional
+coefficient that is applied to the intensity (i.e.
+<i>not</i> gamma-adjusted) of each RGB component of
+<i>color</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When the
+transformation is linear (i.e. uses two mappings) and
+preserves zero (i.e. maps black to black), it corresponds to
+multiplication of light intensity by a constant and
+preserves <b>color integrity</b>(1).</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In the examples
+below, \ denotes a line continuation:</p>
+
+<p style="margin-left:11%; margin-top: 1em">To brighten an
+image by setting a darker white point- <br>
+pamlevels -f1 black -t1 black \ <br>
+-f2 white:0.9 -t2 white in.ppm &gt; out.ppm</p>
+
+<p style="margin-left:11%; margin-top: 1em">To adjust the
+white point- <br>
+pamlevels -f1 black -t1 black \ <br>
+-f2 rgbi:0.9/0.83/0.80 -t2 white in.ppm &gt; out.ppm</p>
+
+<p style="margin-left:11%; margin-top: 1em">To set a
+lighter black point- <br>
+pamlevels -f1 white:0.06 -t1 black \ <br>
+-f2 white -t2 white in.ppm &gt; out.ppm</p>
+
+<p style="margin-left:11%; margin-top: 1em">To increase
+brightness by compression- <br>
+pamlevels \ <br>
+-f1 black -t1 black -f2 white -t2 white \ <br>
+-f3 white:0.5 -t3 white:0.6 in.ppm &gt; out.ppm</p>
+
+<p style="margin-left:11%; margin-top: 1em">The latter
+tranformation is similar to gamma-correction.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamlevels</b> recognizes the following command line
+options:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-from1</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-to1</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-from2</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-to2</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-from3</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-to3</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>These options define the mappings of input colors to
+output colors that anchor the transformation function. See
+<a href="#description">DESCRIPTION</a> .</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">You must
+specify at least two of these pairs.</p>
+
+<p style="margin-left:11%;"><b>-linear</b></p>
+
+<p style="margin-left:22%;">This option tells
+<b>pamlevels</b> to work with the intensity-linear variation
+on PPM where the samples are proportional to light
+intensity, rather than brightness (gamma-adjusted) as in
+true PPM. The input must be of this form and the
+<b>pamlevels</b> makes the output of this form.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Note that the
+numbers in a color specification like
+<b>rgbi:0.9/0.83/0.80</b> are brightness levels
+(gamma-adjusted) regardless of the input and output
+format.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You cannot use
+this with <b>-fitbrightness</b> because that function is not
+implemented.</p>
+
+<p style="margin-left:11%;"><b>-fitbrightness</b></p>
+
+<p style="margin-left:22%;">This option selects a
+transformation which is not very useful - it is linear or
+quadratic in brightness rather than light intensity of the
+pixels. There is no physical basis for doing it this way and
+the result is normally undesirable.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Note that many
+tools other than Netpbm do the transformation this way. One
+use for this option is simply to demonstrate the poor result
+of this method.</p>
+
+<p style="margin-left:22%; margin-top: 1em">One advantage
+of this transformation is that it is faster, because the
+input and output image formats use brightness values. The
+result is approximately correct.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You cannot use
+this with <b>-linear</b> because that function is not
+implemented.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmnorm</b>(1),
+<b>pamrecolor</b>(1), <b>pnmgamma</b>(1), <b>pnm</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program
+was first submitted by Anton Shepelev
+(<i>anton.txt@gmail.com</i>).</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamlevels</b>
+was new in Netpbm 10.83 (June 2018).</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamlevels.html</b></p>
+<hr>
+</body>
+</html>

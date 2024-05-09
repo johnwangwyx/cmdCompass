@@ -1,0 +1,215 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:27 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamtooctaveimg User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamtooctaveimg User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#ARGUMENTS">ARGUMENTS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamtooctaveimg
+- convert a Netpbm image to a GNU Octave image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtooctaveimg</b>
+[<i>netpbmfile</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtooctaveimg</b>
+reads a Netpbm image as input and produces a
+<a href="http://www.octave.org/">GNU Octave</a> image file
+as output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">An Octave image
+file (called &quot;Octave&rsquo;s image format&quot; in
+Octave documentation) is a particular kind of Octave data
+file. It describes two matrices:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>the image itself as a list of indexes into a colormap,
+and</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>the corresponding colormap as a list of {red, green,
+blue} triplets.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">An Octave data
+file is an ASCII text file that you use to import data to
+Octave.</p>
+
+<p style="margin-left:11%; margin-top: 1em">See the
+<a href="http://www.gnu.org/software/octave/doc/interpreter/Image-Processing.html#Image-Processing">
+Image Processing chapter</a> of the GNU Octave manual for
+details.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtooctaveimg</b>
+writes the output Octave image to Standard Output.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">There are no
+command line options defined specifically for
+<b>pamtooctaveimg</b>, but it recognizes the options common
+to all programs based on libnetpbm (See
+<a href="index.html#commonoptions"> Common Options</a>
+.)</p>
+
+<h2>ARGUMENTS
+<a name="ARGUMENTS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>netpbmfile</i>
+is the name of the file containing the input PNM or PAM
+image, or <b>-</b> to indicate Standard Input. If you
+don&rsquo;t specify <i>netpbmfile</i>, the input is from
+Standard Input. <b>pamtooctaveimg</b> converts only the
+first image in the input stream.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">%
+pamtooctaveimg myimage.ppm &gt; myimage.img <br>
+% octave <br>
+&gt; [img,map] = loadimage(&quot;myimage.img&quot;);</p>
+
+<p style="margin-left:11%; margin-top: 1em"># (At this
+point, img is an X by Y matrix and map is a 3 by M
+matrix.)</p>
+
+<p style="margin-left:11%; margin-top: 1em">&gt;
+imshow(img,map); # Displays img with colormap map <br>
+&gt; [r,g,b] = ind2rgb(img,map);</p>
+
+<p style="margin-left:11%; margin-top: 1em"># (r, g, and b
+are now each X by Y matrices of color levels [0 to 1].)</p>
+
+<p style="margin-left:11%; margin-top: 1em">&gt;
+[newimg,newmap] = rgb2ind(r,b,g); # Swap the blue and green
+channels. <br>
+&gt; saveimage(&quot;newimage.ppm&quot;, newimg,
+&quot;ppm&quot;, newmap); # Save as a PPM file.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">There is no
+<b>octavetopam</b> program. However, GNU Octave&rsquo;s
+<b>saveimage</b> command can save images in PPM format.</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtooctaveimg</b>
+was new in Netpbm 10.39 (June 2007).</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+2007 Scott Pakin, <i>scott+pbm@pakin.org</i>.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>octave</b>(1),
+<b>pam</b>(1).</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamtooctaveimg.html</b></p>
+<hr>
+</body>
+</html>

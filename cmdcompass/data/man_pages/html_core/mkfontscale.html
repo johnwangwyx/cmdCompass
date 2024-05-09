@@ -1,0 +1,282 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:18 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>MKFONTSCALE</title>
+
+</head>
+<body>
+
+<h1 align="center">MKFONTSCALE</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">mkfontscale -
+create an index of scalable font files for X</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mkfontscale</b>
+[ <b>-b</b> ] [ <b>-s</b> ] [ <b>-o</b> <i>filename</i> ] [
+<b>-x</b> <i>suffix</i> ] [ <b>-a</b> <i>encoding</i> ] ...
+[ <b>-f</b> <i>fuzz</i> ] [ <b>-l</b> ] [ <b>-e</b>
+<i>directory</i> ] [ <b>-p</b> <i>prefix</i> ] [ <b>-r</b>
+<i>prefix</i> ] [ <b>-n</b> <i>prefix</i> ] [ <b>-u | -U</b>
+] [ <b>-v</b> ] [ <b>--</b> ] [ <i>directory</i> ] ...</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For each
+directory argument, <i>mkfontscale</i> reads all of the
+scalable font files in the directory. For every font file
+found, an X11 font name (XLFD) is generated, and is written
+together with the file name to a file <b>fonts.scale</b> in
+the directory.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The resulting
+<b>fonts.scale</b> file should be checked and possibly
+manually edited before being used as input for the
+<b>mkfontdir</b>(1) program.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-b</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">read bitmap fonts. By default,
+bitmap fonts are ignored.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-s</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>ignore scalable fonts. By default, scalable fonts are
+read. If <b>-b</b> is set, this flag has the side effect of
+enabling the reading of <b>fonts.scale</b> files.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-o</b> <i>filename</i></p>
+
+<p style="margin-left:22%;">send program output to
+<i>filename</i>; default is <b>fonts.scale</b> if bitmap
+fonts are not being read, and <b>fonts.dir</b> if they are.
+If <i>filename</i> is relative, it is created in the
+directory being processed. If it is the special value
+<b>-</b>, output is written to standard output.</p>
+
+<p style="margin-left:11%;"><b>-x</b> <i>suffix</i></p>
+
+<p style="margin-left:22%;">exclude all files with the
+specified <i>suffix</i>.</p>
+
+<p style="margin-left:11%;"><b>-a</b> <i>encoding</i></p>
+
+<p style="margin-left:22%;">add <i>encoding</i> to the list
+of encodings searched for.</p>
+
+<p style="margin-left:11%;"><b>-f</b> <i>fuzz</i></p>
+
+<p style="margin-left:22%;">set the fraction of characters
+that may be missing in large encodings to <i>fuzz</i>
+percent. Defaults to 2%.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-l</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Write <b>fonts.dir</b> files suitable for
+implementations that cannot reencode legacy fonts (BDF and
+PCF). By default, it is assumed that the implementation can
+reencode Unicode-encoded legacy fonts.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-e</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>specifies a directory with encoding files. Every such
+directory is scanned for encoding files, the list of which
+is then written to an &quot;encodings.dir&quot; file in
+every font directory.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-p</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Specifies a prefix that is prepended to the encoding
+file path names when they are written to the
+&quot;encodings.dir&quot; file. The prefix is prepended
+literally: if a &rsquo;/&rsquo; is required between the
+prefix and the path names, it must be supplied explicitly as
+part of the prefix.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-r</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Keep non-absolute encoding directories in their relative
+form when writing the &quot;encodings.dir&quot; file. The
+default is to convert relative encoding directories to
+absolute directories by prepending the current directory.
+The positioning of this options is significant, as this
+option only applies to subsequent <b>-e</b> options.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-n</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>do not scan for fonts, do not write font directory
+files. This option is useful when generating encoding
+directories only.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-u, -U</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>disable (<i>-u</i>) or enable (<i>-U</i>) indexing of
+ISO 10646:1 font encodings (default: enabled).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-v</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>print program version and exit.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>end of options.</p></td></tr>
+</table>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">X(7),
+Xserver(1), mkfontdir(1), ttmkfdir(1), xfs(1), xset(1)</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The format of
+the <b>fonts.scale</b>, <b>fonts.dir</b> and
+<b>encodings.dir</b> files is documented in the mkfontdir(1)
+manual page.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Mkfontscale</b>
+will overwrite any <b>fonts.scale</b> file even if it has
+been hand-edited.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>mkfontscale
+-b -s -l</b> is equivalent to <b>mkfontdir</b>.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The version of
+<b>mkfontscale</b> included in this X.Org Foundation release
+was originally written by Juliusz Chroboczek
+&lt;jch@freedesktop.org&gt; for the XFree86 project. The
+functionality of this program was inspired by the
+<b>ttmkfdir</b> utility by Joerg Pommnitz.</p>
+<hr>
+</body>
+</html>

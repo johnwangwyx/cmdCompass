@@ -1,0 +1,354 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:46 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SETPRIV</title>
+
+</head>
+<body>
+
+<h1 align="center">SETPRIV</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#AVAILABILITY">AVAILABILITY</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">setpriv - run a
+program with different Linux privilege settings</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>setpriv</b>
+[options] <i>program</i> [<i>arguments</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Sets or queries
+various Linux privilege settings that are inherited across
+<b>execve</b>(2).</p>
+
+<p style="margin-left:11%; margin-top: 1em">In comparison
+to <b>su</b>(1) and <b>runuser</b>(1), <b>setpriv</b>
+neither uses PAM, nor does it prompt for a password. It is a
+simple, non-set-user-ID wrapper around <b>execve</b>(2), and
+can be used to drop privileges in the same way as
+<b>setuidgid</b>(8) from <b>daemontools</b>, <b>chpst</b>(8)
+from <b>runit</b>, or similar tools shipped by other service
+managers.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--clear-groups</b></p>
+
+<p style="margin-left:17%;">Clear supplementary groups.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-d</b>,
+<b>--dump</b></p>
+
+<p style="margin-left:17%;">Dump the current privilege
+state. This option can be specified more than once to show
+extra, mostly useless, information. Incompatible with all
+other options.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--groups</b>
+<i>group</i>...</p>
+
+<p style="margin-left:17%;">Set supplementary groups. The
+argument is a comma-separated list of GIDs or names.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--inh-caps</b>
+(<b>+</b>|<b>-</b>)<i>cap</i>..., <b>--ambient-caps</b>
+(<b>+</b>|<b>-</b>)<i>cap</i>..., <b>--bounding-set</b>
+(<b>+</b>|<b>-</b>)<i>cap</i>...</p>
+
+<p style="margin-left:17%;">Set the inheritable
+capabilities, ambient capabilities or the capability
+bounding set. See <b>capabilities</b>(7). The argument is a
+comma-separated list of <b>+</b><i>cap</i> and
+<b>-</b><i>cap</i> entries, which add or remove an entry
+respectively. <i>cap</i> can either be a human-readable name
+as seen in <b>capabilities</b>(7) without the <i>cap_</i>
+prefix or of the format <b>cap_N</b>, where <i>N</i> is the
+internal capability index used by Linux. <b>+all</b> and
+<b>-all</b> can be used to add or remove all caps.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The set of
+capabilities starts out as the current inheritable set for
+<b>--inh-caps</b>, the current ambient set for
+<b>--ambient-caps</b> and the current bounding set for
+<b>--bounding-set</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note the
+following restrictions (detailed in <b>capabilities</b>(7))
+regarding modifications to these capability sets:</p>
+
+<p style="margin-left:23%; margin-top: 1em">&bull; A
+capability can be added to the inheritable set only if it is
+currently present in the bounding set.</p>
+
+<p style="margin-left:23%; margin-top: 1em">&bull; A
+capability can be added to the ambient set only if it is
+currently present in both the permitted and inheritable
+sets.</p>
+
+<p style="margin-left:23%; margin-top: 1em">&bull;
+Notwithstanding the syntax offered by <b>setpriv</b>, the
+kernel does not permit capabilities to be added to the
+bounding set.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you drop a
+capability from the bounding set without also dropping it
+from the inheritable set, you are likely to become confused.
+Do not do that.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--keep-groups</b></p>
+
+<p style="margin-left:17%;">Preserve supplementary groups.
+Only useful in conjunction with <b>--rgid</b>,
+<b>--egid</b>, or <b>--regid</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--init-groups</b></p>
+
+<p style="margin-left:17%;">Initialize supplementary groups
+using initgroups3. Only useful in conjunction with
+<b>--ruid</b> or <b>--reuid</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--list-caps</b></p>
+
+<p style="margin-left:17%;">List all known capabilities.
+This option must be specified alone.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--no-new-privs</b></p>
+
+<p style="margin-left:17%;">Set the <i>no_new_privs</i>
+bit. With this bit set, <b>execve</b>(2) will not grant new
+privileges. For example, the set-user-ID and set-group-ID
+bits as well as file capabilities will be disabled.
+(Executing binaries with these bits set will still work, but
+they will not gain privileges. Certain LSMs, especially
+AppArmor, may result in failures to execute certain
+programs.) This bit is inherited by child processes and
+cannot be unset. See <b>prctl</b>(2) and
+<i>Documentation/prctl/no_new_privs.txt</i> in the Linux
+kernel source.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The
+<i>no_new_privs</i> bit is supported since Linux 3.5.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--rgid</b>
+<i>gid</i>, <b>--egid</b> <i>gid</i>, <b>--regid</b>
+<i>gid</i></p>
+
+<p style="margin-left:17%;">Set the real, effective, or
+both GIDs. The <i>gid</i> argument can be given as a textual
+group name.</p>
+
+<p style="margin-left:17%; margin-top: 1em">For safety, you
+must specify one of <b>--clear-groups</b>, <b>--groups</b>,
+<b>--keep-groups</b>, or <b>--init-groups</b> if you set any
+primary <i>gid</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--ruid</b>
+<i>uid</i>, <b>--euid</b> <i>uid</i>, <b>--reuid</b>
+<i>uid</i></p>
+
+<p style="margin-left:17%;">Set the real, effective, or
+both UIDs. The <i>uid</i> argument can be given as a textual
+login name.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Setting a
+<i>uid</i> or <i>gid</i> does not change capabilities,
+although the exec call at the end might change capabilities.
+This means that, if you are root, you probably want to do
+something like:</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>setpriv
+--reuid=1000 --regid=1000 --inh-caps=-all</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--securebits</b>
+(<b>+</b>|<b>-</b>)<i>securebit</i>...</p>
+
+<p style="margin-left:17%;">Set or clear securebits. The
+argument is a comma-separated list. The valid securebits are
+<i>noroot</i>, <i>noroot_locked</i>, <i>no_setuid_fixup</i>,
+<i>no_setuid_fixup_locked</i>, and <i>keep_caps_locked</i>.
+<i>keep_caps</i> is cleared by <b>execve</b>(2) and is
+therefore not allowed.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--pdeathsig
+keep</b>|<b>clear</b>|<b>&lt;signal&gt;</b></p>
+
+<p style="margin-left:17%;">Keep, clear or set the parent
+death signal. Some LSMs, most notably SELinux and AppArmor,
+clear the signal when the process' credentials change. Using
+<b>--pdeathsig keep</b> will restore the parent death signal
+after changing credentials to remedy that situation.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--selinux-label</b>
+<i>label</i></p>
+
+<p style="margin-left:17%;">Request a particular SELinux
+transition (using a transition on exec, not dyntrans). This
+will fail and cause <b>setpriv</b> to abort if SELinux is
+not in use, and the transition may be ignored or cause
+<b>execve</b>(2) to fail at SELinux&rsquo;s whim. (In
+particular, this is unlikely to work in conjunction with
+<i>no_new_privs</i>.) This is similar to
+<b>runcon</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--apparmor-profile</b>
+<i>profile</i></p>
+
+<p style="margin-left:17%;">Request a particular AppArmor
+profile (using a transition on exec). This will fail and
+cause <b>setpriv</b> to abort if AppArmor is not in use, and
+the transition may be ignored or cause <b>execve</b>(2) to
+fail at AppArmor&rsquo;s whim.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--reset-env</b></p>
+
+<p style="margin-left:17%;">Clears all the environment
+variables except <b>TERM</b>; initializes the environment
+variables <b>HOME</b>, <b>SHELL</b>, <b>USER</b>,
+<b>LOGNAME</b> according to the user&rsquo;s passwd entry;
+sets <b>PATH</b> to <i>/usr/local/bin:/bin:/usr/bin</i> for
+a regular user and to
+<i>/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin</i>
+for root.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The environment
+variable <b>PATH</b> may be different on systems where
+<i>/bin</i> and <i>/sbin</i> are merged into <i>/usr</i>.
+The environment variable <b>SHELL</b> defaults to
+<b>/bin/sh</b> if none is given in the user&rsquo;s passwd
+entry.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Display help text and exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-V</b>,
+<b>--version</b></p>
+
+<p style="margin-left:17%;">Print version and exit.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If applying any
+specified option fails, <i>program</i> will not be run and
+<b>setpriv</b> will return with exit status 127.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Be careful with
+this tool &mdash; it may have unexpected security
+consequences. For example, setting <i>no_new_privs</i> and
+then execing a program that is SELinux-confined (as this
+tool would do) may prevent the SELinux restrictions from
+taking effect.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If you&rsquo;re
+looking for behavior similar to
+<b>su</b>(1)/<b>runuser</b>(1), or <b>sudo</b>(8) (without
+the <b>-g</b> option), try something like:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>setpriv
+--reuid=1000 --regid=1000 --init-groups</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">If you want to
+mimic daemontools' <b>setuid</b>(8), try:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>setpriv
+--reuid=1000 --regid=1000 --clear-groups</b></p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><i>Andy
+Lutomirski</i></b> &lt;luto@amacapital.net&gt;</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>runuser</b>(1),
+<b>su</b>(1), <b>prctl</b>(2), <b>capabilities</b>(7)</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For bug
+reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+
+<h2>AVAILABILITY
+<a name="AVAILABILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>setpriv</b> command is part of the util-linux package
+which can be downloaded from <i>Linux Kernel Archive</i>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>
+<hr>
+</body>
+</html>

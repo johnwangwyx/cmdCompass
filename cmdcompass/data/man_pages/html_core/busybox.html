@@ -1,0 +1,5354 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:33:56 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>BUSYBOX</title>
+
+</head>
+<body>
+
+<h1 align="center">BUSYBOX</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNTAX">SYNTAX</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#USAGE">USAGE</a><br>
+<a href="#COMMON OPTIONS">COMMON OPTIONS</a><br>
+<a href="#COMMANDS">COMMANDS</a><br>
+<a href="#COMMAND DESCRIPTIONS">COMMAND DESCRIPTIONS</a><br>
+<a href="#LIBC NSS">LIBC NSS</a><br>
+<a href="#MAINTAINER">MAINTAINER</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">BusyBox - The
+Swiss Army Knife of Embedded Linux</p>
+
+<h2>SYNTAX
+<a name="SYNTAX"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">busybox
+&lt;applet&gt; [arguments...] # or <br>
+&lt;applet&gt; [arguments...] # if symlinked</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">BusyBox
+combines tiny versions of many common <small>UNIX</small>
+utilities into a single small executable. It provides
+minimalist replacements for most of the utilities you
+usually find in <small>GNU</small> coreutils, util-linux,
+etc. The utilities in BusyBox generally have fewer options
+than their full-featured <small>GNU</small> cousins;
+however, the options that are included provide the expected
+functionality and behave very much like their
+<small>GNU</small> counterparts.</p>
+
+<p style="margin-left:11%; margin-top: 1em">BusyBox has
+been written with size-optimization and limited resources in
+mind. It is also extremely modular so you can easily include
+or exclude commands (or features) at compile time. This
+makes it easy to customize your embedded systems. To create
+a working system, just add /dev, /etc, and a Linux kernel.
+BusyBox provides a fairly complete <small>POSIX</small>
+environment for any small or embedded system.</p>
+
+<p style="margin-left:11%; margin-top: 1em">BusyBox is
+extremely configurable. This allows you to include only the
+components you need, thereby reducing binary size. Run
+&rsquo;make config&rsquo; or &rsquo;make menuconfig&rsquo;
+to select the functionality that you wish to enable. Then
+run &rsquo;make&rsquo; to compile BusyBox using your
+configuration.</p>
+
+<p style="margin-left:11%; margin-top: 1em">After the
+compile has finished, you should use &rsquo;make
+install&rsquo; to install BusyBox. This will install the
+&rsquo;bin/busybox&rsquo; binary, in the target directory
+specified by <small>CONFIG_PREFIX. CONFIG_PREFIX</small> can
+be set when configuring BusyBox, or you can specify an
+alternative location at install time (i.e., with a command
+line like &rsquo;make CONFIG_PREFIX=/tmp/foo
+install&rsquo;). If you enabled any applet installation
+scheme (either as symlinks or hardlinks), these will also be
+installed in the location pointed to by
+<small>CONFIG_PREFIX.</small></p>
+
+<h2>USAGE
+<a name="USAGE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">BusyBox is a
+multi-call binary. A multi-call binary is an executable
+program that performs the same job as more than one utility
+program. That means there is just a single BusyBox binary,
+but that single binary acts like a large number of
+utilities. This allows BusyBox to be smaller since all the
+built-in utility programs (we call them applets) can share
+code for many common operations.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can also
+invoke BusyBox by issuing a command as an argument on the
+command line. For example, entering</p>
+
+<p style="margin-left:11%; margin-top: 1em">/bin/busybox
+ls</p>
+
+<p style="margin-left:11%; margin-top: 1em">will also cause
+BusyBox to behave as &rsquo;ls&rsquo;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Of course,
+adding &rsquo;/bin/busybox&rsquo; into every command would
+be painful. So most people will invoke BusyBox using links
+to the BusyBox binary.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For example,
+entering</p>
+
+<p style="margin-left:11%; margin-top: 1em">ln -s
+/bin/busybox ls <br>
+./ls</p>
+
+<p style="margin-left:11%; margin-top: 1em">will cause
+BusyBox to behave as &rsquo;ls&rsquo; (if the
+&rsquo;ls&rsquo; command has been compiled into BusyBox).
+Generally speaking, you should never need to make all these
+links yourself, as the BusyBox build system will do this for
+you when you run the &rsquo;make install&rsquo; command.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you invoke
+BusyBox with no arguments, it will provide you with a list
+of the applets that have been compiled into your BusyBox
+binary.</p>
+
+<h2>COMMON OPTIONS
+<a name="COMMON OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Most BusyBox
+applets support the <b>--help</b> argument to provide a
+terse runtime description of their behavior. If the
+<small>CONFIG_FEATURE_VERBOSE_USAGE</small> option has been
+enabled, more detailed usage information will also be
+available.</p>
+
+<h2>COMMANDS
+<a name="COMMANDS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Currently
+available applets include:</p>
+
+<p style="margin-left:11%; margin-top: 1em">[, [[, acpid,
+adjtimex, ar, arch, arp, arping, ascii, ash, awk, <br>
+base64, basename, bc, blkdiscard, blkid, blockdev, brctl,
+bunzip2, <br>
+bzcat, bzip2, cal, cat, chgrp, chmod, chown, chroot, chvt,
+clear, <br>
+cmp, cp, cpio, crc32, cttyhack, cut, date, dc, dd,
+deallocvt, <br>
+depmod, devmem, df, diff, dirname, dmesg, dnsdomainname,
+dos2unix, <br>
+du, dumpkmap, dumpleases, echo, egrep, env, expand, expr,
+factor, <br>
+fallocate, false, fatattr, fdisk, fgrep, find, findfs, fold,
+free, <br>
+freeramdisk, fsfreeze, fstrim, ftpget, ftpput, getopt,
+getty, grep, <br>
+groups, gunzip, gzip, halt, head, hexdump, hostid, hostname,
+httpd, <br>
+hwclock, i2cdetect, i2cdump, i2cget, i2cset, i2ctransfer,
+id, <br>
+ifconfig, ifdown, ifup, init, insmod, ionice, ip, ipcalc,
+ipneigh, <br>
+kill, killall, klogd, last, less, link, linux32, linux64,
+linuxrc, <br>
+ln, loadfont, loadkmap, logger, login, logname, logread,
+losetup, <br>
+ls, lsmod, lsscsi, lzcat, lzma, lzop, md5sum, mdev,
+microcom, mim, <br>
+mkdir, mkdosfs, mke2fs, mkfifo, mknod, mkpasswd, mkswap,
+mktemp, <br>
+modinfo, modprobe, more, mount, mt, mv, nameif, nc, netstat,
+nl, <br>
+nologin, nproc, nsenter, nslookup, nuke, od, openvt,
+partprobe, <br>
+paste, patch, pidof, ping, ping6, pivot_root, poweroff,
+printf, ps, <br>
+pwd, rdate, readlink, realpath, reboot, renice, reset,
+resume, rev, <br>
+rm, rmdir, rmmod, route, rpm, rpm2cpio, run-init, run-parts,
+sed, <br>
+seq, setkeycodes, setpriv, setsid, sh, sha1sum, sha256sum,
+sha3sum, <br>
+sha512sum, shred, shuf, sleep, sort, ssl_client,
+start-stop-daemon, <br>
+stat, strings, stty, svc, svok, swapoff, swapon,
+switch_root, sync, <br>
+sysctl, syslogd, tac, tail, tar, taskset, tee, telnet, test,
+tftp, <br>
+time, timeout, top, touch, tr, traceroute, traceroute6,
+true, <br>
+truncate, ts, tty, ubirename, udhcpc, udhcpd, uevent,
+umount, uname, <br>
+uncompress, unexpand, uniq, unix2dos, unlink, unlzma,
+unshare, unxz, <br>
+unzip, uptime, usleep, uudecode, uuencode, vconfig, vi, w,
+watch, <br>
+watchdog, wc, wget, which, who, whoami, xargs, xxd, xz,
+xzcat, yes, <br>
+zcat</p>
+
+<h2>COMMAND DESCRIPTIONS
+<a name="COMMAND DESCRIPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>acpid</b></p>
+
+<p style="margin-left:17%;">acpid [-df] [-c
+<small>CONFDIR</small> ] [-l <small>LOGFILE</small> ] [-a
+<small>ACTIONFILE</small> ] [-M <small>MAPFILE</small> ] [-e
+<small>PROC_EVENT_FILE</small> ] [-p <small>PIDFILE</small>
+]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Listen to
+<small>ACPI</small> events and spawn specific helpers on
+event arrival</p>
+
+<p style="margin-left:17%; margin-top: 1em">-d Log to
+stderr, not log file (implies -f) <br>
+-f Run in foreground <br>
+-c DIR Config directory [/etc/acpi] <br>
+-e FILE /proc event file [/proc/acpi/event] <br>
+-l FILE Log file [/var/log/acpid.log] <br>
+-p FILE Pid file [/var/run/acpid.pid] <br>
+-a FILE Action file [/etc/acpid.conf] <br>
+-M FILE Map file [/etc/acpi.map]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Accept and
+ignore compatibility options -g -m -s -S -v</p>
+
+<p style="margin-left:11%;"><b>adjtimex</b></p>
+
+<p style="margin-left:17%;">adjtimex [-q] [-o
+<small>OFS</small> ] [-f <small>FREQ</small> ] [-p
+<small>TCONST</small> ] [-t <small>TICK</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Read or set
+kernel time variables. See <b>adjtimex</b>(2)</p>
+
+<p style="margin-left:17%; margin-top: 1em">-q Quiet <br>
+-o OFF Time offset, microseconds <br>
+-f FREQ Frequency adjust, integer kernel units (65536 is
+1ppm) <br>
+-t TICK Microseconds per tick, usually 10000 <br>
+(positive -t or -f values make clock run faster) <br>
+-p TCONST</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>ar</b></p></td>
+<td width="3%"></td>
+<td width="49%">
+
+
+<p>ar x|p|t [-ov] <small>ARCHIVE</small> [
+<small>FILE</small> ]...</p></td>
+<td width="34%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Extract or list
+FILEs from an ar archive</p>
+
+<p style="margin-left:17%; margin-top: 1em">x Extract <br>
+p Extract to stdout <br>
+t List <br>
+-o Restore mtime <br>
+-v Verbose</p>
+
+<p style="margin-left:11%;"><b>arch</b></p>
+
+<p style="margin-left:17%;">arch</p>
+
+<p style="margin-left:17%; margin-top: 1em">Print system
+architecture</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>arp</b></p></td>
+<td width="2%"></td>
+<td width="83%">
+
+
+<p>arp [-vn] [-H <small>HWTYPE</small> ] [-i
+<small>IF</small> ] -a [ <small>HOSTNAME</small> ] [-v] [-i
+<small>IF</small> ] -d <small>HOSTNAME</small> [pub] [-v]
+[-H <small>HWTYPE</small> ] [-i <small>IF</small> ] -s
+<small>HOSTNAME HWADDR</small> [temp] [-v] [-H
+<small>HWTYPE</small> ] [-i <small>IF</small> ] -s
+<small>HOSTNAME HWADDR</small> [netmask <small>MASK</small>
+] pub [-v] [-H <small>HWTYPE</small> ] [-i <small>IF</small>
+] -Ds <small>HOSTNAME IFACE</small> [netmask
+<small>MASK</small> ] pub</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Manipulate
+<small>ARP</small> cache</p>
+
+<p style="margin-left:17%; margin-top: 1em">-a Display
+(all) hosts <br>
+-d Delete ARP entry <br>
+-s Set new entry <br>
+-v Verbose <br>
+-n Don't resolve names <br>
+-i IF Network interface <br>
+-D Read HWADDR from IFACE <br>
+-A,-p AF Protocol family <br>
+-H HWTYPE Hardware address type</p>
+
+<p style="margin-left:11%;"><b>arping</b></p>
+
+<p style="margin-left:17%;">arping [-fqbDUA] [-c
+<small>CNT</small> ] [-w <small>TIMEOUT</small> ] [-I
+<small>IFACE</small> ] [-s <small>SRC_IP</small> ]
+<small>DST_IP</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Send
+<small>ARP</small> requests/replies</p>
+
+<p style="margin-left:17%; margin-top: 1em">-f Quit on
+first ARP reply <br>
+-q Quiet <br>
+-b Keep broadcasting, don't go unicast <br>
+-D Exit with 1 if DST_IP replies <br>
+-U Unsolicited ARP mode, update your neighbors <br>
+-A ARP answer mode, update your neighbors <br>
+-c N Stop after sending N ARP requests <br>
+-w TIMEOUT Seconds to wait for ARP reply <br>
+-I IFACE Interface to use (default eth0) <br>
+-s SRC_IP Sender IP address <br>
+DST_IP Target IP address</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>ash</b></p></td>
+<td width="2%"></td>
+<td width="83%">
+
+
+<p>ash [-il] [-|+Cabefmnuvx] [-|+o <small>OPT</small> ]...
+[-c &rsquo; <small>SCRIPT</small> &rsquo; [ <small>ARG0
+ARGS</small> ] | <small>FILE ARGS</small> | -s
+<small>ARGS</small> ]</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Unix shell
+interpreter</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p style="margin-top: 1em"><b>awk</b></p></td>
+<td width="2%"></td>
+<td width="57%">
+
+
+<p style="margin-top: 1em">awk [ <small>OPTIONS</small> ] [
+<small>AWK_PROGRAM</small> ] [ <small>FILE</small> ]...</p></td>
+<td width="26%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">-v VAR=VAL Set
+variable <br>
+-F SEP Use SEP as field separator <br>
+-f FILE Read program from FILE <br>
+-e AWK_PROGRAM</p>
+
+<p style="margin-left:11%;"><b>base64</b></p>
+
+<p style="margin-left:17%;">base64 [-d] [-w
+<small>COL</small> ] [ <small>FILE</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Base64 encode
+or decode <small>FILE</small> to standard output</p>
+
+<p style="margin-left:17%; margin-top: 1em">-d Decode data
+<br>
+-w COL Wrap lines at COL (default 76, 0 disables)</p>
+
+<p style="margin-left:11%;"><b>basename</b></p>
+
+<p style="margin-left:17%;">basename <small>FILE</small> [
+<small>SUFFIX</small> ] | -a <small>FILE...</small> | -s
+<small>SUFFIX FILE...</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Strip directory
+path and <small>SUFFIX</small> from <small>FILE</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">-a All
+arguments are FILEs <br>
+-s SUFFIX Remove SUFFIX (implies -a)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>bc</b></p></td>
+<td width="3%"></td>
+<td width="31%">
+
+
+<p>bc [-sqlw] [ <small>FILE</small> ]...</p></td>
+<td width="52%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Arbitrary
+precision calculator</p>
+
+<p style="margin-left:17%; margin-top: 1em">-q Quiet <br>
+-l Load standard library <br>
+-s Be POSIX compatible <br>
+-w Warn if extensions are used</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">$BC_LINE_LENGTH
+changes output width</p>
+
+<p style="margin-left:11%;"><b>blkdiscard</b></p>
+
+<p style="margin-left:17%;">blkdiscard [-o
+<small>OFS</small> ] [-l <small>LEN</small> ] [-s]
+<small>DEVICE</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Discard sectors
+on <small>DEVICE</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">-o OFS Byte
+offset into device <br>
+-l LEN Number of bytes to discard <br>
+-s Perform a secure discard</p>
+
+<p style="margin-left:11%;"><b>blkid</b></p>
+
+<p style="margin-left:17%;">blkid [ <small>BLOCKDEV</small>
+]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Print UUIDs of
+all filesystems</p>
+
+<p style="margin-left:11%;"><b>blockdev</b></p>
+
+<p style="margin-left:17%;">blockdev <small>OPTION
+BLOCKDEV</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">--setro Set ro
+<br>
+--setrw Set rw <br>
+--getro Get ro <br>
+--getss Get sector size <br>
+--getbsz Get block size <br>
+--setbsz BYTES Set block size <br>
+--getsz Get device size in 512-byte sectors <br>
+--getsize64 Get device size in bytes <br>
+--getra Get readahead in 512-byte sectors <br>
+--setra SECTORS Set readahead <br>
+--flushbufs Flush buffers <br>
+--rereadpt Reread partition table</p>
+
+<p style="margin-left:11%;"><b>brctl</b></p>
+
+<p style="margin-left:17%;">brctl <small>COMMAND</small> [
+<small>BRIDGE</small> [ <small>ARGS</small> ]]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Manage ethernet
+bridges Commands:</p>
+
+<p style="margin-left:17%; margin-top: 1em">addbr BRIDGE
+Create BRIDGE <br>
+delbr BRIDGE Delete BRIDGE <br>
+addif BRIDGE IFACE Add IFACE to BRIDGE <br>
+delif BRIDGE IFACE Delete IFACE from BRIDGE</p>
+
+<p style="margin-left:11%;"><b>bunzip2</b></p>
+
+<p style="margin-left:17%;">bunzip2 [-cfk] [
+<small>FILE</small> ]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Decompress
+FILEs (or stdin)</p>
+
+<p style="margin-left:17%; margin-top: 1em">-c Write to
+stdout <br>
+-f Force <br>
+-k Keep input files <br>
+-t Test integrity</p>
+
+<p style="margin-left:11%;"><b>bzcat</b></p>
+
+<p style="margin-left:17%;">bzcat [ <small>FILE</small>
+]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Decompress to
+stdout</p>
+
+<p style="margin-left:11%;"><b>bzip2</b></p>
+
+<p style="margin-left:17%;">bzip2 [-cfkdt123456789] [
+<small>FILE</small> ]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Compress FILEs
+(or stdin) with bzip2 algorithm</p>
+
+<p style="margin-left:17%; margin-top: 1em">-1..9
+Compression level <br>
+-d Decompress <br>
+-c Write to stdout <br>
+-f Force <br>
+-k Keep input files <br>
+-t Test integrity</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>cal</b></p></td>
+<td width="2%"></td>
+<td width="38%">
+
+
+<p>cal [-jmy] [[ <small>MONTH</small> ] <small>YEAR</small>
+]</p> </td>
+<td width="45%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Display a
+calendar</p>
+
+<p style="margin-left:17%; margin-top: 1em">-j Use julian
+dates <br>
+-m Week starts on Monday <br>
+-y Display the entire year</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p style="margin-top: 1em"><b>cat</b></p></td>
+<td width="2%"></td>
+<td width="35%">
+
+
+<p style="margin-top: 1em">cat [-nbvteA] [
+<small>FILE</small> ]...</p></td>
+<td width="48%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Print FILEs to
+stdout</p>
+
+<p style="margin-left:17%; margin-top: 1em">-n Number
+output lines <br>
+-b Number nonempty lines <br>
+-v Show nonprinting characters as ^x or M-x <br>
+-t ...and tabs as ^I <br>
+-e ...and end lines with $ <br>
+-A Same as -vte</p>
+
+<p style="margin-left:11%;"><b>chgrp</b></p>
+
+<p style="margin-left:17%;">chgrp [-RhLHPcvf]...
+<small>GROUP FILE...</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Change the
+group membership of FILEs to <small>GROUP</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">-h Affect
+symlinks instead of symlink targets <br>
+-L Traverse all symlinks to directories <br>
+-H Traverse symlinks on command line only <br>
+-P Don't traverse symlinks (default) <br>
+-R Recurse <br>
+-c List changed files <br>
+-v Verbose <br>
+-f Hide errors</p>
+
+<p style="margin-left:11%;"><b>chmod</b></p>
+
+<p style="margin-left:17%;">chmod [-Rcvf] MODE[,MODE]...
+<small>FILE...</small></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><small>MODE</small>
+is octal number (bit pattern sstrwxrwxrwx) or
+[ugoa]{+|-|=}[rwxXst]</p>
+
+<p style="margin-left:17%; margin-top: 1em">-R Recurse <br>
+-c List changed files <br>
+-v Verbose <br>
+-f Hide errors</p>
+
+<p style="margin-left:11%;"><b>chown</b></p>
+
+<p style="margin-left:17%;">chown [-RhLHPcvf]... USER[:[
+<small>GRP</small> ]] <small>FILE...</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Change the
+owner and/or group of FILEs to <small>USER</small> and/or
+<small>GRP</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">-h Affect
+symlinks instead of symlink targets <br>
+-L Traverse all symlinks to directories <br>
+-H Traverse symlinks on command line only <br>
+-P Don't traverse symlinks (default) <br>
+-R Recurse <br>
+-c List changed files <br>
+-v Verbose <br>
+-f Hide errors</p>
+
+<p style="margin-left:11%;"><b>chroot</b></p>
+
+<p style="margin-left:17%;">chroot <small>NEWROOT</small> [
+<small>PROG ARGS</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Run
+<small>PROG</small> with root directory set to
+<small>NEWROOT</small></p>
+
+<p style="margin-left:11%;"><b>chvt</b></p>
+
+<p style="margin-left:17%;">chvt N</p>
+
+<p style="margin-left:17%; margin-top: 1em">Change the
+foreground virtual terminal to /dev/ttyN</p>
+
+<p style="margin-left:11%;"><b>clear</b></p>
+
+<p style="margin-left:17%;">clear</p>
+
+<p style="margin-left:17%; margin-top: 1em">Clear
+screen</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>cmp</b></p></td>
+<td width="2%"></td>
+<td width="74%">
+
+
+<p>cmp [-ls] [-n <small>NUM</small> ] <small>FILE1</small>
+[ <small>FILE2</small> [ <small>SKIP1</small> [
+<small>SKIP2</small> ]]]</p></td>
+<td width="9%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Compare
+<small>FILE1</small> with <small>FILE2</small> (or
+stdin)</p>
+
+<p style="margin-left:17%; margin-top: 1em">-l Write the
+byte numbers (decimal) and values (octal) <br>
+for all differing bytes <br>
+-s Quiet <br>
+-n NUM Compare at most NUM bytes</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>cp</b></p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">cp [-arPLHpfinlsTu]
+<small>SOURCE DEST</small> or: cp [-arPLHpfinlsu]
+<small>SOURCE...</small> { -t <small>DIRECTORY</small> |
+<small>DIRECTORY</small> }</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Copy SOURCEs to
+<small>DEST</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">-a Same as -dpR
+<br>
+-R,-r Recurse <br>
+-d,-P Preserve symlinks (default if -R) <br>
+-L Follow all symlinks <br>
+-H Follow symlinks on command line <br>
+-p Preserve file attributes if possible <br>
+-f Overwrite <br>
+-i Prompt before overwrite <br>
+-n Don't overwrite <br>
+-l,-s Create (sym)links <br>
+-T Refuse to copy if DEST is a directory <br>
+-t DIR Copy all SOURCEs into DIR <br>
+-u Copy only newer files</p>
+
+<p style="margin-left:11%;"><b>cpio</b></p>
+
+<p style="margin-left:17%;">cpio [-dmvu] [-F
+<small>FILE</small> ] [-R USER[:GRP]] [-H newc] [-tio] [
+<small>EXTR_FILE</small> ]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Extract (-i) or
+list (-t) files from a cpio archive, or take file list from
+stdin and create an archive (-o)</p>
+
+<p style="margin-left:17%; margin-top: 1em">Main operation
+mode:</p>
+
+<p style="margin-left:17%; margin-top: 1em">-t List <br>
+-i Extract EXTR_FILEs (or all) <br>
+-o Create (requires -H newc) <br>
+Options: <br>
+-H newc Archive format <br>
+-d Make leading directories <br>
+-m Restore mtime <br>
+-v Verbose <br>
+-u Overwrite <br>
+-F FILE Input (-t,-i,-p) or output (-o) file <br>
+-R USER[:GRP] Set owner of created files <br>
+-L Dereference symlinks <br>
+-0 NUL terminated input <br>
+--ignore-devno <br>
+--renumber-inodes</p>
+
+<p style="margin-left:11%;"><b>crc32</b></p>
+
+<p style="margin-left:17%;">crc32
+<small>FILE...</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Calculate
+<small>CRC32</small> checksum of FILEs</p>
+
+<p style="margin-left:11%;"><b>cttyhack</b></p>
+
+<p style="margin-left:17%;">cttyhack [ <small>PROG
+ARGS</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Give
+<small>PROG</small> a controlling tty if possible. Example
+for /etc/inittab (for busybox init): ::respawn:/bin/cttyhack
+/bin/sh Giving controlling tty to shell running with
+<small>PID 1:</small> $ exec cttyhack sh Starting
+interactive shell from boot shell script:</p>
+
+<p style="margin-left:17%; margin-top: 1em">setsid cttyhack
+sh</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>cut</b></p></td>
+<td width="2%"></td>
+<td width="35%">
+
+
+<p>cut [ <small>OPTIONS</small> ] [ <small>FILE</small>
+]...</p> </td>
+<td width="48%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Print selected
+fields from FILEs to stdout</p>
+
+<p style="margin-left:17%; margin-top: 1em">-b LIST Output
+only bytes from LIST <br>
+-c LIST Output only characters from LIST <br>
+-d SEP Field delimiter for input (default -f TAB, -F run of
+whitespace) <br>
+-O SEP Field delimiter for output (default = -d for -f, one
+space for -F) <br>
+-D Don't sort/collate sections or match -fF lines without
+delimiter <br>
+-f LIST Print only these fields (-d is single char) <br>
+-F LIST Print only these fields (-d is regex) <br>
+-s Output only lines containing delimiter <br>
+-n Ignored</p>
+
+<p style="margin-left:11%;"><b>date</b></p>
+
+<p style="margin-left:17%;">date [ <small>OPTIONS</small> ]
+[+FMT] [[-s] <small>TIME</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Display time
+(using +FMT), or set time</p>
+
+<p style="margin-left:17%; margin-top: 1em">-u Work in UTC
+(don't convert to local time) <br>
+[-s] TIME Set time to TIME <br>
+-d TIME Display TIME, not 'now' <br>
+-D FMT FMT (strptime format) for -s/-d TIME conversion <br>
+-r FILE Display last modification time of FILE <br>
+-R Output RFC-2822 date <br>
+-I[SPEC] Output ISO-8601 date <br>
+SPEC=date (default), hours, minutes, seconds or ns</p>
+
+<p style="margin-left:17%; margin-top: 1em">Recognized
+<small>TIME</small> formats:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">@seconds_since_1970
+<br>
+hh:mm[:ss] <br>
+[YYYY.]MM.DD-hh:mm[:ss] <br>
+YYYY-MM-DD hh:mm[:ss] <br>
+[[[[[YY]YY]MM]DD]hh]mm[.ss] <br>
+'date TIME' form accepts MMDDhhmm[[YY]YY][.ss] instead</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>dc</b></p></td>
+<td width="3%"></td>
+<td width="66%">
+
+
+<p>dc [-x] [-eSCRIPT]... [-fFILE]... [ <small>FILE</small>
+]...</p> </td>
+<td width="17%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Tiny
+<small>RPN</small> calculator. Operations: Arithmetic: + - *
+/ % ^ ~ - divide with remainder | - modular exponentiation v
+- square root p - print top of the stack without popping f -
+print entire stack k - pop the value and set precision i -
+pop the value and set input radix o - pop the value and set
+output radix Examples: dc -e&rsquo;2 2 + p&rsquo; -&gt; 4,
+dc -e&rsquo;8 8 * 2 2 + / p&rsquo; -&gt; 16</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>dd</b></p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">dd [if=FILE] [of=FILE] [ibs=N
+obs=N/bs=N] [count=N] [skip=N] [seek=N]
+[conv=notrunc|noerror|sync|fsync]
+[iflag=skip_bytes|count_bytes|fullblock|direct]
+[oflag=seek_bytes|append|direct]</p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Copy a file
+with converting and formatting</p>
+
+<p style="margin-left:17%; margin-top: 1em">if=FILE Read
+from FILE instead of stdin <br>
+of=FILE Write to FILE instead of stdout <br>
+bs=N Read and write N bytes at a time <br>
+ibs=N Read N bytes at a time <br>
+obs=N Write N bytes at a time <br>
+count=N Copy only N input blocks <br>
+skip=N Skip N input blocks <br>
+seek=N Skip N output blocks <br>
+conv=notrunc Don't truncate output file <br>
+conv=noerror Continue after read errors <br>
+conv=sync Pad blocks with zeros <br>
+conv=fsync Physically write data out before finishing <br>
+conv=swab Swap every pair of bytes <br>
+iflag=skip_bytes skip=N is in bytes <br>
+iflag=count_bytes count=N is in bytes <br>
+oflag=seek_bytes seek=N is in bytes <br>
+iflag=direct O_DIRECT input <br>
+oflag=direct O_DIRECT output <br>
+iflag=fullblock Read full blocks <br>
+oflag=append Open output in append mode <br>
+status=noxfer Suppress rate output <br>
+status=none Suppress all output</p>
+
+<p style="margin-left:17%; margin-top: 1em">N may be
+suffixed by c (1), w (2), b (512), kB (1000), k (1024),
+<small>MB, M, GB, G</small></p>
+
+<p style="margin-left:11%;"><b>deallocvt</b></p>
+
+<p style="margin-left:17%;">deallocvt [N]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Deallocate
+unused virtual terminal /dev/ttyN</p>
+
+<p style="margin-left:11%;"><b>depmod</b></p>
+
+<p style="margin-left:17%;">depmod [-n] [-b
+<small>BASE</small> ] [ <small>VERSION</small> ] [
+<small>MODFILES</small> ]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Generate
+modules.dep, alias, and symbols files</p>
+
+<p style="margin-left:17%; margin-top: 1em">-b BASE Use
+BASE/lib/modules/VERSION <br>
+-n Dry run: print files to stdout</p>
+
+<p style="margin-left:11%;"><b>devmem</b></p>
+
+<p style="margin-left:17%;">devmem <small>ADDRESS</small> [
+<small>WIDTH</small> [ <small>VALUE</small> ]]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Read/write from
+physical address</p>
+
+<p style="margin-left:17%; margin-top: 1em">ADDRESS Address
+to act upon <br>
+WIDTH Width (8/16/...) <br>
+VALUE Data to be written</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>df</b></p></td>
+<td width="3%"></td>
+<td width="75%">
+
+
+<p>df [-PkmhTai] [-B <small>SIZE</small> ] [-t
+<small>TYPE</small> ] [ <small>FILESYSTEM</small> ]...</p></td>
+<td width="8%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Print
+filesystem usage statistics</p>
+
+<p style="margin-left:17%; margin-top: 1em">-P POSIX output
+format <br>
+-k 1024-byte blocks (default) <br>
+-m 1M-byte blocks <br>
+-h Human readable (e.g. 1K 243M 2G) <br>
+-T Print filesystem type <br>
+-t TYPE Print only mounts of this type <br>
+-a Show all filesystems <br>
+-i Inodes <br>
+-B SIZE Blocksize</p>
+
+<p style="margin-left:11%;"><b>diff</b></p>
+
+<p style="margin-left:17%;">diff [-abBdiNqrTstw] [-L
+<small>LABEL</small> ] [-S <small>FILE</small> ] [-U
+<small>LINES</small> ] <small>FILE1 FILE2</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Compare files
+line by line and output the differences between them. This
+implementation supports unified diffs only.</p>
+
+<p style="margin-left:17%; margin-top: 1em">-a Treat all
+files as text <br>
+-b Ignore changes in the amount of whitespace <br>
+-B Ignore changes whose lines are all blank <br>
+-d Try hard to find a smaller set of changes <br>
+-i Ignore case differences <br>
+-L Use LABEL instead of the filename in the unified header
+<br>
+-N Treat absent files as empty <br>
+-q Output only whether files differ <br>
+-r Recurse <br>
+-S Start with FILE when comparing directories <br>
+-T Make tabs line up by prefixing a tab when necessary <br>
+-s Report when two files are the same <br>
+-t Expand tabs to spaces in output <br>
+-U Output LINES lines of context <br>
+-w Ignore all whitespace</p>
+
+<p style="margin-left:11%;"><b>dirname</b></p>
+
+<p style="margin-left:17%;">dirname
+<small>FILENAME</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Strip
+non-directory suffix from <small>FILENAME</small></p>
+
+<p style="margin-left:11%;"><b>dmesg</b></p>
+
+<p style="margin-left:17%;">dmesg [-cr] [-n
+<small>LEVEL</small> ] [-s <small>SIZE</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Print or
+control the kernel ring buffer</p>
+
+<p style="margin-left:17%; margin-top: 1em">-c Clear ring
+buffer after printing <br>
+-n LEVEL Set console logging level <br>
+-s SIZE Buffer size <br>
+-r Print raw message buffer</p>
+
+<p style="margin-left:11%;"><b>dos2unix</b></p>
+
+<p style="margin-left:17%;">dos2unix [-ud] [
+<small>FILE</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Convert
+<small>FILE</small> in-place from <small>DOS</small> to Unix
+format. When no file is given, use stdin/stdout.</p>
+
+<p style="margin-left:17%; margin-top: 1em">-u dos2unix
+<br>
+-d unix2dos</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>du</b></p></td>
+<td width="3%"></td>
+<td width="41%">
+
+
+<p>du [-aHLdclsxhmk] [ <small>FILE</small> ]...</p></td>
+<td width="42%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Summarize disk
+space used for FILEs (or directories)</p>
+
+<p style="margin-left:17%; margin-top: 1em">-a Show file
+sizes too <br>
+-b Apparent size (including holes) <br>
+-L Follow all symlinks <br>
+-H Follow symlinks on command line <br>
+-d N Limit output to directories (and files with -a) of
+depth &lt; N <br>
+-c Show grand total <br>
+-l Count sizes many times if hard linked <br>
+-s Display only a total for each argument <br>
+-x Skip directories on different filesystems <br>
+-h Sizes in human readable format (e.g., 1K 243M 2G) <br>
+-m Sizes in megabytes <br>
+-k Sizes in kilobytes (default)</p>
+
+<p style="margin-left:11%;"><b>dumpkmap</b></p>
+
+<p style="margin-left:17%;">dumpkmap &gt; keymap</p>
+
+<p style="margin-left:17%; margin-top: 1em">Print a binary
+keyboard translation table to stdout</p>
+
+<p style="margin-left:11%;"><b>dumpleases</b></p>
+
+<p style="margin-left:17%;">dumpleases [-r|-a] [-d] [-f
+<small>LEASEFILE</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Display
+<small>DHCP</small> leases granted by udhcpd</p>
+
+<p style="margin-left:17%; margin-top: 1em">-f FILE Lease
+file <br>
+-r Show remaining time <br>
+-a Show expiration time <br>
+-d Show time in seconds</p>
+
+<p style="margin-left:11%;"><b>echo</b></p>
+
+<p style="margin-left:17%;">echo [-neE] [
+<small>ARG</small> ]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Print ARGs to
+stdout</p>
+
+<p style="margin-left:17%; margin-top: 1em">-n No trailing
+newline <br>
+-e Interpret backslash escapes (\t=tab etc) <br>
+-E Don't interpret backslash escapes (default)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>env</b></p></td>
+<td width="2%"></td>
+<td width="83%">
+
+
+<p>env [-i0] [-u <small>NAME</small> ]... [-]
+[NAME=VALUE]... [ <small>PROG ARGS</small> ]</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Print current
+environment or run <small>PROG</small> after setting up
+environment</p>
+
+<p style="margin-left:17%; margin-top: 1em">-, -i Start
+with empty environment <br>
+-0 NUL terminated output <br>
+-u NAME Remove variable from environment</p>
+
+<p style="margin-left:11%;"><b>expand</b></p>
+
+<p style="margin-left:17%;">expand [-i] [-t N] [
+<small>FILE</small> ]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Convert tabs to
+spaces, writing to stdout</p>
+
+<p style="margin-left:17%; margin-top: 1em">-i Don't
+convert tabs after non blanks <br>
+-t Tabstops every N chars</p>
+
+<p style="margin-left:11%;"><b>expr</b></p>
+
+<p style="margin-left:17%;">expr
+<small>EXPRESSION</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Print the value
+of <small>EXPRESSION</small></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><small>EXPRESSION</small>
+may be:</p>
+
+<p style="margin-left:17%; margin-top: 1em">ARG1 | ARG2
+ARG1 if it is neither null nor 0, otherwise ARG2 <br>
+ARG1 &amp; ARG2 ARG1 if neither argument is null or 0,
+otherwise 0 <br>
+ARG1 &lt; ARG2 1 if ARG1 is less than ARG2, else 0.
+Similarly: <br>
+ARG1 &lt;= ARG2 <br>
+ARG1 = ARG2 <br>
+ARG1 != ARG2 <br>
+ARG1 &gt;= ARG2 <br>
+ARG1 &gt; ARG2 <br>
+ARG1 + ARG2 Sum of ARG1 and ARG2. Similarly: <br>
+ARG1 - ARG2 <br>
+ARG1 * ARG2 <br>
+ARG1 / ARG2 <br>
+ARG1 % ARG2 <br>
+STRING : REGEXP Anchored pattern match of REGEXP in STRING
+<br>
+match STRING REGEXP Same as STRING : REGEXP <br>
+substr STRING POS LEN Substring of STRING, POS counts from 1
+<br>
+index STRING CHARS Index in STRING where any CHARS is found,
+or 0 <br>
+length STRING Length of STRING <br>
+quote TOKEN Interpret TOKEN as a string, even if <br>
+it is a keyword like 'match' or an <br>
+operator like '/' <br>
+(EXPRESSION) Value of EXPRESSION</p>
+
+<p style="margin-left:17%; margin-top: 1em">Beware that
+many operators need to be escaped or quoted for shells.
+Comparisons are arithmetic if both ARGs are numbers, else
+lexicographical. Pattern matches return the string matched
+between \( and \) or null; if \( and \) are not used, they
+return the number of characters matched or 0.</p>
+
+<p style="margin-left:11%;"><b>factor</b></p>
+
+<p style="margin-left:17%;">factor [ <small>NUMBER</small>
+]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Print prime
+factors</p>
+
+<p style="margin-left:11%;"><b>fallocate</b></p>
+
+<p style="margin-left:17%;">fallocate [-o
+<small>OFS</small> ] -l <small>LEN FILE</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Preallocate
+space for <small>FILE</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">-o OFS Offset
+of range <br>
+-l LEN Length of range</p>
+
+<p style="margin-left:11%;"><b>fatattr</b></p>
+
+<p style="margin-left:17%;">fatattr [-+rhsvda]
+<small>FILE...</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Change file
+attributes on <small>FAT</small> filesystem</p>
+
+<p style="margin-left:17%; margin-top: 1em">- Clear
+attributes <br>
++ Set attributes <br>
+r Read only <br>
+h Hidden <br>
+s System <br>
+v Volume label <br>
+d Directory <br>
+a Archive</p>
+
+<p style="margin-left:11%;"><b>fdisk</b></p>
+
+<p style="margin-left:17%;">fdisk [-ul] [-C
+<small>CYLINDERS</small> ] [-H <small>HEADS</small> ] [-S
+<small>SECTORS</small> ] [-b <small>SSZ</small> ]
+<small>DISK</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Change
+partition table</p>
+
+<p style="margin-left:17%; margin-top: 1em">-u Start and
+End are in sectors (instead of cylinders) <br>
+-l Show partition table for each DISK, then exit <br>
+-b 2048 (for certain MO disks) use 2048-byte sectors <br>
+-C CYLINDERS Set number of cylinders/heads/sectors <br>
+-H HEADS Typically 255 <br>
+-S SECTORS Typically 63</p>
+
+<p style="margin-left:11%;"><b>find</b></p>
+
+<p style="margin-left:17%;">find [-HL] [
+<small>PATH</small> ]... [ <small>OPTIONS</small> ] [
+<small>ACTIONS</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Search for
+files and perform actions on them. First failed action stops
+processing of current file. Defaults: <small>PATH</small> is
+current directory, action is &rsquo;-print&rsquo;</p>
+
+<p style="margin-left:17%; margin-top: 1em">-L,-follow
+Follow symlinks <br>
+-H ...on command line only <br>
+-xdev Don't descend directories on other filesystems <br>
+-maxdepth N Descend at most N levels. -maxdepth 0 applies
+<br>
+actions to command line arguments only <br>
+-mindepth N Don't act on first N levels <br>
+-depth Act on directory *after* traversing it</p>
+
+<p style="margin-left:17%; margin-top: 1em">Actions:</p>
+
+<p style="margin-left:17%; margin-top: 1em">( ACTIONS )
+Group actions for -o / -a <br>
+! ACT Invert ACT's success/failure <br>
+ACT1 [-a] ACT2 If ACT1 fails, stop, else do ACT2 <br>
+ACT1 -o ACT2 If ACT1 succeeds, stop, else do ACT2 <br>
+Note: -a has higher priority than -o <br>
+-name PATTERN Match file name (w/o directory name) to
+PATTERN <br>
+-iname PATTERN Case insensitive -name <br>
+-path PATTERN Match path to PATTERN <br>
+-ipath PATTERN Case insensitive -path <br>
+-regex PATTERN Match path to regex PATTERN <br>
+-type X File type is X (one of: f,d,l,b,c,s,p) <br>
+-executable File is executable <br>
+-perm MASK At least one mask bit (+MASK), all bits (-MASK),
+<br>
+or exactly MASK bits are set in file's mode <br>
+-mtime DAYS mtime is greater than (+N), less than (-N), <br>
+or exactly N days in the past <br>
+-atime DAYS atime +N/-N/N days in the past <br>
+-ctime DAYS ctime +N/-N/N days in the past <br>
+-mmin MINS mtime is greater than (+N), less than (-N), <br>
+or exactly N minutes in the past <br>
+-amin MINS atime +N/-N/N minutes in the past <br>
+-cmin MINS ctime +N/-N/N minutes in the past <br>
+-newer FILE mtime is more recent than FILE's <br>
+-inum N File has inode number N <br>
+-samefile FILE File is same as FILE <br>
+-user NAME/ID File is owned by given user <br>
+-group NAME/ID File is owned by given group <br>
+-size N[bck] File size is N (c:bytes,k:kbytes,b:512
+bytes(def.)) <br>
++/-N: file size is bigger/smaller than N <br>
+-links N Number of links is greater than (+N), less than
+(-N), <br>
+or exactly N <br>
+-empty Match empty file/directory <br>
+-prune If current file is directory, don't descend into it
+<br>
+If none of the following actions is specified, -print is
+assumed <br>
+-print Print file name <br>
+-print0 Print file name, NUL terminated <br>
+-exec CMD ARG ; Run CMD with all instances of {} replaced by
+<br>
+file name. Fails if CMD exits with nonzero <br>
+-exec CMD ARG + Run CMD with {} replaced by list of file
+names <br>
+-quit Exit</p>
+
+<p style="margin-left:11%;"><b>findfs</b></p>
+
+<p style="margin-left:17%;">findfs LABEL=label or
+UUID=uuid</p>
+
+<p style="margin-left:17%; margin-top: 1em">Find a
+filesystem device based on a label or
+<small>UUID</small></p>
+
+<p style="margin-left:11%;"><b>fold</b></p>
+
+<p style="margin-left:17%;">fold [-bs] [-w
+<small>WIDTH</small> ] [ <small>FILE</small> ]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Wrap input
+lines in FILEs (or stdin), writing to stdout</p>
+
+<p style="margin-left:17%; margin-top: 1em">-b Count bytes
+rather than columns <br>
+-s Break at spaces <br>
+-w Use WIDTH columns instead of 80</p>
+
+<p style="margin-left:11%;"><b>free</b></p>
+
+<p style="margin-left:17%;">free [-bkmgh]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Display free
+and used memory</p>
+
+<p style="margin-left:11%;"><b>freeramdisk</b></p>
+
+<p style="margin-left:17%;">freeramdisk
+<small>DEVICE</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Free all memory
+used by the specified ramdisk</p>
+
+<p style="margin-left:11%;"><b>fsfreeze</b></p>
+
+<p style="margin-left:17%;">fsfreeze --[un]freeze
+<small>MOUNTPOINT</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Flush and halt
+writes to <small>MOUNTPOINT</small></p>
+
+<p style="margin-left:11%;"><b>fstrim</b></p>
+
+<p style="margin-left:17%;">fstrim [ <small>OPTIONS</small>
+] <small>MOUNTPOINT</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">-o OFFSET
+Offset in bytes to discard from <br>
+-l LEN Bytes to discard <br>
+-m MIN Minimum extent length <br>
+-v Print number of discarded bytes</p>
+
+<p style="margin-left:11%;"><b>ftpget</b></p>
+
+<p style="margin-left:17%;">ftpget [ <small>OPTIONS</small>
+] <small>HOST</small> [ <small>LOCAL_FILE</small> ]
+<small>REMOTE_FILE</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Download a file
+via <small>FTP</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">-c Continue
+previous transfer <br>
+-v Verbose <br>
+-u USER Username <br>
+-p PASS Password <br>
+-P PORT</p>
+
+<p style="margin-left:11%;"><b>ftpput</b></p>
+
+<p style="margin-left:17%;">ftpput [ <small>OPTIONS</small>
+] <small>HOST</small> [ <small>REMOTE_FILE</small> ]
+<small>LOCAL_FILE</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Upload a file
+to a <small>FTP</small> server</p>
+
+<p style="margin-left:17%; margin-top: 1em">-v Verbose <br>
+-u USER Username <br>
+-p PASS Password <br>
+-P PORT</p>
+
+<p style="margin-left:11%;"><b>getopt</b></p>
+
+<p style="margin-left:17%;">getopt [ <small>OPTIONS</small>
+] [--] <small>OPTSTRING PARAMS</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">-a Allow long
+options starting with single - <br>
+-l LOPT[,...] Long options to recognize <br>
+-n PROGNAME The name under which errors are reported <br>
+-o OPTSTRING Short options to recognize <br>
+-q No error messages on unrecognized options <br>
+-Q No normal output <br>
+-s SHELL Set shell quoting conventions <br>
+-T Version test (exits with 4) <br>
+-u Don't quote output</p>
+
+<p style="margin-left:17%; margin-top: 1em">Example:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>O=&rsquo;getopt -l bb: -- ab:c:: &quot;$@&quot;&rsquo;
+|| exit 1 eval set -- &quot;$O&quot; while true; do</p></td>
+<td width="8%">
+
+
+<p>case &quot;$1&quot; in</p></td>
+<td width="69%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%">
+
+
+<p>-a)</p></td>
+<td width="69%">
+
+
+<p>echo A; shift;;</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%">
+
+
+<p>-b|--bb) echo &quot;B:&rsquo;$2&rsquo;&quot;; shift
+2;;</p> </td>
+<td width="69%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%">
+
+
+<p>-c)</p></td>
+<td width="69%">
+
+
+<p>case &quot;$2&quot; in</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%">
+</td>
+<td width="69%">
+
+
+<p>&quot;&quot;)</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="69%">
+
+
+<p>echo C; shift 2;;</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%">
+</td>
+<td width="69%">
+
+
+<p>*)</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="69%">
+
+
+<p>echo &quot;C:&rsquo;$2&rsquo;&quot;; shift 2;;</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%">
+</td>
+<td width="69%">
+
+
+<p>esac;;</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%">
+
+
+<p>--)</p></td>
+<td width="69%">
+
+
+<p>shift; break;;</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%">
+
+
+<p>*)</p></td>
+<td width="69%">
+
+
+<p>echo Error; exit 1;;</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%">
+
+
+<p>esac done</p></td>
+<td width="69%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>getty</b></p>
+
+<p style="margin-left:17%;">getty [ <small>OPTIONS</small>
+] BAUD_RATE[,BAUD_RATE]... <small>TTY</small> [
+<small>TERMTYPE</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Open
+<small>TTY,</small> prompt for login name, then invoke
+/bin/login</p>
+
+<p style="margin-left:17%; margin-top: 1em">-h Enable
+hardware RTS/CTS flow control <br>
+-L Set CLOCAL (ignore Carrier Detect state) <br>
+-m Get baud rate from modem's CONNECT status message <br>
+-n Don't prompt for login name <br>
+-w Wait for CR or LF before sending /etc/issue <br>
+-i Don't display /etc/issue <br>
+-f ISSUE_FILE Display ISSUE_FILE instead of /etc/issue <br>
+-l LOGIN Invoke LOGIN instead of /bin/login <br>
+-t SEC Terminate after SEC if no login name is read <br>
+-I INITSTR Send INITSTR before anything else <br>
+-H HOST Log HOST into the utmp file as the hostname</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><small>BAUD_RATE</small>
+of 0 leaves it unchanged</p>
+
+<p style="margin-left:11%;"><b>grep</b></p>
+
+<p style="margin-left:17%;">grep [-HhnlLoqvsrRiwFEz] [-m N]
+[-A|B|C N] { <small>PATTERN</small> | -e
+<small>PATTERN...</small> | -f <small>FILE...</small> } [
+<small>FILE</small> ]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Search for
+<small>PATTERN</small> in FILEs (or stdin)</p>
+
+<p style="margin-left:17%; margin-top: 1em">-H Add
+'filename:' prefix <br>
+-h Do not add 'filename:' prefix <br>
+-n Add 'line_no:' prefix <br>
+-l Show only names of files that match <br>
+-L Show only names of files that don't match <br>
+-c Show only count of matching lines <br>
+-o Show only the matching part of line <br>
+-q Quiet. Return 0 if PATTERN is found, 1 otherwise <br>
+-v Select non-matching lines <br>
+-s Suppress open and read errors <br>
+-r Recurse <br>
+-R Recurse and dereference symlinks <br>
+-i Ignore case <br>
+-w Match whole words only <br>
+-x Match whole lines only <br>
+-F PATTERN is a literal (not regexp) <br>
+-E PATTERN is an extended regexp <br>
+-z NUL terminated input <br>
+-m N Match up to N times per file <br>
+-A N Print N lines of trailing context <br>
+-B N Print N lines of leading context <br>
+-C N Same as '-A N -B N' <br>
+-e PTRN Pattern to match <br>
+-f FILE Read pattern from file</p>
+
+<p style="margin-left:11%;"><b>groups</b></p>
+
+<p style="margin-left:17%;">groups [ <small>USER</small>
+]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Print the
+groups <small>USER</small> is in</p>
+
+<p style="margin-left:11%;"><b>gunzip</b></p>
+
+<p style="margin-left:17%;">gunzip [-cfkt] [
+<small>FILE</small> ]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Decompress
+FILEs (or stdin)</p>
+
+<p style="margin-left:17%; margin-top: 1em">-c Write to
+stdout <br>
+-f Force <br>
+-k Keep input files <br>
+-t Test integrity</p>
+
+<p style="margin-left:11%;"><b>gzip</b></p>
+
+<p style="margin-left:17%;">gzip [-cfkdt] [
+<small>FILE</small> ]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Compress FILEs
+(or stdin)</p>
+
+<p style="margin-left:17%; margin-top: 1em">-d Decompress
+<br>
+-c Write to stdout <br>
+-f Force <br>
+-k Keep input files <br>
+-t Test integrity</p>
+
+<p style="margin-left:11%;"><b>halt</b></p>
+
+<p style="margin-left:17%;">halt [-d <small>DELAY</small> ]
+[-nfw]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Halt the
+system</p>
+
+<p style="margin-left:17%; margin-top: 1em">-d SEC Delay
+interval <br>
+-n Do not sync <br>
+-f Force (don't go through init) <br>
+-w Only write a wtmp record</p>
+
+<p style="margin-left:11%;"><b>head</b></p>
+
+<p style="margin-left:17%;">head [ <small>OPTIONS</small> ]
+[ <small>FILE</small> ]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Print first 10
+lines of FILEs (or stdin). With more than one
+<small>FILE,</small> precede each with a filename
+header.</p>
+
+<p style="margin-left:17%; margin-top: 1em">-n N[bkm] Print
+first N lines <br>
+-n -N[bkm] Print all except N last lines <br>
+-c [-]N[bkm] Print first N bytes <br>
+(b:*512 k:*1024 m:*1024^2) <br>
+-q Never print headers <br>
+-v Always print headers</p>
+
+<p style="margin-left:11%;"><b>hexdump</b></p>
+
+<p style="margin-left:17%;">hexdump [-bcdoxCv] [-e
+<small>FMT</small> ] [-f <small>FMT_FILE</small> ] [-n
+<small>LEN</small> ] [-s <small>OFS</small> ] [
+<small>FILE</small> ]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Display FILEs
+(or stdin) in a user specified format</p>
+
+<p style="margin-left:17%; margin-top: 1em">-b 1-byte octal
+display <br>
+-c 1-byte character display <br>
+-d 2-byte decimal display <br>
+-o 2-byte octal display <br>
+-x 2-byte hex display <br>
+-C hex+ASCII 16 bytes per line <br>
+-v Show all (no dup folding) <br>
+-e FORMAT_STR Example: '16/1
+&quot;%02x|&quot;&quot;\n&quot;' <br>
+-f FORMAT_FILE <br>
+-n LENGTH Show only first LENGTH bytes <br>
+-s OFFSET Skip OFFSET bytes</p>
+
+<p style="margin-left:11%;"><b>hostid</b></p>
+
+<p style="margin-left:17%;">hostid</p>
+
+<p style="margin-left:17%; margin-top: 1em">Print out a
+unique 32-bit identifier for the machine</p>
+
+<p style="margin-left:11%;"><b>hostname</b></p>
+
+<p style="margin-left:17%;">hostname [-sidf] [
+<small>HOSTNAME</small> | -F <small>FILE</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Show or set
+hostname or <small>DNS</small> domain name</p>
+
+<p style="margin-left:17%; margin-top: 1em">-s Short <br>
+-i Addresses for the hostname <br>
+-d DNS domain name <br>
+-f Fully qualified domain name <br>
+-F FILE Use FILE's content as hostname</p>
+
+<p style="margin-left:11%;"><b>httpd</b></p>
+
+<p style="margin-left:17%;">httpd [-ifv[v]] [-c
+<small>CONFFILE</small> ] [-p [ <small>IP:</small> ]PORT]
+[-u USER[:GRP]] [-r <small>REALM</small> ] [-h
+<small>HOME</small> ] or httpd -d/-e/-m
+<small>STRING</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Listen for
+incoming <small>HTTP</small> requests</p>
+
+<p style="margin-left:17%; margin-top: 1em">-i Inetd mode
+<br>
+-f Run in foreground <br>
+-v[v] Verbose <br>
+-p [IP:]PORT Bind to IP:PORT (default *:80) <br>
+-u USER[:GRP] Set uid/gid after binding to port <br>
+-r REALM Authentication Realm for Basic Authentication <br>
+-h HOME Home directory (default .) <br>
+-c FILE Configuration file (default {/etc,HOME}/httpd.conf)
+<br>
+-m STRING MD5 crypt STRING <br>
+-e STRING HTML encode STRING <br>
+-d STRING URL decode STRING</p>
+
+<p style="margin-left:11%;"><b>hwclock</b></p>
+
+<p style="margin-left:17%;">hwclock [-swul] [--systz] [-f
+<small>DEV</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Show or set
+hardware clock ( <small>RTC</small> )</p>
+
+<p style="margin-left:17%; margin-top: 1em">-s Set system
+time from RTC <br>
+-w Set RTC from system time <br>
+--systz Set in-kernel timezone, correct system time <br>
+if RTC is kept in local time <br>
+-f DEV Use specified device (e.g. /dev/rtc2) <br>
+-u Assume RTC is kept in UTC <br>
+-l Assume RTC is kept in local time <br>
+(if neither is given, read from /etc/adjtime)</p>
+
+<p style="margin-left:11%;"><b>i2cdetect</b></p>
+
+<p style="margin-left:17%;">i2cdetect -l | -F I2CBUS |
+[-ya] [-q|-r] I2CBUS [ <small>FIRST LAST</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Detect I2C
+chips</p>
+
+<p style="margin-left:17%; margin-top: 1em">-l List
+installed buses <br>
+-F BUS# List functionalities on this bus <br>
+-y Disable interactive mode <br>
+-a Force scanning of non-regular addresses <br>
+-q Use smbus quick write commands for probing (default) <br>
+-r Use smbus read byte commands for probing <br>
+FIRST and LAST limit probing range</p>
+
+<p style="margin-left:11%;"><b>i2cdump</b></p>
+
+<p style="margin-left:17%;">i2cdump [-fy] [-r
+<small>FIRST-LAST</small> ] <small>BUS ADDR</small> [
+<small>MODE</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Examine I2C
+registers</p>
+
+<p style="margin-left:17%; margin-top: 1em">I2CBUS I2C bus
+number <br>
+ADDRESS 0x03-0x77 <br>
+MODE is: <br>
+b Byte (default) <br>
+w Word <br>
+W Word on even register addresses <br>
+i I2C block <br>
+s SMBus block <br>
+c Consecutive byte <br>
+Append p for SMBus PEC <br>
+-f Force access <br>
+-y Disable interactive mode <br>
+-r Limit the number of registers being accessed</p>
+
+<p style="margin-left:11%;"><b>i2cget</b></p>
+
+<p style="margin-left:17%;">i2cget [-fy] <small>BUS</small>
+CHIP-ADDRESS [ <small>DATA-ADDRESS</small> [
+<small>MODE</small> ]]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Read from
+I2C/SMBus chip registers</p>
+
+<p style="margin-left:17%; margin-top: 1em">I2CBUS I2C bus
+number <br>
+ADDRESS 0x03-0x77 <br>
+MODE is: <br>
+b Read byte data (default) <br>
+w Read word data <br>
+c Write byte/read byte <br>
+Append p for SMBus PEC <br>
+-f Force access <br>
+-y Disable interactive mode</p>
+
+<p style="margin-left:11%;"><b>i2cset</b></p>
+
+<p style="margin-left:17%;">i2cset [-fy] [-m
+<small>MASK</small> ] <small>BUS</small> CHIP-ADDRESS
+DATA-ADDRESS [ <small>VALUE</small> ] ... [
+<small>MODE</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Set I2C
+registers</p>
+
+<p style="margin-left:17%; margin-top: 1em">I2CBUS I2C bus
+number <br>
+ADDRESS 0x03-0x77 <br>
+MODE is: <br>
+c Byte, no value <br>
+b Byte data (default) <br>
+w Word data <br>
+i I2C block data <br>
+s SMBus block data <br>
+Append p for SMBus PEC <br>
+-f Force access <br>
+-y Disable interactive mode <br>
+-r Read back and compare the result <br>
+-m MASK Mask specifying which bits to write</p>
+
+<p style="margin-left:11%;"><b>i2ctransfer</b></p>
+
+<p style="margin-left:17%;">i2ctransfer [-fay] I2CBUS {
+rLENGTH[@ADDR] | wLENGTH[@ADDR] <small>DATA...</small>
+}...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Read/write I2C
+data in one transfer</p>
+
+<p style="margin-left:17%; margin-top: 1em">-f Force access
+to busy addresses <br>
+-a Force access to non-regular addresses <br>
+-y Disable interactive mode</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>id</b></p></td>
+<td width="3%"></td>
+<td width="28%">
+
+
+<p>id [-ugGnr] [ <small>USER</small> ]</p></td>
+<td width="55%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Print
+information about <small>USER</small> or the current
+user</p>
+
+<p style="margin-left:17%; margin-top: 1em">-u User ID <br>
+-g Group ID <br>
+-G Supplementary group IDs <br>
+-n Print names instead of numbers <br>
+-r Print real ID instead of effective ID</p>
+
+<p style="margin-left:11%;"><b>ifconfig</b></p>
+
+<p style="margin-left:17%;">ifconfig [-a] [
+<small>IFACE</small> ] [ <small>ADDRESS</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Configure a
+network interface</p>
+
+<p style="margin-left:17%; margin-top: 1em">[add
+ADDRESS[/PREFIXLEN]] <br>
+[del ADDRESS[/PREFIXLEN]] <br>
+[[-]broadcast [ADDRESS]] [[-]pointopoint [ADDRESS]] <br>
+[netmask ADDRESS] [dstaddr ADDRESS] <br>
+[outfill NN] [keepalive NN] <br>
+[hw ether|infiniband ADDRESS] [metric NN] [mtu NN] <br>
+[[-]trailers] [[-]arp] [[-]allmulti] <br>
+[multicast] [[-]promisc] [txqueuelen NN] [[-]dynamic] <br>
+[mem_start NN] [io_addr NN] [irq NN] <br>
+[up|down] ...</p>
+
+<p style="margin-left:11%;"><b>ifdown</b></p>
+
+<p style="margin-left:17%;">ifdown [-nvf] [-i
+<small>FILE</small> ] -a | <small>IFACE...</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">-a Deconfigure
+all interfaces <br>
+-i FILE Use FILE instead of /etc/network/interfaces <br>
+-n Dry run <br>
+-v Print out what would happen before doing it <br>
+-f Force</p>
+
+<p style="margin-left:11%;"><b>ifup</b></p>
+
+<p style="margin-left:17%;">ifup [-nvf] [-i
+<small>FILE</small> ] -a | <small>IFACE...</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">-a Configure
+all interfaces <br>
+-i FILE Use FILE instead of /etc/network/interfaces <br>
+-n Dry run <br>
+-v Print out what would happen before doing it <br>
+-f Force</p>
+
+<p style="margin-left:11%;"><b>init</b></p>
+
+<p style="margin-left:17%;">init</p>
+
+<p style="margin-left:17%; margin-top: 1em">Init is the
+first process started during boot. It never exits. It
+(re)spawns children according to /etc/inittab. Signals:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><small>HUP:</small>
+reload /etc/inittab <small>TSTP:</small> stop respawning
+until <small>CONT QUIT:</small> re-exec another init
+<small>USR1/TERM/USR2/INT:</small> run
+halt/reboot/poweroff/Ctrl-Alt-Del script</p>
+
+<p style="margin-left:11%;"><b>insmod</b></p>
+
+<p style="margin-left:17%;">insmod <small>FILE</small>
+[SYMBOL=VALUE]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Load kernel
+module</p>
+
+<p style="margin-left:11%;"><b>ionice</b></p>
+
+<p style="margin-left:17%;">ionice [-c 1-3] [-n 0-7] [-t] {
+-p <small>PID</small> | <small>PROG ARGS</small> }</p>
+
+<p style="margin-left:17%; margin-top: 1em">Change I/O
+priority and class</p>
+
+<p style="margin-left:17%; margin-top: 1em">-c N Class.
+1:realtime 2:best-effort 3:idle <br>
+-n N Priority <br>
+-t Ignore errors</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>ip</b></p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>ip [ <small>OPTIONS</small> ]
+address|route|link|tunnel|neigh|rule [ <small>ARGS</small>
+]</p> </td></tr>
+</table>
+
+
+<p style="margin-left:17%; margin-top: 1em"><small>OPTIONS</small>
+:= -f[amily] inet|inet6|link | -o[neline]</p>
+
+<p style="margin-left:17%; margin-top: 1em">ip addr add|del
+<small>IFADDR</small> dev <small>IFACE</small> | show|flush
+[dev <small>IFACE</small> ] [to <small>PREFIX</small> ] ip
+route list|flush|add|del|change|append|replace|test
+<small>ROUTE</small> ip link set <small>IFACE</small>
+[up|down] [arp on|off] [multicast on|off] [promisc on|off]
+[mtu <small>NUM</small> ] [name <small>NAME</small> ] [qlen
+<small>NUM</small> ] [address <small>MAC</small> ] [master
+<small>IFACE</small> | nomaster] [netns <small>PID</small> ]
+ip tunnel add|change|del|show [ <small>NAME</small> ] [mode
+ipip|gre|sit] [remote <small>ADDR</small> ] [local
+<small>ADDR</small> ] [ttl <small>TTL</small> ] ip neigh
+show|flush [to <small>PREFIX</small> ] [dev
+<small>DEV</small> ] [nud <small>STATE</small> ] ip rule
+[list] | add|del <small>SELECTOR ACTION</small></p>
+
+<p style="margin-left:11%;"><b>ipcalc</b></p>
+
+<p style="margin-left:17%;">ipcalc [-bnmphs]
+ADDRESS[/PREFIX] [ <small>NETMASK</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Calculate and
+display network settings from <small>IP</small> address</p>
+
+<p style="margin-left:17%; margin-top: 1em">-b Broadcast
+address <br>
+-n Network address <br>
+-m Default netmask for IP <br>
+-p Prefix for IP/NETMASK <br>
+-h Resolved host name <br>
+-s No error messages</p>
+
+<p style="margin-left:11%;"><b>ipneigh</b></p>
+
+<p style="margin-left:17%;">ipneigh show|flush [to
+<small>PREFIX</small> ] [dev <small>DEV</small> ] [nud
+<small>STATE</small> ]</p>
+
+<p style="margin-left:11%;"><b>kill</b></p>
+
+<p style="margin-left:17%;">kill [-l] [-SIG]
+<small>PID...</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Send a signal
+(default: <small>TERM</small> ) to given PIDs</p>
+
+<p style="margin-left:17%; margin-top: 1em">-l List all
+signal names and numbers</p>
+
+<p style="margin-left:11%;"><b>killall</b></p>
+
+<p style="margin-left:17%;">killall [-lq] [-SIG]
+<small>PROCESS_NAME...</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Send a signal
+(default: <small>TERM</small> ) to given processes</p>
+
+<p style="margin-left:17%; margin-top: 1em">-l List all
+signal names and numbers <br>
+-q Don't complain if no processes were killed</p>
+
+<p style="margin-left:11%;"><b>klogd</b></p>
+
+<p style="margin-left:17%;">klogd [-c N] [-n]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Log kernel
+messages to syslog</p>
+
+<p style="margin-left:17%; margin-top: 1em">-c N Print to
+console messages more urgent than prio N (1-8) <br>
+-n Run in foreground</p>
+
+<p style="margin-left:11%;"><b>last</b></p>
+
+<p style="margin-left:17%;">last</p>
+
+<p style="margin-left:17%; margin-top: 1em">Show listing of
+the last users that logged into the system</p>
+
+<p style="margin-left:11%;"><b>less</b></p>
+
+<p style="margin-left:17%;">less [-EFIMmNSRh~] [
+<small>FILE</small> ]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">View
+<small>FILE</small> (or stdin) one screenful at a time</p>
+
+<p style="margin-left:17%; margin-top: 1em">-E Quit once
+the end of a file is reached <br>
+-F Quit if entire file fits on first screen <br>
+-I Ignore case in all searches <br>
+-M,-m Display status line with line numbers <br>
+and percentage through the file <br>
+-N Prefix line number to each line <br>
+-S Truncate long lines <br>
+-R Remove color escape codes in input <br>
+-~ Suppress ~s displayed past EOF</p>
+
+<p style="margin-left:11%;"><b>link</b></p>
+
+<p style="margin-left:17%;">link <small>FILE
+LINK</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Create hard
+<small>LINK</small> to <small>FILE</small></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>ln</b></p></td>
+<td width="3%"></td>
+<td width="61%">
+
+
+<p>ln [-sfnbtv] [-S <small>SUF</small> ]
+<small>TARGET...</small> LINK|DIR</p></td>
+<td width="22%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Create a link
+<small>LINK</small> or <small>DIR/TARGET</small> to the
+specified <small>TARGET</small> (s)</p>
+
+<p style="margin-left:17%; margin-top: 1em">-s Make
+symlinks instead of hardlinks <br>
+-f Remove existing destinations <br>
+-n Don't dereference symlinks - treat like normal file <br>
+-b Make a backup of the target (if exists) before link
+operation <br>
+-S SUF Use suffix instead of ~ when making backup files <br>
+-T Treat LINK as a file, not DIR <br>
+-v Verbose</p>
+
+<p style="margin-left:11%;"><b>loadfont</b></p>
+
+<p style="margin-left:17%;">loadfont &lt; font</p>
+
+<p style="margin-left:17%; margin-top: 1em">Load a console
+font from stdin</p>
+
+<p style="margin-left:11%;"><b>loadkmap</b></p>
+
+<p style="margin-left:17%;">loadkmap &lt; keymap</p>
+
+<p style="margin-left:17%; margin-top: 1em">Load a binary
+keyboard translation table from stdin</p>
+
+<p style="margin-left:11%;"><b>logger</b></p>
+
+<p style="margin-left:17%;">logger [-s] [-t
+<small>TAG</small> ] [-p <small>PRIO</small> ] [
+<small>MESSAGE</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Write
+<small>MESSAGE</small> (or stdin) to syslog</p>
+
+<p style="margin-left:17%; margin-top: 1em">-s Log to
+stderr as well as the system log <br>
+-t TAG Log using the specified tag (defaults to user name)
+<br>
+-p PRIO Priority (number or FACILITY.LEVEL pair)</p>
+
+<p style="margin-left:11%;"><b>login</b></p>
+
+<p style="margin-left:17%;">login [-p] [-h
+<small>HOST</small> ] [[-f] <small>USER</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Begin a new
+session on the system</p>
+
+<p style="margin-left:17%; margin-top: 1em">-f Don't
+authenticate (user already authenticated) <br>
+-h HOST Host user came from (for network logins) <br>
+-p Preserve environment</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%">
+
+
+<p>$LOGIN_TIMEOUT</p></td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="62%">
+
+
+<p>Seconds (default 60, 0 - disable)</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>logname</b></p>
+
+<p style="margin-left:17%;">logname</p>
+
+<p style="margin-left:17%; margin-top: 1em">Print the name
+of the current user</p>
+
+<p style="margin-left:11%;"><b>logread</b></p>
+
+<p style="margin-left:17%;">logread [-fF]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Show messages
+in syslogd&rsquo;s circular buffer</p>
+
+<p style="margin-left:17%; margin-top: 1em">-f Output data
+as log grows <br>
+-F Same as -f, but dump buffer first</p>
+
+<p style="margin-left:11%;"><b>losetup</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>losetup [-rP] [-o <small>OFS</small> ] {-f|LOOPDEV}
+<small>FILE:</small> associate loop devices</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>losetup -c <small>LOOPDEV:</small> reread file size</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>losetup -d <small>LOOPDEV:</small> disassociate</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>losetup -a: show status</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>losetup -f: show next free loop device</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">-o OFS Start
+OFS bytes into FILE <br>
+-P Scan for partitions <br>
+-r Read-only <br>
+-f Show/use next free loop device</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>ls</b></p></td>
+<td width="3%"></td>
+<td width="77%">
+
+
+<p>ls [-1AaCxdLHRFplinshrSXvctu] [-w <small>WIDTH</small> ]
+[ <small>FILE</small> ]...</p></td>
+<td width="6%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">List directory
+contents</p>
+
+<p style="margin-left:17%; margin-top: 1em">-1 One column
+output <br>
+-a Include names starting with . <br>
+-A Like -a, but exclude . and .. <br>
+-x List by lines <br>
+-d List directory names, not contents <br>
+-L Follow symlinks <br>
+-H Follow symlinks on command line <br>
+-R Recurse <br>
+-p Append / to directory names <br>
+-F Append indicator (one of */=@|) to names <br>
+-l Long format <br>
+-i List inode numbers <br>
+-n List numeric UIDs and GIDs instead of names <br>
+-s List allocated blocks <br>
+-lc List ctime <br>
+-lu List atime <br>
+--full-time List full date/time <br>
+-h Human readable sizes (1K 243M 2G) <br>
+--group-directories-first <br>
+-S Sort by size <br>
+-X Sort by extension <br>
+-v Sort by version <br>
+-t Sort by mtime <br>
+-tc Sort by ctime <br>
+-tu Sort by atime <br>
+-r Reverse sort order <br>
+-w N Format N columns wide <br>
+--color[={always,never,auto}]</p>
+
+<p style="margin-left:11%;"><b>lsmod</b></p>
+
+<p style="margin-left:17%;">lsmod</p>
+
+<p style="margin-left:17%; margin-top: 1em">List loaded
+kernel modules</p>
+
+<p style="margin-left:11%;"><b>lzcat</b></p>
+
+<p style="margin-left:17%;">lzcat [ <small>FILE</small>
+]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Decompress to
+stdout</p>
+
+<p style="margin-left:11%;"><b>lzma</b></p>
+
+<p style="margin-left:17%;">lzma -d [-cfk] [
+<small>FILE</small> ]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Decompress
+FILEs (or stdin)</p>
+
+<p style="margin-left:17%; margin-top: 1em">-d Decompress
+<br>
+-c Write to stdout <br>
+-f Force <br>
+-k Keep input files <br>
+-t Test integrity</p>
+
+<p style="margin-left:11%;"><b>lzop</b></p>
+
+<p style="margin-left:17%;">lzop [-cfUvd123456789CF] [
+<small>FILE</small> ]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">-1..9
+Compression level <br>
+-d Decompress <br>
+-c Write to stdout <br>
+-f Force <br>
+-U Delete input files <br>
+-v Verbose <br>
+-F Don't store or verify checksum <br>
+-C Also write checksum of compressed block</p>
+
+<p style="margin-left:11%;"><b>md5sum</b></p>
+
+<p style="margin-left:17%;">md5sum [-c[sw]] [
+<small>FILE</small> ]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Print or check
+<small>MD5</small> checksums</p>
+
+<p style="margin-left:17%; margin-top: 1em">-c Check sums
+against list in FILEs <br>
+-s Don't output anything, status code shows success <br>
+-w Warn about improperly formatted checksum lines</p>
+
+<p style="margin-left:11%;"><b>mdev</b></p>
+
+<p style="margin-left:17%;">mdev [-vS] { [-s] | [-df] }</p>
+
+<p style="margin-left:17%; margin-top: 1em">-v Verbose <br>
+-S Log to syslog too <br>
+-s Scan /sys and populate /dev <br>
+-d Daemon, listen on netlink <br>
+-f Run in foreground</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>Bare mdev is a kernel hotplug helper. To activate
+it:</p> </td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>echo /sbin/mdev &gt;/proc/sys/kernel/hotplug</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>It uses /etc/mdev.conf with lines</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>[-][ENV=regex;]...DEVNAME <small>UID:GID PERM</small>
+[&gt;|=PATH]|[!] [@|$|*PROG] where <small>DEVNAME</small> is
+device name regex, @major,minor[-minor2], or environment
+variable regex. A common use of the latter is to load
+modules for hotplugged devices:</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">$MODALIAS=.*
+0:0 660 @modprobe &quot;$MODALIAS&quot;</p>
+
+<p style="margin-left:17%; margin-top: 1em">If
+/dev/mdev.seq file exists, mdev will wait for its value to
+match $SEQNUM variable. This prevents plug/unplug races. To
+activate this feature, create empty /dev/mdev.seq at
+boot.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If
+/dev/mdev.log file exists, debug log will be appended to
+it.</p>
+
+<p style="margin-left:11%;"><b>microcom</b></p>
+
+<p style="margin-left:17%;">microcom [-d
+<small>DELAY_MS</small> ] [-t <small>TIMEOUT_MS</small> ]
+[-s <small>SPEED</small> ] [-X] <small>TTY</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Copy bytes from
+stdin to <small>TTY</small> and from <small>TTY</small> to
+stdout</p>
+
+<p style="margin-left:17%; margin-top: 1em">-d DELAY Wait
+up to DELAY ms for TTY output before sending <br>
+every next byte to it <br>
+-t TIMEOUT Exit if both stdin and TTY are silent for TIMEOUT
+ms <br>
+-s SPEED Set serial line to SPEED <br>
+-X Disable special meaning of NUL and Ctrl-X from stdin</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>mim</b></p></td>
+<td width="2%"></td>
+<td width="65%">
+
+
+<p>mim [-f <small>FILE</small> ] [
+<small>SHELL_OPTIONS</small> ] [ <small>TARGET</small> ]
+...</p> </td>
+<td width="18%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Run a script
+from a Makefile-like specification file</p>
+
+<p style="margin-left:17%; margin-top: 1em">-f FILE Spec
+file (default Mimfile)</p>
+
+<p style="margin-left:11%;"><b>mkdir</b></p>
+
+<p style="margin-left:17%;">mkdir [-m <small>MODE</small> ]
+[-p] <small>DIRECTORY...</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Create
+<small>DIRECTORY</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">-m MODE Mode
+<br>
+-p No error if exists; make parent directories as needed</p>
+
+<p style="margin-left:11%;"><b>mkdosfs</b></p>
+
+<p style="margin-left:17%;">mkdosfs [-v] [-n
+<small>LABEL</small> ] <small>BLOCKDEV</small> [
+<small>KBYTES</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Make a
+<small>FAT32</small> filesystem</p>
+
+<p style="margin-left:17%; margin-top: 1em">-v Verbose <br>
+-n LBL Volume label</p>
+
+<p style="margin-left:11%;"><b>mke2fs</b></p>
+
+<p style="margin-left:17%;">mke2fs [-Fn] [-b
+<small>BLK_SIZE</small> ] [-i <small>INODE_RATIO</small> ]
+[-I <small>INODE_SIZE</small> ] [-m
+<small>RESERVED_PERCENT</small> ] [-L <small>LABEL</small> ]
+<small>BLOCKDEV</small> [ <small>KBYTES</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">-b BLK_SIZE
+Block size, bytes <br>
+-F Force <br>
+-i RATIO Max number of files is filesystem_size / RATIO <br>
+-I BYTES Inode size (min 128) <br>
+-L LBL Volume label <br>
+-m PERCENT Percent of blocks to reserve for admin <br>
+-n Dry run</p>
+
+<p style="margin-left:11%;"><b>mkfifo</b></p>
+
+<p style="margin-left:17%;">mkfifo [-m <small>MODE</small>
+] <small>NAME</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Create named
+pipe</p>
+
+<p style="margin-left:17%; margin-top: 1em">-m MODE Mode
+(default a=rw)</p>
+
+<p style="margin-left:11%;"><b>mknod</b></p>
+
+<p style="margin-left:17%;">mknod [-m <small>MODE</small> ]
+<small>NAME TYPE</small> [ <small>MAJOR MINOR</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Create a
+special file (block, character, or pipe)</p>
+
+<p style="margin-left:17%; margin-top: 1em">-m MODE
+Creation mode (default a=rw) <br>
+TYPE: <br>
+b Block device <br>
+c or u Character device <br>
+p Named pipe (MAJOR MINOR must be omitted)</p>
+
+<p style="margin-left:11%;"><b>mkpasswd</b></p>
+
+<p style="margin-left:17%;">mkpasswd [-P <small>FD</small>
+] [-m <small>TYPE</small> ] [-S <small>SALT</small> ] [
+<small>PASSWORD</small> ] [ <small>SALT</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Print
+<b>crypt</b>(3) hashed <small>PASSWORD</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">-P N Read
+password from fd N <br>
+-m TYPE des,md5,sha256/512 (default ) <br>
+-S SALT</p>
+
+<p style="margin-left:11%;"><b>mkswap</b></p>
+
+<p style="margin-left:17%;">mkswap [-L <small>LBL</small> ]
+<small>BLOCKDEV</small> [ <small>KBYTES</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Prepare
+<small>BLOCKDEV</small> to be used as swap partition</p>
+
+<p style="margin-left:17%; margin-top: 1em">-L LBL
+Label</p>
+
+<p style="margin-left:11%;"><b>mktemp</b></p>
+
+<p style="margin-left:17%;">mktemp [-dt] [-p
+<small>DIR</small> ] [ <small>TEMPLATE</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Create a
+temporary file with name based on <small>TEMPLATE</small>
+and print its name. <small>TEMPLATE</small> must end with
+<small>XXXXXX</small> (e.g. [/dir/]nameXXXXXX). Without
+<small>TEMPLATE,</small> -t tmp.XXXXXX is assumed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">-d Make
+directory, not file <br>
+-q Fail silently on errors <br>
+-t Prepend base directory name to TEMPLATE <br>
+-p DIR Use DIR as a base directory (implies -t) <br>
+-u Do not create anything; print a name</p>
+
+<p style="margin-left:17%; margin-top: 1em">Base directory
+is: -p <small>DIR,</small> else $TMPDIR, else /tmp</p>
+
+<p style="margin-left:11%;"><b>modinfo</b></p>
+
+<p style="margin-left:17%;">modinfo [-adlpn0] [-F keyword]
+<small>MODULE</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">-a Shortcut for
+'-F author' <br>
+-d Shortcut for '-F description' <br>
+-l Shortcut for '-F license' <br>
+-p Shortcut for '-F parm' <br>
+-F keyword Keyword to look for <br>
+-0 NUL terminated output</p>
+
+<p style="margin-left:11%;"><b>modprobe</b></p>
+
+<p style="margin-left:17%;">modprobe [-alrqvsDb]
+<small>MODULE</small> [SYMBOL=VALUE]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">-a Load
+multiple MODULEs <br>
+-l List (MODULE is a pattern) <br>
+-r Remove MODULE (stacks) or do autoclean <br>
+-q Quiet <br>
+-v Verbose <br>
+-s Log to syslog <br>
+-D Show dependencies <br>
+-b Apply blacklist to module names too</p>
+
+<p style="margin-left:11%;"><b>more</b></p>
+
+<p style="margin-left:17%;">more [ <small>FILE</small>
+]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">View
+<small>FILE</small> (or stdin) one screenful at a time</p>
+
+<p style="margin-left:11%;"><b>mount</b></p>
+
+<p style="margin-left:17%;">mount [ <small>OPTIONS</small>
+] [-o <small>OPT</small> ] <small>DEVICE NODE</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Mount a
+filesystem. Filesystem autodetection requires /proc.</p>
+
+<p style="margin-left:17%; margin-top: 1em">-a Mount all
+filesystems in fstab <br>
+-f Dry run <br>
+-i Don't run mount helper <br>
+-r Read-only mount <br>
+-t FSTYPE[,...] Filesystem type(s) <br>
+-T FILE Read FILE instead of /etc/fstab <br>
+-O OPT Mount only filesystems with option OPT (-a only) <br>
+-o OPT: <br>
+loop Ignored (loop devices are autodetected) <br>
+[a]sync Writes are [a]synchronous <br>
+[no]atime Disable/enable updates to inode access times <br>
+[no]diratime Disable/enable atime updates to directories
+<br>
+[no]relatime Disable/enable atime updates relative to
+modification time <br>
+[no]dev (Dis)allow use of special device files <br>
+[no]exec (Dis)allow use of executable files <br>
+[no]suid (Dis)allow set-user-id-root programs <br>
+[r]shared Convert [recursively] to a shared subtree <br>
+[r]slave Convert [recursively] to a slave subtree <br>
+[r]private Convert [recursively] to a private subtree <br>
+[un]bindable Make mount point [un]able to be bind mounted
+<br>
+[r]bind Bind a file or directory [recursively] to another
+location <br>
+move Relocate an existing mount point <br>
+remount Remount a mounted filesystem, changing flags <br>
+ro Same as -r</p>
+
+<p style="margin-left:17%; margin-top: 1em">There are
+filesystem-specific -o flags.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>mt</b></p></td>
+<td width="3%"></td>
+<td width="41%">
+
+
+<p>mt [-f <small>DEVICE</small> ] <small>OPCODE
+VALUE</small></p> </td>
+<td width="42%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Control
+magnetic tape drive operation</p>
+
+<p style="margin-left:17%; margin-top: 1em">Opcodes:</p>
+
+<p style="margin-left:17%; margin-top: 1em">bsf bsfm bsr
+bss datacompression drvbuffer eof eom erase fsf fsfm fsr fss
+load lock mkpart nop offline ras1 ras2 ras3 reset retension
+rewind rewoffline seek setblk setdensity setpart tell unload
+unlock weof wset</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>mv</b></p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">mv [-finT] <small>SOURCE
+DEST</small> or: mv [-fin] <small>SOURCE...</small> { -t
+<small>DIRECTORY</small> | <small>DIRECTORY</small> }</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Rename
+<small>SOURCE</small> to <small>DEST,</small> or move
+SOURCEs to <small>DIRECTORY</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">-f Don't prompt
+before overwriting <br>
+-i Interactive, prompt before overwrite <br>
+-n Don't overwrite an existing file <br>
+-T Refuse to move if DEST is a directory <br>
+-t DIR Move all SOURCEs into DIR</p>
+
+<p style="margin-left:11%;"><b>nameif</b></p>
+
+<p style="margin-left:17%;">nameif [-s] [-c
+<small>FILE</small> ] [ <small>IFNAME HWADDR</small>
+]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Rename network
+interface while it in the down state. The device with
+address <small>HWADDR</small> is renamed to
+<small>IFNAME.</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">-c FILE
+Configuration file (default: /etc/mactab) <br>
+-s Log to syslog</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>nc</b></p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>nc [-iN] [-wN] [-l] [-p <small>PORT</small> ] [-f
+FILE|IPADDR <small>PORT</small> ] [-e <small>PROG</small>
+]</p> </td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Open a pipe to
+<small>IP:PORT</small> or <small>FILE</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">-l Listen mode,
+for inbound connects <br>
+(use -ll with -e for persistent server) <br>
+-p PORT Local port <br>
+-w SEC Connect timeout <br>
+-i SEC Delay interval for lines sent <br>
+-f FILE Use file (ala /dev/ttyS0) instead of network <br>
+-e PROG Run PROG after connect</p>
+
+<p style="margin-left:11%;"><b>netstat</b></p>
+
+<p style="margin-left:17%;">netstat [-ral] [-tuwx]
+[-en]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Display
+networking information</p>
+
+<p style="margin-left:17%; margin-top: 1em">-r Routing
+table <br>
+-a All sockets <br>
+-l Listening sockets <br>
+Else: connected sockets <br>
+-t TCP sockets <br>
+-u UDP sockets <br>
+-w Raw sockets <br>
+-x Unix sockets <br>
+Else: all socket types <br>
+-e Other/more information <br>
+-n Don't resolve names</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>nl</b></p></td>
+<td width="3%"></td>
+<td width="34%">
+
+
+<p>nl [ <small>OPTIONS</small> ] [ <small>FILE</small>
+]...</p> </td>
+<td width="49%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Write FILEs to
+standard output with line numbers added</p>
+
+<p style="margin-left:17%; margin-top: 1em">-b STYLE Which
+lines to number - a: all, t: nonempty, n: none <br>
+-i N Line number increment <br>
+-s STRING Use STRING as line number separator <br>
+-v N Start from N <br>
+-w N Width of line numbers</p>
+
+<p style="margin-left:11%;"><b>nologin</b></p>
+
+<p style="margin-left:17%;">nologin</p>
+
+<p style="margin-left:17%; margin-top: 1em">Politely refuse
+a login</p>
+
+<p style="margin-left:11%;"><b>nproc</b></p>
+
+<p style="margin-left:17%;">nproc [--all] [--ignore=N]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Print number of
+available CPUs</p>
+
+<p style="margin-left:17%; margin-top: 1em">--all Number of
+installed CPUs <br>
+--ignore=N Exclude N CPUs</p>
+
+<p style="margin-left:11%;"><b>nsenter</b></p>
+
+<p style="margin-left:17%;">nsenter [
+<small>OPTIONS</small> ] [ <small>PROG ARGS</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">-t PID Target
+process to get namespaces from <br>
+-m[FILE] Enter mount namespace <br>
+-u[FILE] Enter UTS namespace (hostname etc) <br>
+-i[FILE] Enter System V IPC namespace <br>
+-n[FILE] Enter network namespace <br>
+-p[FILE] Enter pid namespace <br>
+-U[FILE] Enter user namespace <br>
+-S UID Set uid in entered namespace <br>
+-G GID Set gid in entered namespace <br>
+--preserve-credentials Don't touch uids or gids <br>
+-r[DIR] Set root directory <br>
+-w[DIR] Set working directory <br>
+-F Don't fork before exec'ing PROG</p>
+
+<p style="margin-left:11%;"><b>nslookup</b></p>
+
+<p style="margin-left:17%;">nslookup [-type=QUERY_TYPE]
+[-debug] <small>HOST</small> [ <small>DNS_SERVER</small>
+]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Query
+<small>DNS</small> about <small>HOST</small></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><small>QUERY_TYPE:</small>
+soa,ns,a,aaaa,cname,mx,txt,ptr,srv,any</p>
+
+<p style="margin-left:11%;"><b>nuke</b></p>
+
+<p style="margin-left:17%;">nuke <small>DIR...</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Remove DIRs</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>od</b></p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>od [-abcdfhilovxs] [-t <small>TYPE</small> ] [-A
+<small>RADIX</small> ] [-N <small>SIZE</small> ] [-j
+<small>SKIP</small> ] [-S <small>MINSTR</small> ] [-w
+<small>WIDTH</small> ] [ <small>FILE</small> ]...</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Print FILEs (or
+stdin) unambiguously, as octal bytes by default</p>
+
+<p style="margin-left:11%;"><b>openvt</b></p>
+
+<p style="margin-left:17%;">openvt [-c N] [-sw] [
+<small>PROG ARGS</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Start
+<small>PROG</small> on a new virtual terminal</p>
+
+<p style="margin-left:17%; margin-top: 1em">-c N Use
+specified VT <br>
+-s Switch to the VT <br>
+-w Wait for PROG to exit</p>
+
+<p style="margin-left:11%;"><b>partprobe</b></p>
+
+<p style="margin-left:17%;">partprobe
+<small>DEVICE...</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Ask kernel to
+rescan partition table</p>
+
+<p style="margin-left:11%;"><b>paste</b></p>
+
+<p style="margin-left:17%;">paste [-d <small>LIST</small> ]
+[-s] [ <small>FILE</small> ]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Paste lines
+from each input file, separated with tab</p>
+
+<p style="margin-left:17%; margin-top: 1em">-d LIST Use
+delimiters from LIST, not tab <br>
+-s Serial: one file at a time</p>
+
+<p style="margin-left:11%;"><b>patch</b></p>
+
+<p style="margin-left:17%;">patch [-RNE] [-p N] [-i
+<small>DIFF</small> ] [ <small>ORIGFILE</small> [
+<small>PATCHFILE</small> ]]</p>
+
+<p style="margin-left:17%; margin-top: 1em">-p N Strip N
+leading components from file names <br>
+-i DIFF Read DIFF instead of stdin <br>
+-R Reverse patch <br>
+-N Ignore already applied patches <br>
+-E Remove output files if they become empty <br>
+--dry-run Don't actually change files</p>
+
+<p style="margin-left:11%;"><b>pidof</b></p>
+
+<p style="margin-left:17%;">pidof [ <small>NAME</small>
+]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">List PIDs of
+all processes with names that match NAMEs</p>
+
+<p style="margin-left:11%;"><b>ping</b></p>
+
+<p style="margin-left:17%;">ping [ <small>OPTIONS</small> ]
+<small>HOST</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Send
+<small>ICMP</small> ECHO_REQUESTs to <small>HOST</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">-4,-6 Force IP
+or IPv6 name resolution <br>
+-c CNT Send only CNT pings <br>
+-s SIZE Send SIZE data bytes in packets (default 56) <br>
+-i SECS Interval <br>
+-A Ping as soon as reply is received <br>
+-t TTL Set TTL <br>
+-I IFACE/IP Source interface or IP address <br>
+-W SEC Seconds to wait for the first response (default 10)
+<br>
+(after all -c CNT packets are sent) <br>
+-w SEC Seconds until ping exits (default:infinite) <br>
+(can exit earlier with -c CNT) <br>
+-q Quiet, only display output at start/finish <br>
+-p HEXBYTE Payload pattern</p>
+
+<p style="margin-left:11%;"><b>ping6</b></p>
+
+<p style="margin-left:17%;">ping6 [ <small>OPTIONS</small>
+] <small>HOST</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Send
+<small>ICMP</small> ECHO_REQUESTs to <small>HOST</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">-c CNT Send
+only CNT pings <br>
+-s SIZE Send SIZE data bytes in packets (default 56) <br>
+-i SECS Interval <br>
+-A Ping as soon as reply is received <br>
+-I IFACE/IP Source interface or IP address <br>
+-W SEC Seconds to wait for the first response (default 10)
+<br>
+(after all -c CNT packets are sent) <br>
+-w SEC Seconds until ping exits (default:infinite) <br>
+(can exit earlier with -c CNT) <br>
+-q Quiet, only display output at start/finish <br>
+-p HEXBYTE Payload pattern</p>
+
+<p style="margin-left:11%;"><b>pivot_root</b></p>
+
+<p style="margin-left:17%;">pivot_root <small>NEW_ROOT
+PUT_OLD</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Move the
+current root file system to <small>PUT_OLD</small> and make
+<small>NEW_ROOT</small> the new root file system</p>
+
+<p style="margin-left:11%;"><b>poweroff</b></p>
+
+<p style="margin-left:17%;">poweroff [-d
+<small>DELAY</small> ] [-nf]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Halt and shut
+off power</p>
+
+<p style="margin-left:17%; margin-top: 1em">-d SEC Delay
+interval <br>
+-n Do not sync <br>
+-f Force (don't go through init)</p>
+
+<p style="margin-left:11%;"><b>printf</b></p>
+
+<p style="margin-left:17%;">printf <small>FORMAT</small> [
+<small>ARG</small> ]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Format and
+print <small>ARG</small> (s) according to
+<small>FORMAT</small> (a-la C printf)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>ps</b></p></td>
+<td width="3%"></td>
+<td width="45%">
+
+
+<p>ps [-o <small>COL1</small> ,COL2=HEADER] [-T]</p></td>
+<td width="38%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Show list of
+processes</p>
+
+<p style="margin-left:17%; margin-top: 1em">-o
+COL1,COL2=HEADER Select columns for display <br>
+-T Show threads</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p style="margin-top: 1em"><b>pwd</b></p></td>
+<td width="2%"></td>
+<td width="5%">
+
+
+<p style="margin-top: 1em">pwd</p></td>
+<td width="78%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Print the full
+filename of the current working directory</p>
+
+<p style="margin-left:11%;"><b>rdate</b></p>
+
+<p style="margin-left:17%;">rdate [-s/-p]
+<small>HOST</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Set and print
+time from <small>HOST</small> using <small>RFC
+868</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">-s Only set
+system time <br>
+-p Only print time</p>
+
+<p style="margin-left:11%;"><b>readlink</b></p>
+
+<p style="margin-left:17%;">readlink [-fnv]
+<small>FILE</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Display the
+value of a symlink</p>
+
+<p style="margin-left:17%; margin-top: 1em">-f Canonicalize
+by following all symlinks <br>
+-n Don't add newline <br>
+-v Verbose</p>
+
+<p style="margin-left:11%;"><b>realpath</b></p>
+
+<p style="margin-left:17%;">realpath
+<small>FILE...</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Print absolute
+pathnames of FILEs</p>
+
+<p style="margin-left:11%;"><b>reboot</b></p>
+
+<p style="margin-left:17%;">reboot [-d <small>DELAY</small>
+] [-nf]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Reboot the
+system</p>
+
+<p style="margin-left:17%; margin-top: 1em">-d SEC Delay
+interval <br>
+-n Do not sync <br>
+-f Force (don't go through init)</p>
+
+<p style="margin-left:11%;"><b>renice</b></p>
+
+<p style="margin-left:17%;">renice [-n]
+<small>PRIORITY</small> [[-p|g|u] <small>ID...</small>
+]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Change
+scheduling priority of a running process</p>
+
+<p style="margin-left:17%; margin-top: 1em">-n Add PRIORITY
+to current nice value <br>
+Without -n, nice value is set to PRIORITY <br>
+-p Process ids (default) <br>
+-g Process group ids <br>
+-u Process user names</p>
+
+<p style="margin-left:11%;"><b>reset</b></p>
+
+<p style="margin-left:17%;">reset</p>
+
+<p style="margin-left:17%; margin-top: 1em">Reset the
+screen</p>
+
+<p style="margin-left:11%;"><b>resume</b></p>
+
+<p style="margin-left:17%;">resume <small>BLOCKDEV</small>
+[ <small>OFFSET</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Restore system
+state from &rsquo;suspend-to-disk&rsquo; data in
+<small>BLOCKDEV</small></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>rev</b></p></td>
+<td width="2%"></td>
+<td width="20%">
+
+
+<p>rev [ <small>FILE</small> ]...</p></td>
+<td width="63%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Reverse lines
+of <small>FILE</small></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>rm</b></p></td>
+<td width="3%"></td>
+<td width="26%">
+
+
+<p style="margin-top: 1em">rm [-irf]
+<small>FILE...</small></p> </td>
+<td width="57%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Remove (unlink)
+FILEs</p>
+
+<p style="margin-left:17%; margin-top: 1em">-i Always
+prompt before removing <br>
+-f Never prompt <br>
+-R,-r Recurse</p>
+
+<p style="margin-left:11%;"><b>rmdir</b></p>
+
+<p style="margin-left:17%;">rmdir [-p]
+<small>DIRECTORY...</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Remove
+<small>DIRECTORY</small> if it is empty</p>
+
+<p style="margin-left:17%; margin-top: 1em">-p Include
+parents <br>
+--ignore-fail-on-non-empty</p>
+
+<p style="margin-left:11%;"><b>rmmod</b></p>
+
+<p style="margin-left:17%;">rmmod [-wfa] [
+<small>MODULE</small> ]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Unload kernel
+modules</p>
+
+<p style="margin-left:17%; margin-top: 1em">-w Wait until
+the module is no longer used <br>
+-f Force unload <br>
+-a Remove all unused modules (recursively)</p>
+
+<p style="margin-left:11%;"><b>route</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>route [-ne] [-A inet[6]] [{add|del} [-net|-host]
+<small>TARGET</small> [netmask <small>MASK</small> ]</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>[gw <small>GATEWAY</small> ] [metric N] [mss
+<small>BYTES</small> ] [window <small>BYTES</small> ]
+[reject] [ <small>IFACE</small> ]]</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Show or edit
+kernel routing tables</p>
+
+<p style="margin-left:17%; margin-top: 1em">-n Don't
+resolve names <br>
+-e Display other/more information <br>
+-A inet[6] Select address family</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>rpm</b></p></td>
+<td width="2%"></td>
+<td width="69%">
+
+
+<p>rpm -i <small>PACKAGE</small> .rpm; rpm -qp[ildc]
+<small>PACKAGE</small> .rpm</p></td>
+<td width="14%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Manipulate
+<small>RPM</small> packages</p>
+
+<p style="margin-left:17%; margin-top: 1em">Commands:</p>
+
+<p style="margin-left:17%; margin-top: 1em">-i Install
+package <br>
+-qp Query package <br>
+-qpi Show information <br>
+-qpl List contents <br>
+-qpd List documents <br>
+-qpc List config files</p>
+
+<p style="margin-left:11%;"><b>rpm2cpio</b></p>
+
+<p style="margin-left:17%;">rpm2cpio <small>PACKAGE</small>
+.rpm</p>
+
+<p style="margin-left:17%; margin-top: 1em">Output a cpio
+archive of the rpm file</p>
+
+<p style="margin-left:11%;"><b>run-init</b></p>
+
+<p style="margin-left:17%;">run-init [-d
+<small>CAP,CAP...</small> ] [-n] [-c
+<small>CONSOLE_DEV</small> ] <small>NEW_ROOT
+NEW_INIT</small> [ <small>ARGS</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Free initramfs
+and switch to another root fs:</p>
+
+<p style="margin-left:17%; margin-top: 1em">chroot to
+<small>NEW_ROOT,</small> delete all in /, move
+<small>NEW_ROOT</small> to /, execute <small>NEW_INIT.
+PID</small> must be 1. <small>NEW_ROOT</small> must be a
+mountpoint.</p>
+
+<p style="margin-left:17%; margin-top: 1em">-c DEV Reopen
+stdio to DEV after switch <br>
+-d CAPS Drop capabilities <br>
+-n Dry run</p>
+
+<p style="margin-left:11%;"><b>run-parts</b></p>
+
+<p style="margin-left:17%;">run-parts [-a
+<small>ARG</small> ]... [-u <small>UMASK</small> ]
+[--reverse] [--test] [--exit-on-error]
+<small>DIRECTORY</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Run a bunch of
+scripts in <small>DIRECTORY</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">-a ARG Pass ARG
+as argument to scripts <br>
+-u UMASK Set UMASK before running scripts <br>
+--reverse Reverse execution order <br>
+--test Dry run <br>
+--exit-on-error Exit if a script exits with non-zero</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>sed</b></p></td>
+<td width="2%"></td>
+<td width="83%">
+
+
+<p>sed [-i[ <small>SFX</small> ]] [-nrE] [-f
+<small>FILE</small> ]... [-e <small>CMD</small> ]... [
+<small>FILE</small> ]... or: sed [-i[ <small>SFX</small> ]]
+[-nrE] <small>CMD</small> [ <small>FILE</small> ]...</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">-e CMD Add CMD
+to sed commands to be executed <br>
+-f FILE Add FILE contents to sed commands to be executed
+<br>
+-i[SFX] Edit files in-place (otherwise write to stdout) <br>
+Optionally back files up, appending SFX <br>
+-n Suppress automatic printing of pattern space <br>
+-r,-E Use extended regex syntax</p>
+
+<p style="margin-left:17%; margin-top: 1em">If no -e or -f,
+the first non-option argument is the sed command string.
+Remaining arguments are input files (stdin if none).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p style="margin-top: 1em"><b>seq</b></p></td>
+<td width="2%"></td>
+<td width="55%">
+
+
+<p style="margin-top: 1em">seq [-w] [-s <small>SEP</small>
+] [ <small>FIRST</small> [ <small>INC</small> ]]
+<small>LAST</small></p> </td>
+<td width="28%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Print numbers
+from <small>FIRST</small> to <small>LAST,</small> in steps
+of <small>INC. FIRST, INC</small> default to 1.</p>
+
+<p style="margin-left:17%; margin-top: 1em">-w Pad to last
+with leading zeros <br>
+-s SEP String separator</p>
+
+<p style="margin-left:11%;"><b>setkeycodes</b></p>
+
+<p style="margin-left:17%;">setkeycodes { <small>SCANCODE
+KEYCODE</small> }...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Modify
+kernel&rsquo;s scancode-to-keycode map, allowing unusual
+keyboards to generate usable keycodes.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><small>SCANCODE</small>
+is either xx or e0xx (hexadecimal), <small>KEYCODE</small>
+is decimal.</p>
+
+<p style="margin-left:11%;"><b>setpriv</b></p>
+
+<p style="margin-left:17%;">setpriv [
+<small>OPTIONS</small> ] <small>PROG ARGS</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Run
+<small>PROG</small> with different privilege settings</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>-d,--dump</p></td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+
+
+<p>Show current capabilities --nnp,--no-new-privs</p></td>
+<td width="54%">
+
+
+<p>Ignore setuid/setgid bits and file capabilities
+--inh-caps <small>CAP,CAP</small></p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="54%">
+
+
+<p>Set inheritable capabilities --ambient-caps
+<small>CAP,CAP</small></p> </td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="54%">
+
+
+<p>Set ambient capabilities</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>setsid</b></p>
+
+<p style="margin-left:17%;">setsid [-c] <small>PROG
+ARGS</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Run
+<small>PROG</small> in a new session. <small>PROG</small>
+will have no controlling terminal and will not be affected
+by keyboard signals (^C etc).</p>
+
+<p style="margin-left:17%; margin-top: 1em">-c Set
+controlling terminal to stdin</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>sh</b></p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>sh [-il] [-|+Cabefmnuvx] [-|+o <small>OPT</small> ]...
+[-c &rsquo; <small>SCRIPT</small> &rsquo; [ <small>ARG0
+ARGS</small> ] | <small>FILE ARGS</small> | -s
+<small>ARGS</small> ]</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Unix shell
+interpreter</p>
+
+<p style="margin-left:11%;"><b>sha1sum</b></p>
+
+<p style="margin-left:17%;">sha1sum [-c[sw]] [
+<small>FILE</small> ]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Print or check
+<small>SHA1</small> checksums</p>
+
+<p style="margin-left:17%; margin-top: 1em">-c Check sums
+against list in FILEs <br>
+-s Don't output anything, status code shows success <br>
+-w Warn about improperly formatted checksum lines</p>
+
+<p style="margin-left:11%;"><b>sha256sum</b></p>
+
+<p style="margin-left:17%;">sha256sum [-c[sw]] [
+<small>FILE</small> ]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Print or check
+<small>SHA256</small> checksums</p>
+
+<p style="margin-left:17%; margin-top: 1em">-c Check sums
+against list in FILEs <br>
+-s Don't output anything, status code shows success <br>
+-w Warn about improperly formatted checksum lines</p>
+
+<p style="margin-left:11%;"><b>sha3sum</b></p>
+
+<p style="margin-left:17%;">sha3sum [-c[sw]] [-a
+<small>BITS</small> ] [ <small>FILE</small> ]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Print or check
+<small>SHA3</small> checksums</p>
+
+<p style="margin-left:17%; margin-top: 1em">-c Check sums
+against list in FILEs <br>
+-s Don't output anything, status code shows success <br>
+-w Warn about improperly formatted checksum lines <br>
+-a BITS 224 (default), 256, 384, 512</p>
+
+<p style="margin-left:11%;"><b>sha512sum</b></p>
+
+<p style="margin-left:17%;">sha512sum [-c[sw]] [
+<small>FILE</small> ]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Print or check
+<small>SHA512</small> checksums</p>
+
+<p style="margin-left:17%; margin-top: 1em">-c Check sums
+against list in FILEs <br>
+-s Don't output anything, status code shows success <br>
+-w Warn about improperly formatted checksum lines</p>
+
+<p style="margin-left:11%;"><b>shred</b></p>
+
+<p style="margin-left:17%;">shred [-fuz] [-n N] [-s
+<small>SIZE</small> ] <small>FILE...</small></p>
+
+
+<p style="margin-left:17%; margin-top: 1em">Overwrite/delete
+FILEs</p>
+
+<p style="margin-left:17%; margin-top: 1em">-f Chmod to
+ensure writability <br>
+-s SIZE Size to write <br>
+-n N Overwrite N times (default 3) <br>
+-z Final overwrite with zeros <br>
+-u Remove file</p>
+
+<p style="margin-left:11%;"><b>shuf</b></p>
+
+<p style="margin-left:17%;">shuf [-n <small>NUM</small> ]
+[-o <small>FILE</small> ] [-z] [ <small>FILE</small> | -e [
+<small>ARG...</small> ] | -i L-H]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Randomly
+permute lines</p>
+
+<p style="margin-left:17%; margin-top: 1em">-n NUM Output
+at most NUM lines <br>
+-o FILE Write to FILE, not standard output <br>
+-z NUL terminated output <br>
+-e Treat ARGs as lines <br>
+-i L-H Treat numbers L-H as lines</p>
+
+<p style="margin-left:11%;"><b>sleep</b></p>
+
+<p style="margin-left:17%;">sleep [N]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Pause for a
+time equal to the total of the args given, where each arg
+can have an optional suffix of (s)econds, (m)inutes,
+(h)ours, or (d)ays</p>
+
+<p style="margin-left:11%;"><b>sort</b></p>
+
+<p style="margin-left:17%;">sort [-nrugMcszbdfiokt] [-o
+<small>FILE</small> ] [-k START[.OFS][ <small>OPTS</small>
+][,END[.OFS][ <small>OPTS</small> ]] [-t <small>CHAR</small>
+] [ <small>FILE</small> ]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Sort lines of
+text</p>
+
+<p style="margin-left:17%; margin-top: 1em">-o FILE Output
+to FILE <br>
+-c Check whether input is sorted <br>
+-b Ignore leading blanks <br>
+-f Ignore case <br>
+-i Ignore unprintable characters <br>
+-d Dictionary order (blank or alphanumeric only) <br>
+-n Sort numbers <br>
+-g General numerical sort <br>
+-M Sort month <br>
+-V Sort version <br>
+-t CHAR Field separator <br>
+-k N[,M] Sort by Nth field <br>
+-r Reverse sort order <br>
+-s Stable (don't sort ties alphabetically) <br>
+-u Suppress duplicate lines <br>
+-z NUL terminated input and output</p>
+
+<p style="margin-left:11%;"><b>ssl_client</b></p>
+
+<p style="margin-left:17%;">ssl_client [-e] -s
+<small>FD</small> [-r <small>FD</small> ] [-n
+<small>SNI</small> ]</p>
+
+<p style="margin-left:11%;"><b>start-stop-daemon</b></p>
+
+<p style="margin-left:17%;">start-stop-daemon [
+<small>OPTIONS</small> ] [-S|-K] ... [--
+<small>ARGS...</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Search for
+matching processes, and then -K: stop all matching processes
+-S: start a process unless a matching process is found</p>
+
+<p style="margin-left:17%; margin-top: 1em">Process
+matching:</p>
+
+<p style="margin-left:17%; margin-top: 1em">-u USERNAME|UID
+Match only this user's processes <br>
+-n NAME Match processes with NAME <br>
+in comm field in /proc/PID/stat <br>
+-x EXECUTABLE Match processes with this command <br>
+in /proc/PID/cmdline <br>
+-p FILE Match a process with PID from FILE <br>
+All specified conditions must match <br>
+-S only: <br>
+-x EXECUTABLE Program to run <br>
+-a NAME Zeroth argument <br>
+-b Background <br>
+-N N Change nice level <br>
+-c USER[:[GRP]] Change user/group <br>
+-m Write PID to pidfile specified by -p <br>
+-K only: <br>
+-s SIG Signal to send <br>
+-t Match only, exit with 0 if found <br>
+Other: <br>
+-o Exit with status 0 if nothing is done <br>
+-v Verbose <br>
+-q Quiet</p>
+
+<p style="margin-left:11%;"><b>stat</b></p>
+
+<p style="margin-left:17%;">stat [-ltf] [-c
+<small>FMT</small> ] <small>FILE...</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Display file
+(default) or filesystem status</p>
+
+<p style="margin-left:17%; margin-top: 1em">-c FMT Use the
+specified format <br>
+-f Display filesystem status <br>
+-L Follow links <br>
+-t Terse display</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><small>FMT</small>
+sequences for files:</p>
+
+<p style="margin-left:17%; margin-top: 1em">%a Access
+rights in octal <br>
+%A Access rights in human readable form <br>
+%b Number of blocks allocated (see %B) <br>
+%B Size in bytes of each block reported by %b <br>
+%d Device number in decimal <br>
+%D Device number in hex <br>
+%f Raw mode in hex <br>
+%F File type <br>
+%g Group ID <br>
+%G Group name <br>
+%h Number of hard links <br>
+%i Inode number <br>
+%n File name <br>
+%N File name, with -&gt; TARGET if symlink <br>
+%o I/O block size <br>
+%s Total size in bytes <br>
+%t Major device type in hex <br>
+%T Minor device type in hex <br>
+%u User ID <br>
+%U User name <br>
+%x Time of last access <br>
+%X Time of last access as seconds since Epoch <br>
+%y Time of last modification <br>
+%Y Time of last modification as seconds since Epoch <br>
+%z Time of last change <br>
+%Z Time of last change as seconds since Epoch</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><small>FMT</small>
+sequences for file systems:</p>
+
+<p style="margin-left:17%; margin-top: 1em">%a Free blocks
+available to non-superuser <br>
+%b Total data blocks <br>
+%c Total file nodes <br>
+%d Free file nodes <br>
+%f Free blocks <br>
+%i File System ID in hex <br>
+%l Maximum length of filenames <br>
+%n File name <br>
+%s Block size (for faster transfer) <br>
+%S Fundamental block size (for block counts) <br>
+%t Type in hex <br>
+%T Type in human readable form</p>
+
+<p style="margin-left:11%;"><b>strings</b></p>
+
+<p style="margin-left:17%;">strings [-fo] [-t o|d|x] [-n
+<small>LEN</small> ] [ <small>FILE</small> ]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Display
+printable strings in a binary file</p>
+
+<p style="margin-left:17%; margin-top: 1em">-f Precede
+strings with filenames <br>
+-o Precede strings with octal offsets <br>
+-t o|d|x Precede strings with offsets in base 8/10/16 <br>
+-n LEN At least LEN characters form a string (default 4)</p>
+
+<p style="margin-left:11%;"><b>stty</b></p>
+
+<p style="margin-left:17%;">stty [-a|g] [-F
+<small>DEVICE</small> ] [ <small>SETTING</small> ]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Without
+arguments, prints baud rate, line discipline, and deviations
+from stty sane</p>
+
+<p style="margin-left:17%; margin-top: 1em">-F DEVICE Open
+device instead of stdin <br>
+-a Print all current settings in human-readable form <br>
+-g Print in stty-readable form <br>
+[SETTING] See manpage</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>svc</b></p></td>
+<td width="2%"></td>
+<td width="51%">
+
+
+<p>svc [-udopchaitkx] <small>SERVICE_DIR...</small></p></td>
+<td width="32%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Control
+services monitored by runsv supervisor</p>
+
+<p style="margin-left:17%; margin-top: 1em">-u If service
+is not running, start it; restart if it stops <br>
+-d If service is running, send TERM+CONT signals; do not
+restart it <br>
+-o Once: if service is not running, start it; do not restart
+it <br>
+-pchaitk Send STOP, CONT, HUP, ALRM, INT, TERM, KILL signal
+to service <br>
+-x Exit: runsv will exit as soon as the service is down</p>
+
+<p style="margin-left:11%;"><b>svok</b></p>
+
+<p style="margin-left:17%;">svok
+<small>SERVICE_DIR</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Check whether
+runsv supervisor is running. Exit code is 0 if it does, 100
+if it does not, 111 (with error message) if
+<small>SERVICE_DIR</small> does not exist.</p>
+
+<p style="margin-left:11%;"><b>swapoff</b></p>
+
+<p style="margin-left:17%;">swapoff [-a] [
+<small>DEVICE</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Stop swapping
+on <small>DEVICE</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">-a Stop
+swapping on all swap devices</p>
+
+<p style="margin-left:11%;"><b>swapon</b></p>
+
+<p style="margin-left:17%;">swapon [-a] [-e] [-d[
+<small>POL</small> ]] [ <small>DEVICE</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Start swapping
+on <small>DEVICE</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">-a Start
+swapping on all swap devices <br>
+-d[POL] Discard blocks at swapon (POL=once), <br>
+as freed (POL=pages), or both (POL omitted) <br>
+-e Silently skip devices that do not exist</p>
+
+<p style="margin-left:11%;"><b>switch_root</b></p>
+
+<p style="margin-left:17%;">switch_root [-c
+<small>CONSOLE_DEV</small> ] <small>NEW_ROOT
+NEW_INIT</small> [ <small>ARGS</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Free initramfs
+and switch to another root fs:</p>
+
+<p style="margin-left:17%; margin-top: 1em">chroot to
+<small>NEW_ROOT,</small> delete all in /, move
+<small>NEW_ROOT</small> to /, execute <small>NEW_INIT.
+PID</small> must be 1. <small>NEW_ROOT</small> must be a
+mountpoint.</p>
+
+<p style="margin-left:17%; margin-top: 1em">-c DEV Reopen
+stdio to DEV after switch</p>
+
+<p style="margin-left:11%;"><b>sync</b></p>
+
+<p style="margin-left:17%;">sync [-df] [
+<small>FILE</small> ]...</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>Write all buffered blocks (in FILEs) to disk</p></td>
+<td width="77%">
+
+
+<p>-d</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="77%">
+
+
+<p>Avoid syncing metadata</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="77%">
+
+
+<p>-f</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="77%">
+
+
+<p>Sync filesystems underlying FILEs</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>sysctl</b></p>
+
+<p style="margin-left:17%;">sysctl [-enq] { -a | -p [
+<small>FILE</small> ]... | [-w] [KEY[=VALUE]]... }</p>
+
+<p style="margin-left:17%; margin-top: 1em">Show/set kernel
+parameters</p>
+
+<p style="margin-left:17%; margin-top: 1em">-e Don't warn
+about unknown keys <br>
+-n Don't show key names <br>
+-q Quiet <br>
+-a Show all values <br>
+-p Set values from FILEs (default /etc/sysctl.conf) <br>
+-w Set values</p>
+
+<p style="margin-left:11%;"><b>syslogd</b></p>
+
+<p style="margin-left:17%;">syslogd [
+<small>OPTIONS</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">System logging
+utility (this version of syslogd ignores
+/etc/syslog.conf)</p>
+
+<p style="margin-left:17%; margin-top: 1em">-n Run in
+foreground <br>
+-R HOST[:PORT] Log to HOST:PORT (default PORT:514) <br>
+-L Log locally and via network (default is network only if
+-R) <br>
+-C[size_kb] Log to shared mem buffer (use logread to read
+it) <br>
+-O FILE Log to FILE (default: /var/log/messages, stdout if
+-) <br>
+-l N Log only messages more urgent than prio N (1-8) <br>
+-S Smaller output <br>
+-t Strip client-generated timestamps</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>tac</b></p></td>
+<td width="2%"></td>
+<td width="20%">
+
+
+<p>tac [ <small>FILE</small> ]...</p></td>
+<td width="63%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Concatenate
+FILEs and print them in reverse</p>
+
+<p style="margin-left:11%;"><b>tail</b></p>
+
+<p style="margin-left:17%;">tail [ <small>OPTIONS</small> ]
+[ <small>FILE</small> ]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Print last 10
+lines of FILEs (or stdin) to. With more than one
+<small>FILE,</small> precede each with a filename
+header.</p>
+
+<p style="margin-left:17%; margin-top: 1em">-c [+]N[bkm]
+Print last N bytes <br>
+-n N[bkm] Print last N lines <br>
+-n +N[bkm] Start on Nth line and print the rest <br>
+(b:*512 k:*1024 m:*1024^2) <br>
+-q Never print headers <br>
+-v Always print headers <br>
+-f Print data as file grows <br>
+-F Same as -f, but keep retrying <br>
+-s SECONDS Wait SECONDS between reads with -f</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>tar</b></p></td>
+<td width="2%"></td>
+<td width="83%">
+
+
+<p>tar c|x|t [-ZzJjahmvokO] [-f <small>TARFILE</small> ]
+[-C <small>DIR</small> ] [ <small>FILE</small> ]...</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Create,
+extract, or list files from a tar file</p>
+
+<p style="margin-left:17%; margin-top: 1em">c Create <br>
+x Extract <br>
+t List <br>
+-f FILE Name of TARFILE ('-' for stdin/out) <br>
+-C DIR Change to DIR before operation <br>
+-v Verbose <br>
+-O Extract to stdout <br>
+-m Don't restore mtime <br>
+-o Don't restore user:group <br>
+-k Don't replace existing files <br>
+-Z (De)compress using compress <br>
+-z (De)compress using gzip <br>
+-J (De)compress using xz <br>
+-j (De)compress using bzip2 <br>
+--lzma (De)compress using lzma <br>
+-a (De)compress based on extension <br>
+-h Follow symlinks <br>
+--overwrite Replace existing files <br>
+--strip-components NUM NUM of leading components to strip
+<br>
+--no-recursion Don't descend in directories <br>
+--numeric-owner Use numeric user:group <br>
+--no-same-permissions Don't restore access permissions <br>
+--to-command COMMAND Pipe files to COMMAND</p>
+
+<p style="margin-left:11%;"><b>taskset</b></p>
+
+<p style="margin-left:17%;">taskset [-ap] [
+<small>HEXMASK</small> | -c <small>LIST</small> ] {
+<small>PID</small> | <small>PROG ARGS</small> }</p>
+
+<p style="margin-left:17%; margin-top: 1em">Set or get
+<small>CPU</small> affinity</p>
+
+<p style="margin-left:17%; margin-top: 1em">-p Operate on
+PID <br>
+-a Operate on all threads <br>
+-c Affinity is a list, not mask</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>tee</b></p></td>
+<td width="2%"></td>
+<td width="29%">
+
+
+<p>tee [-ai] [ <small>FILE</small> ]...</p></td>
+<td width="54%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Copy stdin to
+each <small>FILE,</small> and also to stdout</p>
+
+<p style="margin-left:17%; margin-top: 1em">-a Append to
+the given FILEs, don't overwrite <br>
+-i Ignore interrupt signals (SIGINT)</p>
+
+<p style="margin-left:11%;"><b>telnet</b></p>
+
+<p style="margin-left:17%;">telnet [-a] [-l
+<small>USER</small> ] <small>HOST</small> [
+<small>PORT</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Connect to
+telnet server</p>
+
+<p style="margin-left:17%; margin-top: 1em">-a Automatic
+login with $USER variable <br>
+-l USER Automatic login as USER</p>
+
+<p style="margin-left:11%;"><b>tftp</b></p>
+
+<p style="margin-left:17%;">tftp [ <small>OPTIONS</small> ]
+<small>HOST</small> [ <small>PORT</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Transfer a file
+from/to tftp server</p>
+
+<p style="margin-left:17%; margin-top: 1em">-l FILE Local
+FILE <br>
+-r FILE Remote FILE <br>
+-g Get file <br>
+-p Put file <br>
+-b SIZE Transfer blocks in bytes</p>
+
+<p style="margin-left:11%;"><b>time</b></p>
+
+<p style="margin-left:17%;">time [-vpa] [-o
+<small>FILE</small> ] <small>PROG ARGS</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Run
+<small>PROG,</small> display resource usage when it
+exits</p>
+
+<p style="margin-left:17%; margin-top: 1em">-v Verbose <br>
+-p POSIX output format <br>
+-f FMT Custom format <br>
+-o FILE Write result to FILE <br>
+-a Append (else overwrite)</p>
+
+<p style="margin-left:11%;"><b>timeout</b></p>
+
+<p style="margin-left:17%;">timeout [-s <small>SIG</small>
+] [-k <small>KILL_SECS</small> ] <small>SECS PROG
+ARGS</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Run
+<small>PROG.</small> Send <small>SIG</small> to it if it is
+not gone in <small>SECS</small> seconds. Default <small>SIG:
+TERM</small> .If it still exists in <small>KILL_SECS</small>
+seconds, send <small>KILL.</small></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>top</b></p></td>
+<td width="2%"></td>
+<td width="51%">
+
+
+<p>top [-bH] [-n <small>COUNT</small> ] [-d
+<small>SECONDS</small> ]</p></td>
+<td width="32%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Show a view of
+process activity in real time. Read the status of all
+processes from /proc each <small>SECONDS</small> and show a
+screenful of them. Keys:</p>
+
+<p style="margin-left:17%; margin-top: 1em">N/M/P/T: sort
+by pid/mem/cpu/time <br>
+R: reverse sort <br>
+H: toggle threads <br>
+Q,^C: exit <br>
+Options: <br>
+-b Batch mode <br>
+-n N Exit after N iterations <br>
+-d SEC Delay between updates <br>
+-H Show threads</p>
+
+<p style="margin-left:11%;"><b>touch</b></p>
+
+<p style="margin-left:17%;">touch [-cham] [-d
+<small>DATE</small> ] [-t <small>DATE</small> ] [-r
+<small>FILE</small> ] <small>FILE...</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Update mtime of
+FILEs</p>
+
+<p style="margin-left:17%; margin-top: 1em">-c Don't create
+files <br>
+-h Don't follow links <br>
+-a Change only atime <br>
+-m Change only mtime <br>
+-d DT Date/time to use <br>
+-t DT Date/time to use <br>
+-r FILE Use FILE's date/time</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>tr</b></p></td>
+<td width="3%"></td>
+<td width="41%">
+
+
+<p>tr [-cds] <small>STRING1</small> [
+<small>STRING2</small> ]</p></td>
+<td width="42%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Translate,
+squeeze, or delete characters from stdin, writing to
+stdout</p>
+
+<p style="margin-left:17%; margin-top: 1em">-c Take
+complement of STRING1 <br>
+-d Delete input characters coded STRING1 <br>
+-s Squeeze multiple output characters of STRING2 into one
+character</p>
+
+<p style="margin-left:11%;"><b>traceroute</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>traceroute [-46Flnrv] [-f 1ST_TTL] [-m
+<small>MAXTTL</small> ] [-q <small>PROBES</small> ] [-p
+<small>PORT</small> ]</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>[-t <small>TOS</small> ] [-w <small>WAIT_SEC</small> ]
+[-s <small>SRC_IP</small> ] [-i <small>IFACE</small> ]</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>[-z <small>PAUSE_MSEC</small> ] <small>HOST</small> [
+<small>BYTES</small> ]</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Trace the route
+to <small>HOST</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">-4,-6 Force IP
+or IPv6 name resolution <br>
+-F Set don't fragment bit <br>
+-l Display TTL value of the returned packet <br>
+-n Print numeric addresses <br>
+-r Bypass routing tables, send directly to HOST <br>
+-v Verbose <br>
+-f N First number of hops (default 1) <br>
+-m N Max number of hops <br>
+-q N Number of probes per hop (default 3) <br>
+-p N Base UDP port number used in probes <br>
+(default 33434) <br>
+-s IP Source address <br>
+-i IFACE Source interface <br>
+-t N Type-of-service in probe packets (default 0) <br>
+-w SEC Wait for a response (default 3) <br>
+-z MSEC Wait before each send</p>
+
+<p style="margin-left:11%;"><b>traceroute6</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>traceroute6 [-nrv] [-f 1ST_TTL] [-m
+<small>MAXTTL</small> ] [-q <small>PROBES</small> ] [-p
+<small>PORT</small> ]</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>[-t <small>TOS</small> ] [-w <small>WAIT_SEC</small> ]
+[-s <small>SRC_IP</small> ] [-i <small>IFACE</small> ]</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>[-z <small>PAUSE_MSEC</small> ] <small>HOST</small> [
+<small>BYTES</small> ]</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Trace the route
+to <small>HOST</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">-n Print
+numeric addresses <br>
+-r Bypass routing tables, send directly to HOST <br>
+-v Verbose <br>
+-f N First number of hops (default 1) <br>
+-m N Max number of hops <br>
+-q N Number of probes per hop (default 3) <br>
+-p N Base UDP port number used in probes <br>
+(default 33434) <br>
+-s IP Source address <br>
+-i IFACE Source interface <br>
+-t N Type-of-service in probe packets (default 0) <br>
+-w SEC Wait for a response (default 3) <br>
+-z MSEC Wait before each send</p>
+
+<p style="margin-left:11%;"><b>truncate</b></p>
+
+<p style="margin-left:17%;">truncate [-c] -s <small>SIZE
+FILE...</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Truncate FILEs
+to <small>SIZE</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">-c Do not
+create files <br>
+-s SIZE</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>ts</b></p></td>
+<td width="3%"></td>
+<td width="29%">
+
+
+<p>ts [-is] [ <small>STRFTIME</small> ]</p></td>
+<td width="54%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Pipe stdin to
+stdout, add timestamp to each line</p>
+
+<p style="margin-left:17%; margin-top: 1em">-s Time since
+start <br>
+-i Time since previous line</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p style="margin-top: 1em"><b>tty</b></p></td>
+<td width="2%"></td>
+<td width="12%">
+
+
+<p style="margin-top: 1em">tty [-s]</p></td>
+<td width="71%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Print file name
+of stdin&rsquo;s terminal</p>
+
+<p style="margin-left:17%; margin-top: 1em">-s Print
+nothing, only return exit status</p>
+
+<p style="margin-left:11%;"><b>ubirename</b></p>
+
+<p style="margin-left:17%;">ubirename <small>UBI_DEVICE
+OLD_VOLNAME NEW_VOLNAME</small> [ <small>OLD2 NEW2</small>
+]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Rename
+<small>UBI</small> volumes on <small>UBI_DEVICE</small></p>
+
+<p style="margin-left:11%;"><b>udhcpc</b></p>
+
+<p style="margin-left:17%;">udhcpc [-fbqRB] [-a[
+<small>MSEC</small> ]] [-t N] [-T <small>SEC</small> ] [-A
+SEC|-n] [-i <small>IFACE</small> ] [-s <small>PROG</small> ]
+[-p <small>PIDFILE</small> ] [-oC] [-r <small>IP</small> ]
+[-V <small>VENDOR</small> ] [-F <small>NAME</small> ] [-x
+<small>OPT:VAL</small> ]... [-O <small>OPT</small> ]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">-i IFACE
+Interface to use (default eth0) <br>
+-s PROG Run PROG at DHCP events (default
+/etc/udhcpc/default.script) <br>
+-p FILE Create pidfile <br>
+-B Request broadcast replies <br>
+-t N Send up to N discover packets (default 3) <br>
+-T SEC Pause between packets (default 3) <br>
+-A SEC Wait if lease is not obtained (default 20) <br>
+-b Background if lease is not obtained <br>
+-n Exit if lease is not obtained <br>
+-q Exit after obtaining lease <br>
+-R Release IP on exit <br>
+-f Run in foreground <br>
+-S Log to syslog too <br>
+-a[MSEC] Validate offered address with ARP ping <br>
+-r IP Request this IP address <br>
+-o Don't request any options (unless -O is given) <br>
+-O OPT Request option OPT from server (cumulative) <br>
+-x OPT:VAL Include option OPT in sent packets (cumulative)
+<br>
+Examples of string, numeric, and hex byte opts: <br>
+-x hostname:bbox - option 12 <br>
+-x lease:3600 - option 51 (lease time) <br>
+-x 0x3d:0100BEEFC0FFEE - option 61 (client id) <br>
+-x 14:'&quot;dumpfile&quot;' - option 14 (shell-quoted) <br>
+-F NAME Ask server to update DNS mapping for NAME <br>
+-V VENDOR Vendor identifier (default 'udhcp VERSION') <br>
+-C Don't send MAC as client identifier <br>
+Signals: <br>
+USR1 Renew lease <br>
+USR2 Release lease</p>
+
+<p style="margin-left:11%;"><b>udhcpd</b></p>
+
+<p style="margin-left:17%;">udhcpd [-fS] [-I
+<small>ADDR</small> ] [-a <small>MSEC</small> ] [
+<small>CONFFILE</small> ]</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><small>DHCP</small>
+server</p>
+
+<p style="margin-left:17%; margin-top: 1em">-f Run in
+foreground <br>
+-S Log to syslog too <br>
+-I ADDR Local address <br>
+-a MSEC Timeout for ARP ping (default 2000) <br>
+Signals: <br>
+USR1 Update lease file</p>
+
+<p style="margin-left:11%;"><b>uevent</b></p>
+
+<p style="margin-left:17%;">uevent [ <small>PROG
+ARGS</small> ]</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>uevent runs <small>PROG</small> for every netlink
+notification. <small>PROG</small> &rsquo;s environment
+contains data passed from the kernel. Typical usage (daemon
+for dynamic device node creation):</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p># uevent mdev &amp; mdev -s</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>umount</b></p>
+
+<p style="margin-left:17%;">umount [-rlfda] [-t
+<small>FSTYPE</small> ] FILESYSTEM|DIRECTORY</p>
+
+<p style="margin-left:17%; margin-top: 1em">Unmount
+filesystems</p>
+
+<p style="margin-left:17%; margin-top: 1em">-a Unmount all
+filesystems <br>
+-r Remount devices read-only if mount is busy <br>
+-l Lazy umount (detach filesystem) <br>
+-f Force umount (i.e., unreachable NFS server) <br>
+-d Free loop device if it has been used <br>
+-t FSTYPE[,...] Unmount only these filesystem type(s)</p>
+
+<p style="margin-left:11%;"><b>uname</b></p>
+
+<p style="margin-left:17%;">uname [-amnrspvio]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Print system
+information</p>
+
+<p style="margin-left:17%; margin-top: 1em">-a Print all
+<br>
+-m Machine (hardware) type <br>
+-n Hostname <br>
+-r Kernel release <br>
+-s Kernel name (default) <br>
+-p Processor type <br>
+-v Kernel version <br>
+-i Hardware platform <br>
+-o OS name</p>
+
+<p style="margin-left:11%;"><b>uncompress</b></p>
+
+<p style="margin-left:17%;">uncompress [-cf] [
+<small>FILE</small> ]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Decompress
+FILEs (or stdin)</p>
+
+<p style="margin-left:17%; margin-top: 1em">-c Write to
+stdout <br>
+-f Overwrite</p>
+
+<p style="margin-left:11%;"><b>unexpand</b></p>
+
+<p style="margin-left:17%;">unexpand [-fa][-t N] [
+<small>FILE</small> ]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Convert spaces
+to tabs, writing to stdout</p>
+
+<p style="margin-left:17%; margin-top: 1em">-a Convert all
+blanks <br>
+-f Convert only leading blanks <br>
+-t N Tabstops every N chars</p>
+
+<p style="margin-left:11%;"><b>uniq</b></p>
+
+<p style="margin-left:17%;">uniq [-cduiz] [-f,s,w N] [
+<small>FILE</small> [ <small>OUTFILE</small> ]]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Discard
+duplicate lines</p>
+
+<p style="margin-left:17%; margin-top: 1em">-c Prefix lines
+by the number of occurrences <br>
+-d Only print duplicate lines <br>
+-u Only print unique lines <br>
+-i Ignore case <br>
+-z NUL terminated output <br>
+-f N Skip first N fields <br>
+-s N Skip first N chars (after any skipped fields) <br>
+-w N Compare N characters in line</p>
+
+<p style="margin-left:11%;"><b>unix2dos</b></p>
+
+<p style="margin-left:17%;">unix2dos [-ud] [
+<small>FILE</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Convert
+<small>FILE</small> in-place from Unix to <small>DOS</small>
+format. When no file is given, use stdin/stdout.</p>
+
+<p style="margin-left:17%; margin-top: 1em">-u dos2unix
+<br>
+-d unix2dos</p>
+
+<p style="margin-left:11%;"><b>unlink</b></p>
+
+<p style="margin-left:17%;">unlink <small>FILE</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Delete
+<small>FILE</small> by calling <b>unlink()</b></p>
+
+<p style="margin-left:11%;"><b>unlzma</b></p>
+
+<p style="margin-left:17%;">unlzma [-cfk] [
+<small>FILE</small> ]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Decompress
+FILEs (or stdin)</p>
+
+<p style="margin-left:17%; margin-top: 1em">-c Write to
+stdout <br>
+-f Force <br>
+-k Keep input files <br>
+-t Test integrity</p>
+
+<p style="margin-left:11%;"><b>unshare</b></p>
+
+<p style="margin-left:17%;">unshare [
+<small>OPTIONS</small> ] [ <small>PROG ARGS</small> ]</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">-m,--mount[=FILE]
+Unshare mount namespace <br>
+-u,--uts[=FILE] Unshare UTS namespace (hostname etc.) <br>
+-i,--ipc[=FILE] Unshare System V IPC namespace <br>
+-n,--net[=FILE] Unshare network namespace <br>
+-p,--pid[=FILE] Unshare PID namespace <br>
+-U,--user[=FILE] Unshare user namespace <br>
+-f Fork before execing PROG <br>
+-r Map current user to root (implies -U) <br>
+--mount-proc[=DIR] Mount /proc filesystem first (implies -m)
+<br>
+--propagation slave|shared|private|unchanged <br>
+Modify mount propagation in mount namespace <br>
+--setgroups allow|deny Control the setgroups syscall in user
+namespaces</p>
+
+<p style="margin-left:11%;"><b>unxz</b></p>
+
+<p style="margin-left:17%;">unxz [-cfk] [
+<small>FILE</small> ]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Decompress
+FILEs (or stdin)</p>
+
+<p style="margin-left:17%; margin-top: 1em">-c Write to
+stdout <br>
+-f Force <br>
+-k Keep input files <br>
+-t Test integrity</p>
+
+<p style="margin-left:11%;"><b>unzip</b></p>
+
+<p style="margin-left:17%;">unzip [-lnojpq] FILE[.zip] [
+<small>FILE</small> ]... [-x <small>FILE</small> ]... [-d
+<small>DIR</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Extract FILEs
+from <small>ZIP</small> archive</p>
+
+<p style="margin-left:17%; margin-top: 1em">-l List
+contents (with -q for short form) <br>
+-n Never overwrite files (default: ask) <br>
+-o Overwrite <br>
+-j Do not restore paths <br>
+-p Write to stdout <br>
+-t Test <br>
+-q Quiet <br>
+-x FILE Exclude FILEs <br>
+-d DIR Extract into DIR</p>
+
+<p style="margin-left:11%;"><b>uptime</b></p>
+
+<p style="margin-left:17%;">uptime</p>
+
+<p style="margin-left:17%; margin-top: 1em">Display the
+time since the last boot</p>
+
+<p style="margin-left:11%;"><b>usleep</b></p>
+
+<p style="margin-left:17%;">usleep N</p>
+
+<p style="margin-left:17%; margin-top: 1em">Pause for N
+microseconds</p>
+
+<p style="margin-left:11%;"><b>uudecode</b></p>
+
+<p style="margin-left:17%;">uudecode [-o
+<small>OUTFILE</small> ] [ <small>INFILE</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Uudecode a file
+Finds <small>OUTFILE</small> in uuencoded source unless -o
+is given</p>
+
+<p style="margin-left:11%;"><b>uuencode</b></p>
+
+<p style="margin-left:17%;">uuencode [-m] [
+<small>FILE</small> ] <small>STORED_FILENAME</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Uuencode
+<small>FILE</small> (or stdin) to stdout</p>
+
+<p style="margin-left:17%; margin-top: 1em">-m Use base64
+encoding per RFC1521</p>
+
+<p style="margin-left:11%;"><b>vconfig</b></p>
+
+<p style="margin-left:17%;">vconfig <small>COMMAND</small>
+[ <small>OPTIONS</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Create and
+remove virtual ethernet devices</p>
+
+<p style="margin-left:17%; margin-top: 1em">add IFACE
+VLAN_ID <br>
+rem VLAN_NAME <br>
+set_flag IFACE 0|1 VLAN_QOS <br>
+set_egress_map VLAN_NAME SKB_PRIO VLAN_QOS <br>
+set_ingress_map VLAN_NAME SKB_PRIO VLAN_QOS <br>
+set_name_type NAME_TYPE</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>vi</b></p></td>
+<td width="3%"></td>
+<td width="48%">
+
+
+<p>vi [-c <small>CMD</small> ] [-R] [-H] [
+<small>FILE</small> ]...</p></td>
+<td width="35%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Edit
+<small>FILE</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">-c CMD Initial
+command to run ($EXINIT and ~/.exrc also available) <br>
+-R Read-only <br>
+-H List available features</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em"><b>w</b></p></td>
+<td width="5%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">w</p></td>
+<td width="82%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Show who is
+logged on</p>
+
+<p style="margin-left:11%;"><b>watch</b></p>
+
+<p style="margin-left:17%;">watch [-n <small>SEC</small> ]
+[-t] <small>PROG ARGS</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Run
+<small>PROG</small> periodically</p>
+
+<p style="margin-left:17%; margin-top: 1em">-n SEC Period
+(default 2) <br>
+-t Don't print header</p>
+
+<p style="margin-left:11%;"><b>watchdog</b></p>
+
+<p style="margin-left:17%;">watchdog [-t N[ms]] [-T N[ms]]
+[-F] <small>DEV</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Periodically
+write to watchdog device <small>DEV</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">-T N Reboot
+after N seconds if not reset (default 60) <br>
+-t N Reset every N seconds (default 30) <br>
+-F Run in foreground</p>
+
+<p style="margin-left:17%; margin-top: 1em">Use 500ms to
+specify period in milliseconds</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>wc</b></p></td>
+<td width="3%"></td>
+<td width="32%">
+
+
+<p>wc [-cmlwL] [ <small>FILE</small> ]...</p></td>
+<td width="51%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Count lines,
+words, and bytes for FILEs (or stdin)</p>
+
+<p style="margin-left:17%; margin-top: 1em">-c Count bytes
+<br>
+-m Count characters <br>
+-l Count newlines <br>
+-w Count words <br>
+-L Print longest line length</p>
+
+<p style="margin-left:11%;"><b>wget</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>wget [-cqS] [--spider] [-O <small>FILE</small> ] [-o
+<small>LOGFILE</small> ] [--header <small>STR</small> ]</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>[--post-data <small>STR</small> | --post-file
+<small>FILE</small> ] [-Y on/off]</p></td></tr>
+<tr valign="top" align="left">
+<td width="17%"></td>
+<td width="-9%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>[--no-check-certificate] [-P <small>DIR</small> ] [-U
+<small>AGENT</small> ] <small>URL...</small></p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Retrieve files
+via <small>HTTP</small> or <small>FTP</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">--spider Only
+check URL existence: $? is 0 if exists <br>
+--header STR Add STR (of form 'header: value') to headers
+<br>
+--post-data STR Send STR using POST method <br>
+--post-file FILE Send FILE using POST method <br>
+--no-check-certificate Don't validate the server's
+certificate <br>
+-c Continue retrieval of aborted transfer <br>
+-q Quiet <br>
+-P DIR Save to DIR (default .) <br>
+-S Show server response <br>
+-O FILE Save to FILE ('-' for stdout) <br>
+-o LOGFILE Log messages to FILE <br>
+-U STR Use STR for User-Agent header <br>
+-Y on/off Use proxy</p>
+
+<p style="margin-left:11%;"><b>which</b></p>
+
+<p style="margin-left:17%;">which [-a]
+<small>COMMAND...</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Locate
+<small>COMMAND</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">-a Show all
+matches</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>who</b></p></td>
+<td width="2%"></td>
+<td width="14%">
+
+
+<p>who [-aH]</p></td>
+<td width="69%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Show who is
+logged on</p>
+
+<p style="margin-left:17%; margin-top: 1em">-a Show all
+<br>
+-H Print column headers</p>
+
+<p style="margin-left:11%;"><b>whoami</b></p>
+
+<p style="margin-left:17%;">whoami</p>
+
+<p style="margin-left:17%; margin-top: 1em">Print the user
+name associated with the current effective user id</p>
+
+<p style="margin-left:11%;"><b>xargs</b></p>
+
+<p style="margin-left:17%;">xargs [ <small>OPTIONS</small>
+] [ <small>PROG ARGS</small> ]</p>
+
+<p style="margin-left:17%; margin-top: 1em">Run
+<small>PROG</small> on every item given by stdin</p>
+
+<p style="margin-left:17%; margin-top: 1em">-0 NUL
+terminated input <br>
+-a FILE Read from FILE instead of stdin <br>
+-r Don't run command if input is empty <br>
+-t Print the command on stderr before execution <br>
+-p Ask user whether to run each command <br>
+-E STR,-e[STR] STR stops input processing <br>
+-I STR Replace STR within PROG ARGS with input line <br>
+-n N Pass no more than N args to PROG <br>
+-s N Pass command line of no more than N bytes <br>
+-P N Run up to N PROGs in parallel <br>
+-x Exit if size is exceeded</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>xxd</b></p></td>
+<td width="2%"></td>
+<td width="83%">
+
+
+<p>xxd [-pri] [-g N] [-c N] [-n <small>LEN</small> ] [-s
+<small>OFS</small> ] [-o <small>OFS</small> ] [
+<small>FILE</small> ]</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Hex dump
+<small>FILE</small> (or stdin)</p>
+
+<p style="margin-left:17%; margin-top: 1em">-g N Bytes per
+group <br>
+-c N Bytes per line <br>
+-p Show only hex bytes, assumes -c30 <br>
+-i C include file style <br>
+-l LENGTH Show only first LENGTH bytes <br>
+-s OFFSET Skip OFFSET bytes <br>
+-o OFFSET Add OFFSET to displayed offset <br>
+-r Reverse (with -p, assumes no offsets in input)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>xz</b></p></td>
+<td width="3%"></td>
+<td width="34%">
+
+
+<p style="margin-top: 1em">xz -d [-cfk] [
+<small>FILE</small> ]...</p></td>
+<td width="49%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Decompress
+FILEs (or stdin)</p>
+
+<p style="margin-left:17%; margin-top: 1em">-d Decompress
+<br>
+-c Write to stdout <br>
+-f Force <br>
+-k Keep input files <br>
+-t Test integrity</p>
+
+<p style="margin-left:11%;"><b>xzcat</b></p>
+
+<p style="margin-left:17%;">xzcat [ <small>FILE</small>
+]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Decompress to
+stdout</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>yes</b></p></td>
+<td width="2%"></td>
+<td width="18%">
+
+
+<p>yes [ <small>STRING</small> ]</p></td>
+<td width="65%">
+</td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">Repeatedly
+print a line with <small>STRING,</small> or
+&rsquo;y&rsquo;</p>
+
+<p style="margin-left:11%;"><b>zcat</b></p>
+
+<p style="margin-left:17%;">zcat [ <small>FILE</small>
+]...</p>
+
+<p style="margin-left:17%; margin-top: 1em">Decompress to
+stdout</p>
+
+<h2>LIBC NSS
+<a name="LIBC NSS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><small>GNU</small>
+Libc (glibc) uses the Name Service Switch (
+<small>NSS</small> ) to configure the behavior of the C
+library for the local environment, and to configure how it
+reads system data, such as passwords and group information.
+This is implemented using an /etc/nsswitch.conf
+configuration file, and using one or more of the
+/lib/libnss_* libraries. BusyBox tries to avoid using any
+libc calls that make use of <small>NSS.</small> Some applets
+however, such as login and su, will use libc functions that
+require <small>NSS.</small></p>
+
+<p style="margin-left:11%; margin-top: 1em">If you enable
+<small>CONFIG_USE_BB_PWD_GRP,</small> BusyBox will use
+internal functions to directly access the /etc/passwd,
+/etc/group, and /etc/shadow files without using
+<small>NSS.</small> This may allow you to run your system
+without the need for installing any of the
+<small>NSS</small> configuration files and libraries.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When used with
+glibc, the BusyBox &rsquo;networking&rsquo; applets will
+similarly require that you install at least some of the
+glibc <small>NSS</small> stuff (in particular,
+/etc/nsswitch.conf, /lib/libnss_dns*, /lib/libnss_files*,
+and /lib/libresolv*).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Shameless Plug:
+As an alternative, one could use a C library such as uClibc.
+In addition to making your system significantly smaller,
+uClibc does not require the use of any <small>NSS</small>
+support files or libraries.</p>
+
+<h2>MAINTAINER
+<a name="MAINTAINER"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Denis Vlasenko
+&lt;vda.linux@googlemail.com&gt;</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+people have contributed code to BusyBox whether they know it
+or not. If you have written code included in BusyBox, you
+should probably be listed here so you can obtain your bit of
+eternal glory. If you should be listed here, or the
+description of what you have done needs more detail, or is
+incorrect, please send in an update.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Emanuele Aina
+&lt;emanuele.aina@tiscali.it&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">run-parts</p>
+
+<p style="margin-left:11%; margin-top: 1em">Erik Andersen
+&lt;andersen@codepoet.org&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">Tons of new
+stuff, major rewrite of most of the <br>
+core apps, tons of new apps as noted in header files. <br>
+Lots of tedious effort writing these boring docs that <br>
+nobody is going to actually read.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Laurence
+Anderson &lt;l.d.anderson@warwick.ac.uk&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">rpm2cpio,
+unzip, get_header_cpio, read_gz interface, rpm</p>
+
+<p style="margin-left:11%; margin-top: 1em">Jeff Angielski
+&lt;jeff@theptrgroup.com&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">ftpput,
+ftpget</p>
+
+<p style="margin-left:11%; margin-top: 1em">Edward Betts
+&lt;edward@debian.org&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">expr, hostid,
+logname, whoami</p>
+
+<p style="margin-left:11%; margin-top: 1em">John Beppu
+&lt;beppu@codepoet.org&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">du, nslookup,
+sort</p>
+
+<p style="margin-left:11%; margin-top: 1em">Brian Candler
+&lt;B.Candler@pobox.com&gt;</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">tiny-ls(ls)</p>
+
+<p style="margin-left:11%; margin-top: 1em">Randolph Chung
+&lt;tausq@debian.org&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">fbset, ping,
+hostname</p>
+
+<p style="margin-left:11%; margin-top: 1em">Dave Cinege
+&lt;dcinege@psychosis.com&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">more(v2),
+makedevs, dutmp, modularization, auto links file, <br>
+various fixes, Linux Router Project maintenance</p>
+
+<p style="margin-left:11%; margin-top: 1em">Jordan Crouse
+&lt;jordan@cosmicpenguin.net&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">ipcalc</p>
+
+<p style="margin-left:11%; margin-top: 1em">Magnus Damm
+&lt;damm@opensource.se&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">tftp client
+insmod powerpc support</p>
+
+<p style="margin-left:11%; margin-top: 1em">Larry Doolittle
+&lt;ldoolitt@recycle.lbl.gov&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">pristine source
+directory compilation, lots of patches and fixes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Glenn Engel
+&lt;glenne@engel.org&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">httpd</p>
+
+<p style="margin-left:11%; margin-top: 1em">Gennady Feldman
+&lt;gfeldman@gena01.com&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">Sysklogd
+(single threaded syslogd, IPC Circular buffer support, <br>
+logread), various fixes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Karl M.
+Hegbloom &lt;karlheg@debian.org&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">cp_mv.c, the
+test suite, various fixes to utility.c, &amp;c.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Daniel
+Jacobowitz &lt;dan@debian.org&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">mktemp.c</p>
+
+<p style="margin-left:11%; margin-top: 1em">Matt Kraai
+&lt;kraai@alumni.cmu.edu&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">documentation,
+bugfixes, test suite</p>
+
+<p style="margin-left:11%; margin-top: 1em">Stephan Linz
+&lt;linz@li-pro.net&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">ipcalc, Red Hat
+equivalence</p>
+
+<p style="margin-left:11%; margin-top: 1em">John Lombardo
+&lt;john@deltanet.com&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">tr</p>
+
+<p style="margin-left:11%; margin-top: 1em">Glenn McGrath
+&lt;bug1@iinet.net.au&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">Common
+unarchiving code and unarchiving applets, ifupdown,
+ftpgetput, <br>
+nameif, sed, patch, fold, install, uudecode. <br>
+Various bugfixes, review and apply numerous patches.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Manuel Novoa
+<small>III</small> &lt;mjn3@codepoet.org&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">cat, head,
+mkfifo, mknod, rmdir, sleep, tee, tty, uniq, usleep, wc,
+yes, <br>
+mesg, vconfig, make_directory, parse_mode, dirname,
+mode_string, <br>
+get_last_path_component, simplify_path, and a number trivial
+libbb routines <br>
+also bug fixes, partial rewrites, and size optimizations in
+<br>
+ash, basename, cal, cmp, cp, df, du, echo, env, ln, logname,
+md5sum, mkdir, <br>
+mv, realpath, rm, sort, tail, touch, uname, watch, arith,
+human_readable, <br>
+interface, dutmp, ifconfig, route</p>
+
+<p style="margin-left:11%; margin-top: 1em">Vladimir
+Oleynik &lt;dzo@simtreas.ru&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">cmdedit;
+xargs(current), httpd(current); <br>
+ports: ash, crond, fdisk, inetd, stty, traceroute, top; <br>
+locale, various fixes <br>
+and irreconcilable critic of everything not perfect.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Bruce Perens
+&lt;bruce@pixar.com&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">Original author
+of BusyBox in 1995, 1996. Some of his code can <br>
+still be found hiding here and there...</p>
+
+<p style="margin-left:11%; margin-top: 1em">Tim Riker
+&lt;Tim@Rikers.org&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">bug fixes,
+member of fan club</p>
+
+<p style="margin-left:11%; margin-top: 1em">Kent Robotti
+&lt;robotti@metconnect.com&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">reset, tons and
+tons of bug reports and patches.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Chip Rosenthal
+&lt;chip@unicom.com&gt;, &lt;crosenth@covad.com&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">wget -
+Contributed by permission of Covad Communications</p>
+
+<p style="margin-left:11%; margin-top: 1em">Pavel Roskin
+&lt;proski@gnu.org&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">Lots of bugs
+fixes and patches.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Gyepi Sam
+&lt;gyepi@praxis-sw.com&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">Remote logging
+feature for syslogd</p>
+
+<p style="margin-left:11%; margin-top: 1em">Linus Torvalds
+&lt;torvalds@transmeta.com&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">mkswap,
+fsck.minix, mkfs.minix</p>
+
+<p style="margin-left:11%; margin-top: 1em">Mark Whitley
+&lt;markw@codepoet.org&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">grep, sed, cut,
+xargs(previous), <br>
+style-guide, new-applet-HOWTO, bug fixes, etc.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Charles P.
+Wright &lt;cpwright@villagenet.com&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">gzip,
+mini-netcat(nc)</p>
+
+<p style="margin-left:11%; margin-top: 1em">Enrique Zanardi
+&lt;ezanardi@ull.es&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">tarcat (since
+removed), loadkmap, various fixes, Debian maintenance</p>
+
+<p style="margin-left:11%; margin-top: 1em">Tito Ragusa
+&lt;farmatito@tiscali.it&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">devfsd and size
+optimizations in strings, openvt and deallocvt.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Paul Fox
+&lt;pgf@foxharp.boston.ma.us&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">vi editing mode
+for ash, various other patches/fixes</p>
+
+<p style="margin-left:11%; margin-top: 1em">Roberto A.
+Foglietta &lt;me@roberto.foglietta.name&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">port: dnsd</p>
+
+<p style="margin-left:11%; margin-top: 1em">Bernhard
+Reutner-Fischer &lt;rep.dot.nop@gmail.com&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">misc</p>
+
+<p style="margin-left:11%; margin-top: 1em">Mike Frysinger
+&lt;vapier@gentoo.org&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">initial
+e2fsprogs, printenv, setarch, sum, misc</p>
+
+<p style="margin-left:11%; margin-top: 1em">Jie Zhang
+&lt;jie.zhang@analog.com&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">fixed two bugs
+in msh and hush (exitcode of killed processes)</p>
+<hr>
+</body>
+</html>

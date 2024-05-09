@@ -1,0 +1,172 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:27 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamtopfm User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamtopfm User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamtopfm -
+Convert Netpbm image to PFM (Portable Float Map)</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtopfm</b>
+[<b>-endian=</b>{<b>big</b>|<b>little</b>}]
+[<b>-scale=</b><i>float</i>] [<i>imagefile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">All options can
+be abbreviated to their shortest unique prefix. You may use
+two hyphens instead of one. You may separate an option name
+and its value with white space instead of an equals
+sign.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtopfm</b>
+reads a Netpbm image (PNM or PAM) and converts it to a PFM
+(Portable Float Map) image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The PFM
+(Portable Float Map) image format is a lot like PPM, but
+uses floating point numbers with no maxval to achieve a High
+Dynamic Range (HDR) format. That means it doesn&rsquo;t have
+a concept of absolute color and it can represent generic
+light intensity information rather than just visual
+information like PPM does. For example, two pixels that are
+so close in intensity that the human eye cannot tell them
+apart are not visually distinct, so a visual image format
+such as PPM would have no reason to use different sample
+values for them. But an HDR format would.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There are
+details of the PFM format in the <b>PFM</b> Format
+Description&quot; (1). <br>
+<a href="https://vgl.ict.usc.edu/HDRShop/">USC&rsquo;s
+HDRShop program</a> and a program called Lefty use it.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtopfm</b>
+creates a color PFM image if its input is RGB (PPM) and a
+non-color PFM otherwise.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Use
+<b>pfmtopam</b>(1) to convert a PFM image to Netpbm
+format.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamtopfm</b> recognizes the following command line
+options: <b><br>
+-scale=</b><i>float</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">This specifies
+the scale factor of the PFM image. <br>
+Scale factor is a component of the PFM format. <br>
+Default is 1.0.</p>
+
+
+<p style="margin-left:11%;"><b>-endian=</b>{<b>big</b>|<b>little</b>}</p>
+
+<p style="margin-left:22%; margin-top: 1em">This specifies
+the endianness of the PFM image. The samples <br>
+in the raster of a PFM image are 4 byte IEEE floating point
+<br>
+numbers. A parameter of the IEEE format, and therefore the
+PFM <br>
+format, is endianness, i.e. whether the specified bytes are
+<br>
+ordered from low addresses to high addresses or vice
+versa.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>big</b>
+means big endian -- the natural ordering; <b><br>
+little</b> means little-endian, the Intel-friendly
+ordering.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Default is
+whichever endianness the machine on which <b>pamtopfm</b>
+<br>
+runs uses internally, which results in the faster
+execution.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Netpbm</b>(1),
+<b>pfmtopam</b>(1), <b>pam</b>(1)</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtopfm</b>
+was added to Netpbm in Release 10.22 (April 2004).</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamtopfm.html</b></p>
+<hr>
+</body>
+</html>

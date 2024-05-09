@@ -1,0 +1,225 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:53 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SYSTEMD-SOCKET-ACTIVATE</title>
+
+</head>
+<body>
+
+<h1 align="center">SYSTEMD-SOCKET-ACTIVATE</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#ENVIRONMENT VARIABLES">ENVIRONMENT VARIABLES</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">systemd-socket-activate
+- Test socket activation of daemons</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="86%">
+
+
+<p style="margin-top: 1em"><b>systemd-socket-activate</b>
+[OPTIONS...] <i>daemon</i> [OPTIONS...]</p></td>
+<td width="3%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-socket-activate</b>
+may be used to launch a socket-activated service program
+from the command line for testing purposes. It may also be
+used to launch individual instances of the service program
+per connection.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The daemon to
+launch and its options should be specified after options
+intended for <b>systemd-socket-activate</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the
+<b>--inetd</b> option is given, the socket file descriptor
+will be used as the standard input and output of the
+launched process. Otherwise, standard input and output will
+be inherited, and sockets will be passed through file
+descriptors 3 and higher. Sockets passed through
+<i>$LISTEN_FDS</i> to <b>systemd-socket-activate</b> will be
+passed through to the daemon, in the original positions.
+Other sockets specified with <b>--listen=</b> will use
+consecutive descriptors. By default,
+<b>systemd-socket-activate</b> listens on a stream socket,
+use <b>--datagram</b> and <b>--seqpacket</b> to listen on
+datagram or sequential packet sockets instead (see
+below).</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-l</b>
+<i>address</i>, <b>--listen=</b><i>address</i></p>
+
+<p style="margin-left:17%;">Listen on this <i>address</i>.
+Takes a string like &quot;2000&quot; or
+&quot;127.0.0.1:2001&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-a</b>,
+<b>--accept</b></p>
+
+<p style="margin-left:17%;">Launch an instance of the
+service program for each connection and pass the connection
+socket.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-d</b>,
+<b>--datagram</b></p>
+
+<p style="margin-left:17%;">Listen on a datagram socket
+(<b>SOCK_DGRAM</b>), instead of a stream socket
+(<b>SOCK_STREAM</b>). May not be combined with
+<b>--seqpacket</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--seqpacket</b></p>
+
+<p style="margin-left:17%;">Listen on a sequential packet
+socket (<b>SOCK_SEQPACKET</b>), instead of a stream socket
+(<b>SOCK_STREAM</b>). May not be combined with
+<b>--datagram</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--inetd</b></p>
+
+<p style="margin-left:17%;">Use the inetd protocol for
+passing file descriptors, i.e. as standard input and
+standard output, instead of the new-style protocol for
+passing file descriptors using <i>$LISTEN_FDS</i> (see
+above).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-E</b>
+<i>VAR</i><b>[=</b><i>VALUE</i>],
+<b>--setenv=</b><i>VAR</i><b>[=</b><i>VALUE</i>]</p>
+
+<p style="margin-left:17%;">Add this variable to the
+environment of the launched process. If <i>VAR</i> is
+followed by &quot;=&quot;, assume that it is a
+variable&ndash;value pair. Otherwise, obtain the value from
+the environment of <b>systemd-socket-activate</b>
+itself.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--fdname=</b><i>NAME</i>[:<i>NAME</i>...]</p>
+
+<p style="margin-left:17%;">Specify names for the file
+descriptors passed. This is equivalent to setting
+<i>FileDescriptorName=</i> in socket unit files, and enables
+use of <b>sd_listen_fds_with_names</b>(3). Multiple entries
+may be specifies using separate options or by separating
+names with colons (&quot;:&quot;) in one option. In case
+more names are given than descriptors, superfluous ones will
+be ignored. In case less names are given than descriptors,
+the remaining file descriptors will be unnamed.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Print a short help text and
+exit.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--version</b></p>
+
+<p style="margin-left:17%;">Print a short version string
+and exit.</p>
+
+<h2>ENVIRONMENT VARIABLES
+<a name="ENVIRONMENT VARIABLES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$LISTEN_FDS</i>,
+<i>$LISTEN_PID</i>, <i>$LISTEN_FDNAMES</i></p>
+
+<p style="margin-left:17%;">See
+<b>sd_listen_fds</b>(3).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_LOG_TARGET</i>,
+<i>$SYSTEMD_LOG_LEVEL</i>, <i>$SYSTEMD_LOG_TIME</i>,
+<i>$SYSTEMD_LOG_COLOR</i>, <i>$SYSTEMD_LOG_LOCATION</i></p>
+
+<p style="margin-left:17%;">Same as in
+<b>systemd</b>(1).</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;1.&nbsp;Run
+an echo server on port 2000</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$
+systemd-socket-activate -l 2000 --inetd -a cat</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;2.&nbsp;Run
+a socket-activated instance of
+systemd-journal-gatewayd(8)</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$
+systemd-socket-activate -l 19531
+/lib/systemd/systemd-journal-gatewayd</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd</b>(1),
+<b>systemd.socket</b>(5), <b>systemd.service</b>(5),
+<b>systemd-run</b>(1), <b>sd_listen_fds</b>(3),
+<b>sd_listen_fds_with_names</b>(3), <b>cat</b>(1)</p>
+<hr>
+</body>
+</html>

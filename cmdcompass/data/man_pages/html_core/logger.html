@@ -1,0 +1,539 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:15 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>LOGGER</title>
+
+</head>
+<body>
+
+<h1 align="center">LOGGER</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#FACILITIES AND LEVELS">FACILITIES AND LEVELS</a><br>
+<a href="#CONFORMING TO">CONFORMING TO</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#AVAILABILITY">AVAILABILITY</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">logger - enter
+messages into the system log</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>logger</b>
+[options] <i>message</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i><b>logger</b></i>
+makes entries in the system log.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When the
+optional <i>message</i> argument is present, it is written
+to the log. If it is not present, and the <b>-f</b> option
+is not given either, then standard input is logged.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-d</b>,
+<b>--udp</b></p>
+
+<p style="margin-left:17%;">Use datagrams (UDP) only. By
+default the connection is tried to the syslog port defined
+in <i>/etc/services</i>, which is often 514.</p>
+
+<p style="margin-left:17%; margin-top: 1em">See also
+<b>--server</b> and <b>--socket</b> to specify where to
+connect.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-e</b>,
+<b>--skip-empty</b></p>
+
+<p style="margin-left:17%;">Ignore empty lines when
+processing files. An empty line is defined to be a line
+without any characters. Thus a line consisting only of
+whitespace is NOT considered empty. Note that when the
+<b>--prio-prefix</b> option is specified, the priority is
+not part of the line. Thus an empty line in this mode is a
+line that does not have any characters after the priority
+prefix (e.g., <b>&lt;13&gt;</b>).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-f</b>,
+<b>--file</b> <i>file</i></p>
+
+<p style="margin-left:17%;">Log the contents of the
+specified <i>file</i>. This option cannot be combined with a
+command-line message.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-i</b></p>
+
+<p style="margin-left:17%;">Log the PID of the
+<b>logger</b> process with each line.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--id</b>[<b>=</b><i>id</i>]</p>
+
+<p style="margin-left:17%;">Log the PID of the
+<b>logger</b> process with each line. When the optional
+argument <i>id</i> is specified, then it is used instead of
+the <b>logger</b> command&rsquo;s PID. The use of
+<b>--id=$$</b> (PPID) is recommended in scripts that send
+several messages.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note that the
+system logging infrastructure (for example <b>systemd</b>
+when listening on <i>/dev/log</i>) may follow local socket
+credentials to overwrite the PID specified in the message.
+<b>logger</b>(1) is able to set those socket credentials to
+the given <i>id</i>, but only if you have root permissions
+and a process with the specified PID exists, otherwise the
+socket credentials are not modified and the problem is
+silently ignored.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--journald</b>[<b>=</b><i>file</i>]</p>
+
+<p style="margin-left:17%;">Write a <b>systemd</b> journal
+entry. The entry is read from the given <i>file</i>, when
+specified, otherwise from standard input. Each line must
+begin with a field that is accepted by <b>journald</b>; see
+<b>systemd.journal-fields</b>(7) for details. The use of a
+MESSAGE_ID field is generally a good idea, as it makes
+finding entries easy. Examples:</p>
+
+<p style="margin-left:22%; margin-top: 1em">logger
+--journald &lt;&lt;end <br>
+MESSAGE_ID=67feb6ffbaf24c5cbec13c008dd72309 <br>
+MESSAGE=The dogs bark, but the caravan goes on. <br>
+DOGS=bark <br>
+CARAVAN=goes on <br>
+end</p>
+
+<p style="margin-left:22%; margin-top: 1em">logger
+--journald=entry.txt</p>
+
+<p style="margin-left:11%; margin-top: 1em">Notice that
+<b>--journald</b> will ignore values of other options, such
+as priority. If priority is needed it must be within input,
+and use PRIORITY field. The simple execution of
+<b>journalctl</b>(1) will display MESSAGE field. Use
+<b>journalctl --output json-pretty</b> to see rest of the
+fields.</p>
+
+<p style="margin-left:11%; margin-top: 1em">+ To include
+newlines in MESSAGE, specify MESSAGE several times. This is
+handled as a special case, other fields will be stored as an
+array in the journal if they appear multiple times.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--msgid</b>
+<i>msgid</i></p>
+
+<p style="margin-left:17%;">Sets the <i>RFC 5424</i>
+&lt;https://tools.ietf.org/html/rfc5424&gt; MSGID field.
+Note that the space character is not permitted inside of
+<i>msgid</i>. This option is only used if <b>--rfc5424</b>
+is specified as well; otherwise, it is silently ignored.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-n</b>,
+<b>--server</b> <i>server</i></p>
+
+<p style="margin-left:17%;">Write to the specified remote
+syslog <i>server</i> instead of to the system log socket.
+Unless <b>--udp</b> or <b>--tcp</b> is specified,
+<b>logger</b> will first try to use UDP, but if this fails a
+TCP connection is attempted.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--no-act</b></p>
+
+<p style="margin-left:17%;">Causes everything to be done
+except for writing the log message to the system log, and
+removing the connection to the journal. This option can be
+used together with <b>--stderr</b> for testing purposes.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--octet-count</b></p>
+
+<p style="margin-left:17%;">Use the <i>RFC 6587</i>
+&lt;https://tools.ietf.org/html/rfc6587&gt; octet counting
+framing method for sending messages. When this option is not
+used, the default is no framing on UDP, and RFC6587
+non-transparent framing (also known as octet stuffing) on
+TCP.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-P</b>,
+<b>--port</b> <i>port</i></p>
+
+<p style="margin-left:17%;">Use the specified <i>port</i>.
+When this option is not specified, the port defaults to
+<b>syslog</b> for udp and to <b>syslog-conn</b> for tcp
+connections.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-p</b>,
+<b>--priority</b> <i>priority</i></p>
+
+<p style="margin-left:17%;">Enter the message into the log
+with the specified <i>priority</i>. The priority may be
+specified numerically or as a <i>facility</i>.<i>level</i>
+pair. For example, <b>-p local3.info</b> logs the message as
+informational in the local3 facility. The default is
+<b>user.notice</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--prio-prefix</b></p>
+
+<p style="margin-left:17%;">Look for a syslog prefix on
+every line read from standard input. This prefix is a
+decimal number within angle brackets that encodes both the
+facility and the level. The number is constructed by
+multiplying the facility by 8 and then adding the level. For
+example, <b>local0.info</b>, meaning facility=16 and
+level=6, becomes <b>&lt;134&gt;</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If the prefix
+contains no facility, the facility defaults to what is
+specified by the <b>-p</b> option. Similarly, if no prefix
+is provided, the line is logged using the <i>priority</i>
+given with <b>-p</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This option
+doesn&rsquo;t affect a command-line message.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--rfc3164</b></p>
+
+<p style="margin-left:17%;">Use the <i>RFC 3164</i>
+&lt;https://tools.ietf.org/html/rfc3164&gt; BSD syslog
+protocol to submit messages to a remote server.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--rfc5424</b>[<b>=</b><i>without</i>]</p>
+
+<p style="margin-left:17%;">Use the <i>RFC 5424</i>
+&lt;https://tools.ietf.org/html/rfc5424&gt; syslog protocol
+to submit messages to a remote server. The optional
+<i>without</i> argument can be a comma-separated list of the
+following values: <b>notq</b>, <b>notime</b>,
+<b>nohost</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The <b>notq</b>
+value suppresses the time-quality structured data from the
+submitted message. The time-quality information shows
+whether the local clock was synchronized plus the maximum
+number of microseconds the timestamp might be off. The time
+quality is also automatically suppressed when <b>--sd-id
+timeQuality</b> is specified.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The
+<b>notime</b> value (which implies <b>notq</b>) suppresses
+the complete sender timestamp that is in ISO-8601 format,
+including microseconds and timezone.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The
+<b>nohost</b> value suppresses <b>gethostname</b>(2)
+information from the message header.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The RFC 5424
+protocol has been the default for <b>logger</b> since
+version 2.26.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-s</b>,
+<b>--stderr</b></p>
+
+<p style="margin-left:17%;">Output the message to standard
+error as well as to the system log.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--sd-id</b>
+<i>name</i>[<b>@</b><i>digits</i>]</p>
+
+<p style="margin-left:17%;">Specifies a structured data
+element ID for an RFC 5424 message header. The option has to
+be used before <b>--sd-param</b> to introduce a new element.
+The number of structured data elements is unlimited. The ID
+(<i>name</i> plus possibly <b>@</b><i>digits</i>) is
+case-sensitive and uniquely identifies the type and purpose
+of the element. The same ID must not exist more than once in
+a message. The <b>@</b><i>digits</i> part is required for
+user-defined non-standardized IDs.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>logger</b>
+currently generates the <b>timeQuality</b> standardized
+element only. RFC 5424 also describes the elements
+<b>origin</b> (with parameters <b>ip</b>,
+<b>enterpriseId</b>, <b>software</b> and <b>swVersion</b>)
+and <b>meta</b> (with parameters <b>sequenceId</b>,
+<b>sysUpTime</b> and <b>language</b>). These element IDs may
+be specified without the <b>@</b><i>digits</i> suffix.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--sd-param</b>
+<i>name</i>=<i>value</i></p>
+
+<p style="margin-left:17%;">Specifies a structured data
+element parameter, a name and value pair. The option has to
+be used after <b>--sd-id</b> and may be specified more than
+once for the same element. Note that the quotation marks
+around <i>value</i> are required and must be escaped on the
+command line.</p>
+
+<p style="margin-left:23%; margin-top: 1em">logger
+--rfc5424 --sd-id zoo@123 \ <br>
+--sd-param tiger=&quot;hungry&quot; \ <br>
+--sd-param zebra=&quot;running&quot; \ <br>
+--sd-id manager@123 \ <br>
+--sd-param onMeeting=&quot;yes&quot; \ <br>
+&quot;this is message&quot;</p>
+
+<p style="margin-left:17%; margin-top: 1em">produces:</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&lt;13&gt;1
+2015-10-01T14:07:59.168662+02:00 ws kzak - - [timeQuality
+tzKnown=&quot;1&quot; isSynced=&quot;1&quot;
+syncAccuracy=&quot;218616&quot;][zoo@123
+tiger=&quot;hungry&quot;
+zebra=&quot;running&quot;][manager@123
+onMeeting=&quot;yes&quot;] this is message</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-S</b>,
+<b>--size</b> <i>size</i></p>
+
+<p style="margin-left:17%;">Sets the maximum permitted
+message size to <i>size</i>. The default is 1KiB characters,
+which is the limit traditionally used and specified in RFC
+3164. With RFC 5424, this limit has become flexible. A good
+assumption is that RFC 5424 receivers can at least process
+4KiB messages.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Most receivers
+accept messages larger than 1KiB over any type of syslog
+protocol. As such, the <b>--size</b> option affects
+<b>logger</b> in all cases (not only when <b>--rfc5424</b>
+was used).</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note: the
+message-size limit limits the overall message size,
+including the syslog header. Header sizes vary depending on
+the selected options and the hostname length. As a rule of
+thumb, headers are usually not longer than 50 to 80
+characters. When selecting a maximum message size, it is
+important to ensure that the receiver supports the max size
+as well, otherwise messages may become truncated. Again, as
+a rule of thumb two to four KiB message size should
+generally be OK, whereas anything larger should be verified
+to work.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--socket-errors</b>[<b>=</b><i>mode</i>]</p>
+
+<p style="margin-left:17%;">Print errors about Unix socket
+connections. The <i>mode</i> can be a value of <b>off</b>,
+<b>on</b>, or <b>auto</b>. When the mode is <b>auto</b>,
+then <b>logger</b> will detect if the init process is
+<b>systemd</b>(1), and if so assumption is made
+<i>/dev/log</i> can be used early at boot. Other init
+systems lack of <i>/dev/log</i> will not cause errors that
+is identical with messaging using <b>openlog</b>(3) system
+call. The <b>logger</b>(1) before version 2.26 used
+<b>openlog</b>(3), and hence was unable to detected loss of
+messages sent to Unix sockets.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The default
+mode is <b>auto</b>. When errors are not enabled lost
+messages are not communicated and will result to successful
+exit status of <b>logger</b>(1) invocation.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-T</b>,
+<b>--tcp</b></p>
+
+<p style="margin-left:17%;">Use stream (TCP) only. By
+default the connection is tried to the <i>syslog-conn</i>
+port defined in <i>/etc/services</i>, which is often
+<i>601</i>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">See also
+<b>--server</b> and <b>--socket</b> to specify where to
+connect.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-t</b>,
+<b>--tag</b> <i>tag</i></p>
+
+<p style="margin-left:17%;">Mark every line to be logged
+with the specified <i>tag</i>. The default tag is the name
+of the user logged in on the terminal (or a user name based
+on effective user ID).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-u</b>,
+<b>--socket</b> <i>socket</i></p>
+
+<p style="margin-left:17%;">Write to the specified
+<i>socket</i> instead of to the system log socket.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--</b></p>
+
+<p style="margin-left:17%;">End the argument list. This
+allows the <i>message</i> to start with a hyphen (-).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Display help text and exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-V</b>,
+<b>--version</b></p>
+
+<p style="margin-left:17%;">Print version and exit.</p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>logger</b> utility exits 0 on success, and &gt;0 if an
+error occurs.</p>
+
+<h2>FACILITIES AND LEVELS
+<a name="FACILITIES AND LEVELS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Valid facility
+names are:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>auth <br>
+authpriv</b> for security information of a sensitive nature
+<b><br>
+cron</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>daemon <br>
+ftp <br>
+kern</b> cannot be generated from userspace process,
+automatically converted to <b>user</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>lpr <br>
+mail <br>
+news <br>
+syslog <br>
+user <br>
+uucp <br>
+local0</b> <br>
+to <b><br>
+local7 <br>
+security</b> deprecated synonym for <b>auth</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Valid level
+names are:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>emerg <br>
+alert <br>
+crit <br>
+err <br>
+warning <br>
+notice <br>
+info <br>
+debug <br>
+panic</b> deprecated synonym for <b>emerg <br>
+error</b> deprecated synonym for <b>err <br>
+warn</b> deprecated synonym for <b>warning</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">For the
+priority order and intended purposes of these facilities and
+levels, see <b>syslog</b>(3).</p>
+
+<h2>CONFORMING TO
+<a name="CONFORMING TO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>logger</b> command is expected to be IEEE Std 1003.2
+(&quot;POSIX.2&quot;) compatible.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>logger
+System rebooted logger -p local0.notice -t HOSTIDM -f
+/dev/idmc logger -n loghost.example.com System
+rebooted</b></p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>logger</b> command was originally written by University
+of California in 1983-1993 and later rewritten by <i>Karel
+Zak</i> &lt;kzak@redhat.com&gt;, <i>Rainer Gerhards</i>
+&lt;rgerhards@adiscon.com&gt;, and <i>Sami Kerola</i>
+&lt;kerolasa@iki.fi&gt;.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>journalctl</b>(1),
+<b>syslog</b>(3), <b>systemd.journal-fields</b>(7)</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For bug
+reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+
+<h2>AVAILABILITY
+<a name="AVAILABILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>logger</b> command is part of the util-linux package
+which can be downloaded from <i>Linux Kernel Archive</i>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>
+<hr>
+</body>
+</html>

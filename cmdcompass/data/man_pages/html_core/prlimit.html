@@ -1,0 +1,323 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:40 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>PRLIMIT</title>
+
+</head>
+<body>
+
+<h1 align="center">PRLIMIT</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#GENERAL OPTIONS">GENERAL OPTIONS</a><br>
+<a href="#RESOURCE OPTIONS">RESOURCE OPTIONS</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#AVAILABILITY">AVAILABILITY</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">prlimit - get
+and set process resource limits</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>prlimit</b>
+[options] [<b>--resource</b>[=<i>limits</i>]] [<b>--pid</b>
+<i>PID</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>prlimit</b>
+[options] [<b>--resource</b>[=<i>limits</i>]] <i>command</i>
+[<i>argument</i>...]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Given a process
+ID and one or more resources, <b>prlimit</b> tries to
+retrieve and/or modify the limits.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When
+<i>command</i> is given, <b>prlimit</b> will run this
+command with the given arguments.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>limits</i> parameter is composed of a soft and a hard
+value, separated by a colon (:), in order to modify the
+existing values. If no <i>limits</i> are given,
+<b>prlimit</b> will display the current values. If one of
+the values is not given, then the existing one will be used.
+To specify the unlimited or infinity limit
+(<b>RLIM_INFINITY</b>), the -1 or 'unlimited' string can be
+passed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Because of the
+nature of limits, the soft limit must be lower or equal to
+the high limit (also called the ceiling). To see all
+available resource limits, refer to the <b>RESOURCE
+OPTIONS</b> section.</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+<i>soft</i>:_hard_ Specify both limits.</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+<i>soft</i>: Specify only the soft limit.</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+:<i>hard</i> Specify only the hard limit.</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+<i>value</i> Specify both limits to the same value.</p>
+
+<h2>GENERAL OPTIONS
+<a name="GENERAL OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--noheadings</b></p>
+
+<p style="margin-left:17%;">Do not print a header line.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-o,
+--output</b> <i>list</i></p>
+
+<p style="margin-left:17%;">Define the output columns to
+use. If no output arrangement is specified, then a default
+set is used. Use <b>--help</b> to get a list of all
+supported columns.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-p,
+--pid</b></p>
+
+<p style="margin-left:17%;">Specify the process id; if none
+is given, the running process will be used.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--raw</b></p>
+
+<p style="margin-left:17%;">Use the raw output format.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--verbose</b></p>
+
+<p style="margin-left:17%;">Verbose mode.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Display help text and exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-V</b>,
+<b>--version</b></p>
+
+<p style="margin-left:17%;">Print version and exit.</p>
+
+<h2>RESOURCE OPTIONS
+<a name="RESOURCE OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-c,
+--core</b>[=<i>limits</i>]</p>
+
+<p style="margin-left:17%;">Maximum size of a core
+file.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-d,
+--data</b>[=<i>limits</i>]</p>
+
+<p style="margin-left:17%;">Maximum data size.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-e,
+--nice</b>[=<i>limits</i>]</p>
+
+<p style="margin-left:17%;">Maximum nice priority allowed
+to raise.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-f,
+--fsize</b>[=<i>limits</i>]</p>
+
+<p style="margin-left:17%;">Maximum file size.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-i,
+--sigpending</b>[=<i>limits</i>]</p>
+
+<p style="margin-left:17%;">Maximum number of pending
+signals.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-l,
+--memlock</b>[=<i>limits</i>]</p>
+
+<p style="margin-left:17%;">Maximum locked-in-memory
+address space.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-m,
+--rss</b>[=<i>limits</i>]</p>
+
+<p style="margin-left:17%;">Maximum Resident Set Size
+(RSS).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-n,
+--nofile</b>[=<i>limits</i>]</p>
+
+<p style="margin-left:17%;">Maximum number of open
+files.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-q,
+--msgqueue</b>[=<i>limits</i>]</p>
+
+<p style="margin-left:17%;">Maximum number of bytes in
+POSIX message queues.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-r,
+--rtprio</b>[=<i>limits</i>]</p>
+
+<p style="margin-left:17%;">Maximum real-time priority.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-s,
+--stack</b>[=<i>limits</i>]</p>
+
+<p style="margin-left:17%;">Maximum size of the stack.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-t,
+--cpu</b>[=<i>limits</i>]</p>
+
+<p style="margin-left:17%;">CPU time, in seconds.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-u,
+--nproc</b>[=<i>limits</i>]</p>
+
+<p style="margin-left:17%;">Maximum number of
+processes.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-v,
+--as</b>[=<i>limits</i>]</p>
+
+<p style="margin-left:17%;">Address space limit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-x,
+--locks</b>[=<i>limits</i>]</p>
+
+<p style="margin-left:17%;">Maximum number of file locks
+held.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-y,
+--rttime</b>[=<i>limits</i>]</p>
+
+<p style="margin-left:17%;">Timeout for real-time
+tasks.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>prlimit</b>(2) system call is supported since Linux
+2.6.36, older kernels will break this program.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>prlimit
+--pid 13134</b></p>
+
+<p style="margin-left:17%;">Display limit values for all
+current resources.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>prlimit
+--pid 13134 --rss --nofile=1024:4095</b></p>
+
+<p style="margin-left:17%;">Display the limits of the RSS,
+and set the soft and hard limits for the number of open
+files to 1024 and 4095, respectively.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>prlimit
+--pid 13134 --nproc=512:</b></p>
+
+<p style="margin-left:17%;">Modify only the soft limit for
+the number of processes.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>prlimit
+--pid $$ --nproc=unlimited</b></p>
+
+<p style="margin-left:17%;">Set for the current process
+both the soft and ceiling values for the number of processes
+to unlimited.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>prlimit
+--cpu=10 sort -u hugefile</b></p>
+
+<p style="margin-left:17%;">Set both the soft and hard CPU
+time limit to ten seconds and run <b>sort</b>(1).</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Davidlohr
+Bueso</i> &lt;dave@gnu.org&gt; - In memory of Dennis M.
+Ritchie.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ulimit</b>(1p),
+<b>prlimit</b>(2)</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For bug
+reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+
+<h2>AVAILABILITY
+<a name="AVAILABILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>prlimit</b> command is part of the util-linux package
+which can be downloaded from <i>Linux Kernel Archive</i>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>
+<hr>
+</body>
+</html>

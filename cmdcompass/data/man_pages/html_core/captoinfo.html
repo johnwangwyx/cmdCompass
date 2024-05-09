@@ -1,0 +1,251 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:33:56 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>captoinfo</title>
+
+</head>
+<body>
+
+<h1 align="center">captoinfo</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#TRANSLATIONS FROM NONSTANDARD CAPABILITIES">TRANSLATIONS FROM NONSTANDARD CAPABILITIES</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#PORTABILITY">PORTABILITY</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>captoinfo</b>
+- convert a <i>termcap</i> description into a
+<i>terminfo</i> description</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>captoinfo</b>
+[<b>-v</b><i>n width</i>] [<b>-V</b>] [<b>-1</b>] [<b>-w</b>
+<i>width</i>] <i>file</i> ...</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>captoinfo</b>
+looks in each given text <i>file</i> for <b>termcap</b>
+descriptions. For each one found, an equivalent
+<b>terminfo</b> description is written to standard output.
+Termcap <b>tc</b> capabilities are translated directly to
+terminfo <b>use</b> capabilities.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If no
+<i>file</i> is given, then the environment variable
+<b>TERMCAP</b> is used for the filename or entry. If
+<b>TERMCAP</b> is a full pathname to a file, only the
+terminal whose name is specified in the environment variable
+<b>TERM</b> is extracted from that file. If the environment
+variable <b>TERMCAP</b> is not set, then the file
+<b>/etc/terminfo</b> is read.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-v</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>print out tracing information on standard error as the
+program runs.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-V</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>print out the version of the program in use on standard
+error and exit.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-1</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>cause the fields to print out one to a line. Otherwise,
+the fields will be printed several to a line to a maximum
+width of 60 characters.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-w</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>change the output to <i>width</i> characters.</p></td></tr>
+</table>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="20%">
+
+
+<p style="margin-top: 1em">/etc/terminfo</p></td>
+<td width="11%"></td>
+<td width="58%">
+
+
+<p style="margin-top: 1em">Compiled terminal description
+database.</p> </td></tr>
+</table>
+
+<h2>TRANSLATIONS FROM NONSTANDARD CAPABILITIES
+<a name="TRANSLATIONS FROM NONSTANDARD CAPABILITIES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Some obsolete
+nonstandard capabilities will automatically be translated
+into standard (SVr4/XSI Curses) terminfo capabilities by
+<b>captoinfo</b>. Whenever one of these automatic
+translations is done, the program will issue an notification
+to stderr, inviting the user to check that it has not
+mistakenly translated a completely unknown and random
+capability and/or syntax error.</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-43421.png" alt="Image grohtml-43421.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em">XENIX termcap
+also used to have a set of extension capabilities for forms
+drawing, designed to take advantage of the IBM PC high-half
+graphics. They were as follows:</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-43422.png" alt="Image grohtml-43422.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em">If the
+single-line capabilities occur in an entry, they will
+automatically be composed into an <b>acsc</b> string. The
+double-line capabilities and <b>GG</b> are discarded with a
+warning message.</p>
+
+<p style="margin-left:11%; margin-top: 1em">IBM&rsquo;s AIX
+has a terminfo facility descended from SVr1 terminfo but
+incompatible with the SVr4 format. The following AIX
+extensions are automatically translated:</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-43423.png" alt="Image grohtml-43423.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em">Additionally,
+the AIX <i>box1</i> capability will be automatically
+translated to an <b>acsc</b> string.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">Hewlett-Packard&rsquo;s
+terminfo library supports two nonstandard terminfo
+capabilities <b>meml</b> (memory lock) and <b>memu</b>
+(memory unlock). These will be discarded with a warning
+message.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This utility is
+actually a link to <b>tic</b>(1), running in <i>-I</i> mode.
+You can use other <b>tic</b> options such as <b>-f</b> and
+<b>-x</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The verbose
+option is not identical to SVr4&rsquo;s. Under SVr4, instead
+of following the <b>-v</b> with a trace level n, you repeat
+it n times.</p>
+
+<h2>PORTABILITY
+<a name="PORTABILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">X/Open Curses,
+Issue 7 (2009) describes <b>tic</b> briefly, but omits this
+program. SVr4 systems provide <b>captoinfo</b> as a separate
+application from <b>tic</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">NetBSD does not
+provide this application.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>infocmp</b>(1),
+<b>ncurses</b>(3NCURSES), <b>terminfo</b>(5)</p>
+
+<p style="margin-left:11%; margin-top: 1em">This describes
+<b>ncurses</b> version 6.4 (patch 20221231).</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Eric S. Raymond
+&lt;esr@snark.thyrsus.com&gt; and <br>
+Thomas E. Dickey &lt;dickey@invisible-island.net&gt;</p>
+<hr>
+</body>
+</html>

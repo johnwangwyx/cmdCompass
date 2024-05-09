@@ -1,0 +1,223 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:54 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>TEMPFILE</title>
+
+</head>
+<body>
+
+<h1 align="center">TEMPFILE</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#RETURN VALUES">RETURN VALUES</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#EXAMPLE">EXAMPLE</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">tempfile -
+create a temporary file in a safe manner</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>tempfile</b>
+[-d DIR] [-p STRING] [-s STRING] [-m MODE] [-n FILE]
+[--directory=DIR] [--prefix=STRING] [--suffix=STRING]
+[--mode=MODE] [--name=FILE] [--help] [--version]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>tempfile</b>
+creates a temporary file in a safe manner. It uses
+<b>mkstemps</b>(3) to choose the name and opens it with
+O_RDWR | O_CREAT | O_EXCL. The filename is printed on
+standard output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The directory
+in which to create the file might be searched for in this
+order:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>a)</p></td>
+<td width="1%"></td>
+<td width="85%">
+
+
+<p>In case the environment variable <b>TMPDIR</b> exists
+and contains the name of an appropriate directory, that is
+used.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>b)</p></td>
+<td width="1%"></td>
+<td width="85%">
+
+
+<p>Otherwise, if the <i>--directory</i> argument is
+specified and appropriate, it is used.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>c)</p></td>
+<td width="1%"></td>
+<td width="85%">
+
+
+<p>Otherwise, <i>P_tmpdir</i> (as defined in
+<i>&lt;stdio.h&gt;</i>) is used when appropriate.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>d)</p></td>
+<td width="1%"></td>
+<td width="85%">
+
+
+<p>Finally an implementation-defined directory
+(<i>/tmp</i>) may be used.</p></td></tr>
+</table>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-d,
+--directory</b> <i>DIR</i></p>
+
+<p style="margin-left:22%;">Place the file in DIR.</p>
+
+<p style="margin-left:11%;"><b>-m, --mode</b>
+<i>MODE</i></p>
+
+<p style="margin-left:22%;">Open the file with MODE instead
+of 0600.</p>
+
+<p style="margin-left:11%;"><b>-n, --name</b>
+<i>FILE</i></p>
+
+<p style="margin-left:22%;">Use FILE for the name instead
+of <b>tempnam</b>(3)<b>.</b> The options -d, -p, and -s are
+ignored if this option is given.</p>
+
+<p style="margin-left:11%;"><b>-p, --prefix</b>
+<i>STRING</i></p>
+
+<p style="margin-left:22%;">Use up to five letters of
+STRING to generate the name.</p>
+
+<p style="margin-left:11%;"><b>-s, --suffix</b>
+<i>STRING</i></p>
+
+<p style="margin-left:22%;">Generate the file with STRING
+as the suffix.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--help</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Print a usage message on standard output and exit
+successfully.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--version</b></p>
+
+<p style="margin-left:22%;">Print version information on
+standard output and exit successfully.</p>
+
+<h2>RETURN VALUES
+<a name="RETURN VALUES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">An exit status
+of 0 means the temporary file was created successfully. Any
+other exit status indicates an error.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Exclusive
+creation is not guaranteed when creating files on NFS
+partitions. tempfile cannot make temporary directories.
+tempfile is deprecated; you should use <b>mktemp</b>(1)
+instead.</p>
+
+<h2>EXAMPLE
+<a name="EXAMPLE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">#!/bin/sh <br>
+#[...] <br>
+t=$(tempfile) || exit <br>
+trap &quot;rm -f -- &rsquo;$t&rsquo;&quot; EXIT <br>
+#[...] <br>
+rm -f -- &quot;$t&quot; <br>
+trap - EXIT <br>
+exit</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>tempnam</b>(3),
+<b>mktemp</b>(1)</p>
+<hr>
+</body>
+</html>

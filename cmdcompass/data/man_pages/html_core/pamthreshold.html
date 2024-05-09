@@ -1,0 +1,260 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:27 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamthreshold User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamthreshold User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamthreshold -
+threshold grayscale image to black and white</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamthreshold</b>
+[<b>-simple</b>]
+[<b>-local=</b><i>width</i><b>x</b><i>height</i>]
+[<b>-dual=</b><i>width</i><b>x</b><i>height</i>]
+[<b>-threshold=</b><i>threshold</i>]
+[<b>-contrast=</b><i>threshold</i>]
+[<i>inputpamfile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviations of options are acceptable. You may use double
+hyphens instead of a single hyphen to denote options. You
+may use white space in place of the equals sign to separate
+an option name from its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamthreshold</b>
+thresholds a grayscale image. Thresholding means dividing
+the image into background and foreground by comparing every
+pixel to a thresholding value.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The input
+should be a PGM image or a PAM image of tuple type GRAYSCALE
+or GRAYSCALE_ALPHA. However, pamthreshold doesn&rsquo;t
+check; it just thresholds the first channel as if it were
+grayscale samples and if there is a second channel,
+processes it as if it is a transparency (alpha) channel. So
+if you feed it e.g. a PPM image, it will work but produce
+probably useless results.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The output is a
+PAM with tuple type BLACKANDWHITE or BLACKANDWHITE_ALPHA,
+depending on whether the input has a transparency channel.
+You can turn this into a PBM (if you need to use it with an
+older program that doesn&rsquo;t understand PAM, or you
+can&rsquo;t afford the 8X amount of space that PAM uses for
+the image) with <b>pamtopnm</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The output is
+to Standard Output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When the input
+has a transparency channel, <b>pamthreshold</b> includes a
+transparency channel in the output. Since the output has
+maxval 1, the transparency channel can indicate only fully
+transparent or fully opaque. <b>pamthreshold</b> make it
+fully transparent where the input is more than half
+transparent and fully opaque where it isn&rsquo;t.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+transparency function was new in Netpbm 10.43 (June 2008).
+Before that, <b>pamthreshold</b> ignores any transparency
+channel in the input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Another way to
+convert a grayscale image to black and white is to dither.
+Dithering is using clustered black and white pixels such
+that if you step back and look at the picture, you see
+varying levels of gray. <b>pamditherbw</b> does
+dithering.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamthreshold</b> recognizes the following command line
+options:</p>
+
+<p style="margin-left:11%; margin-top: 1em">Without any
+options, <b>pamthreshold</b> uses a method based on the
+iterative algorithm found in the
+<a href="http://www.wikipedia.org/">wikipedia</a> article
+<a href="http://en.wikipedia.org/wiki/Thresholding_%28image_processing%29">
+<i>Thresholding (image processing)</i></a> to compute the
+thresholding value. (
+<a href="http://en.wikipedia.org/w/index.php?title=Thresholding_%28image_processing%29&oldid=132306976">this
+version</a> of the Wikipedia article was current at the time
+of this writing). It uses this threshold to globally
+threshold the image. This should work well for most images.
+The program issues a message telling you what threshold it
+used. (Netpbm messages go to Standard Error, and you can
+turn them off with the Netpbm common option
+<b>-quiet</b>).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Options
+<b>-simple</b>, <b>-local</b>, and <b>-dual</b> select other
+methods. <b><br>
+-simple</b></p>
+
+<p style="margin-left:22%;">This selects simple or global
+thresholding, i.e. <b>pamthreshold</b> compares every pixel
+to the threshold you specify with <b>-threshold</b>. Those
+with a brightness greater than or equal to the threshold
+become white; others become black. This works well for black
+and white text pages scanned with a flatbed scanner and is
+faster than the default method that iteratively determines
+the thresholding value first.</p>
+
+
+<p style="margin-left:11%;"><b>-local=</b><i>width</i><b>x</b><i>height</i></p>
+
+<p style="margin-left:22%;">This selects local adaptive
+thresholding (also known as dynamic thresholding) using the
+neighborhood which is the square <i>width</i> pixels wide
+and <i>height</i> pixels high centered on the pixel in
+question. <b>pamthreshold</b> computes the threshold
+individually for each pixel of the image. This can
+accommodate changing lighting conditions in the image.
+Depending on the size of the neighborhood this can be quite
+slow.</p>
+
+
+<p style="margin-left:11%;"><b>-dual=</b><i>width</i><b>x</b><i>height</i></p>
+
+<p style="margin-left:22%;">This selects a dual
+thresholding algorithm using a global threshold for low
+contrast neighborhoods and local thresholding otherwise.
+This can preserve larger back- respectively foreground areas
+than local adaptive thresholding. This algorithm was
+proposed in the paper &quot;An Approach To Licence Plate
+Recognition&quot; by J.R. Parker and Pavol Federl.</p>
+
+
+<p style="margin-left:11%;"><b>-threshold=</b><i>threshold</i></p>
+
+<p style="margin-left:22%;">This sets the thresholding
+value for simple or local thresholding. The value is a
+floating point number in the range [0, 1] directly
+proportional to the Netpbm sample values, where 0
+corresponds to black and 1 to the maxval of the image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you
+don&rsquo;t specify this option, <b>pamthreshold</b> uses a
+threshold of 0.5.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Without
+<b>-simple</b>, <b>-local</b>, or <b>-dual</b>, this option
+is meaningless.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The meaning of
+the threshold depends upon the kind of thresholding you do
+(as determined by other options). Roughly, pixels at least
+as bright as the threshold become white in the output while
+others become black.</p>
+
+
+<p style="margin-left:11%;"><b>-contrast=</b><i>threshold</i></p>
+
+<p style="margin-left:22%;">This sets the threshold to
+determine if a neighborhood has low contrast or not for dual
+thresholding. The value is a floating point number in the
+range [0, 1].</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you
+don&rsquo;t specify this option, <b>pamthreshold</b> uses a
+contrast threshold of 0.05. Without <b>-dual</b> this option
+is meaningless.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamditherbw</b>(1),
+<b>ppmtopgm</b>(1), <b>pamtopnm</b>(1), <b>pam</b>(1)</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamthreshold</b>
+was new in Netpbm 10.34 (June 2006).</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamthreshold</b>
+is Copyright &copy; 2006 by Erik Auerswald and released
+under the <b>GPL</b>(1).</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamthreshold.html</b></p>
+<hr>
+</body>
+</html>

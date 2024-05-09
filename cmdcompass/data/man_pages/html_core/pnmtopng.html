@@ -1,0 +1,818 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:36 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pnmtopng User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pnmtopng User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#OPTION USAGE">OPTION USAGE</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pnmtopng -
+convert a PNM image to PNG</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmtopng</b>
+[<b>-verbose</b>] [<b>-downscale</b>] [<b>-interlace</b>]
+[<b>-alpha=</b><i>file</i>]
+[<b>-transparent=</b>[<b>=</b>]<i>color</i>]
+[<b>-background=</b><i>color</i>]
+[<b>-palette=</b><i>palettefile</i>]
+[<b>-gamma=</b><i>value</i>] [<b>-hist</b>]
+[<b>-text=</b><i>file</i>] [<b>-ztxt=</b><i>file</i>]
+[<b>-rgb=&rsquo;</b><i>wx wy <br>
+rx ry gx gy bx by</i><b>&rsquo;</b>]
+[<b>-size=&rsquo;</b><i>x y unit</i><b>&rsquo;</b>]
+[<b>-srgbintent=</b><i>intent</i>]
+[<b>-modtime=&rsquo;</b>[<i>yy</i>]<i>yy</i><b>-</b><i>mm</i><b>-</b><i>dd
+<br>
+hh</i><b>:</b><i>mm</i><b>:</b><i>ss</i><b>&rsquo;</b>]
+[<b>-nofilter</b>] [<b>-sub</b>] [<b>-up</b>] [<b>-avg</b>]
+[<b>-paeth</b>] [<b>-compression=</b><i>n</i>]
+[<b>-comp_mem_level=</b><i>n</i>]
+[<b>-comp_strategy=</b>{<b>huffman_only</b>|<b>filtered</b>}]
+[<b>-comp_method=deflated</b>]
+[<b>-comp_window_bits=</b><i>n</i>]
+[<b>-comp_buffer_size=</b><i>n</i>] [<b>-force</b>]
+[<b>-libversion</b>] [<i>pnmfile</i>]</p>
+
+<h2>OPTION USAGE
+<a name="OPTION USAGE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Obsolete
+options:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-filter</b>
+<i>n</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Options
+available only in older versions:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-chroma</b>
+<i>wx wy rx ry gx gy bx by</i>] [<b>-phys</b> <i>x y
+unit</i>] [<b>-time</b>
+[<i>yy</i>]<i>yy</i><b>-</b><i>mm</i><b>-</b><i>dd <br>
+hh</i><b>:</b><i>mm</i><b>:</b><i>ss</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviation of option is acceptable. You may use double
+hyphens instead of single hyphen to denote options. You may
+use white space in place of the equals sign to separate an
+option name from its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmtopng</b>
+reads a PNM image as input and produces a PNG image as
+output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Color component
+values in PNG files are either eight or sixteen bits wide,
+so <b>pnmtopng</b> will automatically scale colors to have a
+maxval of 255 or 65535.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For a grayscale
+image, <b>pnmtopng</b> produces a PNG bit depth 1, 2, 4, 8
+or 16. When the input image has a small maxval, the output
+PNG image has a correspondingly small bit depth. But in
+mapping the PNM maxval to the PNG maxval (which is by
+definition the maximum value that can be represented in the
+number of bits), a fair amount of distortion happens with
+these low maxvals. For example, with a PNM maxval of 5 and a
+PNG maxval of 7, the input sample 2 becomes the output
+sample 3. The input brightness is 2/5 = .40, while the
+output brightness is 3/7 = .43. Note that this is not a
+problem if you view the maxval as a precision, because in .4
+and .43 are identical within the precision implied by maxval
+5. Indeed, if you convert this PNG back to a maxval 5 PGM,
+the pixel&rsquo;s value will again be 2, exactly as it was
+originally. But if you need precisely the same colors in the
+output PNG as in the input PNM, make sure your input PNM has
+a maxval which is a power of two minus one. If you
+can&rsquo;t do that, then convert it with <b>pamdepth</b> to
+something with a large maxval that is a power of two minus
+one (255 and 65535 are good choices) to minimize the
+error.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Note: Option
+Syntax of Older Versions <br>
+pnmtopng</b> changed in Netpbm 10.30 (October 2005) to use
+the standard Netpbm command line syntax. Before that, you
+could not use double hyphens to denote an option and could
+not use an equal sign to separate an option name from its
+value. And the options had to come before the non-option
+program arguments.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Furthermore,
+the options <b>-chroma</b>, <b>-phys</b>, and <b>-time</b>
+were replaced by <b>-rgb</b>, <b>-size</b>, and
+<b>-modtime</b>, respectively. The only difference, taking
+<b>-phys</b>/<b>-size</b> as an example, is that
+<b>-phys</b> takes multiple program arguments as the option
+argument, whereas <b>-size</b> takes a single program
+argument which is composed of multiple words. E.g. The old
+shell command</p>
+
+<p style="margin-left:11%; margin-top: 1em">pnmtopng -phys
+800 800 0 input.pnm &gt; output.png</p>
+
+<p style="margin-left:11%; margin-top: 1em">is equivalent
+to the new shell command</p>
+
+<p style="margin-left:11%; margin-top: 1em">pnmtopng -size
+&quot;800 800 0&quot; input.pnm &gt; output.png</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you&rsquo;re
+writing a program that needs to work with both new and old ,
+have it first try with the new syntax, and if it fails with
+&quot;unrecognized option,&quot; fall back to the old
+syntax.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Current
+Options</b> <br>
+In addition to the options common to all programs based on
+libnetpbm (most notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pnmtopng</b> recognizes the following command line
+options: <b><br>
+-verbose</b></p>
+
+<p style="margin-left:22%;">This causes <b>pnmtopng</b> to
+display information about the format of the output file.
+&nbsp;</p>
+
+<p style="margin-left:11%;"><b>-downscale</b></p>
+
+<p style="margin-left:22%;">This enables <b>pnmtopng</b> to
+scale maxvalues of more then 65535 to 16 bits. Since this
+means loss of image data, <b>pnmtopng</b> does not do it by
+default. &nbsp;</p>
+
+<p style="margin-left:11%;"><b>-interlace</b></p>
+
+<p style="margin-left:22%;">This causes the PNG file to be
+interlaced, in Adam7 format. The interlaced format is one in
+which the raster data starts with a low-resolution
+representation of the entire image, then continues with
+additional information for the entire image, then even more
+information, etc. In Adam7 in particular, there are seven
+such passes of the whole image. This is useful when you are
+receiving the image over a slow communication line as
+someone is waiting to see it. The simplest thing to do in
+that case is wait for the entire image to arrive and then
+display it instantly, but then the user is wasting time
+staring at a blank space until the whole image arrives. With
+the standard non-interlaced format, the data arrives
+row-by-row starting at the top, so the displayer could
+display each row of the image as it arrives and gradually
+paint down to the bottom. But with an interlaced image, the
+displayer can start by showing a low-resolution version of
+the image, then gradually improve the display as more data
+arrives. &nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>-alpha=</b><i>filename</i></p>
+
+<p style="margin-left:22%;">This specifies the transparency
+(alpha) channel of the image. You supply the transparency
+channel as a standard PGM transparency mask (see the
+<b>PGM</b>(1) specification. <b>pnmtopng</b> does not
+necessarily represents the transparency information as a
+transparency channel in the PNG format. If it can represent
+the transparency information through a palette, it will do
+so in order to make a smaller PNG file. <b>pnmtopng</b> even
+sorts the palette so it can omit the opaque colors from the
+transparency part of the palette and save space for the
+palette. &nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>-transparent=</b><i>color</i></p>
+
+<p style="margin-left:22%;"><b>pnmtopng</b> marks the
+specified color as transparent in the PNG image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Specify the
+color (<i>color</i>) as described for the
+<a href="libnetpbm_image.html#colorname">argument of the
+<b>pnm_parsecolor()</b> library routine</a> . E.g.
+<b>red</b> or <b>rgb:ff/00/0d</b>. If the color you specify
+is not present in the image, <b>pnmtopng</b> selects instead
+the color in the image that is closest to the one you
+specify. Closeness is measured as a Cartesian distance
+between colors in RGB space. If multiple colors are
+equidistant, <b>pnmtopng</b> chooses one of them
+arbitrarily.</p>
+
+<p style="margin-left:22%; margin-top: 1em">However, if you
+prefix your color specification with &quot;=&quot;, e.g.</p>
+
+<p style="margin-left:22%; margin-top: 1em">-transparent
+=red</p>
+
+<p style="margin-left:22%; margin-top: 1em">only the exact
+color you specify will be transparent. If that color does
+not appear in the image, there will be no transparency.
+<b>pnmtopng</b> issues an information message when this is
+the case.</p>
+
+
+<p style="margin-left:11%;"><b>-background=</b><i>color</i></p>
+
+<p style="margin-left:22%;">Causes <b>pnmtopng</b> to
+create a background color chunk in the PNG output which can
+be used for subsequent transparency channel or transparent
+color conversions. Specify <i>color</i> the same as for
+<b>-transparent</b>. &nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>-palette=</b><i>palettefile</i></p>
+
+<p style="margin-left:22%;">This option specifies a palette
+to use in the PNG. It forces <b>pnmtopng</b> to create the
+paletted (colormapped) variety of PNG -- if that isn&rsquo;t
+possible, <b>pnmtopng</b> fails. If the palette you specify
+doesn&rsquo;t contain exactly the colors in the image,
+<b>pnmtopng</b> fails. Since <b>pnmtopng</b> will
+automatically generate a paletted PNG, with a correct
+palette, when appropriate, the only reason you would specify
+the <b>-palette</b> option is if you care in what order the
+colors appear in the palette. The PNG palette has colors in
+the same order as the palette you specify.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You specify the
+palette by naming a PPM file that has one pixel for each
+color in the palette.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Alternatively,
+consider the case that have a palette and you want to make
+sure your PNG contains only colors from the palette,
+approximating if necessary. You don&rsquo;t care what
+indexes the PNG uses internally for the colors (i.e. the
+order of the PNG palette). In this case, you don&rsquo;t
+need <b>-palette</b>. Pass the Netpbm input image and your
+palette PPM through <b>pnmremap</b>. Though you might think
+it would, using <b>-palette</b> in this case wouldn&rsquo;t
+even save <b>pnmtopng</b> any work.</p>
+
+<p style="margin-left:11%;"><b>-gamma=</b><i>value</i></p>
+
+<p style="margin-left:22%;">Causes <b>pnmtopng</b> to
+create a gAMA chunk. This information helps describe how the
+color values in the PNG must be interpreted. Without the
+gAMA chunk, whatever interprets the PNG must get this
+information separately (or just assume something standard).
+If your input is a true PPM or PGM image, you should specify
+<b>-gamma=.52</b>. But sometimes people generate images
+which are ostensibly PPM except the image uses a different
+gamma transfer function than the one specified for PPM. A
+common case of this is when the image is created by simple
+hardware that doesn&rsquo;t have digital computational
+ability. Also, some simple programs that generate images
+from scratch do it with a gamma transfer in which the gamma
+value is 1.0. &nbsp;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-hist</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Use this parameter to create a chunk that specifies the
+frequency (or histogram) of the colors in the image.
+&nbsp;</p> </td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>-text=</b><i>filename</i></p>
+
+<p style="margin-left:22%;">This option lets you include
+arbitrary text strings in the PNG output, as tEXt
+chunks.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><i>filename</i>
+is the name of a file that contains your text strings.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The output
+contains a distinct tEXt chunk for each entry in the
+file.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Here is an
+example of a text string file:</p>
+
+<p style="margin-left:22%; margin-top: 1em">Title PNG
+file</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>Author John Doe</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>Description how to include a text chunk</p></td></tr>
+</table>
+
+<p style="margin-left:22%;">PNG file</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>&quot;Creation Date&quot; 2015-may-11</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>Software pamtopng</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">The file is
+divided into entries, each entry comprising consecutive
+lines of text. The first line of an entry starts in the
+first column (i.e. the first column is not white space) and
+every other line has white space in the first column. The
+first entry starts in the first line, so it is not valid for
+the first line of the file to have white space in its first
+column.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The first word
+in an entry is the key of the text string (e.g.
+&rsquo;Title&rsquo;). It begins in column one of the line
+and continues up to, but not including, the first delimiter
+character or the end of the line, whichever is first. You
+can enclose the key in double quotes in which case the key
+can consists of multiple words. The quotes are not part of
+the key. The text string per se begins after the key and any
+delimiter characters after it, plus the text in subsequent
+continuation lines.</p>
+
+<p style="margin-left:22%; margin-top: 1em">There is no
+limit on the length of a file line or entry or key or text
+string. There is no limit on the number of entries.</p>
+
+
+<p style="margin-left:11%;"><b>-ztxt=</b><i>filename</i></p>
+
+<p style="margin-left:22%;">The same as <b>-text</b>,
+except the text string is compressed in the PNG output.
+<b>pnmtopng</b> uses zTXt chunks instead of a tEXt chunks,
+unless the key for the text string starts with
+&rsquo;A&rsquo; or &rsquo;T&rsquo;. This odd exception
+exists for backward compatibility; we don&rsquo;t know why
+the program was originally designed this way, except that
+the distinction was meant to roughly identify the keys
+&rsquo;Author&rsquo; and &rsquo;Title&rsquo;. &nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>-rgb=</b><i>chroma_list</i></p>
+
+<p style="margin-left:22%;">This option specifies how red,
+green, and blue component values of a pixel specify a
+particular color, by telling the chromaticities of those 3
+primary illuminants and of white (i.e. full strength of all
+three).</p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+<i>chroma_list</i> value is a blank-separated list of 8
+floating point decimal numbers. The CIE-1931 X and Y
+chromaticities (in that order) of each of white, red, green,
+and blue, in that order.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This
+information goes into the PNG&rsquo;s cHRM chunk.</p>
+
+<p style="margin-left:22%; margin-top: 1em">In a shell
+command, make sure you use quotation marks so that the
+blanks in <i>chroma_list</i> don&rsquo;t make the shell see
+multiple command arguments.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.30 (October 2005). Before that, the option
+<b>-chroma</b> does the same thing, but with slightly
+different syntax.</p>
+
+<p style="margin-left:11%;"><b>-size=&quot;</b><i>x y
+unit</i><b>&quot;</b></p>
+
+<p style="margin-left:22%;">This option determines the
+aspect ratio of the individual pixels of your image as well
+as the physical resolution of it.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>unit</i> is
+either <b>0</b> or <i>1</i>. When it is <i>1</i>, the option
+specifies the physical resolution of the image in pixels per
+meter. For example, <b>-size=&quot;10000 15000 1&quot;</b>
+means that when someone displays the image, he should make
+it so that 10,000 pixels horizontally occupy 1 meter and
+15,000 pixels vertically occupy one meter. And even if he
+doesn&rsquo;t take this advice on the overall size of the
+displayed image, he should at least make it so that each
+pixel displays as 1.5 times as high as wide.</p>
+
+<p style="margin-left:22%; margin-top: 1em">When
+<i>unit</i> is <b>0</b>, that means there is no advice on
+the absolute physical resolution; just on the ratio of
+horizontal to vertical physical resolution.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This
+information goes into the PNG&rsquo;s pHYS chunk.</p>
+
+<p style="margin-left:22%; margin-top: 1em">When you
+don&rsquo;t specify <b>-size</b>, <b>pnmtopng</b> creates
+the image with no pHYS chunk, which means square pixels of
+no absolute resolution.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.30 (October 2005). Before that, the option
+<b>-phys</b> does the same thing, but with slightly
+different syntax.</p>
+
+
+<p style="margin-left:11%;"><b>-srgbintent=</b><i>intent</i></p>
+
+<p style="margin-left:22%;">This asserts that the input is
+a pseudo-Netpbm image that uses an sRGB color space (unlike
+true Netpbm) and indicates how you intend for the colors to
+be rendered. It causes <b>pnmtopng</b> to include an sRGB
+chunk in the PNG image that specifies that intent, so see
+the PNG documentation for more information on what this
+really means.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>intent</i>
+is one of:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="30%">
+
+
+<p><b>perceptual</b></p></td>
+<td width="48%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="30%">
+
+
+<p><b>relativecolorimetric</b></p></td>
+<td width="48%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="30%">
+
+
+<p><b>saturation</b></p></td>
+<td width="48%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="30%">
+
+
+<p><b>absolutecolorimetric</b></p></td>
+<td width="48%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.71 (June 2015). Before that,
+<b>pnmtopng</b> never generates an sRGB chunk.</p>
+
+
+<p style="margin-left:11%;"><b>-modtime=&quot;</b>[<i>yy</i>]<i>yy-mm-dd
+hh:mm:ss</i><b>&quot;</b></p>
+
+<p style="margin-left:22%;">This option allows you to
+specify the modification time value to be placed in the PNG
+output. You can specify the year parameter either as a two
+digit or four digit value.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.30 (October 2005). Before that, the option
+<b>-time</b> does the same thing, but with slightly
+different syntax.</p>
+
+<p style="margin-left:11%;"><b>-filter=</b><i>n</i></p>
+
+<p style="margin-left:22%;">This option is obsolete. Before
+Netpbm 10.22 (April 2004), this was the only way to specify
+a row filter. It specifies a single type of row filter, by
+number, that <b>pnmtopng</b> must use on each row.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Use
+<b>-nofilter</b>, <b>-sub</b>, <b>-up</b>, <b>-avg</b>, and
+<b>-paeth</b> in current Netpbm.</p>
+
+<p style="margin-left:11%;"><b>-nofilter</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-sub</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-up</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-avg</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-paeth</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Each of these options permits <b>pnmtopng</b> to use one
+type of row filter. <b>pnmtopng</b> chooses whichever of the
+permitted filters it finds to be optimal. If you specify
+none of these options, it is the same as specifying all of
+them -- <b>pnmtopng</b> uses any row filter type it finds
+optimal.</p> </td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">These options
+were new with Netpbm 10.22 (April 2004). Before that, you
+could use the <b>-filter</b> option to specify one permitted
+row filter type. The default, when you specify no filter
+options, was the same.</p>
+
+
+<p style="margin-left:11%;"><b>-compression=</b><i>n</i></p>
+
+<p style="margin-left:22%;">This option sets set the
+compression level of the zlib compression. Select a level
+from 0 for no compression (maximum speed) to 9 for maximum
+compression (minimum speed).</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+the default of the zlib library.</p>
+
+
+<p style="margin-left:11%;"><b>-comp_mem_level=</b><i>n</i></p>
+
+<p style="margin-left:22%;">This option sets the memory
+usage level of the zlib compression. Select a level from 1
+for minimum memory usage (and minimum speed) to 9 for
+maximum memory usage (and speed).</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+the default of the zlib library.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.30 (October 2005).</p>
+
+
+<p style="margin-left:11%;"><b>-comp_strategy=</b>{<b>huffman_only</b>|<b>filtered</b>}</p>
+
+<p style="margin-left:22%;">This options sets the
+compression strategy of the zlib compression. See Zlib
+documentation for information on what these strategies
+are.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+the default of the zlib library.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.30 (October 2005).</p>
+
+
+<p style="margin-left:11%;"><b>-comp_method=deflated</b></p>
+
+<p style="margin-left:22%;">This option does nothing. It is
+here for mathematical completeness and for possible forward
+compatibility. It theoretically selects the compression
+method of the zlib compression, but the Z library knows only
+one method today, so there&rsquo;s nothing to choose.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+the default of the zlib library.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.30 (October 2005).</p>
+
+
+<p style="margin-left:11%;"><b>-comp_window_bits=</b><i>N</i></p>
+
+<p style="margin-left:22%;">This option tells how big a
+window the zlib compression algorithm uses. The value is the
+base 2 logarithm of the window size in bytes, so 8 means 256
+bytes. The value must be from 8 to 15 (i.e. 256 bytes to
+32K).</p>
+
+<p style="margin-left:22%; margin-top: 1em">See Zlib
+documentation for details on what this window size is.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+the default of the zlib library.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.30 (October 2005).</p>
+
+
+<p style="margin-left:11%;"><b>-comp_buffer_size</b>=<i>N</i></p>
+
+<p style="margin-left:22%;">This option determines in what
+size pieces <b>pnmtopng</b> does the zlib compression. One
+compressed piece goes in each IDAT chunk in the PNG. So the
+bigger this value, the fewer IDAT chunks your PNG will have.
+Theoretically, this makes the PNG smaller because 1) you
+have less per-IDAT-chunk overhead, and 2) the compression
+algorithm has more data to work with. But in reality, the
+difference will probably not be noticeable above about 8K,
+which is the default.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The value
+<i>n</i> is the size of the compressed piece (i.e. the
+compression buffer) in bytes.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.30 (October 2005).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-force</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>When you specify this, <b>pnmtopng</b> limits its
+optimizations. The resulting PNG output is as similar to the
+Netpbm input as possible. For example, the PNG output will
+not be paletted and the transparency channel will be
+represented as a full transparency channel even if the
+information could be represented more succinctly with a
+transparency chunk. &nbsp;</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-libversion</b></p>
+
+<p style="margin-left:22%;">This option causes
+<b>pnmtopng</b> to display version information about itself
+and the libraries it uses, <b>in addition to all its normal
+function</b>. Do not confuse this with the Netpbm common
+option <b>-version</b>, which causes the program to display
+version information about the Netpbm library and do nothing
+else.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You can&rsquo;t
+really use this option in a program that invokes
+<b>pnmtopng</b> and needs to know which version it is. Its
+function has changed too much over the history of
+<b>pnmtopng</b>. The option is good only for human eyes.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pngtopam</b>(1),
+<b>pamtopng</b>(1), <b>pnmremap</b>(1), <b>pnmgamma</b>(1),
+<b>pnm</b>(1)</p>
+
+<p style="margin-left:11%; margin-top: 1em">For information
+on the PNG format, see
+<a href="http://schaik.com/png">http://schaik.com/png</a>
+.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1995-1997 by Alexander Lehmann and Willem van Schaik.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pnmtopng.html</b></p>
+<hr>
+</body>
+</html>

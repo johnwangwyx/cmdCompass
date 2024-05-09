@@ -1,0 +1,254 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:29 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pbmtoescp2 User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pbmtoescp2 User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#HINTS">HINTS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pbmtoescp2 -
+convert a PBM image to a ESC/P2 printer file</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbmtoescp2</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-compress=</b><i>compressionmode</i>]
+[<b>-resolution=</b>{<b>180</b>|<b>360</b>|<b>720</b>}]
+[<b>-stripeheight=</b><i>n</i>] [<b>-formfeed</b>]
+[<b>-raw</b>] [<i>pbmfile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">All options can
+be abbreviated to their shortest unique prefix. You may use
+two hyphens instead of one to designate an option. You may
+use either white space or equals signs between an option
+name and its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbmtoescp2</b>
+reads a PBM image as input. It produces an ESC/P2 raster
+graphic printer control stream as output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This program
+creates an output that is printable on Epson printers that
+understand the ESC/P2 printer control language (e.g. the
+Stylus models). For older Epson 9-pin dot matrix printers,
+which use the ESC/P protocol, see <b>pbmtoepson</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The printed
+output has one pixel for each pixel of the input image,
+except that it is padded up to the stripe size (see
+<b>-stripeheight</b> option) vertically and to a multiple of
+8 columns horizontally. Before Netpbm 10.72 (September
+2015), the output is instead truncated to those
+boundaries.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Input is read
+from file <i>pbmfile</i> if specified, otherwise from stdin.
+Output is written to stdout.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pbmtoescp2</b> recognizes the following command line
+options: <b><br>
+-compress=</b><i>compressionmode</i></p>
+
+<p style="margin-left:22%;">This determines the compression
+mode that <b>pbmtoescp2</b> uses in its output. Valid values
+for <i>compressionmode</i> are <b>0</b> and <b>1</b>.
+<b>-compress=0</b> results in a printer control stream with
+uncompressed raster graphic data. <b>-compress=1</b> results
+in a printer control stream with RLE compressed raster
+graphic data (RLE means Run Length Encoding). The default is
+<b>-compress=1</b>.</p>
+
+
+<p style="margin-left:11%;"><b>-resolution=</b><i>dpi</i></p>
+
+<p style="margin-left:22%;">This determines the horizontal
+and the vertical print resolution set in the printer control
+stream. Another way of looking at it is a declaration of
+what the resolution of the input image is (PBM images
+don&rsquo;t have inherent resolution). Valid values for
+<i>dpi</i> are <b>180</b>, <b>360</b>, and <b>720</b>. See
+<a href="#hints">hints</a> for more information on this.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+<b>-resolution=360</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Before Netpbm
+10.72 (September 2015), <b>720</b> is not valid.</p>
+
+
+<p style="margin-left:11%;"><b>-stripeheight=</b><i>n</i></p>
+
+<p style="margin-left:22%;">This option controls the height
+in lines of the stripes in the output.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The valid
+stripe heights in the printer language are 1, 8, and 24, but
+it is capable of expressing any height up to 255 and
+<b>pbmtoescp2</b> accepts any value in the range 1-255. It
+issues a warning, though, if you choose something other than
+1, 8, or 24.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+24.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.72 (September 2015). Before that, the
+stripe size is always 24.</p>
+
+<p style="margin-left:11%;"><b>-formfeed</b></p>
+
+<p style="margin-left:22%;">This option causes
+<b>pbmtoescp2</b> to place a formfeed command at the end of
+the output.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.72 (September 2015).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-raw</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>This option causes <b>pbmtoescp2</b> to generate only
+the data blocks. It does not generate printer commands to
+set up the output (for example, setting the line
+spacing).</p> </td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">You can use
+this to insert graphics into a larger printer command
+stream.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.72 (September 2015).</p>
+
+<h2>HINTS
+<a name="HINTS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">RLE compresses
+very well bitmaps of line drawings, preferably horizontal
+oriented contents like texts, sheets of music, etc. However,
+bitmaps derived from photographs are not ideal for RLE. In
+extreme cases, when no byte repetitions occur in the input,
+the result will be even slightly bigger than the input. To
+avoid this, use compression mode 0 to switch off RLE.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each pixel in
+the input PBM image becomes one dot in the printed output.
+Therefore, you must make sure the width and height of the
+input are appropriate for the print resolution you choose
+and the print area you want. E.g. if you print at 180 dpi
+and want the image to print as 8 inches by 10, you must
+supply a PBM that is 1440 pixels wide by 1800 pixels high.
+You can adjust the size of the input with <b>pamscale</b>,
+<b>pamstretch</b>, <b>pbmreduce</b>, or
+<b>pamenlarge</b>.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>escp2topbm</b>(1),
+<b>pbmtoepson</b>(1), <b>pamscale</b>(1),
+<b>pamstretch</b>(1), <b>pbmreduce</b>(1),
+<b>pamenlarge</b>(1), <b>pbm</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+2003 by Ulrich Walcher (<i>u.walcher@gmx.de</i>).</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbmtoescp2</b>
+was added to Netpbm in Release 10.18 (August 2003); it was
+created around the same time.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pbmtoescp2.html</b></p>
+<hr>
+</body>
+</html>

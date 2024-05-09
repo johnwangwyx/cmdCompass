@@ -1,0 +1,454 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:15 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>LOGIN</title>
+
+</head>
+<body>
+
+<h1 align="center">LOGIN</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#CAVEATS">CAVEATS</a><br>
+<a href="#CONFIGURATION">CONFIGURATION</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">login - begin
+session on the system</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="67%">
+
+
+<p style="margin-top: 1em"><b>login</b> [-p]
+[-h&nbsp;<i>host</i>] [<i>username</i>]
+[<i>ENV=VAR</i>...]</p> </td>
+<td width="22%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="67%">
+
+
+<p style="margin-top: 1em"><b>login</b> [-p]
+[-h&nbsp;<i>host</i>] -f <i>username</i></p></td>
+<td width="22%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="67%">
+
+
+<p style="margin-top: 1em"><b>login</b> [-p]
+-r&nbsp;<i>host</i></p> </td>
+<td width="22%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>login</b> program is used to establish a new session with
+the system. It is normally invoked automatically by
+responding to the <i>login:</i> prompt on the user's
+terminal. <b>login</b> may be special to the shell and may
+not be invoked as a sub-process. When called from a shell,
+<b>login</b> should be executed as <b>exec login</b> which
+will cause the user to exit from the current shell (and thus
+will prevent the new logged in user to return to the session
+of the caller). Attempting to execute <b>login</b> from any
+shell but the login shell will produce an error message.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The user is
+then prompted for a password, where appropriate. Echoing is
+disabled to prevent revealing the password. Only a small
+number of password failures are permitted before
+<b>login</b> exits and the communications link is
+severed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If password
+aging has been enabled for your account, you may be prompted
+for a new password before proceeding. You will be forced to
+provide your old password and the new password before
+continuing. Please refer to <b>passwd</b>(1) for more
+information.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Your user and
+group ID will be set according to their values in the
+/etc/passwd file. The value for <b>$HOME</b>, <b>$SHELL</b>,
+<b>$PATH</b>, <b>$LOGNAME</b>, and <b>$MAIL</b> are set
+according to the appropriate fields in the password entry.
+Ulimit, umask and nice values may also be set according to
+entries in the GECOS field.</p>
+
+<p style="margin-left:11%; margin-top: 1em">On some
+installations, the environmental variable <b>$TERM</b> will
+be initialized to the terminal type on your tty line, as
+specified in /etc/ttytype.</p>
+
+<p style="margin-left:11%; margin-top: 1em">An
+initialization script for your command interpreter may also
+be executed. Please see the appropriate manual section for
+more information on this function.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A subsystem
+login is indicated by the presence of a &quot;*&quot; as the
+first character of the login shell. The given home directory
+will be used as the root of a new file system which the user
+is actually logged into.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>login</b> program is NOT responsible for removing users
+from the utmp file. It is the responsibility of
+<b>getty</b>(8) and <b>init</b>(8) to clean up apparent
+ownership of a terminal session. If you use <b>login</b>
+from the shell prompt without <b>exec</b>, the user you use
+will continue to appear to be logged in even after you log
+out of the &quot;subsession&quot;.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-f</b></p>
+
+<p style="margin-left:17%;">Do not perform authentication,
+user is preauthenticated.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note: In that
+case, <i>username</i> is mandatory.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b></p>
+
+<p style="margin-left:17%;">Name of the remote host for
+this login.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-p</b></p>
+
+<p style="margin-left:17%;">Preserve environment.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-r</b></p>
+
+<p style="margin-left:17%;">Perform autologin protocol for
+rlogin.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <b>-r</b>,
+<b>-h</b> and <b>-f</b> options are only used when
+<b>login</b> is invoked by root.</p>
+
+<h2>CAVEATS
+<a name="CAVEATS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This version of
+<b>login</b> has many compilation options, only some of
+which may be in use at any particular site.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The location of
+files is subject to differences in system configuration.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>login</b> program is NOT responsible for removing users
+from the utmp file. It is the responsibility of
+<b>getty</b>(8) and <b>init</b>(8) to clean up apparent
+ownership of a terminal session. If you use <b>login</b>
+from the shell prompt without <b>exec</b>, the user you use
+will continue to appear to be logged in even after you log
+out of the &quot;subsession&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">As with any
+program, <b>login</b>'s appearance can be faked. If
+non-trusted users have physical access to a machine, an
+attacker could use this to obtain the password of the next
+person coming to sit in front of the machine. Under Linux,
+the SAK mechanism can be used by users to initiate a trusted
+path and prevent this kind of attack.</p>
+
+<h2>CONFIGURATION
+<a name="CONFIGURATION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+configuration variables in /etc/login.defs change the
+behavior of this tool:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>CONSOLE_GROUPS</b>
+(string)</p>
+
+<p style="margin-left:17%;">List of groups to add to the
+user's supplementary groups set when logging in on the
+console (as determined by the CONSOLE setting). Default is
+none.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Use with
+caution - it is possible for users to gain permanent access
+to these groups, even when not logged in on the console.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>DEFAULT_HOME</b>
+(boolean)</p>
+
+<p style="margin-left:17%;">Indicate if login is allowed if
+we can't cd to the home directory. Default is no.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If set to
+<i>yes</i>, the user will login in the root (/) directory if
+it is not possible to cd to her home directory.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ENV_PATH</b>
+(string)</p>
+
+<p style="margin-left:17%;">If set, it will be used to
+define the PATH environment variable when a regular user
+login. The value is a colon separated list of paths (for
+example <i>/bin:/usr/bin</i>) and can be preceded by
+<i>PATH=</i>. The default value is
+<i>PATH=/bin:/usr/bin</i>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ENV_SUPATH</b>
+(string)</p>
+
+<p style="margin-left:17%;">If set, it will be used to
+define the PATH environment variable when the superuser
+login. The value is a colon separated list of paths (for
+example <i>/sbin:/bin:/usr/sbin:/usr/bin</i>) and can be
+preceded by <i>PATH=</i>. The default value is
+<i>PATH=/sbin:/bin:/usr/sbin:/usr/bin</i>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ERASECHAR</b>
+(number)</p>
+
+<p style="margin-left:17%;">Terminal ERASE character
+(<i>010</i> = backspace, <i>0177</i> = DEL).</p>
+
+<p style="margin-left:17%; margin-top: 1em">The value can
+be prefixed &quot;0&quot; for an octal value, or
+&quot;0x&quot; for an hexadecimal value.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>FAIL_DELAY</b>
+(number)</p>
+
+<p style="margin-left:17%;">Delay in seconds before being
+allowed another attempt after a login failure.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>FAKE_SHELL</b>
+(string)</p>
+
+<p style="margin-left:17%;">If set, <b>login</b> will
+execute this shell instead of the users' shell specified in
+/etc/passwd.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>HUSHLOGIN_FILE</b>
+(string)</p>
+
+<p style="margin-left:17%;">If defined, this file can
+inhibit all the usual chatter during the login sequence. If
+a full pathname is specified, then hushed mode will be
+enabled if the user's name or shell are found in the file.
+If not a full pathname, then hushed mode will be enabled if
+the file exists in the user's home directory.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>KILLCHAR</b>
+(number)</p>
+
+<p style="margin-left:17%;">Terminal KILL character
+(<i>025</i> = CTRL/U).</p>
+
+<p style="margin-left:17%; margin-top: 1em">The value can
+be prefixed &quot;0&quot; for an octal value, or
+&quot;0x&quot; for an hexadecimal value.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>LOGIN_RETRIES</b>
+(number)</p>
+
+<p style="margin-left:17%;">Maximum number of login retries
+in case of bad password.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This will most
+likely be overridden by PAM, since the default pam_unix
+module has its own built in of 3 retries. However, this is a
+safe fallback in case you are using an authentication module
+that does not enforce PAM_MAXTRIES.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>LOGIN_TIMEOUT</b>
+(number)</p>
+
+<p style="margin-left:17%;">Max time in seconds for
+login.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>LOG_OK_LOGINS</b>
+(boolean)</p>
+
+<p style="margin-left:17%;">Enable logging of successful
+logins.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>LOG_UNKFAIL_ENAB</b>
+(boolean)</p>
+
+<p style="margin-left:17%;">Enable display of unknown
+usernames when login failures are recorded.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note: logging
+unknown usernames may be a security issue if an user enter
+her password instead of her login name.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>TTYGROUP</b>
+(string), <b>TTYPERM</b> (string)</p>
+
+<p style="margin-left:17%;">The terminal permissions: the
+login tty will be owned by the <b>TTYGROUP</b> group, and
+the permissions will be set to <b>TTYPERM</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">By default, the
+ownership of the terminal is set to the user's primary group
+and the permissions are set to <i>0600</i>.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b>TTYGROUP</b>
+can be either the name of a group or a numeric group
+identifier.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If you have a
+<b>write</b> program which is &quot;setgid&quot; to a
+special group which owns the terminals, define TTYGROUP to
+the group number and TTYPERM to 0620. Otherwise leave
+TTYGROUP commented out and assign TTYPERM to either 622 or
+600.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>TTYTYPE_FILE</b>
+(string)</p>
+
+<p style="margin-left:17%;">If defined, file which maps tty
+line to TERM environment parameter. Each line of the file is
+in a format something like &quot;vt100 tty01&quot;.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>USERGROUPS_ENAB</b>
+(boolean)</p>
+
+<p style="margin-left:17%;">If set to <i>yes</i>,
+<b>userdel</b> will remove the user's group if it contains
+no more members, and <b>useradd</b> will create by default a
+group with the name of the user.</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">/var/run/utmp</p>
+
+<p style="margin-left:17%;">List of current login
+sessions.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">/var/log/wtmp</p>
+
+<p style="margin-left:17%;">List of previous login
+sessions.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">/etc/passwd</p>
+
+<p style="margin-left:17%;">User account information.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">/etc/shadow</p>
+
+<p style="margin-left:17%;">Secure user account
+information.</p>
+
+<p style="margin-left:11%; margin-top: 1em">/etc/motd</p>
+
+<p style="margin-left:17%;">System message of the day
+file.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">/etc/nologin</p>
+
+<p style="margin-left:17%;">Prevent non-root users from
+logging in.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">/etc/ttytype</p>
+
+<p style="margin-left:17%;">List of terminal types.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">$HOME/.hushlogin</p>
+
+<p style="margin-left:17%;">Suppress printing of system
+messages.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">/etc/login.defs</p>
+
+<p style="margin-left:17%;">Shadow password suite
+configuration.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mail</b>(1),
+<b>passwd</b>(1), <b>sh</b>(1), <b>su</b>(1),
+<b>login.defs</b>(5), <b>nologin</b>(5), <b>passwd</b>(5),
+<b>securetty</b>(5), <b>getty</b>(8).</p>
+<hr>
+</body>
+</html>

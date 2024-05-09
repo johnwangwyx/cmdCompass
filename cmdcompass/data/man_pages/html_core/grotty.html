@@ -1,0 +1,500 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:07 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GROTTY</title>
+
+</head>
+<body>
+
+<h1 align="center">GROTTY</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#USAGE">USAGE</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">grotty - groff
+driver for typewriter-like devices</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>grotty</b></p></td>
+<td width="2%"></td>
+<td width="53%">
+
+
+<p style="margin-top: 1em">[<b>-bBcdfhioruUv</b>]
+[<b>-F&nbsp;</b><i>dir</i>] [<i>file</i> ...]</p></td>
+<td width="25%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>grotty</b>
+translates the output of GNU <b>troff</b> into a form
+suitable for typewriter-like devices. Normally <b>grotty</b>
+should be invoked by using the <b>groff</b> command with a
+<b>-Tascii</b>, <b>-Tlatin1</b> or <b>-Tutf8</b> option on
+ASCII based systems, and with <b>-Tcp1047</b> and
+<b>-Tutf8</b> on EBCDIC based hosts. If no files are given,
+<b>grotty</b> reads the standard input. A filename of
+<b>-</b> also causes <b>grotty</b> to read the standard
+input. Output is written to the standard output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">By default,
+<b>grotty</b> emits SGR escape sequences (from ISO 6429,
+also called ANSI color escapes) to change text attributes
+(bold, italic, colors). This makes it possible to have eight
+different background and foreground colors; additionally,
+bold and italic attributes can be used <b><i>at the same
+time</i></b> (by using the BI font).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+colors are defined in <b>tty.tmac</b>: black, white, red,
+green, blue, yellow, magenta, cyan. Unknown colors are
+mapped to the default color (which is dependent on the
+settings of the terminal; in most cases, this is black for
+the foreground and white for the background).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Use the
+<b>-c</b> switch to revert to the old behaviour, printing a
+bold character <i>c</i> with the sequence &ldquo;<i>c</i>
+BACKSPACE <i>c</i>&rdquo; and an italic character <i>c</i>
+by the sequence &ldquo;<b>_</b> BACKSPACE <i>c</i>&rdquo;.
+At the same time, color output is disabled. The same effect
+can be achieved by setting either the <i>GROFF_NO_SGR</i>
+environment variable or using the &rsquo;sgr&rsquo; X
+command (see below).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">(Debian-specific:
+The old behaviour is the default when using the <b>man</b>
+and <b>mdoc</b> macro packages, because most pagers either
+fail to cope with SGR escape sequences or need special
+options to do so. SGR output can be re-enabled permanently
+by editing <i>/etc/groff/man.local</i> and
+<i>/etc/groff/mdoc.local</i>, or temporarily by setting the
+<i>GROFF_SGR</i> environment variable to something
+non-empty.)</p>
+
+<p style="margin-left:11%; margin-top: 1em">For SGR
+support, it is necessary to use the <b>-R</b> option of
+<b>less</b>(1) to disable the interpretation of
+<b>grotty</b>&rsquo;s old output format. Consequently, all
+programs which use <b>less</b> as the pager program have to
+pass this option to it. For <b>man</b>(1) in particular,
+either add <b>-R</b> to the <i>PAGER</i> environment
+variable, e.g.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>PAGER=&quot;/usr/bin/less
+-R&quot; <br>
+export PAGER</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">or use the
+<b>-P</b> option of <b>man</b> to set the pager executable
+and its options, or modify the configuration file of
+<b>man</b> in a similar fashion. Note that with some
+<b>man</b>(1) versions, you have to use the <i>MANPAGER</i>
+environment variable instead.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>grotty</b>&rsquo;s
+old output format can be displayed on a terminal by piping
+through <b>ul</b>(1). Pagers such as <b>more</b>(1) or
+<b>less</b>(1) are also able to display these sequences. Use
+either <b>-B</b> or <b>-U</b> when piping into
+<b>less</b>(1); use <b>-b</b> when piping into
+<b>more</b>(1). There is no need to filter the output
+through <b>col</b>(1) since <b>grotty</b> never outputs
+reverse line feeds.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The font
+description file may contain a command</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>internalname&nbsp;</b><i>n</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">where <i>n</i>
+is a decimal integer. If the 01 bit in <i>n</i> is set, then
+the font is treated as an italic font; if the 02 bit is set,
+then it is treated as a bold font. The code field in the
+font description field gives the code which is used to
+output the character. This code can also be used in the
+<b>\N</b> escape sequence in <b>troff</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the
+<i>DESC</i> file contains the keyword <b>unicode</b>,
+<b>grotty</b> emits Unicode characters in UTF-8 encoding.
+Otherwise, it emits characters in a single-byte encoding
+depending on the data in the font description files. See the
+<b>groff_font</b>(5) man page for more details.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Whitespace is
+permitted between a command-line option and its
+argument.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-b</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Suppress the use of overstriking for bold characters.
+Ignored if <b>-c</b> isn&rsquo;t used.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-B</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Use only overstriking for bold-italic characters.
+Ignored if <b>-c</b> isn&rsquo;t used.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-c</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Use <b>grotty</b>&rsquo;s old output format (see above).
+This also disables color output. (Debian-specific: This
+option is enabled by default when using the <b>man</b> and
+<b>mdoc</b> macro packages. It can be disabled by default
+permanently by editing <i>/etc/groff/man.local</i> and
+<i>/etc/groff/mdoc.local</i>, or temporarily by setting the
+<i>GROFF_SGR</i> environment variable to something
+non-empty.)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-d</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Ignore all <b>\D</b> commands. Without this
+<b>grotty</b> renders <b>\D&rsquo;l...&rsquo;</b> commands
+that have at least one zero argument (and so are either
+horizontal or vertical) using <b>-</b>, <b>|</b>, and
+<b>+</b> characters. In a similar way, <b>grotty</b> handles
+<b>\D&rsquo;p...&rsquo;</b> commands which consist entirely
+of horizontal and vertical lines.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-f</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Use form feeds in the output. A form feed is output at
+the end of each page that has no output on its last
+line.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-F</b><i>dir</i></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Prepend directory dir<i>/dev</i>name to the search path
+for font and device description files; <i>name</i> is the
+name of the device, usually <b>ascii</b>, <b>latin1</b>,
+<b>utf8</b>, or <b>cp1047</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-h</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Use horizontal tabs in the output. Tabs are assumed to
+be set every 8 columns.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-i</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Use escape sequences to set the italic text attribute
+instead of the underline attribute for italic fonts
+(&rsquo;I&rsquo; and &rsquo;BI&rsquo;). Note that most
+terminals (including xterm) don&rsquo;t support this.
+Ignored if <b>-c</b> is active.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-o</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Suppress overstriking (other than for bold or underlined
+characters in case the old output format has been activated
+with <b>-c</b>).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-r</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Use escape sequences to set the reverse text attribute
+instead of the underline attribute for italic fonts
+(&rsquo;I&rsquo; and &rsquo;BI&rsquo;). Ignored if <b>-c</b>
+is active.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-u</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Suppress the use of underlining for italic characters.
+Ignored if <b>-c</b> isn&rsquo;t used.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-U</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Use only underlining for bold-italic characters. Ignored
+if <b>-c</b> isn&rsquo;t used.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-v</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Print the version number.</p></td></tr>
+</table>
+
+<h2>USAGE
+<a name="USAGE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>grotty</b>
+understands a single X command produced using the <b>\X</b>
+escape sequence. <b><br>
+\X&rsquo;tty:&nbsp;sgr&nbsp;</b><i>n</i><b>&rsquo;</b></p>
+
+<p style="margin-left:22%;">If <i>n</i> is non-zero or
+missing, enable SGR output (this is the default), otherwise
+use the old drawing scheme for bold and underline.</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>GROFF_NO_SGR</i></p>
+
+<p style="margin-left:22%;">If set, the old drawing scheme
+for bold and underline (using the backspace character) is
+active. Colors are disabled.</p>
+
+<p style="margin-left:11%;"><i>GROFF_FONT_PATH</i></p>
+
+<p style="margin-left:22%;">A list of directories in which
+to search for the <i>dev</i>name directory in addition to
+the default ones. See <b>troff</b>(1) and
+<b>groff_font</b>(5) for more details.</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/usr/share/groff/1.22.4/font/devascii/DESC</i></p>
+
+<p style="margin-left:22%;">Device description file for the
+<b>ascii</b> device.</p>
+
+
+<p style="margin-left:11%;"><i>/usr/share/groff/1.22.4/font/devascii/</i>F</p>
+
+<p style="margin-left:22%;">Font description file for font
+<i>F</i> of the <b>ascii</b> device.</p>
+
+
+<p style="margin-left:11%;"><i>/usr/share/groff/1.22.4/font/devlatin1/DESC</i></p>
+
+<p style="margin-left:22%;">Device description file for the
+<b>latin1</b> device.</p>
+
+
+<p style="margin-left:11%;"><i>/usr/share/groff/1.22.4/font/devlatin1/</i>F</p>
+
+<p style="margin-left:22%;">Font description file for font
+<i>F</i> of the <b>latin1</b> device.</p>
+
+
+<p style="margin-left:11%;"><i>/usr/share/groff/1.22.4/font/devutf8/DESC</i></p>
+
+<p style="margin-left:22%;">Device description file for the
+<b>utf8</b> device.</p>
+
+
+<p style="margin-left:11%;"><i>/usr/share/groff/1.22.4/font/devutf8/</i>F</p>
+
+<p style="margin-left:22%;">Font description file for font
+<i>F</i> of the <b>utf8</b> device.</p>
+
+
+<p style="margin-left:11%;"><i>/usr/share/groff/1.22.4/font/devcp1047/DESC</i></p>
+
+<p style="margin-left:22%;">Device description file for the
+<b>cp1047</b> device.</p>
+
+
+<p style="margin-left:11%;"><i>/usr/share/groff/1.22.4/font/devcp1047/</i>F</p>
+
+<p style="margin-left:22%;">Font description file for font
+<i>F</i> of the <b>cp1047</b> device.</p>
+
+
+<p style="margin-left:11%;"><i>/usr/share/groff/1.22.4/tmac/tty.tmac</i></p>
+
+<p style="margin-left:22%;">Macros for use with
+<b>grotty</b>.</p>
+
+
+<p style="margin-left:11%;"><i>/usr/share/groff/1.22.4/tmac/tty-char.tmac</i></p>
+
+<p style="margin-left:22%;">Additional character
+definitions for use with <b>grotty</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that on
+EBCDIC hosts, only files for the <b>cp1047</b> device is
+installed.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>grotty</b>
+is intended only for simple documents.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There is no
+support for fractional horizontal or vertical motions.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There is no
+support for <b>\D</b> commands other than horizontal and
+vertical lines.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Characters
+above the first line (i.e. with a vertical position
+of&nbsp;0) cannot be printed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Color handling
+differs from <b>grops</b>(1). <b>\M</b> doesn&rsquo;t set
+the fill color for closed graphic objects (which
+<b>grotty</b> doesn&rsquo;t support anyway) but changes the
+background color of the character cell, affecting all
+subsequent operations.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>groff</b>(1),
+<b>troff</b>(1), <b>groff_out</b>(5), <b>groff_font</b>(5),
+<b>groff_char</b>(7), <b>ul</b>(1), <b>more</b>(1),
+<b>man</b>(1), <b>less</b>(1)</p>
+<hr>
+</body>
+</html>

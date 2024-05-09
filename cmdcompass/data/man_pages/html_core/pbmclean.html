@@ -1,0 +1,254 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:29 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pbmclean User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pbmclean User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#OPTION USAGE">OPTION USAGE</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pbmclean -
+despeckle a PBM image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbmclean</b>
+[<b>-minneighbors=</b><i>N</i>]
+[<b>-black</b>|<b>-white</b>] [<b>-extended</b>]
+[<i>pbmfile</i>]</p>
+
+<h2>OPTION USAGE
+<a name="OPTION USAGE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">You can use the
+minimum unique abbreviation of the options. You can use two
+hyphens instead of one. You can separate an option name from
+its value with white space instead of an equals sign.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbmclean</b>
+cleans up a PBM image of random specks. It reads a PBM image
+as input and outputs a PBM that is the same as the input
+except with isolated pixels inverted.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can use
+<b>pbmclean</b> to clean up &quot;snow&quot; on bitmap
+images.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There are two
+ways <b>pbmclean</b> can define &quot;isolated&quot; pixels:
+simple and extended. When you specify <b>-extended</b>,
+<b>pbmclean</b> uses extended; otherwise it uses basic.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Basic
+Mode</b> <br>
+In basic mode, <b>pbmclean</b> looks at each pixel
+individually, and any pixel that doesn&rsquo;t have at least
+a minimum number of pixels of the same color touching it is
+considered isolated and <b>pbmclean</b> erases it.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>-minneighbors</b> option specifies the minimum number of
+neighboring pixels of the same color for a pixel <i>not</i>
+to be considered isolated.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For example, if
+<b>-minneighbors</b> is two and there are two contiguous
+black pixels in an otherwise white field, each of those
+pixels is isolated, so <b>pbmclean</b> erases them - turns
+both white.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The default
+minimum 1 pixel - <b>pbmclean</b> flips only completely
+isolated pixels.</p>
+
+<p style="margin-left:11%; margin-top: 1em">(A
+<b>-minneighbors</b> value greater than 8 generates a
+completely inverted image (but use <b>pnminvert</b> to do
+that) -- or a completely white or completely black image
+with the <b>-black</b> or <b>-white</b> option).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbmclean</b>
+considers the area beyond the edges of the image to be
+white. (This matters when you consider pixels right on the
+edge of the image).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbmclean</b>
+does not distinguish between foreground and background; by
+default, it flips isolated pixels of either color. But you
+can specify <b>-black</b> or <b>-white</b> to have it flip
+only pixels of one color.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Extended
+Mode</b> <br>
+In extended mode, <b>pbmclean</b> erases all blobs which
+don&rsquo;t have the specified minimum number of pixels. A
+blob is a set of contiguous pixels of the foreground color.
+The minimum number of pixels is one plus the
+<b>-minneighbors</b> value. You specify the foreground color
+with <b>-black</b> and <b>-white</b> (default is black).</p>
+
+<p style="margin-left:11%; margin-top: 1em">For example, if
+<b>-minneighbors</b> is 2 and the foreground color is black,
+and the image contains a straight line 4 pixels long,
+<b>pbmclean</b> erases that -- turns all four pixels white.
+<b>pbmclean</b> also erases 4 pixels in a square or
+L-shape.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The default
+<b>-minneighbors</b> is 4, so a blob must have at least 5
+pixels to escape <b>pbmclean</b>&rsquo;s purge.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Extended mode
+was new in Netpbm 10.56 (September 2011).</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pbmclean</b> recognizes the following command line
+options:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-black</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-white</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Flip pixels of the specified color. By default, if you
+specify neither <b>-black</b> nor <b>-white</b>,
+<b>pbmclean</b> flips both black and white pixels which do
+not have sufficient identical neighbors. If you specify
+<b>-black</b>, <b>pbmclean</b> leaves the white pixels alone
+and just erases isolated black pixels. Vice versa for
+<b>-white</b>. You may specify both <b>-black</b> and
+<b>-white</b> to get the same as the default behavior.</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>-minneighbors=</b><i>N</i></p>
+
+<p style="margin-left:22%;">This determines how many pixels
+must be in a cluster in order for <b>pbmclean</b> to
+consider them legitimate and not clean them out of the
+image. See <a href="#description">Description</a> .</p>
+
+<p style="margin-left:22%; margin-top: 1em">Before December
+2001, <b>pbmclean</b> accepted <b>-</b><i>N</i> instead of
+<b>-minneighbors</b>. Before Netpbm 10.27 (March 2005),
+<b>-minneighbors</b> was <b>-minneighbor</b>.</p>
+
+<p style="margin-left:11%;"><b>-extended</b></p>
+
+<p style="margin-left:22%;"><b>pbmclean</b> uses extended,
+as opposed to basic, isolated pixel detection.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.56 (September 2011).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbm</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1990 by Angus Duggan Copyright (C) 1989 by Jef Poskanzer.
+Copyright (C) 2001 by Michael Sternberg.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Permission to
+use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby
+granted, provided that the above copyright notice appear in
+all copies and that both that copyright notice and this
+permission notice appear in supporting documentation. This
+software is provided &quot;as is&quot; without express or
+implied warranty.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pbmclean.html</b></p>
+<hr>
+</body>
+</html>

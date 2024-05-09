@@ -1,0 +1,622 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:35:02 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GZIP</title>
+
+</head>
+<body>
+
+<h1 align="center">GZIP</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#ADVANCED USAGE">ADVANCED USAGE</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#DIAGNOSTICS">DIAGNOSTICS</a><br>
+<a href="#CAVEATS">CAVEATS</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#COPYRIGHT NOTICE">COPYRIGHT NOTICE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">gzip, gunzip,
+zcat - compress or expand files</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gzip</b> [
+<b>-acdfhklLnNrtvV19</b> ] [<b>-S&nbsp;suffix</b>] [ <i>name
+...</i> ] <b><br>
+gunzip</b> [ <b>-acfhklLnNrtvV</b> ] [<b>-S&nbsp;suffix</b>]
+[ <i>name ...</i> ] <b><br>
+zcat</b> [ <b>-fhLV</b> ] [ <i>name ...</i> ]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The <b>gzip</b>
+command reduces the size of the named files using Lempel-Ziv
+coding (LZ77). Whenever possible, each file is replaced by
+one with the extension <b>.gz</b>, while keeping the same
+ownership modes, access and modification times. (The default
+extension is <b>z</b> for MSDOS, OS/2 FAT, Windows NT FAT
+and Atari.) If no files are specified, or if a file name is
+&quot;-&quot;, the standard input is compressed to the
+standard output. The <b>gzip</b> command will only attempt
+to compress regular files. In particular, it will ignore
+symbolic links.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the
+compressed file name is too long for its file system,
+<b>gzip</b> truncates it. The <b>gzip</b> command attempts
+to truncate only the parts of the file name longer than 3
+characters. (A part is delimited by dots.) If the name
+consists of small parts only, the longest parts are
+truncated. For example, if file names are limited to 14
+characters, gzip.msdos.exe is compressed to gzi.msd.exe.gz.
+Names are not truncated on systems which do not have a limit
+on file name length.</p>
+
+<p style="margin-left:11%; margin-top: 1em">By default,
+<b>gzip</b> keeps the original file name and timestamp in
+the compressed file. These are used when decompressing the
+file with the <b>-N</b> option. This is useful when the
+compressed file name was truncated or when the timestamp was
+not preserved after a file transfer.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Compressed
+files can be restored to their original form using <b>gzip
+-d</b> or <b>gunzip</b> or <b>zcat</b>. If the original name
+saved in the compressed file is not suitable for its file
+system, a new name is constructed from the original one to
+make it legal.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>gunzip</b>
+takes a list of files on its command line and replaces each
+file whose name ends with .gz, -gz, .z, -z, or _z (ignoring
+case) and which begins with the correct magic number with an
+uncompressed file without the original extension.
+<b>gunzip</b> also recognizes the special extensions
+<b>.tgz</b> and <b>.taz</b> as shorthands for <b>.tar.gz</b>
+and <b>.tar.Z</b> respectively. When compressing,
+<b>gzip</b> uses the <b>.tgz</b> extension if necessary
+instead of truncating a file with a <b>.tar</b>
+extension.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>gunzip</b>
+can currently decompress files created by <b>gzip</b>,
+<b>zip</b>, <b>compress</b>, <b>compress -H</b> or
+<b>pack</b>. The detection of the input format is automatic.
+When using the first two formats, <b>gunzip</b> checks a 32
+bit CRC. For <b>pack</b> and <b>gunzip</b> checks the
+uncompressed length. The standard <b>compress</b> format was
+not designed to allow consistency checks. However
+<b>gunzip</b> is sometimes able to detect a bad .Z file. If
+you get an error when uncompressing a .Z file, do not assume
+that the .Z file is correct simply because the standard
+<b>uncompress</b> does not complain. This generally means
+that the standard <b>uncompress</b> does not check its
+input, and happily generates garbage output. The SCO
+compress -H format (lzh compression method) does not include
+a CRC but also allows some consistency checks.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Files created
+by <b>zip</b> can be uncompressed by gzip only if they have
+a single member compressed with the &rsquo;deflation&rsquo;
+method. This feature is only intended to help conversion of
+tar.zip files to the tar.gz format. To extract a <b>zip</b>
+file with a single member, use a command like
+&rsquo;<b>gunzip &lt;foo.zip</b>&rsquo; or &rsquo;<b>gunzip
+-S .zip foo.zip</b>&rsquo;. To extract zip files with
+several members, use <b>unzip</b> instead of
+<b>gunzip</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <b>zcat</b>
+command is identical to <b>gunzip -c</b>. (On some systems,
+<b>zcat</b> may be installed as <b>gzcat</b> to preserve the
+original link to <b>compress</b>.) <b>zcat</b> uncompresses
+either a list of files on the command line or its standard
+input and writes the uncompressed data on standard output.
+<b>zcat</b> will uncompress files that have the correct
+magic number whether they have a <b>.gz</b> suffix or
+not.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <b>gzip</b>
+command uses the Lempel-Ziv algorithm used in <b>zip</b> and
+PKZIP. The amount of compression obtained depends on the
+size of the input and the distribution of common substrings.
+Typically, text such as source code or English is reduced by
+60-70%. Compression is generally much better than that
+achieved by LZW (as used in <b>compress</b>), Huffman coding
+(as used in <b>pack</b>), or adaptive Huffman coding
+(<b>compact</b>).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Compression is
+always performed, even if the compressed file is slightly
+larger than the original. The worst case expansion is a few
+bytes for the gzip file header, plus 5 bytes per 32&nbsp;KiB
+block, or an expansion ratio of 0.015% for large files. The
+actual number of used disk blocks almost never
+increases.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>gzip</b>
+normally preserves the mode and modification timestamp of a
+file when compressing or decompressing. If you have
+appropriate privileges, it also preserves the file&rsquo;s
+owner and group.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-a
+--ascii</b></p>
+
+<p style="margin-left:22%;">Ascii text mode: convert
+end-of-lines using local conventions. This option is
+supported only on some non-Unix systems. For MSDOS, CR LF is
+converted to LF when compressing, and LF is converted to CR
+LF when decompressing.</p>
+
+<p style="margin-left:11%;"><b>-c --stdout
+--to-stdout</b></p>
+
+<p style="margin-left:22%;">Write output on standard
+output; keep original files unchanged. If there are several
+input files, the output consists of a sequence of
+independently compressed members. To obtain better
+compression, concatenate all input files before compressing
+them.</p>
+
+<p style="margin-left:11%;"><b>-d --decompress
+--uncompress</b></p>
+
+<p style="margin-left:22%;">Decompress.</p>
+
+<p style="margin-left:11%;"><b>-f --force</b></p>
+
+<p style="margin-left:22%;">Force compression or
+decompression even if the file has multiple links or the
+corresponding file already exists, or if the compressed data
+is read from or written to a terminal. If the input data is
+not in a format recognized by <b>gzip</b>, and if the option
+--stdout is also given, copy the input data without change
+to the standard output: let <b>zcat</b> behave as
+<b>cat</b>. If <b>-f</b> is not given, and when not running
+in the background, <b>gzip</b> prompts to verify whether an
+existing file should be overwritten.</p>
+
+<p style="margin-left:11%;"><b>-h --help</b></p>
+
+<p style="margin-left:22%;">Display a help screen and
+quit.</p>
+
+<p style="margin-left:11%;"><b>-k --keep</b></p>
+
+<p style="margin-left:22%;">Keep (don&rsquo;t delete) input
+files during compression or decompression.</p>
+
+<p style="margin-left:11%;"><b>-l --list</b></p>
+
+<p style="margin-left:22%;">For each compressed file, list
+the following fields:</p>
+
+<p style="margin-left:22%; margin-top: 1em">compressed
+size: size of the compressed file <br>
+uncompressed size: size of the uncompressed file <br>
+ratio: compression ratio (0.0% if unknown) <br>
+uncompressed_name: name of the uncompressed file</p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+uncompressed size is given as -1 for files not in gzip
+format, such as compressed .Z files. To get the uncompressed
+size for such a file, you can use:</p>
+
+<p style="margin-left:22%; margin-top: 1em">zcat file.Z |
+wc -c</p>
+
+<p style="margin-left:22%; margin-top: 1em">In combination
+with the --verbose option, the following fields are also
+displayed:</p>
+
+<p style="margin-left:22%; margin-top: 1em">method:
+compression method <br>
+crc: the 32-bit CRC of the uncompressed data <br>
+date &amp; time: timestamp for the uncompressed file</p>
+
+<p style="margin-left:22%; margin-top: 1em">The compression
+methods currently supported are deflate, compress, lzh (SCO
+compress -H) and pack. The crc is given as ffffffff for a
+file not in gzip format.</p>
+
+<p style="margin-left:22%; margin-top: 1em">With --name,
+the uncompressed name, date and time are those stored within
+the compress file if present.</p>
+
+<p style="margin-left:22%; margin-top: 1em">With --verbose,
+the size totals and compression ratio for all files is also
+displayed, unless some sizes are unknown. With --quiet, the
+title and totals lines are not displayed.</p>
+
+<p style="margin-left:11%;"><b>-L --license</b></p>
+
+<p style="margin-left:22%;">Display the <b>gzip</b> license
+and quit.</p>
+
+<p style="margin-left:11%;"><b>-n --no-name</b></p>
+
+<p style="margin-left:22%;">When compressing, do not save
+the original file name and timestamp by default. (The
+original name is always saved if the name had to be
+truncated.) When decompressing, do not restore the original
+file name if present (remove only the <b>gzip</b> suffix
+from the compressed file name) and do not restore the
+original timestamp if present (copy it from the compressed
+file). This option is the default when decompressing.</p>
+
+<p style="margin-left:11%;"><b>-N --name</b></p>
+
+<p style="margin-left:22%;">When compressing, always save
+the original file name, and save the seconds part of the
+original modification timestamp if the original is a regular
+file and its timestamp is at least 1 (1970-01-01 00:00:01
+UTC) and is less than 2**32 (2106-02-07 06:28:16 UTC,
+assuming leap seconds are not counted); this is the default.
+When decompressing, restore from the saved file name and
+timestamp if present. This option is useful on systems which
+have a limit on file name length or when the timestamp has
+been lost after a file transfer.</p>
+
+<p style="margin-left:11%;"><b>-q --quiet</b></p>
+
+<p style="margin-left:22%;">Suppress all warnings.</p>
+
+<p style="margin-left:11%;"><b>-r --recursive</b></p>
+
+<p style="margin-left:22%;">Travel the directory structure
+recursively. If any of the file names specified on the
+command line are directories, <b>gzip</b> will descend into
+the directory and compress all the files it finds there (or
+decompress them in the case of <b>gunzip</b> ).</p>
+
+<p style="margin-left:11%;"><b>-S .suf --suffix
+.suf</b></p>
+
+<p style="margin-left:22%;">When compressing, use suffix
+.suf instead of .gz. Any non-empty suffix can be given, but
+suffixes other than .z and .gz should be avoided to avoid
+confusion when files are transferred to other systems.</p>
+
+<p style="margin-left:22%; margin-top: 1em">When
+decompressing, add .suf to the beginning of the list of
+suffixes to try, when deriving an output file name from an
+input file name.</p>
+
+<p style="margin-left:11%;"><b>--synchronous</b></p>
+
+<p style="margin-left:22%;">Use synchronous output. With
+this option, <b>gzip</b> is less likely to lose data during
+a system crash, but it can be considerably slower.</p>
+
+<p style="margin-left:11%;"><b>-t --test</b></p>
+
+<p style="margin-left:22%;">Test. Check the compressed file
+integrity then quit.</p>
+
+<p style="margin-left:11%;"><b>-v --verbose</b></p>
+
+<p style="margin-left:22%;">Verbose. Display the name and
+percentage reduction for each file compressed or
+decompressed.</p>
+
+<p style="margin-left:11%;"><b>-V --version</b></p>
+
+<p style="margin-left:22%;">Version. Display the version
+number and compilation options then quit.</p>
+
+<p style="margin-left:11%;"><b>-# --fast --best</b></p>
+
+<p style="margin-left:22%;">Regulate the speed of
+compression using the specified digit <b>#</b>, where
+<b>-1</b> or <b>--fast</b> indicates the fastest compression
+method (less compression) and <b>-9</b> or <b>--best</b>
+indicates the slowest compression method (best compression).
+The default compression level is <b>-6</b> (that is, biased
+towards high compression at expense of speed).</p>
+
+<p style="margin-left:11%;"><b>--rsyncable</b></p>
+
+<p style="margin-left:22%;">When you synchronize a
+compressed file between two computers, this option allows
+rsync to transfer only files that were changed in the
+archive instead of the entire archive. Normally, after a
+change is made to any file in the archive, the compression
+algorithm can generate a new version of the archive that
+does not match the previous version of the archive. In this
+case, rsync transfers the entire new version of the archive
+to the remote computer. With this option, rsync can transfer
+only the changed files as well as a small amount of metadata
+that is required to update the archive structure in the area
+that was changed.</p>
+
+<h2>ADVANCED USAGE
+<a name="ADVANCED USAGE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Multiple
+compressed files can be concatenated. In this case,
+<b>gunzip</b> will extract all members at once. For
+example:</p>
+
+<p style="margin-left:11%; margin-top: 1em">gzip -c file1
+&gt; foo.gz <br>
+gzip -c file2 &gt;&gt; foo.gz</p>
+
+<p style="margin-left:11%; margin-top: 1em">Then</p>
+
+<p style="margin-left:11%; margin-top: 1em">gunzip -c
+foo</p>
+
+<p style="margin-left:11%; margin-top: 1em">is equivalent
+to</p>
+
+<p style="margin-left:11%; margin-top: 1em">cat file1
+file2</p>
+
+<p style="margin-left:11%; margin-top: 1em">In case of
+damage to one member of a .gz file, other members can still
+be recovered (if the damaged member is removed). However,
+you can get better compression by compressing all members at
+once:</p>
+
+<p style="margin-left:11%; margin-top: 1em">cat file1 file2
+| gzip &gt; foo.gz</p>
+
+<p style="margin-left:11%; margin-top: 1em">compresses
+better than</p>
+
+<p style="margin-left:11%; margin-top: 1em">gzip -c file1
+file2 &gt; foo.gz</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you want to
+recompress concatenated files to get better compression,
+do:</p>
+
+<p style="margin-left:11%; margin-top: 1em">gzip -cd old.gz
+| gzip &gt; new.gz</p>
+
+<p style="margin-left:11%; margin-top: 1em">If a compressed
+file consists of several members, the uncompressed size and
+CRC reported by the --list option applies to the last member
+only. If you need the uncompressed size for all members, you
+can use:</p>
+
+<p style="margin-left:11%; margin-top: 1em">gzip -cd
+file.gz | wc -c</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you wish to
+create a single archive file with multiple members so that
+members can later be extracted independently, use an
+archiver such as tar or zip. GNU tar supports the -z option
+to invoke gzip transparently. gzip is designed as a
+complement to tar, not as a replacement.</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The obsolescent
+environment variable <b>GZIP</b> can hold a set of default
+options for <b>gzip</b>. These options are interpreted first
+and can be overwritten by explicit command line parameters.
+As this can cause problems when using scripts, this feature
+is supported only for options that are reasonably likely to
+not cause too much harm, and <b>gzip</b> warns if it is
+used. This feature will be removed in a future release of
+<b>gzip</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can use an
+alias or script instead. For example, if <b>gzip</b> is in
+the directory <b>/usr/bin</b> you can prepend
+<b>$HOME/bin</b> to your <b>PATH</b> and create an
+executable script <b>$HOME/bin/gzip</b> containing the
+following:</p>
+
+<p style="margin-left:11%; margin-top: 1em">#! /bin/sh <br>
+export PATH=/usr/bin <br>
+exec gzip -9 &quot;$@&quot;</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>znew</b>(1),
+<b>zcmp</b>(1), <b>zmore</b>(1), <b>zforce</b>(1),
+<b>gzexe</b>(1), <b>zip</b>(1), <b>unzip</b>(1),
+<b>compress</b>(1)</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <b>gzip</b>
+file format is specified in P. Deutsch, <small>GZIP</small>
+file format specification version 4.3,
+<b>&lt;https://www.ietf.org/rfc/rfc1952.txt&gt;</b>,
+Internet RFC 1952 (May 1996). The <b>zip</b> deflation
+format is specified in P. Deutsch, <small>DEFLATE</small>
+Compressed Data Format Specification version 1.3,
+<b>&lt;https://www.ietf.org/rfc/rfc1951.txt&gt;</b>,
+Internet RFC 1951 (May 1996).</p>
+
+<h2>DIAGNOSTICS
+<a name="DIAGNOSTICS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Exit status is
+normally 0; if an error occurs, exit status is 1. If a
+warning occurs, exit status is 2. <br>
+Usage: gzip [-cdfhklLnNrtvV19] [-S suffix] [file ...]</p>
+
+<p style="margin-left:22%;">Invalid options were specified
+on the command line.</p>
+
+<p style="margin-left:11%;"><i>file</i>: not in gzip
+format</p>
+
+<p style="margin-left:22%;">The file specified to
+<b>gunzip</b> has not been compressed.</p>
+
+<p style="margin-left:11%;"><i>file</i>: Corrupt input. Use
+zcat to recover some data.</p>
+
+<p style="margin-left:22%;">The compressed file has been
+damaged. The data up to the point of failure can be
+recovered using</p>
+
+<p style="margin-left:22%; margin-top: 1em">zcat
+<i>file</i> &gt; recover</p>
+
+<p style="margin-left:11%;"><i>file</i>: compressed with
+<i>xx</i> bits, can only handle <i>yy</i> bits</p>
+
+<p style="margin-left:22%;"><b>File</b> was compressed
+(using LZW) by a program that could deal with more bits than
+the decompress code on this machine. Recompress the file
+with gzip, which compresses better and uses less memory.</p>
+
+<p style="margin-left:11%;"><i>file</i>: already has .gz
+suffix -- unchanged</p>
+
+<p style="margin-left:22%;">The file is assumed to be
+already compressed. Rename the file and try again.</p>
+
+<p style="margin-left:11%;"><i>file</i> already exists; do
+you wish to overwrite (y or n)?</p>
+
+<p style="margin-left:22%;">Respond &quot;y&quot; if you
+want the output file to be replaced; &quot;n&quot; if
+not.</p>
+
+<p style="margin-left:11%;">gunzip: corrupt input</p>
+
+<p style="margin-left:22%;">A SIGSEGV violation was
+detected which usually means that the input file has been
+corrupted.</p>
+
+<p style="margin-left:11%;"><i>xx.x%</i> Percentage of the
+input saved by compression.</p>
+
+<p style="margin-left:22%;">(Relevant only for <b>-v</b>
+and <b>-l</b>.)</p>
+
+<p style="margin-left:11%;">-- not a regular file or
+directory: ignored</p>
+
+<p style="margin-left:22%;">When the input file is not a
+regular file or directory, (e.g. a symbolic link, socket,
+FIFO, device file), it is left unaltered.</p>
+
+<p style="margin-left:11%;">-- has <i>xx</i> other links:
+unchanged</p>
+
+<p style="margin-left:22%;">The input file has links; it is
+left unchanged. See <b>ln</b>(1) for more information. Use
+the <b>-f</b> flag to force compression of multiply-linked
+files.</p>
+
+<h2>CAVEATS
+<a name="CAVEATS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">When writing
+compressed data to a tape, it is generally necessary to pad
+the output with zeroes up to a block boundary. When the data
+is read and the whole block is passed to <b>gunzip</b> for
+decompression, <b>gunzip</b> detects that there is extra
+trailing garbage after the compressed data and emits a
+warning by default. You can use the --quiet option to
+suppress the warning.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In some rare
+cases, the --best option gives worse compression than the
+default compression level (-6). On some highly redundant
+files, <b>compress</b> compresses better than
+<b>gzip</b>.</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Report bugs to:
+bug-gzip@gnu.org <br>
+GNU gzip home page:
+&lt;https://www.gnu.org/software/gzip/&gt; <br>
+General help using GNU software:
+&lt;https://www.gnu.org/gethelp/&gt;</p>
+
+<h2>COPYRIGHT NOTICE
+<a name="COPYRIGHT NOTICE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+&copy; 1998-1999, 2001-2002, 2012, 2015-2022 Free Software
+Foundation, Inc. <br>
+Copyright &copy; 1992, 1993 Jean-loup Gailly</p>
+
+<p style="margin-left:11%; margin-top: 1em">Permission is
+granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission
+notice are preserved on all copies.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Permission is
+granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided
+that the entire resulting derived work is distributed under
+the terms of a permission notice identical to this one.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Permission is
+granted to copy and distribute translations of this manual
+into another language, under the above conditions for
+modified versions, except that this permission notice may be
+stated in a translation approved by the Foundation.</p>
+<hr>
+</body>
+</html>

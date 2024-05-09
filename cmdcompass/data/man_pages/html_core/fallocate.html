@@ -1,0 +1,273 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:03 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>FALLOCATE</title>
+
+</head>
+<body>
+
+<h1 align="center">FALLOCATE</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#AVAILABILITY">AVAILABILITY</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">fallocate -
+preallocate or deallocate space to a file</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>fallocate</b>
+[<b>-c</b>|<b>-p</b>|<b>-z</b>] [<b>-o</b> <i>offset</i>]
+<b>-l</b> <i>length</i> [<b>-n</b>] <i>filename</i></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>fallocate
+-d</b> [<b>-o</b> <i>offset</i>] [<b>-l</b> <i>length</i>]
+<i>filename</i></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>fallocate
+-x</b> [<b>-o</b> <i>offset</i>] <b>-l</b> <i>length
+filename</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i><b>fallocate</b></i>
+is used to manipulate the allocated disk space for a file,
+either to deallocate or preallocate it. For filesystems
+which support the <b>fallocate</b>(2) system call,
+preallocation is done quickly by allocating blocks and
+marking them as uninitialized, requiring no IO to the data
+blocks. This is much faster than creating a file by filling
+it with zeroes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The exit status
+returned by <b>fallocate</b> is 0 on success and 1 on
+failure.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>length</i> and <i>offset</i> arguments may be followed by
+the multiplicative suffixes KiB (=1024), MiB (=1024*1024),
+and so on for GiB, TiB, PiB, EiB, ZiB, and YiB (the
+&quot;iB&quot; is optional, e.g., &quot;K&quot; has the same
+meaning as &quot;KiB&quot;) or the suffixes KB (=1000), MB
+(=1000*1000), and so on for GB, TB, PB, EB, ZB, and YB.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The options
+<b>--collapse-range</b>, <b>--dig-holes</b>,
+<b>--punch-hole</b>, and <b>--zero-range</b> are mutually
+exclusive.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-c</b>,
+<b>--collapse-range</b></p>
+
+<p style="margin-left:17%;">Removes a byte range from a
+file, without leaving a hole. The byte range to be collapsed
+starts at <i>offset</i> and continues for <i>length</i>
+bytes. At the completion of the operation, the contents of
+the file starting at the location
+<i>offset</i>+<i>length</i> will be appended at the location
+<i>offset</i>, and the file will be <i>length</i> bytes
+smaller. The option <b>--keep-size</b> may not be specified
+for the collapse-range operation.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Available since
+Linux 3.15 for ext4 (only for extent-based files) and
+XFS.</p>
+
+<p style="margin-left:17%; margin-top: 1em">A filesystem
+may place limitations on the granularity of the operation,
+in order to ensure efficient implementation. Typically,
+<i>offset</i> and <i>length</i> must be a multiple of the
+filesystem logical block size, which varies according to the
+filesystem type and configuration. If a filesystem has such
+a requirement, the operation will fail with the error
+<b>EINVAL</b> if this requirement is violated.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-d</b>,
+<b>--dig-holes</b></p>
+
+<p style="margin-left:17%;">Detect and dig holes. This
+makes the file sparse in-place, without using extra disk
+space. The minimum size of the hole depends on filesystem
+I/O block size (usually 4096 bytes). Also, when using this
+option, <b>--keep-size</b> is implied. If no range is
+specified by <b>--offset</b> and <b>--length</b>, then the
+entire file is analyzed for holes.</p>
+
+<p style="margin-left:17%; margin-top: 1em">You can think
+of this option as doing a &quot;<b>cp --sparse</b>&quot; and
+then renaming the destination file to the original, without
+the need for extra disk space.</p>
+
+<p style="margin-left:17%; margin-top: 1em">See
+<b>--punch-hole</b> for a list of supported filesystems.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-i</b>,
+<b>--insert-range</b></p>
+
+<p style="margin-left:17%;">Insert a hole of <i>length</i>
+bytes from <i>offset</i>, shifting existing data.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-l</b>,
+<b>--length</b> <i>length</i></p>
+
+<p style="margin-left:17%;">Specifies the length of the
+range, in bytes.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-n</b>,
+<b>--keep-size</b></p>
+
+<p style="margin-left:17%;">Do not modify the apparent
+length of the file. This may effectively allocate blocks
+past EOF, which can be removed with a truncate.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-o</b>,
+<b>--offset</b> <i>offset</i></p>
+
+<p style="margin-left:17%;">Specifies the beginning offset
+of the range, in bytes.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-p</b>,
+<b>--punch-hole</b></p>
+
+<p style="margin-left:17%;">Deallocates space (i.e.,
+creates a hole) in the byte range starting at <i>offset</i>
+and continuing for <i>length</i> bytes. Within the specified
+range, partial filesystem blocks are zeroed, and whole
+filesystem blocks are removed from the file. After a
+successful call, subsequent reads from this range will
+return zeroes. This option may not be specified at the same
+time as the <b>--zero-range</b> option. Also, when using
+this option, <b>--keep-size</b> is implied.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Supported for
+XFS (since Linux 2.6.38), ext4 (since Linux 3.0), Btrfs
+(since Linux 3.7), tmpfs (since Linux 3.5) and gfs2 (since
+Linux 4.16).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-v</b>,
+<b>--verbose</b></p>
+
+<p style="margin-left:17%;">Enable verbose mode.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-x</b>,
+<b>--posix</b></p>
+
+<p style="margin-left:17%;">Enable POSIX operation mode. In
+that mode allocation operation always completes, but it may
+take longer time when fast allocation is not supported by
+the underlying filesystem.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-z</b>,
+<b>--zero-range</b></p>
+
+<p style="margin-left:17%;">Zeroes space in the byte range
+starting at <i>offset</i> and continuing for <i>length</i>
+bytes. Within the specified range, blocks are preallocated
+for the regions that span the holes in the file. After a
+successful call, subsequent reads from this range will
+return zeroes.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Zeroing is done
+within the filesystem preferably by converting the range
+into unwritten extents. This approach means that the
+specified range will not be physically zeroed out on the
+device (except for partial blocks at the either end of the
+range), and I/O is (otherwise) required only to update
+metadata.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Option
+<b>--keep-size</b> can be specified to prevent file length
+modification.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Available since
+Linux 3.14 for ext4 (only for extent-based files) and
+XFS.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Display help text and exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-V</b>,
+<b>--version</b></p>
+
+<p style="margin-left:17%;">Print version and exit.</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Eric
+Sandeen</i> &lt;sandeen@redhat.com&gt;, <i>Karel Zak</i>
+&lt;kzak@redhat.com&gt;</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>truncate</b>(1),
+<b>fallocate</b>(2), <b>posix_fallocate</b>(3)</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For bug
+reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+
+<h2>AVAILABILITY
+<a name="AVAILABILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>fallocate</b> command is part of the util-linux package
+which can be downloaded from <i>Linux Kernel Archive</i>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,369 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:38 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Ppmtoarbtxt User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Ppmtoarbtxt User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ppmtoarbtxt -
+generate image in arbitrary text format from PPM image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmtoarbtxt</b>
+<i>bodytmpl</i> [<b>-hd</b> <i>headtmpl</i>] [<b>-tl</b>
+<i>tailtmpl</i>] [<i>ppmfile</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmtoarbtxt</b>
+generates simple text-based graphics formats based on format
+descriptions given as input. A text-based graphics format is
+one in which an image is represented by text (like PNM plain
+format, but unlike PNM raw format).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmtoarbtxt</b>
+reads a PPM image as input. For each pixel in the image,
+<b>ppmtoarbtxt</b> writes the contents of the template file
+<i>bodytmpl</i>, with certain substitutions based on the
+value of the pixel, to Standard Output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You may also
+supply a head template file, in which case
+<b>ppmtoarbtxt</b> generates text from the template file,
+based on the image dimensions, and includes it in the output
+before anything else.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Likewise, you
+may supply a tail template file to cause text to be placed
+at the end of the output.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Template
+Files</b> <br>
+The text that <b>ppmtoarbtxt</b> generates from a template
+file is the literal text of the template file, except with
+substitution specifier replaced with something else. The
+program recognizes a substitution specifier as text of the
+form <b>#(</b>...<b>)</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmtoarbtxt</b>
+treats white space in the template files the same as any
+other characters, placing it in the output, with one
+exception: If the template file ends with a newline
+character, <b>ppmtoarbtxt</b> ignores it -- it does not
+include it in the output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Many
+substitution specifiers use format strings (another form of
+template) to specify the substitution. You should make these
+format strings as minimal as possible, placing literal text
+outside the substitution specifier instead of inside the
+format string. For example,</p>
+
+<p style="margin-left:11%; margin-top: 1em">Wrong: #(flum
+%%%2.2f 0 1)</p>
+
+<p style="margin-left:11%; margin-top: 1em">Right: %#(flum
+%2.2f 0 1)</p>
+
+<p style="margin-left:11%; margin-top: 1em">The valid
+substitution specifiers are as follows. Text that has the
+form of a substitution specifier but is not actually valid
+(e.g. <b>#(random junk)</b> usually just specifies its
+literal value, but if it is close enough to something valid,
+<b>ppmtoarbtxt</b> assumes you made a mistake and fails.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Useful in a
+body template, to do substitutions based on a particular
+pixel: <b><br>
+#(ired</b> <i>format blackref whiteref</i><b>)</b></p>
+
+<p style="margin-left:22%;">generates an integer in the
+range <i>blackref</i> to <i>whiteref</i> in a format
+specified by <i>format</i> representing the red intensity of
+the pixel. A red intensity of 0 becomes <i>blackref</i>; a
+red intensity of maxval becomes <i>whiteref</i>, with the
+rest linearly interpolated in between.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>format</i>
+is a printf-like format specifier like &quot;%d&quot;.
+<b>ppmtoarbtxt</b> uses as the entire format string to a
+<b>fprintf</b> POSIX library call whose only other argument
+is the red itensity as an integer data type.
+<b>ppmtoarbtxt</b> does not necessarily verify that your
+format string makes sense; there are values you could
+specify that could even crash the program. To avoid
+unexpected behavior, keep format strings simple and
+hardcoded, and never include a per cent sign or newline.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>#(ired)</b>
+is equivalent to <b>#(ired %d 0 255)</b>.</p>
+
+<p style="margin-left:11%;"><b>#(igreen</b> <i>format
+blackref whiteref</i><b>)</b></p>
+
+<p style="margin-left:22%;">Same as <b>#(ired...</b>, but
+for green.</p>
+
+<p style="margin-left:11%;"><b>#(iblue</b> <i>format
+blackref whiteref</i><b>)</b></p>
+
+<p style="margin-left:22%;">Same as <b>#(ired...</b>, but
+for blue.</p>
+
+<p style="margin-left:11%;"><b>#(ilum</b> <i>format
+blackref whiteref</i><b>)</b></p>
+
+<p style="margin-left:22%;">Same as <b>#(ired...</b>, but
+representing the luminance value (0.299*red + 0.587*green +
+0.114*blue) of the pixel.</p>
+
+<p style="margin-left:11%;"><b>#(fred</b> <i>format
+blackref whiteref</i><b>)</b></p>
+
+<p style="margin-left:22%;">Same as <b>#(ired...</b>, but
+generates a floating point number instead of an integer.</p>
+
+<p style="margin-left:22%; margin-top: 1em">In this case,
+the second argument to the <b>fprintf</b> that uses
+<i>format</i> has a double precision floating point data
+type.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>#(fred)</b>
+is equivalent to <b>#(fred %f 0.0 1.0)</b>.</p>
+
+<p style="margin-left:11%;"><b>#(fgreen</b> <i>format
+blackref whiteref</i><b>)</b></p>
+
+<p style="margin-left:22%;">Same as <b>#(fred...</b>, but
+for green.</p>
+
+<p style="margin-left:11%;"><b>#(fblue</b> <i>format
+blackref whiteref</i><b>)</b></p>
+
+<p style="margin-left:22%;">Same as <b>#(fred...</b>, but
+for blue.</p>
+
+<p style="margin-left:11%;"><b>#(flum</b> <i>format
+blackref whiteref</i><b>)</b></p>
+
+<p style="margin-left:22%;">Same as <b>#(fred...</b>, but
+representing the luminance value (0.299*red + 0.587*green +
+0.114*blue) of the pixel.</p>
+
+<p style="margin-left:11%;"><b>#(posx</b>
+<i>format</i><b>)</b></p>
+
+<p style="margin-left:22%;">Generates the horizontal
+position of the pixel, in pixels from the left edge of the
+image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The second
+argument to the <b>fprintf</b> that uses <i>format</i> has
+an unsigned integer data type.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>format</i>
+defaults to <b>%u</b></p>
+
+<p style="margin-left:11%;"><b>#(posy</b>
+<i>format</i><b>)</b></p>
+
+<p style="margin-left:22%;">Same as <b>#(width...</b>, but
+for the vertical position.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you use any
+of the above substitution specifiers in a head or tail
+template, the result is undefined.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Useful in a
+head or tail template, to do substitutions based on
+whole-image attributes: <b><br>
+#(width</b> <i>format</i><b>)</b></p>
+
+<p style="margin-left:22%;">Generates the width in pixels
+of the image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The second
+argument to the <b>fprintf</b> that uses <i>format</i> has
+an unsigned integer data type.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>format</i>
+defaults to <b>%u</b></p>
+
+<p style="margin-left:11%;"><b>#(height</b>
+<i>format</i><b>)</b></p>
+
+<p style="margin-left:22%;">Same as <b>#(width...</b>, but
+for the height of the image.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>ppmtoarbtxt</b> recognizes the following command line
+options: <b><br>
+-hd</b> <i>headtmpl</i></p>
+
+<p style="margin-left:22%;">This option specifies a head
+template (<i>headtmpl</i> is the name of the head template
+file); it causes <b>ppmtoarbtxt</b> to place the contents of
+the file named <i>headtmpl</i> at the beginning of the
+output</p>
+
+<p style="margin-left:11%;"><b>-tl</b> <i>tailtmpl</i></p>
+
+<p style="margin-left:22%;">This option specifies a tail
+template; it is analogous to <b>-hd</b>.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gray
+inversion</b> <br>
+Here we generate a PGM plain-format image with gray
+inversion (like <b>ppmtopgm | pnminvert</b>).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Contents of our
+head template file:</p>
+
+<p style="margin-left:11%; margin-top: 1em">P2 <br>
+#(width) #(height) <br>
+255</p>
+
+<p style="margin-left:11%; margin-top: 1em">Contents of our
+body skeleton file:</p>
+
+<p style="margin-left:11%; margin-top: 1em">#(ilum %d 255
+0)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>povray
+file</b> <br>
+Here we generate a povray file where each pixel is
+represented by a sphere at location (x,y,z) =
+(posx,height-posy,luminance). The color of the sphere is the
+color of the pixel.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Contents of our
+head skeleton:</p>
+
+<p style="margin-left:11%; margin-top: 1em">#include
+&quot;colors.inc&quot; <br>
+#include &quot;textures.inc&quot; <br>
+camera { <br>
+location &lt;#(width) * 0.6, #(height) * 0.7, 80&gt; <br>
+look_at &lt;#(width) * 0.5, #(height) * 0.5, 0&gt; <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">light_source {
+&lt;#(width) * 0.5, #(height) * 0.5, 25&gt; color White <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">Contents of our
+body skeleton:</p>
+
+<p style="margin-left:11%; margin-top: 1em">sphere {
+&lt;#(posx),#(height)-#(posy),#(ilum %d 0 10)&gt;, 0.5 <br>
+texture { <br>
+pigment { <br>
+color rgb &lt;#(fred),#(fgreen),#(fblue)&gt; <br>
+} <br>
+finish { <br>
+phong 1 <br>
+} <br>
+} <br>
+}</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmtoplainpnm</b>(1)
+<b>pamtable</b>(1) <b>ppm</b>(1)</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmtoarbtxt</b>
+was added to Netpbm in Release 10.14 (March 2003). It
+existed under the name <b>ppmtotxt</b> since 1995.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1995 by Peter Kirchgessner</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/ppmtoarbtxt.html</b></p>
+<hr>
+</body>
+</html>

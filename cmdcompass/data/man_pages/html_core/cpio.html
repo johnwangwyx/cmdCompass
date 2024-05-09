@@ -1,0 +1,649 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:33:59 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>CPIO</title>
+
+</head>
+<body>
+
+<h1 align="center">CPIO</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#RETURN VALUE">RETURN VALUE</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#BUG REPORTS">BUG REPORTS</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">cpio - copy
+files to and from archives</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>cpio</b>
+{<b>-o</b>|<b>--create</b>} [<b>-0acvABLV</b>] [<b>-C</b>
+<i>BYTES</i>] [<b>-H</b> <i>FORMAT</i>] [<b>-M</b>
+<i>MESSAGE</i>] [<b>-O</b>
+[[<i>USER</i><b>@</b>]<i>HOST</i><b>:</b>]<i>ARCHIVE</i>]
+[<b>-F</b>
+[[<i>USER</i><b>@</b>]<i>HOST</i><b>:</b>]<i>ARCHIVE</i>]
+[<b>--file=</b>[[<i>USER</i><b>@</b>]<i>HOST</i><b>:</b>]<i>ARCHIVE</i>]
+[<b>--format=</b><i>FORMAT</i>]
+[<b>--message=</b><i>MESSAGE</i>] [<b>--null</b>]
+[<b>--reset-access-time</b>] [<b>--verbose</b>]
+[<b>--dot</b>] [<b>--append</b>]
+[<b>--block-size=</b><i>blocks</i>] [<b>--dereference</b>]
+[<b>--io-size=</b><i>BYTES</i>] [<b>--quiet</b>]
+[<b>--force-local</b>] [<b>--rsh-command=</b><i>COMMAND</i>]
+<b>&lt;</b> <i>name-list</i> [<b>&gt;</b>
+<i>archive</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>cpio</b>
+{<b>-i</b>|<b>--extract</b>} [<b>-bcdfmnrtsuvBSV</b>]
+[<b>-C</b> <i>BYTES</i>] [<b>-E</b> <i>FILE</i>] [<b>-H</b>
+<i>FORMAT</i>] [<b>-M</b> <i>MESSAGE</i>] [<b>-R</b>
+[<i>USER</i>][<b>:.</b>][<i>GROUP</i>]] [<b>-I</b>
+[[<i>USER</i><b>@</b>]<i>HOST</i><b>:</b>]<i>ARCHIVE</i>]
+[<b>-F</b>
+[[<i>USER</i><b>@</b>]<i>HOST</i><b>:</b>]<i>ARCHIVE</i>]
+[<b>--file=</b>[[<i>USER</i><b>@</b>]<i>HOST</i><b>:</b>]<i>ARCHIVE</i>]
+[<b>--make-directories</b>] [<b>--nonmatching</b>]
+[<b>--preserve-modification-time</b>]
+[<b>--numeric-uid-gid</b>] [<b>--rename</b>] [<b>--list</b>]
+[<b>--swap-bytes</b>] [<b>--swap</b>] [<b>--dot</b>]
+[<b>--unconditional</b>] [<b>--verbose</b>]
+[<b>--block-size=</b><i>BLOCKS</i>]
+[<b>--swap-halfwords</b>] [<b>--io-size=</b><i>BYTES</i>]
+[<b>--pattern-file=</b><i>FILE</i>]
+[<b>--format=</b><i>FORMAT</i>]
+[<b>--owner=</b>[<i>USER][</i><b>:.</b>][<i>GROUP</i>]]
+[<b>--no-preserve-owner</b>]
+[<b>--message=</b><i>MESSAGE</i>] [<b>--force-local</b>]
+[<b>--no-absolute-filenames</b>] [<b>--sparse</b>]
+[<b>--only-verify-crc</b>] [<b>--to-stdout</b>]
+[<b>--quiet</b>] [<b>--rsh-command=</b><i>COMMAND</i>]
+[<i>pattern</i>...] [<b>&lt;</b> <i>archive</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>cpio</b>
+{<b>-p</b>|<b>--pass-through</b>} [<b>-0adlmuvLV</b>]
+[<b>-R</b> [<i>USER</i>][<b>:.</b>][<i>GROUP</i>]]
+[<b>--null</b>] [<b>--reset-access-time</b>]
+[<b>--make-directories</b>] [<b>--link</b>] [<b>--quiet</b>]
+[<b>--preserve-modification-time] [--unconditional</b>]
+[<b>--verbose</b>] [<b>--dot</b>] [<b>--dereference</b>]
+[<b>--owner=</b>[<i>USER</i>][<b>:.</b>][<i>GROUP</i>]]
+[<b>--no-preserve-owner</b>] [<b>--sparse</b>]
+<i>destination-directory</i> <b>&lt;</b>
+<i>name-list</i></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>cpio</b>
+{<b>-?</b>|<b>--help</b>|<b>--usage</b>|<b>--version</b>}</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Report cpio
+bugs to bug-cpio@gnu.org</p>
+
+<p style="margin-left:11%; margin-top: 1em">GNU cpio home
+page: &lt;http://www.gnu.org/software/cpio/&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">General help
+using GNU software: &lt;http://www.gnu.org/gethelp/&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">Report cpio
+translation bugs to
+&lt;http://translationproject.org/team/&gt;</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">cpio(5)</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">GNU <b>cpio</b>
+copies files between archives and directories. It supports
+the following archive formats: old binary cpio, old portable
+cpio, SVR4 cpio with and without checksum, HP cpio, and
+various tar formats.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The operation
+mode is requested by one of the following options: <b><br>
+-o</b>, <b>--create</b></p>
+
+<p style="margin-left:22%;">Copy-out. Read a list of file
+names from the standard input and create on the standard
+output (unless overridden by the <b>--file</b> option) an
+archive containing these files.</p>
+
+<p style="margin-left:11%;"><b>-i</b>, <b>--extract</b></p>
+
+<p style="margin-left:22%;">Copy-in. Read the archive from
+standard input (or from the file supplied with the
+<b>--file</b> option) and extract files from it, or (if the
+<b>-t</b> option is given) list its contents to the standard
+output. If one or more <i>pattern</i>s are supplied, read or
+list only files matching these patterns. The <b>-t</b>
+option alone implies <b>-i</b>.</p>
+
+<p style="margin-left:11%;"><b>-p</b>,
+<b>--pass-through</b></p>
+
+<p style="margin-left:22%;">Pass-through. Read a list of
+file names from the standard input and copy them to the
+specified directory.</p>
+
+<p style="margin-left:11%;"><b>-?</b>, <b>--help</b></p>
+
+<p style="margin-left:22%;">Give a short help summary and
+exit.</p>
+
+<p style="margin-left:11%;"><b>--usage</b></p>
+
+<p style="margin-left:22%;">Print a short usage message and
+exit.</p>
+
+<p style="margin-left:11%;"><b>--version</b></p>
+
+<p style="margin-left:22%;">Print program version and
+exit.</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Report cpio
+bugs to bug-cpio@gnu.org</p>
+
+<p style="margin-left:11%; margin-top: 1em">GNU cpio home
+page: &lt;http://www.gnu.org/software/cpio/&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">General help
+using GNU software: &lt;http://www.gnu.org/gethelp/&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">Report cpio
+translation bugs to
+&lt;http://translationproject.org/team/&gt;</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Operation
+modifiers valid in any mode <br>
+--block-size=</b><i>BLOCK-SIZE</i></p>
+
+<p style="margin-left:22%;">Set the I/O block size to
+<i>BLOCK-SIZE</i> * 512 bytes.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-B</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Set the I/O block size to 5120 bytes.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-c</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Use the old portable (ASCII) archive format. This is the
+same as <b>-H odc</b>.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-C</b>,
+<b>--io-size=</b><i>NUMBER</i></p>
+
+<p style="margin-left:22%;">Set the I/O block size to the
+given <i>NUMBER</i> of bytes.</p>
+
+<p style="margin-left:11%;"><b>-D</b>,
+<b>--directory=</b><i>DIR</i></p>
+
+<p style="margin-left:22%;">Change to directory
+<i>DIR</i>.</p>
+
+<p style="margin-left:11%;"><b>--force-local</b></p>
+
+<p style="margin-left:22%;">Archive file is local, even if
+its name contains colons.</p>
+
+<p style="margin-left:11%;"><b>-H</b>,
+<b>--format=</b><i>FORMAT</i></p>
+
+<p style="margin-left:22%;">Use given archive
+<b>FORMAT</b>. Valid formats are (the number in parentheses
+gives maximum size for individual archive member):</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>bin</b></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>The obsolete binary format. (2147483647 bytes)</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>odc</b></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>The old (POSIX.1) portable format. (8589934591
+bytes)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>newc</b></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>The new (SVR4) portable format, which supports file
+systems having more than 65536 i-nodes. (4294967295
+bytes)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>crc</b></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>The new (SVR4) portable format with a checksum
+added.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>tar</b></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>The old tar format. (8589934591 bytes)</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>ustar</b></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>The POSIX.1 tar format. Also recognizes GNU tar
+archives, which are similar but not identical. (8589934591
+bytes)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>hpbin</b></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>The obsolete binary format used by HPUX&rsquo;s cpio
+(which stores device files differently).</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>hpodc</b></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>The portable format used by HPUX&rsquo;s cpio (which
+stores device files differently).</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-R</b>,
+<b>--owner=</b>[<i>USER</i>][<b>:.</b>][<i>GROUP</i>]</p>
+
+<p style="margin-left:22%;">In copy-in and copy-pass mode,
+set the ownership of all files created to the specified
+<i>USER</i> and/or <i>GROUP</i>. In copy-out mode, store the
+supplied owner information in the archive.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>USER</i> and
+<i>GROUP</i> are first looked up in the system user and
+group databases. If not found, <b>cpio</b> checks if they
+consist of decimal digits only and, if so, treats them as
+numeric UID and GID, correspondingly.</p>
+
+<p style="margin-left:22%; margin-top: 1em">To avoid the
+lookup and ensure that arguments are treated as numeric
+values, prefix them with a plus sign, e.g.: <b>-R
++0:+0</b>.</p>
+
+<p style="margin-left:11%;"><b>--quiet</b></p>
+
+<p style="margin-left:22%;">Do not print the number of
+blocks copied at the end of the run.</p>
+
+
+<p style="margin-left:11%;"><b>--rsh-command=</b><i>COMMAND</i></p>
+
+<p style="margin-left:22%;">Use remote <i>COMMAND</i>
+instead of <b>rsh</b>.</p>
+
+<p style="margin-left:11%;"><b>-v</b>, <b>--verbose</b></p>
+
+<p style="margin-left:22%;">Verbosely list the files
+processed.</p>
+
+<p style="margin-left:11%;"><b>-V</b>, <b>--dot</b></p>
+
+<p style="margin-left:22%;">Print a &quot;<b>.</b>&quot;
+for each file processed.</p>
+
+<p style="margin-left:11%;"><b>-W</b>,
+<b>--warning=</b><i>FLAG</i></p>
+
+<p style="margin-left:22%;">Controls&ETH;&cedil; warning
+display. The <i>FLAG</i> is one of <b>none</b>, to disable
+all warnings, <b>all</b> to enable them, <b>truncate</b>, to
+enable warnings about field truncation, and
+<b>no-truncate</b>, to disable them.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Multiple
+<b>-W</b> options accumulate.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Operation
+modifiers valid in copy-in and copy-out modes <br>
+-F</b>,
+<b>--file=</b>[[<i>USER</i><b>@</b>]<i>HOST</i><b>:</b>]<i>ARCHIVE-FILE</i></p>
+
+<p style="margin-left:22%;">Use this <i>ARCHIVE-FILE</i>
+instead of standard input (in copy-in mode) or standard
+output (in copy-out mode). Optional <i>USER</i> and
+<i>HOST</i> specify the user and host names in case of a
+remote archive.</p>
+
+<p style="margin-left:11%;"><b>-M</b>,
+<b>--message=</b><i>STRING</i></p>
+
+<p style="margin-left:22%;">Print <i>STRING</i> when the
+end of a volume of the backup media is reached.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Operation
+modifiers valid only in copy-in mode <br>
+-b</b>, <b>--swap</b></p>
+
+<p style="margin-left:22%;">Swap both halfwords of words
+and bytes of halfwords in the data. Equivalent to
+<b>-sS</b>.</p>
+
+<p style="margin-left:11%;"><b>-f</b>,
+<b>--nonmatching</b></p>
+
+<p style="margin-left:22%;">Only copy files that do not
+match any of the given patterns.</p>
+
+<p style="margin-left:11%;"><b>-n</b>,
+<b>--numeric-uid-gid</b></p>
+
+<p style="margin-left:22%;">In the verbose table of
+contents listing, show numeric UID and GID.</p>
+
+<p style="margin-left:11%;"><b>-r</b>, <b>--rename</b></p>
+
+<p style="margin-left:22%;">Interactively rename files.</p>
+
+<p style="margin-left:11%;"><b>-s</b>,
+<b>--swap-bytes</b></p>
+
+<p style="margin-left:22%;">Swap the bytes of each halfword
+in the files.</p>
+
+<p style="margin-left:11%;"><b>-S</b>,
+<b>--swap-halfwords</b></p>
+
+<p style="margin-left:22%;">Swap the halfwords of each word
+(4 bytes) in the files.</p>
+
+<p style="margin-left:11%;"><b>--to-stdout</b></p>
+
+<p style="margin-left:22%;">Extract files to standard
+output.</p>
+
+<p style="margin-left:11%;"><b>-E</b>,
+<b>--pattern-file=</b><i>FILE</i></p>
+
+<p style="margin-left:22%;">Read additional patterns
+specifying filenames to extract or list from
+<i>FILE</i>.</p>
+
+<p style="margin-left:11%;"><b>--only-verify-crc</b></p>
+
+<p style="margin-left:22%;">When reading a CRC format
+archive, only verify the CRC&rsquo;s of each file in the
+archive, without actually extracting the files.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Operation
+modifiers valid only in copy-out mode <br>
+-A</b>, <b>--append</b></p>
+
+<p style="margin-left:22%;">Append to an existing
+archive.</p>
+
+<p style="margin-left:11%;"><b>--device-independent</b>,
+<b>--reproducible</b></p>
+
+<p style="margin-left:22%;">Create reproducible archives.
+This is equivalent to <b>--ignore-devno
+--renumber-inodes</b>.</p>
+
+<p style="margin-left:11%;"><b>--ignore-devno</b></p>
+
+<p style="margin-left:22%;">Store 0 in the device number
+field of each archive member, instead of the actual device
+number.</p>
+
+<p style="margin-left:11%;"><b>-O</b>
+[[<i>USER</i><b>@</b>]<i>HOST</i><b>:</b>]<i>ARCHIVE-NAME</i></p>
+
+<p style="margin-left:22%;">Use <i>ARCHIVE-NAME</i> instead
+of standard output. Optional <i>USER</i> and <i>HOST</i>
+specify the user and host names in case of a remote
+archive.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The output
+archive name can be specified wither using this option, or
+using <b>-F</b> (<b>--file</b>), but not both.</p>
+
+<p style="margin-left:11%;"><b>--renumber-inodes</b></p>
+
+<p style="margin-left:22%;">Renumber inodes when storing
+them in the archive.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Operation
+modifiers valid only in copy-pass mode <br>
+-l</b>, <b>--link</b></p>
+
+<p style="margin-left:22%;">Link files instead of copying
+them, when possible.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Operation
+modifiers valid in copy-in and copy-out modes <br>
+--absolute-filenames</b></p>
+
+<p style="margin-left:22%;">Do not strip file system prefix
+components from the file names. This is the default.</p>
+
+
+<p style="margin-left:11%;"><b>--no-absolute-filenames</b></p>
+
+<p style="margin-left:22%;">Create all files relative to
+the current directory.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Operation
+modifiers valid in copy-out and copy-pass modes <br>
+-0</b>, <b>--null</b></p>
+
+<p style="margin-left:22%;">Filenames in the list are
+delimited by null characters instead of newlines.</p>
+
+<p style="margin-left:11%;"><b>-a</b>,
+<b>--reset-access-time</b></p>
+
+<p style="margin-left:22%;">Reset the access times of files
+after reading them.</p>
+
+<p style="margin-left:11%;"><b>-I</b>
+[[<i>USER</i><b>@</b>]<i>HOST</i><b>:</b>]<i>ARCHIVE-NAME</i></p>
+
+<p style="margin-left:22%;">Use <i>ARCHIVE-NAME</i> instead
+of standard input. Optional <i>USER</i> and <i>HOST</i>
+specify the user and host names in case of a remote
+archive.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The input
+archive name can be specified wither using this option, or
+using <b>-F</b> (<b>--file</b>), but not both.</p>
+
+<p style="margin-left:11%;"><b>-L</b>,
+<b>--dereference</b></p>
+
+<p style="margin-left:22%;">Dereference symbolic links
+(copy the files that they point to instead of copying the
+links).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Operation
+modifiers valid in copy-in and copy-pass modes <br>
+-d</b>, <b>--make-directories</b></p>
+
+<p style="margin-left:22%;">Create leading directories
+where needed.</p>
+
+<p style="margin-left:11%;"><b>-m</b>,
+<b>--preserve-modification-time</b></p>
+
+<p style="margin-left:22%;">Retain previous file
+modification times when creating files.</p>
+
+<p style="margin-left:11%;"><b>--no-preserve-owner</b></p>
+
+<p style="margin-left:22%;">Do not change the ownership of
+the files.</p>
+
+<p style="margin-left:11%;"><b>--sparse</b></p>
+
+<p style="margin-left:22%;">Write files with large blocks
+of zeros as sparse files.</p>
+
+<p style="margin-left:11%;"><b>-u</b>,
+<b>--unconditional</b></p>
+
+<p style="margin-left:22%;">Replace all files
+unconditionally.</p>
+
+<h2>RETURN VALUE
+<a name="RETURN VALUE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">GNU <b>cpio</b>
+exits with code <b>0</b> if it was able to successfully
+complete the requested operation. On errors, it exits with
+code <b>2</b>.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>tar</b>(1),
+<b>rmt</b>(8), <b>mt</b>(1).</p>
+
+<h2>BUG REPORTS
+<a name="BUG REPORTS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Report bugs to
+&lt;bug-cpio@gnu.org&gt;.</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+&copy; 2014 Free Software Foundation, Inc. <br>
+License GPLv3+: GNU GPL version 3 or later
+&lt;http://gnu.org/licenses/gpl.html&gt; <br>
+This is free software: you are free to change and
+redistribute it. There is NO WARRANTY, to the extent
+permitted by law.</p>
+<hr>
+</body>
+</html>

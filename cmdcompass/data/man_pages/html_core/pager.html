@@ -1,0 +1,3919 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:24 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>LESS</title>
+
+</head>
+<body>
+
+<h1 align="center">LESS</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#COMMANDS">COMMANDS</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#LINE EDITING">LINE EDITING</a><br>
+<a href="#KEY BINDINGS">KEY BINDINGS</a><br>
+<a href="#INPUT PREPROCESSOR">INPUT PREPROCESSOR</a><br>
+<a href="#NATIONAL CHARACTER SETS">NATIONAL CHARACTER SETS</a><br>
+<a href="#PROMPTS">PROMPTS</a><br>
+<a href="#SECURITY">SECURITY</a><br>
+<a href="#COMPATIBILITY WITH MORE">COMPATIBILITY WITH MORE</a><br>
+<a href="#ENVIRONMENT VARIABLES">ENVIRONMENT VARIABLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">less - opposite
+of more</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>less -? <br>
+less --help <br>
+less -V <br>
+less --version <br>
+less [-[+]aABcCdeEfFgGiIJKLmMnNqQrRsSuUVwWX~] <br>
+[-b</b> <i>space</i><b>] [-h</b> <i>lines</i><b>] [-j</b>
+<i>line</i><b>] [-k</b> <i>keyfile</i><b>] <br>
+[-{oO}</b> <i>logfile</i><b>] [-p</b> <i>pattern</i><b>]
+[-P</b> <i>prompt</i><b>] [-t</b> <i>tag</i><b>] <br>
+[-T</b> <i>tagsfile</i><b>] [-x</b> <i>tab</i><b>,...]
+[-y</b> <i>lines</i><b>] [-[z]</b> <i>lines</i><b>] <br>
+[-#</b> <i>shift</i><b>] [+[+]</b><i>cmd</i><b>] [--]
+[</b><i>filename</i><b>]...</b> <br>
+(See the OPTIONS section for alternate option syntax with
+long option names.)</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Less</i> is
+a program similar to <i>more</i>(1), but it has many more
+features. <i>Less</i> does not have to read the entire input
+file before starting, so with large input files it starts up
+faster than text editors like <i>vi</i>(1). <i>Less</i> uses
+termcap (or terminfo on some systems), so it can run on a
+variety of terminals. There is even limited support for
+hardcopy terminals. (On a hardcopy terminal, lines which
+should be printed at the top of the screen are prefixed with
+a caret.)</p>
+
+<p style="margin-left:11%; margin-top: 1em">Commands are
+based on both <i>more</i> and <i>vi</i>. Commands may be
+preceded by a decimal number, called N in the descriptions
+below. The number is used by some commands, as
+indicated.</p>
+
+<h2>COMMANDS
+<a name="COMMANDS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In the
+following descriptions, ^X means control-X. ESC stands for
+the ESCAPE key; for example ESC-v means the two character
+sequence &quot;ESCAPE&quot;, then &quot;v&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>h or H</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Help: display a summary of these commands. If you forget
+all the other commands, remember this one.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">SPACE or ^V or f or ^F</p>
+
+<p style="margin-left:22%;">Scroll forward N lines, default
+one window (see option -z below). If N is more than the
+screen size, only the final screenful is displayed. Warning:
+some systems use ^V as a special literalization
+character.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>z</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Like SPACE, but if N is specified, it becomes the new
+window size.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">ESC-SPACE</p>
+
+<p style="margin-left:22%;">Like SPACE, but scrolls a full
+screenful, even if it reaches end-of-file in the
+process.</p>
+
+<p style="margin-left:11%;">ENTER or RETURN or ^N or e or
+^E or j or ^J</p>
+
+<p style="margin-left:22%;">Scroll forward N lines, default
+1. The entire N lines are displayed, even if N is more than
+the screen size.</p>
+
+<p style="margin-left:11%;">d or ^D</p>
+
+<p style="margin-left:22%;">Scroll forward N lines, default
+one half of the screen size. If N is specified, it becomes
+the new default for subsequent d and u commands.</p>
+
+<p style="margin-left:11%;">b or ^B or ESC-v</p>
+
+<p style="margin-left:22%;">Scroll backward N lines,
+default one window (see option -z below). If N is more than
+the screen size, only the final screenful is displayed.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>w</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Like ESC-v, but if N is specified, it becomes the new
+window size.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">y or ^Y or ^P or k or ^K</p>
+
+<p style="margin-left:22%;">Scroll backward N lines,
+default 1. The entire N lines are displayed, even if N is
+more than the screen size. Warning: some systems use ^Y as a
+special job control character.</p>
+
+<p style="margin-left:11%;">u or ^U</p>
+
+<p style="margin-left:22%;">Scroll backward N lines,
+default one half of the screen size. If N is specified, it
+becomes the new default for subsequent d and u commands.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>J</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Like j, but continues to scroll beyond the end of the
+file.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>K or Y</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Like k, but continues to scroll beyond the beginning of
+the file.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">ESC-) or RIGHTARROW</p>
+
+<p style="margin-left:22%;">Scroll horizontally right N
+characters, default half the screen width (see the -#
+option). If a number N is specified, it becomes the default
+for future RIGHTARROW and LEFTARROW commands. While the text
+is scrolled, it acts as though the -S option (chop lines)
+were in effect.</p>
+
+<p style="margin-left:11%;">ESC-( or LEFTARROW</p>
+
+<p style="margin-left:22%;">Scroll horizontally left N
+characters, default half the screen width (see the -#
+option). If a number N is specified, it becomes the default
+for future RIGHTARROW and LEFTARROW commands.</p>
+
+<p style="margin-left:11%;">ESC-} or ^RIGHTARROW</p>
+
+<p style="margin-left:22%;">Scroll horizontally right to
+show the end of the longest displayed line.</p>
+
+<p style="margin-left:11%;">ESC-{ or ^LEFTARROW</p>
+
+<p style="margin-left:22%;">Scroll horizontally left back
+to the first column.</p>
+
+<p style="margin-left:11%;">r or ^R or ^L</p>
+
+<p style="margin-left:22%;">Repaint the screen.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p>R</p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Repaint the screen, discarding any buffered input. That
+is, reload the current file. Useful if the file is changing
+while it is being viewed.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p>F</p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Scroll forward, and keep trying to read when the end of
+file is reached. Normally this command would be used when
+already at the end of the file. It is a way to monitor the
+tail of a file which is growing while it is being viewed.
+(The behavior is similar to the &quot;tail -f&quot;
+command.) To stop waiting for more data, enter the interrupt
+character (usually ^C). On some systems you can also use
+^X.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p>ESC-F</p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Like F, but as soon as a line is found which matches the
+last search pattern, the terminal bell is rung and forward
+scrolling stops.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">g or &lt; or ESC-&lt;</p>
+
+<p style="margin-left:22%;">Go to line N in the file,
+default 1 (beginning of file). (Warning: this may be slow if
+N is large.)</p>
+
+<p style="margin-left:11%;">G or &gt; or ESC-&gt;</p>
+
+<p style="margin-left:22%;">Go to line N in the file,
+default the end of the file. (Warning: this may be slow if N
+is large, or if N is not specified and standard input,
+rather than a file, is being read.)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>ESC-G</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Same as G, except if no number N is specified and the
+input is standard input, goes to the last line which is
+currently buffered.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>p or %</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Go to a position N percent into the file. N should be
+between 0 and 100, and may contain a decimal point.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>P</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Go to the line containing byte offset N in the file.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>{</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>If a left curly bracket appears in the top line
+displayed on the screen, the { command will go to the
+matching right curly bracket. The matching right curly
+bracket is positioned on the bottom line of the screen. If
+there is more than one left curly bracket on the top line, a
+number N may be used to specify the N-th bracket on the
+line.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>}</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>If a right curly bracket appears in the bottom line
+displayed on the screen, the } command will go to the
+matching left curly bracket. The matching left curly bracket
+is positioned on the top line of the screen. If there is
+more than one right curly bracket on the top line, a number
+N may be used to specify the N-th bracket on the line.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>(</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Like {, but applies to parentheses rather than curly
+brackets.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>)</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Like }, but applies to parentheses rather than curly
+brackets.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>[</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Like {, but applies to square brackets rather than curly
+brackets.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>]</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Like }, but applies to square brackets rather than curly
+brackets.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>ESC-^F</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Followed by two characters, acts like {, but uses the
+two characters as open and close brackets, respectively. For
+example, &quot;ESC ^F &lt; &gt;&quot; could be used to go
+forward to the &gt; which matches the &lt; in the top
+displayed line.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>ESC-^B</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Followed by two characters, acts like }, but uses the
+two characters as open and close brackets, respectively. For
+example, &quot;ESC ^B &lt; &gt;&quot; could be used to go
+backward to the &lt; which matches the &gt; in the bottom
+displayed line.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>m</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Followed by any lowercase or uppercase letter, marks the
+first displayed line with that letter. If the status column
+is enabled via the -J option, the status column shows the
+marked line.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>M</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Acts like m, except the last displayed line is marked
+rather than the first displayed line.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>&rsquo;</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>(Single quote.) Followed by any lowercase or uppercase
+letter, returns to the position which was previously marked
+with that letter. Followed by another single quote, returns
+to the position at which the last &quot;large&quot; movement
+command was executed. Followed by a ^ or $, jumps to the
+beginning or end of the file respectively. Marks are
+preserved when a new file is examined, so the &rsquo;
+command can be used to switch between input files.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>^X^X</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Same as single quote.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>ESC-m</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Followed by any lowercase or uppercase letter, clears
+the mark identified by that letter.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">/pattern</p>
+
+<p style="margin-left:22%;">Search forward in the file for
+the N-th line containing the pattern. N defaults to 1. The
+pattern is a regular expression, as recognized by the
+regular expression library supplied by your system. The
+search starts at the first line displayed (but see the -a
+and -j options, which change this).</p>
+
+<p style="margin-left:22%; margin-top: 1em">Certain
+characters are special if entered at the beginning of the
+pattern; they modify the type of search rather than become
+part of the pattern: <br>
+^N or !</p>
+
+<p style="margin-left:32%;">Search for lines which do NOT
+match the pattern.</p>
+
+<p style="margin-left:22%;">^E or *</p>
+
+<p style="margin-left:32%;">Search multiple files. That is,
+if the search reaches the END of the current file without
+finding a match, the search continues in the next file in
+the command line list.</p>
+
+<p style="margin-left:22%;">^F or @</p>
+
+<p style="margin-left:32%;">Begin the search at the first
+line of the FIRST file in the command line list, regardless
+of what is currently displayed on the screen or the settings
+of the -a or -j options.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="3%">
+
+
+<p>^K</p></td>
+<td width="7%"></td>
+<td width="68%">
+
+
+<p>Highlight any text which matches the pattern on the
+current screen, but don&rsquo;t move to the first match
+(KEEP current position).</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="3%">
+
+
+<p>^R</p></td>
+<td width="7%"></td>
+<td width="68%">
+
+
+<p>Don&rsquo;t interpret regular expression metacharacters;
+that is, do a simple textual comparison.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="3%">
+
+
+<p>^W</p></td>
+<td width="7%"></td>
+<td width="68%">
+
+
+<p>WRAP around the current file. That is, if the search
+reaches the end of the current file without finding a match,
+the search continues from the first line of the current file
+up to the line where it started.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">?pattern</p>
+
+<p style="margin-left:22%;">Search backward in the file for
+the N-th line containing the pattern. The search starts at
+the last line displayed (but see the -a and -j options,
+which change this).</p>
+
+<p style="margin-left:22%; margin-top: 1em">Certain
+characters are special as in the / command: <br>
+^N or !</p>
+
+<p style="margin-left:32%;">Search for lines which do NOT
+match the pattern.</p>
+
+<p style="margin-left:22%;">^E or *</p>
+
+<p style="margin-left:32%;">Search multiple files. That is,
+if the search reaches the beginning of the current file
+without finding a match, the search continues in the
+previous file in the command line list.</p>
+
+<p style="margin-left:22%;">^F or @</p>
+
+<p style="margin-left:32%;">Begin the search at the last
+line of the last file in the command line list, regardless
+of what is currently displayed on the screen or the settings
+of the -a or -j options.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="3%">
+
+
+<p>^K</p></td>
+<td width="7%"></td>
+<td width="68%">
+
+
+<p>As in forward searches.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="3%">
+
+
+<p>^R</p></td>
+<td width="7%"></td>
+<td width="68%">
+
+
+<p>As in forward searches.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="3%">
+
+
+<p>^W</p></td>
+<td width="7%"></td>
+<td width="68%">
+
+
+<p>WRAP around the current file. That is, if the search
+reaches the beginning of the current file without finding a
+match, the search continues from the last line of the
+current file up to the line where it started.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">ESC-/pattern</p>
+
+<p style="margin-left:22%;">Same as &quot;/*&quot;.</p>
+
+<p style="margin-left:11%;">ESC-?pattern</p>
+
+<p style="margin-left:22%;">Same as &quot;?*&quot;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p>n</p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Repeat previous search, for N-th line containing the
+last pattern. If the previous search was modified by ^N, the
+search is made for the N-th line NOT containing the pattern.
+If the previous search was modified by ^E, the search
+continues in the next (or previous) file if not satisfied in
+the current file. If the previous search was modified by ^R,
+the search is done without using regular expressions. There
+is no effect if the previous search was modified by ^F or
+^K.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p>N</p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Repeat previous search, but in the reverse
+direction.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p>ESC-n</p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Repeat previous search, but crossing file boundaries.
+The effect is as if the previous search were modified by
+*.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p>ESC-N</p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Repeat previous search, but in the reverse direction and
+crossing file boundaries.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p>ESC-u</p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Undo search highlighting. Turn off highlighting of
+strings matching the current search pattern. If highlighting
+is already off because of a previous ESC-u command, turn
+highlighting back on. Any search command will also turn
+highlighting back on. (Highlighting can also be disabled by
+toggling the -G option; in that case search commands do not
+turn highlighting back on.)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p>ESC-U</p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Like ESC-u but also clears the saved search pattern. If
+the status column is enabled via the -J option, this clears
+all search matches marked in the status column.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">&amp;pattern</p>
+
+<p style="margin-left:22%;">Display only lines which match
+the pattern; lines which do not match the pattern are not
+displayed. If pattern is empty (if you type &amp;
+immediately followed by ENTER), any filtering is turned off,
+and all lines are displayed. While filtering is in effect,
+an ampersand is displayed at the beginning of the prompt, as
+a reminder that some lines in the file may be hidden.
+Multiple &amp; commands may be entered, in which case only
+lines which match all of the patterns will be displayed.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Certain
+characters are special as in the / command: <br>
+^N or !</p>
+
+<p style="margin-left:32%;">Display only lines which do NOT
+match the pattern.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="3%">
+
+
+<p>^R</p></td>
+<td width="7%"></td>
+<td width="68%">
+
+
+<p>Don&rsquo;t interpret regular expression metacharacters;
+that is, do a simple textual comparison.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">:e [filename]</p>
+
+<p style="margin-left:22%;">Examine a new file. If the
+filename is missing, the &quot;current&quot; file (see the
+:n and :p commands below) from the list of files in the
+command line is re-examined. A percent sign (%) in the
+filename is replaced by the name of the current file. A
+pound sign (#) is replaced by the name of the previously
+examined file. However, two consecutive percent signs are
+simply replaced with a single percent sign. This allows you
+to enter a filename that contains a percent sign in the
+name. Similarly, two consecutive pound signs are replaced
+with a single pound sign. The filename is inserted into the
+command line list of files so that it can be seen by
+subsequent :n and :p commands. If the filename consists of
+several files, they are all inserted into the list of files
+and the first one is examined. If the filename contains one
+or more spaces, the entire filename should be enclosed in
+double quotes (also see the -&quot; option).</p>
+
+<p style="margin-left:11%;">^X^V or E</p>
+
+<p style="margin-left:22%;">Same as :e. Warning: some
+systems use ^V as a special literalization character. On
+such systems, you may not be able to use ^V.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>:n</p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Examine the next file (from the list of files given in
+the command line). If a number N is specified, the N-th next
+file is examined.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>:p</p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Examine the previous file in the command line list. If a
+number N is specified, the N-th previous file is
+examined.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>:x</p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Examine the first file in the command line list. If a
+number N is specified, the N-th file in the list is
+examined.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>:d</p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Remove the current file from the list of files.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>t</p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Go to the next tag, if there were more than one matches
+for the current tag. See the -t option for more details
+about tags.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>T</p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Go to the previous tag, if there were more than one
+matches for the current tag.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">= or ^G or :f</p>
+
+<p style="margin-left:22%;">Prints some information about
+the file being viewed, including its name and the line
+number and byte offset of the bottom line being displayed.
+If possible, it also prints the length of the file, the
+number of lines in the file and the percent of the file
+above the last displayed line.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>-</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Followed by one of the command line option letters (see
+OPTIONS below), this will change the setting of that option
+and print a message describing the new setting. If a ^P
+(CONTROL-P) is entered immediately after the dash, the
+setting of the option is changed but no message is printed.
+If the option letter has a numeric value (such as -b or -h),
+or a string value (such as -P or -t), a new value may be
+entered after the option letter. If no new value is entered,
+a message describing the current setting is printed and
+nothing is changed.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>--</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Like the - command, but takes a long option name (see
+OPTIONS below) rather than a single option letter. You must
+press ENTER or RETURN after typing the option name. A ^P
+immediately after the second dash suppresses printing of a
+message describing the new setting, as in the - command.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>-+</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Followed by one of the command line option letters this
+will reset the option to its default setting and print a
+message describing the new setting. (The
+&quot;-+<i>X</i>&quot; command does the same thing as
+&quot;-+<i>X</i>&quot; on the command line.) This does not
+work for string-valued options.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>--+</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Like the -+ command, but takes a long option name rather
+than a single option letter.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>-!</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Followed by one of the command line option letters, this
+will reset the option to the &quot;opposite&quot; of its
+default setting and print a message describing the new
+setting. This does not work for numeric or string-valued
+options.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>--!</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Like the -! command, but takes a long option name rather
+than a single option letter.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>_</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>(Underscore.) Followed by one of the command line option
+letters, this will print a message describing the current
+setting of that option. The setting of the option is not
+changed.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>__</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>(Double underscore.) Like the _ (underscore) command,
+but takes a long option name rather than a single option
+letter. You must press ENTER or RETURN after typing the
+option name.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>+cmd</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Causes the specified cmd to be executed each time a new
+file is examined. For example, +G causes <i>less</i> to
+initially display each file starting at the end rather than
+the beginning.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>V</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Prints the version number of <i>less</i> being run.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">q or Q or :q or :Q or ZZ</p>
+
+<p style="margin-left:22%;">Exits <i>less</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+four commands may or may not be valid, depending on your
+particular installation.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>v</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Invokes an editor to edit the current file being viewed.
+The editor is taken from the environment variable VISUAL if
+defined, or EDITOR if VISUAL is not defined, or defaults to
+&quot;vi&quot; if neither VISUAL nor EDITOR is defined. See
+also the discussion of LESSEDIT under the section on PROMPTS
+below.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;">! shell-command</p>
+
+<p style="margin-left:22%;">Invokes a shell to run the
+shell-command given. A percent sign (%) in the command is
+replaced by the name of the current file. A pound sign (#)
+is replaced by the name of the previously examined file.
+&quot;!!&quot; repeats the last shell command. &quot;!&quot;
+with no shell command simply invokes a shell. On Unix
+systems, the shell is taken from the environment variable
+SHELL, or defaults to &quot;sh&quot;. On MS-DOS and OS/2
+systems, the shell is the normal command processor.</p>
+
+<p style="margin-left:11%;">| &lt;m&gt; shell-command</p>
+
+<p style="margin-left:22%;">&lt;m&gt; represents any mark
+letter. Pipes a section of the input file to the given shell
+command. The section of the file to be piped is between the
+position marked by the letter and the current screen. The
+entire current screen is included, regardless of whether the
+marked position is before or after the current screen.
+&lt;m&gt; may also be ^ or $ to indicate beginning or end of
+file respectively. If &lt;m&gt; is . or newline, the current
+screen is piped.</p>
+
+<p style="margin-left:11%;">s filename</p>
+
+<p style="margin-left:22%;">Save the input to a file. This
+only works if the input is a pipe, not an ordinary file.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Command line
+options are described below. Most options may be changed
+while <i>less</i> is running, via the &quot;-&quot;
+command.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Most options
+may be given in one of two forms: either a dash followed by
+a single letter, or two dashes followed by a long option
+name. A long option name may be abbreviated as long as the
+abbreviation is unambiguous. For example, --quit-at-eof may
+be abbreviated --quit, but not --qui, since both
+--quit-at-eof and --quiet begin with --qui. Some long option
+names are in uppercase, such as --QUIT-AT-EOF, as distinct
+from --quit-at-eof. Such option names need only have their
+first letter capitalized; the remainder of the name may be
+in either case. For example, --Quit-at-eof is equivalent to
+--QUIT-AT-EOF.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Options are
+also taken from the environment variable &quot;LESS&quot;.
+For example, to avoid typing &quot;less -options ...&quot;
+each time <i>less</i> is invoked, you might tell
+<i>csh</i>:</p>
+
+<p style="margin-left:11%; margin-top: 1em">setenv LESS
+&quot;-options&quot;</p>
+
+<p style="margin-left:11%; margin-top: 1em">or if you use
+<i>sh</i>:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">LESS=&quot;-options&quot;;
+export LESS</p>
+
+<p style="margin-left:11%; margin-top: 1em">On MS-DOS, you
+don&rsquo;t need the quotes, but you should replace any
+percent signs in the options string by double percent
+signs.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The environment
+variable is parsed before the command line, so command line
+options override the LESS environment variable. If an option
+appears in the LESS variable, it can be reset to its default
+value on the command line by beginning the command line
+option with &quot;-+&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Some options
+like -k or -D require a string to follow the option letter.
+The string for that option is considered to end when a
+dollar sign ($) is found. For example, you can set two -D
+options on MS-DOS like this:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">LESS=&quot;Dn9.1$Ds4.1&quot;</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the
+--use-backslash option appears earlier in the options, then
+a dollar sign or backslash may be included literally in an
+option string by preceding it with a backslash. If the
+--use-backslash option is not in effect, then backslashes
+are not treated specially, and there is no way to include a
+dollar sign in the option string. <br>
+-? or --help</p>
+
+<p style="margin-left:22%;">This option displays a summary
+of the commands accepted by <i>less</i> (the same as the h
+command). (Depending on how your shell interprets the
+question mark, it may be necessary to quote the question
+mark, thus: &quot;-\?&quot;.)</p>
+
+<p style="margin-left:11%;">-a or --search-skip-screen</p>
+
+<p style="margin-left:22%;">By default, forward searches
+start at the top of the displayed screen and backwards
+searches start at the bottom of the displayed screen (except
+for repeated searches invoked by the n or N commands, which
+start after or before the &quot;target&quot; line
+respectively; see the -j option for more about the target
+line). The -a option causes forward searches to instead
+start at the bottom of the screen and backward searches to
+start at the top of the screen, thus skipping all lines
+displayed on the screen.</p>
+
+<p style="margin-left:11%;">-A or --SEARCH-SKIP-SCREEN</p>
+
+<p style="margin-left:22%;">Causes all forward searches
+(not just non-repeated searches) to start just after the
+target line, and all backward searches to start just before
+the target line. Thus, forward searches will skip part of
+the displayed screen (from the first line up to and
+including the target line). Similarly backwards searches
+will skip the displayed screen from the last line up to and
+including the target line. This was the default behavior in
+less versions prior to 441.</p>
+
+<p style="margin-left:11%;">-b<i>n</i> or
+--buffers=<i>n</i></p>
+
+<p style="margin-left:22%;">Specifies the amount of buffer
+space <i>less</i> will use for each file, in units of
+kilobytes (1024 bytes). By default 64&nbsp;KB of buffer
+space is used for each file (unless the file is a pipe; see
+the -B option). The -b option specifies instead that
+<i>n</i> kilobytes of buffer space should be used for each
+file. If <i>n</i> is -1, buffer space is unlimited; that is,
+the entire file can be read into memory.</p>
+
+<p style="margin-left:11%;">-B or --auto-buffers</p>
+
+<p style="margin-left:22%;">By default, when data is read
+from a pipe, buffers are allocated automatically as needed.
+If a large amount of data is read from the pipe, this can
+cause a large amount of memory to be allocated. The -B
+option disables this automatic allocation of buffers for
+pipes, so that only 64&nbsp;KB (or the amount of space
+specified by the -b option) is used for the pipe. Warning:
+use of -B can result in erroneous display, since only the
+most recently viewed part of the piped data is kept in
+memory; any earlier data is lost.</p>
+
+<p style="margin-left:11%;">-c or --clear-screen</p>
+
+<p style="margin-left:22%;">Causes full screen repaints to
+be painted from the top line down. By default, full screen
+repaints are done by scrolling from the bottom of the
+screen.</p>
+
+<p style="margin-left:11%;">-C or --CLEAR-SCREEN</p>
+
+<p style="margin-left:22%;">Same as -c, for compatibility
+with older versions of <i>less</i>.</p>
+
+<p style="margin-left:11%;">-d or --dumb</p>
+
+<p style="margin-left:22%;">The -d option suppresses the
+error message normally displayed if the terminal is dumb;
+that is, lacks some important capability, such as the
+ability to clear the screen or scroll backward. The -d
+option does not otherwise change the behavior of <i>less</i>
+on a dumb terminal.</p>
+
+<p style="margin-left:11%;">-D<b>x</b><i>color</i> or
+--color=<b>x</b><i>color</i></p>
+
+<p style="margin-left:22%;">Changes the color of different
+parts of the displayed text. <b>x</b> is a single character
+which selects the type of text whose color is being set:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>B</p></td>
+<td width="9%"></td>
+<td width="62%">
+
+
+<p>Binary characters.</p></td>
+<td width="6%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>C</p></td>
+<td width="9%"></td>
+<td width="62%">
+
+
+<p>Control characters.</p></td>
+<td width="6%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>E</p></td>
+<td width="9%"></td>
+<td width="62%">
+
+
+<p>Errors and informational messages.</p></td>
+<td width="6%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>M</p></td>
+<td width="9%"></td>
+<td width="62%">
+
+
+<p>Mark letters in the status column.</p></td>
+<td width="6%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>N</p></td>
+<td width="9%"></td>
+<td width="62%">
+
+
+<p>Line numbers enabled via the -N option.</p></td>
+<td width="6%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>P</p></td>
+<td width="9%"></td>
+<td width="62%">
+
+
+<p>Prompts.</p></td>
+<td width="6%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>R</p></td>
+<td width="9%"></td>
+<td width="62%">
+
+
+<p>The rscroll character.</p></td>
+<td width="6%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>S</p></td>
+<td width="9%"></td>
+<td width="62%">
+
+
+<p>Search results.</p></td>
+<td width="6%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>W</p></td>
+<td width="9%"></td>
+<td width="62%">
+
+
+<p>The highlight enabled via the -w option.</p></td>
+<td width="6%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>d</p></td>
+<td width="9%"></td>
+<td width="62%">
+
+
+<p>Bold text.</p></td>
+<td width="6%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>k</p></td>
+<td width="9%"></td>
+<td width="62%">
+
+
+<p>Blinking text.</p></td>
+<td width="6%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>s</p></td>
+<td width="9%"></td>
+<td width="62%">
+
+
+<p>Standout text.</p></td>
+<td width="6%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>u</p></td>
+<td width="9%"></td>
+<td width="62%">
+
+
+<p>Underlined text.</p></td>
+<td width="6%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">The uppercase
+letters can be used only when the --use-color option is
+enabled. When text color is specified by both an uppercase
+letter and a lowercase letter, the uppercase letter takes
+precedence. For example, error messages are normally
+displayed as standout text. So if both &quot;s&quot; and
+&quot;E&quot; are given a color, the &quot;E&quot; color
+applies to error messages, and the &quot;s&quot; color
+applies to other standout text. The &quot;d&quot; and
+&quot;u&quot; letters refer to bold and underline text
+formed by overstriking with backspaces (see the -u option),
+not to text using ANSI escape sequences with the -R
+option.</p>
+
+<p style="margin-left:22%; margin-top: 1em">A lowercase
+letter may be followed by a + to indicate that both the
+normal format change and the specified color should both be
+used. For example, -Dug displays underlined text as green
+without underlining; the green color has replaced the usual
+underline formatting. But -Du+g displays underlined text as
+both green and in underlined format.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>color</i> is
+either a 4-bit color string or an 8-bit color string:</p>
+
+<p style="margin-left:22%; margin-top: 1em">A 4-bit color
+string is zero, one or two characters, where the first
+character specifies the foreground color and the second
+specifies the background color as follows:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">b</p></td>
+<td width="9%"></td>
+<td width="11%">
+
+
+<p style="margin-top: 1em">Blue</p></td>
+<td width="57%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>c</p></td>
+<td width="9%"></td>
+<td width="11%">
+
+
+<p>Cyan</p></td>
+<td width="57%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>g</p></td>
+<td width="9%"></td>
+<td width="11%">
+
+
+<p>Green</p></td>
+<td width="57%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>k</p></td>
+<td width="9%"></td>
+<td width="11%">
+
+
+<p>Black</p></td>
+<td width="57%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>m</p></td>
+<td width="9%"></td>
+<td width="11%">
+
+
+<p>Magenta</p></td>
+<td width="57%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>r</p></td>
+<td width="9%"></td>
+<td width="11%">
+
+
+<p>Red</p></td>
+<td width="57%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>w</p></td>
+<td width="9%"></td>
+<td width="11%">
+
+
+<p>White</p></td>
+<td width="57%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>y</p></td>
+<td width="9%"></td>
+<td width="11%">
+
+
+<p>Yellow</p></td>
+<td width="57%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">The
+corresponding upper-case letter denotes a brighter shade of
+the color. For example, -DNGk displays line numbers as
+bright green text on a black background, and -DEbR displays
+error messages as blue text on a bright red background. If
+either character is a &quot;-&quot; or is omitted, the
+corresponding color is set to that of normal text.</p>
+
+<p style="margin-left:22%; margin-top: 1em">An 8-bit color
+string is one or two decimal integers separated by a dot,
+where the first integer specifies the foreground color and
+the second specifies the background color. Each integer is a
+value between 0 and 255 inclusive which selects a &quot;CSI
+38;5&quot; color value (see <br>
+
+https://en.wikipedia.org/wiki/ANSI_escape_code#SGR_parameters)
+If either integer is a &quot;-&quot; or is omitted, the
+corresponding color is set to that of normal text. On MS-DOS
+versions of <i>less</i>, 8-bit color is not supported;
+instead, decimal values are interpreted as 4-bit
+CHAR_INFO.Attributes values (see <br>
+
+https://docs.microsoft.com/en-us/windows/console/char-info-str).</p>
+
+<p style="margin-left:11%;">-e or --quit-at-eof</p>
+
+<p style="margin-left:22%;">Causes <i>less</i> to
+automatically exit the second time it reaches end-of-file.
+By default, the only way to exit <i>less</i> is via the
+&quot;q&quot; command.</p>
+
+<p style="margin-left:11%;">-E or --QUIT-AT-EOF</p>
+
+<p style="margin-left:22%;">Causes <i>less</i> to
+automatically exit the first time it reaches
+end-of-file.</p>
+
+<p style="margin-left:11%;">-f or --force</p>
+
+<p style="margin-left:22%;">Forces non-regular files to be
+opened. (A non-regular file is a directory or a device
+special file.) Also suppresses the warning message when a
+binary file is opened. By default, <i>less</i> will refuse
+to open non-regular files. Note that some operating systems
+will not allow directories to be read, even if -f is
+set.</p>
+
+<p style="margin-left:11%;">-F or --quit-if-one-screen</p>
+
+<p style="margin-left:22%;">Causes <i>less</i> to
+automatically exit if the entire file can be displayed on
+the first screen.</p>
+
+<p style="margin-left:11%;">-g or --hilite-search</p>
+
+<p style="margin-left:22%;">Normally, <i>less</i> will
+highlight ALL strings which match the last search command.
+The -g option changes this behavior to highlight only the
+particular string which was found by the last search
+command. This can cause <i>less</i> to run somewhat faster
+than the default.</p>
+
+<p style="margin-left:11%;">-G or --HILITE-SEARCH</p>
+
+<p style="margin-left:22%;">The -G option suppresses all
+highlighting of strings found by search commands.</p>
+
+<p style="margin-left:11%;">-h<i>n</i> or
+--max-back-scroll=<i>n</i></p>
+
+<p style="margin-left:22%;">Specifies a maximum number of
+lines to scroll backward. If it is necessary to scroll
+backward more than <i>n</i> lines, the screen is repainted
+in a forward direction instead. (If the terminal does not
+have the ability to scroll backward, -h0 is implied.)</p>
+
+<p style="margin-left:11%;">-i or --ignore-case</p>
+
+<p style="margin-left:22%;">Causes searches to ignore case;
+that is, uppercase and lowercase are considered identical.
+This option is ignored if any uppercase letters appear in
+the search pattern; in other words, if a pattern contains
+uppercase letters, then that search does not ignore
+case.</p>
+
+<p style="margin-left:11%;">-I or --IGNORE-CASE</p>
+
+<p style="margin-left:22%;">Like -i, but searches ignore
+case even if the pattern contains uppercase letters.</p>
+
+<p style="margin-left:11%;">-j<i>n</i> or
+--jump-target=<i>n</i></p>
+
+<p style="margin-left:22%;">Specifies a line on the screen
+where the &quot;target&quot; line is to be positioned. The
+target line is the line specified by any command to search
+for a pattern, jump to a line number, jump to a file
+percentage or jump to a tag. The screen line may be
+specified by a number: the top line on the screen is 1, the
+next is 2, and so on. The number may be negative to specify
+a line relative to the bottom of the screen: the bottom line
+on the screen is -1, the second to the bottom is -2, and so
+on. Alternately, the screen line may be specified as a
+fraction of the height of the screen, starting with a
+decimal point: .5 is in the middle of the screen, .3 is
+three tenths down from the first line, and so on. If the
+line is specified as a fraction, the actual line number is
+recalculated if the terminal window is resized, so that the
+target line remains at the specified fraction of the screen
+height. If any form of the -j option is used, repeated
+forward searches (invoked with &quot;n&quot; or
+&quot;N&quot;) begin at the line immediately after the
+target line, and repeated backward searches begin at the
+target line, unless changed by -a or -A. For example, if
+&quot;-j4&quot; is used, the target line is the fourth line
+on the screen, so forward searches begin at the fifth line
+on the screen. However nonrepeated searches (invoked with
+&quot;/&quot; or &quot;?&quot;) always begin at the start or
+end of the current screen respectively.</p>
+
+<p style="margin-left:11%;">-J or --status-column</p>
+
+<p style="margin-left:22%;">Displays a status column at the
+left edge of the screen. The status column shows the lines
+that matched the current search, and any lines that are
+marked (via the m or M command).</p>
+
+<p style="margin-left:11%;">-k<i>filename</i> or
+--lesskey-file=<i>filename</i></p>
+
+<p style="margin-left:22%;">Causes <i>less</i> to open and
+interpret the named file as a <i>lesskey</i>(1) binary file.
+Multiple -k options may be specified. If the LESSKEY or
+LESSKEY_SYSTEM environment variable is set, or if a lesskey
+file is found in a standard place (see KEY BINDINGS), it is
+also used as a <i>lesskey</i> file.</p>
+
+
+<p style="margin-left:11%;">--lesskey-src=<i>filename</i></p>
+
+<p style="margin-left:22%;">Causes <i>less</i> to open and
+interpret the named file as a <i>lesskey</i>(1) source file.
+If the LESSKEYIN or LESSKEYIN_SYSTEM environment variable is
+set, or if a lesskey source file is found in a standard
+place (see KEY BINDINGS), it is also used as a <i>lesskey
+source</i> file. Prior to version 582, the <i>lesskey</i>
+program needed to be run to convert a <i>lesskey source</i>
+file to a <i>lesskey binary</i> file for <i>less</i> to use.
+Newer versions of <i>less</i> read the <i>lesskey source</i>
+file directly and ignore the binary file if the source file
+exists.</p>
+
+<p style="margin-left:11%;">-K or --quit-on-intr</p>
+
+<p style="margin-left:22%;">Causes <i>less</i> to exit
+immediately (with status 2) when an interrupt character
+(usually ^C) is typed. Normally, an interrupt character
+causes <i>less</i> to stop whatever it is doing and return
+to its command prompt. Note that use of this option makes it
+impossible to return to the command prompt from the
+&quot;F&quot; command.</p>
+
+<p style="margin-left:11%;">-L or --no-lessopen</p>
+
+<p style="margin-left:22%;">Ignore the LESSOPEN environment
+variable (see the INPUT PREPROCESSOR section below). This
+option can be set from within <i>less</i>, but it will apply
+only to files opened subsequently, not to the file which is
+currently open.</p>
+
+<p style="margin-left:11%;">-m or --long-prompt</p>
+
+<p style="margin-left:22%;">Causes <i>less</i> to prompt
+verbosely (like <i>more</i>), with the percent into the
+file. By default, <i>less</i> prompts with a colon.</p>
+
+<p style="margin-left:11%;">-M or --LONG-PROMPT</p>
+
+<p style="margin-left:22%;">Causes <i>less</i> to prompt
+even more verbosely than <i>more</i>.</p>
+
+<p style="margin-left:11%;">-n or --line-numbers</p>
+
+<p style="margin-left:22%;">Suppresses line numbers. The
+default (to use line numbers) may cause <i>less</i> to run
+more slowly in some cases, especially with a very large
+input file. Suppressing line numbers with the -n option will
+avoid this problem. Using line numbers means: the line
+number will be displayed in the verbose prompt and in the =
+command, and the v command will pass the current line number
+to the editor (see also the discussion of LESSEDIT in
+PROMPTS below).</p>
+
+<p style="margin-left:11%;">-N or --LINE-NUMBERS</p>
+
+<p style="margin-left:22%;">Causes a line number to be
+displayed at the beginning of each line in the display.</p>
+
+<p style="margin-left:11%;">-o<i>filename</i> or
+--log-file=<i>filename</i></p>
+
+<p style="margin-left:22%;">Causes <i>less</i> to copy its
+input to the named file as it is being viewed. This applies
+only when the input file is a pipe, not an ordinary file. If
+the file already exists, <i>less</i> will ask for
+confirmation before overwriting it.</p>
+
+<p style="margin-left:11%;">-O<i>filename</i> or
+--LOG-FILE=<i>filename</i></p>
+
+<p style="margin-left:22%;">The -O option is like -o, but
+it will overwrite an existing file without asking for
+confirmation.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If no log file
+has been specified, the -o and -O options can be used from
+within <i>less</i> to specify a log file. Without a file
+name, they will simply report the name of the log file. The
+&quot;s&quot; command is equivalent to specifying -o from
+within <i>less</i>.</p>
+
+<p style="margin-left:11%;">-p<i>pattern</i> or
+--pattern=<i>pattern</i></p>
+
+<p style="margin-left:22%;">The -p option on the command
+line is equivalent to specifying +/<i>pattern</i>; that is,
+it tells <i>less</i> to start at the first occurrence of
+<i>pattern</i> in the file.</p>
+
+<p style="margin-left:11%;">-P<i>prompt</i> or
+--prompt=<i>prompt</i></p>
+
+<p style="margin-left:22%;">Provides a way to tailor the
+three prompt styles to your own preference. This option
+would normally be put in the LESS environment variable,
+rather than being typed in with each <i>less</i> command.
+Such an option must either be the last option in the LESS
+variable, or be terminated by a dollar sign. <br>
+-Ps followed by a string changes the default (short) prompt
+to that string. <br>
+-Pm changes the medium (-m) prompt. <br>
+-PM changes the long (-M) prompt. <br>
+-Ph changes the prompt for the help screen. <br>
+-P= changes the message printed by the = command. <br>
+-Pw changes the message printed while waiting for data (in
+the F command).</p>
+
+<p style="margin-left:22%; margin-top: 1em">All prompt
+strings consist of a sequence of letters and special escape
+sequences. See the section on PROMPTS for more details.</p>
+
+<p style="margin-left:11%;">-q or --quiet or --silent</p>
+
+<p style="margin-left:22%;">Causes moderately
+&quot;quiet&quot; operation: the terminal bell is not rung
+if an attempt is made to scroll past the end of the file or
+before the beginning of the file. If the terminal has a
+&quot;visual bell&quot;, it is used instead. The bell will
+be rung on certain other errors, such as typing an invalid
+character. The default is to ring the terminal bell in all
+such cases.</p>
+
+<p style="margin-left:11%;">-Q or --QUIET or --SILENT</p>
+
+<p style="margin-left:22%;">Causes totally
+&quot;quiet&quot; operation: the terminal bell is never
+rung. If the terminal has a &quot;visual bell&quot;, it is
+used in all cases where the terminal bell would have been
+rung.</p>
+
+<p style="margin-left:11%;">-r or --raw-control-chars</p>
+
+<p style="margin-left:22%;">Causes &quot;raw&quot; control
+characters to be displayed. The default is to display
+control characters using the caret notation; for example, a
+control-A (octal 001) is displayed as &quot;^A&quot;.
+Warning: when the -r option is used, <i>less</i> cannot keep
+track of the actual appearance of the screen (since this
+depends on how the screen responds to each type of control
+character). Thus, various display problems may result, such
+as long lines being split in the wrong place.</p>
+
+<p style="margin-left:22%; margin-top: 1em">USE OF THE -r
+OPTION IS NOT RECOMMENDED.</p>
+
+<p style="margin-left:11%;">-R or --RAW-CONTROL-CHARS</p>
+
+<p style="margin-left:22%;">Like -r, but only ANSI
+&quot;color&quot; escape sequences and OSC 8 hyperlink
+sequences are output in &quot;raw&quot; form. Unlike -r, the
+screen appearance is maintained correctly, provided that
+there are no escape sequences in the file other than these
+types of escape sequences. Color escape sequences are only
+supported when the color is changed within one line, not
+across lines. In other words, the beginning of each line is
+assumed to be normal (non-colored), regardless of any escape
+sequences in previous lines. For the purpose of keeping
+track of screen appearance, these escape sequences are
+assumed to not move the cursor.</p>
+
+<p style="margin-left:22%; margin-top: 1em">OSC 8
+hyperlinks are sequences of the form:</p>
+
+<p style="margin-left:22%; margin-top: 1em">ESC ] 8 ; ...
+\7</p>
+
+<p style="margin-left:22%; margin-top: 1em">The terminating
+sequence may be either a BEL character (\7) or the
+two-character sequence &quot;ESC \&quot;.</p>
+
+<p style="margin-left:22%; margin-top: 1em">ANSI color
+escape sequences are sequences of the form:</p>
+
+<p style="margin-left:22%; margin-top: 1em">ESC [ ... m</p>
+
+<p style="margin-left:22%; margin-top: 1em">where the
+&quot;...&quot; is zero or more color specification
+characters. You can make <i>less</i> think that characters
+other than &quot;m&quot; can end ANSI color escape sequences
+by setting the environment variable LESSANSIENDCHARS to the
+list of characters which can end a color escape sequence.
+And you can make <i>less</i> think that characters other
+than the standard ones may appear between the ESC and the m
+by setting the environment variable LESSANSIMIDCHARS to the
+list of characters which can appear.</p>
+
+<p style="margin-left:11%;">-s or --squeeze-blank-lines</p>
+
+<p style="margin-left:22%;">Causes consecutive blank lines
+to be squeezed into a single blank line. This is useful when
+viewing <i>nroff</i> output.</p>
+
+<p style="margin-left:11%;">-S or --chop-long-lines</p>
+
+<p style="margin-left:22%;">Causes lines longer than the
+screen width to be chopped (truncated) rather than wrapped.
+That is, the portion of a long line that does not fit in the
+screen width is not displayed until you press RIGHT-ARROW.
+The default is to wrap long lines; that is, display the
+remainder on the next line.</p>
+
+<p style="margin-left:11%;">-t<i>tag</i> or
+--tag=<i>tag</i></p>
+
+<p style="margin-left:22%;">The -t option, followed
+immediately by a TAG, will edit the file containing that
+tag. For this to work, tag information must be available;
+for example, there may be a file in the current directory
+called &quot;tags&quot;, which was previously built by
+<i>ctags</i>(1) or an equivalent command. If the environment
+variable LESSGLOBALTAGS is set, it is taken to be the name
+of a command compatible with <i>global</i>(1), and that
+command is executed to find the tag. (See
+http://www.gnu.org/software/global/global.html). The -t
+option may also be specified from within <i>less</i> (using
+the - command) as a way of examining a new file. The command
+&quot;:t&quot; is equivalent to specifying -t from within
+<i>less</i>.</p>
+
+<p style="margin-left:11%;">-T<i>tagsfile</i> or
+--tag-file=<i>tagsfile</i></p>
+
+<p style="margin-left:22%;">Specifies a tags file to be
+used instead of &quot;tags&quot;.</p>
+
+<p style="margin-left:11%;">-u or --underline-special</p>
+
+<p style="margin-left:22%;">Causes backspaces and carriage
+returns to be treated as printable characters; that is, they
+are sent to the terminal when they appear in the input.</p>
+
+<p style="margin-left:11%;">-U or --UNDERLINE-SPECIAL</p>
+
+<p style="margin-left:22%;">Causes backspaces, tabs,
+carriage returns and &quot;formatting characters&quot; (as
+defined by Unicode) to be treated as control characters;
+that is, they are handled as specified by the -r option.</p>
+
+<p style="margin-left:22%; margin-top: 1em">By default, if
+neither -u nor -U is given, backspaces which appear adjacent
+to an underscore character are treated specially: the
+underlined text is displayed using the terminal&rsquo;s
+hardware underlining capability. Also, backspaces which
+appear between two identical characters are treated
+specially: the overstruck text is printed using the
+terminal&rsquo;s hardware boldface capability. Other
+backspaces are deleted, along with the preceding character.
+Carriage returns immediately followed by a newline are
+deleted. Other carriage returns are handled as specified by
+the -r option. Unicode formatting characters, such as the
+Byte Order Mark, are sent to the terminal. Text which is
+overstruck or underlined can be searched for if neither -u
+nor -U is in effect.</p>
+
+<p style="margin-left:11%;">-V or --version</p>
+
+<p style="margin-left:22%;">Displays the version number of
+<i>less</i>.</p>
+
+<p style="margin-left:11%;">-w or --hilite-unread</p>
+
+<p style="margin-left:22%;">Temporarily highlights the
+first &quot;new&quot; line after a forward movement of a
+full page. The first &quot;new&quot; line is the line
+immediately following the line previously at the bottom of
+the screen. Also highlights the target line after a g or p
+command. The highlight is removed at the next command which
+causes movement. The entire line is highlighted, unless the
+-J option is in effect, in which case only the status column
+is highlighted.</p>
+
+<p style="margin-left:11%;">-W or --HILITE-UNREAD</p>
+
+<p style="margin-left:22%;">Like -w, but temporarily
+highlights the first new line after any forward movement
+command larger than one line.</p>
+
+<p style="margin-left:11%;">-x<i>n</i>,... or
+--tabs=<i>n</i>,...</p>
+
+<p style="margin-left:22%;">Sets tab stops. If only one
+<i>n</i> is specified, tab stops are set at multiples of
+<i>n</i>. If multiple values separated by commas are
+specified, tab stops are set at those positions, and then
+continue with the same spacing as the last two. For example,
+<i>-x9,17</i> will set tabs at positions 9, 17, 25, 33, etc.
+The default for <i>n</i> is 8.</p>
+
+<p style="margin-left:11%;">-X or --no-init</p>
+
+<p style="margin-left:22%;">Disables sending the termcap
+initialization and deinitialization strings to the terminal.
+This is sometimes desirable if the deinitialization string
+does something unnecessary, like clearing the screen.</p>
+
+<p style="margin-left:11%;">-y<i>n</i> or
+--max-forw-scroll=<i>n</i></p>
+
+<p style="margin-left:22%;">Specifies a maximum number of
+lines to scroll forward. If it is necessary to scroll
+forward more than <i>n</i> lines, the screen is repainted
+instead. The -c or -C option may be used to repaint from the
+top of the screen if desired. By default, any forward
+movement causes scrolling.</p>
+
+<p style="margin-left:11%;">-z<i>n</i> or --window=<i>n</i>
+or -<i>n</i></p>
+
+<p style="margin-left:22%;">Changes the default scrolling
+window size to <i>n</i> lines. The default is one screenful.
+The z and w commands can also be used to change the window
+size. The &quot;z&quot; may be omitted for compatibility
+with some versions of <i>more</i>. If the number <i>n</i> is
+negative, it indicates <i>n</i> lines less than the current
+screen size. For example, if the screen is 24 lines,
+<i>-z-4</i> sets the scrolling window to 20 lines. If the
+screen is resized to 40 lines, the scrolling window
+automatically changes to 36 lines.</p>
+
+
+<p style="margin-left:11%;">-&quot;<i>cc&nbsp;</i>or&nbsp;--quotes=<i>cc</i></p>
+
+<p style="margin-left:22%;">Changes the filename quoting
+character. This may be necessary if you are trying to name a
+file which contains both spaces and quote characters.
+Followed by a single character, this changes the quote
+character to that character. Filenames containing a space
+should then be surrounded by that character rather than by
+double quotes. Followed by two characters, changes the open
+quote to the first character, and the close quote to the
+second character. Filenames containing a space should then
+be preceded by the open quote character and followed by the
+close quote character. Note that even after the quote
+characters are changed, this option remains -&quot; (a dash
+followed by a double quote).</p>
+
+<p style="margin-left:11%;">-~ or --tilde</p>
+
+<p style="margin-left:22%;">Normally lines after end of
+file are displayed as a single tilde (~). This option causes
+lines after end of file to be displayed as blank lines.</p>
+
+<p style="margin-left:11%;">-# or --shift</p>
+
+<p style="margin-left:22%;">Specifies the default number of
+positions to scroll horizontally in the RIGHTARROW and
+LEFTARROW commands. If the number specified is zero, it sets
+the default number of positions to one half of the screen
+width. Alternately, the number may be specified as a
+fraction of the width of the screen, starting with a decimal
+point: .5 is half of the screen width, .3 is three tenths of
+the screen width, and so on. If the number is specified as a
+fraction, the actual number of scroll positions is
+recalculated if the terminal window is resized, so that the
+actual scroll remains at the specified fraction of the
+screen width.</p>
+
+<p style="margin-left:11%;">--file-size</p>
+
+<p style="margin-left:22%;">If --file-size is specified,
+<i>less</i> will determine the size of the file immediately
+after opening the file. Normally this is not done, because
+it can be slow if the input file is large.</p>
+
+<p style="margin-left:11%;">--follow-name</p>
+
+<p style="margin-left:22%;">Normally, if the input file is
+renamed while an F command is executing, <i>less</i> will
+continue to display the contents of the original file
+despite its name change. If --follow-name is specified,
+during an F command <i>less</i> will periodically attempt to
+reopen the file by name. If the reopen succeeds and the file
+is a different file from the original (which means that a
+new file has been created with the same name as the original
+(now renamed) file), <i>less</i> will display the contents
+of that new file.</p>
+
+<p style="margin-left:11%;">--incsearch</p>
+
+<p style="margin-left:22%;">Subsequent search commands will
+be &quot;incremental&quot;; that is, <i>less</i> will
+advance to the next line containing the search pattern as
+each character of the pattern is typed in.</p>
+
+<p style="margin-left:11%;">--line-num-width</p>
+
+<p style="margin-left:22%;">Sets the minimum width of the
+line number field when the -N option is in effect. The
+default is 7 characters.</p>
+
+<p style="margin-left:11%;">--mouse</p>
+
+<p style="margin-left:22%;">Enables mouse input: scrolling
+the mouse wheel down moves forward in the file, scrolling
+the mouse wheel up moves backwards in the file, and clicking
+the mouse sets the &quot;#&quot; mark to the line where the
+mouse is clicked. The number of lines to scroll when the
+wheel is moved can be set by the --wheel-lines option. Mouse
+input works only on terminals which support X11 mouse
+reporting, and on the Windows version of <i>less</i>.</p>
+
+<p style="margin-left:11%;">--MOUSE</p>
+
+<p style="margin-left:22%;">Like --mouse, except the
+direction scrolled on mouse wheel movement is reversed.</p>
+
+<p style="margin-left:11%;">--no-keypad</p>
+
+<p style="margin-left:22%;">Disables sending the keypad
+initialization and deinitialization strings to the terminal.
+This is sometimes useful if the keypad strings make the
+numeric keypad behave in an undesirable manner.</p>
+
+<p style="margin-left:11%;">--no-histdups</p>
+
+<p style="margin-left:22%;">This option changes the
+behavior so that if a search string or file name is typed
+in, and the same string is already in the history list, the
+existing copy is removed from the history list before the
+new one is added. Thus, a given string will appear only once
+in the history list. Normally, a string may appear multiple
+times.</p>
+
+<p style="margin-left:11%;">--rscroll</p>
+
+<p style="margin-left:22%;">This option changes the
+character used to mark truncated lines. It may begin with a
+two-character attribute indicator like LESSBINFMT does. If
+there is no attribute indicator, standout is used. If set to
+&quot;-&quot;, truncated lines are not marked.</p>
+
+<p style="margin-left:11%;">--save-marks</p>
+
+<p style="margin-left:22%;">Save marks in the history file,
+so marks are retained across different invocations of
+<i>less</i>.</p>
+
+<p style="margin-left:11%;">--status-col-width</p>
+
+<p style="margin-left:22%;">Sets the width of the status
+column when the -J option is in effect. The default is 2
+characters.</p>
+
+<p style="margin-left:11%;">--use-backslash</p>
+
+<p style="margin-left:22%;">This option changes the
+interpretations of options which follow this one. After the
+--use-backslash option, any backslash in an option string is
+removed and the following character is taken literally. This
+allows a dollar sign to be included in option strings.</p>
+
+<p style="margin-left:11%;">--use-color</p>
+
+<p style="margin-left:22%;">Enables the colored text in
+various places. The -D option can be used to change the
+colors. Colored text works only if the terminal supports
+ANSI color escape sequences (as defined in ECMA-48 SGR; see
+<br>
+
+https://www.ecma-international.org/publications-and-standards/standards/ecma-48).</p>
+
+<p style="margin-left:11%;">--wheel-lines=<i>n</i></p>
+
+<p style="margin-left:22%;">Set the number of lines to
+scroll when the mouse wheel is scrolled and the --mouse or
+--MOUSE option is in effect. The default is 1 line.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>--</p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>A command line argument of &quot;--&quot; marks the end
+of option arguments. Any arguments following this are
+interpreted as filenames. This can be useful when viewing a
+file whose name begins with a &quot;-&quot; or
+&quot;+&quot;.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>+</p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>If a command line option begins with <b>+</b>, the
+remainder of that option is taken to be an initial command
+to <i>less</i>. For example, +G tells <i>less</i> to start
+at the end of the file rather than the beginning, and +/xyz
+tells it to start at the first occurrence of &quot;xyz&quot;
+in the file. As a special case, +&lt;number&gt; acts like
++&lt;number&gt;g; that is, it starts the display at the
+specified line number (however, see the caveat under the
+&quot;g&quot; command above). If the option starts with ++,
+the initial command applies to every file being viewed, not
+just the first one. The + command described previously may
+also be used to set (or change) an initial command for every
+file.</p> </td></tr>
+</table>
+
+<h2>LINE EDITING
+<a name="LINE EDITING"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">When entering a
+command line at the bottom of the screen (for example, a
+filename for the :e command, or the pattern for a search
+command), certain keys can be used to manipulate the command
+line. Most commands have an alternate form in [ brackets ]
+which can be used if a key does not exist on a particular
+keyboard. (Note that the forms beginning with ESC do not
+work in some MS-DOS and Windows systems because ESC is the
+line erase character.) Any of these special keys may be
+entered literally by preceding it with the
+&quot;literal&quot; character, either ^V or ^A. A backslash
+itself may also be entered literally by entering two
+backslashes. <br>
+LEFTARROW [ ESC-h ]</p>
+
+<p style="margin-left:22%;">Move the cursor one space to
+the left.</p>
+
+<p style="margin-left:11%;">RIGHTARROW [ ESC-l ]</p>
+
+<p style="margin-left:22%;">Move the cursor one space to
+the right.</p>
+
+<p style="margin-left:11%;">^LEFTARROW [ ESC-b or
+ESC-LEFTARROW ]</p>
+
+<p style="margin-left:22%;">(That is, CONTROL and LEFTARROW
+simultaneously.) Move the cursor one word to the left.</p>
+
+<p style="margin-left:11%;">^RIGHTARROW [ ESC-w or
+ESC-RIGHTARROW ]</p>
+
+<p style="margin-left:22%;">(That is, CONTROL and
+RIGHTARROW simultaneously.) Move the cursor one word to the
+right.</p>
+
+<p style="margin-left:11%;">HOME [ ESC-0 ]</p>
+
+<p style="margin-left:22%;">Move the cursor to the
+beginning of the line.</p>
+
+<p style="margin-left:11%;">END [ ESC-$ ]</p>
+
+<p style="margin-left:22%;">Move the cursor to the end of
+the line.</p>
+
+<p style="margin-left:11%;">BACKSPACE</p>
+
+<p style="margin-left:22%;">Delete the character to the
+left of the cursor, or cancel the command if the command
+line is empty.</p>
+
+<p style="margin-left:11%;">DELETE or [ ESC-x ]</p>
+
+<p style="margin-left:22%;">Delete the character under the
+cursor.</p>
+
+<p style="margin-left:11%;">^BACKSPACE [ ESC-BACKSPACE
+]</p>
+
+<p style="margin-left:22%;">(That is, CONTROL and BACKSPACE
+simultaneously.) Delete the word to the left of the
+cursor.</p>
+
+<p style="margin-left:11%;">^DELETE [ ESC-X or ESC-DELETE
+]</p>
+
+<p style="margin-left:22%;">(That is, CONTROL and DELETE
+simultaneously.) Delete the word under the cursor.</p>
+
+<p style="margin-left:11%;">UPARROW [ ESC-k ]</p>
+
+<p style="margin-left:22%;">Retrieve the previous command
+line. If you first enter some text and then press UPARROW,
+it will retrieve the previous command which begins with that
+text.</p>
+
+<p style="margin-left:11%;">DOWNARROW [ ESC-j ]</p>
+
+<p style="margin-left:22%;">Retrieve the next command line.
+If you first enter some text and then press DOWNARROW, it
+will retrieve the next command which begins with that
+text.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>TAB</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Complete the partial filename to the left of the cursor.
+If it matches more than one filename, the first match is
+entered into the command line. Repeated TABs will cycle thru
+the other matching filenames. If the completed filename is a
+directory, a &quot;/&quot; is appended to the filename. (On
+MS-DOS systems, a &quot;\&quot; is appended.) The
+environment variable LESSSEPARATOR can be used to specify a
+different character to append to a directory name.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">BACKTAB [ ESC-TAB ]</p>
+
+<p style="margin-left:22%;">Like, TAB, but cycles in the
+reverse direction thru the matching filenames.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>^L</p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Complete the partial filename to the left of the cursor.
+If it matches more than one filename, all matches are
+entered into the command line (if they fit).</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">^U (Unix and OS/2) or ESC
+(MS-DOS)</p>
+
+<p style="margin-left:22%;">Delete the entire command line,
+or cancel the command if the command line is empty. If you
+have changed your line-kill character in Unix to something
+other than ^U, that character is used instead of ^U.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>^G</p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Delete the entire command line and return to the main
+prompt.</p> </td></tr>
+</table>
+
+<h2>KEY BINDINGS
+<a name="KEY BINDINGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">You may define
+your own <i>less</i> commands by creating a lesskey source
+file. This file specifies a set of command keys and an
+action associated with each key. You may also change the
+line-editing keys (see LINE EDITING), and to set environment
+variables. If the environment variable LESSKEYIN is set,
+<i>less</i> uses that as the name of the lesskey source
+file. Otherwise, <i>less</i> looks in a standard place for
+the lesskey source file: On Unix systems, <i>less</i> looks
+for a lesskey file called
+&quot;$XDG_CONFIG_HOME/lesskey&quot; or
+&quot;$HOME/.lesskey&quot;. On MS-DOS and Windows systems,
+<i>less</i> looks for a lesskey file called
+&quot;$HOME/_lesskey&quot;, and if it is not found there,
+then looks for a lesskey file called &quot;_lesskey&quot; in
+any directory specified in the PATH environment variable. On
+OS/2 systems, <i>less</i> looks for a lesskey file called
+&quot;$HOME/lesskey.ini&quot;, and if it is not found, then
+looks for a lesskey file called &quot;lesskey.ini&quot; in
+any directory specified in the INIT environment variable,
+and if it not found there, then looks for a lesskey file
+called &quot;lesskey.ini&quot; in any directory specified in
+the PATH environment variable. See the <i>lesskey</i> manual
+page for more details.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A system-wide
+lesskey source file may also be set up to provide key
+bindings. If a key is defined in both a local lesskey file
+and in the system-wide file, key bindings in the local file
+take precedence over those in the system-wide file. If the
+environment variable LESSKEYIN_SYSTEM is set, <i>less</i>
+uses that as the name of the system-wide lesskey file.
+Otherwise, <i>less</i> looks in a standard place for the
+system-wide lesskey file: On Unix systems, the system-wide
+lesskey file is /usr/local/etc/syslesskey. (However, if
+<i>less</i> was built with a different sysconf directory
+than /usr/local/etc, that directory is where the sysless
+file is found.) On MS-DOS and Windows systems, the
+system-wide lesskey file is c:\_syslesskey. On OS/2 systems,
+the system-wide lesskey file is c:\syslesskey.ini.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Previous
+versions of <i>less</i> (before v582) used lesskey files
+with a binary format, produced by the <i>lesskey</i>
+program. It is no longer necessary to use the <i>lesskey</i>
+program.</p>
+
+<h2>INPUT PREPROCESSOR
+<a name="INPUT PREPROCESSOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">You may define
+an &quot;input preprocessor&quot; for <i>less</i>. Before
+<i>less</i> opens a file, it first gives your input
+preprocessor a chance to modify the way the contents of the
+file are displayed. An input preprocessor is simply an
+executable program (or shell script), which writes the
+contents of the file to a different file, called the
+replacement file. The contents of the replacement file are
+then displayed in place of the contents of the original
+file. However, it will appear to the user as if the original
+file is opened; that is, <i>less</i> will display the
+original filename as the name of the current file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">An input
+preprocessor receives one command line argument, the
+original filename, as entered by the user. It should create
+the replacement file, and when finished, print the name of
+the replacement file to its standard output. If the input
+preprocessor does not output a replacement filename,
+<i>less</i> uses the original file, as normal. The input
+preprocessor is not called when viewing standard input. To
+set up an input preprocessor, set the LESSOPEN environment
+variable to a command line which will invoke your input
+preprocessor. This command line should include one
+occurrence of the string &quot;%s&quot;, which will be
+replaced by the filename when the input preprocessor command
+is invoked.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When
+<i>less</i> closes a file opened in such a way, it will call
+another program, called the input postprocessor, which may
+perform any desired clean-up action (such as deleting the
+replacement file created by LESSOPEN). This program receives
+two command line arguments, the original filename as entered
+by the user, and the name of the replacement file. To set up
+an input postprocessor, set the LESSCLOSE environment
+variable to a command line which will invoke your input
+postprocessor. It may include two occurrences of the string
+&quot;%s&quot;; the first is replaced with the original name
+of the file and the second with the name of the replacement
+file, which was output by LESSOPEN.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For example, on
+many Unix systems, these two scripts will allow you to keep
+files in compressed format, but still let <i>less</i> view
+them directly:</p>
+
+<p style="margin-left:11%; margin-top: 1em">lessopen.sh:
+<br>
+#! /bin/sh <br>
+case &quot;$1&quot; in <br>
+*.Z) TEMPFILE=$(mktemp) <br>
+uncompress -c $1 &gt;$TEMPFILE 2&gt;/dev/null <br>
+if [ -s $TEMPFILE ]; then <br>
+echo $TEMPFILE <br>
+else <br>
+rm -f $TEMPFILE <br>
+fi <br>
+;; <br>
+esac</p>
+
+<p style="margin-left:11%; margin-top: 1em">lessclose.sh:
+<br>
+#! /bin/sh <br>
+rm $2</p>
+
+<p style="margin-left:11%; margin-top: 1em">To use these
+scripts, put them both where they can be executed and set
+LESSOPEN=&quot;lessopen.sh&nbsp;%s&quot;, and
+LESSCLOSE=&quot;lessclose.sh&nbsp;%s&nbsp;%s&quot;. More
+complex LESSOPEN and LESSCLOSE scripts may be written to
+accept other types of compressed files, and so on.</p>
+
+<p style="margin-left:11%; margin-top: 1em">It is also
+possible to set up an input preprocessor to pipe the file
+data directly to <i>less</i>, rather than putting the data
+into a replacement file. This avoids the need to decompress
+the entire file before starting to view it. An input
+preprocessor that works this way is called an input pipe. An
+input pipe, instead of writing the name of a replacement
+file on its standard output, writes the entire contents of
+the replacement file on its standard output. If the input
+pipe does not write any characters on its standard output,
+then there is no replacement file and <i>less</i> uses the
+original file, as normal. To use an input pipe, make the
+first character in the LESSOPEN environment variable a
+vertical bar (|) to signify that the input preprocessor is
+an input pipe. As with non-pipe input preprocessors, the
+command string must contain one occurrence of %s, which is
+replaced with the filename of the input file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For example, on
+many Unix systems, this script will work like the previous
+example scripts:</p>
+
+<p style="margin-left:11%; margin-top: 1em">lesspipe.sh:
+<br>
+#! /bin/sh <br>
+case &quot;$1&quot; in <br>
+*.Z) uncompress -c $1 2&gt;/dev/null <br>
+;; <br>
+*) exit 1 <br>
+;; <br>
+esac <br>
+exit $?</p>
+
+<p style="margin-left:11%; margin-top: 1em">To use this
+script, put it where it can be executed and set
+LESSOPEN=&quot;|lesspipe.sh %s&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that a
+preprocessor cannot output an empty file, since that is
+interpreted as meaning there is no replacement, and the
+original file is used. To avoid this, if LESSOPEN starts
+with two vertical bars, the exit status of the script
+becomes meaningful. If the exit status is zero, the output
+is considered to be replacement text, even if it is empty.
+If the exit status is nonzero, any output is ignored and the
+original file is used. For compatibility with previous
+versions of <i>less</i>, if LESSOPEN starts with only one
+vertical bar, the exit status of the preprocessor is
+ignored.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When an input
+pipe is used, a LESSCLOSE postprocessor can be used, but it
+is usually not necessary since there is no replacement file
+to clean up. In this case, the replacement file name passed
+to the LESSCLOSE postprocessor is &quot;-&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For
+compatibility with previous versions of <i>less</i>, the
+input preprocessor or pipe is not used if <i>less</i> is
+viewing standard input. However, if the first character of
+LESSOPEN is a dash (-), the input preprocessor is used on
+standard input as well as other files. In this case, the
+dash is not considered to be part of the preprocessor
+command. If standard input is being viewed, the input
+preprocessor is passed a file name consisting of a single
+dash. Similarly, if the first two characters of LESSOPEN are
+vertical bar and dash (|-) or two vertical bars and a dash
+(||-), the input pipe is used on standard input as well as
+other files. Again, in this case the dash is not considered
+to be part of the input pipe command.</p>
+
+<h2>NATIONAL CHARACTER SETS
+<a name="NATIONAL CHARACTER SETS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">There are three
+types of characters in the input file: <br>
+normal characters</p>
+
+<p style="margin-left:22%;">can be displayed directly to
+the screen.</p>
+
+<p style="margin-left:11%;">control characters</p>
+
+<p style="margin-left:22%;">should not be displayed
+directly, but are expected to be found in ordinary text
+files (such as backspace and tab).</p>
+
+<p style="margin-left:11%;">binary characters</p>
+
+<p style="margin-left:22%;">should not be displayed
+directly and are not expected to be found in text files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A
+&quot;character set&quot; is simply a description of which
+characters are to be considered normal, control, and binary.
+The LESSCHARSET environment variable may be used to select a
+character set. Possible values for LESSCHARSET are:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p>ascii</p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>BS, TAB, NL, CR, and formfeed are control characters,
+all chars with values between 32 and 126 are normal, and all
+others are binary.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">iso8859</p>
+
+<p style="margin-left:22%;">Selects an ISO 8859 character
+set. This is the same as ASCII, except characters between
+160 and 255 are treated as normal characters.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>latin1</p></td>
+<td width="2%"></td>
+<td width="72%">
+
+
+<p>Same as iso8859.</p></td>
+<td width="6%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>latin9</p></td>
+<td width="2%"></td>
+<td width="72%">
+
+
+<p>Same as iso8859.</p></td>
+<td width="6%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>dos</p></td>
+<td width="2%"></td>
+<td width="72%">
+
+
+<p>Selects a character set appropriate for MS-DOS.</p></td>
+<td width="6%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>ebcdic</p></td>
+<td width="2%"></td>
+<td width="72%">
+
+
+<p>Selects an EBCDIC character set.</p></td>
+<td width="6%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;">IBM-1047</p>
+
+<p style="margin-left:22%;">Selects an EBCDIC character set
+used by OS/390 Unix Services. This is the EBCDIC analogue of
+latin1. You get similar results by setting either
+LESSCHARSET=IBM-1047 or LC_CTYPE=en_US in your
+environment.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>koi8-r</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Selects a Russian character set.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>next</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Selects a character set appropriate for NeXT
+computers.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>utf-8</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Selects the UTF-8 encoding of the ISO 10646 character
+set. UTF-8 is special in that it supports multi-byte
+characters in the input file. It is the only character set
+that supports multi-byte characters.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">windows</p>
+
+<p style="margin-left:22%;">Selects a character set
+appropriate for Microsoft Windows (cp 1251).</p>
+
+<p style="margin-left:11%; margin-top: 1em">In rare cases,
+it may be desired to tailor <i>less</i> to use a character
+set other than the ones definable by LESSCHARSET. In this
+case, the environment variable LESSCHARDEF can be used to
+define a character set. It should be set to a string where
+each character in the string represents one character in the
+character set. The character &quot;.&quot; is used for a
+normal character, &quot;c&quot; for control, and
+&quot;b&quot; for binary. A decimal number may be used for
+repetition. For example, &quot;bccc4b.&quot; would mean
+character 0 is binary, 1, 2 and 3 are control, 4, 5, 6 and 7
+are binary, and 8 is normal. All characters after the last
+are taken to be the same as the last, so characters 9
+through 255 would be normal. (This is an example, and does
+not necessarily represent any real character set.)</p>
+
+<p style="margin-left:11%; margin-top: 1em">This table
+shows the value of LESSCHARDEF which is equivalent to each
+of the possible values for LESSCHARSET:</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-113751.png" alt="Image grohtml-113751.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em">If neither
+LESSCHARSET nor LESSCHARDEF is set, but any of the strings
+&quot;UTF-8&quot;, &quot;UTF8&quot;, &quot;utf-8&quot; or
+&quot;utf8&quot; is found in the LC_ALL, LC_CTYPE or LANG
+environment variables, then the default character set is
+utf-8.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If that string
+is not found, but your system supports the <i>setlocale</i>
+interface, <i>less</i> will use setlocale to determine the
+character set. setlocale is controlled by setting the LANG
+or LC_CTYPE environment variables.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Finally, if the
+<i>setlocale</i> interface is also not available, the
+default character set is latin1.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Control and
+binary characters are displayed in standout (reverse video).
+Each such character is displayed in caret notation if
+possible (e.g. ^A for control-A). Caret notation is used
+only if inverting the 0100 bit results in a normal printable
+character. Otherwise, the character is displayed as a hex
+number in angle brackets. This format can be changed by
+setting the LESSBINFMT environment variable. LESSBINFMT may
+begin with a &quot;*&quot; and one character to select the
+display attribute: &quot;*k&quot; is blinking,
+&quot;*d&quot; is bold, &quot;*u&quot; is underlined,
+&quot;*s&quot; is standout, and &quot;*n&quot; is normal. If
+LESSBINFMT does not begin with a &quot;*&quot;, normal
+attribute is assumed. The remainder of LESSBINFMT is a
+string which may include one printf-style escape sequence (a
+% followed by x, X, o, d, etc.). For example, if LESSBINFMT
+is &quot;*u[%x]&quot;, binary characters are displayed in
+underlined hexadecimal surrounded by brackets. The default
+if no LESSBINFMT is specified is &quot;*s&lt;%02X&gt;&quot;.
+Warning: the result of expanding the character via
+LESSBINFMT must be less than 31 characters.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When the
+character set is utf-8, the LESSUTFBINFMT environment
+variable acts similarly to LESSBINFMT but it applies to
+Unicode code points that were successfully decoded but are
+unsuitable for display (e.g., unassigned code points). Its
+default value is &quot;&lt;U+%04lX&gt;&quot;. Note that
+LESSUTFBINFMT and LESSBINFMT share their display attribute
+setting (&quot;*x&quot;) so specifying one will affect both;
+LESSUTFBINFMT is read after LESSBINFMT so its setting, if
+any, will have priority. Problematic octets in a UTF-8 file
+(octets of a truncated sequence, octets of a complete but
+non-shortest form sequence, invalid octets, and stray
+trailing octets) are displayed individually using LESSBINFMT
+so as to facilitate diagnostic of how the UTF-8 file is
+ill-formed.</p>
+
+<h2>PROMPTS
+<a name="PROMPTS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The -P option
+allows you to tailor the prompt to your preference. The
+string given to the -P option replaces the specified prompt
+string. Certain characters in the string are interpreted
+specially. The prompt mechanism is rather complicated to
+provide flexibility, but the ordinary user need not
+understand the details of constructing personalized prompt
+strings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A percent sign
+followed by a single character is expanded according to what
+the following character is:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>%b<i>X</i></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Replaced by the byte offset into the current input file.
+The b is followed by a single character (shown as <i>X</i>
+above) which specifies the line whose byte offset is to be
+used. If the character is a &quot;t&quot;, the byte offset
+of the top line in the display is used, an &quot;m&quot;
+means use the middle line, a &quot;b&quot; means use the
+bottom line, a &quot;B&quot; means use the line just after
+the bottom line, and a &quot;j&quot; means use the
+&quot;target&quot; line, as specified by the -j option.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>%B</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Replaced by the size of the current input file.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>%c</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Replaced by the column number of the text appearing in
+the first column of the screen.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>%d<i>X</i></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Replaced by the page number of a line in the input file.
+The line to be used is determined by the <i>X</i>, as with
+the %b option.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>%D</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Replaced by the number of pages in the input file, or
+equivalently, the page number of the last line in the input
+file.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>%E</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Replaced by the name of the editor (from the VISUAL
+environment variable, or the EDITOR environment variable if
+VISUAL is not defined). See the discussion of the LESSEDIT
+feature below.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>%f</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Replaced by the name of the current input file.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>%F</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Replaced by the last component of the name of the
+current input file.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>%g</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Replaced by the shell-escaped name of the current input
+file. This is useful when the expanded string will be used
+in a shell command, such as in LESSEDIT.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>%i</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Replaced by the index of the current file in the list of
+input files.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>%l<i>X</i></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Replaced by the line number of a line in the input file.
+The line to be used is determined by the <i>X</i>, as with
+the %b option.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>%L</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Replaced by the line number of the last line in the
+input file.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>%m</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Replaced by the total number of input files.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>%p<i>X</i></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Replaced by the percent into the current input file,
+based on byte offsets. The line used is determined by the
+<i>X</i> as with the %b option.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>%P<i>X</i></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Replaced by the percent into the current input file,
+based on line numbers. The line used is determined by the
+<i>X</i> as with the %b option.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>%s</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Same as %B.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>%t</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Causes any trailing spaces to be removed. Usually used
+at the end of the string, but may appear anywhere.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>%T</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Normally expands to the word &quot;file&quot;. However
+if viewing files via a tags list using the -t option, it
+expands to the word &quot;tag&quot;.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>%x</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Replaced by the name of the next input file in the
+list.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">If any item is
+unknown (for example, the file size if input is a pipe), a
+question mark is printed instead.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The format of
+the prompt string can be changed depending on certain
+conditions. A question mark followed by a single character
+acts like an &quot;IF&quot;: depending on the following
+character, a condition is evaluated. If the condition is
+true, any characters following the question mark and
+condition character, up to a period, are included in the
+prompt. If the condition is false, such characters are not
+included. A colon appearing between the question mark and
+the period can be used to establish an &quot;ELSE&quot;: any
+characters between the colon and the period are included in
+the string if and only if the IF condition is false.
+Condition characters (which follow a question mark) may
+be:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p style="margin-top: 1em">?a</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">True if any characters have been
+included in the prompt so far.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>?b<i>X</i></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>True if the byte offset of the specified line is
+known.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>?B</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>True if the size of current input file is known.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>?c</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>True if the text is horizontally shifted (%c is not
+zero).</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>?d<i>X</i></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>True if the page number of the specified line is
+known.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>?e</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>True if at end-of-file.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>?f</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>True if there is an input filename (that is, if input is
+not a pipe).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>?l<i>X</i></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>True if the line number of the specified line is
+known.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>?L</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>True if the line number of the last line in the file is
+known.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>?m</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>True if there is more than one input file.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>?n</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>True if this is the first prompt in a new input
+file.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>?p<i>X</i></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>True if the percent into the current input file, based
+on byte offsets, of the specified line is known.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>?P<i>X</i></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>True if the percent into the current input file, based
+on line numbers, of the specified line is known.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>?s</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Same as &quot;?B&quot;.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>?x</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>True if there is a next input file (that is, if the
+current input file is not the last one).</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Any characters
+other than the special ones (question mark, colon, period,
+percent, and backslash) become literally part of the prompt.
+Any of the special characters may be included in the prompt
+literally by preceding it with a backslash.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Some
+examples:</p>
+
+<p style="margin-left:11%; margin-top: 1em">?f%f:Standard
+input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This prompt
+prints the filename, if known; otherwise the string
+&quot;Standard input&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">?f%f .?ltLine
+%lt:?pt%pt\%:?btByte %bt:-...</p>
+
+<p style="margin-left:11%; margin-top: 1em">This prompt
+would print the filename, if known. The filename is followed
+by the line number, if known, otherwise the percent if
+known, otherwise the byte offset if known. Otherwise, a dash
+is printed. Notice how each question mark has a matching
+period, and how the % after the %pt is included literally by
+escaping it with a backslash.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">?n?f%f&nbsp;.?m(%T
+%i of
+%m)&nbsp;..?e(END)&nbsp;?x-&nbsp;Next\:&nbsp;%x..%t&quot;;</p>
+
+<p style="margin-left:11%; margin-top: 1em">This prints the
+filename if this is the first prompt in a file, followed by
+the &quot;file N of N&quot; message if there is more than
+one input file. Then, if we are at end-of-file, the string
+&quot;(END)&quot; is printed followed by the name of the
+next file, if there is one. Finally, any trailing spaces are
+truncated. This is the default prompt. For reference, here
+are the defaults for the other two prompts (-m and -M
+respectively). Each is broken into two lines here for
+readability only.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">?n?f%f&nbsp;.?m(%T&nbsp;%i&nbsp;of&nbsp;%m)&nbsp;..?e(END)&nbsp;?x-&nbsp;Next\:&nbsp;%x.:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>?pB%pB\%:byte&nbsp;%bB?s/%s...%t</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%; margin-top: 1em">?f%f&nbsp;.?n?m(%T&nbsp;%i&nbsp;of&nbsp;%m)&nbsp;..?ltlines&nbsp;%lt-%lb?L/%L.&nbsp;:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+
+<p>byte&nbsp;%bB?s/%s.&nbsp;.?e(END)&nbsp;?x-&nbsp;Next\:&nbsp;%x.:?pB%pB\%..%t</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">And here is the
+default message produced by the = command:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">?f%f&nbsp;.?m(%T&nbsp;%i&nbsp;of&nbsp;%m)&nbsp;.?ltlines&nbsp;%lt-%lb?L/%L.&nbsp;.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>byte&nbsp;%bB?s/%s.&nbsp;?e(END)&nbsp;:?pB%pB\%..%t</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The prompt
+expansion features are also used for another purpose: if an
+environment variable LESSEDIT is defined, it is used as the
+command to be executed when the v command is invoked. The
+LESSEDIT string is expanded in the same way as the prompt
+strings. The default value for LESSEDIT is:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>%E&nbsp;?lm+%lm.&nbsp;%g</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Note that this
+expands to the editor name, followed by a + and the line
+number, followed by the shell-escaped file name. If your
+editor does not accept the &quot;+linenumber&quot; syntax,
+or has other differences in invocation syntax, the LESSEDIT
+variable can be changed to modify this default.</p>
+
+<h2>SECURITY
+<a name="SECURITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">When the
+environment variable LESSSECURE is set to 1, <i>less</i>
+runs in a &quot;secure&quot; mode. This means these features
+are disabled:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em">!</p></td>
+<td width="3%"></td>
+<td width="31%">
+
+
+<p style="margin-top: 1em">the shell command</p></td>
+<td width="37%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p>|</p></td>
+<td width="3%"></td>
+<td width="31%">
+
+
+<p>the pipe command</p></td>
+<td width="37%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p>:e</p></td>
+<td width="3%"></td>
+<td width="31%">
+
+
+<p>the examine command.</p></td>
+<td width="37%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p>v</p></td>
+<td width="3%"></td>
+<td width="31%">
+
+
+<p>the editing command</p></td>
+<td width="37%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p>s -o</p></td>
+<td width="3%"></td>
+<td width="31%">
+
+
+<p>log files</p></td>
+<td width="37%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p>-k</p></td>
+<td width="3%"></td>
+<td width="31%">
+
+
+<p>use of lesskey files</p></td>
+<td width="37%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p>-t</p></td>
+<td width="3%"></td>
+<td width="31%">
+
+
+<p>use of tags files</p></td>
+<td width="37%">
+</td></tr>
+</table>
+
+<p style="margin-left:32%; margin-top: 1em">metacharacters
+in filenames, such as *</p>
+
+<p style="margin-left:32%; margin-top: 1em">filename
+completion (TAB, ^L)</p>
+
+<p style="margin-left:11%; margin-top: 1em">Less can also
+be compiled to be permanently in &quot;secure&quot;
+mode.</p>
+
+<h2>COMPATIBILITY WITH MORE
+<a name="COMPATIBILITY WITH MORE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If the
+environment variable LESS_IS_MORE is set to 1, or if the
+program is invoked via a file link named &quot;more&quot;,
+<i>less</i> behaves (mostly) in conformance with the POSIX
+&quot;more&quot; command specification. In this mode, less
+behaves differently in these ways:</p>
+
+<p style="margin-left:11%; margin-top: 1em">The -e option
+works differently. If the -e option is not set, <i>less</i>
+behaves as if the -e option were set. If the -e option is
+set, <i>less</i> behaves as if the -E option were set.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The -m option
+works differently. If the -m option is not set, the medium
+prompt is used, and it is prefixed with the string
+&quot;--More--&quot;. If the -m option is set, the short
+prompt is used.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The -n option
+acts like the -z option. The normal behavior of the -n
+option is unavailable in this mode.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The parameter
+to the -p option is taken to be a <i>less</i> command rather
+than a search pattern.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The LESS
+environment variable is ignored, and the MORE environment
+variable is used in its place.</p>
+
+<h2>ENVIRONMENT VARIABLES
+<a name="ENVIRONMENT VARIABLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Environment
+variables may be specified either in the system environment
+as usual, or in a <i>lesskey</i>(1) file. If environment
+variables are defined in more than one place, variables
+defined in a local lesskey file take precedence over
+variables defined in the system environment, which take
+precedence over variables defined in the system-wide lesskey
+file. <br>
+COLUMNS</p>
+
+<p style="margin-left:22%;">Sets the number of columns on
+the screen. Takes precedence over the number of columns
+specified by the TERM variable. (But if you have a windowing
+system which supports TIOCGWINSZ or WIOCGETD, the window
+system&rsquo;s idea of the screen size takes precedence over
+the LINES and COLUMNS environment variables.)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>EDITOR</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The name of the editor (used for the v command).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>HOME</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Name of the user&rsquo;s home directory (used to find a
+lesskey file on Unix and OS/2 systems).</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">HOMEDRIVE, HOMEPATH</p>
+
+<p style="margin-left:22%;">Concatenation of the HOMEDRIVE
+and HOMEPATH environment variables is the name of the
+user&rsquo;s home directory if the HOME variable is not set
+(only in the Windows version).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>INIT</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Name of the user&rsquo;s init directory (used to find a
+lesskey file on OS/2 systems).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>LANG</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Language for determining the character set.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">LC_CTYPE</p>
+
+<p style="margin-left:22%;">Language for determining the
+character set.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>LESS</p></td>
+<td width="5%"></td>
+<td width="72%">
+
+
+<p>Options which are passed to <i>less</i>
+automatically.</p> </td>
+<td width="6%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;">LESSANSIENDCHARS</p>
+
+<p style="margin-left:22%;">Characters which may end an
+ANSI color escape sequence (default &quot;m&quot;).</p>
+
+<p style="margin-left:11%;">LESSANSIMIDCHARS</p>
+
+<p style="margin-left:22%;">Characters which may appear
+between the ESC character and the end character in an ANSI
+color escape sequence (default
+&quot;0123456789:;[?!&quot;&rsquo;#%()*+&nbsp;&quot;.</p>
+
+<p style="margin-left:11%;">LESSBINFMT</p>
+
+<p style="margin-left:22%;">Format for displaying
+non-printable, non-control characters.</p>
+
+<p style="margin-left:11%;">LESSCHARDEF</p>
+
+<p style="margin-left:22%;">Defines a character set.</p>
+
+<p style="margin-left:11%;">LESSCHARSET</p>
+
+<p style="margin-left:22%;">Selects a predefined character
+set.</p>
+
+<p style="margin-left:11%;">LESSCLOSE</p>
+
+<p style="margin-left:22%;">Command line to invoke the
+(optional) input-postprocessor.</p>
+
+<p style="margin-left:11%;">LESSECHO</p>
+
+<p style="margin-left:22%;">Name of the lessecho program
+(default &quot;lessecho&quot;). The lessecho program is
+needed to expand metacharacters, such as * and ?, in
+filenames on Unix systems.</p>
+
+<p style="margin-left:11%;">LESSEDIT</p>
+
+<p style="margin-left:22%;">Editor prototype string (used
+for the v command). See discussion under PROMPTS.</p>
+
+<p style="margin-left:11%;">LESSGLOBALTAGS</p>
+
+<p style="margin-left:22%;">Name of the command used by the
+-t option to find global tags. Normally should be set to
+&quot;global&quot; if your system has the <i>global</i>(1)
+command. If not set, global tags are not used.</p>
+
+<p style="margin-left:11%;">LESSHISTFILE</p>
+
+<p style="margin-left:22%;">Name of the history file used
+to remember search commands and shell commands between
+invocations of <i>less</i>. If set to &quot;-&quot; or
+&quot;/dev/null&quot;, a history file is not used. The
+default is &quot;$XDG_DATA_HOME/lesshst&quot; or
+&quot;$HOME/.lesshst&quot; on Unix systems,
+&quot;$HOME/_lesshst&quot; on DOS and Windows systems, or
+&quot;$HOME/lesshst.ini&quot; or
+&quot;$INIT/lesshst.ini&quot; on OS/2 systems.</p>
+
+<p style="margin-left:11%;">LESSHISTSIZE</p>
+
+<p style="margin-left:22%;">The maximum number of commands
+to save in the history file. The default is 100.</p>
+
+<p style="margin-left:11%;">LESSKEYIN</p>
+
+<p style="margin-left:22%;">Name of the default <i>lesskey
+source</i> file.</p>
+
+<p style="margin-left:11%;">LESSKEY</p>
+
+<p style="margin-left:22%;">Name of the default <i>lesskey
+binary</i> file. (Not used if &quot;$LESSKEYIN&quot;
+exists.)</p>
+
+<p style="margin-left:11%;">LESSKEYIN_SYSTEM</p>
+
+<p style="margin-left:22%;">Name of the default system-wide
+<i>lesskey source</i> file.</p>
+
+<p style="margin-left:11%;">LESSKEY_SYSTEM</p>
+
+<p style="margin-left:22%;">Name of the default system-wide
+<i>lesskey binary</i> file. (Not used if
+&quot;$LESSKEYIN_SYSTEM&quot; exists.)</p>
+
+<p style="margin-left:11%;">LESSMETACHARS</p>
+
+<p style="margin-left:22%;">List of characters which are
+considered &quot;metacharacters&quot; by the shell.</p>
+
+<p style="margin-left:11%;">LESSMETAESCAPE</p>
+
+<p style="margin-left:22%;">Prefix which less will add
+before each metacharacter in a command sent to the shell. If
+LESSMETAESCAPE is an empty string, commands containing
+metacharacters will not be passed to the shell.</p>
+
+<p style="margin-left:11%;">LESSOPEN</p>
+
+<p style="margin-left:22%;">Command line to invoke the
+(optional) input-preprocessor.</p>
+
+<p style="margin-left:11%;">LESSSECURE</p>
+
+<p style="margin-left:22%;">Runs less in &quot;secure&quot;
+mode. See discussion under SECURITY.</p>
+
+<p style="margin-left:11%;">LESSSEPARATOR</p>
+
+<p style="margin-left:22%;">String to be appended to a
+directory name in filename completion.</p>
+
+<p style="margin-left:11%;">LESSUTFBINFMT</p>
+
+<p style="margin-left:22%;">Format for displaying
+non-printable Unicode code points.</p>
+
+<p style="margin-left:11%;">LESS_IS_MORE</p>
+
+<p style="margin-left:22%;">Emulate the <i>more</i>(1)
+command.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>LINES</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Sets the number of lines on the screen. Takes precedence
+over the number of lines specified by the TERM variable.
+(But if you have a windowing system which supports
+TIOCGWINSZ or WIOCGETD, the window system&rsquo;s idea of
+the screen size takes precedence over the LINES and COLUMNS
+environment variables.)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>MORE</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Options which are passed to <i>less</i> automatically
+when running in <i>more</i> compatible mode.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>PATH</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>User&rsquo;s search path (used to find a lesskey file on
+MS-DOS and OS/2 systems).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>SHELL</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The shell used to execute the ! command, as well as to
+expand filenames.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>TERM</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The type of terminal on which <i>less</i> is being
+run.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p>VISUAL</p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The name of the editor (used for the v command).</p></td></tr>
+</table>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>lesskey</b>(1)</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1984-2021 Mark Nudelman</p>
+
+<p style="margin-left:11%; margin-top: 1em">less is part of
+the GNU project and is free software. You can redistribute
+it and/or modify it under the terms of either (1) the GNU
+General Public License as published by the Free Software
+Foundation; or (2) the Less License. See the file README in
+the less distribution for more details regarding
+redistribution. You should have received a copy of the GNU
+General Public License along with the source for less; see
+the file COPYING. If not, write to the Free Software
+Foundation, 59 Temple Place, Suite 330, Boston, MA
+02111-1307, USA. You should also have received a copy of the
+Less License; see the file LICENSE.</p>
+
+<p style="margin-left:11%; margin-top: 1em">less is
+distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Mark Nudelman
+<br>
+Report bugs at https://github.com/gwsw/less/issues. <br>
+For more information, see the less homepage at <br>
+ https://greenwoodsoftware.com/less</p>
+<hr>
+</body>
+</html>

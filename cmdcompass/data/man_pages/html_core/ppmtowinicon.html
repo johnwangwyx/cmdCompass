@@ -1,0 +1,241 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:40 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Ppmtowinicon User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Ppmtowinicon User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ppmtowinicon -
+convert PPM image into a Windows .ico file</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmtowinicon</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-andpgms</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-output=</b><i>output.ico</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<i>ppmfile</i>
+[<i>andfile</i>] ...]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+essentially obsolete; The newer <b>pamtowinicon</b> is
+better.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmtowinicon</b>
+reads one or more PPM images as input and produces a
+Microsoft Windows .ico file as output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A Windows icon
+contains 1 or more images, at different resolutions and
+color depths. When Windows wants to display the icon, it
+searches through the images to find the one that best
+matches the number of colors and resolution of the
+display.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Microsoft
+recommends including at least the following formats in each
+icon.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="23%">
+
+
+<p>16 x 16 - 4 bpp</p></td>
+<td width="55%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="23%">
+
+
+<p>32 x 32 - 4 bpp</p></td>
+<td width="55%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="23%">
+
+
+<p>48 x 48 - 8 bpp</p></td>
+<td width="55%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">If you
+don&rsquo;t specify any input files, input is from Standard
+Input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Output is to
+Standard Output unless you specify <b>-output</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Transparency</b>
+<br>
+If you specify the <b>-andmask</b> option, you get (partly)
+transparent icons. In that case, your arguments are pairs of
+file names, with the first file name being that of the image
+and the second file name being that of a standard Netpbm PGM
+transparency mask (see the <b>pgm format
+specification</b>(1)).</p>
+
+<p style="margin-left:11%; margin-top: 1em">In a .ico file,
+there is no such thing as partial transparency
+(translucency). Where the PGM mask says completely opaque,
+the icon will be opaque. Everywhere else, the icon will be
+transparent. Note that as with any Netpbm program, you can
+use a PBM image for the transparency mask and
+<b>ppmtowinicon</b> will treat it like a PGM.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The and mask is
+like a transparency mask, except for what it signifies in
+the &quot;not opaque&quot; areas. In the usual case, the
+foreground image is black in those areas, and in that case
+the areas are fully transparent -- the background shows
+through the icon. But in general, a not opaque pixel
+signifies that the background and foreground should be
+merged as follows: The intensities of the color components
+in the foreground and background are represented as binary
+numbers, then corresponding bits of the background and
+foreground intensities are exclusive-or&rsquo;ed together.
+So there is a sort of reverse video effect.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you
+don&rsquo;t want this special effect and instead want
+straightforward transparency, use the
+<b>-truetransparent</b> option. This causes
+<b>ppmtowinicon</b> to make the base image black everywhere
+your transparency mask says transparent, regardless of what
+color your input image is at that location.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you
+don&rsquo;t specify <b>-andmask</b>, <b>ppmtowinicon</b>
+puts all-opaque and masks into the .ico file.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>ppmtowinicon</b> recognizes the following command line
+options: <b><br>
+-andpgms</b></p>
+
+<p style="margin-left:22%;">Include transparency
+information in the icons. See the
+<a href="#transparency">transparency section</a> .</p>
+
+
+<p style="margin-left:11%;"><b>-output=</b><i>output.ico</i></p>
+
+<p style="margin-left:22%;">Name of output file. By
+default, <b>ppmtowinicon</b> writes the icon to Standard
+Output.</p>
+
+<p style="margin-left:11%;"><b>-truetransparent</b></p>
+
+<p style="margin-left:22%;">Make transparency in the icon
+normal instead of the special reverse video effect. See the
+<a href="#transparency">transparency section</a> .</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtowinicon</b>(1),
+<b>winicontoppm</b>(1), <b>ppm</b>(1) <b>pgm</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+2000 by Lee Benfield.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/ppmtowinicon.html</b></p>
+<hr>
+</body>
+</html>

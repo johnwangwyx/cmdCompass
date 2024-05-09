@@ -101,7 +101,9 @@ def download_and_process_package(package_name):
     
     with SqliteDict(KV_DB_PATH) as db:
         if package_name in db:
-            link = db[package_name]
+            # Note the db value can contain a list of package that includes the command.
+            # So we can have a feature to allow user to choose which package to use
+            link = list(db[package_name])[0]  # For now, use any one
             full_link = f"{DEB_DOWNLOAD_LINK}/{link}"
             deb_path = download_file(full_link)
             extract_to = os.path.join(UNPACKING_DIR, os.path.basename(deb_path).replace('.deb', ''))

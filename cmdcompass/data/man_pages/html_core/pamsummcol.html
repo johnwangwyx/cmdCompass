@@ -1,0 +1,254 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:27 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamsummcol User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamsummcol User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamsummcol -
+summarize (sum, average, etc) a Netpbm image by column</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamsummcol</b>
+{ <b>-sum</b> | <b>-mean</b> | <b>-min</b> | <b>-max</b> }
+[<i>imagefile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">All options can
+be abbreviated to their shortest unique prefix. You may use
+two hyphens instead of one. You may separate an option name
+and its value with white space instead of an equals
+sign.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamsummcol</b>
+reads a Netpbm image (PNM or PAM) and performs a summary
+function over all the rows in each column (sum, mean, etc.).
+It produces an image of the same kind that the same width
+and depth as the input, and one row high. Its sample values
+are the result of the summary.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamsummcol</b>
+performs the summary operation on each plane
+independently.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamsummcol</b>
+performs the operation on the actual sample values, not on
+the light intensities represented by them in the case that
+the image is a PGM or PPM image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you want to
+summarize by row instead of by column, run the input through
+<b>pamflip</b> first (and if you want the output to be a
+single column instead of a single row, use <b>pamflip</b>
+again).</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you want to
+summarize over the entire image (getting a one-tuple output
+image), use <b>pamsumm</b> to get a summary row,
+<b>pamflip</b> to turn that into a column, the
+<b>pamsumm</b> again to summarize the column.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you want to
+summarize the individual samples in an entire image, instead
+of by tuple, use <b>pamsumm</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamsummcol</b>
+performs the operation on the actual sample values, not on
+the light intensities represented by them in the case that
+the image is a PGM or PPM image or PAM equivalent. You can
+use <b>pnmgamma</b> to convert such an image to one with
+samples proportional to light intensity, and then use
+<b>pamsummcol</b> on the result.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can achieve
+the same thing as <b>pamsummcol -mean</b> with
+<b>pamscale</b>. Just scale vertically to a single row,
+without scaling horizontally at all. Use the pixel mixing
+method.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamsummcol</b> recognizes the following command line
+options:</p>
+
+<p style="margin-left:11%; margin-top: 1em">You must
+specify exactly one of <b>-sum</b>, <b>-mean</b>,
+<b>-min</b>, or <b>-max</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-sum</b></p></td>
+<td width="5%"></td>
+<td width="73%">
+
+
+<p>This option makes the summary function addition.</p></td>
+<td width="5%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%;">In each column and plane of the
+output row, the sample value is the <br>
+sum of all the samples values in the same column and plane
+of the input. <br>
+If a result is greater than the image maxval, it is clipped
+to <br>
+the maxval.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em"><b>-mean</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">This option makes the summary
+function arithmetic mean.</p></td></tr>
+</table>
+
+<p style="margin-left:22%;">In each column and plane of the
+output row, the sample value is the <br>
+mean of all the samples values in the same column and plane
+of the input.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p style="margin-top: 1em"><b>-min</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">This option makes the summary
+function arithmetic minimum.</p></td></tr>
+</table>
+
+<p style="margin-left:22%;">In each column and plane of the
+output row, the sample value is the <br>
+minimum of all the samples values in the same column and
+plane of <br>
+the input.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p style="margin-top: 1em"><b>-max</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">This option makes the summary
+function arithmetic maximum.</p></td></tr>
+</table>
+
+<p style="margin-left:22%;">In each column and plane of the
+output row, the sample value is <br>
+the maximum of all the samples values in the same column and
+<br>
+plane of the input.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamsumm</b>(1),
+<b>pamflip</b>(1), <b>pamfunc</b>(1), <b>pamarith</b>(1),
+<b>pamscale</b>(1), <b>pam</b>(1),</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamsummcol</b>
+was added to Netpbm in Release 10.21 (March 2004).</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamsummcol.html</b></p>
+<hr>
+</body>
+</html>

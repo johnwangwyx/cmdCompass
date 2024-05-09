@@ -1,0 +1,329 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:49 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title></title>
+</head>
+<body>
+
+<hr>
+
+
+<p>SSH-ADD(1) BSD General Commands Manual SSH-ADD(1)</p>
+
+<p style="margin-top: 1em"><b>NAME</b></p>
+
+<p style="margin-left:6%;"><b>ssh-add</b> &mdash; adds
+private key identities to the OpenSSH authentication
+agent</p>
+
+<p style="margin-top: 1em"><b>SYNOPSIS</b></p>
+
+<p style="margin-left:17%;"><b>ssh-add</b>
+[<b>-cDdKkLlqvXx</b>]
+[<b>-E&nbsp;</b><i>fingerprint_hash</i>]
+[<b>-H&nbsp;</b><i>hostkey_file</i>]
+[<b>-h&nbsp;</b><i>destination_constraint</i>]
+[<b>-S&nbsp;</b><i>provider</i>]
+[<b>-t&nbsp;</b><i>life</i>] [<i>file&nbsp;...</i>] <b><br>
+ssh-add -s</b> <i>pkcs11</i> <b><br>
+ssh-add -e</b> <i>pkcs11</i> <b><br>
+ssh-add -T</b> <i>pubkey ...</i></p>
+
+<p style="margin-top: 1em"><b>DESCRIPTION</b></p>
+
+<p style="margin-left:6%;"><b>ssh-add</b> adds private key
+identities to the authentication agent, ssh-agent(1). When
+run without arguments, it adds the files
+<i>~/.ssh/id_rsa</i>, <i>~/.ssh/id_ecdsa</i>,
+<i>~/.ssh/id_ecdsa_sk</i>, <i>~/.ssh/id_ed25519</i>,
+<i>~/.ssh/id_ed25519_sk</i>, and <i>~/.ssh/id_dsa</i>. After
+loading a private key, <b>ssh-add</b> will try to load
+corresponding certificate information from the filename
+obtained by appending <i>-cert.pub</i> to the name of the
+private key file. Alternative file names can be given on the
+command line.</p>
+
+<p style="margin-left:6%; margin-top: 1em">If any file
+requires a passphrase, <b>ssh-add</b> asks for the
+passphrase from the user. The passphrase is read from the
+user&rsquo;s tty. <b>ssh-add</b> retries the last passphrase
+if multiple identity files are given.</p>
+
+<p style="margin-left:6%; margin-top: 1em">The
+authentication agent must be running and the SSH_AUTH_SOCK
+environment variable must contain the name of its socket for
+<b>ssh-add</b> to work.</p>
+
+<p style="margin-left:6%; margin-top: 1em">The options are
+as follows:</p>
+
+<p style="margin-top: 1em"><b>-c</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Indicates that
+added identities should be subject to confirmation before
+being used for authentication. Confirmation is performed by
+ssh-askpass(1). Successful confirmation is signaled by a
+zero exit status from ssh-askpass(1), rather than text
+entered into the requester.</p>
+
+<p style="margin-top: 1em"><b>-D</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Deletes all
+identities from the agent.</p>
+
+<p style="margin-top: 1em"><b>-d</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Instead of
+adding identities, removes identities from the agent. If
+<b>ssh-add</b> has been run without arguments, the keys for
+the default identities and their corresponding certificates
+will be removed. Otherwise, the argument list will be
+interpreted as a list of paths to public key files to
+specify keys and certificates to be removed from the agent.
+If no public key is found at a given path, <b>ssh-add</b>
+will append <i>.pub</i> and retry. If the argument list
+consists of &ldquo;-&rdquo; then <b>ssh-add</b> will read
+public keys to be removed from standard input.</p>
+
+<p style="margin-top: 1em"><b>-E</b>
+<i>fingerprint_hash</i></p>
+
+<p style="margin-left:17%;">Specifies the hash algorithm
+used when displaying key fingerprints. Valid options are:
+&ldquo;md5&rdquo; and &ldquo;sha256&rdquo;. The default is
+&ldquo;sha256&rdquo;.</p>
+
+<p style="margin-top: 1em"><b>-e</b> <i>pkcs11</i></p>
+
+<p style="margin-left:17%;">Remove keys provided by the
+PKCS#11 shared library <i>pkcs11</i>.</p>
+
+<p style="margin-top: 1em"><b>-H</b>
+<i>hostkey_file</i></p>
+
+<p style="margin-left:17%;">Specifies a known hosts file to
+look up hostkeys when using destination-constrained keys via
+the <b>-h</b> flag. This option may be specified multiple
+times to allow multiple files to be searched. If no files
+are specified, <b>ssh-add</b> will use the default
+ssh_config(5) known hosts files: <i>~/.ssh/known_hosts</i>,
+<i>~/.ssh/known_hosts2</i>, <i>/etc/ssh/ssh_known_hosts</i>,
+and <i>/etc/ssh/ssh_known_hosts2</i>.</p>
+
+<p style="margin-top: 1em"><b>-h</b>
+<i>destination_constraint</i></p>
+
+<p style="margin-left:17%;">When adding keys, constrain
+them to be usable only through specific hosts or to specific
+destinations.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Destination
+constraints of the form &rsquo;[user@]dest-hostname&rsquo;
+permit use of the key only from the origin host (the one
+running ssh-agent(1)) to the listed destination host, with
+optional user name.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Constraints of
+the form &rsquo;src-hostname&gt;[user@]dst-hostname&rsquo;
+allow a key available on a forwarded ssh-agent(1) to be used
+through a particular host (as specified by
+&rsquo;src-hostname&rsquo;) to authenticate to a further
+host, specified by &rsquo;dst-hostname&rsquo;.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Multiple
+destination constraints may be added when loading keys. When
+attempting authentication with a key that has destination
+constraints, the whole connection path, including
+ssh-agent(1) forwarding, is tested against those constraints
+and each hop must be permitted for the attempt to succeed.
+For example, if key is forwarded to a remote host,
+&rsquo;host-b&rsquo;, and is attempting authentication to
+another host, &rsquo;host-c&rsquo;, then the operation will
+be successful only if &rsquo;host-b&rsquo; was permitted
+from the origin host and the subsequent
+&rsquo;host-b&gt;host-c&rsquo; hop is also permitted by
+destination constraints.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Hosts are
+identified by their host keys, and are looked up from known
+hosts files by <b>ssh-add</b>. Wildcards patterns may be
+used for hostnames and certificate host keys are supported.
+By default, keys added by <b>ssh-add</b> are not destination
+constrained.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Destination
+constraints were added in OpenSSH release 8.9. Support in
+both the remote SSH client and server is required when using
+destination-constrained keys over a forwarded ssh-agent(1)
+channel.</p>
+
+<p style="margin-left:17%; margin-top: 1em">It is also
+important to note that destination constraints can only be
+enforced by ssh-agent(1) when a key is used, or when it is
+forwarded by a <b>cooperating</b> ssh(1). Specifically, it
+does not prevent an attacker with access to a remote
+SSH_AUTH_SOCK from forwarding it again and using it on a
+different host (but only to a permitted destination).</p>
+
+<p style="margin-top: 1em"><b>-K</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Load resident
+keys from a FIDO authenticator.</p>
+
+<p style="margin-top: 1em"><b>-k</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">When loading
+keys into or deleting keys from the agent, process plain
+private keys only and skip certificates.</p>
+
+<p style="margin-top: 1em"><b>-L</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Lists public
+key parameters of all identities currently represented by
+the agent.</p>
+
+<p style="margin-top: 1em"><b>-l</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Lists
+fingerprints of all identities currently represented by the
+agent.</p>
+
+<p style="margin-top: 1em"><b>-q</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Be quiet after
+a successful operation.</p>
+
+<p style="margin-top: 1em"><b>-S</b> <i>provider</i></p>
+
+<p style="margin-left:17%;">Specifies a path to a library
+that will be used when adding FIDO authenticator-hosted
+keys, overriding the default of using the internal USB HID
+support.</p>
+
+<p style="margin-top: 1em"><b>-s</b> <i>pkcs11</i></p>
+
+<p style="margin-left:17%;">Add keys provided by the
+PKCS#11 shared library <i>pkcs11</i>.</p>
+
+<p style="margin-top: 1em"><b>-T</b> <i>pubkey ...</i></p>
+
+<p style="margin-left:17%;">Tests whether the private keys
+that correspond to the specified <i>pubkey</i> files are
+usable by performing sign and verify operations on each.</p>
+
+<p style="margin-top: 1em"><b>-t</b> <i>life</i></p>
+
+<p style="margin-left:17%;">Set a maximum lifetime when
+adding identities to an agent. The lifetime may be specified
+in seconds or in a time format specified in
+sshd_config(5).</p>
+
+<p style="margin-top: 1em"><b>-v</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Verbose mode.
+Causes <b>ssh-add</b> to print debugging messages about its
+progress. This is helpful in debugging problems. Multiple
+<b>-v</b> options increase the verbosity. The maximum is
+3.</p>
+
+<p style="margin-top: 1em"><b>-X</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Unlock the
+agent.</p>
+
+<p style="margin-top: 1em"><b>-x</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Lock the agent
+with a password.</p>
+
+<p style="margin-top: 1em"><b>ENVIRONMENT</b> <br>
+DISPLAY, SSH_ASKPASS and SSH_ASKPASS_REQUIRE</p>
+
+<p style="margin-left:17%;">If <b>ssh-add</b> needs a
+passphrase, it will read the passphrase from the current
+terminal if it was run from a terminal. If <b>ssh-add</b>
+does not have a terminal associated with it but DISPLAY and
+SSH_ASKPASS are set, it will execute the program specified
+by SSH_ASKPASS (by default &ldquo;ssh-askpass&rdquo;) and
+open an X11 window to read the passphrase. This is
+particularly useful when calling <b>ssh-add</b> from a
+<i>.xsession</i> or related script.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">SSH_ASKPASS_REQUIRE
+allows further control over the use of an askpass program.
+If this variable is set to &ldquo;never&rdquo; then
+<b>ssh-add</b> will never attempt to use one. If it is set
+to &ldquo;prefer&rdquo;, then <b>ssh-add</b> will prefer to
+use the askpass program instead of the TTY when requesting
+passwords. Finally, if the variable is set to
+&ldquo;force&rdquo;, then the askpass program will be used
+for all passphrase input regardless of whether DISPLAY is
+set.</p>
+
+<p style="margin-top: 1em">SSH_AUTH_SOCK</p>
+
+<p style="margin-left:17%;">Identifies the path of a
+UNIX-domain socket used to communicate with the agent.</p>
+
+<p style="margin-top: 1em">SSH_SK_PROVIDER</p>
+
+<p style="margin-left:17%;">Specifies a path to a library
+that will be used when loading any FIDO authenticator-hosted
+keys, overriding the default of using the built-in USB HID
+support.</p>
+
+<p style="margin-top: 1em"><b>FILES</b> <br>
+~/.ssh/id_dsa <br>
+~/.ssh/id_ecdsa <br>
+~/.ssh/id_ecdsa_sk <br>
+~/.ssh/id_ed25519 <br>
+~/.ssh/id_ed25519_sk <br>
+~/.ssh/id_rsa</p>
+
+<p style="margin-left:17%;">Contains the DSA, ECDSA,
+authenticator-hosted ECDSA, Ed25519, authenticator-hosted
+Ed25519 or RSA authentication identity of the user.</p>
+
+<p style="margin-left:6%; margin-top: 1em">Identity files
+should not be readable by anyone but the user. Note that
+<b>ssh-add</b> ignores identity files if they are accessible
+by others.</p>
+
+<p style="margin-top: 1em"><b>EXIT STATUS</b></p>
+
+<p style="margin-left:6%;">Exit status is 0 on success, 1
+if the specified command fails, and 2 if <b>ssh-add</b> is
+unable to contact the authentication agent.</p>
+
+<p style="margin-top: 1em"><b>SEE ALSO</b></p>
+
+<p style="margin-left:6%;">ssh(1), ssh-agent(1),
+ssh-askpass(1), ssh-keygen(1), sshd(8)</p>
+
+<p style="margin-top: 1em"><b>AUTHORS</b></p>
+
+<p style="margin-left:6%;">OpenSSH is a derivative of the
+original and free ssh 1.2.12 release by Tatu Ylonen. Aaron
+Campbell, Bob Beck, Markus Friedl, Niels Provos, Theo de
+Raadt and Dug Song removed many bugs, re-added newer
+features and created OpenSSH. Markus Friedl contributed the
+support for SSH protocol versions 1.5 and 2.0.</p>
+
+<p style="margin-left:6%; margin-top: 1em">BSD
+February&nbsp;4, 2022 BSD</p>
+<hr>
+</body>
+</html>

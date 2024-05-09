@@ -1,0 +1,492 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:34 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pngtopam User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pngtopam User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#NOTE">NOTE</a><br>
+<a href="#LIMITATIONS">LIMITATIONS</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pngtopam -
+convert a PNG image into a Netpbm image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pngtopam</b>
+[<b>-verbose</b>] [<b>-alphapam</b> | <b>-alpha</b> |
+<b>-mix</b>] [<b>-background</b>=<i>color</i>]
+[<b>-gamma</b>=<i>value</i>] [<b>-text</b>=<i>filename</i>]
+[<b>-time</b>] [<b>-byrow</b>] [<i>pngfile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviation of option is acceptable. You may use double
+hyphens instead of single hyphen to denote options. You may
+use white space in place of the equals sign to separate an
+option name from its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pngtopam</b>
+reads a PNG image (Portable Network Graphics) as input and
+produces a Netpbm image as output. The type of the output
+file depends on the input file - if it&rsquo;s black &amp;
+white, <b>pngtopam</b> creates a PBM file. If it&rsquo;s
+grayscale, <b>pngtopam</b> creates a PGM file. Otherwise, it
+creates a PPM file. Except that with the <b>-alphapam</b>
+option, it always creates a PAM file. That file has tuple
+type GRAYSCALE_ALPHA or RGB_ALPHA depending on whether the
+input has color or not.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To convert in
+the other direction, use <b>pamtopng</b> or <b>pnmtopng</b>.
+The former is the more modern of the two and can recognize
+transparency information in a PAM file, as you might
+generate with <b>pngtopam -alphapam</b>. It has existed only
+since June 2015. The latter has more features, but probably
+not ones that matter in the modern world.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pngtopam</b> recognizes the following command line
+options: <b><br>
+-verbose</b></p>
+
+<p style="margin-left:22%;">Display various information
+about the input PNG image and the conversion process.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you want
+even more information about the PNG image, use
+<b>pngcheck</b> (not part of Netpbm).</p>
+
+<p style="margin-left:11%;"><b>-alphapam</b></p>
+
+<p style="margin-left:22%;">Produce a single output image
+containing the main image (foreground) and the transparency
+channel or transparency mask. This image is in the PAM
+format with tuple type of either GRAYSCALE_ALPHA (which has
+a depth of 2 channels) or RGB_ALPHA (which has a depth of 4
+channels).</p>
+
+<p style="margin-left:22%; margin-top: 1em">You can specify
+only one of <b>-alphapam</b>, <b>-alpha</b>, and
+<b>-mix</b>. With none of them, <b>pngtopam</b> produces an
+image of the foreground of the input image and discards
+transparency information.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.44 (September 2008).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-alpha</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Output the transparency channel or transparency mask of
+the image. The result is either a PBM file or a PGM file,
+depending on whether different levels of transparency
+appear.</p> </td></tr>
+</table>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>pngtopam</b>
+discards the main image (the foreground).</p>
+
+<p style="margin-left:22%; margin-top: 1em">You can specify
+only one of <b>-alphapam</b>, <b>-alpha</b>, and
+<b>-mix</b>. With none of them, <b>pngtopam</b> produces an
+image of the foreground of the input image and discards
+transparency information.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p style="margin-top: 1em"><b>-mix</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Compose the image with the
+transparency or transparency mask against a background. The
+background color is determined by the bKGD chunk in the PNG,
+except that you can override it with <b>-background</b>. If
+the PNG has no bKGD chunk and you don&rsquo;t specify
+<b>-background</b>, the background color is white.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">You can specify
+only one of <b>-alphapam</b>, <b>-alpha</b>, and
+<b>-mix</b>. With none of them, <b>pngtopam</b> produces an
+image of the foreground of the input image and discards
+transparency information.</p>
+
+
+<p style="margin-left:11%;"><b>-background=</b><i>color</i></p>
+
+<p style="margin-left:22%;">This option specifies the
+background color with which to mix the image when you
+specify <b>-mix</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>color</i> is
+as described for the
+<a href="libnetpbm_image.html#colorname">argument of the
+<b>pnm_parsecolor()</b> library routine</a> .</p>
+
+<p style="margin-left:22%; margin-top: 1em">Examples:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="40%">
+
+
+<p>-background=rgb:01/ff/80</p></td>
+<td width="38%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="40%">
+
+
+<p>-background=rgbi:1/255/128</p></td>
+<td width="38%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">If you
+don&rsquo;t specify <b>-background</b>, the background color
+is what is specified in the PNG image, and if the PNG
+doesn&rsquo;t specify anything, white.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You cannot
+specify <b>-background</b> unless you also specify
+<b>-mix</b>. Before Netpbm 10.27 (March 2005), you could
+specify <b>-background</b> without <b>-mix</b> and it was
+just ignored. (This caused a usability problem).</p>
+
+<p style="margin-left:11%;"><b>-gamma=</b><i>value</i></p>
+
+<p style="margin-left:22%;">This option causes
+<b>pngtopam</b> to respect the image gamma information in
+the PNG file (from the gAMA chunk). Probably by historical
+accident, <b>pngtopam</b> ignores that information by
+default, assuming the image uses the same gamma
+transformation as a Netpbm image, so the output image has
+different colors than the PNG file actually represents if
+the PNG doesn&rsquo;t actually do that. (However, it is rare
+for a PNG file to use a gamma transformation different from
+what the Netpbm formats specify, or if it does, to specify
+with a gAMA chuck what that is).</p>
+
+<p style="margin-left:22%; margin-top: 1em">But when you
+<i>do</i> specify <b>-gamma</b>, you get a rather strange
+additional function, probably a historical mistake:
+<b>pngtopam</b> incorporates the specified screen gamma
+value into the output pixels, so that the samples in the
+Netpbm output deviate from the Netpbm format specifications
+and are appropriate raw intensity values to send to the
+display. This function essentially just exercises the
+ability of the PNG library to make gamma corrections to the
+pixels as it reads them from the PNG file to produce values
+appropriate for sending to a certain display in certain
+viewing conditions. It&rsquo;s a strange function because it
+has nothing to do with PNG and because in Netpbm, the normal
+way to make gamma corrections appropriate for sending to a
+ceratin display in certain viewing conditions is with the
+program <b>pngtopam</b>, applied to the normal output of
+<b>pngtopam</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you specify
+<b>-gamma</b>, but the PNG image does not specify what gamma
+transformation it uses (there is no gAMA chunk),
+<b>pngtopam</b> assumes a simple power transformation with
+an image gamma of 1.0. That is probably not not the actual
+image gamma; it is much more likely to be .45.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Because the
+gammas of uncompensated monitors are around 2.6, which
+results in an image-gamma of 0.45, some typical situations
+are: when the image-gamma is 0.45 (use -verbose to check)
+and the picture is too light, your system is
+gamma-corrected, so convert with &quot;-gamma 1.0&quot;.
+When no gAMA chunk is present or the image-gamma is 1.0, use
+2.2 to make the picture lighter and 0.45 to make the picture
+darker.</p>
+
+<p style="margin-left:22%; margin-top: 1em">One oddity to
+be aware of when using <b>-gamma</b> on an image with
+transparency: The PNG image specifies that a certain color
+is transparent, i.e. every pixel in the image of that color
+is transparent. But <b>pngtopam</b> interprets this as
+applying to the gamma-corrected space, and there may be less
+precision in that space than in the original, which means
+multiple uncorrected colors map to the same corrected color.
+So imagine that the image contains 3 shades of white (gray)
+and specifies that one of them is transparent. After gamma
+correction, those three shades are indistinguishable, so
+<b>pngtopam</b> considers pixels of all three shades to be
+transparent.</p>
+
+<p style="margin-left:11%;"><b>-text=</b><i>file</i></p>
+
+<p style="margin-left:22%;">Writes the tEXt and zTXt chunks
+to a file, in a format as described in the <b>pnmtopng</b>
+user manual. These chunks contain text comments or
+annotations.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-time</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Prints the tIME chunk to stderr.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-byrow</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>This option can make <b>pngtopam</b> run faster or in
+environments where it would otherwise fail.</p></td></tr>
+</table>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>pngtopam</b>
+has two ways to do the conversion from PNG to PAM, using
+respectively two facilities of the PNG library:</p>
+
+<p style="margin-left:11%;">Whole Image</p>
+
+<p style="margin-left:22%;">Decode the entire image into
+memory at once, using <b>png_read_image()</b>, then convert
+to PAM and output row by row.</p>
+
+<p style="margin-left:11%;">Row By Row</p>
+
+<p style="margin-left:22%;">Read, convert, and output one
+row at a time using <b>png_read_row()</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Whole Image is
+generally preferable because the PNG library does more of
+the work, which means it understands more of the PNG format
+possibilities now and in the future. Also, if the PNG is
+interlaced, <b>pngtopam</b> does not know how to assemble
+the rows in the right order.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Row By Row uses
+far less memory, which means with large images, it can run
+in environments where Whole Image cannot and may also run
+faster. And because Netpbm code does more of the work,
+it&rsquo;s possible that it can be more flexible or at least
+give better diagnostic information if there&rsquo;s
+something wrong with the PNG.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The Netpbm
+native code may do something correctly that the PNG library
+does incorrectly, or vice versa.</p>
+
+<p style="margin-left:22%; margin-top: 1em">In Netpbm, we
+stress function over performance, so by default
+<b>pngtopam</b> uses Whole Image. You can select Row By Row
+with <b>-byrow</b> if you want the speed or resource
+requirement improvement.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>-byrow</b>
+was new in Netpbm 10.54 (March 2011).</p>
+
+<p style="margin-left:11%;"><b>-orientraw</b></p>
+
+<p style="margin-left:22%;">A TIFF stream contains raster
+data which can be arranged in the stream various ways. Most
+commonly, it is arranged by rows, with the top row first,
+and the pixels left to right within each row, but many other
+orientations are possible.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The common
+orientation is the same on the Netpbm formats use, so
+<b>tifftopnm</b> can do its jobs quite efficiently when the
+TIFF raster is oriented that way.</p>
+
+<p style="margin-left:22%; margin-top: 1em">But if the TIFF
+raster is oriented any other way, it can take a considerable
+amount of processing for <b>tifftopnm</b> to convert it to
+Netpbm format.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtopng</b>(1),
+<b>pnmtopng</b>(1), <b>pngtopnm</b>(1), <b>ptot</b>,
+<b>pnmgamma</b>(1), <b>pnm</b>(1)</p>
+
+<p style="margin-left:11%; margin-top: 1em">For information
+on the PNG format, see
+<a href="http://schaik.com/png">http://schaik.com/png</a>
+.</p>
+
+<h2>NOTE
+<a name="NOTE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">A PNG image
+contains a lot of information that can&rsquo;t be
+represented in Netpbm formats. Therefore, you lose
+information when you convert to another format with
+&quot;pngtopam | pnmtoxxx&quot;. If there is a specialized
+converter that converts directly to the other format, e.g.
+<b>ptot</b> to convert from PNG to TIFF, you&rsquo;ll get
+better results using that.</p>
+
+<h2>LIMITATIONS
+<a name="LIMITATIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">There could be
+an option to include PNG comment chunks in the output image
+as PNM comments instead of putting them in a separate
+file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The program
+could be much faster, with a bit of code optimizing. As with
+any Netpbm program, speed always takes a back seat to quick
+present and future development.</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pngtopam</b>
+was new in Netpbm 10.44, as a replacement for
+<b>pngtopnm</b>. The main improvement over <b>pngtopnm</b>
+was that it could generate a PAM image with a transparency
+channel, whereas with <b>pngtopnm</b>, you would have to
+extract the transparency channel as a separate file, in a
+separate run.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pngtopnm</b>
+was new in Netpbm 8.1 (March 2000), the first big change to
+the package in Netpbm&rsquo;s renaissance. It and
+<b>pnmtopng</b> were simply copied from the <b>pnmtopng</b>
+package&quot; (1) by Greg Roelofs. Those were based on
+simpler reference applications by Alexander Lehmann
+&lt;alex@hal.rhein-main.de&gt; and Willem van Schaik
+&lt;willem@schaik.com&gt; and distributed with their PNG
+library.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Nearly all of
+the code has changed since it was copied from the
+<b>pnmtopng</b> package, most of it just to improve
+maintainability.</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1995-1997 by Alexander Lehmann and Willem van Schaik.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pngtopam.html</b></p>
+<hr>
+</body>
+</html>

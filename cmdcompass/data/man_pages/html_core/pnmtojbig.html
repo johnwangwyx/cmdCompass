@@ -1,0 +1,516 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:36 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pnmtojbig User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pnmtojbig User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#FORMATS">FORMATS</a><br>
+<a href="#STANDARDS">STANDARDS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#LICENSE">LICENSE</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pnmtojbig - PNM
+to JBIG file converter</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmtojbig</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<i>options</i>]
+[<i>input-file</i> [<i>output-file</i>]]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmtojbig</b>
+reads a PBM or PGM image, compresses it, and outputs the
+image as a JBIG bi-level image entity (BIE) file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">JBIG is a
+highly effective lossless compression algorithm for bi-level
+images (one bit per pixel), which is particularly suitable
+for scanned document pages.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A JBIG encoded
+image can be stored in several resolutions (progressive
+mode). These resolution layers can be stored all in one
+single BIE or they can be stored in several separate BIE
+files. All resolution layers except the lowest one are
+stored merely as differences to the next lower resolution
+layer, because this requires less space than encoding the
+full image completely every time. Each resolution layer has
+twice the number of horizontal and vertical pixels than the
+next lower layer. JBIG files can also store several bits per
+pixel as separate bitmap planes, and <b>pnmtojbig</b> can
+read a PGM file and transform it into a multi-bitplane
+BIE.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pnmtojbig</b> recognizes the following command line
+options:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-q</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Encode the image in one single resolution layer
+(sequential mode). This is usually the most efficient
+compression method. By default, the number of resolution
+layers is chosen automatically such that the lowest layer
+image is not larger than 640 &times; 480 pixels.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-x</b> <i>number</i></p>
+
+<p style="margin-left:22%;">Specify the maximal horizontal
+size of the lowest resolution layer. The default is 640
+pixels.</p>
+
+<p style="margin-left:11%;"><b>-y</b> <i>number</i></p>
+
+<p style="margin-left:22%;">Specify the maximal vertical
+size of the lowest resolution layer. The default is 480
+pixels.</p>
+
+<p style="margin-left:11%;"><b>-l</b> <i>number</i></p>
+
+<p style="margin-left:22%;">Select the lowest resolution
+layer that will be written to the BIE. It is possible to
+store the various resolution layers of a JBIG image in
+progressive mode into different BIEs. Options <b>-l</b> and
+<b>-h</b> allow you to select the resolution-layer interval
+that will appear in the created BIE. The lowest resolution
+layer has number 0 and this is also the default value. By
+default, <b>pnmtojbig</b> writes all layers.</p>
+
+<p style="margin-left:11%;"><b>-h</b> <i>number</i></p>
+
+<p style="margin-left:22%;">Select the highest resolution
+layer that will be written to the BIE. By default,
+<b>pnmtojbig</b> writes all layers. See also option
+<b>-l</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-b</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Use binary values instead of Gray code words in order to
+encode pixel values in multiple bitplanes. This option has
+only an effect if the input is a PGM file and if more than
+one bitplane is produced. Note that the decoder has to make
+the same selection but cannot determine from the BIE,
+whether Gray or binary code words were used by the
+encoder.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-d</b> <i>number</i></p>
+
+<p style="margin-left:22%;">Specify the total number of
+differential resolution layers into which the input image
+will be split in addition to the lowest layer. Each
+additional layer reduces the size of layer 0 by 50 %. This
+option overrides options <b>-x</b> and <b>-y</b>, which are
+usually a more comfortable way of selecting the number of
+resolution layers.</p>
+
+<p style="margin-left:11%;"><b>-s</b> <i>number</i></p>
+
+<p style="margin-left:22%;">The JBIG algorithm splits each
+image into a number of horizontal stripes. This option
+specifies that each stripe shall have <i>number</i> lines in
+layer 0. The default value is selected so that approximately
+35 stripes will be used for the whole image.</p>
+
+<p style="margin-left:11%;"><b>-m</b> <i>number</i></p>
+
+<p style="margin-left:22%;">Select the maximum horizontal
+offset of the adaptive template pixel. The JBIG encoder uses
+a number of neighbour pixels in order to get statistical a
+priori knowledge of the probability, whether the next pixel
+will be black or white. One single pixel out of this
+template of context neighbor pixels can be moved around.
+Especially for dithered images it can be a significant
+advantage to have one neighbor pixel which has a distance
+large enough to cover the period of a dither function. By
+default, the adaptive template pixel can be moved up to 8
+pixels away. This encoder go up to 23 pixels, however as
+decoders are only required to handle at least a distance of
+16 pixels by the standard, no higher value than 16 for
+<i>number</i> is recommended in order to maintain
+interoperability with other JBIG implementations. The
+maximal vertical offset of the adaptive template pixel is
+always zero.</p>
+
+<p style="margin-left:11%;"><b>-t</b> <i>number</i></p>
+
+<p style="margin-left:22%;">Encode only the specified
+number of most significant bit planes. This option allows to
+reduce the depth of an input PGM file if not all bits per
+pixel are needed in the output.</p>
+
+<p style="margin-left:11%;"><b>-o</b> <i>number</i></p>
+
+<p style="margin-left:22%;">JBIG separates an image into
+several horizontal stripes, resolution layers and planes,
+were each plane contains one bit per pixel. One single
+stripe in one plane and layer is encoded as a data unit
+called stripe data entity (SDE) inside the BIE. There are 12
+different possible orders in which the SDEs can be stored
+inside the BIE and <i>number</i> selects which one shall be
+used. The order of the SDEs is only relevant for
+applications that want to decode a JBIG file which has not
+yet completely arrived from e.g. a slow network connection.
+For instance some applications prefer that the outermost of
+the three loops (stripes, layers, planes) is over all layers
+so that all data of the lowest resolution layer is
+transmitted first.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The following
+values for <i>number</i> select these loop arrangements for
+writing the SDEs (outermost loop first):</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>0</p></td>
+<td width="10%"></td>
+<td width="35%">
+
+
+<p>planes, layers, stripes</p></td>
+<td width="43%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>2</p></td>
+<td width="10%"></td>
+<td width="35%">
+
+
+<p>layers, planes, stripes</p></td>
+<td width="43%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>3</p></td>
+<td width="10%"></td>
+<td width="35%">
+
+
+<p>layers, stripes, planes</p></td>
+<td width="43%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>4</p></td>
+<td width="10%"></td>
+<td width="35%">
+
+
+<p>stripes, planes, layers</p></td>
+<td width="43%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>5</p></td>
+<td width="10%"></td>
+<td width="35%">
+
+
+<p>planes, stripes, layers</p></td>
+<td width="43%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>6</p></td>
+<td width="10%"></td>
+<td width="35%">
+
+
+<p>stripes, layers, planes</p></td>
+<td width="43%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">All loops count
+starting with zero, however by adding 8 to the above order
+code, the layer loop can be reversed so that it counts down
+to zero and then higher resolution layers will be stored
+before lower layers. Default order is 3 which writes at
+first all planes of the first stripe and then completes
+layer 0 before continuing with the next layer and so on.</p>
+
+<p style="margin-left:11%;"><b>-p</b> <i>number</i></p>
+
+<p style="margin-left:22%;">This option allows you to
+activate or deactivate various optional algorithms defined
+in the JBIG standard. Just add the numbers of the following
+options which you want to activate in order to get the
+<i>number</i> value:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>4</p></td>
+<td width="8%"></td>
+<td width="58%">
+
+
+<p>deterministic prediction (DPON)</p></td>
+<td width="20%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>8</p></td>
+<td width="8%"></td>
+<td width="58%">
+
+
+<p>typical prediction (TPBON)</p></td>
+<td width="20%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>16</p></td>
+<td width="8%"></td>
+<td width="58%">
+
+
+<p>diff. layer typical prediction (TPDON)</p></td>
+<td width="20%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>64</p></td>
+<td width="8%"></td>
+<td width="58%">
+
+
+<p>layer 0 two-line template (LRLTWO)</p></td>
+<td width="20%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">Except for
+special applications (like communication with JBIG subset
+implementations) and for debugging purposes you will
+normally not want to change anything here. The default is
+28, which provides the best compression result.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-c</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">The adaptive template pixel
+movement is determined as suggested in annex C of the
+standard. By default the template change takes place
+directly in the next line which is most effective. However a
+few conformance test examples in the standard require the
+adaptive template change to be delayed until the first line
+of the next stripe. This option selects this special
+behavior, which is normally not required except in order to
+pass some conformance test suite.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-v</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>After <b>pnmtojbig</b> creates the BIE, it lists a few
+technical details of the created file (verbose mode).</p></td></tr>
+</table>
+
+<h2>FORMATS
+<a name="FORMATS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Most of the
+format <b>pnmtojbig</b> creates is defined by the JBIG
+standard.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The standard,
+however, does not specify which values in the BIE mean white
+and which mean black. It contains a recommendation that for
+a single plane image zero mean background and one mean
+foreground, but the Netpbm formats have no concept of
+foreground and background. And the standard says nothing
+about values for multiple plane BIEs.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmtojbig</b>
+follows Markus Kuhn&rsquo;s implementation of the standard
+in the <b>pbmtojbg</b> program that comes with his JBIG
+library: If the BIE is a single plane BIE, zero means white
+and one means black. If it is a multiple plane BIE, zero
+means black and the maximal value is white.</p>
+
+<h2>STANDARDS
+<a name="STANDARDS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program
+implements the JBIG image coding algorithm as specified in
+ISO/IEC 11544:1993 and ITU-T T.82(1993).</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmtojbig</b>
+is based on the JBIG library by Markus Kuhn, part of his
+<b>JBIG-KIT</b> package. The <b>pbmtojbg</b> program is part
+of the <i>JBIG-KIT</i> package. The most recent version of
+that library and tools set is freely available on the
+Internet from anonymous ftp server
+<a href="ftp://ftp.informatik.uni-erlangen.de">ftp.informatik.uni-erlangen.de</a>
+in directory pub/doc/ISO/JBIG/.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmtojbig</b>
+is part of the Netpbm package of graphics tools.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnm</b>(1),
+<b>jbigtopnm</b>(1)</p>
+
+<h2>LICENSE
+<a name="LICENSE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">There was at
+one time concern about the need for patent licenses to use
+<b>pnmtojbig</b>, but any relevant patents expired by
+2012.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pnmtojbig.html</b></p>
+<hr>
+</body>
+</html>

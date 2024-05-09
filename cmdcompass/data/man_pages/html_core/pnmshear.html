@@ -1,0 +1,192 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:35 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pnmshear User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pnmshear User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pnmshear -
+shear a PNM image by a specified angle</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmshear</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-noantialias</b>]
+[<b>-background=</b><i>color</i>] <i>angle</i>
+[<i>pnmfile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">All options can
+be abbreviated to their shortest unique prefix. You may use
+two hyphens instead of one to designate an option. You may
+use either white space or equals signs between an option
+name and its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmshear</b>
+reads a PNM image as input and shears it by the specified
+angle and produce a PNM image as output. If the input file
+is in color, the output will be too, otherwise it will be
+grayscale. The angle is in degrees (floating point), and
+measures this:</p>
+
+<p style="margin-left:11%; margin-top: 1em">+-------+
++-------+ <br>
+| | |\ \ <br>
+| OLD | | \ NEW \ <br>
+| | |an\ \ <br>
++-------+ |gle+-------+</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the angle is
+negative, it shears the other way: <br>
++-------+ |-an+-------+ <br>
+| | |gl/ / <br>
+| OLD | |e/ NEW / <br>
+| | |/ / <br>
++-------+ +-------+</p>
+
+<p style="margin-left:11%; margin-top: 1em">The angle
+should not get too close to 90 or -90, or the resulting
+image will be unreasonably wide. In fact, if it gets too
+close, the width will be so large that <b>pnmshear</b>
+cannot do computations in the word sizes it uses, and the
+program detects this and fails.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmshear</b>
+does the shearing by looping over the source pixels and
+distributing fractions to each of the destination pixels.
+This has an &quot;anti-aliasing&quot; effect - it avoids
+jagged edges and similar artifacts. However, it also means
+that the original colors in the image are modified and there
+are typically more of them than you started with. If you
+need to keep precisely the same set of colors, see the
+<b>-noantialias</b> option. If the expanded palette is a
+problem, you can run the result through <b>pnmquant</b>.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pnmshear</b> recognizes the following command line
+options: <b><br>
+-background=</b><i>color</i></p>
+
+<p style="margin-left:22%;">This determines the color of
+the background on which the sheared image sits.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Specify the
+color (<i>color</i>) as described for the
+<a href="libnetpbm_image.html#colorname">argument of the
+<b>pnm_parsecolor()</b> library routine</a> .</p>
+
+<p style="margin-left:22%; margin-top: 1em">By default, if
+you don&rsquo;t specify this option, <b>pnmshear</b> selects
+what appears to it to be the background color of the
+original image. It determines this color rather
+simplistically, by taking an average of the colors of the
+two top corners of the image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.37 (December 2006). Before that,
+<b>pnmshear</b> always behaved as is the default now.</p>
+
+<p style="margin-left:11%;"><b>-noantialias</b></p>
+
+<p style="margin-left:22%;">This option forces
+<b>pnmshear</b> to simply move pixels around instead of
+synthesizing output pixels from multiple input pixels. The
+latter could cause the output to contain colors that are not
+in the input, which may not be desirable. It also probably
+makes the output contain a large number of colors. If you
+need a small number of colors, but it doesn&rsquo;t matter
+if they are the exact ones from the input, consider using
+<b>pnmquant</b> on the output instead of using
+<b>-noantialias</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Note that to
+ensure the output does not contain colors that are not in
+the input, you also must consider the background color. See
+the <b>-background</b> option.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmrotate</b>(1),
+<b>pamflip</b>(1), <b>pamhomography</b>(1),
+<b>pnmquant</b>(1), <b>pnm</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1989, 1991 by Jef Poskanzer.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pnmshear.html</b></p>
+<hr>
+</body>
+</html>

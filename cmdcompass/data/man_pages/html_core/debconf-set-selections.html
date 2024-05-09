@@ -1,0 +1,160 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:00 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>DEBCONF-SET-SELECTIONS</title>
+
+</head>
+<body>
+
+<h1 align="center">DEBCONF-SET-SELECTIONS</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#WARNING">WARNING</a><br>
+<a href="#DATA FORMAT">DATA FORMAT</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">debconf-set-selections
+- insert new values into the debconf database</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">debconf-set-selections
+file <br>
+debconf-get-selections | ssh newhost
+debconf-set-selections</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>debconf-set-selections</b>
+can be used to pre-seed the debconf database with answers,
+or to change answers in the database. Each question will be
+marked as seen to prevent debconf from asking the question
+interactively.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Reads from a
+file if a filename is given, otherwise from stdin.</p>
+
+<h2>WARNING
+<a name="WARNING"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Only use this
+command to seed debconf values for packages that will be or
+are installed. Otherwise you can end up with values in the
+database for uninstalled packages that will not go away, or
+with worse problems involving shared values. It is
+recommended that this only be used to seed the database if
+the originating machine has an identical install.</p>
+
+<h2>DATA FORMAT
+<a name="DATA FORMAT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The data is a
+series of lines. Lines beginning with a # character are
+comments. Blank lines are ignored. All other lines set the
+value of one question, and should contain four values, each
+separated by one character of whitespace. The first value is
+the name of the package that owns the question. The second
+is the name of the question, the third value is the type of
+this question, and the fourth value (through the end of the
+line) is the value to use for the answer of the
+question.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Alternatively,
+the third value can be &quot;seen&quot;; then the preseed
+line only controls whether the question is marked as seen in
+debconf&rsquo;s database. Note that preseeding a
+question&rsquo;s value defaults to marking that question as
+seen, so to override the default value without marking a
+question seen, you need two lines.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Lines can be
+continued to the next line by ending them with a
+&quot;\&quot; character.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"># Force debconf
+priority to critical. <br>
+debconf debconf/priority select critical <br>
+# Override default frontend to readline, but allow user to
+select. <br>
+debconf debconf/frontend select readline <br>
+debconf debconf/frontend seen false</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--verbose</b>,
+<b>-v</b></p>
+
+<p style="margin-left:17%;">verbose output</p>
+
+<p style="margin-left:11%;"><b>--checkonly</b>,
+<b>-c</b></p>
+
+<p style="margin-left:17%;">only check the input file
+format, do not save changes to database</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>debconf-get-selections</b>(1)
+(available in the debconf-utils package)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Petter
+Reinholdtsen &lt;pere@hungry.com&gt;</p>
+<hr>
+</body>
+</html>

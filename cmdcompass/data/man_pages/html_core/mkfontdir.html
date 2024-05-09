@@ -1,0 +1,358 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:18 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>MKFONTDIR</title>
+
+</head>
+<body>
+
+<h1 align="center">MKFONTDIR</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#SCALABLE FONTS">SCALABLE FONTS</a><br>
+<a href="#FONT NAME ALIASES">FONT NAME ALIASES</a><br>
+<a href="#ENCODING FILES">ENCODING FILES</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">mkfontdir -
+create an index of X font files in a directory</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mkfontdir</b>
+[<b>-n</b>] [<b>-x</b> <i>suffix</i>] [<b>-r</b>] [<b>-p</b>
+<i>prefix</i>] [<b>-e</b> <i>encoding-directory-name</i>]
+... [<b>--</b>] [<i>directory-name</i> ... ]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For each
+directory argument, <i>mkfontdir</i> reads all of the font
+files in the directory searching for properties named
+&quot;FONT&quot;, or (failing that) the name of the file
+stripped of its suffix. These are converted to lower case
+and used as font names, and, along with the name of the font
+file, are written out to the file &quot;fonts.dir&quot; in
+the directory. The X server and font server use
+&quot;fonts.dir&quot; to find font files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The kinds of
+font files read by <i>mkfontdir</i> depend on configuration
+parameters, but typically include PCF (suffix
+&quot;.pcf&quot;), SNF (suffix &quot;.snf&quot;) and BDF
+(suffix &quot;.bdf&quot;). If a font exists in multiple
+formats, <i>mkfontdir</i> will first choose PCF, then SNF
+and finally BDF.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The first line
+of fonts.dir gives the number of fonts in the file. The
+remaining lines list the fonts themselves, one per line, in
+two fields. First is the name of the font file, followed by
+a space and the name of the font.</p>
+
+<h2>SCALABLE FONTS
+<a name="SCALABLE FONTS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Because
+scalable font files do not usually include the X font name,
+the file &quot;fonts.scale&quot; can be used to name the
+scalable fonts in the directory. The fonts listed in it are
+copied to fonts.dir by <i>mkfontdir</i>.
+&quot;fonts.scale&quot; has the same format as the
+&quot;fonts.dir&quot; file, and can be created with the
+<i>mkfontscale</i>(1) program.</p>
+
+<h2>FONT NAME ALIASES
+<a name="FONT NAME ALIASES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The file
+&quot;fonts.alias&quot;, which can be put in any directory
+of the font-path, is used to map new names to existing
+fonts, and should be edited by hand. The format is two
+white-space separated columns, the first containing aliases
+and the second containing font-name patterns. Lines
+beginning with &quot;!&quot; are comment lines and are
+ignored.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If neither the
+alias nor the value specifies the size fields of the font
+name, this is a scalable alias. A font name of any size that
+matches this alias will be mapped to the same size of the
+font that the alias resolves to.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When a font
+alias is used, the name it references is searched for in the
+normal manner, looking through each font directory in turn.
+This means that the aliases need not mention fonts in the
+same directory as the alias file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To embed white
+space in either name, simply enclose it in double-quote
+marks; to embed double-quote marks (or any other character),
+precede them with back-slash:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="-3%">
+
+
+<p>&quot;magic-alias with spaces&quot;</p></td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%"></td>
+<td width="8%"></td>
+<td width="46%">
+
+
+<p>&quot;\&quot;font name\&quot; with quotes&quot;</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="-3%">
+
+
+<p>regular-alias</p></td>
+<td width="15%"></td>
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%">
+</td>
+<td width="8%">
+
+
+<p>fixed</p></td>
+<td width="46%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">If the string
+&quot;FILE_NAMES_ALIASES&quot; stands alone on a line, each
+file-name in the directory (stripped of its suffix) will be
+used as an alias for that font.</p>
+
+<h2>ENCODING FILES
+<a name="ENCODING FILES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The option
+<b>-e</b> can be used to specify a directory with encoding
+files. Every such directory is scanned for encoding files,
+the list of which is then written to an
+&quot;encodings.dir&quot; file in every font directory. The
+&quot;encodings.dir&quot; file is used by the server to find
+encoding information.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;encodings.dir&quot; file has the same format as
+&quot;fonts.dir&quot;. It maps encoding names (strings of
+the form
+<b>CHARSET_REGISTRY</b><i>-</i><b>CHARSET_ENCODING</b> ) to
+encoding file names.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+options are supported:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-e</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Specify a directory containing encoding files. The
+<b>-e</b> option may be specified multiple times, and all
+the specified directories will be read. The order of the
+entries is significant, as encodings found in earlier
+directories override those in later ones; encoding files in
+the same directory are discriminated by preferring
+compressed versions.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-n</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>do not scan for fonts, do not write font directory
+files. This option is useful when generating encoding
+directories only.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-p</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Specify a prefix that is prepended to the encoding file
+path names when they are written to the
+&quot;encodings.dir&quot; file. The prefix is prepended
+as-is. If a &rsquo;/&rsquo; is required between the prefix
+and the path names, it must be supplied explicitly as part
+of the prefix.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-r</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Keep non-absolute encoding directories in their relative
+form when writing the &quot;encodings.dir&quot; file. The
+default is to convert relative encoding directories to
+absolute directories by prepending the current directory.
+The positioning of this options is significant, as this
+option only applies to subsequent <b>-e</b> options.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-x</b> <i>suffix</i></p>
+
+<p style="margin-left:22%;">Ignore fonts files of type
+<i>suffix</i>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>--</b></p></td>
+<td width="8%"></td>
+<td width="18%">
+
+
+<p>End options.</p></td>
+<td width="60%">
+</td></tr>
+</table>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="20%">
+
+
+<p style="margin-top: 1em"><b>fonts.dir</b></p></td>
+<td width="3%"></td>
+<td width="66%">
+
+
+<p style="margin-top: 1em">List of fonts in the directory
+and the files they are stored in. Created by
+<i>mkfontdir</i>. Read by the X server and font server each
+time the font path is set (see xset(1)).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="20%">
+
+
+<p><b>fonts.scale</b></p></td>
+<td width="3%"></td>
+<td width="66%">
+
+
+<p>List of scalable fonts in the directory. Contents are
+copied to fonts.dir by <i>mkfontdir</i>. Can be created with
+<i>mkfontscale</i>(1).</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="20%">
+
+
+<p><b>fonts.alias</b></p></td>
+<td width="3%"></td>
+<td width="66%">
+
+
+<p>List of font name aliases. Read by the X server and font
+server each time the font path is set (see xset(1)).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="20%">
+
+
+<p><b>encodings.dir</b></p></td>
+<td width="3%"></td>
+<td width="66%">
+
+
+<p>List of known encodings and the files they are stored
+in. Created by <i>mkfontdir</i>. Read by the X server and
+font server each time a font with an unknown charset is
+opened.</p> </td></tr>
+</table>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">X(7),
+Xserver(1), mkfontscale(1), xfs(1), xset(1)</p>
+<hr>
+</body>
+</html>

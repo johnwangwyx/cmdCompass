@@ -1,0 +1,199 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:33:57 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>CHFN</title>
+
+</head>
+<body>
+
+<h1 align="center">CHFN</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#CONFIGURATION">CONFIGURATION</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">chfn - change
+real user name and information</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="34%">
+
+
+<p style="margin-top: 1em"><b>chfn</b> [<i>options</i>]
+[<i>LOGIN</i>]</p> </td>
+<td width="55%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The <b>chfn</b>
+command changes user fullname, office room number, office
+phone number, and home phone number information for a user's
+account. This information is typically printed by
+<b>finger</b>(1) and similar programs. A normal user may
+only change the fields for her own account, subject to the
+restrictions in /etc/login.defs. (The default configuration
+is to prevent users from changing their fullname.) The
+superuser may change any field for any account.
+Additionally, only the superuser may use the <b>-o</b>
+option to change the undefined portions of the GECOS
+field.</p>
+
+<p style="margin-left:11%; margin-top: 1em">These fields
+must not contain any colons. Except for the <i>other</i>
+field, they should not contain any comma or equal sign. It
+is also recommended to avoid non-US-ASCII characters, but
+this is only enforced for the phone numbers. The
+<i>other</i> field is used to store accounting information
+used by other applications.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The options
+which apply to the <b>chfn</b> command are:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-f</b>,
+<b>--full-name&nbsp;</b><i>FULL_NAME</i></p>
+
+<p style="margin-left:17%;">Change the user's full
+name.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--home-phone&nbsp;</b><i>HOME_PHONE</i></p>
+
+<p style="margin-left:17%;">Change the user's home phone
+number.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-o</b>,
+<b>--other&nbsp;</b><i>OTHER</i></p>
+
+<p style="margin-left:17%;">Change the user's other GECOS
+information. This field is used to store accounting
+information used by other applications, and can be changed
+only by a superuser.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-r</b>,
+<b>--room&nbsp;</b><i>ROOM_NUMBER</i></p>
+
+<p style="margin-left:17%;">Change the user's room
+number.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-R</b>,
+<b>--root&nbsp;</b><i>CHROOT_DIR</i></p>
+
+<p style="margin-left:17%;">Apply changes in the
+<i>CHROOT_DIR</i> directory and use the configuration files
+from the <i>CHROOT_DIR</i> directory. Only absolute paths
+are supported.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-u</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Display help message and
+exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-w</b>,
+<b>--work-phone&nbsp;</b><i>WORK_PHONE</i></p>
+
+<p style="margin-left:17%;">Change the user's office phone
+number.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If none of the
+options are selected, <b>chfn</b> operates in an interactive
+fashion, prompting the user with the current values for all
+of the fields. Enter the new value to change the field, or
+leave the line blank to use the current value. The current
+value is displayed between a pair of <b>[ ]</b> marks.
+Without options, <b>chfn</b> prompts for the current user
+account.</p>
+
+<h2>CONFIGURATION
+<a name="CONFIGURATION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+configuration variables in /etc/login.defs change the
+behavior of this tool:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>CHFN_RESTRICT</b>
+(string)</p>
+
+<p style="margin-left:17%;">This parameter specifies which
+values in the <i>gecos</i> field of the /etc/passwd file may
+be changed by regular users using the <b>chfn</b> program.
+It can be any combination of letters <i>f</i>, <i>r</i>,
+<i>w</i>, <i>h</i>, for Full name, Room number, Work phone,
+and Home phone, respectively. For backward compatibility,
+<i>yes</i> is equivalent to <i>rwh</i> and <i>no</i> is
+equivalent to <i>frwh</i>. If not specified, only the
+superuser can make any changes. The most restrictive setting
+is better achieved by not installing <b>chfn</b> SUID.</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">/etc/login.defs</p>
+
+<p style="margin-left:17%;">Shadow password suite
+configuration.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">/etc/passwd</p>
+
+<p style="margin-left:17%;">User account information.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>chsh</b>(1),
+<b>login.defs</b>(5), <b>passwd</b>(5).</p>
+<hr>
+</body>
+</html>

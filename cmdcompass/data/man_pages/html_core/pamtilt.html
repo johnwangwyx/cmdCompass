@@ -1,0 +1,273 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:27 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamtilt User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamtilt User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#REFERENCES">REFERENCES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamtilt - print
+the tilt angle of a PGM file</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtilt</b>
+[<b>-angle=</b><i>maxangle</i>] [<b>-fast</b>]
+[<b>-quality=</b><i>q</i>] [<b>-hstep=</b><i>n</i>]
+[<b>-vstep=</b><i>n</i>] [<b>-dstep=</b><i>n</i>]
+[<b>-astep=</b><i>n</i>] [<b>-verbose</b>]
+[<i>pgmfile</i>]</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">scanimage
+--mode Gray --resolution 300 &gt;crooked.pgm <br>
+pnmrotate -b white &rsquo;pamtilt crooked.pgm&rsquo;
+crooked.pgm &gt;straight.pgm <br>
+(then crop, threshold, etc.)</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtilt</b>
+tries to find the correct angle for untilting (de-skewing) a
+scanned text document. The output is a single floating-point
+number (the angle in degrees) for use as the argument to
+pnmrotate.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&quot;Document
+skew&quot; is the name given to what happens when you feed a
+page into an image scanner at an angle: the resulting image
+is tilted. <b>pamtilt</b> aims to help correct that.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtilt</b>
+makes three iterations at successively finer increments,
+testing prospective rotation angles to find the best one.
+<b>pamtilt</b> works best for straightening images with
+strong horizontal lines and does poorly with arbitrary
+photos. If <b>pamtilt</b> has no confidence in its results,
+it prints the special value 00.00; you can check for this or
+just pass it as a legal argument to pnmrotate.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtilt</b>
+operates on the first plane of the input image, which is
+either PNM or PAM, and ignores any other planes. Ordinarily,
+the input is PGM or GRAYSCALE PAM, so there is only one
+plane.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtilt</b>
+works on bilevel (PBM, BLACKANDWHITE PAM) images as well as
+grayscale, but you will minimize artifacts if you scan and
+rotate in grayscale before you apply a threshold to make a
+bilevel image.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamtilt</b> recognizes the following command line
+options: <b><br>
+-angle=</b><i>maxangle</i></p>
+
+<p style="margin-left:22%;">Assume a maximum tilt angle of
+<i>maxangle</i> (measured in degrees). The default value is
+sufficient for most images, even those scanned somewhat
+carelessly.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+10.0.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-fast</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Skip the third iteration for speed at the expense of
+accuracy.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-verbose</b></p>
+
+<p style="margin-left:22%;">Show on Standard Error the
+measurements computed at each tested angle.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Here are some
+other options you can use to tune the operation of
+<b>pamtilt</b> but they&rsquo;re seldom needed. The default
+values accommodate a wide variety of input documents.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-quality=</b><i>q</i></p>
+
+<p style="margin-left:22%;">Require a signal-to-noise ratio
+of a least <i>q</i> on the first iteration to report a valid
+result. Larger values reduce the chances of obtaining a
+bogus result at the risk of obtaining no result at all.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+1.0.</p>
+
+<p style="margin-left:11%;"><b>-hstep=</b><i>n</i></p>
+
+<p style="margin-left:22%;">Set the horizontal increment to
+check every <i>n</i>th column. This value affects both run
+time and memory requirements.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+11.</p>
+
+<p style="margin-left:11%;"><b>-vstep=</b><i>n</i></p>
+
+<p style="margin-left:22%;">Set the vertical increment to
+check every nth row. Larger values usually work, reducing
+run time, but they increase the risk of incorrect
+results.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+5.</p>
+
+<p style="margin-left:11%;"><b>-dstep=</b><i>n</i></p>
+
+<p style="margin-left:22%;">Set the vertical distance used
+when checking pixels in a column. The default is intended to
+minimize the effect of noise along a horizontal
+boundary.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+2.</p>
+
+<p style="margin-left:11%;"><b>-astep=</b><i>n</i></p>
+
+<p style="margin-left:22%;">Set the angle increment of the
+first iteration, in degrees.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+1.0.</p>
+
+<h2>REFERENCES
+<a name="REFERENCES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtilt</b>
+implements a somewhat simplified algorithm inspired by:
+&quot;Measuring Document Image Skew and Orientation&quot;,
+by Bloomberg, Kopec, and Dasari. In SPIE Volume 2422,
+Document Recognition II, pages 302-316, February 1995.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="18%">
+
+
+<p style="margin-top: 1em"><b>pnmrotate</b>(1)</p></td>
+<td width="60%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="18%">
+
+
+<p><b>pgm</b>(1)</p></td>
+<td width="60%">
+</td></tr>
+</table>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtilt</b>
+was new in Netpbm 10.30 (October 2005).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Gregg Townsend
+wrote it and sent it to Bryan Henderson in August 2005.
+Bryan recoded it to fit Netpbm conventions.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamtilt.html</b></p>
+<hr>
+</body>
+</html>

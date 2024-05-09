@@ -1,0 +1,229 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:33:55 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>BDFTOPCF</title>
+
+</head>
+<body>
+
+<h1 align="center">BDFTOPCF</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">bdftopcf -
+convert X font from Bitmap Distribution Format to Portable
+Compiled Format</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>bdftopcf</b>
+[ <b>-p</b><i>n</i> ] [ <b>-u</b><i>n</i> ] [ <b>-m</b> ] [
+<b>-l</b> ] [ <b>-M</b> ] [ <b>-L</b> ] [ <b>-t</b> ] [
+<b>-i</b> ] [ <b>-o</b> <i>outputfile</i> ] fontfile.bdf</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Bdftopcf</i>
+is a font compiler for the X server and font server. Fonts
+in Portable Compiled Format can be read by any architecture,
+although the file is structured to allow one particular
+architecture to read them directly without reformatting.
+This allows fast reading on the appropriate machine, but the
+files are still portable (but read more slowly) on other
+machines.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p style="margin-top: 1em"><b>-p</b><i>n</i></p></td>
+<td width="8%"></td>
+<td width="77%">
+
+
+<p style="margin-top: 1em">Sets the font glyph padding.
+Each glyph in the font will have each scanline padded in to
+a multiple of <i>n</i> bytes, where <i>n</i> is 1, 2, 4 or
+8.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>-u</b><i>n</i></p></td>
+<td width="8%"></td>
+<td width="77%">
+
+
+<p>Sets the font scanline unit. When the font bit order is
+different from the font byte order, the scanline unit
+<i>n</i> describes what unit of data (in bytes) are to be
+swapped; the unit <i>i</i> can be 1, 2 or 4 bytes.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>-m</b></p></td>
+<td width="8%"></td>
+<td width="77%">
+
+
+<p>Sets the font bit order to MSB (most significant bit)
+first. Bits for each glyph will be placed in this order;
+i.e., the left most bit on the screen will be in the highest
+valued bit in each unit.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>-l</b></p></td>
+<td width="8%"></td>
+<td width="77%">
+
+
+<p>Sets the font bit order to LSB (least significant bit)
+first. The left most bit on the screen will be in the lowest
+valued bit in each unit.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>-M</b></p></td>
+<td width="8%"></td>
+<td width="77%">
+
+
+<p>Sets the font byte order to MSB first. All multi-byte
+data in the file (metrics, bitmaps and everything else) will
+be written most significant byte first.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>-L</b></p></td>
+<td width="8%"></td>
+<td width="77%">
+
+
+<p>Sets the font byte order to LSB first. All multi-byte
+data in the file (metrics, bitmaps and everything else) will
+be written least significant byte first.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>-t</b></p></td>
+<td width="8%"></td>
+<td width="77%">
+
+
+<p>When this option is specified, <i>bdftopcf</i> will
+convert fonts into &quot;terminal&quot; fonts when possible.
+A terminal font has each glyph image padded to the same
+size; the X server can usually render these types of fonts
+more quickly.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>-i</b></p></td>
+<td width="8%"></td>
+<td width="77%">
+
+
+<p>This option inhibits the normal computation of ink
+metrics. When a font has glyph images which do not fill the
+bitmap image (i.e., the &quot;on&quot; pixels don&rsquo;t
+extend to the edges of the metrics) <i>bdftopcf</i> computes
+the actual ink metrics and places them in the .pcf file; the
+-t option inhibits this behaviour.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-o</b>
+<i>output-file-name</i></p>
+
+<p style="margin-left:23%;">By default <i>bdftopcf</i>
+writes the pcf file to standard output; this option gives
+the name of a file to be used instead.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-v</b></p></td>
+<td width="9%"></td>
+<td width="54%">
+
+
+<p>Print version information and exit.</p></td>
+<td width="23%">
+</td></tr>
+</table>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">X(7)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Keith Packard,
+MIT X Consortium</p>
+<hr>
+</body>
+</html>

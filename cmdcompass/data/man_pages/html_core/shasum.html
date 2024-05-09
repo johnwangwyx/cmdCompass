@@ -1,0 +1,155 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:47 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SHASUM</title>
+
+</head>
+<body>
+
+<h1 align="center">SHASUM</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">shasum - Print
+or Check SHA Checksums</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Usage: shasum
+[OPTION]... [FILE]... <br>
+Print or check SHA checksums. <br>
+With no FILE, or when FILE is -, read standard input. <br>
+-a, --algorithm 1 (default), 224, 256, 384, 512, 512224,
+512256 <br>
+-b, --binary read in binary mode <br>
+-c, --check read SHA sums from the FILEs and check them <br>
+--tag create a BSD-style checksum <br>
+-t, --text read in text mode (default) <br>
+-U, --UNIVERSAL read in Universal Newlines mode <br>
+produces same digest on Windows/Unix/Mac <br>
+-0, --01 read in BITS mode <br>
+ASCII '0' interpreted as 0-bit, <br>
+ASCII '1' interpreted as 1-bit, <br>
+all other characters ignored <br>
+The following five options are useful only when verifying
+checksums: <br>
+--ignore-missing don't fail or report status for missing
+files <br>
+-q, --quiet don't print OK for each successfully verified
+file <br>
+-s, --status don't output anything, status code shows
+success <br>
+--strict exit non-zero for improperly formatted checksum
+lines <br>
+-w, --warn warn about improperly formatted checksum lines
+<br>
+-h, --help display this help and exit <br>
+-v, --version output version information and exit <br>
+When verifying SHA-512/224 or SHA-512/256 checksums,
+indicate the <br>
+algorithm explicitly using the -a option, e.g. <br>
+shasum -a 512224 -c checksumfile <br>
+The sums are computed as described in FIPS PUB 180-4. When
+checking, <br>
+the input should be a former output of this program. The
+default <br>
+mode is to print a line with checksum, a character
+indicating type <br>
+(`*' for binary, ` ' for text, `U' for UNIVERSAL, `^' for
+BITS), <br>
+and name for each FILE. The line starts with a `\' character
+if the <br>
+FILE name contains either newlines or backslashes, which are
+then <br>
+replaced by the two-character sequences `\n' and `\\'
+respectively. <br>
+Report shasum bugs to mshelor@cpan.org</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Running
+<i>shasum</i> is often the quickest way to compute
+<small>SHA</small> message digests. The user simply feeds
+data to the script through files or standard input, and then
+collects the results from standard output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+command shows how to compute digests for typical inputs such
+as the <small>NIST</small> test vector &quot;abc&quot;:</p>
+
+<p style="margin-left:11%; margin-top: 1em">perl -e
+&quot;print qq(abc)&quot; | shasum</p>
+
+<p style="margin-left:11%; margin-top: 1em">Or, if you want
+to use <small>SHA-256</small> instead of the default
+<small>SHA-1,</small> simply say:</p>
+
+<p style="margin-left:11%; margin-top: 1em">perl -e
+&quot;print qq(abc)&quot; | shasum -a 256</p>
+
+<p style="margin-left:11%; margin-top: 1em">Since
+<i>shasum</i> mimics the behavior of the combined
+<small>GNU</small> <i>sha1sum</i>, <i>sha224sum</i>,
+<i>sha256sum</i>, <i>sha384sum</i>, and <i>sha512sum</i>
+programs, you can install this script as a convenient
+drop-in replacement.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Unlike the
+<small>GNU</small> programs, <i>shasum</i> encompasses the
+full <small>SHA</small> standard by allowing partial-byte
+inputs. This is accomplished through the <small>BITS</small>
+option (<i>-0</i>). The following example computes the
+<small>SHA-224</small> digest of the 7-bit message
+<i>0001100</i>:</p>
+
+<p style="margin-left:11%; margin-top: 1em">perl -e
+&quot;print qq(0001100)&quot; | shasum -0 -a 224</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+2003-2018 Mark Shelor &lt;mshelor@cpan.org&gt;.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>shasum</i>
+is implemented using the Perl module Digest::SHA.</p>
+<hr>
+</body>
+</html>

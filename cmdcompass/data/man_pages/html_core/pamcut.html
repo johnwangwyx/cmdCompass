@@ -1,0 +1,352 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:25 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamcut User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamcut User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamcut - cut a
+rectangle out of a PAM, PBM, PGM, or PPM image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamcut</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-left</b>
+<i>colnum</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-right</b>
+<i>colnum</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-top</b>
+<i>rownum</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-bottom</b>
+<i>rownum</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-width</b>
+<i>cols</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-height</b>
+<i>rows</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-pad</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-cropleft</b>
+<i>numcols</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-cropright</b>
+<i>numcols</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-croptop</b>
+<i>numrows</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-cropbottom</b>
+<i>numrows</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-verbose</b>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">[<i>left top
+width height</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<i>pnmfile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviations of option are acceptable. You may use double
+hyphens instead of single hyphen to denote options. You may
+use white space in place of the equals sign to separate an
+option name from its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamcut</b>
+reads a PAM, PBM, PGM, or PPM image as input and extracts
+the specified rectangle, and produces the same kind of image
+as output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can specify
+either the rectangle to cut out and keep or specify the
+edges to crop off and discard, or a combination.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To request
+edges be cropped off, use options <b>-cropleft</b>,
+<b>-cropright</b>, <b>-croptop</b>, and <b>-cropbottom</b>
+to indicate how many rows or columns to discard.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For example,
+<b>-cropleft=50 -cropright=200</b> means to discard the
+leftmost 50 and rightmost 200 columns.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To specify the
+rectangle to keep, use <b>-left</b>, <b>-right</b>,
+<b>-top</b>, <b>-bottom</b>, <b>-width</b>, <b>-height</b>,
+and <b>-pad</b> options.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For example,
+<b>-left=50 -right=200</b> means to keep the 150 columns
+between Columns 50 and 200 inclusive.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can code
+any mixture of the options. What you don&rsquo;t specify
+defaults. Those defaults are in favor of minimal cutting and
+in favor of cutting the right and bottom edges off. It is an
+error to overspecify, i.e. to specify all three of
+<b>-left</b>, <b>-right</b>, and <b>-width</b> or
+<b>-top</b>, <b>-bottom</b>, and <b>-height</b> or
+<b>right</b> as well as <b>-cropright</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There is an
+older way to specify the rectangle to keep: positional
+arguments. Arguments were the only way available before July
+2000, but you should not use them in new applications.
+Options are easier to remember and read, more expressive,
+and allow you to use defaults.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you use both
+options and arguments, the two specifications get mixed in
+an unspecified way.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To use
+arguments, specify all four of the <i>left</i>, <i>top</i>,
+<i>width</i>, and <i>height</i> arguments. <i>left</i> and
+<i>top</i> have the same effect as specifying them as the
+argument of a <b>-left</b> or <b>-top</b> option,
+respectively. <i>width</i> and <i>height</i> have the same
+effect as specifying them as the argument of a <b>-width</b>
+or <b>-height</b> option, respectively, where they are
+positive. Where they are not positive, they have the same
+effect as specifying one less than the value as the argument
+to a <b>-right</b> or <b>-bottom</b> option, respectively.
+(E.g. <i>width</i> = 0 makes the cut go all the way to the
+right edge). Before July 2000, negative numbers were not
+allowed for <i>width</i> and <i>height</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Input is from
+Standard Input if you don&rsquo;t specify the input file
+<i>pnmfile</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Output is to
+Standard Output.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamcut</b>
+works on a multi-image stream. It cuts each image in the
+stream independently and produces a multi-image stream
+output. Before Netpbm 10.32 (March 2006), it ignored all but
+the first image in the stream.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you are
+splitting a single image into multiple same-size images,
+<b>pamdice</b> is faster and easier than running
+<b>pamcut</b> multiple times.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamcomp</b>
+is also useful for cutting and padding an image to a certain
+size. You create a background image of the desired frame
+dimensions and overlay the subject image on it.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamcut</b> recognizes the following command line options:
+<b><br>
+-left=</b><i>colnum</i></p>
+
+<p style="margin-left:22%;">The column number of the
+leftmost column to be in the output. Columns left of this
+get cut out. If a nonnegative number, it refers to columns
+numbered from 0 at the left, increasing to the right. If
+negative, it refers to columns numbered -1 at the right,
+decreasing to the left.</p>
+
+
+<p style="margin-left:11%;"><b>-right=</b><i>colnum</i></p>
+
+<p style="margin-left:22%;">The column number of the
+rightmost column to be in the output, numbered the same as
+for <b>-left.</b> Columns to the right of this get cut
+out.</p>
+
+<p style="margin-left:11%;"><b>-top=</b><i>rownum</i></p>
+
+<p style="margin-left:22%;">The row number of the topmost
+row to be in the output. Rows above this get cut out. If a
+nonnegative number it refers to rows numbered from 0 at the
+top, increasing downward. If negative, it refers to columns
+numbered -1 at the bottom, decreasing upward.</p>
+
+
+<p style="margin-left:11%;"><b>-bottom=</b><i>rownum</i></p>
+
+<p style="margin-left:22%;">The row number of the
+bottom-most row to be in the output, numbered the same as
+for <b>-top</b>. Rows below this get cut out.</p>
+
+<p style="margin-left:11%;"><b>-width=</b><i>cols</i></p>
+
+<p style="margin-left:22%;">The number of columns to be in
+the output. Must be positive.</p>
+
+<p style="margin-left:11%;"><b>-height=</b><i>rows</i></p>
+
+<p style="margin-left:22%;">The number of rows to be in the
+output. Must be positive.</p>
+
+<p style="margin-left:11%;"><b>-cropleft <br>
+-cropright <br>
+-croptop <br>
+-cropbottom</b></p>
+
+<p style="margin-left:22%;">These options tell how many
+rows or columns to crop from the left, right, top, or bottom
+edges, respectively.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The value must
+not be negative.</p>
+
+<p style="margin-left:22%; margin-top: 1em">These option
+were new in Netpbm 10.85 (December 2018). Before that, you
+can achieve the same thing with <b>-left</b>, <b>top</b>,
+and negative values for <b>-right</b> and <b>-bottom</b>.
+Remember to subtract one in the latter case; e.g. the
+equivalent of <b>-cropright=1</b> is <b>-right=-2</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-pad</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>If the rectangle you specify is not entirely within the
+input image, <b>pamcut</b> fails unless you also specify
+<b>-pad</b>. In that case, it pads the output with black up
+to the edges you specify. You can use this option if you
+need to have an image of certain dimensions and have an
+image of arbitrary dimensions.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em"><b>pnmpad</b>
+also adds borders to an image, but you specify their width
+directly.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>pamcomp</b>
+does a more general form of this padding. Create a
+background image of the frame dimensions and overlay the
+subject image on it. You can use options to have the subject
+image in the center of the frame or against any edge and
+make the padding any color (the padding color is the color
+of the background image).</p>
+
+<p style="margin-left:11%;"><b>-verbose</b></p>
+
+<p style="margin-left:22%;">Print information about the
+processing to Standard Error.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmcrop</b>(1),
+<b>pamdice</b>(1), <b>pamcomp</b>(1), <b>pnmpad</b>(1),
+<b>pnmcat</b>(1), <b>pgmslice</b>(1), <b>pnm</b>(1)</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamcut</b>
+was derived from <b>pnmcut</b> in Netpbm 9.20 (May 2001). It
+was the first Netpbm program adapted to the new PAM format
+and programming library.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The predecessor
+<b>pnmcut</b> was one of the oldest tools in the Netpbm
+package.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1989 by Jef Poskanzer.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamcut.html</b></p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,523 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:33:56 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>CAPSH</title>
+
+</head>
+<body>
+
+<h1 align="center">CAPSH</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">capsh -
+capability shell wrapper</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>capsh</b>
+[<i>OPTION</i>]...</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Linux
+capability support and use can be explored and constrained
+with this tool. This tool provides a handy wrapper for
+certain types of capability testing and environment
+creation. It also provides some debugging features useful
+for summarizing capability state.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>capsh</b>
+takes a number of optional arguments, acting on them in the
+order they are provided. They are as follows:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--help</b></p></td>
+<td width="2%"></td>
+<td width="73%">
+
+
+<p>Display the list of commands supported by
+<b>capsh</b>.</p> </td>
+<td width="5%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--print</b></p>
+
+<p style="margin-left:22%;">Display prevailing capability
+and related state.</p>
+
+<p style="margin-left:11%;"><b>--current</b></p>
+
+<p style="margin-left:22%;">Display prevailing capability
+state, 1e capabilities and IAB vector.</p>
+
+<p style="margin-left:11%;"><b>--</b> <i>[args]</i></p>
+
+<p style="margin-left:22%;">Execute <b>/bin/bash</b> with
+trailing arguments. Note, you can use <b>-c &rsquo;command
+to execute&rsquo;</b> for specific commands.</p>
+
+<p style="margin-left:11%;"><b>-+</b> <i>[args]</i></p>
+
+<p style="margin-left:22%;">Uses <b>cap_launch</b>(3) to
+fork a child to execute the shell. When the child exits,
+<b>capsh</b> exits with the status of the child or 1 in the
+case that the child was terminated by a signal.</p>
+
+<p style="margin-left:11%;"><b>==</b> <i>[args]</i></p>
+
+<p style="margin-left:22%;">Execute <b>capsh</b> again with
+the remaining arguments. Useful for testing <b>exec</b>()
+behavior. Note, PATH is searched when the running
+<b>capsh</b> was found via the shell&rsquo;s PATH searching.
+If the <b>exec</b> occurs after a
+<b>--chroot=</b><i>/some/path</i> argument the PATH located
+binary may not be resolve to the same binary as that running
+initially. This behavior is an intended feature as it can
+complete the chroot transition.</p>
+
+<p style="margin-left:11%;"><b>=+</b> <i>[args]</i></p>
+
+<p style="margin-left:22%;">Uses <b>cap_launch</b>(3) to
+fork a child to re-execute <b>capsh</b>. When this child
+exits, <b>capsh</b> exits with the status of the child or 1
+in the case that the child was terminated by a signal.</p>
+
+
+<p style="margin-left:11%;"><b>--caps=</b><i>cap-set</i></p>
+
+<p style="margin-left:22%;">Set the prevailing process
+capabilities to those specified by <i>cap-set</i>. Where
+<i>cap-set</i> is a text-representation of capability state
+as per <b>cap_from_text</b>(3).</p>
+
+
+<p style="margin-left:11%;"><b>--drop=</b><i>cap-list</i></p>
+
+<p style="margin-left:22%;">Remove the listed capabilities
+from the prevailing bounding set. The capabilities are a
+comma-separated list of capabilities as recognized by the
+<b>cap_from_name</b>(3) function. Use of this feature
+requires that <b>capsh</b> is operating with
+<b>CAP_SETPCAP</b> in its effective set.</p>
+
+
+<p style="margin-left:11%;"><b>--inh=</b><i>cap-list</i></p>
+
+<p style="margin-left:22%;">Set the inheritable set of
+capabilities for the current process to equal those provided
+in the comma separated list. For this action to succeed, the
+prevailing process should already have each of these
+capabilities in the union of the current inheritable and
+permitted capability sets, or <b>capsh</b> should be
+operating with <b>CAP_SETPCAP</b> in its effective set.</p>
+
+
+<p style="margin-left:11%;"><b>--user=</b><i>username</i></p>
+
+<p style="margin-left:22%;">Assume the identity of the
+named user. That is, look up the user&rsquo;s UID and GID
+with <b>getpwuid</b>(3) and their group memberships with
+<b>getgrouplist</b>(3) and set them all using
+<b>cap_setuid</b>(3) and <b>cap_setgroups</b>(3). Following
+this command, the effective capabilities will be cleared,
+but the permitted set will not be, so the running program is
+still privileged.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--mode</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Display the prevailing libcap mode as guessed by the
+<b>cap_get_mode</b>(3) function.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--mode=</b>&lt;mode&gt;</p>
+
+<p style="margin-left:22%;">Force the program into a
+<b>cap_set_mode</b>(3) security mode. This is a set of
+securebits and prevailing capability arrangement recommended
+for its pre-determined security stance.</p>
+
+<p style="margin-left:11%;"><b>--modes</b></p>
+
+<p style="margin-left:22%;">Lists all of the libcap modes
+supported by <b>--mode=</b>&lt;mode&gt;.</p>
+
+
+<p style="margin-left:11%;"><b>--inmode=</b>&lt;mode&gt;</p>
+
+<p style="margin-left:22%;">Confirm that the prevailing
+mode is that specified in <i>&lt;mode&gt;</i>, or exit with
+a status 1.</p>
+
+<p style="margin-left:11%;"><b>--uid=</b><i>id</i></p>
+
+<p style="margin-left:22%;">Force all UID values to equal
+<i>id</i> using the <b>setuid</b>(2) system call. This
+argument may require explicit preparation of the effective
+set.</p>
+
+
+<p style="margin-left:11%;"><b>--cap-uid=</b>&lt;uid&gt;</p>
+
+<p style="margin-left:22%;">use the <b>cap_setuid</b>(3)
+function to set the UID of the current process. This
+performs all preparations for setting the UID without
+dropping capabilities in the process. Following this command
+the prevailing effective capabilities will be lowered.</p>
+
+
+<p style="margin-left:11%;"><b>--is-uid=</b><i>&lt;id&gt;</i></p>
+
+<p style="margin-left:22%;">Exit with status 1 unless the
+current UID equals <i>&lt;id&gt;</i>.</p>
+
+
+<p style="margin-left:11%;"><b>--gid=</b><i>&lt;id&gt;</i></p>
+
+<p style="margin-left:22%;">Force all GID values to equal
+<i>id</i> using the <b>setgid</b>(2) system call.</p>
+
+
+<p style="margin-left:11%;"><b>--is-gid=</b><i>&lt;id&gt;</i></p>
+
+<p style="margin-left:22%;">Exit with status 1 unless the
+current GIQ equals <i>&lt;id&gt;</i>.</p>
+
+
+<p style="margin-left:11%;"><b>--groups=</b><i>&lt;gid-list&gt;</i></p>
+
+<p style="margin-left:22%;">Set the supplementary groups to
+the numerical list provided. The groups are set with the
+<b>setgroups</b>(2) system call. See <b>--user</b> for a
+more convenient way of doing this.</p>
+
+
+<p style="margin-left:11%;"><b>--keep=</b><i>&lt;0|1&gt;</i></p>
+
+<p style="margin-left:22%;">In a non-pure capability mode,
+the kernel provides liberal privilege to the super-user.
+However, it is normally the case that when the super-user
+changes UID to some lesser user, then capabilities are
+dropped. For these situations, the kernel can permit the
+process to retain its capabilities after a <b>setuid</b>(2)
+system call. This feature is known as <i>keep-caps</i>
+support. The way to activate it using this program is with
+this argument. Setting the value to 1 will cause
+<i>keep-caps</i> to be active. Setting it to 0 will cause
+keep-caps to deactivate for the current process. In all
+cases, <i>keep-caps</i> is deactivated when an <b>exec</b>()
+is performed. See <b>--secbits</b>and<b>--mode</b> for ways
+to disable this feature.</p>
+
+<p style="margin-left:11%;"><b>--secbits=</b><i>N</i></p>
+
+<p style="margin-left:22%;">Set the security-bits for the
+program. This is done using the <b>prctl</b>(2)
+<b>PR_SET_SECUREBITS</b> operation. The list of supported
+bits and their meaning can be found in the
+<b>&lt;sys/secbits.h&gt;</b> header file. The program will
+list these bits via the <b>--print</b> command. The argument
+is expressed as a numeric bitmask, in any of the formats
+permitted by <b>strtoul</b>(3). An alternative to this
+bit-twiddling is embedded in the <b>--mode*</b> commandline
+arguments.</p>
+
+
+<p style="margin-left:11%;"><b>--chroot=</b><i>/some/path</i></p>
+
+<p style="margin-left:22%;">Execute the <b>chroot</b>(2)
+system call with the new root-directory (/) equal to
+<i>path</i>. This operation requires <b>CAP_SYS_CHROOT</b>
+to be in effect.</p>
+
+
+<p style="margin-left:11%;"><b>--forkfor=</b><i>sec</i></p>
+
+<p style="margin-left:22%;">This command causes the program
+to fork a child process for so many seconds. The child will
+sleep that long and then exit with status 0. The purpose of
+this command is to support exploring the way processes are
+killable in the face of capability changes. See the
+<b>--killit</b> command. Only one fork can be active at a
+time.</p>
+
+<p style="margin-left:11%;"><b>--killit=</b><i>sig</i></p>
+
+<p style="margin-left:22%;">This commands causes a
+<b>--forkfor</b> child to be <b>kill</b>(2)d with the
+specified signal. The command then waits for the child to
+exit. If the exit status does not match the signal being
+used to kill it, the <b>capsh</b> program exits with status
+1.</p>
+
+
+<p style="margin-left:11%;"><b>--explain=</b><i>cap_xxx</i></p>
+
+<p style="margin-left:22%;">Give a brief textual
+description of what privileges the specified capability
+makes available to a running program. Note, instead of
+<i>cap_xxx</i>, one can provide a decimal number and
+<b>capsh</b> will look up the corresponding
+capability&rsquo;s description.</p>
+
+
+<p style="margin-left:11%;"><b>--shell</b><i>=/full/path</i></p>
+
+<p style="margin-left:22%;">This option changes the shell
+that is invoked when the argument <b>==</b> is
+encountered.</p>
+
+<p style="margin-left:11%;"><b>--strict</b></p>
+
+<p style="margin-left:22%;">This option toggles the
+suppression of subsequent attempts to fixup <b>--caps=</b>
+and <b>--inh=</b> arguments. That is, when the prevailing
+Effective flag does not contain <b>CAP_SETPCAP the to be
+raised Inheritable Flag values (in strict mode) are limited
+to those in the Permitted set. The strict mode defaults to
+off. Supplying this argument an even number of times
+restores this default behavior.</b></p>
+
+
+<p style="margin-left:11%;"><b>--suggest=</b><i>phrase</i></p>
+
+<p style="margin-left:22%;">Scan each of the textual
+descriptions of capabilities, known to <b>capsh</b>, and
+display all descriptions that include <i>phrase</i>.</p>
+
+<p style="margin-left:11%;"><b>--decode=</b><i>N</i></p>
+
+<p style="margin-left:22%;">This is a convenience feature.
+If you look at <b>/proc/1/status</b> there are some
+capability related fields of the following form:</p>
+
+<p style="margin-left:22%; margin-top: 1em">CapInh:
+0000000000000000</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="-14%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>CapPrm:</p></td>
+<td width="77%">
+
+
+<p>0000003fffffffff</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="-14%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>CapEff:</p></td>
+<td width="77%">
+
+
+<p>0000003fffffffff</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="-14%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>CapBnd:</p></td>
+<td width="77%">
+
+
+<p>0000003fffffffff</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="-14%"></td>
+<td width="7%"></td>
+<td width="8%">
+
+
+<p>CapAmb:</p></td>
+<td width="77%">
+
+
+<p>0000000000000000</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+provides a quick way to decode a capability vector
+represented in this hexadecimal form. Here&rsquo;s an
+example that decodes the two lowest capability bits:</p>
+
+<p style="margin-left:22%; margin-top: 1em">$ <b>capsh
+--decode=3</b> <br>
+0x0000000000000003=cap_chown,cap_dac_override</p>
+
+
+<p style="margin-left:11%;"><b>--supports=</b><i>xxx</i></p>
+
+<p style="margin-left:22%;">As the kernel evolves, more
+capabilities are added. This option can be used to verify
+the existence of a capability on the system. For example,
+<b>--supports=</b><i>cap_syslog</i> will cause <b>capsh</b>
+to promptly exit with a status of 1 when run on kernel
+2.6.27. However, when run on kernel 2.6.38 it will silently
+succeed.</p>
+
+<p style="margin-left:11%;"><b>--has-p=</b><i>xxx</i></p>
+
+<p style="margin-left:22%;">Exit with status 1 unless the
+<i>permitted</i> vector has capability <b>xxx</b>
+raised.</p>
+
+<p style="margin-left:11%;"><b>--has-ambient</b></p>
+
+<p style="margin-left:22%;">Performs a check to see if the
+running kernel supports ambient capabilities. If not,
+<b>capsh</b> exits with status 1.</p>
+
+<p style="margin-left:11%;"><b>--has-a=</b><i>xxx</i></p>
+
+<p style="margin-left:22%;">Exit with status 1 unless the
+<i>ambient</i> vector has capability <b>xxx</b> raised.</p>
+
+<p style="margin-left:11%;"><b>--has-b=</b><i>xxx</i></p>
+
+<p style="margin-left:22%;">Exit with status 1 unless the
+<i>bounding</i> vector has capability <b>xxx</b> in its
+(default) non-blocked state.</p>
+
+<p style="margin-left:11%;"><b>--iab=</b><i>xxx</i></p>
+
+<p style="margin-left:22%;">Attempts to set the IAB tuple
+of inheritable capability vectors. The text conventions used
+for <i>xxx</i> are those of <b>cap_iab_from_text</b>(3).</p>
+
+<p style="margin-left:11%;"><b>--addamb=</b><i>xxx</i></p>
+
+<p style="margin-left:22%;">Adds the specified ambient
+capability to the running process.</p>
+
+<p style="margin-left:11%;"><b>--delamb=</b><i>xxx</i></p>
+
+<p style="margin-left:22%;">Removes the specified ambient
+capability from the running process.</p>
+
+<p style="margin-left:11%;"><b>--noamb</b></p>
+
+<p style="margin-left:22%;">Drops all ambient capabilities
+from the running process.</p>
+
+<p style="margin-left:11%;"><b>--noenv</b></p>
+
+<p style="margin-left:22%;">Suppresses overriding of the
+HOME and USER environment variables when a subsequent
+<b>--user</b> argument is processed.</p>
+
+<p style="margin-left:11%;"><b>--quiet</b></p>
+
+<p style="margin-left:22%;">This argument is ignored unless
+it is the first one. If present, it suppresses the capsh
+runtime check to confirm the running libcap is recent enough
+that it can name all of the kernel supported capability
+values.</p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Following
+successful execution, <b>capsh</b> exits with status 0.
+Following an error, <b>capsh</b> immediately exits with
+status 1.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Written by
+Andrew G. Morgan &lt;morgan@kernel.org&gt;.</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Please report
+bugs via: <br>
+
+https://bugzilla.kernel.org/buglist.cgi?component=libcap&amp;list_id=1090757</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>libcap</b>(3),
+<b>cap_from_text</b>(3), <b>cap_iab</b>(3)
+<b>capabilities</b>(7), <b>captree</b>(8), <b>getcap</b>(8),
+<b>getpcaps</b>(8), and <b>setcap</b>(8).</p>
+<hr>
+</body>
+</html>

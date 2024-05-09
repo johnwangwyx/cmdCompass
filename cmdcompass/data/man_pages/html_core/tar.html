@@ -1,0 +1,2361 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:53 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>TAR</title>
+
+</head>
+<body>
+
+<h1 align="center">TAR</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#NOTE">NOTE</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#RETURN VALUE">RETURN VALUE</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#BUG REPORTS">BUG REPORTS</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">tar - an
+archiving utility</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Traditional
+usage <br>
+tar</b>
+{<b>A</b>|<b>c</b>|<b>d</b>|<b>r</b>|<b>t</b>|<b>u</b>|<b>x</b>}[<b>GnSkUWOmpsMBiajJzZhPlRvwo</b>]
+[<i>ARG</i>...]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>UNIX-style
+usage <br>
+tar -A</b> [<i>OPTIONS</i>] <i>ARCHIVE ARCHIVE</i></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>tar -c</b>
+[<b>-f</b> <i>ARCHIVE</i>] [<i>OPTIONS</i>]
+[<i>FILE</i>...]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>tar -d</b>
+[<b>-f</b> <i>ARCHIVE</i>] [<i>OPTIONS</i>]
+[<i>FILE</i>...]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>tar -t</b>
+[<b>-f</b> <i>ARCHIVE</i>] [<i>OPTIONS</i>]
+[<i>MEMBER</i>...]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>tar -r</b>
+[<b>-f</b> <i>ARCHIVE</i>] [<i>OPTIONS</i>]
+[<i>FILE</i>...]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>tar -u</b>
+[<b>-f</b> <i>ARCHIVE</i>] [<i>OPTIONS</i>]
+[<i>FILE</i>...]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>tar -x</b>
+[<b>-f</b> <i>ARCHIVE</i>] [<i>OPTIONS</i>]
+[<i>MEMBER</i>...]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>GNU-style
+usage <br>
+tar</b> {<b>--catenate</b>|<b>--concatenate</b>}
+[<i>OPTIONS</i>] <i>ARCHIVE ARCHIVE</i></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>tar
+--create</b> [<b>--file</b> <i>ARCHIVE</i>] [<i>OPTIONS</i>]
+[<i>FILE</i>...]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>tar</b>
+{<b>--diff</b>|<b>--compare</b>} [<b>--file</b>
+<i>ARCHIVE</i>] [<i>OPTIONS</i>] [<i>FILE</i>...]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>tar
+--delete</b> [<b>--file</b> <i>ARCHIVE</i>] [<i>OPTIONS</i>]
+[<i>MEMBER</i>...]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>tar
+--append</b> [<b>-f</b> <i>ARCHIVE</i>] [<i>OPTIONS</i>]
+[<i>FILE</i>...]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>tar
+--list</b> [<b>-f</b> <i>ARCHIVE</i>] [<i>OPTIONS</i>]
+[<i>MEMBER</i>...]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>tar
+--test-label</b> [<b>--file</b> <i>ARCHIVE</i>]
+[<i>OPTIONS</i>] [<i>LABEL</i>...]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>tar
+--update</b> [<b>--file</b> <i>ARCHIVE</i>] [<i>OPTIONS</i>]
+[<i>FILE</i>...]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>tar
+--update</b> [<b>-f</b> <i>ARCHIVE</i>] [<i>OPTIONS</i>]
+[<i>FILE</i>...]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>tar</b>
+{<b>--extract</b>|<b>--get</b>} [<b>-f</b> <i>ARCHIVE</i>]
+[<i>OPTIONS</i>] [<i>MEMBER</i>...]</p>
+
+<h2>NOTE
+<a name="NOTE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manpage is
+a short description of GNU <b>tar</b>. For a detailed
+discussion, including examples and usage recommendations,
+refer to the <b>GNU Tar Manual</b> available in texinfo
+format. If the <b>info</b> reader and the tar documentation
+are properly installed on your system, the command</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>info
+tar</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">should give you
+access to the complete manual.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can also
+view the manual using the info mode in <b>emacs</b>(1), or
+find it in various formats online at</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b>http://www.gnu.org/software/tar/manual</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">If any
+discrepancies occur between this manpage and the <b>GNU Tar
+Manual</b>, the later shall be considered the authoritative
+source.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">GNU <b>tar</b>
+is an archiving program designed to store multiple files in
+a single file (an <b>archive</b>), and to manipulate such
+archives. The archive can be either a regular file or a
+device (e.g. a tape drive, hence the name of the program,
+which stands for <b>t</b>ape <b>ar</b>chiver), which can be
+located either on the local or on a remote machine.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Option
+styles</b> <br>
+Options to GNU <b>tar</b> can be given in three different
+styles. In <b>traditional style</b>, the first argument is a
+cluster of option letters and all subsequent arguments
+supply arguments to those options that require them. The
+arguments are read in the same order as the option letters.
+Any command line words that remain after all options has
+been processed are treated as non-optional arguments: file
+or archive member names.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For example,
+the <b>c</b> option requires creating the archive, the
+<b>v</b> option requests the verbose operation, and the
+<b>f</b> option takes an argument that sets the name of the
+archive to operate upon. The following command, written in
+the traditional style, instructs tar to store all files from
+the directory <b>/etc</b> into the archive file
+<b>etc.tar</b> verbosely listing the files being
+archived:</p>
+
+<p style="margin-left:11%; margin-top: 1em">tar cfv etc.tar
+/etc</p>
+
+<p style="margin-left:11%; margin-top: 1em">In <b>UNIX</b>
+or <b>short-option style</b>, each option letter is prefixed
+with a single dash, as in other command line utilities. If
+an option takes argument, the argument follows it, either as
+a separate command line word, or immediately following the
+option. However, if the option takes an <b>optional</b>
+argument, the argument must follow the option letter without
+any intervening whitespace, as in <b>-g/tmp/snar.db</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Any number of
+options not taking arguments can be clustered together after
+a single dash, e.g. <b>-vkp</b>. Options that take arguments
+(whether mandatory or optional), can appear at the end of
+such a cluster, e.g. <b>-vkpf a.tar</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The example
+command above written in the <b>short-option style</b> could
+look like:</p>
+
+<p style="margin-left:11%; margin-top: 1em">tar -cvf
+etc.tar /etc <br>
+or <br>
+tar -c -v -f etc.tar /etc</p>
+
+<p style="margin-left:11%; margin-top: 1em">In <b>GNU</b>
+or <b>long-option style</b>, each option begins with two
+dashes and has a meaningful name, consisting of lower-case
+letters and dashes. When used, the long option can be
+abbreviated to its initial letters, provided that this does
+not create ambiguity. Arguments to long options are supplied
+either as a separate command line word, immediately
+following the option, or separated from the option by an
+equals sign with no intervening whitespace. Optional
+arguments must always use the latter method.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Here are
+several ways of writing the example command in this
+style:</p>
+
+<p style="margin-left:11%; margin-top: 1em">tar --create
+--file etc.tar --verbose /etc <br>
+or (abbreviating some options): <br>
+tar --cre --file=etc.tar --verb /etc</p>
+
+<p style="margin-left:11%; margin-top: 1em">The options in
+all three styles can be intermixed, although doing so with
+old options is not encouraged.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Operation
+mode</b> <br>
+The options listed in the table below tell GNU <b>tar</b>
+what operation it is to perform. Exactly one of them must be
+given. Meaning of non-optional arguments depends on the
+operation mode requested. <b><br>
+-A</b>, <b>--catenate</b>, <b>--concatenate</b></p>
+
+<p style="margin-left:22%;">Append archive to the end of
+another archive. The arguments are treated as the names of
+archives to append. All archives must be of the same format
+as the archive they are appended to, otherwise the resulting
+archive might be unusable with non-GNU implementations of
+<b>tar</b>. Notice also that when more than one archive is
+given, the members from archives other than the first one
+will be accessible in the resulting archive only if using
+the <b>-i</b> (<b>--ignore-zeros</b>) option.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Compressed
+archives cannot be concatenated.</p>
+
+<p style="margin-left:11%;"><b>-c</b>, <b>--create</b></p>
+
+<p style="margin-left:22%;">Create a new archive. Arguments
+supply the names of the files to be archived. Directories
+are archived recursively, unless the <b>--no-recursion</b>
+option is given.</p>
+
+<p style="margin-left:11%;"><b>-d</b>, <b>--diff</b>,
+<b>--compare</b></p>
+
+<p style="margin-left:22%;">Find differences between
+archive and file system. The arguments are optional and
+specify archive members to compare. If not given, the
+current working directory is assumed.</p>
+
+<p style="margin-left:11%;"><b>--delete</b></p>
+
+<p style="margin-left:22%;">Delete from the archive. The
+arguments supply names of the archive members to be removed.
+At least one argument must be given.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+does not operate on compressed archives. There is no short
+option equivalent.</p>
+
+<p style="margin-left:11%;"><b>-r</b>, <b>--append</b></p>
+
+<p style="margin-left:22%;">Append files to the end of an
+archive. Arguments have the same meaning as for <b>-c</b>
+(<b>--create</b>).</p>
+
+<p style="margin-left:11%;"><b>-t</b>, <b>--list</b></p>
+
+<p style="margin-left:22%;">List the contents of an
+archive. Arguments are optional. When given, they specify
+the names of the members to list.</p>
+
+<p style="margin-left:11%;"><b>--test-label</b></p>
+
+<p style="margin-left:22%;">Test the archive volume label
+and exit. When used without arguments, it prints the volume
+label (if any) and exits with status <b>0</b>. When one or
+more command line arguments are given. <b>tar</b> compares
+the volume label with each argument. It exits with code
+<b>0</b> if a match is found, and with code <b>1</b>
+otherwise. No output is displayed, unless used together with
+the <b>-v</b> (<b>--verbose</b>) option.</p>
+
+<p style="margin-left:22%; margin-top: 1em">There is no
+short option equivalent for this option.</p>
+
+<p style="margin-left:11%;"><b>-u</b>, <b>--update</b></p>
+
+<p style="margin-left:22%;">Append files which are newer
+than the corresponding copy in the archive. Arguments have
+the same meaning as with <b>-c</b> and <b>-r</b> options.
+Notice, that newer files don&rsquo;t replace their old
+archive copies, but instead are appended to the end of
+archive. The resulting archive can thus contain several
+members of the same name, corresponding to various versions
+of the same file.</p>
+
+<p style="margin-left:11%;"><b>-x</b>, <b>--extract</b>,
+<b>--get</b></p>
+
+<p style="margin-left:22%;">Extract files from an archive.
+Arguments are optional. When given, they specify names of
+the archive members to be extracted.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--show-defaults</b></p>
+
+<p style="margin-left:22%;">Show built-in defaults for
+various <b>tar</b> options and exit. No arguments are
+allowed.</p>
+
+<p style="margin-left:11%;"><b>-?</b>, <b>--help</b></p>
+
+<p style="margin-left:22%;">Display a short option summary
+and exit. No arguments allowed.</p>
+
+<p style="margin-left:11%;"><b>--usage</b></p>
+
+<p style="margin-left:22%;">Display a list of available
+options and exit. No arguments allowed.</p>
+
+<p style="margin-left:11%;"><b>--version</b></p>
+
+<p style="margin-left:22%;">Print program version and
+copyright information and exit.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Operation
+modifiers <br>
+--check-device</b></p>
+
+<p style="margin-left:22%;">Check device numbers when
+creating incremental archives (default).</p>
+
+<p style="margin-left:11%;"><b>-g</b>,
+<b>--listed-incremental</b>=<i>FILE</i></p>
+
+<p style="margin-left:22%;">Handle new GNU-format
+incremental backups. <i>FILE</i> is the name of a
+<b>snapshot file</b>, where tar stores additional
+information which is used to decide which files changed
+since the previous incremental dump and, consequently, must
+be dumped again. If <i>FILE</i> does not exist when creating
+an archive, it will be created and all files will be added
+to the resulting archive (the <b>level 0</b> dump). To
+create incremental archives of non-zero level <b>N</b>,
+create a copy of the snapshot file created during the level
+<b>N-1</b>, and use it as <i>FILE</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">When listing or
+extracting, the actual contents of <i>FILE</i> is not
+inspected, it is needed only due to syntactical
+requirements. It is therefore common practice to use
+<b>/dev/null</b> in its place.</p>
+
+
+<p style="margin-left:11%;"><b>--hole-detection</b>=<i>METHOD</i></p>
+
+<p style="margin-left:22%;">Use <i>METHOD</i> to detect
+holes in sparse files. This option implies <b>--sparse</b>.
+Valid values for <i>METHOD</i> are <b>seek</b> and
+<b>raw</b>. Default is <b>seek</b> with fallback to
+<b>raw</b> when not applicable.</p>
+
+<p style="margin-left:11%;"><b>-G</b>,
+<b>--incremental</b></p>
+
+<p style="margin-left:22%;">Handle old GNU-format
+incremental backups.</p>
+
+
+<p style="margin-left:11%;"><b>--ignore-failed-read</b></p>
+
+<p style="margin-left:22%;">Do not exit with nonzero on
+unreadable files.</p>
+
+
+<p style="margin-left:11%;"><b>--level</b>=<i>NUMBER</i></p>
+
+<p style="margin-left:22%;">Set dump level for created
+listed-incremental archive. Currently only <b>--level=0</b>
+is meaningful: it instructs <b>tar</b> to truncate the
+snapshot file before dumping, thereby forcing a level 0
+dump.</p>
+
+<p style="margin-left:11%;"><b>-n</b>, <b>--seek</b></p>
+
+<p style="margin-left:22%;">Assume the archive is seekable.
+Normally <b>tar</b> determines automatically whether the
+archive can be seeked or not. This option is intended for
+use in cases when such recognition fails. It takes effect
+only if the archive is open for reading (e.g. with
+<b>--list</b> or <b>--extract</b> options).</p>
+
+<p style="margin-left:11%;"><b>--no-check-device</b></p>
+
+<p style="margin-left:22%;">Do not check device numbers
+when creating incremental archives.</p>
+
+<p style="margin-left:11%;"><b>--no-seek</b></p>
+
+<p style="margin-left:22%;">Assume the archive is not
+seekable.</p>
+
+
+<p style="margin-left:11%;"><b>--occurrence</b>[=<i>N</i>]</p>
+
+<p style="margin-left:22%;">Process only the <i>N</i>th
+occurrence of each file in the archive. This option is valid
+only when used with one of the following subcommands:
+<b>--delete</b>, <b>--diff</b>, <b>--extract</b> or
+<b>--list</b> and when a list of files is given either on
+the command line or via the <b>-T</b> option. The default
+<i>N</i> is <b>1</b>.</p>
+
+<p style="margin-left:11%;"><b>--restrict</b></p>
+
+<p style="margin-left:22%;">Disable the use of some
+potentially harmful options.</p>
+
+
+<p style="margin-left:11%;"><b>--sparse-version</b>=<i>MAJOR</i>[.<i>MINOR</i>]</p>
+
+<p style="margin-left:22%;">Set version of the sparse
+format to use (implies <b>--sparse</b>). This option implies
+<b>--sparse</b>. Valid argument values are <b>0.0</b>,
+<b>0.1</b>, and <b>1.0</b>. For a detailed discussion of
+sparse formats, refer to the <b>GNU Tar Manual</b>, appendix
+<b>D</b>, &quot;<b>Sparse Formats</b>&quot;. Using
+<b>info</b> reader, it can be accessed running the following
+command: <b>info tar &rsquo;Sparse Formats&rsquo;</b>.</p>
+
+<p style="margin-left:11%;"><b>-S</b>, <b>--sparse</b></p>
+
+<p style="margin-left:22%;">Handle sparse files
+efficiently. Some files in the file system may have segments
+which were actually never written (quite often these are
+database files created by such systems as <b>DBM</b>). When
+given this option, <b>tar</b> attempts to determine if the
+file is sparse prior to archiving it, and if so, to reduce
+the resulting archive size by not dumping empty parts of the
+file.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Overwrite
+control</b> <br>
+These options control <b>tar</b> actions when extracting a
+file over an existing copy on disk. <b><br>
+-k</b>, <b>--keep-old-files</b></p>
+
+<p style="margin-left:22%;">Don&rsquo;t replace existing
+files when extracting.</p>
+
+<p style="margin-left:11%;"><b>--keep-newer-files</b></p>
+
+<p style="margin-left:22%;">Don&rsquo;t replace existing
+files that are newer than their archive copies.</p>
+
+
+<p style="margin-left:11%;"><b>--keep-directory-symlink</b></p>
+
+<p style="margin-left:22%;">Don&rsquo;t replace existing
+symlinks to directories when extracting.</p>
+
+<p style="margin-left:11%;"><b>--no-overwrite-dir</b></p>
+
+<p style="margin-left:22%;">Preserve metadata of existing
+directories.</p>
+
+
+<p style="margin-left:11%;"><b>--one-top-level</b>[<b>=</b><i>DIR</i>]</p>
+
+<p style="margin-left:22%;">Extract all files into
+<i>DIR</i>, or, if used without argument, into a
+subdirectory named by the base name of the archive (minus
+standard compression suffixes recognizable by
+<b>--auto-compress).</b></p>
+
+<p style="margin-left:11%;"><b>--overwrite</b></p>
+
+<p style="margin-left:22%;">Overwrite existing files when
+extracting.</p>
+
+<p style="margin-left:11%;"><b>--overwrite-dir</b></p>
+
+<p style="margin-left:22%;">Overwrite metadata of existing
+directories when extracting (default).</p>
+
+<p style="margin-left:11%;"><b>--recursive-unlink</b></p>
+
+<p style="margin-left:22%;">Recursively remove all files in
+the directory prior to extracting it.</p>
+
+<p style="margin-left:11%;"><b>--remove-files</b></p>
+
+<p style="margin-left:22%;">Remove files from disk after
+adding them to the archive.</p>
+
+<p style="margin-left:11%;"><b>--skip-old-files</b></p>
+
+<p style="margin-left:22%;">Don&rsquo;t replace existing
+files when extracting, silently skip over them.</p>
+
+<p style="margin-left:11%;"><b>-U</b>,
+<b>--unlink-first</b></p>
+
+<p style="margin-left:22%;">Remove each file prior to
+extracting over it.</p>
+
+<p style="margin-left:11%;"><b>-W</b>, <b>--verify</b></p>
+
+<p style="margin-left:22%;">Verify the archive after
+writing it.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Output
+stream selection <br>
+--ignore-command-error</b> <br>
+Ignore subprocess exit codes. <b><br>
+--no-ignore-command-error</b></p>
+
+<p style="margin-left:22%;">Treat non-zero exit codes of
+children as error (default).</p>
+
+<p style="margin-left:11%;"><b>-O</b>,
+<b>--to-stdout</b></p>
+
+<p style="margin-left:22%;">Extract files to standard
+output.</p>
+
+
+<p style="margin-left:11%;"><b>--to-command</b>=<i>COMMAND</i></p>
+
+<p style="margin-left:22%;">Pipe extracted files to
+<i>COMMAND</i>. The argument is the pathname of an external
+program, optionally with command line arguments. The program
+will be invoked and the contents of the file being extracted
+supplied to it on its standard input. Additional data will
+be supplied via the following environment variables: <b><br>
+TAR_FILETYPE</b></p>
+
+<p style="margin-left:32%;">Type of the file. It is a
+single letter with the following meaning:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="19%"></td>
+<td width="69%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="19%"></td>
+<td width="69%">
+
+
+<p>f</p></td></tr>
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="19%"></td>
+<td width="69%">
+
+
+<p>Regular file</p></td></tr>
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="19%"></td>
+<td width="69%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="19%"></td>
+<td width="69%">
+
+
+<p>d</p></td></tr>
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="19%"></td>
+<td width="69%">
+
+
+<p>Directory</p></td></tr>
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="19%"></td>
+<td width="69%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="19%"></td>
+<td width="69%">
+
+
+<p>l</p></td></tr>
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="19%"></td>
+<td width="69%">
+
+
+<p>Symbolic link</p></td></tr>
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="19%"></td>
+<td width="69%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="19%"></td>
+<td width="69%">
+
+
+<p>h</p></td></tr>
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="19%"></td>
+<td width="69%">
+
+
+<p>Hard link</p></td></tr>
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="19%"></td>
+<td width="69%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="19%"></td>
+<td width="69%">
+
+
+<p>b</p></td></tr>
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="19%"></td>
+<td width="69%">
+
+
+<p>Block device</p></td></tr>
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="19%"></td>
+<td width="69%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="19%"></td>
+<td width="69%">
+
+
+<p>c</p></td></tr>
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="19%"></td>
+<td width="69%">
+
+
+<p>Character device</p></td></tr>
+</table>
+
+<p style="margin-left:32%; margin-top: 1em">Currently only
+regular files are supported.</p>
+
+<p style="margin-left:22%;"><b>TAR_MODE</b></p>
+
+<p style="margin-left:32%;">File mode, an octal number.</p>
+
+<p style="margin-left:22%;"><b>TAR_FILENAME</b></p>
+
+<p style="margin-left:32%;">The name of the file.</p>
+
+<p style="margin-left:22%;"><b>TAR_REALNAME</b></p>
+
+<p style="margin-left:32%;">Name of the file as stored in
+the archive.</p>
+
+<p style="margin-left:22%;"><b>TAR_UNAME</b></p>
+
+<p style="margin-left:32%;">Name of the file owner.</p>
+
+<p style="margin-left:22%;"><b>TAR_GNAME</b></p>
+
+<p style="margin-left:32%;">Name of the file owner
+group.</p>
+
+<p style="margin-left:22%;"><b>TAR_ATIME</b></p>
+
+<p style="margin-left:32%;">Time of last access. It is a
+decimal number, representing seconds since the Epoch. If the
+archive provides times with nanosecond precision, the
+nanoseconds are appended to the timestamp after a decimal
+point.</p>
+
+<p style="margin-left:22%;"><b>TAR_MTIME</b></p>
+
+<p style="margin-left:32%;">Time of last modification.</p>
+
+<p style="margin-left:22%;"><b>TAR_CTIME</b></p>
+
+<p style="margin-left:32%;">Time of last status change.</p>
+
+<p style="margin-left:22%;"><b>TAR_SIZE</b></p>
+
+<p style="margin-left:32%;">Size of the file.</p>
+
+<p style="margin-left:22%;"><b>TAR_UID</b></p>
+
+<p style="margin-left:32%;">UID of the file owner.</p>
+
+<p style="margin-left:22%;"><b>TAR_GID</b></p>
+
+<p style="margin-left:32%;">GID of the file owner.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Additionally,
+the following variables contain information about <b>tar</b>
+operation mode and the archive being processed: <b><br>
+TAR_VERSION</b></p>
+
+<p style="margin-left:32%;">GNU <b>tar</b> version
+number.</p>
+
+<p style="margin-left:22%;"><b>TAR_ARCHIVE</b></p>
+
+<p style="margin-left:32%;">The name of the archive
+<b>tar</b> is processing.</p>
+
+<p style="margin-left:22%;"><b>TAR_BLOCKING_FACTOR</b></p>
+
+<p style="margin-left:32%;">Current blocking factor, i.e.
+number of 512-byte blocks in a record.</p>
+
+<p style="margin-left:22%;"><b>TAR_VOLUME</b></p>
+
+<p style="margin-left:32%;">Ordinal number of the volume
+<b>tar</b> is processing (set if reading a multi-volume
+archive).</p>
+
+<p style="margin-left:22%;"><b>TAR_FORMAT</b></p>
+
+<p style="margin-left:32%;">Format of the archive being
+processed. One of: <b>gnu</b>, <b>oldgnu</b>, <b>posix</b>,
+<b>ustar</b>, <b>v7</b>.</p>
+
+<p style="margin-left:22%;"><b>TAR_SUBCOMMAND</b></p>
+
+<p style="margin-left:32%;">A short option (with a leading
+dash) describing the operation <b>tar</b> is executing.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Handling of
+file attributes <br>
+--atime-preserve</b>[=<i>METHOD</i>]</p>
+
+<p style="margin-left:22%;">Preserve access times on dumped
+files, either by restoring the times after reading
+(<i>METHOD</i>=<b>replace</b>, this is the default) or by
+not setting the times in the first place
+(<i>METHOD</i>=<b>system</b>)</p>
+
+
+<p style="margin-left:11%;"><b>--delay-directory-restore</b></p>
+
+<p style="margin-left:22%;">Delay setting modification
+times and permissions of extracted directories until the end
+of extraction. Use this option when extracting from an
+archive which has unusual member ordering.</p>
+
+
+<p style="margin-left:11%;"><b>--group</b>=<i>NAME</i>[:<i>GID</i>]</p>
+
+<p style="margin-left:22%;">Force <i>NAME</i> as group for
+added files. If <i>GID</i> is not supplied, <i>NAME</i> can
+be either a user name or numeric GID. In this case the
+missing part (GID or name) will be inferred from the current
+host&rsquo;s group database.</p>
+
+<p style="margin-left:22%; margin-top: 1em">When used with
+<b>--group-map</b>=<i>FILE</i>, affects only those files
+whose owner group is not listed in <i>FILE</i>.</p>
+
+
+<p style="margin-left:11%;"><b>--group-map</b>=<i>FILE</i></p>
+
+<p style="margin-left:22%;">Read group translation map from
+<i>FILE</i>. Empty lines are ignored. Comments are
+introduced with <b>#</b> sign and extend to the end of line.
+Each non-empty line in <i>FILE</i> defines translation for a
+single group. It must consist of two fields, delimited by
+any amount of whitespace:</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>OLDGRP
+NEWGRP</i>[<b>:</b><i>NEWGID</i>]</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>OLDGRP</i>
+is either a valid group name or a GID prefixed with
+<b>+</b>. Unless <i>NEWGID</i> is supplied, <i>NEWGRP</i>
+must also be either a valid group name or a
+<b>+</b><i>GID</i>. Otherwise, both <i>NEWGRP</i> and
+<i>NEWGID</i> need not be listed in the system group
+database.</p>
+
+<p style="margin-left:22%; margin-top: 1em">As a result,
+each input file with owner group <i>OLDGRP</i> will be
+stored in archive with owner group <i>NEWGRP</i> and GID
+<i>NEWGID</i>.</p>
+
+
+<p style="margin-left:11%;"><b>--mode</b>=<i>CHANGES</i></p>
+
+<p style="margin-left:22%;">Force symbolic mode
+<i>CHANGES</i> for added files.</p>
+
+
+<p style="margin-left:11%;"><b>--mtime</b>=<i>DATE-OR-FILE</i></p>
+
+<p style="margin-left:22%;">Set mtime for added files.
+<i>DATE-OR-FILE</i> is either a date/time in almost
+arbitrary format, or the name of an existing file. In the
+latter case the mtime of that file will be used.</p>
+
+<p style="margin-left:11%;"><b>-m</b>, <b>--touch</b></p>
+
+<p style="margin-left:22%;">Don&rsquo;t extract file
+modified time.</p>
+
+
+<p style="margin-left:11%;"><b>--no-delay-directory-restore</b></p>
+
+<p style="margin-left:22%;">Cancel the effect of the prior
+<b>--delay-directory-restore</b> option.</p>
+
+<p style="margin-left:11%;"><b>--no-same-owner</b></p>
+
+<p style="margin-left:22%;">Extract files as yourself
+(default for ordinary users).</p>
+
+
+<p style="margin-left:11%;"><b>--no-same-permissions</b></p>
+
+<p style="margin-left:22%;">Apply the user&rsquo;s umask
+when extracting permissions from the archive (default for
+ordinary users).</p>
+
+<p style="margin-left:11%;"><b>--numeric-owner</b></p>
+
+<p style="margin-left:22%;">Always use numbers for
+user/group names.</p>
+
+
+<p style="margin-left:11%;"><b>--owner</b>=<i>NAME</i>[:<i>UID</i>]</p>
+
+<p style="margin-left:22%;">Force <i>NAME</i> as owner for
+added files. If <i>UID</i> is not supplied, <i>NAME</i> can
+be either a user name or numeric UID. In this case the
+missing part (UID or name) will be inferred from the current
+host&rsquo;s user database.</p>
+
+<p style="margin-left:22%; margin-top: 1em">When used with
+<b>--owner-map</b>=<i>FILE</i>, affects only those files
+whose owner is not listed in <i>FILE</i>.</p>
+
+
+<p style="margin-left:11%;"><b>--owner-map</b>=<i>FILE</i></p>
+
+<p style="margin-left:22%;">Read owner translation map from
+<i>FILE</i>. Empty lines are ignored. Comments are
+introduced with <b>#</b> sign and extend to the end of line.
+Each non-empty line in <i>FILE</i> defines translation for a
+single UID. It must consist of two fields, delimited by any
+amount of whitespace:</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>OLDUSR
+NEWUSR</i>[<b>:</b><i>NEWUID</i>]</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>OLDUSR</i>
+is either a valid user name or a UID prefixed with <b>+</b>.
+Unless <i>NEWUID</i> is supplied, <i>NEWUSR</i> must also be
+either a valid user name or a <b>+</b><i>UID</i>. Otherwise,
+both <i>NEWUSR</i> and <i>NEWUID</i> need not be listed in
+the system user database.</p>
+
+<p style="margin-left:22%; margin-top: 1em">As a result,
+each input file owned by <i>OLDUSR</i> will be stored in
+archive with owner name <i>NEWUSR</i> and UID
+<i>NEWUID</i>.</p>
+
+<p style="margin-left:11%;"><b>-p</b>,
+<b>--preserve-permissions</b>, <b>--same-permissions</b></p>
+
+<p style="margin-left:22%;">extract information about file
+permissions (default for superuser)</p>
+
+<p style="margin-left:11%;"><b>--same-owner</b></p>
+
+<p style="margin-left:22%;">Try extracting files with the
+same ownership as exists in the archive (default for
+superuser).</p>
+
+<p style="margin-left:11%;"><b>-s</b>,
+<b>--preserve-order</b>, <b>--same-order</b></p>
+
+<p style="margin-left:22%;">Sort names to extract to match
+archive</p>
+
+<p style="margin-left:11%;"><b>--sort=</b><i>ORDER</i></p>
+
+<p style="margin-left:22%;">When creating an archive, sort
+directory entries according to <i>ORDER</i>, which is one of
+<b>none</b>, <b>name</b>, or <b>inode</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+<b>--sort=none</b>, which stores archive members in the same
+order as returned by the operating system.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Using
+<b>--sort=name</b> ensures the member ordering in the
+created archive is uniform and reproducible.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Using
+<b>--sort=inode</b> reduces the number of disk seeks made
+when creating the archive and thus can considerably speed up
+archivation. This sorting order is supported only if the
+underlying system provides the necessary information.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Extended
+file attributes</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--acls</b></p></td>
+<td width="2%"></td>
+<td width="40%">
+
+
+<p>Enable POSIX ACLs support.</p></td>
+<td width="38%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--no-acls</b></p>
+
+<p style="margin-left:22%;">Disable POSIX ACLs support.</p>
+
+<p style="margin-left:11%;"><b>--selinux</b></p>
+
+<p style="margin-left:22%;">Enable SELinux context
+support.</p>
+
+<p style="margin-left:11%;"><b>--no-selinux</b></p>
+
+<p style="margin-left:22%;">Disable SELinux context
+support.</p>
+
+<p style="margin-left:11%;"><b>--xattrs</b></p>
+
+<p style="margin-left:22%;">Enable extended attributes
+support.</p>
+
+<p style="margin-left:11%;"><b>--no-xattrs</b></p>
+
+<p style="margin-left:22%;">Disable extended attributes
+support.</p>
+
+
+<p style="margin-left:11%;"><b>--xattrs-exclude=</b><i>PATTERN</i></p>
+
+<p style="margin-left:22%;">Specify the exclude pattern for
+xattr keys. <i>PATTERN</i> is a POSIX regular expression,
+e.g. <b>--xattrs-exclude=&rsquo;^user.&rsquo;</b>, to
+exclude attributes from the user namespace.</p>
+
+
+<p style="margin-left:11%;"><b>--xattrs-include=</b><i>PATTERN</i></p>
+
+<p style="margin-left:22%;">Specify the include pattern for
+xattr keys. <i>PATTERN</i> is a POSIX regular
+expression.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Device
+selection and switching <br>
+-f</b>, <b>--file</b>=<i>ARCHIVE</i></p>
+
+<p style="margin-left:22%;">Use archive file or device
+<i>ARCHIVE</i>. If this option is not given, <b>tar</b> will
+first examine the environment variable &rsquo;TAPE&rsquo;.
+If it is set, its value will be used as the archive name.
+Otherwise, <b>tar</b> will assume the compiled-in default.
+The default value can be inspected either using the
+<b>--show-defaults</b> option, or at the end of the <b>tar
+--help</b> output.</p>
+
+<p style="margin-left:22%; margin-top: 1em">An archive name
+that has a colon in it specifies a file or device on a
+remote machine. The part before the colon is taken as the
+machine name or IP address, and the part after it as the
+file or device pathname, e.g.:</p>
+
+
+<p style="margin-left:22%; margin-top: 1em">--file=remotehost:/dev/sr0</p>
+
+<p style="margin-left:22%; margin-top: 1em">An optional
+username can be prefixed to the hostname, placing a <b>@</b>
+sign between them.</p>
+
+<p style="margin-left:22%; margin-top: 1em">By default, the
+remote host is accessed via the <b>rsh</b>(1) command.
+Nowadays it is common to use <b>ssh</b>(1) instead. You can
+do so by giving the following command line option:</p>
+
+
+<p style="margin-left:22%; margin-top: 1em">--rsh-command=/usr/bin/ssh</p>
+
+<p style="margin-left:22%; margin-top: 1em">The remote
+machine should have the <b>rmt</b>(8) command installed. If
+its pathname does not match <b>tar</b>&rsquo;s default, you
+can inform <b>tar</b> about the correct pathname using the
+<b>--rmt-command</b> option.</p>
+
+<p style="margin-left:11%;"><b>--force-local</b></p>
+
+<p style="margin-left:22%;">Archive file is local even if
+it has a colon.</p>
+
+<p style="margin-left:11%;"><b>-F</b>,
+<b>--info-script</b>=<i>COMMAND</i>,
+<b>--new-volume-script</b>=<i>COMMAND</i></p>
+
+<p style="margin-left:22%;">Run <i>COMMAND</i> at the end
+of each tape (implies <b>-M</b>). The command can include
+arguments. When started, it will inherit <b>tar</b>&rsquo;s
+environment plus the following variables: <b><br>
+TAR_VERSION</b></p>
+
+<p style="margin-left:32%;">GNU <b>tar</b> version
+number.</p>
+
+<p style="margin-left:22%;"><b>TAR_ARCHIVE</b></p>
+
+<p style="margin-left:32%;">The name of the archive
+<b>tar</b> is processing.</p>
+
+<p style="margin-left:22%;"><b>TAR_BLOCKING_FACTOR</b></p>
+
+<p style="margin-left:32%;">Current blocking factor, i.e.
+number of 512-byte blocks in a record.</p>
+
+<p style="margin-left:22%;"><b>TAR_VOLUME</b></p>
+
+<p style="margin-left:32%;">Ordinal number of the volume
+<b>tar</b> is processing (set if reading a multi-volume
+archive).</p>
+
+<p style="margin-left:22%;"><b>TAR_FORMAT</b></p>
+
+<p style="margin-left:32%;">Format of the archive being
+processed. One of: <b>gnu</b>, <b>oldgnu</b>, <b>posix</b>,
+<b>ustar</b>, <b>v7</b>.</p>
+
+<p style="margin-left:22%;"><b>TAR_SUBCOMMAND</b></p>
+
+<p style="margin-left:32%;">A short option (with a leading
+dash) describing the operation <b>tar</b> is executing.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>TAR_FD</b></p></td>
+<td width="1%"></td>
+<td width="68%">
+
+
+<p>File descriptor which can be used to communicate the new
+volume name to <b>tar</b>.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">If the info
+script fails, <b>tar</b> exits; otherwise, it begins writing
+the next volume.</p>
+
+<p style="margin-left:11%;"><b>-L</b>,
+<b>--tape-length</b>=<i>N</i></p>
+
+<p style="margin-left:22%;">Change tape after writing
+<i>N</i>x1024 bytes. If <i>N</i> is followed by a size
+suffix (see the subsection <b>Size suffixes</b> below), the
+suffix specifies the multiplicative factor to be used
+instead of 1024.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+implies <b>-M</b>.</p>
+
+<p style="margin-left:11%;"><b>-M</b>,
+<b>--multi-volume</b></p>
+
+<p style="margin-left:22%;">Create/list/extract
+multi-volume archive.</p>
+
+
+<p style="margin-left:11%;"><b>--rmt-command</b>=<i>COMMAND</i></p>
+
+<p style="margin-left:22%;">Use <i>COMMAND</i> instead of
+<b>rmt</b> when accessing remote archives. See the
+description of the <b>-f</b> option, above.</p>
+
+
+<p style="margin-left:11%;"><b>--rsh-command</b>=<i>COMMAND</i></p>
+
+<p style="margin-left:22%;">Use <i>COMMAND</i> instead of
+<b>rsh</b> when accessing remote archives. See the
+description of the <b>-f</b> option, above.</p>
+
+
+<p style="margin-left:11%;"><b>--volno-file</b>=<i>FILE</i></p>
+
+<p style="margin-left:22%;">When this option is used in
+conjunction with <b>--multi-volume</b>, <b>tar</b> will keep
+track of which volume of a multi-volume archive it is
+working in <i>FILE</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Device
+blocking <br>
+-b</b>, <b>--blocking-factor</b>=<i>BLOCKS</i></p>
+
+<p style="margin-left:22%;">Set record size to
+<i>BLOCKS</i>x<b>512</b> bytes.</p>
+
+<p style="margin-left:11%;"><b>-B</b>,
+<b>--read-full-records</b></p>
+
+<p style="margin-left:22%;">When listing or extracting,
+accept incomplete input records after end-of-file
+marker.</p>
+
+<p style="margin-left:11%;"><b>-i</b>,
+<b>--ignore-zeros</b></p>
+
+<p style="margin-left:22%;">Ignore zeroed blocks in
+archive. Normally two consecutive 512-blocks filled with
+zeroes mean EOF and tar stops reading after encountering
+them. This option instructs it to read further and is useful
+when reading archives created with the <b>-A</b> option.</p>
+
+
+<p style="margin-left:11%;"><b>--record-size</b>=<i>NUMBER</i></p>
+
+<p style="margin-left:22%;">Set record size. <i>NUMBER</i>
+is the number of bytes per record. It must be multiple of
+<b>512</b>. It can can be suffixed with a <b>size
+suffix</b>, e.g. <b>--record-size=10K</b>, for 10 Kilobytes.
+See the subsection <b>Size suffixes</b>, for a list of valid
+suffixes.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Archive
+format selection <br>
+-H</b>, <b>--format</b>=<i>FORMAT</i></p>
+
+<p style="margin-left:22%;">Create archive of the given
+format. Valid formats are:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>gnu</b></p></td>
+<td width="1%"></td>
+<td width="46%">
+
+
+<p>GNU tar 1.13.x format</p></td>
+<td width="22%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>oldgnu</b></p></td>
+<td width="1%"></td>
+<td width="46%">
+
+
+<p>GNU format as per tar &lt;= 1.12.</p></td>
+<td width="22%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%;"><b>pax</b>, <b>posix</b></p>
+
+<p style="margin-left:32%;">POSIX 1003.1-2001 (pax)
+format.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>ustar</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+
+
+<p>POSIX 1003.1-1988 (ustar) format.</p></td>
+<td width="17%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>v7</b></p></td>
+<td width="3%"></td>
+<td width="51%">
+
+
+<p>Old V7 tar format.</p></td>
+<td width="17%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--old-archive</b>,
+<b>--portability</b></p>
+
+<p style="margin-left:22%;">Same as <b>--format=v7</b>.</p>
+
+
+<p style="margin-left:11%;"><b>--pax-option</b>=<i>keyword</i>[[:]=<i>value</i>][,<i>keyword</i>[[:]=<i>value</i>]]...</p>
+
+<p style="margin-left:22%;">Control pax keywords when
+creating <b>PAX</b> archives (<b>-H pax</b>). This option is
+equivalent to the <b>-o</b> option of the <b>pax</b>(1)
+utility.</p>
+
+<p style="margin-left:11%;"><b>--posix</b></p>
+
+<p style="margin-left:22%;">Same as
+<b>--format=posix</b>.</p>
+
+<p style="margin-left:11%;"><b>-V</b>,
+<b>--label</b>=<i>TEXT</i></p>
+
+<p style="margin-left:22%;">Create archive with volume name
+<i>TEXT</i>. If listing or extracting, use <i>TEXT</i> as a
+globbing pattern for volume name.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Compression
+options <br>
+-a</b>, <b>--auto-compress</b></p>
+
+<p style="margin-left:22%;">Use archive suffix to determine
+the compression program.</p>
+
+<p style="margin-left:11%;"><b>-I</b>,
+<b>--use-compress-program</b><i>=COMMAND</i></p>
+
+<p style="margin-left:22%;">Filter data through
+<i>COMMAND</i>. It must accept the <b>-d</b> option, for
+decompression. The argument can contain command line
+options.</p>
+
+<p style="margin-left:11%;"><b>-j</b>, <b>--bzip2</b></p>
+
+<p style="margin-left:22%;">Filter the archive through
+<b>bzip2</b>(1).</p>
+
+<p style="margin-left:11%;"><b>-J</b>, <b>--xz</b></p>
+
+<p style="margin-left:22%;">Filter the archive through
+<b>xz</b>(1).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--lzip</b></p></td>
+<td width="2%"></td>
+<td width="53%">
+
+
+<p>Filter the archive through <b>lzip</b>(1).</p></td>
+<td width="25%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--lzma</b></p></td>
+<td width="2%"></td>
+<td width="53%">
+
+
+<p>Filter the archive through <b>lzma</b>(1).</p></td>
+<td width="25%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--lzop</b></p></td>
+<td width="2%"></td>
+<td width="53%">
+
+
+<p>Filter the archive through <b>lzop</b>(1).</p></td>
+<td width="25%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--no-auto-compress</b></p>
+
+<p style="margin-left:22%;">Do not use archive suffix to
+determine the compression program.</p>
+
+<p style="margin-left:11%;"><b>-z</b>, <b>--gzip</b>,
+<b>--gunzip</b>, <b>--ungzip</b></p>
+
+<p style="margin-left:22%;">Filter the archive through
+<b>gzip</b>(1).</p>
+
+<p style="margin-left:11%;"><b>-Z</b>, <b>--compress</b>,
+<b>--uncompress</b></p>
+
+<p style="margin-left:22%;">Filter the archive through
+<b>compress</b>(1).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--zstd</b></p></td>
+<td width="2%"></td>
+<td width="53%">
+
+
+<p>Filter the archive through <b>zstd</b>(1).</p></td>
+<td width="25%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Local file
+selection <br>
+--add-file</b>=<i>FILE</i></p>
+
+<p style="margin-left:22%;">Add <i>FILE</i> to the archive
+(useful if its name starts with a dash).</p>
+
+
+<p style="margin-left:11%;"><b>--backup</b>[=<i>CONTROL</i>]</p>
+
+<p style="margin-left:22%;">Backup before removal. The
+<i>CONTROL</i> argument, if supplied, controls the backup
+policy. Its valid values are: <b><br>
+none</b>, <b>off</b></p>
+
+<p style="margin-left:32%;">Never make backups.</p>
+
+<p style="margin-left:22%;"><b>t</b>, <b>numbered</b></p>
+
+<p style="margin-left:32%;">Make numbered backups.</p>
+
+<p style="margin-left:22%;"><b>nil</b>, <b>existing</b></p>
+
+<p style="margin-left:32%;">Make numbered backups if
+numbered backups exist, simple backups otherwise.</p>
+
+<p style="margin-left:22%;"><b>never</b>, <b>simple</b></p>
+
+<p style="margin-left:32%;">Always make simple backups</p>
+
+<p style="margin-left:22%; margin-top: 1em">If
+<i>CONTROL</i> is not given, the value is taken from the
+<b>VERSION_CONTROL</b> environment variable. If it is not
+set, <b>existing</b> is assumed.</p>
+
+<p style="margin-left:11%;"><b>-C</b>,
+<b>--directory</b>=<i>DIR</i></p>
+
+<p style="margin-left:22%;">Change to <i>DIR</i> before
+performing any operations. This option is order-sensitive,
+i.e. it affects all options that follow.</p>
+
+
+<p style="margin-left:11%;"><b>--exclude</b>=<i>PATTERN</i></p>
+
+<p style="margin-left:22%;">Exclude files matching
+<i>PATTERN</i>, a <b>glob</b>(3)-style wildcard pattern.</p>
+
+<p style="margin-left:11%;"><b>--exclude-backups</b></p>
+
+<p style="margin-left:22%;">Exclude backup and lock
+files.</p>
+
+<p style="margin-left:11%;"><b>--exclude-caches</b></p>
+
+<p style="margin-left:22%;">Exclude contents of directories
+containing file <b>CACHEDIR.TAG</b>, except for the tag file
+itself.</p>
+
+
+<p style="margin-left:11%;"><b>--exclude-caches-all</b></p>
+
+<p style="margin-left:22%;">Exclude directories containing
+file <b>CACHEDIR.TAG</b> and the file itself.</p>
+
+
+<p style="margin-left:11%;"><b>--exclude-caches-under</b></p>
+
+<p style="margin-left:22%;">Exclude everything under
+directories containing <b>CACHEDIR.TAG</b></p>
+
+
+<p style="margin-left:11%;"><b>--exclude-ignore=</b><i>FILE</i></p>
+
+<p style="margin-left:22%;">Before dumping a directory, see
+if it contains <i>FILE</i>. If so, read exclusion patterns
+from this file. The patterns affect only the directory
+itself.</p>
+
+
+<p style="margin-left:11%;"><b>--exclude-ignore-recursive=</b><i>FILE</i></p>
+
+<p style="margin-left:22%;">Same as
+<b>--exclude-ignore</b>, except that patterns from
+<i>FILE</i> affect both the directory and all its
+subdirectories.</p>
+
+
+<p style="margin-left:11%;"><b>--exclude-tag</b>=<i>FILE</i></p>
+
+<p style="margin-left:22%;">Exclude contents of directories
+containing <i>FILE</i>, except for <i>FILE</i> itself.</p>
+
+
+<p style="margin-left:11%;"><b>--exclude-tag-all</b>=<i>FILE</i></p>
+
+<p style="margin-left:22%;">Exclude directories containing
+<i>FILE</i>.</p>
+
+
+<p style="margin-left:11%;"><b>--exclude-tag-under</b>=<i>FILE</i></p>
+
+<p style="margin-left:22%;">Exclude everything under
+directories containing <i>FILE</i>.</p>
+
+<p style="margin-left:11%;"><b>--exclude-vcs</b></p>
+
+<p style="margin-left:22%;">Exclude version control system
+directories.</p>
+
+
+<p style="margin-left:11%;"><b>--exclude-vcs-ignores</b></p>
+
+<p style="margin-left:22%;">Exclude files that match
+patterns read from VCS-specific ignore files. Supported
+files are: <b>.cvsignore</b>, <b>.gitignore</b>,
+<b>.bzrignore</b>, and <b>.hgignore</b>.</p>
+
+<p style="margin-left:11%;"><b>-h</b>,
+<b>--dereference</b></p>
+
+<p style="margin-left:22%;">Follow symlinks; archive and
+dump the files they point to.</p>
+
+<p style="margin-left:11%;"><b>--hard-dereference</b></p>
+
+<p style="margin-left:22%;">Follow hard links; archive and
+dump the files they refer to.</p>
+
+<p style="margin-left:11%;"><b>-K</b>,
+<b>--starting-file</b>=<i>MEMBER</i></p>
+
+<p style="margin-left:22%;">Begin at the given member in
+the archive.</p>
+
+
+<p style="margin-left:11%;"><b>--newer-mtime</b>=<i>DATE</i></p>
+
+<p style="margin-left:22%;">Work on files whose data
+changed after the <i>DATE</i>. If <i>DATE</i> starts with
+<b>/</b> or <b>.</b> it is taken to be a file name; the
+mtime of that file is used as the date.</p>
+
+<p style="margin-left:11%;"><b>--no-null</b></p>
+
+<p style="margin-left:22%;">Disable the effect of the
+previous <b>--null</b> option.</p>
+
+<p style="margin-left:11%;"><b>--no-recursion</b></p>
+
+<p style="margin-left:22%;">Avoid descending automatically
+in directories.</p>
+
+<p style="margin-left:11%;"><b>--no-unquote</b></p>
+
+<p style="margin-left:22%;">Do not unquote input file or
+member names.</p>
+
+
+<p style="margin-left:11%;"><b>--no-verbatim-files-from</b></p>
+
+<p style="margin-left:22%;">Treat each line read from a
+file list as if it were supplied in the command line. I.e.,
+leading and trailing whitespace is removed and, if the
+resulting string begins with a dash, it is treated as
+<b>tar</b> command line option.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This is the
+default behavior. The <b>--no-verbatim-files-from</b> option
+is provided as a way to restore it after
+<b>--verbatim-files-from</b> option.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option is
+positional: it affects all <b>--files-from</b> options that
+occur after it in, until <b>--verbatim-files-from</b> option
+or end of line, whichever occurs first.</p>
+
+<p style="margin-left:22%; margin-top: 1em">It is implied
+by the <b>--no-null</b> option.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--null</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Instruct subsequent <b>-T</b> options to read
+null-terminated names verbatim (disables special handling of
+names that start with a dash).</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">See also
+<b>--verbatim-files-from</b>.</p>
+
+<p style="margin-left:11%;"><b>-N</b>,
+<b>--newer</b>=<i>DATE</i>,
+<b>--after-date</b>=<i>DATE</i></p>
+
+<p style="margin-left:22%;">Only store files newer than
+DATE. If <i>DATE</i> starts with <b>/</b> or <b>.</b> it is
+taken to be a file name; the mtime of that file is used as
+the date.</p>
+
+<p style="margin-left:11%;"><b>--one-file-system</b></p>
+
+<p style="margin-left:22%;">Stay in local file system when
+creating archive.</p>
+
+<p style="margin-left:11%;"><b>-P</b>,
+<b>--absolute-names</b></p>
+
+<p style="margin-left:22%;">Don&rsquo;t strip leading
+slashes from file names when creating archives.</p>
+
+<p style="margin-left:11%;"><b>--recursion</b></p>
+
+<p style="margin-left:22%;">Recurse into directories
+(default).</p>
+
+
+<p style="margin-left:11%;"><b>--suffix</b>=<i>STRING</i></p>
+
+<p style="margin-left:22%;">Backup before removal, override
+usual suffix. Default suffix is <b>~</b>, unless overridden
+by environment variable <b>SIMPLE_BACKUP_SUFFIX</b>.</p>
+
+<p style="margin-left:11%;"><b>-T</b>,
+<b>--files-from</b>=<i>FILE</i></p>
+
+<p style="margin-left:22%;">Get names to extract or create
+from <i>FILE</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Unless
+specified otherwise, the <i>FILE</i> must contain a list of
+names separated by ASCII <b>LF</b> (i.e. one name per line).
+The names read are handled the same way as command line
+arguments. They undergo quote removal and word splitting,
+and any string that starts with a <b>-</b> is handled as
+<b>tar</b> command line option.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If this
+behavior is undesirable, it can be turned off using the
+<b>--verbatim-files-from</b> option.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+<b>--null</b> option instructs <b>tar</b> that the names in
+<i>FILE</i> are separated by ASCII <b>NUL</b> character,
+instead of <b>LF</b>. It is useful if the list is generated
+by <b>find</b>(1) <b>-print0</b> predicate.</p>
+
+<p style="margin-left:11%;"><b>--unquote</b></p>
+
+<p style="margin-left:22%;">Unquote file or member names
+(default).</p>
+
+
+<p style="margin-left:11%;"><b>--verbatim-files-from</b></p>
+
+<p style="margin-left:22%;">Treat each line obtained from a
+file list as a file name, even if it starts with a dash.
+File lists are supplied with the <b>--files-from</b>
+(<b>-T</b>) option. The default behavior is to handle names
+supplied in file lists as if they were typed in the command
+line, i.e. any names starting with a dash are treated as
+<b>tar</b> options. The <b>--verbatim-files-from</b> option
+disables this behavior.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+affects all <b>--files-from</b> options that occur after it
+in the command line. Its effect is reverted by the
+<b>--no-verbatim-files-from} option.</b></p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>This option
+is implied by the --null</b> option.</p>
+
+<p style="margin-left:22%; margin-top: 1em">See also
+<b>--add-file</b>.</p>
+
+<p style="margin-left:11%;"><b>-X</b>,
+<b>--exclude-from</b>=<i>FILE</i></p>
+
+<p style="margin-left:22%;">Exclude files matching patterns
+listed in FILE.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>File name
+transformations <br>
+--strip-components</b>=<i>NUMBER</i></p>
+
+<p style="margin-left:22%;">Strip <i>NUMBER</i> leading
+components from file names on extraction.</p>
+
+
+<p style="margin-left:11%;"><b>--transform</b>=<i>EXPRESSION</i>,
+<b>--xform</b>=<i>EXPRESSION</i></p>
+
+<p style="margin-left:22%;">Use sed replace
+<i>EXPRESSION</i> to transform file names.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>File name
+matching options</b> <br>
+These options affect both exclude and include patterns.
+<b><br>
+--anchored</b></p>
+
+<p style="margin-left:22%;">Patterns match file name
+start.</p>
+
+<p style="margin-left:11%;"><b>--ignore-case</b></p>
+
+<p style="margin-left:22%;">Ignore case.</p>
+
+<p style="margin-left:11%;"><b>--no-anchored</b></p>
+
+<p style="margin-left:22%;">Patterns match after any
+<b>/</b> (default for exclusion).</p>
+
+<p style="margin-left:11%;"><b>--no-ignore-case</b></p>
+
+<p style="margin-left:22%;">Case sensitive matching
+(default).</p>
+
+<p style="margin-left:11%;"><b>--no-wildcards</b></p>
+
+<p style="margin-left:22%;">Verbatim string matching.</p>
+
+
+<p style="margin-left:11%;"><b>--no-wildcards-match-slash</b></p>
+
+<p style="margin-left:22%;">Wildcards do not match
+<b>/</b>.</p>
+
+<p style="margin-left:11%;"><b>--wildcards</b></p>
+
+<p style="margin-left:22%;">Use wildcards (default for
+exclusion).</p>
+
+
+<p style="margin-left:11%;"><b>--wildcards-match-slash</b></p>
+
+<p style="margin-left:22%;">Wildcards match <b>/</b>
+(default for exclusion).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Informative
+output <br>
+--checkpoint</b>[=<i>N</i>]</p>
+
+<p style="margin-left:22%;">Display progress messages every
+<i>N</i>th record (default 10).</p>
+
+
+<p style="margin-left:11%;"><b>--checkpoint-action</b>=<i>ACTION</i></p>
+
+<p style="margin-left:22%;">Run <i>ACTION</i> on each
+checkpoint.</p>
+
+<p style="margin-left:11%;"><b>--clamp-mtime</b></p>
+
+<p style="margin-left:22%;">Only set time when the file is
+more recent than what was given with --mtime.</p>
+
+<p style="margin-left:11%;"><b>--full-time</b></p>
+
+<p style="margin-left:22%;">Print file time to its full
+resolution.</p>
+
+
+<p style="margin-left:11%;"><b>--index-file</b>=<i>FILE</i></p>
+
+<p style="margin-left:22%;">Send verbose output to
+<i>FILE</i>.</p>
+
+<p style="margin-left:11%;"><b>-l</b>,
+<b>--check-links</b></p>
+
+<p style="margin-left:22%;">Print a message if not all
+links are dumped.</p>
+
+
+<p style="margin-left:11%;"><b>--no-quote-chars</b>=<i>STRING</i></p>
+
+<p style="margin-left:22%;">Disable quoting for characters
+from <i>STRING</i>.</p>
+
+
+<p style="margin-left:11%;"><b>--quote-chars</b>=<i>STRING</i></p>
+
+<p style="margin-left:22%;">Additionally quote characters
+from <i>STRING</i>.</p>
+
+
+<p style="margin-left:11%;"><b>--quoting-style</b>=<i>STYLE</i></p>
+
+<p style="margin-left:22%;">Set quoting style for file and
+member names. Valid values for <i>STYLE</i> are
+<b>literal</b>, <b>shell</b>, <b>shell-always</b>, <b>c</b>,
+<b>c-maybe</b>, <b>escape</b>, <b>locale</b>,
+<b>clocale</b>.</p>
+
+<p style="margin-left:11%;"><b>-R</b>,
+<b>--block-number</b></p>
+
+<p style="margin-left:22%;">Show block number within
+archive with each message.</p>
+
+<p style="margin-left:11%;"><b>--show-omitted-dirs</b></p>
+
+<p style="margin-left:22%;">When listing or extracting,
+list each directory that does not match search criteria.</p>
+
+
+<p style="margin-left:11%;"><b>--show-transformed-names</b>,
+<b>--show-stored-names</b></p>
+
+<p style="margin-left:22%;">Show file or archive names
+after transformation by <b>--strip</b> and
+<b>--transform</b> options.</p>
+
+
+<p style="margin-left:11%;"><b>--totals</b>[=<i>SIGNAL</i>]</p>
+
+<p style="margin-left:22%;">Print total bytes after
+processing the archive. If <i>SIGNAL</i> is given, print
+total bytes when this signal is delivered. Allowed signals
+are: <b>SIGHUP</b>, <b>SIGQUIT</b>, <b>SIGINT</b>,
+<b>SIGUSR1</b>, and <b>SIGUSR2</b>. The <b>SIG</b> prefix
+can be omitted.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>--utc</b></p></td>
+<td width="4%"></td>
+<td width="56%">
+
+
+<p>Print file modification times in UTC.</p></td>
+<td width="22%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-v</b>, <b>--verbose</b></p>
+
+<p style="margin-left:22%;">Verbosely list files processed.
+Each instance of this option on the command line increases
+the verbosity level by one. The maximum verbosity level is
+3. For a detailed discussion of how various verbosity levels
+affect tar&rsquo;s output, please refer to <b>GNU Tar
+Manual</b>, subsection 2.5.1 &quot;<b>The --verbose
+Option</b>&quot;.</p>
+
+
+<p style="margin-left:11%;"><b>--warning</b>=<i>KEYWORD</i></p>
+
+<p style="margin-left:22%;">Enable or disable warning
+messages identified by <i>KEYWORD</i>. The messages are
+suppressed if <i>KEYWORD</i> is prefixed with <b>no-</b> and
+enabled otherwise.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Multiple
+<b>--warning</b> messages accumulate.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Keywords
+controlling general <b>tar</b> operation:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="6%">
+
+
+<p><b>all</b></p></td>
+<td width="4%"></td>
+<td width="68%">
+
+
+<p>Enable all warning messages. This is the default.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="6%">
+
+
+<p><b>none</b></p></td>
+<td width="4%"></td>
+<td width="68%">
+
+
+<p>Disable all warning messages.</p></td></tr>
+</table>
+
+<p style="margin-left:22%;"><b>filename-with-nuls</b></p>
+
+<p style="margin-left:32%;">&quot;%s: file name read
+contains nul character&quot;</p>
+
+<p style="margin-left:22%;"><b>alone-zero-block</b></p>
+
+<p style="margin-left:32%;">&quot;A lone zero block at
+%s&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="56%">
+
+
+<p style="margin-top: 1em">Keywords applicable for <b>tar
+--create</b>:</p> </td>
+<td width="22%">
+</td></tr>
+</table>
+
+<p><b>cachedir</b></p></table>
+
+<p style="margin-left:32%;">&quot;%s: contains a cache
+directory tag %s; %s&quot;</p>
+
+<p style="margin-left:22%;"><b>file-shrank</b></p>
+
+<p style="margin-left:32%;">&quot;%s: File shrank by %s
+bytes; padding with zeros&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="6%">
+
+
+<p><b>xdev</b></p></td>
+<td width="4%"></td>
+<td width="68%">
+
+
+<p>&quot;%s: file is on a different filesystem; not
+dumped&quot;</p> </td></tr>
+</table>
+
+<p style="margin-left:22%;"><b>file-ignored</b></p>
+
+<p style="margin-left:32%;">&quot;%s: Unknown file type;
+file ignored&quot; <br>
+&quot;%s: socket ignored&quot; <br>
+&quot;%s: door ignored&quot;</p>
+
+<p style="margin-left:22%;"><b>file-unchanged</b></p>
+
+<p style="margin-left:32%;">&quot;%s: file is unchanged;
+not dumped&quot;</p>
+
+<p style="margin-left:22%;"><b>ignore-archive</b></p>
+
+<p style="margin-left:32%;">&quot;%s: file is the archive;
+not dumped&quot;</p>
+
+<p style="margin-left:22%;"><b>file-removed</b></p>
+
+<p style="margin-left:32%;">&quot;%s: File removed before
+we read it&quot;</p>
+
+<p style="margin-left:22%;"><b>file-changed</b></p>
+
+<p style="margin-left:32%;">&quot;%s: file changed as we
+read it&quot;</p>
+
+<p style="margin-left:22%;"><b>failed-read</b></p>
+
+<p style="margin-left:32%;">Suppresses warnings about
+unreadable files or directories. This keyword applies only
+if used together with the <b>--ignore-failed-read</b>
+option.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="58%">
+
+
+<p style="margin-top: 1em">Keywords applicable for <b>tar
+--extract</b>:</p> </td>
+<td width="20%">
+</td></tr>
+</table>
+
+<p><b>existing-file</b></p></table>
+
+<p style="margin-left:32%;">&quot;%s: skipping existing
+file&quot;</p>
+
+<p style="margin-left:22%;"><b>timestamp</b></p>
+
+<p style="margin-left:32%;">&quot;%s: implausibly old time
+stamp %s&quot; <br>
+&quot;%s: time stamp %s is %s s in the future&quot;</p>
+
+<p style="margin-left:22%;"><b>contiguous-cast</b></p>
+
+<p style="margin-left:32%;">&quot;Extracting contiguous
+files as regular files&quot;</p>
+
+<p style="margin-left:22%;"><b>symlink-cast</b></p>
+
+<p style="margin-left:32%;">&quot;Attempting extraction of
+symbolic links as hard links&quot;</p>
+
+<p style="margin-left:22%;"><b>unknown-cast</b></p>
+
+<p style="margin-left:32%;">&quot;%s: Unknown file type
+&rsquo;%c&rsquo;, extracted as normal file&quot;</p>
+
+<p style="margin-left:22%;"><b>ignore-newer</b></p>
+
+<p style="margin-left:32%;">&quot;Current %s is newer or
+same age&quot;</p>
+
+<p style="margin-left:22%;"><b>unknown-keyword</b></p>
+
+<p style="margin-left:32%;">&quot;Ignoring unknown extended
+header keyword &rsquo;%s&rsquo;&quot;</p>
+
+<p style="margin-left:22%;"><b>decompress-program</b></p>
+
+<p style="margin-left:32%;">Controls verbose description of
+failures occurring when trying to run alternative
+decompressor programs. This warning is disabled by default
+(unless <b>--verbose</b> is used). A common example of what
+you can get when using this warning is:</p>
+
+<p style="margin-left:32%; margin-top: 1em">$ tar
+--warning=decompress-program -x -f archive.Z <br>
+tar (child): cannot run compress: No such file or directory
+<br>
+tar (child): trying gzip</p>
+
+<p style="margin-left:32%; margin-top: 1em">This means that
+<b>tar</b> first tried to decompress <b>archive.Z</b> using
+<b>compress</b>, and, when that failed, switched to
+<b>gzip</b>.</p>
+
+<p style="margin-left:22%;"><b>record-size</b></p>
+
+<p style="margin-left:32%;">&quot;Record size = %lu
+blocks&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="67%">
+
+
+<p style="margin-top: 1em">Keywords controlling incremental
+extraction:</p> </td>
+<td width="11%">
+</td></tr>
+</table>
+
+<p><b>rename-directory</b></p></table>
+
+<p style="margin-left:32%;">&quot;%s: Directory has been
+renamed from %s&quot; <br>
+&quot;%s: Directory has been renamed&quot;</p>
+
+<p style="margin-left:22%;"><b>new-directory</b></p>
+
+<p style="margin-left:32%;">&quot;%s: Directory is
+new&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="6%">
+
+
+<p><b>xdev</b></p></td>
+<td width="4%"></td>
+<td width="68%">
+
+
+<p>&quot;%s: directory is on a different device: not
+purging&quot;</p> </td></tr>
+</table>
+
+<p style="margin-left:22%;"><b>bad-dumpdir</b></p>
+
+<p style="margin-left:32%;">&quot;Malformed dumpdir:
+&rsquo;X&rsquo; never used&quot;</p>
+
+<p style="margin-left:11%;"><b>-w</b>,
+<b>--interactive</b>, <b>--confirmation</b></p>
+
+<p style="margin-left:22%;">Ask for confirmation for every
+action.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Compatibility
+options</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-o</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>When creating, same as <b>--old-archive</b>. When
+extracting, same as <b>--no-same-owner</b>.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Size
+suffixes</b> <i><br>
+Suffix Units Byte Equivalent</i></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+
+
+<p>b</p><td width="34%"></td>
+<td width="15%">
+
+
+<p>Blocks</p></td>
+<td width="37%">
+
+
+<p><i>SIZE</i> x 512 <br>
+B</p></td>
+<td width="14%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="34%"></td>
+<td width="15%">
+
+
+<p>Kilobytes</p></td>
+<td width="37%">
+
+
+<p><i>SIZE</i> x 1024 <br>
+c</p></td>
+<td width="14%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="34%"></td>
+<td width="15%">
+
+
+<p>Bytes</p></td>
+<td width="37%">
+
+
+<p><i>SIZE</i> <br>
+G</p></td>
+<td width="14%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="34%"></td>
+<td width="15%">
+
+
+<p>Gigabytes</p></td>
+<td width="37%">
+
+
+<p><i>SIZE</i> x 1024^3 <br>
+K</p></td>
+<td width="14%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="34%"></td>
+<td width="15%">
+
+
+<p>Kilobytes</p></td>
+<td width="37%">
+
+
+<p><i>SIZE</i> x 1024 <br>
+k</p></td>
+<td width="14%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="34%"></td>
+<td width="15%">
+
+
+<p>Kilobytes</p></td>
+<td width="37%">
+
+
+<p><i>SIZE</i> x 1024 <br>
+M</p></td>
+<td width="14%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="34%"></td>
+<td width="15%">
+
+
+<p>Megabytes</p></td>
+<td width="37%">
+
+
+<p><i>SIZE</i> x 1024^2 <br>
+P</p></td>
+<td width="14%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="34%"></td>
+<td width="15%">
+
+
+<p>Petabytes</p></td>
+<td width="37%">
+
+
+<p><i>SIZE</i> x 1024^5 <br>
+T</p></td>
+<td width="14%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="34%"></td>
+<td width="15%">
+
+
+<p>Terabytes</p></td>
+<td width="37%">
+
+
+<p><i>SIZE</i> x 1024^4 <br>
+w</p></td>
+<td width="14%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="34%"></td>
+<td width="15%">
+
+
+<p>Words</p></td>
+<td width="37%">
+
+
+<p><i>SIZE</i> x 2</p></td>
+<td width="14%">
+</td></tr>
+</table>
+
+<h2>RETURN VALUE
+<a name="RETURN VALUE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Tar exit code
+indicates whether it was able to successfully perform the
+requested operation, and if not, what kind of error
+occurred.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em"><b>0</b></p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Successful termination.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p><b>1</b></p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p><i>Some files differ.</i> If tar was invoked with the
+<b>--compare</b> (<b>--diff</b>, <b>-d</b>) command line
+option, this means that some files in the archive differ
+from their disk counterparts. If tar was given one of the
+<b>--create</b>, <b>--append</b> or <b>--update</b> options,
+this exit code means that some files were changed while
+being archived and so the resulting archive does not contain
+the exact copy of the file set.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p><b>2</b></p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p><i>Fatal error.</i> This means that some fatal,
+unrecoverable error occurred.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">If a subprocess
+that had been invoked by <b>tar</b> exited with a nonzero
+exit code, <b>tar</b> itself exits with that code as well.
+This can happen, for example, if a compression option (e.g.
+<b>-z</b>) was used and the external compressor program
+failed. Another example is <b>rmt</b> failure during backup
+to a remote device.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>bzip2</b>(1),
+<b>compress</b>(1), <b>gzip</b>(1), <b>lzma</b>(1),
+<b>lzop</b>(1), <b>rmt</b>(8), <b>symlink</b>(7),
+<b>xz</b>(1), <b>zstd</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Complete
+<b>tar</b> manual: run <b>info tar</b> or use
+<b>emacs</b>(1) info mode to read it.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Online copies
+of <b>GNU tar</b> documentation in various formats can be
+found at:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b>http://www.gnu.org/software/tar/manual</b></p>
+
+<h2>BUG REPORTS
+<a name="BUG REPORTS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Report bugs to
+&lt;bug-tar@gnu.org&gt;.</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+&copy; 2013-2019 Free Software Foundation, Inc. <br>
+License GPLv3+: GNU GPL version 3 or later
+&lt;http://gnu.org/licenses/gpl.html&gt; <br>
+This is free software: you are free to change and
+redistribute it. There is NO WARRANTY, to the extent
+permitted by law.</p>
+<hr>
+</body>
+</html>

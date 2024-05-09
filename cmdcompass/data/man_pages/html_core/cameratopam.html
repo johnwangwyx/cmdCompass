@@ -1,0 +1,260 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:33:56 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Cameratopam User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Cameratopam User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">cameratopam -
+convert raw camera image to PAM</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>cameratopam</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<i>input_file_name</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-identify_only</b>]
+[<b>-quick_interpolate</b>] [<b>-half_size</b>]
+[<b>-four_color_rgb</b>] [<b>-document_mode</b>]
+[<b>-balance_auto</b>] [<b>-balance_camera</b>]
+[<b>-red_scale=</b><i>float</i>]
+[<b>-blue_scale=</b><i>float</i>]
+[<b>-brightness=</b><i>fraction</i>] [<b>-no_clip_color</b>]
+[<b>-rgb</b>] [<b>-secondary</b>] [<b>-linear</b>]
+[<b>-verbose</b>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">All options can
+be abbreviated to their shortest unique prefix. You may use
+two hyphens instead of one to designate an option. You may
+use either white space or an equals sign between an option
+name and its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>cameratopam</b>
+converts from any of dozens of raw camera image formats to
+PAM.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Digital still
+cameras often can produce images in a special raw format in
+addition to something more standard such as TIFF or JFIF
+(JPEG). Software supplied with the camera allows you to
+manipulate the image using information which is lost when
+the camera converts to the common format. A particular
+camera model often has a unique raw format.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>cameratopam</b> recognizes the following command line
+options: <b><br>
+-identify_only</b></p>
+
+<p style="margin-left:22%;">Report to Standard Error the
+format of the input image but don&rsquo;t generate an output
+image. Program fails if it cannot recognize the format.</p>
+
+<p style="margin-left:11%;"><b>-verbose</b></p>
+
+<p style="margin-left:22%;">Report to Standard Error
+details of the processing.</p>
+
+<p style="margin-left:11%;"><b>-quick_interpolate</b></p>
+
+<p style="margin-left:22%;">Use simple bilinear
+interpolation for quick results. The default is to use a
+slow, high-quality adaptive algorithm.</p>
+
+<p style="margin-left:11%;"><b>-half_size</b></p>
+
+<p style="margin-left:22%;">Half-size the output image.
+Instead of interpolating, reduce each 2x2 block of sensors
+to one pixel. Much faster than
+<b>-quick_interpolate</b>.</p>
+
+<p style="margin-left:11%;"><b>-four_color_rgb</b></p>
+
+<p style="margin-left:22%;">Interpolate RGB as four colors.
+This causes a slight loss of detail, so use this only if you
+see false 2x2 mesh patterns in blue sky.</p>
+
+<p style="margin-left:11%;"><b>-document_mode</b></p>
+
+<p style="margin-left:22%;">Show the raw data as a
+grayscale image with no interpolation. This is good for
+photographing black and white documents.</p>
+
+<p style="margin-left:11%;"><b>-balance_auto</b></p>
+
+<p style="margin-left:22%;">Automatic color balance. The
+default is to use a fixed color balance based on a white
+card photographed in sunlight.</p>
+
+<p style="margin-left:11%;"><b>-balance_camera</b></p>
+
+<p style="margin-left:22%;">Use the color balance specified
+by the camera. If <b>cameratopam</b> can&rsquo;t find this,
+it prints a warning and reverts to the default.</p>
+
+<p style="margin-left:11%;"><b>-red_scale=</b><i>float</i>
+<b><br>
+-blue_scale</b><i>float</i></p>
+
+<p style="margin-left:22%;">Further adjust the color
+balance by multiplying the red and blue channels by these
+values. Both default to 1.0.</p>
+
+
+<p style="margin-left:11%;"><b>-brightness=</b><i>float</i></p>
+
+<p style="margin-left:22%;">Change the output brightness.
+Default is 1.0.</p>
+
+<p style="margin-left:11%;"><b>-no_clip_color</b></p>
+
+<p style="margin-left:22%;">By default, <b>cameratoapm</b>
+clips all colors to prevent pink hues in the highlights.
+Combine this option with <b>-brightness=0.25</b> to leave
+the image data completely unclipped.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-rgb</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Write raw camera colors to the output file. By default,
+<b>cameratoapm</b> converts to sRGB colorspace.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-secondary</b></p>
+
+<p style="margin-left:22%;">For cameras based on the Fuji
+Super CCD SR, this option causes <b>cameratopam</b> to use
+the secondary sensors, in effect underexposing the image by
+four stops to reveal detail in the highlights.
+<b>cameratopam</b> silently ignores this option for all
+other cameras.</p>
+
+<p style="margin-left:11%;"><b>-linear</b></p>
+
+<p style="margin-left:22%;">This option causes
+<b>cameratopam</b> to generate a variation on PAM that has
+&quot;linear&quot; color samples. In true PAM, each sample
+in the image raster is gamma-corrected; i.e. it is
+essentially proportional to brightness. With the
+<b>linear</b> option, <b>cameratopam</b> generates an image
+in which the samples are instead proportional to light
+intensity.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Without
+<b>-linear</b>, the image maxval is 255, so the image
+contains one byte per sample. With <b>-linear</b>, the
+maxval is 65535, so the image contains two bytes per
+sample.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Without
+<b>-linear</b>, <b>cameratopam</b> uses a 99th percentile
+white point. With <b>-linear</b>, it doesn&rsquo;t. I
+don&rsquo;t know what that means.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>411toppm</b>(1),
+<b>pamflip</b>(1), <b>pam</b>(1),</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>cameratopam</b>
+was new in Netpbm 10.28 (June 2005).</p>
+
+<p style="margin-left:11%; margin-top: 1em">It was derived
+from the program
+<a href="https://dechifro.org/dcraw/"><b>dcraw</b> by Dave
+Coffin</a> , by Bryan Henderson in April 2005. Bryan
+replaced the part that generates the Netpbm output image and
+removed the Adobe Photoshop output function. Bryan changed
+the command syntax and made other small changes to make the
+program consistent with Netpbm. He also split the source
+code into manageable pieces (<b>dcraw</b> had a single 5000
+line source file).</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/cameratopam.html</b></p>
+<hr>
+</body>
+</html>

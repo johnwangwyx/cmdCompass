@@ -1,0 +1,412 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:28 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamundice User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamundice User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#EXAMPLE">EXAMPLE</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#ARGUMENTS">ARGUMENTS</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamundice -
+combine grid of images (tiles) into one</p>
+
+<h2>EXAMPLE
+<a name="EXAMPLE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">$ pamdice
+myimage.ppm -outstem=myimage_part -width=10 -height=8 <br>
+$ pamundice myimage_part_%1d_%1a.ppm -across=10 -down=8
+&gt;myimage.ppm</p>
+
+<p style="margin-left:11%; margin-top: 1em">$ pamundice
+myimage.ppm myimage_part_%2a -across=13 -hoverlap=9</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamundice</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-across=</b><i>n</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-down=</b><i>n</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-hoverlap=</b><i>pixels</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-voverlap=</b><i>pixels</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-verbose</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">{<i>input_filename_pattern</i>,
+<b>-listfile=</b><i>filename</i>}</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can use the
+minimum unique abbreviation of the options. You can use two
+hyphens instead of one. You can separate an option name from
+its value with white space instead of an equals sign.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamundice</b>
+reads a bunch of Netpbm images as input and combines them as
+a grid of tiles into a single output image of the same kind
+on Standard Output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can
+optionally make the pieces overlap.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The images can
+either be in files whose names indicate where they go in the
+<br>
+output (e.g. &rsquo;myimage_part_03_04&rsquo; could be the
+image for Row 3, <br>
+Column 4 - see the <i>input_filename_pattern</i> argument)
+or listed in a <br>
+file, with a <b>-listfile</b> option.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The input
+images must all have the same format (PAM, PPM, etc.) and
+maxval and for PAM must have the same depth and tuple type.
+All the images in a rank (horizontal row of tiles) must have
+the same height. All the images in a file (vertical column
+of tiles) must have the same width. But it is not required
+that every rank have the same height or every file have the
+same width.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamdice</b>
+is the inverse of <b>pamundice</b>. You can use
+<b>pamundice</b> to reassemble an image sliced up by
+<b>pamdice</b>. You can use <b>pamdice</b> to recreate the
+tiles of an image created by <b>pamundice</b>, but to do
+this, the original ranks must all have been the same height
+except for the bottom one and the original files must all
+have been the same width except the right one.</p>
+
+<p style="margin-left:11%; margin-top: 1em">One use for
+this is to process an image in pieces when the whole image
+is too large to process. For example, you might have an
+image so large that an image editor can&rsquo;t read it all
+into memory or processes it very slowly. You can split it
+into smaller pieces with <b>pamdice</b>, edit one at a time,
+and then reassemble them with <b>pamundice</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Of course, you
+can also use <b>pamundice</b> to compose various kinds of
+checkerboard images, for example, you could write a program
+to render a chessboard by computing an image of each square,
+then using <b>pamundice</b> to assemble them into a
+board.</p>
+
+<p style="margin-left:11%; margin-top: 1em">An alternative
+to join images in a single direction (i.e. a single rank or
+a single file) is <b>pnmcat</b>. <b>pnmcat</b> gives you
+more flexibility than <b>pamundice</b> in identifying the
+input images: you can supply them on Standard Input or as a
+list of arbitrarily named files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To join
+piecewise photographs, use <b>pnmstitch</b> instead of
+<b>pamundice</b>, because it figures out where the pieces
+overlap, even if they don&rsquo;t overlap exactly vertically
+or horizontally.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To create an
+image of the same tile repeated in a grid, that&rsquo;s
+<b>pnmtile</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmindex</b>
+does a similar thing to <b>pamundice</b>: it combines a
+bunch of small images in a grid into a big one. But its
+purpose is to produce a an index image of the input images.
+So it leaves space between them and has labels for them, for
+example.</p>
+
+<h2>ARGUMENTS
+<a name="ARGUMENTS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Unless you use
+a <b>-listfile</b> option,, there is one non-option
+argument, and it is mandatory:
+<i>input_filename_pattern</i>. This tells <b>pamundice</b>
+what files contain the input tiles.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamundice</b>
+reads the input images from files which are named with a
+pattern that indicates their positions in the combined
+image. For example, <b>tile_00_05.ppm</b> could be the 6th
+tile over in the 1st rank, while <b>tile_04_01</b> is the
+2nd tile over in the 5th rank.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You cannot
+supply any of the data on Standard Input, and the files must
+be the kind that <b>pamundice</b> can close and reopen and
+read the same image a second time (e.g. a regular file is
+fine; a named pipe is probably not).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>input_filename_pattern</i>
+is a printf-style pattern. (See the standard C library
+<b>printf</b> subroutine). For the example above, it would
+be <b>tile_%2d_%2a.ppm</b>. The only possible conversion
+specifiers are:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p><b>d</b></p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>&quot;down&quot;: The rank (row) number, starting with
+0.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p><b>a</b></p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>&quot;across&quot;: The file (column) number, starting
+with 0.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p><b>%</b></p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>The per cent character (%).</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The number
+between the % and the conversion specifier is the precision
+and is required. It says how many characters of the file
+name are described by that conversion. The rank or file
+number is filled with leading zeroes as necessary.</p>
+
+<p style="margin-left:11%; margin-top: 1em">So the example
+<b>tile_%2d_%2a.ppm</b> means to get the name of the file
+that contains the tile at Rank 0, File 5, you:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">replace the &quot;%2d&quot; with
+the rank number, as a 2 digit decimal number:
+&quot;00&quot;</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Replace the &quot;%2a&quot; with the file number, as a 2
+digit decimal number: &quot;05&quot;</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Note that this
+pattern describes file names that <b>pamdice</b> produces,
+except that the precision may be more or less.
+(<b>pamdice</b> uses however many digits are required for
+the highest numbered image).</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamundice</b> recognizes the following command line
+options: <b><br>
+-across=</b><i>N</i></p>
+
+<p style="margin-left:22%;">This is the number of tiles
+across in the grid, i.e. the number of tiles in each rank,
+or the number of files.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Default is
+1.</p>
+
+<p style="margin-left:11%;"><b>-down=</b><i>N</i></p>
+
+<p style="margin-left:22%;">This is the number of tiles up
+and down in the grid, i.e. the number of tiles in each file,
+or the number of ranks.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Default is
+1.</p>
+
+
+<p style="margin-left:11%;"><b>-hoverlap=</b><i>pixels</i></p>
+
+<p style="margin-left:22%;">This is the amount in pixels to
+overlap the tiles horizontally. <b>pamundice</b> clips this
+much off the right edge of every tile before joining it to
+the adjacent image to the right. The tiles along the right
+edge remain whole.</p>
+
+<p style="margin-left:22%; margin-top: 1em">There must not
+be any input image narrower than this.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Note that this
+undoes the effect of the same <b>-hoverlap</b> option of
+<b>pamdice</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Default is zero
+-- no overlap.</p>
+
+
+<p style="margin-left:11%;"><b>-voverlap=</b><i>pixels</i></p>
+
+<p style="margin-left:22%;">This is analogous to
+<b>-hoverlap</b>, but <b>pamundice</b> clips the bottom edge
+of each image before joining it to the one below.</p>
+
+
+<p style="margin-left:11%;"><b>-listfile=</b><i>filename</i></p>
+
+<p style="margin-left:22%;">This option names a file that
+contains the names of all the input files. This is an
+alternative to specifying a file name pattern as an
+argument.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The named file
+contains file name, one per line. Each file contains the
+<br>
+image for one tile, in row-major order, top to bottom, left
+to right. So <br>
+the first file is the upper left tile, the second is the one
+to right of <br>
+that, etc. The number of lines in the file must be equal to
+the number of <br>
+tiles in the output, the product of the <b>-across</b> and
+<b>-down</b> <br>
+values.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The file names
+have no meaning to <b>pamundice</b>. You can use the same
+<br>
+file multiple times to have identical tiles in the
+output.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.90 (March 2020).</p>
+
+<p style="margin-left:11%;"><b>-verbose</b></p>
+
+<p style="margin-left:22%;">Print information about the
+processing to Standard Error.</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamundice</b>
+was new in Netpbm 10.39 (June 2007). Before that,
+<b>pnmcat</b> is the best substitute.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamdice</b>(1),
+<b>pnmcat</b>(1), <b>pnmindex</b>(1), <b>pnmtile</b>(1),
+<b>pnm</b>(1) <b>pam</b>(1)</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamundice.html</b></p>
+<hr>
+</body>
+</html>

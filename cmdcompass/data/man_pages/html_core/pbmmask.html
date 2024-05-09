@@ -1,0 +1,184 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:29 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pbmmask User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pbmmask User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pbmmask -
+create a mask bitmap from a regular bitmap</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbmmask</b>
+[<b>-expand</b>] [<i>pbmfile</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbmmask</b>
+reads a PBM image as input and generates a corresponding
+mask of the foreground areas as another PBM image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This is
+probably obsoleted by <b>pambackground</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The color to be
+interpreted as &quot;background&quot; is determined
+automatically. Regardless of which color is background, the
+mask will be white where the background is and black where
+the figure is.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This lets you
+do a masked paste like this, for objects with a black
+background:</p>
+
+<p style="margin-left:11%; margin-top: 1em">pbmmask obj
+&gt; objmask <br>
+pnmpaste &lt; dest -and objmask &lt;x&gt; &lt;y&gt; |
+pnmpaste -or obj &lt;x&gt; &lt;y&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">For objects
+with a white background, you can either invert them or add a
+step: <br>
+pbmmask obj &gt; objmask <br>
+pnminvert objmask | pnmpaste -and obj 0 0 &gt; blackback
+<br>
+pnmpaste &lt; dest -and objmask &lt;x&gt; &lt;y&gt; |
+pnmpaste -or blackback &lt;x&gt; &lt;y&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that this
+three-step version works for objects with black backgrounds
+too, if you don&rsquo;t care about the wasted time.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can also
+use masks with grayscale and color images, using the
+<i>pnmarith</i> tool. For instance:</p>
+
+<p style="margin-left:11%; margin-top: 1em">ppmtopgm
+obj.ppm | pamditherbw -threshold | pbmmask &gt; objmask.pbm
+<br>
+pnmarith -multiply dest.ppm objmask.pbm &gt; t1.ppm <br>
+pnminvert objmask.pbm | pnmarith -multiply obj.ppm - &gt;
+t2.ppm <br>
+pnmarith -add t1.ppm t2.ppm</p>
+
+<p style="margin-left:11%; margin-top: 1em">An interesting
+variation on this is to pipe the mask through
+<i>pnmsmooth</i> before using it. This makes the boundary
+between the two images less sharp.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pbmmask</b> recognizes the following command line option:
+<b><br>
+-expand</b></p>
+
+<p style="margin-left:22%;">Expands the mask by one pixel
+out from the image. This is useful if you want a little
+white border around your image. (A better solution might be
+to turn the <b>pbmlife</b> program into a general cellular
+automaton tool...)</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pambackground</b>(1)
+<b>ppmcolormask</b>(1), <b>pnmpaste</b>(1),
+<b>pnminvert</b>(1), <b>pnmarith</b>(1), <b>pnmsmooth</b>(1)
+<b>pbm</b>(1),</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1988 by Jef Poskanzer.</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbmmask</b>
+is one of the oldest programs in Netpbm. In September 2021,
+<br>
+the date on this manual was August 8, 1989 (being the date
+of the last <br>
+substantial update). We updated the page then just to add
+this historical <br>
+information and recommend <b>pambackground</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">It is likely
+that when Bryan wrote <b>pambackground</b> in 2006, he was
+<br>
+unaware <b>pbmmask</b> existed. Otherwise, he would
+presumably have <br>
+replaced <b>pbmmask</b> with a wrapper around
+<b>pambackground</b>.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pbmmask.html</b></p>
+<hr>
+</body>
+</html>

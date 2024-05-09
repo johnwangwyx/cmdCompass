@@ -1,0 +1,275 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:35 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pnmnlfilt User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pnmnlfilt User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#REFERENCES">REFERENCES</a><br>
+<a href="#PARAMETERS">PARAMETERS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pnmnlfilt -
+non-linear filters: smooth, alpha trim mean, optimal
+estimation smoothing, edge enhancement.</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmnlfilt</b>
+<i>alpha radius</i> [<i>pnmfile</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmnlfilt</b>
+produces an output image where the pixels are a summary of
+multiple pixels near the corresponding location in an input
+image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This program
+works on multi-image streams.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This is
+something of a swiss army knife filter. It has 3 distinct
+operating modes. In all of the modes <b>pnmnlfilt</b>
+examines each pixel in the image and processes it according
+to the values of it and its surrounding pixels. Rather than
+using a square block of surrounding pixels (e.g. the subject
+pixel and its 8 immediate neighbors, in a 3x3 square),
+<b>pnmnlfilt</b> uses 7 hexagonal areas. You choose the size
+of the hexagons with the radius parameter. A radius value of
+1/3 means that the 7 hexagons essentially fit into the
+subject pixel (ie. there will be no filtering effect). A
+radius value of 1.0 means that the 7 hexagons essentially
+cover the 3x3 immediate neighbor square.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Your choice of
+&quot;alpha&quot; parameter selects among the three
+modes.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Alpha
+trimmed mean filter (0.0 &lt;= alpha &lt;= 0.5)</b> <br>
+The value of the center pixel will be replaced by the mean
+of the 7 hexagon values, but the 7 values are sorted by size
+and the top and bottom alpha portion of the 7 are excluded
+from the mean. This implies that an alpha value of 0.0 gives
+the same sort of output as a normal convolution (ie.
+averaging or smoothing filter), where radius will determine
+the &quot;strength&quot; of the filter. A good value to
+start from for subtle filtering is alpha = 0.0, radius =
+0.55 For a more blatant effect, try alpha 0.0 and radius
+1.0</p>
+
+<p style="margin-left:11%; margin-top: 1em">An alpha value
+of 0.5 will cause the median value of the 7 hexagons to be
+used to replace the center pixel value. This sort of filter
+is good for eliminating &quot;pop&quot; or single pixel
+noise from an image without spreading the noise out or
+smudging features on the image. Judicious use of the radius
+parameter will fine tune the filtering. Intermediate values
+of alpha give effects somewhere between smoothing and
+&quot;pop&quot; noise reduction. For subtle filtering try
+starting with values of alpha = 0.4, radius = 0.6 For a more
+blatant effect try alpha = 0.5, radius = 1.0</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Optimal
+estimation smoothing. (1.0 &lt;= alpha &lt;= 2.0)</b> <br>
+This type of filter applies a smoothing filter adaptively
+over the image. For each pixel the variance of the
+surrounding hexagon values is calculated, and the amount of
+smoothing is made inversely proportional to it. The idea is
+that if the variance is small then it is due to noise in the
+image, while if the variance is large, it is because of
+&quot;wanted&quot; image features. As usual the radius
+parameter controls the effective radius, but it probably
+advisable to leave the radius between 0.8 and 1.0 for the
+variance calculation to be meaningful. The alpha parameter
+sets the noise threshold, over which less smoothing will be
+done. This means that small values of alpha will give the
+most subtle filtering effect, while large values will tend
+to smooth all parts of the image. You could start with
+values like alpha = 1.2, radius = 1.0 and try increasing or
+decreasing the alpha parameter to get the desired effect.
+This type of filter is best for filtering out dithering
+noise in both bitmap and color images.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Edge
+enhancement. (-0.1 &gt;= alpha &gt;= -0.9)</b> <br>
+This is the opposite type of filter to the smoothing filter.
+It enhances edges. The alpha parameter controls the amount
+of edge enhancement, from subtle (-0.1) to blatant (-0.9).
+The radius parameter controls the effective radius as usual,
+but useful values are between 0.5 and 0.9. Try starting with
+values of alpha = 0.3, radius = 0.8</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Combination
+use.</b> <br>
+The various modes of <b>pnmnlfilt</b> can be used one after
+the other to get the desired result. For instance to turn a
+monochrome dithered image into a grayscale image you could
+try one or two passes of the smoothing filter, followed by a
+pass of the optimal estimation filter, then some subtle edge
+enhancement. Note that using edge enhancement is only likely
+to be useful after one of the non-linear filters (alpha
+trimmed mean or optimal estimation filter), as edge
+enhancement is the direct opposite of smoothing.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For reducing
+color quantization noise in images (ie. turning .gif files
+back into 24 bit files) you could try a pass of the optimal
+estimation filter (alpha 1.2, radius 1.0), a pass of the
+median filter (alpha 0.5, radius 0.55), and possibly a pass
+of the edge enhancement filter. Several passes of the
+optimal estimation filter with declining alpha values are
+more effective than a single pass with a large alpha value.
+As usual, there is a tradeoff between filtering
+effectiveness and losing detail. Experimentation is
+encouraged.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">There are no
+command line options defined specifically for
+<b>pnmnlfilt</b>, but it recognizes the options common to
+all programs based on libnetpbm (See
+<a href="index.html#commonoptions"> Common Options</a>
+.)</p>
+
+<h2>REFERENCES
+<a name="REFERENCES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+alpha-trimmed mean filter is based on the description in
+IEEE CG&amp;A May 1990 Page 23 by Mark E. Lee and Richard A.
+Redner, and has been enhanced to allow continuous alpha
+adjustment.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The optimal
+estimation filter is taken from an article &quot;Converting
+Dithered Images Back to Gray Scale&quot; by Allen Stenger,
+Dr Dobb&rsquo;s Journal, November 1992, and this article
+references &quot;Digital Image Enhancement and Noise
+Filtering by Use of Local Statistics&quot;, Jong-Sen Lee,
+IEEE Transactions on Pattern Analysis and Machine
+Intelligence, March 1980.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The edge
+enhancement details are from <b>pgmenhance</b>(1), which is
+taken from Philip R. Thompson&rsquo;s &quot;xim&quot;
+program, which in turn took it from section 6 of
+&quot;Digital Halftones by Dot Diffusion&quot;, D. E. Knuth,
+ACM Transaction on Graphics Vol. 6, No. 4, October 1987,
+which in turn got it from two 1976 papers by J. F. Jarvis
+et. al.</p>
+
+<h2>PARAMETERS
+<a name="PARAMETERS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The parameters
+are:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><i>alpha</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The alpha value (described above), in decimal. May be
+fractional.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><i>radius</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The radius (described above), in decimal. May be
+fractional.</p> </td></tr>
+</table>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pgmenhance</b>(1),
+<b>pnmconvol</b>(1), <b>pnm</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Graeme W. Gill
+<i>graeme@labtam.oz.au</i></p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pnmnlfilt.html</b></p>
+<hr>
+</body>
+</html>

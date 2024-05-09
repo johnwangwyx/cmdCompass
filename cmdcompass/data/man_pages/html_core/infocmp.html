@@ -1,0 +1,1127 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:12 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>infocmp</title>
+
+</head>
+<body>
+
+<h1 align="center">infocmp</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#PORTABILITY">PORTABILITY</a><br>
+<a href="#EXTENSIONS">EXTENSIONS</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>infocmp</b>
+- compare or print out <i>terminfo</i> descriptions</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>infocmp</b>
+[<b>-1CDEFGIKLTUVWcdegilnpqrtux</b>] <br>
+[<b>-v</b> <i>n</i>] [<b>-s d</b>| <b>i</b>| <b>l</b>|
+<b>c</b>] [<b>-Q</b> <i>n</i>] [<b>-R subset</b>] <br>
+[<b>-w&nbsp;</b><i>width</i>]
+[<b>-A&nbsp;</b><i>directory</i>]
+[<b>-B&nbsp;</b><i>directory</i>] <br>
+[<i>termname</i>...]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>infocmp</b>
+can be used to compare a binary <b>terminfo</b> entry with
+other terminfo entries, rewrite a <b>terminfo</b>
+description to take advantage of the <b>use=</b> terminfo
+field, or print out a <b>terminfo</b> description from the
+binary file (<b>term</b>) in a variety of formats. In all
+cases, the boolean fields will be printed first, followed by
+the numeric fields, followed by the string fields.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Default
+Options</b> <br>
+If no options are specified and zero or one <i>termnames</i>
+are specified, the <b>-I</b> option will be assumed. If more
+than one <i>termname</i> is specified, the <b>-d</b> option
+will be assumed.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Comparison
+Options [-d] [-c] [-n] <br>
+infocmp</b> compares the <b>terminfo</b> description of the
+first terminal <i>termname</i> with each of the descriptions
+given by the entries for the other terminal&rsquo;s
+<i>termnames</i>. If a capability is defined for only one of
+the terminals, the value returned depends on the type of the
+capability:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="68%">
+
+
+<p><b>F</b> for missing boolean variables</p></td>
+<td width="15%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="68%">
+
+
+<p><b>NULL</b> for missing integer or string variables</p></td>
+<td width="15%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Use the
+<b>-q</b> option to show the distinction between
+<i>absent</i> and <i>cancelled</i> capabilities.</p>
+
+<p style="margin-left:11%; margin-top: 1em">These options
+produce a list which you can use to compare two or more
+terminal descriptions:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-d</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p style="margin-top: 1em">produces a list of each
+capability that is <i>different</i> between two entries.
+Each item in the list shows &ldquo;:&rdquo; after the
+capability name, followed by the capability values,
+separated by a comma.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-c</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>produces a list of each capability that is <i>common</i>
+between two or more entries. Missing capabilities are
+ignored. Each item in the list shows &ldquo;=&rdquo; after
+the capability name, followed by the capability value.</p></td></tr>
+</table>
+
+<p style="margin-left:18%; margin-top: 1em">The <b>-u</b>
+option provides a related output, showing the first terminal
+description rewritten to use the second as a building block
+via the &ldquo;use=&rdquo; clause.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-n</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p style="margin-top: 1em">produces a list of each
+capability that is in <i>none</i> of the given entries. Each
+item in the list shows &ldquo;!&rdquo; before the capability
+name.</p> </td></tr>
+</table>
+
+<p style="margin-left:18%; margin-top: 1em">Normally only
+the conventional capabilities are shown. Use the <b>-x</b>
+option to add the BSD-compatibility capabilities (names
+prefixed with &ldquo;OT&rdquo;).</p>
+
+<p style="margin-left:18%; margin-top: 1em">If no
+<i>termnames</i> are given, <b>infocmp</b> uses the
+environment variable <b>TERM</b> for each of the
+<i>termnames</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Source
+Listing Options [-I] [-L] [-C] [-r]</b> <br>
+The <b>-I</b>, <b>-L</b>, and <b>-C</b> options will produce
+a source listing for each terminal named.</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-83691.png" alt="Image grohtml-83691.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em">If no
+<i>termnames</i> are given, the environment variable
+<b>TERM</b> will be used for the terminal name.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The source
+produced by the <b>-C</b> option may be used directly as a
+<b>termcap</b> entry, but not all parameterized strings can
+be changed to the <b>termcap</b> format. <b>infocmp</b> will
+attempt to convert most of the parameterized information,
+and anything not converted will be plainly marked in the
+output and commented out. These should be edited by
+hand.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For best
+results when converting to <b>termcap</b> format, you should
+use both <b>-C</b> and <b>-r</b>. Normally a termcap
+description is limited to 1023 bytes. <b>infocmp</b> trims
+away less essential parts to make it fit. If you are
+converting to one of the (rare) termcap implementations
+which accept an unlimited size of termcap, you may want to
+add the <b>-T</b> option. More often however, you must help
+the termcap implementation, and trim excess whitespace (use
+the <b>-0</b> option for that).</p>
+
+<p style="margin-left:11%; margin-top: 1em">All padding
+information for strings will be collected together and
+placed at the beginning of the string where <b>termcap</b>
+expects it. Mandatory padding (padding information with a
+trailing &ldquo;/&rdquo;) will become optional.</p>
+
+<p style="margin-left:11%; margin-top: 1em">All
+<b>termcap</b> variables no longer supported by
+<b>terminfo</b>, but which are derivable from other
+<b>terminfo</b> variables, will be output. Not all
+<b>terminfo</b> capabilities will be translated; only those
+variables which were part of <b>termcap</b> will normally be
+output. Specifying the <b>-r</b> option will take off this
+restriction, allowing all capabilities to be output in
+<i>termcap</i> form. Normally you would use both the
+<b>-C</b> and <b>-r</b> options. The actual format used
+incorporates some improvements for escaped characters from
+terminfo format. For a stricter BSD-compatible translation,
+use the <b>-K</b> option rather than <b>-C</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that
+because padding is collected to the beginning of the
+capability, not all capabilities are output. Mandatory
+padding is not supported. Because <b>termcap</b> strings are
+not as flexible, it is not always possible to convert a
+<b>terminfo</b> string capability into an equivalent
+<b>termcap</b> format. A subsequent conversion of the
+<b>termcap</b> file back into <b>terminfo</b> format will
+not necessarily reproduce the original <b>terminfo</b>
+source.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Some common
+<b>terminfo</b> parameter sequences, their <b>termcap</b>
+equivalents, and some terminal types which commonly have
+such sequences, are:</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-83692.png" alt="Image grohtml-83692.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Use= Option
+[-u]</b> <br>
+The <b>-u</b> option produces a <b>terminfo</b> source
+description of the first terminal <i>termname</i> which is
+relative to the sum of the descriptions given by the entries
+for the other terminals <i>termnames</i>. It does this by
+analyzing the differences between the first <i>termname</i>
+and the other <i>termnames</i> and producing a description
+with <b>use=</b> fields for the other terminals. In this
+manner, it is possible to retrofit generic terminfo entries
+into a terminal&rsquo;s description. Or, if two similar
+terminals exist, but were coded at different times or by
+different people so that each description is a full
+description, using <b>infocmp</b> will show what can be done
+to change one description to be relative to the other.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A capability
+will be printed with an at-sign (@) if it no longer exists
+in the first <i>termname</i>, but one of the other
+<i>termname</i> entries contains a value for it. A
+capability&rsquo;s value will be printed if the value in the
+first <i>termname</i> is not found in any of the other
+<i>termname</i> entries, or if the first of the other
+<i>termname</i> entries that has this capability gives a
+different value for the capability than that in the first
+<i>termname</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The order of
+the other <i>termname</i> entries is significant. Since the
+terminfo compiler <b>tic</b> does a left-to-right scan of
+the capabilities, specifying two <b>use=</b> entries that
+contain differing entries for the same capabilities will
+produce different results depending on the order that the
+entries are given in. <b>infocmp</b> will flag any such
+inconsistencies between the other <i>termname</i> entries as
+they are found.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Alternatively,
+specifying a capability <i>after</i> a <b>use=</b> entry
+that contains that capability will cause the second
+specification to be ignored. Using <b>infocmp</b> to
+recreate a description can be a useful check to make sure
+that everything was specified correctly in the original
+source description.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Another error
+that does not cause incorrect compiled files, but will slow
+down the compilation time, is specifying extra <b>use=</b>
+fields that are superfluous. <b>infocmp</b> will flag any
+other <i>termname use=</i> fields that were not needed.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Changing
+Databases [-A</b> <i>directory</i>] [-B <i>directory</i>]
+<br>
+Like other <b>ncurses</b> utilities, <b>infocmp</b> looks
+for the terminal descriptions in several places. You can use
+the <b>TERMINFO</b> and <b>TERMINFO_DIRS</b> environment
+variables to override the compiled-in default list of places
+to search (see <b>ncurses</b>(3NCURSES) for details).</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can also
+use the options <b>-A</b> and <b>-B</b> to override the list
+of places to search when comparing terminal
+descriptions:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">The <b>-A</b> option sets the
+location for the first <i>termname</i></p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>The <b>-B</b> option sets the location for the other
+<i>termnames</i>.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Using these
+options, it is possible to compare descriptions for a
+terminal with the same name located in two different
+databases. For instance, you can use this feature for
+comparing descriptions for the same terminal created by
+different people.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Other
+Options</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-0</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p style="margin-top: 1em">causes the fields to be printed
+on one line, without wrapping.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-1</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>causes the fields to be printed out one to a line.
+Otherwise, the fields will be printed several to a line to a
+maximum width of 60 characters.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-a</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>tells <b>infocmp</b> to retain commented-out
+capabilities rather than discarding them. Capabilities are
+commented by prefixing them with a period.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-D</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>tells <b>infocmp</b> to print the database locations
+that it knows about, and exit.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-E</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>Dump the capabilities of the given terminal as tables,
+needed in the C initializer for a TERMTYPE structure (the
+terminal capability structure in the <b>&lt;term.h&gt;</b>).
+This option is useful for preparing versions of the curses
+library hardwired for a given terminal type. The tables are
+all declared static, and are named according to the type and
+the name of the corresponding terminal entry.</p></td></tr>
+</table>
+
+<p style="margin-left:18%; margin-top: 1em">Before ncurses
+5.0, the split between the <b>-e</b> and <b>-E</b> options
+was not needed; but support for extended names required
+making the arrays of terminal capabilities separate from the
+TERMTYPE structure.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-e</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p style="margin-top: 1em">Dump the capabilities of the
+given terminal as a C initializer for a TERMTYPE structure
+(the terminal capability structure in the
+<b>&lt;term.h&gt;</b>). This option is useful for preparing
+versions of the curses library hardwired for a given
+terminal type.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-F</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>compare terminfo files. This assumes that two following
+arguments are filenames. The files are searched for pairwise
+matches between entries, with two entries considered to
+match if any of their names do. The report printed to
+standard output lists entries with no matches in the other
+file, and entries with more than one match. For entries with
+exactly one match it includes a difference report. Normally,
+to reduce the volume of the report, use references are not
+resolved before looking for differences, but resolution can
+be forced by also specifying <b>-r</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-f</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>Display complex terminfo strings which contain
+if/then/else/endif expressions indented for readability.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-G</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>Display constant literals in decimal form rather than
+their character equivalents.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-g</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>Display constant character literals in quoted form
+rather than their decimal equivalents.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-i</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>Analyze the initialization (<b>is1</b>, <b>is2</b>,
+<b>is3</b>), and reset (<b>rs1</b>, <b>rs2</b>, <b>rs3</b>),
+strings in the entry, as well as those used for
+starting/stopping cursor-positioning mode (<b>smcup</b>,
+<b>rmcup</b>) as well as starting/stopping keymap mode
+(<b>smkx</b>, <b>rmkx</b>).</p></td></tr>
+</table>
+
+<p style="margin-left:18%; margin-top: 1em">For each
+string, the code tries to analyze it into actions in terms
+of the other capabilities in the entry, certain X3.64/ISO
+6429/ECMA-48 capabilities, and certain DEC VT-series private
+modes (the set of recognized special sequences has been
+selected for completeness over the existing terminfo
+database). Each report line consists of the capability name,
+followed by a colon and space, followed by a printable
+expansion of the capability string with sections matching
+recognized actions translated into {}-bracketed
+descriptions.</p>
+
+<p style="margin-left:18%; margin-top: 1em">Here is a list
+of the DEC/ANSI special sequences recognized:</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-83693.png" alt="Image grohtml-83693.png"></p>
+
+<p style="margin-left:18%; margin-top: 1em">It also
+recognizes a SGR action corresponding to ANSI/ISO 6429/ECMA
+Set Graphics Rendition, with the values NORMAL, BOLD,
+UNDERLINE, BLINK, and REVERSE. All but NORMAL may be
+prefixed with</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="2%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="24%">
+
+
+<p style="margin-top: 1em">&ldquo;+&rdquo; (turn on) or</p></td>
+<td width="51%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="2%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="24%">
+
+
+<p>&ldquo;-&rdquo; (turn off).</p></td>
+<td width="51%">
+</td></tr>
+</table>
+
+<p style="margin-left:18%; margin-top: 1em">An SGR0
+designates an empty highlight sequence (equivalent to
+{SGR:NORMAL}).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p style="margin-top: 1em"><b>-l</b></p></td>
+<td width="1%"></td>
+<td width="82%">
+
+
+<p style="margin-top: 1em">Set output format to
+terminfo.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-p</b></p></td>
+<td width="1%"></td>
+<td width="82%">
+
+
+<p>Ignore padding specifications when comparing
+strings.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-Q</b> <i>n</i></p></td>
+<td width="1%"></td>
+<td width="82%">
+
+
+<p>Rather than show source in terminfo (text) format, print
+the compiled (binary) format in hexadecimal or base64 form,
+depending on the option&rsquo;s value:</p></td></tr>
+</table>
+
+<p style="margin-left:23%; margin-top: 1em">1</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="2%"></td>
+<td width="3%"></td>
+<td width="34%">
+
+
+<p style="margin-top: 1em">hexadecimal</p></td>
+<td width="38%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="2%">
+
+
+<p>2</p></td>
+<td width="3%"></td>
+<td width="34%">
+
+
+<p>base64</p></td>
+<td width="38%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="2%">
+
+
+<p>3</p></td>
+<td width="3%"></td>
+<td width="34%">
+
+
+<p>hexadecimal and base64</p></td>
+<td width="38%">
+</td></tr>
+</table>
+
+<p style="margin-left:18%; margin-top: 1em">For example,
+this prints the compiled terminfo value as a string which
+could be assigned to the <b>TERMINFO</b> environment
+variable:</p>
+
+<pre style="margin-left:25%; margin-top: 1em">infocmp -0 -q -Q2</pre>
+
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-q</b></p></td>
+<td width="4%"></td>
+<td width="60%">
+
+
+<p style="margin-top: 1em">This makes the output a little
+shorter:</p> </td>
+<td width="22%">
+</td></tr>
+</table>
+
+<p style="margin-left:18%;">&bull;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="2%"></td>
+<td width="5%"></td>
+<td width="75%">
+
+
+<p style="margin-top: 1em">Make the comparison listing
+shorter by omitting subheadings, and using &ldquo;-&rdquo;
+for absent capabilities, &ldquo;@&rdquo; for canceled rather
+than &ldquo;NULL&rdquo;.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="2%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="75%">
+
+
+<p>However, show differences between absent and cancelled
+capabilities.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="2%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="75%">
+
+
+<p>Omit the &ldquo;Reconstructed from&rdquo; comment for
+source listings.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-R</b><i>subset</i></p>
+
+<p style="margin-left:18%;">Restrict output to a given
+subset. This option is for use with archaic versions of
+terminfo like those on SVr1, Ultrix, or HP-UX that do not
+support the full set of SVR4/XSI Curses terminfo; and
+variants such as AIX that have their own extensions
+incompatible with SVr4/XSI.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="2%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="75%">
+
+
+<p>Available terminfo subsets are &ldquo;SVr1&rdquo;,
+&ldquo;Ultrix&rdquo;, &ldquo;HP&rdquo;, and
+&ldquo;AIX&rdquo;; see <b>terminfo</b>(5) for details.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="2%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="75%">
+
+
+<p>You can also choose the subset &ldquo;BSD&rdquo; which
+selects only capabilities with termcap equivalents
+recognized by 4.4BSD. The <b>-C</b> option sets the
+&ldquo;BSD&rdquo; subset as a side-effect.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="2%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="75%">
+
+
+<p>If you select any other value for <b>-R</b>, it is the
+same as no subset, i.e., all capabilities are used. The
+<b>-I</b> option likewise selects no subset as a
+side-effect.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-s</b> <i>[d|i|l|c]</i></p>
+
+<p style="margin-left:18%;">The <b>-s</b> option sorts the
+fields within each type according to the argument below:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="2%">
+
+
+<p><b>d</b></p></td>
+<td width="6%"></td>
+<td width="74%">
+
+
+<p>leave fields in the order that they are stored in the
+<i>terminfo</i> database.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="2%">
+
+
+<p><b>i</b></p></td>
+<td width="6%"></td>
+<td width="74%">
+
+
+<p>sort by <i>terminfo</i> name.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="2%">
+
+
+<p><b>l</b></p></td>
+<td width="6%"></td>
+<td width="74%">
+
+
+<p>sort by the long C variable name.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="2%">
+
+
+<p><b>c</b></p></td>
+<td width="6%"></td>
+<td width="74%">
+
+
+<p>sort by the <i>termcap</i> name.</p></td></tr>
+</table>
+
+<p style="margin-left:18%; margin-top: 1em">If the
+<b>-s</b> option is not given, the fields printed out will
+be sorted alphabetically by the <b>terminfo</b> name within
+each type, except in the case of the <b>-C</b> or the
+<b>-L</b> options, which cause the sorting to be done by the
+<b>termcap</b> name or the long C variable name,
+respectively.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p style="margin-top: 1em"><b>-T</b></p></td>
+<td width="1%"></td>
+<td width="82%">
+
+
+<p style="margin-top: 1em">eliminates size-restrictions on
+the generated text. This is mainly useful for testing and
+analysis, since the compiled descriptions are limited (e.g.,
+1023 for termcap, 4096 for terminfo).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-t</b></p></td>
+<td width="1%"></td>
+<td width="82%">
+
+
+<p>tells <b>tic</b> to discard commented-out capabilities.
+Normally when translating from terminfo to termcap,
+untranslatable capabilities are commented-out.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-U</b></p></td>
+<td width="1%"></td>
+<td width="82%">
+
+
+<p>tells <b>infocmp</b> to not post-process the data after
+parsing the source file. This feature helps when comparing
+the actual contents of two source files, since it excludes
+the inferences that <b>infocmp</b> makes to fill in missing
+data.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-V</b></p></td>
+<td width="1%"></td>
+<td width="82%">
+
+
+<p>reports the version of ncurses which was used in this
+program, and exits.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-v</b> <i>n</i></p></td>
+<td width="1%"></td>
+<td width="82%">
+
+
+<p>prints out tracing information on standard error as the
+program runs.</p></td></tr>
+</table>
+
+<p style="margin-left:18%; margin-top: 1em">The optional
+parameter <i>n</i> is a number from 1 to 10, inclusive,
+indicating the desired level of detail of information. If
+ncurses is built without tracing support, the optional
+parameter is ignored.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-W</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p style="margin-top: 1em">By itself, the <b>-w</b> option
+will not force long strings to be wrapped. Use the <b>-W</b>
+option to do this.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-w</b> <i>width</i></p>
+
+<p style="margin-left:18%;">changes the output to
+<i>width</i> characters.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-x</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>print information for user-defined capabilities (see
+<b>user_caps(5)</b>. These are extensions to the terminfo
+repertoire which can be loaded using the <b>-x</b> option of
+<b>tic</b>.</p> </td></tr>
+</table>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="20%">
+
+
+<p style="margin-top: 1em">/etc/terminfo</p></td>
+<td width="11%"></td>
+<td width="58%">
+
+
+<p style="margin-top: 1em">Compiled terminal description
+database.</p> </td></tr>
+</table>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Although System
+V Release 2 provided a terminfo library, it had no
+documented tool for decompiling the terminal descriptions.
+Tony Hansen (AT&amp;T) wrote the first <b>infocmp</b> in
+early 1984, for System V Release 3.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Eric Raymond
+used the AT&amp;T documentation in 1995 to provide an
+equivalent <b>infocmp</b> for ncurses. In addition, he added
+a few new features such as:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">the <b>-e</b> option, to support
+<i>fallback</i> (compiled-in) terminal descriptions</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>the <b>-i</b> option, to help with analysis</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Later, Thomas
+Dickey added the <b>-x</b> (user-defined capabilities)
+option, and the <b>-E</b> option to support fallback entries
+with user-defined capabilities.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For a complete
+list, see the <i>EXTENSIONS</i> section.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In 2010, Roy
+Marples provided an <b>infocmp</b> program for NetBSD. It is
+less capable than the SVr4 or ncurses versions (e.g., it
+lacks the sorting options documented in X/Open), but does
+include the <b>-x</b> option adapted from ncurses.</p>
+
+<h2>PORTABILITY
+<a name="PORTABILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">X/Open Curses,
+Issue 7 (2009) provides a description of <b>infocmp</b>. It
+does not mention the options used for converting to termcap
+format.</p>
+
+<h2>EXTENSIONS
+<a name="EXTENSIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The <b>-0</b>,
+<b>-1</b>, <b>-E</b>, <b>-F</b>, <b>-G</b>, <b>-Q</b>,
+<b>-R</b>, <b>-T</b>, <b>-V</b>, <b>-a</b>, <b>-e</b>,
+<b>-f</b>, <b>-g</b>, <b>-i</b>, <b>-l</b>, <b>-p</b>,
+<b>-q</b> and <b>-t</b> options are not supported in SVr4
+curses.</p>
+
+<p style="margin-left:11%; margin-top: 1em">SVr4 infocmp
+does not distinguish between absent and cancelled
+capabilities. Also, it shows missing integer capabilities as
+<b>-1</b> (the internal value used to represent missing
+integers). This implementation shows those as
+&ldquo;NULL&rdquo;, for consistency with missing
+strings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <b>-r</b>
+option&rsquo;s notion of &ldquo;termcap&rdquo; capabilities
+is System V Release 4&rsquo;s. Actual BSD curses versions
+will have a more restricted set. To see only the 4.4BSD set,
+use <b>-r -RBSD</b>.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The <b>-F</b>
+option of <b>infocmp</b>(1) should be a <b>toe</b>(1)
+mode.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>captoinfo</b>(1),
+<b>infotocap</b>(1), <b>tic</b>(1), <b>toe</b>(1),
+<b>ncurses</b>(3NCURSES), <b>terminfo</b>(5).
+<b>user_caps</b>(5).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">https://invisible-island.net/ncurses/tctest.html</p>
+
+<p style="margin-left:11%; margin-top: 1em">This describes
+<b>ncurses</b> version 6.4 (patch 20221231).</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Eric S. Raymond
+&lt;esr@snark.thyrsus.com&gt; and <br>
+Thomas E. Dickey &lt;dickey@invisible-island.net&gt;</p>
+<hr>
+</body>
+</html>

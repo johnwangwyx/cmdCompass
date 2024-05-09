@@ -1,0 +1,468 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:54 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Tifftopnm User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Tifftopnm User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">tifftopnm -
+convert a TIFF file into a PNM image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>tifftopnm</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-alphaout=</b>{<i>alpha-filename</i>,<b>-</b>}]
+[<b>-headerdump</b>] [<b>-verbose</b>]
+[<b>-respectfillorder</b>] [<b>-byrow</b>]
+[<b>-orientraw</b>] [<i>tiff-filename</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>tifftopnm</b>
+reads a TIFF file as input and produces a PNM image as
+output. The type of the output file depends on the input
+file - if it&rsquo;s black and white, <b>tifftopnm</b>
+generates a PBM image; if it&rsquo;s grayscale, it generates
+a PGM image; otherwise, the output is PPM. The program tells
+you which type it is writing.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the TIFF
+file contains multiple images (multiple
+&quot;directories&quot;), <b>tifftopnm</b> generates a
+multi-image PNM output stream. Before Netpbm 10.27 (March
+2005), however, it would just ignore all but the first input
+image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>tiff-filename</i> argument names the file that contains
+the Tiff image. If you specify &quot;-&quot; or don&rsquo;t
+specify this argument, <b>tifftopnm</b> uses Standard
+Input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In either case,
+before Netpbm 10.70 (March 2015), the file must be seekable.
+That means no pipe, but any regular file is fine. In current
+Netpbm, the file need not be seekable, but if it
+isn&rsquo;t, <b>tifftopnm</b> creates a temporary regular
+file containing the entire image, so you must have resources
+for that (and it may defeat your reason for using a
+pipe).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>TIFF
+Capability <br>
+pamtotiff</b> uses the Libtiff.org TIFF library (or whatever
+equivalent you provide) to interpret the TIFF input. So the
+set of files it is able to interpret is determined mostly by
+that library.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This program
+cannot read every possible TIFF file -- there are myriad
+variations of the TIFF format. However, it does understand
+monochrome and gray scale, RGB, RGBA (red/green/blue with
+transparency channel), CMYK (Cyan-Magenta-Yellow-Black ink
+color separation), and color palette TIFF files. An RGB file
+can have either single plane (interleaved) color or multiple
+plane format. The program reads 1-8 and 16 bit-per-sample
+input, the latter in either bigendian or littlendian
+encoding. Tiff directory information may also be either
+bigendian or littlendian.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There are many
+TIFF formats that <b>tifftopnm</b> can read only if the
+image is small enough to fit in memory. <b>tifftopnm</b>
+uses the TIFF library&rsquo;s TIFFRGBAImageGet() function to
+process the TIFF image if it can get enough memory for
+TIFFRGBAImageGet() to store the whole image in memory at
+once (that&rsquo;s what TIFFRGBAImageGet() does). If not,
+<b>tifftopnm</b> uses a more primitive row-by-row conversion
+strategy using the raw data returned by TIFFReadScanLine()
+and native intelligence. That native intelligence does not
+know as many formats as TIFFRGBAImageGet() does. And certain
+compressed formats simply cannot be read with
+TIFFReadScanLine().</p>
+
+<p style="margin-left:11%; margin-top: 1em">Before Netpbm
+10.11 (October 2002), <b>tifftopnm</b> never used
+TIFFRGBAImageGet(), so it could not interpret many of the
+formats it can interpret today.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There is no
+fundamental reason that this program could not read other
+kinds of TIFF files even when they don&rsquo;t fit in memory
+all at once. The existing limitations are mainly because no
+one has asked for more.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Output
+Image</b> <br>
+The PNM output has the same maxval as the Tiff input, except
+that if the Tiff input is colormapped (which implies a
+maxval of 65535) the PNM output has a maxval of 255. Though
+this may result in lost information, such input images
+hardly ever actually have more color resolution than a
+maxval of 255 provides and people often cannot deal with PNM
+files that have maxval &gt; 255. By contrast, a
+non-colormapped Tiff image that doesn&rsquo;t need a maxval
+&gt; 255 doesn&rsquo;t <i>have</i> a maxval &gt; 255, so
+when <b>tifftopnm</b> sees a non-colormapped maxval &gt;
+255, it takes it seriously and produces a matching output
+maxval.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Another
+exception is where the TIFF maxval is greater than 65535,
+which is the maximum allowed by the Netpbm formats. In that
+case, <b>tifftopnm</b> uses a maxval of 65535, and you lose
+some information in the conversion.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>tifftopnm</b> recognizes the following command line
+options:</p>
+
+<p style="margin-left:11%; margin-top: 1em">You may
+abbreviate any option to its shortest unique prefix. You may
+use two hyphens instead of one in options. You may separate
+an option and its value either by an equals sign or white
+space. <b><br>
+-alphaout=</b><i>alpha-filename</i></p>
+
+<p style="margin-left:22%;"><b>tifftopnm</b> creates a PGM
+file containing the alpha channel values in the input image.
+If the input image doesn&rsquo;t contain a transparency
+channel, the <i>alpha-filename</i> file contains all zero
+(transparent) transparency values. If you don&rsquo;t
+specify <b>-alphaout</b>,</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>tifftopnm</b>
+does not generate a transparency file, and if the input
+image has an transparency channel, <b>tifftopnm</b> simply
+discards it.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you specify
+<b>-</b> as the filename, <b>tifftopnm</b> writes the
+transparency output to Standard Output and discards the
+image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">See
+<b>pamcomp</b>(1) for one way to use the transparency output
+file.</p>
+
+<p style="margin-left:11%;"><b>-respectfillorder</b></p>
+
+<p style="margin-left:22%;">By default, <b>tifftopnm</b>
+ignores the &quot;fillorder&quot; tag in the TIFF input,
+which means it may incorrectly interpret the image. To make
+it follow the spec, use this option. For a lengthy but
+engaging discussion of why <b>tifftopnm</b> works this way
+and how to use the <b>-respectfillorder</b> option, see the
+note on fillorder below.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-byrow</b></p></td>
+<td width="2%"></td>
+<td width="64%">
+
+
+<p>This option can make <b>tifftopnm</b> run faster.</p></td>
+<td width="14%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>tifftopnm</b>
+has two ways to do the conversion from Tiff to PNM, using
+respectively two facilities of the TIFF library:</p>
+
+<p style="margin-left:11%;">Whole Image</p>
+
+<p style="margin-left:22%;">Decode the entire image into
+memory at once, using <b>TIFFRGBAImageGet()</b>, then
+convert to PNM and output row by row.</p>
+
+<p style="margin-left:11%;">Row By Row</p>
+
+<p style="margin-left:22%;">Read, convert, and output one
+row at a time using <b>TIFFReadScanline()</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Whole Image is
+preferable because the Tiff library does more of the work,
+which means it understands more of the Tiff format
+possibilities now and in the future. Also, some compressed
+TIFF formats don&rsquo;t allow you to extract an individual
+row.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Row By Row uses
+far less memory, which means with large images, it can run
+in environments where Whole Image cannot and may also run
+faster. And because Netpbm code does more of the work,
+it&rsquo;s possible that it can be more flexible or at least
+give better diagnostic information if there&rsquo;s
+something wrong with the TIFF.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The Netpbm
+native code may do something correctly that the TIFF library
+does incorrectly, or vice versa.</p>
+
+<p style="margin-left:22%; margin-top: 1em">In Netpbm, we
+stress function over performance, so by default we try Whole
+Image first, and if we can&rsquo;t get enough memory for the
+decoded image or <b>TIFFRGBAImageGet()</b> fails, we fall
+back to Row By Row. But if you specify the <b>-byrow</b>
+option, <b>tifftopnm</b> will not attempt Whole Image. If
+Row By Row does not work, it simply fails.</p>
+
+<p style="margin-left:22%; margin-top: 1em">See
+<a href="#cmyk">Color Separation (CMYK) TIFFs</a> for a
+description of one way Row By Row makes a significant
+difference in your results.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Whole Image
+costs you precision when your TIFF image uses more than 8
+bits per sample. <b>TIFFRGBAImageGet()</b> converts the
+samples to 8 bits. <b>tifftopnm</b> then scales them back to
+maxval 65535, but the lower 8 bits of information is
+gone.</p>
+
+<p style="margin-left:22%; margin-top: 1em">In many
+versions of the TIFF library, <b>TIFFRGBAImageGet()</b> does
+not correctly interpret TIFF files in which the raster
+orientation is column-major (i.e. a row of the raster is a
+column of the image). With such a TIFF library and file, you
+must use <b>-byrow</b> to get correct output.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Before Netpbm
+10.11 (October 2002), <b>tifftopnm</b> always did Row By
+Row. Netpbm 10.12 always tried Whole Image first.
+<b>-byrow</b> came in with Netpbm 10.13 (January 2003).</p>
+
+<p style="margin-left:11%;"><b>-orientraw</b></p>
+
+<p style="margin-left:22%;">A TIFF stream contains raster
+data which can be arranged in the stream various ways. Most
+commonly, it is arranged by rows, with the top row first,
+and the pixels left to right within each row, but many other
+orientations are possible.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The common
+orientation is the same one the Netpbm formats use, so
+<b>tifftopnm</b> can do its jobs quite efficiently when the
+TIFF raster is oriented that way.</p>
+
+<p style="margin-left:22%; margin-top: 1em">But if the TIFF
+raster is oriented any other way, it can take a considerable
+amount of processing for <b>tifftopnm</b> to convert it to
+Netpbm format.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>-orientraw</b>
+says to produce an output image that represents the raw
+raster in the TIFF stream rather than the image the TIFF
+stream is supposed to represent. In the output, the top left
+corner corresponds to the start of the TIFF raster, the next
+pixel to the right is the next pixel in the TIFF raster,
+etc. <b>tifftopnm</b> can do this easily, but you
+don&rsquo;t get the right image out. You can use
+<b>pamflip</b> to turn the output into the image the TIFF
+stream represents (but if you do that, you pretty much lose
+the benefit of <b>-orientraw</b>).</p>
+
+<p style="margin-left:22%; margin-top: 1em">With this
+option, <b>tifftopnm</b> always uses the Row By Row method
+(see <b>-byrow</b>).</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.42 (March 2008). Before that,
+<b>tifftopnm</b> generally produces arbitrary results with
+TIFF images that have an orientation other than the common
+one.</p>
+
+<p style="margin-left:11%;"><b>-verbose</b></p>
+
+<p style="margin-left:22%;">Print extra messages to
+Standard Error about the conversion.</p>
+
+<p style="margin-left:11%;"><b>-headerdump</b></p>
+
+<p style="margin-left:22%;">Dump TIFF file information to
+stderr. This information may be useful in debugging TIFF
+file conversion problems.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Fillorder</b>
+<br>
+There is a piece of information in the header of a TIFF
+image called &quot;fillorder.&quot; The TIFF specification
+quite clearly states that this value tells the order in
+which bits are arranged in a byte in the description of the
+image&rsquo;s pixels. There are two options, assuming that
+the image has a format where more than one pixel can be
+represented by a single byte: 1) the byte is filled from
+most significant bit to least significant bit going left to
+right in the image; and 2) the opposite.</p>
+
+<p style="margin-left:11%; margin-top: 1em">However, there
+is confusion in the world as to the meaning of fillorder.
+Evidence shows that some people believe it has to do with
+byte order when a single value is represented by two
+bytes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">These people
+cause TIFF images to be created that, while they use a
+MSB-to-LSB fillorder, have a fillorder tag that says they
+used LSB-to-MSB. A program that properly interprets a TIFF
+image will not end up with the image that the author
+intended in this case.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For a long
+time, <b>tifftopnm</b> did not understand fillorder itself
+and assumed the fillorder was MSB-to-LSB regardless of the
+fillorder tag in the TIFF header. And as far as I know,
+there is no legitimate reason to use a fillorder other than
+MSB-to-LSB. So users of <b>tifftopnm</b> were happily using
+those TIFF images that had incorrect fillorder tags.</p>
+
+<p style="margin-left:11%; margin-top: 1em">So that those
+users can continue to be happy, <b>tifftopnm</b> today
+continues to ignore the fillorder tag unless you tell it not
+to. (It does, however, warn you when the fillorder tag does
+not say MSB-to-LSB that the tag is being ignored).</p>
+
+<p style="margin-left:11%; margin-top: 1em">If for some
+reason you have a TIFF image that actually has LSB-to-MSB
+fillorder, and its fillorder tag correctly indicates that,
+you must use the <b>-respectfillorder</b> option on
+<b>tifftopnm</b> to get proper results.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Examples of
+incorrect TIFF images are at
+<a href="ftp://weather.noaa.gov.">ftp://weather.noaa.gov.</a>
+They are apparently created by a program called
+<b>faxtotiff</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This note was
+written on January 1, 2002.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Color
+Separation (CMYK) TIFFs</b> <br>
+Some TIFF images contain color information in CMYK form,
+whereas PNM images use RGB. There are various formulas for
+converting between these two forms, and <b>tifftopnm</b> can
+use either of two.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The TIFF
+library (Version 3.5.4 from libtiff.org) uses Y=(1-K)*(1-B)
+(similar for R and G) in its TIFFRGBAImageGet() service.
+When <b>tifftopnm</b> works in Whole Image mode, it uses
+that service, so that&rsquo;s the conversion you get.</p>
+
+<p style="margin-left:11%; margin-top: 1em">But when
+<b>tifftopnm</b> runs in Row By Row mode, it does not use
+TIFFRGBAImageGet(), and you get what appears to be more
+useful: Y=1-(B+K). This is the inverse of what
+<b>pnmtotiffcmyk</b> does.</p>
+
+<p style="margin-left:11%; margin-top: 1em">See the
+<b>-byrow</b> option for more information on Whole Image
+versus Row By Row mode.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Before Netpbm
+10.21 (March 2004), <b>tifftopnm</b> used the Y=(1-K)*(1-B)
+formula always.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmtotiff</b>(1),
+<b>pnmtotiffcmyk</b>(1), <b>pamcomp</b>(1),
+<b>pnm</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Derived by Jef
+Poskanzer from tif2ras.c, which is Copyright (c) 1990 by Sun
+Microsystems, Inc. Author: Patrick J. Naughton
+(<i>naughton@wind.sun.com</i>).</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/tifftopnm.html</b></p>
+<hr>
+</body>
+</html>

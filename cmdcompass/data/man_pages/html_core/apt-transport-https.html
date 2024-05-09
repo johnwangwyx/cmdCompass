@@ -1,0 +1,344 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:33:54 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>APT-TRANSPORT-HTTP</title>
+
+</head>
+<body>
+
+<h1 align="center">APT-TRANSPORT-HTTP</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#NOTES">NOTES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">apt-transport-https
+- APT transport for downloading via the HTTP Secure protocol
+(HTTPS)</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This APT
+transport allows the use of repositories accessed via the
+HTTP Secure protocol (HTTPS), also referred to as HTTP over
+TLS. It is available by default since apt 1.5 and was
+available before that in the package apt-transport-https.
+Note that a transport is never called directly by a user but
+used by APT tools based on user configuration.</p>
+
+<p style="margin-left:11%; margin-top: 1em">HTTP is by
+itself an unencrypted transport protocol (compare
+<b>apt-transport-http</b>(1)), which, as indicated by the
+appended S, is wrapped in an encrypted layer known as
+Transport Layer Security (TLS) to provide end-to-end
+encryption. A sufficiently capable attacker can still
+observe the communication partners and deeper analysis of
+the encrypted communication might still reveal important
+details. An overview over available alternative transport
+methods is given in <b>sources.list</b>(5).</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The HTTPS
+protocol is based on the HTTP protocol, so all options
+supported by <b>apt-transport-http</b>(1) are also available
+via Acquire::https and will default to the same values
+specified for Acquire::http. This manpage will only document
+the options <i>unique to https</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Server
+credentials</b> <br>
+By default all certificates trusted by the system (see
+ca-certificates package) are used for the verification of
+the server certificate. An alternative certificate authority
+(CA) can be configured with the Acquire::https::CAInfo
+option and its host-specific option
+Acquire::https::CAInfo::<i>host</i>. The CAInfo option
+specifies a file made up of CA certificates (in PEM format)
+concatenated together to create the chain which APT should
+use to verify the path from your self-signed root
+certificate. If the remote server provides the whole chain
+during the exchange, the file need only contain the root
+certificate. Otherwise, the whole chain is required. If you
+need to support multiple authorities, the only way is to
+concatenate everything.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A custom
+certificate revocation list (CRL) can be configured with the
+options Acquire::https::CRLFile and
+Acquire::https::CRLFile::<i>host</i>. As with the previous
+option, a file in PEM format needs to be specified.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Disabling
+security</b> <br>
+During server authentication, if certificate verification
+fails for some reason (expired, revoked, man in the middle,
+etc.), the connection fails. This is obviously what you want
+in all cases and what the default value (true) of the option
+Acquire::https::Verify-Peer and its host-specific variant
+provides. If you know <i>exactly</i> what you are doing,
+setting this option to &quot;false&quot; allows you to skip
+peer certificate verification and make the exchange succeed.
+Again, this option is for debugging or testing purposes only
+as it removes all security provided by the use of HTTPS.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Similarly the
+option Acquire::https::Verify-Host and its host-specific
+variant can be used to deactivate a security feature: The
+certificate provided by the server includes the identity of
+the server which should match the DNS name used to access
+it. By default, as requested by RFC 2818, the name of the
+mirror is checked against the identity found in the
+certificate. This default behavior is safe and should not be
+changed, but if you know that the server you are using has a
+DNS name which does not match the identity in its
+certificate, you can set the option to &quot;false&quot;,
+which will prevent the comparison from being performed.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Client
+authentication</b> <br>
+Besides supporting password-based authentication (see
+<b>apt_auth.conf</b>(5)) HTTPS also supports authentication
+based on client certificates via Acquire::https::SSLCert and
+Acquire::https::SSLKey. These should be set respectively to
+the filename of the X.509 client certificate and the
+associated (unencrypted) private key, both in PEM format. In
+practice the use of the host-specific variants of both
+options is highly recommended.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:17%; margin-top: 1em">Acquire::https
+{</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>Proxy::example.org &quot;DIRECT&quot;;</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>Proxy &quot;socks5h://apt:pass@127.0.0.1:9050&quot;;</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>Proxy-Auto-Detect
+&quot;/usr/local/bin/apt-https-proxy-auto-detect&quot;;</p> </td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>No-Cache &quot;true&quot;;</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>Max-Age &quot;3600&quot;;</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>No-Store &quot;true&quot;;</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>Timeout &quot;10&quot;;</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>Dl-Limit &quot;42&quot;;</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>Pipeline-Depth &quot;0&quot;;</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>AllowRedirect &quot;false&quot;;</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>User-Agent &quot;My APT-HTTPS&quot;;</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>SendAccept &quot;false&quot;;</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>CAInfo &quot;/path/to/ca/certs.pem&quot;;</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>CRLFile &quot;/path/to/all/crl.pem&quot;;</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>Verify-Peer &quot;true&quot;;</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>Verify-Host::broken.example.org &quot;false&quot;;</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>SSLCert::example.org
+&quot;/path/to/client/cert.pem&quot;;</p> </td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>SSLKey::example.org
+&quot;/path/to/client/key.pem&quot;</p> </td></tr>
+</table>
+
+<p style="margin-left:17%;">};</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>apt-transport-http</b>(1)
+<b>apt.conf</b>(5) <b>apt_auth.conf</b>(5)
+<b>sources.list</b>(5)</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><font color="#0000FF">APT
+bug page</font></b>
+<small><font color="#000000">[1]</font></small>
+<font color="#000000">. If you wish to report a bug in APT,
+please see /usr/share/doc/debian/bug-reporting.txt or the
+<b>reportbug</b>(1) command.</font></p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>APT
+team</b></font></p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">1.</font></p> </td>
+<td width="2%"></td>
+<td width="18%">
+
+
+<p style="margin-top: 1em"><font color="#000000">APT bug
+page</font></p> </td>
+<td width="65%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">http://bugs.debian.org/src:apt</font></p>
+<hr>
+</body>
+</html>

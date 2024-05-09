@@ -1,0 +1,246 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:02 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>dpkg-trigger</title>
+
+</head>
+<body>
+
+<h1 align="center">dpkg-trigger</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#COMMANDS">COMMANDS</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">dpkg-trigger -
+a package trigger utility</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dpkg-trigger</b>
+[<i>option</i>...] <i>trigger-name</i></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dpkg-trigger</b>
+[<i>option</i>...] <i>command</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i><b>dpkg-trigger</b></i>
+is a tool to explicitly activate triggers and check for its
+support on the running <b>dpkg</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This can be
+used by maintainer scripts in complex and conditional
+situations where the file triggers, or the declarative
+<b>activate</b> triggers control file directive, are
+insufficiently rich. It can also be used for testing and by
+system administrators (but note that the triggers
+won&rsquo;t actually be run by <b>dpkg-trigger</b>).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Unrecognized
+trigger name syntaxes are an error for
+<b>dpkg-trigger</b>.</p>
+
+<h2>COMMANDS
+<a name="COMMANDS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--check-supported</b></p>
+
+<p style="margin-left:17%;">Check if the running
+<b>dpkg</b> supports triggers (usually called from a
+postinst). Will exit <b>0</b> if a triggers-capable
+<b>dpkg</b> has run, or <b>1</b> with an error message to
+stderr if not. Normally, however, it is better just to
+activate the desired trigger with <b>dpkg-trigger</b>.</p>
+
+<p style="margin-left:11%;"><b>-?</b>, <b>--help</b></p>
+
+<p style="margin-left:17%;">Show the usage message and
+exit.</p>
+
+<p style="margin-left:11%;"><b>--version</b></p>
+
+<p style="margin-left:17%;">Show the version and exit.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--admindir=</b><i>dir</i></p>
+
+<p style="margin-left:17%;">Change the location of the
+<b>dpkg</b> database. Defaults to <i>/var/lib/dpkg</i> if
+<b><small>DPKG_ADMINDIR</small></b> has not been set.</p>
+
+
+<p style="margin-left:11%;"><b>--root=</b><i>directory</i></p>
+
+<p style="margin-left:17%;">Set the root directory to
+<i>directory</i>, which sets the administrative directory to
+&laquo;<i>directory</i>/var/lib/dpkg&raquo; (since dpkg
+1.21.0).</p>
+
+
+<p style="margin-left:11%;"><b>--by-package=</b><i>package</i></p>
+
+<p style="margin-left:17%;">Override trigger awaiter
+(normally set by <b>dpkg</b> through the
+<b><small>DPKG_MAINTSCRIPT_PACKAGE</small></b> environment
+variable of the maintainer scripts, naming the package to
+which the script belongs, and this will be used by
+default).</p>
+
+<p style="margin-left:11%;"><b>--no-await</b></p>
+
+<p style="margin-left:17%;">This option arranges that the
+calling package <i>T</i> (if any) need not await the
+processing of this trigger; the interested package(s)
+<i>I</i>, will not be added to <i>T</i>&rsquo;s trigger
+processing awaited list and <i>T</i>&rsquo;s status is
+unchanged. <i>T</i> may be considered installed even though
+<i>I</i> may not yet have processed the trigger.</p>
+
+<p style="margin-left:11%;"><b>--await</b></p>
+
+<p style="margin-left:17%;">This option does the inverse of
+<b>--no-await</b> (since dpkg 1.17.21). If the interested
+package has declared a &ldquo;noawait&rdquo; directive, then
+this option will not be effective. It is currently the
+default behavior.</p>
+
+<p style="margin-left:11%;"><b>--no-act</b></p>
+
+<p style="margin-left:17%;">Just test, do not actually
+change anything.</p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em"><b>0</b></p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">The requested action was
+successfully performed. Or a check or assertion command
+returned true.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p><b>1</b></p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>A check or assertion command returned false.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p><b>2</b></p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>Fatal or unrecoverable error due to invalid command-line
+usage, or interactions with the system, such as accesses to
+the database, memory allocations, etc.</p></td></tr>
+</table>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><small>DPKG_ROOT</small></b></p>
+
+<p style="margin-left:17%;">If set and the <b>--root</b>
+option has not been specified, it will be used as the
+filesystem root directory (since dpkg 1.21.0).</p>
+
+
+<p style="margin-left:11%;"><b><small>DPKG_ADMINDIR</small></b></p>
+
+<p style="margin-left:17%;">If set and the
+<b>--admindir</b> option has not been specified, it will be
+used as the <b>dpkg</b> data directory.</p>
+
+
+<p style="margin-left:11%;"><b><small>DPKG_DEBUG</small></b></p>
+
+<p style="margin-left:17%;">Sets the debug mask (since dpkg
+1.21.10) from an octal value. The currently accepted flags
+are described in the <b>dpkg --debug</b> option, but not all
+these flags might have an effect on this program.</p>
+
+
+<p style="margin-left:11%;"><b><small>DPKG_COLORS</small></b></p>
+
+<p style="margin-left:17%;">Sets the color mode (since dpkg
+1.18.5). The currently accepted values are: <b>auto</b>
+(default), <b>always</b> and <b>never</b>.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dpkg</b>(1),
+<b>deb-triggers</b>(5),
+<b>/usr/share/doc/dpkg/spec/triggers.txt</b>.</p>
+<hr>
+</body>
+</html>

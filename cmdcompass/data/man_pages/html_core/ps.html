@@ -1,0 +1,1857 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:42 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>PS</title>
+
+</head>
+<body>
+
+<h1 align="center">PS</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SIMPLE PROCESS SELECTION">SIMPLE PROCESS SELECTION</a><br>
+<a href="#PROCESS SELECTION BY LIST">PROCESS SELECTION BY LIST</a><br>
+<a href="#OUTPUT FORMAT CONTROL">OUTPUT FORMAT CONTROL</a><br>
+<a href="#OUTPUT MODIFIERS">OUTPUT MODIFIERS</a><br>
+<a href="#THREAD DISPLAY">THREAD DISPLAY</a><br>
+<a href="#OTHER INFORMATION">OTHER INFORMATION</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#PROCESS FLAGS">PROCESS FLAGS</a><br>
+<a href="#PROCESS STATE CODES">PROCESS STATE CODES</a><br>
+<a href="#OBSOLETE SORT KEYS">OBSOLETE SORT KEYS</a><br>
+<a href="#AIX FORMAT DESCRIPTORS">AIX FORMAT DESCRIPTORS</a><br>
+<a href="#STANDARD FORMAT SPECIFIERS">STANDARD FORMAT SPECIFIERS</a><br>
+<a href="#ENVIRONMENT VARIABLES">ENVIRONMENT VARIABLES</a><br>
+<a href="#PERSONALITY">PERSONALITY</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#STANDARDS">STANDARDS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ps - report a
+snapshot of the current processes.</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ps</b>
+[<i>options</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ps</b>
+displays information about a selection of the active
+processes. If you want a repetitive update of the selection
+and the displayed information, use <b>top</b> instead.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This version of
+<b>ps</b> accepts several kinds of options:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>1</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>UNIX options, which may be grouped and must be preceded
+by a dash.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>2</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>BSD options, which may be grouped and must not be used
+with a dash.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>3</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>GNU long options, which are preceded by two dashes.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Options of
+different types may be freely mixed, but conflicts can
+appear. There are some synonymous options, which are
+functionally identical, due to the many standards and
+<b>ps</b> implementations that this <b>ps</b> is compatible
+with.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that <b>ps
+-aux</b> is distinct from <b>ps&nbsp;aux</b>. The POSIX and
+UNIX standards require that <b>ps&nbsp;-aux</b> print all
+processes owned by a user named <i>x</i>, as well as
+printing all processes that would be selected by the
+<b>-a</b> option. If the user named <i>x</i> does not exist,
+this <b>ps</b> may interpret the command as
+<b>ps&nbsp;aux</b> instead and print a warning. This
+behavior is intended to aid in transitioning old scripts and
+habits. It is fragile, subject to change, and thus should
+not be relied upon.</p>
+
+<p style="margin-left:11%; margin-top: 1em">By default,
+<b>ps</b> selects all processes with the same effective user
+ID (euid=EUID) as the current user and associated with the
+same terminal as the invoker. It displays the process ID
+(pid=PID), the terminal associated with the process
+(tname=TTY), the cumulated CPU time in [DD-]hh:mm:ss format
+(time=TIME), and the executable name (ucmd=CMD). Output is
+unsorted by default.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The use of
+BSD-style options will add process state (stat=STAT) to the
+default display and show the command args (args=COMMAND)
+instead of the executable name. You can override this with
+the <b>PS_FORMAT</b> environment variable. The use of
+BSD-style options will also change the process selection to
+include processes on other terminals (TTYs) that are owned
+by you; alternately, this may be described as setting the
+selection to be the set of all processes filtered to exclude
+processes owned by other users or not on a terminal. These
+effects are not considered when options are described as
+being &quot;identical&quot; below, so <b>-M</b> will be
+considered identical to <b>Z</b> and so on.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Except as
+described below, process selection options are additive. The
+default selection is discarded, and then the selected
+processes are added to the set of processes to be displayed.
+A process will thus be shown if it meets any of the given
+selection criteria.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">To see every
+process on the system using standard syntax:</p>
+
+<p style="margin-left:15%;"><b>ps&nbsp;-e <br>
+ps&nbsp;-ef <br>
+ps&nbsp;-eF <br>
+ps&nbsp;-ely</b></p>
+
+<p style="margin-left:11%;">To see every process on the
+system using BSD syntax:</p>
+
+<p style="margin-left:15%;"><b>ps&nbsp;ax <br>
+ps&nbsp;axu</b></p>
+
+<p style="margin-left:11%;">To print a process tree:</p>
+
+<p style="margin-left:15%;"><b>ps&nbsp;-ejH <br>
+ps&nbsp;axjf</b></p>
+
+<p style="margin-left:11%;">To get info about threads:</p>
+
+<p style="margin-left:15%;"><b>ps&nbsp;-eLf <br>
+ps&nbsp;axms</b></p>
+
+<p style="margin-left:11%;">To get security info:</p>
+
+<p style="margin-left:15%;"><b>ps&nbsp;-eo
+euser,ruser,suser,fuser,f,comm,label <br>
+ps&nbsp;axZ <br>
+ps&nbsp;-eM</b></p>
+
+<p style="margin-left:11%;">To see every process running as
+root (real&nbsp;&amp;&nbsp;effective&nbsp;ID) in user <br>
+format:</p>
+
+
+<p style="margin-left:15%;"><b>ps&nbsp;-U&nbsp;root&nbsp;-u&nbsp;root&nbsp;u</b></p>
+
+<p style="margin-left:11%;">To see every process with a
+user-defined format:</p>
+
+
+<p style="margin-left:15%;"><b>ps&nbsp;-eo&nbsp;pid,tid,class,rtprio,ni,pri,psr,pcpu,stat,wchan:14,comm
+<br>
+
+ps&nbsp;axo&nbsp;stat,euid,ruid,tty,tpgid,sess,pgrp,ppid,pid,pcpu,comm
+<br>
+ps&nbsp;-Ao&nbsp;pid,tt,user,fname,tmout,f,wchan</b></p>
+
+<p style="margin-left:11%;">Print only the process IDs of
+syslogd:</p>
+
+
+<p style="margin-left:15%;"><b>ps&nbsp;-C&nbsp;syslogd&nbsp;-o&nbsp;pid=</b></p>
+
+<p style="margin-left:11%;">Print only the name of PID
+42:</p>
+
+
+<p style="margin-left:15%;"><b>ps&nbsp;-q&nbsp;42&nbsp;-o&nbsp;comm=</b></p>
+
+<h2>SIMPLE PROCESS SELECTION
+<a name="SIMPLE PROCESS SELECTION"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>a</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Lift the BSD-style &quot;only
+yourself&quot; restriction, which is imposed upon the set of
+all processes when some BSD-style (without &quot;-&quot;)
+options are used or when the <b>ps</b> personality setting
+is BSD-like. The set of processes selected in this manner is
+in addition to the set of processes selected by other means.
+An alternate description is that this option causes
+<b>ps</b> to list all processes with a terminal (tty), or to
+list all processes when used together with the <b>x</b>
+option.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-A</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Select all processes. Identical to <b>-e</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-a</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Select all processes except both session leaders (see
+<i>getsid</i>(2)) and processes not associated with a
+terminal.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-d</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Select all processes except session leaders.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--deselect</b></p>
+
+<p style="margin-left:22%;">Select all processes except
+those that fulfill the specified conditions (negates the
+selection). Identical to <b>-N</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-e</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Select all processes. Identical to <b>-A</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>g</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Really all, even session leaders. This flag is obsolete
+and may be discontinued in a future release. It is normally
+implied by the <b>a</b> flag, and is only useful when
+operating in the sunos4 personality.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-N</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Select all processes except those that fulfill the
+specified conditions (negates the selection). Identical to
+<b>--deselect</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>T</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Select all processes associated with this terminal.
+Identical to the <b>t</b> option without any argument.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>r</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Restrict the selection to only running processes.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>x</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Lift the BSD-style &quot;must have a tty&quot;
+restriction, which is imposed upon the set of all processes
+when some BSD-style (without &quot;-&quot;) options are used
+or when the <b>ps</b> personality setting is BSD-like. The
+set of processes selected in this manner is in addition to
+the set of processes selected by other means. An alternate
+description is that this option causes <b>ps</b> to list all
+processes owned by you (same EUID as <b>ps</b>), or to list
+all processes when used together with the <b>a</b>
+option.</p> </td></tr>
+</table>
+
+<h2>PROCESS SELECTION BY LIST
+<a name="PROCESS SELECTION BY LIST"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">These options
+accept a single argument in the form of a blank-separated or
+comma-separated list. They can be used multiple times. For
+example:
+<b>ps&nbsp;-p&nbsp;&quot;1&nbsp;2&quot;&nbsp;-p&nbsp;3,4</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p style="margin-top: 1em">-<i>123</i></p></td>
+<td width="5%"></td>
+<td width="35%">
+
+
+<p style="margin-top: 1em">Identical to
+<b>--pid&nbsp;</b><i>123</i>.</p> </td>
+<td width="43%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><i>123</i></p></td>
+<td width="5%"></td>
+<td width="35%">
+
+
+<p>Identical to <b>--pid&nbsp;</b><i>123</i>.</p></td>
+<td width="43%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>-C&nbsp;</b><i>cmdlist</i></p>
+
+<p style="margin-left:22%;">Select by command name. This
+selects the processes whose executable name is given in
+<i>cmdlist</i>. NOTE: The command name is not the same as
+the command line. Previous versions of procps and the kernel
+truncated this command name to 15 characters. This
+limitation is no longer present in both. If you depended on
+matching only 15 characters, you may no longer get a
+match.</p>
+
+
+<p style="margin-left:11%;"><b>-G&nbsp;</b><i>grplist</i></p>
+
+<p style="margin-left:22%;">Select by real group ID (RGID)
+or name. This selects the processes whose real group name or
+ID is in the <i>grplist</i> list. The real group ID
+identifies the group of the user who created the process,
+see <i>getgid</i>(2).</p>
+
+
+<p style="margin-left:11%;"><b>-g&nbsp;</b><i>grplist</i></p>
+
+<p style="margin-left:22%;">Select by session OR by
+effective group name. Selection by session is specified by
+many standards, but selection by effective group is the
+logical behavior that several other operating systems use.
+This <b>ps</b> will select by session when the list is
+completely numeric (as sessions are). Group ID numbers will
+work only when some group names are also specified. See the
+<b>-s</b> and <b>--group</b> options.</p>
+
+
+<p style="margin-left:11%;"><b>--Group&nbsp;</b><i>grplist</i></p>
+
+<p style="margin-left:22%;">Select by real group ID (RGID)
+or name. Identical to <b>-G</b>.</p>
+
+
+<p style="margin-left:11%;"><b>--group&nbsp;</b><i>grplist</i></p>
+
+<p style="margin-left:22%;">Select by effective group ID
+(EGID) or name. This selects the processes whose effective
+group name or ID is in <i>grplist</i>. The effective group
+ID describes the group whose file access permissions are
+used by the process (see <i>getegid</i>(2)). The <b>-g</b>
+option is often an alternative to <b>--group</b>.</p>
+
+
+<p style="margin-left:11%;"><b>p&nbsp;</b><i>pidlist</i></p>
+
+<p style="margin-left:22%;">Select by process ID. Identical
+to <b>-p</b> and <b>--pid</b>.</p>
+
+
+<p style="margin-left:11%;"><b>-p&nbsp;</b><i>pidlist</i></p>
+
+<p style="margin-left:22%;">Select by PID. This selects the
+processes whose process ID numbers appear in <i>pidlist</i>.
+Identical to <b>p</b> and <b>--pid</b>.</p>
+
+
+<p style="margin-left:11%;"><b>--pid&nbsp;</b><i>pidlist</i></p>
+
+<p style="margin-left:22%;">Select by process&nbsp;ID.
+Identical to <b>-p</b> and <b>p</b>.</p>
+
+
+<p style="margin-left:11%;"><b>--ppid&nbsp;</b><i>pidlist</i></p>
+
+<p style="margin-left:22%;">Select by parent process ID.
+This selects the processes with a parent process&nbsp;ID in
+<i>pidlist</i>. That is, it selects processes that are
+children of those listed in <i>pidlist</i>.</p>
+
+
+<p style="margin-left:11%;"><b>q&nbsp;</b><i>pidlist</i></p>
+
+<p style="margin-left:22%;">Select by process ID (quick
+mode). Identical to <b>-q</b> and <b>--quick-pid</b>.</p>
+
+
+<p style="margin-left:11%;"><b>-q&nbsp;</b><i>pidlist</i></p>
+
+<p style="margin-left:22%;">Select by PID (quick mode).
+This selects the processes whose process ID numbers appear
+in <i>pidlist</i>. With this option <b>ps</b> reads the
+necessary info only for the pids listed in the
+<i>pidlist</i> and doesn&rsquo;t apply additional filtering
+rules. The order of pids is unsorted and preserved. No
+additional selection options, sorting and forest type
+listings are allowed in this mode. Identical to <b>q</b> and
+<b>--quick-pid</b>.</p>
+
+
+<p style="margin-left:11%;"><b>--quick-pid&nbsp;</b><i>pidlist</i></p>
+
+<p style="margin-left:22%;">Select by process&nbsp;ID
+(quick mode). Identical to <b>-q</b> and <b>q</b>.</p>
+
+
+<p style="margin-left:11%;"><b>-s&nbsp;</b><i>sesslist</i></p>
+
+<p style="margin-left:22%;">Select by session ID. This
+selects the processes with a session ID specified in
+<i>sesslist</i>.</p>
+
+
+<p style="margin-left:11%;"><b>--sid&nbsp;</b><i>sesslist</i></p>
+
+<p style="margin-left:22%;">Select by session&nbsp;ID.
+Identical to <b>-s</b>.</p>
+
+
+<p style="margin-left:11%;"><b>t&nbsp;</b><i>ttylist</i></p>
+
+<p style="margin-left:22%;">Select by tty. Nearly identical
+to <b>-t</b> and <b>--tty</b>, but can also be used with an
+empty <i>ttylist</i> to indicate the terminal associated
+with <b>ps</b>. Using the <b>T</b> option is considered
+cleaner than using <b>t</b> with an empty
+<i>ttylist</i>.</p>
+
+
+<p style="margin-left:11%;"><b>-t&nbsp;</b><i>ttylist</i></p>
+
+<p style="margin-left:22%;">Select by tty. This selects the
+processes associated with the terminals given in
+<i>ttylist</i>. Terminals (ttys, or screens for text output)
+can be specified in several forms: /dev/ttyS1, ttyS1, S1. A
+plain &quot;-&quot; may be used to select processes not
+attached to any terminal.</p>
+
+
+<p style="margin-left:11%;"><b>--tty&nbsp;</b><i>ttylist</i></p>
+
+<p style="margin-left:22%;">Select by terminal. Identical
+to <b>-t</b> and <b>t</b>.</p>
+
+
+<p style="margin-left:11%;"><b>U&nbsp;</b><i>userlist</i></p>
+
+<p style="margin-left:22%;">Select by effective user ID
+(EUID) or name. This selects the processes whose effective
+user name or ID is in <i>userlist</i>. The effective user ID
+describes the user whose file access permissions are used by
+the process (see <i>geteuid</i>(2)). Identical to <b>-u</b>
+and <b>--user</b>.</p>
+
+
+<p style="margin-left:11%;"><b>-U&nbsp;</b><i>userlist</i></p>
+
+<p style="margin-left:22%;">Select by real user ID (RUID)
+or name. It selects the processes whose real user name or ID
+is in the <i>userlist</i> list. The real user ID identifies
+the user who created the process, see <i>getuid</i>(2).</p>
+
+
+<p style="margin-left:11%;"><b>-u&nbsp;</b><i>userlist</i></p>
+
+<p style="margin-left:22%;">Select by effective user ID
+(EUID) or name. This selects the processes whose effective
+user name or ID is in <i>userlist</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The effective
+user ID describes the user whose file access permissions are
+used by the process (see <i>geteuid</i>(2)). Identical to
+<b>U</b> and <b>--user</b>.</p>
+
+
+<p style="margin-left:11%;"><b>--User&nbsp;</b><i>userlist</i></p>
+
+<p style="margin-left:22%;">Select by real user ID (RUID)
+or name. Identical to <b>-U</b>.</p>
+
+
+<p style="margin-left:11%;"><b>--user&nbsp;</b><i>userlist</i></p>
+
+<p style="margin-left:22%;">Select by effective user ID
+(EUID) or name. Identical to <b>-u</b> and <b>U</b>.</p>
+
+<h2>OUTPUT FORMAT CONTROL
+<a name="OUTPUT FORMAT CONTROL"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">These options
+are used to choose the information displayed by <b>ps</b>.
+The output may differ by personality.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-c</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Show different scheduler information for the <b>-l</b>
+option.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--context</b></p>
+
+<p style="margin-left:22%;">Display security context format
+(for SELinux).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-f</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Do full-format listing. This option can be combined with
+many other UNIX-style options to add additional columns. It
+also causes the command arguments to be printed. When used
+with <b>-L</b>, the NLWP (number of threads) and LWP (thread
+ID) columns will be added. See the <b>c</b> option, the
+format keyword <b>args</b>, and the format keyword
+<b>comm</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-F</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Extra full format. See the <b>-f</b> option, which
+<b>-F</b> implies.</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--format&nbsp;</b><i>format</i></p>
+
+<p style="margin-left:22%;">user-defined format. Identical
+to <b>-o</b> and <b>o</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>j</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>BSD job control format.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-j</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Jobs format.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>l</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Display BSD long format.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-l</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Long format. The <b>-y</b> option is often useful with
+this.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-M</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Add a column of security data. Identical to <b>Z</b>
+(for SELinux).</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>O&nbsp;</b><i>format</i></p>
+
+<p style="margin-left:22%;">is preloaded <b>o</b>
+(overloaded). The BSD <b>O</b> option can act like <b>-O</b>
+(user-defined output format with some common fields
+predefined) or can be used to specify sort order. Heuristics
+are used to determine the behavior of this option. To ensure
+that the desired behavior is obtained (sorting or
+formatting), specify the option in some other way (e.g. with
+<b>-O</b> or <b>--sort</b>). When used as a formatting
+option, it is identical to <b>-O</b>, with the BSD
+personality.</p>
+
+
+<p style="margin-left:11%;"><b>-O&nbsp;</b><i>format</i></p>
+
+<p style="margin-left:22%;">Like <b>-o</b>, but preloaded
+with some default columns. Identical to
+<b>-o&nbsp;pid,</b><i>format</i><b>,state,tname,time,command</b>
+or <b>-o&nbsp;pid,</b><i>format</i><b>,tname, time,cmd</b>,
+see <b>-o</b> below.</p>
+
+
+<p style="margin-left:11%;"><b>o&nbsp;</b><i>format</i></p>
+
+<p style="margin-left:22%;">Specify user-defined format.
+Identical to <b>-o</b> and <b>--format</b>.</p>
+
+
+<p style="margin-left:11%;"><b>-o&nbsp;</b><i>format</i></p>
+
+<p style="margin-left:22%;">User-defined format.
+<i>format</i> is a single argument in the form of a
+blank-separated or comma-separated list, which offers a way
+to specify individual output columns. The recognized
+keywords are described in the <b>STANDARD FORMAT
+SPECIFIERS</b> section below. Headers may be renamed (<b>ps
+-o pid,ruser=RealUser -o comm=Command</b>) as desired. If
+all column headers are empty (<b>ps -o pid= -o comm=</b>)
+then the header line will not be output. Column width will
+increase as needed for wide headers; this may be used to
+widen up columns such as WCHAN (<b>ps -o pid,wchan=WIDE-
+WCHAN-COLUMN -o comm</b>). Explicit width control (<b>ps
+opid, wchan:42,cmd</b>) is offered too. The behavior of
+<b>ps -o pid=X, comm=Y</b> varies with personality; output
+may be one column named &quot;X,comm=Y&quot; or two columns
+named &quot;X&quot; and &quot;Y&quot;. Use multiple
+<b>-o</b> options when in doubt. Use the <b>PS_FORMAT</b>
+environment variable to specify a default as desired;
+DefSysV and DefBSD are macros that may be used to choose the
+default UNIX or BSD columns.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-P</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Add a column showing <b>psr</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>s</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Display signal format.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>u</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Display user-oriented format.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>v</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Display virtual memory format.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>X</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Register format.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-y</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Do not show flags; show rss in place of addr. This
+option can only be used with <b>-l</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>Z</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Add a column of security data. Identical to <b>-M</b>
+(for SELinux).</p></td></tr>
+</table>
+
+<h2>OUTPUT MODIFIERS
+<a name="OUTPUT MODIFIERS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em"><b>c</b></p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Show the true command name. This
+is derived from the name of the executable file, rather than
+from the argv value. Command arguments and any modifications
+to them are thus not shown. This option effectively turns
+the <b>args</b> format keyword into the <b>comm</b> format
+keyword; it is useful with the <b>-f</b> format option and
+with the various BSD-style format options, which all
+normally display the command arguments. See the <b>-f</b>
+option, the format keyword <b>args</b>, and the format
+keyword <b>comm</b>.</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--cols&nbsp;</b><i>n</i></p>
+
+<p style="margin-left:22%;">Set screen width.</p>
+
+
+<p style="margin-left:11%;"><b>--columns&nbsp;</b><i>n</i></p>
+
+<p style="margin-left:22%;">Set screen width.</p>
+
+<p style="margin-left:11%;"><b>--cumulative</b></p>
+
+<p style="margin-left:22%;">Include some dead child process
+data (as a sum with the parent).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p><b>e</b></p></td>
+<td width="10%"></td>
+<td width="60%">
+
+
+<p>Show the environment after the command.</p></td>
+<td width="18%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p><b>f</b></p></td>
+<td width="10%"></td>
+<td width="60%">
+
+
+<p>ASCII art process hierarchy (forest).</p></td>
+<td width="18%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--forest</b></p>
+
+<p style="margin-left:22%;">ASCII art process tree.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>h</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>No header. (or, one header per screen in the BSD
+personality). The <b>h</b> option is problematic. Standard
+BSD <b>ps</b> uses this option to print a header on each
+page of output, but older Linux <b>ps</b> uses this option
+to totally disable the header. This version of <b>ps</b>
+follows the Linux usage of not printing the header unless
+the BSD personality has been selected, in which case it
+prints a header on each page of output. Regardless of the
+current personality, you can use the long options
+<b>--headers</b> and <b>--no-headers</b> to enable printing
+headers each page or disable headers entirely,
+respectively.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-H</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Show process hierarchy (forest).</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--headers</b></p>
+
+<p style="margin-left:22%;">Repeat header lines, one per
+page of output.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>k&nbsp;</b><i>spec</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Specify sorting order. Sorting syntax is
+[<b>+</b>|<b>-</b>]<i>key</i>[,[<b>+</b>|<b>-</b>]<i>key</i>[,...]].
+Choose a multi-letter key from the <b>STANDARD FORMAT
+SPECIFIERS</b> section. The &quot;+&quot; is optional since
+default direction is increasing numerical or lexicographic
+order. Identical to <b>--sort</b>.</p></td></tr>
+</table>
+
+<p style="margin-left:34%; margin-top: 1em">Examples:
+<b><br>
+ps jaxkuid,-ppid,+pid <br>
+ps axk comm o comm,args <br>
+ps kstart_time -ef</b></p>
+
+
+<p style="margin-left:11%;"><b>--lines&nbsp;</b><i>n</i></p>
+
+<p style="margin-left:22%;">Set screen height.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p><b>n</b></p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Numeric output for WCHAN and USER (including all types
+of UID and GID).</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--no-headers</b></p>
+
+<p style="margin-left:22%;">Print no header line at all.
+<b>--no-heading</b> is an alias for this option.</p>
+
+<p style="margin-left:11%;"><b>O&nbsp;</b><i>order</i></p>
+
+<p style="margin-left:22%;">Sorting order (overloaded). The
+BSD <b>O</b> option can act like <b>-O</b> (user-defined
+output format with some common fields predefined) or can be
+used to specify sort order. Heuristics are used to determine
+the behavior of this option. To ensure that the desired
+behavior is obtained (sorting or formatting), specify the
+option in some other way (e.g. with <b>-O</b> or
+<b>--sort</b>).</p>
+
+<p style="margin-left:22%; margin-top: 1em">For sorting,
+obsolete BSD <b>O</b> option syntax is
+<b>O</b>[<b>+</b>|<b>-</b>]<i>k1</i>[,[<b>+</b>|<b>-</b>]<i>k2</i>[,...]].
+It orders the processes listing according to the multilevel
+sort specified by the sequence of one-letter short keys
+<i>k1</i>,<i>k2</i>, ... described in the <b>OBSOLETE SORT
+KEYS</b> section below. The&nbsp;&quot;+&quot; is currently
+optional, merely re-iterating the default direction on a
+key, but may help to distinguish an <b>O</b> sort from an
+<b>O</b> format. The &quot;-&quot; reverses direction only
+on the key it precedes.</p>
+
+
+<p style="margin-left:11%;"><b>--rows&nbsp;</b><i>n</i></p>
+
+<p style="margin-left:22%;">Set screen height.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p><b>S</b></p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Sum up some information, such as CPU usage, from dead
+child processes into their parent. This is useful for
+examining a system where a parent process repeatedly forks
+off short-lived children to do work.</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--sort&nbsp;</b><i>spec</i></p>
+
+<p style="margin-left:22%;">Specify sorting order. Sorting
+syntax is
+[<b>+</b>|<b>-</b>]<i>key</i>[,[<b>+</b>|<b>-</b>]<i>key</i>[,...]].
+Choose a multi-letter key from the <b>STANDARD FORMAT
+SPECIFIERS</b> section. The &quot;+&quot; is optional since
+default direction is increasing numerical or lexicographic
+order. Identical to <b>k</b>. For example: <b>ps jax
+--sort=uid,-ppid, +pid</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>w</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Wide output. Use this option twice for unlimited
+width.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-w</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Wide output. Use this option twice for unlimited
+width.</p> </td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--width&nbsp;</b><i>n</i></p>
+
+<p style="margin-left:22%;">Set screen width.</p>
+
+<h2>THREAD DISPLAY
+<a name="THREAD DISPLAY"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>H</b></p></td>
+<td width="8%"></td>
+<td width="75%">
+
+
+<p style="margin-top: 1em">Show threads as if they were
+processes.</p> </td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-L</b></p></td>
+<td width="8%"></td>
+<td width="75%">
+
+
+<p>Show threads, possibly with LWP and NLWP columns.</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>m</b></p></td>
+<td width="8%"></td>
+<td width="75%">
+
+
+<p>Show threads after processes.</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-m</b></p></td>
+<td width="8%"></td>
+<td width="75%">
+
+
+<p>Show threads after processes.</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-T</b></p></td>
+<td width="8%"></td>
+<td width="75%">
+
+
+<p>Show threads, possibly with SPID column.</p></td>
+<td width="3%">
+</td></tr>
+</table>
+
+<h2>OTHER INFORMATION
+<a name="OTHER INFORMATION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--help&nbsp;</b><i>section</i></p>
+
+<p style="margin-left:22%;">Print a help message. The
+<i>section</i> argument can be one of <i>s</i>imple,
+<i>l</i>ist, <i>o</i>utput, <i>t</i>hreads, <i>m</i>isc, or
+<i>a</i>ll. The argument can be shortened to one of the
+underlined letters as in: s|l|o|t|m|a.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--info</b></p></td>
+<td width="2%"></td>
+<td width="43%">
+
+
+<p>Print debugging info.</p></td>
+<td width="35%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>L</b></p></td>
+<td width="2%"></td>
+<td width="43%">
+
+
+<p>List all format specifiers.</p></td>
+<td width="35%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>V</b></p></td>
+<td width="2%"></td>
+<td width="43%">
+
+
+<p>Print the procps-ng version.</p></td>
+<td width="35%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-V</b></p></td>
+<td width="2%"></td>
+<td width="43%">
+
+
+<p>Print the procps-ng version.</p></td>
+<td width="35%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--version</b></p>
+
+<p style="margin-left:22%;">Print the procps-ng
+version.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This <b>ps</b>
+works by reading the virtual files in /proc. This <b>ps</b>
+does not need to be setuid kmem or have any privileges to
+run. Do not give this <b>ps</b> any special permissions.</p>
+
+<p style="margin-left:11%; margin-top: 1em">CPU usage is
+currently expressed as the percentage of time spent running
+during the entire lifetime of a process. This is not ideal,
+and&nbsp;it does not conform to the standards that <b>ps</b>
+otherwise conforms to. CPU usage is unlikely to add up to
+exactly 100%.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The SIZE and
+RSS fields don&rsquo;t count some parts of a process
+including the page tables, kernel stack, struct thread_info,
+and struct task_struct. This is usually at least 20 KiB of
+memory that is always resident. SIZE is the virtual size of
+the process (code+data+stack).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Processes
+marked &lt;defunct&gt; are dead processes (so-called
+&quot;zombies&quot;) that remain because their parent has
+not destroyed them properly. These processes will be
+destroyed by <i>init</i>(8) if the parent process exits.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the length
+of the username is greater than the length of the display
+column, the username will be truncated. See the <b>-o</b>
+and <b>-O</b> formatting options to customize length.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Commands
+options such as <b>ps -aux</b> are not recommended as it is
+a confusion of two different standards. According to the
+POSIX and UNIX standards, the above command asks to display
+all processes with a TTY (generally the commands users are
+running) plus all processes owned by a user named <i>x</i>.
+If that user doesn&rsquo;t exist, then <b>ps</b> will assume
+you really meant <b>ps aux</b>.</p>
+
+<h2>PROCESS FLAGS
+<a name="PROCESS FLAGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The sum of
+these values is displayed in the &quot;F&quot; column, which
+is provided by the <b>flags</b> output specifier:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="2%">
+
+
+<p>1</p></td>
+<td width="6%"></td>
+<td width="40%">
+
+
+<p>forked but didn&rsquo;t exec</p></td>
+<td width="29%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="2%">
+
+
+<p>4</p></td>
+<td width="6%"></td>
+<td width="40%">
+
+
+<p>used super-user privileges</p></td>
+<td width="29%">
+</td></tr>
+</table>
+
+<h2>PROCESS STATE CODES
+<a name="PROCESS STATE CODES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Here are the
+different values that the
+<b>s</b>,&nbsp;<b>stat&nbsp;</b>and&nbsp;<b>state</b> output
+specifiers (header &quot;STAT&quot; or &quot;S&quot;) will
+display to describe the state of a process:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="2%">
+
+
+<p style="margin-top: 1em">D</p></td>
+<td width="6%"></td>
+<td width="69%">
+
+
+<p style="margin-top: 1em">uninterruptible sleep (usually
+IO)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="2%">
+
+
+<p>I</p></td>
+<td width="6%"></td>
+<td width="69%">
+
+
+<p>Idle kernel thread</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="2%">
+
+
+<p>R</p></td>
+<td width="6%"></td>
+<td width="69%">
+
+
+<p>running or runnable (on run queue)</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="2%">
+
+
+<p>S</p></td>
+<td width="6%"></td>
+<td width="69%">
+
+
+<p>interruptible sleep (waiting for an event to
+complete)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="2%">
+
+
+<p>T</p></td>
+<td width="6%"></td>
+<td width="69%">
+
+
+<p>stopped by job control signal</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="2%">
+
+
+<p>t</p></td>
+<td width="6%"></td>
+<td width="69%">
+
+
+<p>stopped by debugger during the tracing</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="2%">
+
+
+<p>W</p></td>
+<td width="6%"></td>
+<td width="69%">
+
+
+<p>paging (not valid since the 2.6.xx kernel)</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="2%">
+
+
+<p>X</p></td>
+<td width="6%"></td>
+<td width="69%">
+
+
+<p>dead (should never be seen)</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="2%">
+
+
+<p>Z</p></td>
+<td width="6%"></td>
+<td width="69%">
+
+
+<p>defunct (&quot;zombie&quot;) process, terminated but not
+reaped by its parent</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">For BSD formats
+and when the <b>stat</b> keyword is used, additional
+characters may be displayed:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="2%">
+
+
+<p style="margin-top: 1em">&lt;</p></td>
+<td width="6%"></td>
+<td width="69%">
+
+
+<p style="margin-top: 1em">high-priority (not nice to other
+users)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="2%">
+
+
+<p>N</p></td>
+<td width="6%"></td>
+<td width="69%">
+
+
+<p>low-priority (nice to other users)</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="2%">
+
+
+<p>L</p></td>
+<td width="6%"></td>
+<td width="69%">
+
+
+<p>has pages locked into memory (for real-time and custom
+IO)</p> </td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="2%">
+
+
+<p>s</p></td>
+<td width="6%"></td>
+<td width="69%">
+
+
+<p>is a session leader</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="2%">
+
+
+<p>l</p></td>
+<td width="6%"></td>
+<td width="69%">
+
+
+<p>is multi-threaded (using CLONE_THREAD, like NPTL
+pthreads do)</p></td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="2%">
+
+
+<p>+</p></td>
+<td width="6%"></td>
+<td width="69%">
+
+
+<p>is in the foreground process group</p></td></tr>
+</table>
+
+<h2>OBSOLETE SORT KEYS
+<a name="OBSOLETE SORT KEYS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">These keys are
+used by the BSD <b>O</b> option (when it is used for
+sorting). The GNU <b>--sort</b> option doesn&rsquo;t use
+these keys, but the specifiers described below in the
+<b>STANDARD FORMAT SPECIFIERS</b> section. Note that the
+values used in sorting are the internal values <b>ps</b>
+uses and not the &quot;cooked&quot; values used in some of
+the output format fields (e.g. sorting on tty will sort into
+device number, not according to the terminal name
+displayed). Pipe <b>ps</b> output into the <b>sort</b>(1)
+command if you want to sort the cooked values.</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-164651.png" alt="Image grohtml-164651.png"></p>
+
+<h2>AIX FORMAT DESCRIPTORS
+<a name="AIX FORMAT DESCRIPTORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This <b>ps</b>
+supports AIX format descriptors, which work somewhat like
+the formatting codes of <i>printf</i>(1) and
+<i>printf</i>(3). For example, the normal default output can
+be produced with this: <b>ps -eo &quot;%p %y %x
+%c&quot;</b>. The <b>NORMAL</b> codes are described in the
+next section.</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-164652.png" alt="Image grohtml-164652.png"></p>
+
+<h2>STANDARD FORMAT SPECIFIERS
+<a name="STANDARD FORMAT SPECIFIERS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Here are the
+different keywords that may be used to control the output
+format (e.g. with option <b>-o</b>) or to sort the selected
+processes with the GNU-style <b>--sort</b> option.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For example:
+<b>ps -eo pid,user,args --sort user</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">This version of
+<b>ps</b> tries to recognize most of the keywords used in
+other implementations of <b>ps</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+user-defined format specifiers may contain spaces:
+<b>args</b>,&nbsp;<b>cmd</b>,&nbsp;<b>comm</b>,&nbsp;<b>command</b>,&nbsp;<b>fname</b>,&nbsp;<b>ucmd</b>,&nbsp;<b>ucomm</b>,
+<b>lstart</b>,&nbsp;<b>bsdstart</b>,&nbsp;<b>start</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Some keywords
+may not be available for sorting.</p>
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="55%"></td>
+<td width="45%">
+
+
+<p style="margin-top: 1em">&nbsp;</p></td></tr>
+<tr valign="top" align="left">
+<td width="55%"></td>
+<td width="45%">
+
+
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</p></td></tr>
+<tr valign="top" align="left">
+<td width="55%"></td>
+<td width="45%">
+
+
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp;</p></td></tr>
+</table>
+
+
+<p align="center"><img src="grohtml-164653.png" alt="Image grohtml-164653.png"></p>
+
+<h2>ENVIRONMENT VARIABLES
+<a name="ENVIRONMENT VARIABLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+environment variables could affect <b>ps</b>: <b><br>
+COLUMNS</b></p>
+
+<p style="margin-left:15%;">Override default display
+width.</p>
+
+<p style="margin-left:11%;"><b>LINES</b></p>
+
+<p style="margin-left:15%;">Override default display
+height.</p>
+
+<p style="margin-left:11%;"><b>PS_PERSONALITY</b></p>
+
+<p style="margin-left:15%;">Set to one of posix, old,
+linux, bsd, sun, digital... (see section <b>PERSONALITY</b>
+below).</p>
+
+<p style="margin-left:11%;"><b>CMD_ENV</b></p>
+
+<p style="margin-left:15%;">Set to one of posix, old,
+linux, bsd, sun, digital... (see section <b>PERSONALITY</b>
+below).</p>
+
+<p style="margin-left:11%;"><b>I_WANT_A_BROKEN_PS</b></p>
+
+<p style="margin-left:15%;">Force obsolete command line
+interpretation.</p>
+
+<p style="margin-left:11%;"><b>LC_TIME</b></p>
+
+<p style="margin-left:15%;">Date format.</p>
+
+<p style="margin-left:11%;"><b>LIBPROC_HIDE_KERNEL</b></p>
+
+<p style="margin-left:15%;">Set this to any value to hide
+kernel threads normally displayed with the <b>-e</b> option.
+This is equivalent to selecting <b>--ppid 2 -p 2
+--deselect</b> instead. Also works in BSD mode.</p>
+
+<p style="margin-left:11%;"><b>PS_COLORS</b></p>
+
+<p style="margin-left:15%;">Not currently supported.</p>
+
+<p style="margin-left:11%;"><b>PS_FORMAT</b></p>
+
+<p style="margin-left:15%;">Default output format override.
+You may set this to a format string of the type used for the
+<b>-o</b> option. The <b>DefSysV</b> and <b>DefBSD</b>
+values are particularly useful.</p>
+
+<p style="margin-left:11%;"><b>POSIXLY_CORRECT</b></p>
+
+<p style="margin-left:15%;">Don&rsquo;t find excuses to
+ignore bad &quot;features&quot;.</p>
+
+<p style="margin-left:11%;"><b>POSIX2</b></p>
+
+<p style="margin-left:15%;">When set to &quot;on&quot;,
+acts as <b>POSIXLY_CORRECT</b>.</p>
+
+<p style="margin-left:11%;"><b>UNIX95</b></p>
+
+<p style="margin-left:15%;">Don&rsquo;t find excuses to
+ignore bad &quot;features&quot;.</p>
+
+<p style="margin-left:11%;"><b>_XPG</b></p>
+
+<p style="margin-left:15%;">Cancel
+<b>CMD_ENV</b>=<i>irix</i> non-standard behavior.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In general, it
+is a bad idea to set these variables. The one exception is
+<b>CMD_ENV</b> or <b>PS_PERSONALITY</b>, which could be set
+to Linux for normal systems. Without that setting, <b>ps</b>
+follows the useless and bad parts of the Unix98
+standard.</p>
+
+<h2>PERSONALITY
+<a name="PERSONALITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">&nbsp;</p>
+
+
+<p align="center"><img src="grohtml-164654.png" alt="Image grohtml-164654.png"></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pgrep</b>(1),
+<b>pstree</b>(1), <b>top</b>(1), <b>proc</b>(5).</p>
+
+<h2>STANDARDS
+<a name="STANDARDS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This <b>ps</b>
+conforms to:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>1</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>Version 2 of the Single Unix Specification</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>2</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>The Open Group Technical Standard Base Specifications,
+Issue&nbsp;6</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>3</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>IEEE Std 1003.1, 2004&nbsp;Edition</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>4</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>X/Open System Interfaces Extension [UP&nbsp;XSI]</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>5</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>ISO/IEC 9945:2003</p></td></tr>
+</table>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ps</b> was
+originally written by <a href="lankeste@fwi.uva.nl">Branko
+Lankester</a>. <a href="johnsonm@redhat.com">Michael K.
+Johnson</a> re-wrote it significantly to use the proc
+filesystem, changing a few things in the process.
+<a href="mjshield@nyx.cs.du.edu">Michael Shields</a> added
+the pid-list feature. <a href="cblake@bbn.com">Charles
+Blake</a> added multi-level sorting, the dirent-style
+library, the device name-to-number mmaped database, the
+approximate binary search directly on System.map, and many
+code and documentation cleanups. David Mossberger-Tang wrote
+the generic BFD support for psupdate.
+<a href="albert@users.sf.net">Albert Cahalan</a> rewrote ps
+for full Unix98 and BSD support, along with some ugly hacks
+for obsolete and foreign syntax.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Please send bug
+reports to
+<a href="procps@freelists.org">procps@freelists.org</a>. No
+subscription is required or suggested.</p>
+<hr>
+</body>
+</html>

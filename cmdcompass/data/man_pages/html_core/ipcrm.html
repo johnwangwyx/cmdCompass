@@ -1,0 +1,206 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:12 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>IPCRM</title>
+
+</head>
+<body>
+
+<h1 align="center">IPCRM</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#AVAILABILITY">AVAILABILITY</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ipcrm - remove
+certain IPC resources</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ipcrm</b>
+[options]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ipcrm</b>
+[<b>shm</b>|<b>msg</b>|<b>sem</b>] <i>ID</i> ...</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ipcrm</b>
+removes System V inter-process communication (IPC) objects
+and associated data structures from the system. In order to
+delete such objects, you must be superuser, or the creator
+or owner of the object.</p>
+
+<p style="margin-left:11%; margin-top: 1em">System V IPC
+objects are of three types: shared memory, message queues,
+and semaphores. Deletion of a message queue or semaphore
+object is immediate (regardless of whether any process still
+holds an IPC identifier for the object). A shared memory
+object is only removed after all currently attached
+processes have detached (<b>shmdt</b>(2)) the object from
+their virtual address space.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Two syntax
+styles are supported. The old Linux historical syntax
+specifies a three-letter keyword indicating which class of
+object is to be deleted, followed by one or more IPC
+identifiers for objects of this type.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+SUS-compliant syntax allows the specification of zero or
+more objects of all three types in a single command line,
+with objects specified either by key or by identifier (see
+below). Both keys and identifiers may be specified in
+decimal, hexadecimal (specified with an initial '0x' or
+'0X'), or octal (specified with an initial '0').</p>
+
+<p style="margin-left:11%; margin-top: 1em">The details of
+the removes are described in <b>shmctl</b>(2),
+<b>msgctl</b>(2), and <b>semctl</b>(2). The identifiers and
+keys can be found by using <b>ipcs</b>(1).</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-a</b>,
+<b>--all</b> [<b>shm</b>] [<b>msg</b>] [<b>sem</b>]</p>
+
+<p style="margin-left:17%;">Remove all resources. When an
+option argument is provided, the removal is performed only
+for the specified resource types.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>Warning!</i>
+Do not use <b>-a</b> if you are unsure how the software
+using the resources might react to missing objects. Some
+programs create these resources at startup and may not have
+any code to deal with an unexpected disappearance.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-M</b>,
+<b>--shmem-key</b> <i>shmkey</i></p>
+
+<p style="margin-left:17%;">Remove the shared memory
+segment created with <i>shmkey</i> after the last detach is
+performed.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-m</b>,
+<b>--shmem-id</b> <i>shmid</i></p>
+
+<p style="margin-left:17%;">Remove the shared memory
+segment identified by <i>shmid</i> after the last detach is
+performed.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-Q</b>,
+<b>--queue-key</b> <i>msgkey</i></p>
+
+<p style="margin-left:17%;">Remove the message queue
+created with <i>msgkey</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-q</b>,
+<b>--queue-id</b> <i>msgid</i></p>
+
+<p style="margin-left:17%;">Remove the message queue
+identified by <i>msgid</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-S</b>,
+<b>--semaphore-key</b> <i>semkey</i></p>
+
+<p style="margin-left:17%;">Remove the semaphore created
+with <i>semkey</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-s</b>,
+<b>--semaphore-id</b> <i>semid</i></p>
+
+<p style="margin-left:17%;">Remove the semaphore identified
+by <i>semid</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Display help text and exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-V</b>,
+<b>--version</b></p>
+
+<p style="margin-left:17%;">Print version and exit.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In its first
+Linux implementation, <b>ipcrm</b> used the deprecated
+syntax shown in the second line of the <b>SYNOPSIS</b>.
+Functionality present in other *nix implementations of
+<b>ipcrm</b> has since been added, namely the ability to
+delete resources by key (not just identifier), and to
+respect the same command-line syntax. For backward
+compatibility the previous syntax is still supported.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ipcmk</b>(1),
+<b>ipcs</b>(1), <b>msgctl</b>(2), <b>msgget</b>(2),
+<b>semctl</b>(2), <b>semget</b>(2), <b>shmctl</b>(2),
+<b>shmdt</b>(2), <b>shmget</b>(2), <b>ftok</b>(3),
+<b>sysvipc</b>(7)</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For bug
+reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+
+<h2>AVAILABILITY
+<a name="AVAILABILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>ipcrm</b> command is part of the util-linux package which
+can be downloaded from <i>Linux Kernel Archive</i>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>
+<hr>
+</body>
+</html>

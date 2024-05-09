@@ -1,0 +1,202 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:12 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Jbigtopnm User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Jbigtopnm User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#STANDARDS">STANDARDS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#LICENSE">LICENSE</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">jbigtopnm -
+JBIG to PNM image file converter</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>jbigtopnm</b>
+[<b>-xmax</b>] [<b>-ymax</b>] [<b>-binary</b>]
+[<b>-diagnose</b>] [<b>-plane</b>] [<i>input-file</i>
+[<i>output-file</i>]]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviation of option is acceptable. You may use double
+hyphens instead of single hyphen to denote options. You may
+use white space in place of the equals sign to separate an
+option name from its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>jbigtopnm</b>
+reads a JBIG bi-level image entity (BIE) from a file or
+standard input, decompresses it, and outputs a PBM or PGM
+file. If the input has one plane, or you choose just one
+plane of it, the output is PBM. Otherwise, the output is
+PGM.</p>
+
+<p style="margin-left:11%; margin-top: 1em">JBIG is a
+highly effective lossless compression algorithm for bi-level
+images (one bit per pixel), which is particularly suitable
+for scanned document pages.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A JBIG encoded
+image can be stored in several resolutions in one or several
+BIEs. All resolution layers except the lowest one are stored
+efficiently as differences to the next lower resolution
+layer. You can use options <b>-x</b> and <b>-y</b> to stop
+the decompression at a specified maximal output image size.
+The input file can consist of several concatenated BIEs
+which contain different increasing resolution layers of the
+same image.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>jbigtopnm</b> recognizes the following command line
+options:</p>
+
+<p style="margin-left:11%; margin-top: 1em">Before Netpbm
+10.85 (December 2018), only single-character single-hyphen
+abbreviations of the options are accepted. <b><br>
+-xmax</b> <i>number</i></p>
+
+<p style="margin-left:22%;">Decode only up to the largest
+resolution layer which is still not more than <i>number</i>
+pixels wide. If no such resolution layer exists, then use
+the smallest one available.</p>
+
+<p style="margin-left:11%;"><b>-ymax</b> <i>number</i></p>
+
+<p style="margin-left:22%;">Decode only up to the largest
+resolution layer which is still not more than <i>number</i>
+pixels high. If no such resolution layer exists, then use
+the smallest one available. You can also use options
+<b>-x</b> and <b>-y</b> together which selects the largest
+layer that satisfies both limits.</p>
+
+<p style="margin-left:11%;"><b>-binary</b></p>
+
+<p style="margin-left:22%;">Use binary values instead of
+Gray code words in order to decode pixel values from
+multiple bitplanes. This option has effect only if the input
+has more than one bitplane and you don&rsquo;t select just
+one of those bitplanes. Note that the decoder has to be used
+in the same mode as the encoder and cannot determine from
+the BIE, whether Gray or binary code words were used by the
+encoder.</p>
+
+<p style="margin-left:11%;"><b>-diagnose</b></p>
+
+<p style="margin-left:22%;">Diagnose a BIE. With this
+option, <b>jbigtopnm</b> only prints a summary of the header
+information found in the input file and then exits.</p>
+
+<p style="margin-left:11%;"><b>-plane</b> <i>number</i></p>
+
+<p style="margin-left:22%;">If the input contains multiple
+bitplanes, then extract only the specified single plane as a
+PBM file. The first plane has number 0.</p>
+
+<h2>STANDARDS
+<a name="STANDARDS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program
+implements the JBIG image coding algorithm as specified in
+ISO/IEC 11544:1993 and ITU-T T.82(1993).</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>jbigtopnm</b>
+is based on the JBIG library by Markus Kuhn, part of his
+<a href="http://www.cl.cam.ac.uk/~mgk25/jbigkit/"><b>JBIG-KIT</b>
+package</a> . The <b>jbgtopbm</b> program is part of the
+<b>JBIG-KIT</b> package.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>jbigtopnm</b>
+is part of the Netpbm package of graphics tools.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnm</b>(1),
+<b>pnmtojbig</b>(1)</p>
+
+<h2>LICENSE
+<a name="LICENSE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">There was at
+one time concern about the need for patent licenses to use
+<b>jbigtopnm</b>, but any relevant patents expired by
+2012.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/jbigtopnm.html</b></p>
+<hr>
+</body>
+</html>

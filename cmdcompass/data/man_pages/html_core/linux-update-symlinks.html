@@ -1,0 +1,261 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:15 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>LINUX-UPDATE-SYMLINKS</title>
+
+</head>
+<body>
+
+<h1 align="center">LINUX-UPDATE-SYMLINKS</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#ENVIRONMENT VARIABLES">ENVIRONMENT VARIABLES</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">linux-update-symlinks
+- maintain symlinks to default kernel and initramfs</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+
+<p style="margin-top: 1em"><b>linux-update-symlinks&nbsp;</b>{<b>install</b>|<b>upgrade</b>|<b>remove</b>}
+<i>VERSION IMAGE-PATH</i></p></td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i><b>linux-update-symlinks</b></i>
+is intended to be called from the postinst and postrm
+maintainer scripts of Linux kernel packages. The postinst
+script must pass the first argument <b>install</b> or
+<b>upgrade</b> depending on whether a fresh installation or
+an upgrade has taken place.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>VERSION</i> argument must be the kernel version string as
+shown by <b>uname -r</b> and used in filenames.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>IMAGE-PATH</i> argument must be the absolute filename of
+the kernel image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">By default,
+this command maintains symlinks in the root directory. This
+behaviour can be modified by settings in
+<i>/etc/kernel-img.conf</i>: <b><br>
+image_dest</b></p>
+
+<p style="margin-left:22%;">Specifies the directory in
+which to maintain symlinks</p>
+
+<p style="margin-left:11%;"><b>link_in_boot</b></p>
+
+<p style="margin-left:22%;">If set to a true value,
+specifies that the directory is <i>/boot</i></p>
+
+<p style="margin-left:11%;"><b>do_symlinks</b></p>
+
+<p style="margin-left:22%;">If set to a false value,
+disables maintenance of symlinks</p>
+
+<p style="margin-left:11%; margin-top: 1em">The symlinks
+for the primary default kernel version are named
+<i>vmlinuz</i> or <i>vmlinux</i> (depending on whether the
+architecture normally uses compressed kernel images) and
+<i>initrd.img</i> (if it uses an initramfs). The symlinks
+for the secondary default have the same names with the
+suffix <i>.old</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If symlink
+maintenance is disabled, <b>linux-update-symlinks</b> does
+nothing, successfully. Otherwise it makes a list of kernel
+versions in decreasing order of priority:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>The given <i>VERSION</i>, if the first argument is
+<b>install</b></p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>The current primary default version, if it exists and is
+not already listed</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>The current secondary default version, if it exists and
+is not already listed</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>All other versions whose files are installed, excluding
+the specified <i>VERSION</i> if the first argument is
+<b>remove</b>, in decreasing version order</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The top two
+entries on the list are the new primary and secondary
+default versions, and it updates the symlinks accordingly.
+In case there is only one entry, this is both the primary
+and secondary default version. If there are no entries,
+there are no default versions and it removes the default
+symlinks.</p>
+
+<h2>ENVIRONMENT VARIABLES
+<a name="ENVIRONMENT VARIABLES"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><i>INITRD</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">When the first argument is
+<b>install</b> or <b>upgrade</b>,
+<b>linux-update-symlinks</b> assumes that the given
+<i>VERSION</i> will use an initramfs unless this variable is
+set to <b>No</b>.</p></td></tr>
+</table>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/boot/initrd.img-</i>*</p>
+
+<p style="margin-left:22%;">Installed initramfs images</p>
+
+
+<p style="margin-left:11%;"><i>/boot/vmlinuz-</i>*&nbsp;|&nbsp;<i>/boot/vmlinux-</i>*</p>
+
+<p style="margin-left:22%;">Installed kernel images</p>
+
+
+<p style="margin-left:11%;"><i>/etc/kernel-img.conf</i></p>
+
+<p style="margin-left:22%;">Configuration file specifying
+whether and where to create symlinks</p>
+
+<p style="margin-left:11%;"><i>/initrd.img</i></p>
+
+<p style="margin-left:22%;">Symlink to the initramfs image
+for the primary default version</p>
+
+<p style="margin-left:11%;"><i>/initrd.img.old</i></p>
+
+<p style="margin-left:22%;">Symlink to the initramfs image
+for the secondary default version</p>
+
+
+<p style="margin-left:11%;"><i>/vmlinuz&nbsp;</i>|&nbsp;<i>/vmlinux</i></p>
+
+<p style="margin-left:22%;">Symlink to the kernel image for
+the primary default version</p>
+
+
+<p style="margin-left:11%;"><i>/vmlinuz.old&nbsp;</i>|&nbsp;<i>/vmlinux.old</i></p>
+
+<p style="margin-left:22%;">Symlink to the kernel image for
+the secondary default version</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>linux-update-symlinks</b>
+and this manual page were written by Ben Hutchings as part
+of the Debian <b>linux-base</b> package.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>kernel-img.conf</i>(5),
+<i>linux-version</i>(1).</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:34 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>pldd</title>
+
+</head>
+<body>
+
+<h1 align="center">pldd</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#VERSIONS">VERSIONS</a><br>
+<a href="#STANDARDS">STANDARDS</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pldd - display
+dynamic shared objects linked into a process</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pldd</b>
+<i>pid</i> <b><br>
+pldd</b> <i>option</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The <b>pldd</b>
+command displays a list of the dynamic shared objects (DSOs)
+that are linked into the process with the specified process
+ID (PID). The list includes the libraries that have been
+dynamically loaded using <b>dlopen</b>(3).</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-?</b>,
+<b>--help</b></p>
+
+<p style="margin-left:22%;">Display a help message and
+exit.</p>
+
+<p style="margin-left:11%;"><b>--usage</b></p>
+
+<p style="margin-left:22%;">Display a short usage message
+and exit.</p>
+
+<p style="margin-left:11%;"><b>-V</b>, <b>--version</b></p>
+
+<p style="margin-left:22%;">Display program version
+information and exit.</p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">On success,
+<b>pldd</b> exits with the status 0. If the specified
+process does not exist, the user does not have permission to
+access its dynamic shared object list, or no command-line
+arguments are supplied, <b>pldd</b> exists with a status of
+1. If given an invalid option, it exits with the status
+64.</p>
+
+<h2>VERSIONS
+<a name="VERSIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pldd</b> is
+available since glibc 2.15.</p>
+
+<h2>STANDARDS
+<a name="STANDARDS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The <b>pldd</b>
+command is not specified by POSIX.1. Some other systems have
+a similar command.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The command</p>
+
+<p style="margin-left:17%; margin-top: 1em">lsof -p PID</p>
+
+<p style="margin-left:11%; margin-top: 1em">also shows
+output that includes the dynamic shared objects that are
+linked into a process.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>gdb</b>(1) <i>info shared</i> command also shows the
+shared libraries being used by a process, so that one can
+obtain similar output to <b>pldd</b> using a command such as
+the following (to monitor the process with the specified
+<i>pid</i>):</p>
+
+<p style="margin-left:17%; margin-top: 1em">$ <b>gdb -ex
+&quot;set confirm off&quot; -ex &quot;set height 0&quot; -ex
+&quot;info shared&quot; \ <br>
+-ex &quot;quit&quot; -p $pid | grep '^0x.*0x'</b></p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">From glibc 2.19
+to glibc 2.29, <b>pldd</b> was broken: it just hung when
+executed. This problem was fixed in glibc 2.30, and the fix
+has been backported to earlier glibc versions in some
+distributions.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">$ <b>echo
+$$</b> # Display PID of shell <br>
+1143 <br>
+$ <b>pldd $$</b> # Display DSOs linked into the shell <br>
+1143: /usr/bin/bash <br>
+linux-vdso.so.1 <br>
+/lib64/libtinfo.so.5 <br>
+/lib64/libdl.so.2 <br>
+/lib64/libc.so.6 <br>
+/lib64/ld-linux-x86-64.so.2 <br>
+/lib64/libnss_files.so.2</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ldd</b>(1),
+<b>lsof</b>(1), <b>dlopen</b>(3), <b>ld.so</b>(8)</p>
+<hr>
+</body>
+</html>

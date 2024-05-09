@@ -1,0 +1,671 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:07 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GRN</title>
+
+</head>
+<body>
+
+<h1 align="center">GRN</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#GRN COMMANDS">GRN COMMANDS</a><br>
+<a href="#NOTES ABOUT GROFF">NOTES ABOUT GROFF</a><br>
+<a href="#GREMLIN FILE FORMAT">GREMLIN FILE FORMAT</a><br>
+<a href="#ELEMENT SPECIFICATIONS">ELEMENT SPECIFICATIONS</a><br>
+<a href="#NOTES ON COORDINATES">NOTES ON COORDINATES</a><br>
+<a href="#NOTES ON SUN/X11 COORDINATES">NOTES ON SUN/X11 COORDINATES</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">grn - groff
+preprocessor for gremlin files</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p style="margin-top: 1em"><b>grn</b></p></td>
+<td width="2%"></td>
+<td width="66%">
+
+
+<p style="margin-top: 1em">[<b>-Cv</b>]
+[<b>-T&nbsp;</b><i>dev</i>] [<b>-M&nbsp;</b><i>dir</i>]
+[<b>-F&nbsp;</b><i>dir</i>] [<i>file</i> ...]</p></td>
+<td width="17%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>grn</i> is a
+preprocessor for including <i>gremlin</i> pictures in
+<i>groff</i> input. <i>grn</i> writes to standard output,
+processing only input lines between two that start with
+<b>.GS</b> and <b>.GE</b>. Those lines must contain
+<i>grn</i> commands (see below). These commands request a
+<i>gremlin</i> file, and the picture in that file is
+converted and placed in the <i>troff</i> input stream. The
+<b>.GS</b> request may be followed by a C, L, or R to
+center, left, or right justify the whole <i>gremlin</i>
+picture (default justification is center). If no <i>file</i>
+is mentioned, the standard input is read. At the end of the
+picture, the position on the page is the bottom of the
+<i>gremlin</i> picture. If the <i>grn</i> entry is ended
+with <b>.GF</b> instead of <b>.GE</b>, the position is left
+at the top of the picture.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Please note
+that currently only the -me macro package has support for
+<b>.GS</b>, <b>.GE</b>, and <b>.GF</b>.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Whitespace is
+permitted between a command-line option and its
+argument.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-T</b><i>dev</i></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Prepare output for printer <i>dev</i>. The default
+device is <b>ps</b>. See <b>groff</b>(1) for acceptable
+devices.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-M</b><i>dir</i></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Prepend <i>dir</i> to the default search path for
+<i>gremlin</i> files. The default path is (in that order)
+the current directory, the home directory,
+<i>/usr/lib/groff/site-tmac</i>,
+<i>/usr/share/groff/site-tmac</i>, and
+<i>/usr/share/groff/1.22.4/tmac</i>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-F</b><i>dir</i></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Search <i>dir</i> for subdirectories <i>dev</i>name
+(<i>name</i> is the name of the device) for the <i>DESC</i>
+file before the default font directories
+<i>/usr/share/groff/site-font</i>,
+<i>/usr/share/groff/1.22.4/font</i>, and
+<i>/usr/lib/font</i>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-C</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Recognize <b>.GS</b> and <b>.GE</b> (and <b>.GF</b>)
+even when followed by a character other than space or
+newline.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-v</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Print the version number.</p></td></tr>
+</table>
+
+<h2>GRN COMMANDS
+<a name="GRN COMMANDS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Each input line
+between <b>.GS</b> and <b>.GE</b> may have one <i>grn</i>
+command. Commands consist of one or two strings separated by
+white space, the first string being the command and the
+second its operand. Commands may be upper or lower case and
+abbreviated down to one character.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Commands that
+affect a picture&rsquo;s environment (those listed before
+<b>default</b>, see below) are only in effect for the
+current picture: The environment is reinitialized to the
+defaults at the start of the next picture. The commands are
+as follows:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p style="margin-top: 1em"><b>1&nbsp;</b><i>N</i></p></td>
+<td width="7%"></td>
+<td width="78%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>2&nbsp;</b><i>N</i></p></td>
+<td width="7%"></td>
+<td width="78%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>3&nbsp;</b><i>N</i></p></td>
+<td width="7%"></td>
+<td width="78%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>4&nbsp;</b><i>N</i></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Set <i>gremlin</i>&rsquo;s text size number 1 (2, 3, or
+4) to <i>N</i> points. The default is 12 (16, 24, and 36,
+respectively).</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>roman&nbsp;</b><i>f</i>
+<b><br>
+italics&nbsp;</b><i>f</i></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>bold&nbsp;</b><i>f</i></p></td>
+<td width="80%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>special&nbsp;</b><i>f</i></p>
+
+<p style="margin-left:22%;">Set the roman (italics, bold,
+or special) font to <i>troff</i>&rsquo;s font <i>f</i>
+(either a name or number). The default is R (I, B, and S,
+respectively).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>l&nbsp;</b><i>f</i></p></td>
+<td width="85%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>stipple&nbsp;</b><i>f</i></p>
+
+<p style="margin-left:22%;">Set the stipple font to
+<i>troff</i>&rsquo;s stipple font <i>f</i> (name or number).
+The command <b>stipple</b> may be abbreviated down as far as
+&rsquo;st&rsquo; (to avoid confusion with <b>special</b>).
+There is <i>no</i> default for stipples (unless one is set
+by the default command), and it is invalid to include a
+<i>gremlin</i> picture with polygons without specifying a
+stipple font.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>x&nbsp;</b><i>N</i></p></td>
+<td width="85%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>scale&nbsp;</b><i>N</i></p>
+
+<p style="margin-left:22%;">Magnify the picture (in
+addition to any default magnification) by <i>N</i>, a
+floating point number larger than zero. The command
+<b>scale</b> may be abbreviated down to
+&rsquo;sc&rsquo;.</p>
+
+<p style="margin-left:11%;"><b>narrow&nbsp;</b><i>N</i>
+<b><br>
+medium&nbsp;</b><i>N</i> <b><br>
+thick&nbsp;</b><i>N</i></p>
+
+<p style="margin-left:22%;">Set the thickness of
+<i>gremlin</i>&rsquo;s narrow (medium and thick,
+respectively) lines to <i>N</i> times 0.15pt (this value can
+be changed at compile time). The default is 1.0 (3.0 and
+5.0, respectively), which corresponds to 0.15pt (0.45pt and
+0.75pt, respectively). A thickness value of zero selects the
+smallest available line thickness. Negative values cause the
+line thickness to be proportional to the current point
+size.</p>
+
+
+<p style="margin-left:11%;"><b>pointscale&nbsp;</b><i>&lt;off/on&gt;</i></p>
+
+<p style="margin-left:22%;">Scale text to match the
+picture. Gremlin text is usually printed in the point size
+specified with the commands <b>1</b>, <b>2</b>, <b>3</b>,
+or&nbsp;<b>4</b>, regardless of any scaling factors in the
+picture. Setting <b>pointscale</b> will cause the point
+sizes to scale with the picture (within <i>troff</i>&rsquo;s
+limitations, of course). An operand of anything but
+<i>off</i> will turn text scaling on.</p>
+
+<p style="margin-left:11%;"><b>default</b></p>
+
+<p style="margin-left:22%;">Reset the picture environment
+defaults to the settings in the current picture. This is
+meant to be used as a global parameter setting mechanism at
+the beginning of the <i>troff</i> input file, but can be
+used at any time to reset the default settings.</p>
+
+<p style="margin-left:11%;"><b>width&nbsp;</b><i>N</i></p>
+
+<p style="margin-left:22%;">Forces the picture to be
+<i>N</i> inches wide. This overrides any scaling factors
+present in the same picture. &rsquo;<b>width</b>
+<i>0</i>&rsquo; is ignored.</p>
+
+
+<p style="margin-left:11%;"><b>height&nbsp;</b><i>N</i></p>
+
+<p style="margin-left:22%;">Forces picture to be <i>N</i>
+inches high, overriding other scaling factors. If both
+&rsquo;width&rsquo; and &rsquo;height&rsquo; are specified
+the tighter constraint will determine the scale of the
+picture. <b>Height</b> and <b>width</b> commands are not
+saved with a <b>default</b> command. They will, however,
+affect point size scaling if that option is set.</p>
+
+
+<p style="margin-left:11%;"><b>file&nbsp;</b><i>name</i></p>
+
+<p style="margin-left:22%;">Get picture from <i>gremlin</i>
+file <i>name</i> located the current directory (or in the
+library directory; see the <b>-M</b> option above). If two
+<b>file</b> commands are given, the second one overrides the
+first. If <i>name</i> doesn&rsquo;t exist, an error message
+is reported and processing continues from the <b>.GE</b>
+line.</p>
+
+<h2>NOTES ABOUT GROFF
+<a name="NOTES ABOUT GROFF"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Since
+<i>grn</i> is a preprocessor, it doesn&rsquo;t know about
+current indents, point sizes, margins, number registers,
+etc. Consequently, no <i>troff</i> input can be placed
+between the <b>.GS</b> and <b>.GE</b> requests. However,
+<i>gremlin</i> text is now processed by <i>troff</i>, so
+anything valid in a single line of <i>troff</i> input is
+valid in a line of <i>gremlin</i> text (barring
+&rsquo;.&rsquo; directives at the beginning of a line).
+Thus, it is possible to have equations within a
+<i>gremlin</i> figure by including in the <i>gremlin</i>
+file <i>eqn</i> expressions enclosed by previously defined
+delimiters (e.g. <i>$$</i>).</p>
+
+<p style="margin-left:11%; margin-top: 1em">When using
+<i>grn</i> along with other preprocessors, it is best to run
+<i>tbl</i> before <i>grn</i>, <i>pic</i>, and/or
+<i>ideal</i> to avoid overworking <i>tbl</i>. <i>Eqn</i>
+should always be run last.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A picture is
+considered an entity, but that doesn&rsquo;t stop
+<i>troff</i> from trying to break it up if it falls off the
+end of a page. Placing the picture between
+&rsquo;keeps&rsquo; in -me macros will ensure proper
+placement.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>grn</i> uses
+<i>troff</i>&rsquo;s number registers <b>g1</b> through
+<b>g9</b> and sets registers <b>g1</b> and <b>g2</b> to the
+width and height of the <i>gremlin</i> figure (in device
+units) before entering the <b>.GS</b> request (this is for
+those who want to rewrite these macros).</p>
+
+<h2>GREMLIN FILE FORMAT
+<a name="GREMLIN FILE FORMAT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">There exist two
+distinct <i>gremlin</i> file formats, the original format
+from the <i>AED</i> graphic terminal version, and the
+<i>SUN</i> or <i>X11</i> version. An extension to the
+<i>SUN</i>/<i>X11</i> version allowing reference points with
+negative coordinates is <b>not</b> compatible with the
+<i>AED</i> version. As long as a <i>gremlin</i> file does
+not contain negative coordinates, either format will be read
+correctly by either version of <i>gremlin</i> or <i>grn</i>.
+The other difference from <i>SUN</i>/<i>X11</i> format is
+the use of names for picture objects (e.g., POLYGON, CURVE)
+instead of numbers. Files representing the same picture are
+shown in Table 1 in each format.</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-72131.png" alt="Image grohtml-72131.png"></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>The first line of each <i>gremlin</i> file contains
+either the string <b>gremlinfile</b> (<i>AED</i> version) or
+<b>sungremlinfile</b> (<i>SUN</i>/<i>X11</i>)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>The second line of the file contains an orientation, and
+<b>x</b> and <b>y</b> values for a positioning point,
+separated by spaces. The orientation, either <b>0</b> or
+<b>1</b>, is ignored by the <i>SUN</i>/<i>X11</i> version.
+<b>0</b> means that <i>gremlin</i> will display things in
+horizontal format (drawing area wider than it is tall, with
+menu across top). <b>1</b> means that <i>gremlin</i> will
+display things in vertical format (drawing area taller than
+it is wide, with menu on left side). <b>x</b> and <b>y</b>
+are floating point values giving a positioning point to be
+used when this file is read into another file. The stuff on
+this line really isn&rsquo;t all that important; a value of
+&ldquo;1 0.00 0.00&rdquo; is suggested.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>The rest of the file consists of zero or more element
+specifications. After the last element specification is a
+line containing the string &ldquo;-1&rdquo;.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Lines longer than 127 characters are chopped to this
+limit.</p> </td></tr>
+</table>
+
+<h2>ELEMENT SPECIFICATIONS
+<a name="ELEMENT SPECIFICATIONS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">The first line of each element
+contains a single decimal number giving the type of the
+element (<i>AED</i> version) or its ASCII name
+(<i>SUN</i>/<i>X11</i> version). See Table 2.</p></td></tr>
+</table>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-72132.png" alt="Image grohtml-72132.png"></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">After the object type comes a
+variable number of lines, each specifying a point used to
+display the element. Each line contains an x-coordinate and
+a y-coordinate in floating point format, separated by
+spaces. The list of points is terminated by a line
+containing the string &ldquo;-1.0 -1.0&rdquo; (<i>AED</i>
+version) or a single asterisk, &ldquo;*&rdquo;
+(<i>SUN</i>/<i>X11</i> version).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>After the points comes a line containing two decimal
+values, giving the brush and size for the element. The brush
+determines the style in which things are drawn. For vectors,
+arcs, and curves there are six valid brush values:</p></td></tr>
+</table>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-72133.png" alt="Image grohtml-72133.png"></p>
+
+<p style="margin-left:22%; margin-top: 1em">For polygons,
+one more value, 0, is valid. It specifies a polygon with an
+invisible border. For text, the brush selects a font as
+follows:</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-72134.png" alt="Image grohtml-72134.png"></p>
+
+<p style="margin-left:22%; margin-top: 1em">If you&rsquo;re
+using <i>grn</i> to run your pictures through <i>groff</i>,
+the font is really just a starting font: The text string can
+contain formatting sequences like &ldquo;\fI&rdquo; or
+&ldquo;\d&rdquo; which may change the font (as well as do
+many other things). For text, the size field is a decimal
+value between 1 and 4. It selects the size of the font in
+which the text will be drawn. For polygons, this size field
+is interpreted as a stipple number to fill the polygon with.
+The number is used to index into a stipple font at print
+time.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">The last line of each element
+contains a decimal number and a string of characters,
+separated by a single space. The number is a count of the
+number of characters in the string. This information is only
+used for text elements, and contains the text string. There
+can be spaces inside the text. For arcs, curves, and
+vectors, this line of the element contains the string
+&ldquo;0&rdquo;.</p> </td></tr>
+</table>
+
+<h2>NOTES ON COORDINATES
+<a name="NOTES ON COORDINATES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>gremlin</i>
+was designed for <i>AED</i>s, and its coordinates reflect
+the <i>AED</i> coordinate space. For vertical pictures,
+x-values range 116 to 511, and y-values from 0 to 483. For
+horizontal pictures, x-values range from 0 to 511 and
+y-values range from 0 to 367. Although you needn&rsquo;t
+absolutely stick to this range, you&rsquo;ll get best
+results if you at least stay in this vicinity. Also, point
+lists are terminated by a point of (-1, -1), so you
+shouldn&rsquo;t ever use negative coordinates.
+<i>gremlin</i> writes out coordinates using format
+&ldquo;%f1.2&rdquo;; it&rsquo;s probably a good idea to use
+the same format if you want to modify the <i>grn</i>
+code.</p>
+
+<h2>NOTES ON SUN/X11 COORDINATES
+<a name="NOTES ON SUN/X11 COORDINATES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">There is no
+longer a restriction on the range of coordinates used to
+create objects in the <i>SUN</i>/<i>X11</i> version of
+<i>gremlin</i>. However, files with negative coordinates
+<b>will</b> cause problems if displayed on the
+<i>AED</i>.</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/usr/share/groff/1.22.4/font/dev</i>name<i>/DESC</i></p>
+
+<p style="margin-left:22%;">Device description file for
+device <i>name</i>.</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">David
+Slattengren and Barry Roitblat wrote the original Berkeley
+<i>grn</i>. Daniel Senderowicz and Werner Lemberg modified
+it for <i>groff</i>.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gremlin</b>(1),
+<b>groff</b>(1), <b>pic</b>(1), <b>ideal</b>(1)</p>
+<hr>
+</body>
+</html>

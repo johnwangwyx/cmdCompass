@@ -1,0 +1,442 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:19 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>NC</title>
+
+</head>
+<body>
+
+<h1 align="center">NC</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">nc - TCP/IP
+swiss army knife</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>nc</b>
+<i>[-options] hostname port[s] [ports] ...</i> <b><br>
+nc</b> <i>-l -p port [-options] [hostname] [port]</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i><b>netcat</b></i>
+is a simple unix utility which reads and writes data across
+network connections, using TCP or UDP protocol. It is
+designed to be a reliable &quot;back-end&quot; tool that can
+be used directly or easily driven by other programs and
+scripts. At the same time, it is a feature-rich network
+debugging and exploration tool, since it can create almost
+any kind of connection you would need and has several
+interesting built-in capabilities. Netcat, or &quot;nc&quot;
+as the actual program is named, should have been supplied
+long ago as another one of those cryptic but standard Unix
+tools.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the simplest
+usage, &quot;nc host port&quot; creates a TCP connection to
+the given port on the given target host. Your standard input
+is then sent to the host, and anything that comes back
+across the connection is sent to your standard output. This
+continues indefinitely, until the network side of the
+connection shuts down. Note that this behavior is different
+from most other applications which shut everything down and
+exit after an end-of-file on the standard input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Netcat can also
+function as a server, by listening for inbound connections
+on arbitrary ports and then doing the same reading and
+writing. With minor limitations, netcat doesn&rsquo;t really
+care if it runs in &quot;client&quot; or &quot;server&quot;
+mode -- it still shovels data back and forth until there
+isn&rsquo;t any more left. In either mode, shutdown can be
+forced after a configurable time of inactivity on the
+network side.</p>
+
+<p style="margin-left:11%; margin-top: 1em">And it can do
+this via UDP too, so netcat is possibly the &quot;udp
+telnet-like&quot; application you always wanted for testing
+your UDP-mode servers. UDP, as the &quot;U&quot; implies,
+gives less reliable data transmission than TCP connections
+and some systems may have trouble sending large amounts of
+data that way, but it&rsquo;s still a useful capability to
+have.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You may be
+asking &quot;why not just use telnet to connect to arbitrary
+ports?&quot; Valid question, and here are some reasons.
+Telnet has the &quot;standard input EOF&quot; problem, so
+one must introduce calculated delays in driving scripts to
+allow network output to finish. This is the main reason
+netcat stays running until the *network* side closes. Telnet
+also will not transfer arbitrary binary data, because
+certain characters are interpreted as telnet options and are
+thus removed from the data stream. Telnet also emits some of
+its diagnostic messages to standard output, where netcat
+keeps such things religiously separated from its *output*
+and will never modify any of the real data in transit unless
+you *really* want it to. And of course telnet is incapable
+of listening for inbound connections, or using UDP instead.
+Netcat doesn&rsquo;t have any of these limitations, is much
+smaller and faster than telnet, and has many other
+advantages.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p style="margin-top: 1em"><i>-c string</i></p></td>
+<td width="3%"></td>
+<td width="69%">
+
+
+<p style="margin-top: 1em">specify shell commands to exec
+after connect (use with caution). The string is passed to
+/bin/sh -c for execution. See the <i>-e</i> option if you
+don&rsquo;t have a working /bin/sh (Note that
+POSIX-conformant system must have one).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><i>-e filename</i></p></td>
+<td width="3%"></td>
+<td width="69%">
+
+
+<p>specify filename to exec after connect (use with
+caution). See the <i>-c</i> option for enhanced
+functionality.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><i>-g gateway</i></p></td>
+<td width="3%"></td>
+<td width="69%">
+
+
+<p>source-routing hop point[s], up to 8</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><i>-G num</i></p></td>
+<td width="3%"></td>
+<td width="69%">
+
+
+<p>source-routing pointer: 4, 8, 12, ...</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><i>-h</i></p></td>
+<td width="3%"></td>
+<td width="69%">
+
+
+<p>display help</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><i>-i secs</i></p></td>
+<td width="3%"></td>
+<td width="69%">
+
+
+<p>delay interval for lines sent, ports scanned</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><i>-l</i></p></td>
+<td width="3%"></td>
+<td width="69%">
+
+
+<p>listen mode, for inbound connects</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><i>-n</i></p></td>
+<td width="3%"></td>
+<td width="69%">
+
+
+<p>numeric-only IP addresses, no DNS</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><i>-o file</i></p></td>
+<td width="3%"></td>
+<td width="69%">
+
+
+<p>hex dump of traffic</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><i>-p port</i></p></td>
+<td width="3%"></td>
+<td width="69%">
+
+
+<p>local port number (port numbers can be individual or
+ranges: lo-hi [inclusive])</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><i>-q seconds</i></p></td>
+<td width="3%"></td>
+<td width="69%">
+
+
+<p>after EOF on stdin, wait the specified number of seconds
+and then quit. If <i>seconds</i> is negative, wait
+forever.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><i>-b</i></p></td>
+<td width="3%"></td>
+<td width="69%">
+
+
+<p>allow UDP broadcasts</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><i>-r</i></p></td>
+<td width="3%"></td>
+<td width="69%">
+
+
+<p>randomize local and remote ports</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><i>-s addr</i></p></td>
+<td width="3%"></td>
+<td width="69%">
+
+
+<p>local source address</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><i>-t</i></p></td>
+<td width="3%"></td>
+<td width="69%">
+
+
+<p>enable telnet negotiation</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><i>-u</i></p></td>
+<td width="3%"></td>
+<td width="69%">
+
+
+<p>UDP mode</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><i>-v</i></p></td>
+<td width="3%"></td>
+<td width="69%">
+
+
+<p>verbose [use twice to be more verbose]</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><i>-w secs</i></p></td>
+<td width="3%"></td>
+<td width="69%">
+
+
+<p>timeout for connects and final net reads</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><i>-C</i></p></td>
+<td width="3%"></td>
+<td width="69%">
+
+
+<p>Send CRLF as line-ending</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><i>-z</i></p></td>
+<td width="3%"></td>
+<td width="69%">
+
+
+<p>zero-I/O mode [used for scanning]</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="17%">
+
+
+<p><i>-T type</i></p></td>
+<td width="3%"></td>
+<td width="69%">
+
+
+<p>set TOS flag (type may be one of
+&quot;Minimize-Delay&quot;, &quot;Maximize-Throughput&quot;,
+&quot;Maximize-Reliability&quot;, or
+&quot;Minimize-Cost&quot;.)</p> </td></tr>
+</table>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Netcat is
+entirely my own creation, although plenty of other code was
+used as examples. It is freely given away to the Internet
+community in the hope that it will be useful, with no
+restrictions except giving credit where it is due. No GPLs,
+Berkeley copyrights or any of that nonsense. The author
+assumes NO responsibility for how anyone uses it. If netcat
+makes you rich somehow and you&rsquo;re feeling generous,
+mail me a check. If you are affiliated in any way with
+Microsoft Network, get a life. Always ski in control.
+Comments, questions, and patches to hobbit@avian.org.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Some port names
+in /etc/services contain hyphens -- netcat currently will
+not correctly parse those unless you escape the hyphens with
+backslashes (e.g. &quot;netcat localhost
+&rsquo;ftp\-data&rsquo;&quot;).</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Efforts have
+been made to have netcat &quot;do the right thing&quot; in
+all its various modes. If you believe that it is doing the
+wrong thing under whatever circumstances, please notify me
+and tell me how you think it should behave. If netcat is not
+able to do some task you think up, minor tweaks to the code
+will probably fix that. It provides a basic and
+easily-modified template for writing other network
+applications, and I certainly encourage people to make
+custom mods and send in any improvements they make to it.
+Continued feedback from the Internet community is always
+welcome!</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For several
+netcat recipes, please see /usr/share/doc/netcat/README.gz
+and /usr/share/doc/netcat/README.Debian.gz.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was written by Joey Hess &lt;joeyh@debian.org&gt; and
+Robert Woodcock &lt;rcw@debian.org&gt;, cribbing heavily
+from Netcat&rsquo;s README file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Netcat was
+written by a guy we know as the Hobbit
+&lt;hobbit@avian.org&gt;.</p>
+<hr>
+</body>
+</html>

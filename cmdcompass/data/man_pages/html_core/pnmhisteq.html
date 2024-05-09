@@ -1,0 +1,321 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:34 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pnmhisteq User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pnmhisteq User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#LIMITATIONS">LIMITATIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pnmhisteq -
+histogram equalize a PNM image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmhisteq</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-gray</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-noblack</b>]
+[<b>-nowhite</b>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-rmap</b>
+<i>pgmfile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-wmap</b>
+<i>pgmfile</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-verbose</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<i>pnmfile</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmhisteq</b>
+increases the contrast of a PGM or PPM image through the
+technique of &quot;histogram equalization.&quot;[1]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmhisteq</b>
+computes a histogram of the luminosity of the pixels in the
+image. It then calculates a mapping between each luminosity
+and a new luminosity such that it spreads out intensity
+levels around histogram peaks and compresses them at
+troughs. I.e. it moves pixels around in the histogram so as
+to make it flat. It applies that mapping to the input image
+to produce the output image. The effect of this is that the
+image has equal numbers of pixels at each possible intensity
+level, which means it uses the available levels of intensity
+more efficiently and thereby has more visible detail.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">Mathematically,
+the luminosity mapping is this: Assume the pixels are sorted
+by luminosity into <i>B</i> buckets numbered from 0 (lowest
+luminosity) to <i>B</i>-1. <i>N[i]</i> is the number of
+pixels in bucket <i>i</i>. <i>T</i> is the total number of
+pixels (sum of <i>N[i]</i> over all <i>i</i>). <i>W</i> is
+the luminosity of white.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmhisteq</b>
+replaces an input pixel whose luminosity falls into bucket
+<i>j</i> with one whose luminosity is:</p>
+
+<p style="margin-left:11%; margin-top: 1em">j <br>
+--- <br>
+\ <br>
+&gt; (N[i] / T) * W <br>
+/ <br>
+--- <br>
+i=0</p>
+
+<p style="margin-left:11%; margin-top: 1em">Considering a
+grayscale image for simplicity, this means that pixels in
+the most luminous bucket become white. Pixels in the 10th
+per centile of luminosity become 10% of white.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmhisteq</b>
+maps a single luminosity in the input to a single luminosity
+in the output. That means if pixels A and B both have
+luminosity .2 in the input, and pixel A has luminosity .4 in
+the output, pixel B also has luminosity .4 in the output.
+And since the luminosities in the input are not continuous,
+the luminosities in the output aren&rsquo;t either and
+<b>pnmhisteq</b> doesn&rsquo;t meet the ideal of having
+exactly the same number of pixels of each luminosity in the
+output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you&rsquo;re
+processing a related set of images, for example frames of an
+animation, it&rsquo;s generally best to apply the same
+luminosity mapping to every frame, since otherwise
+you&rsquo;ll get distracting frame-to-frame changes in the
+brightness of objects. <b>pnmhisteq</b>&rsquo;s <b>-wmap</b>
+option allows you to save, as a PGM image, the luminosity
+map it computes from an image. The <b>-rmap</b> option
+causes <b>pnmisteq</b> to use such an image as its
+luminosity map.</p>
+
+<p style="margin-left:11%; margin-top: 1em">So you can run
+<b>pnmhisteq</b> with <b>-wmap</b> on a composite you
+created with <b>pnmcat</b> of the images you intend to
+process. Then, you can run <b>pnmisteq</b> with <b>-rmap</b>
+on each of the individual images, using the luminosity map
+you generated from the composite.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Use
+<b>pnmhistmap</b> to see the result. Run a color image
+through <b>ppmtopgm</b> first so that you see a histogram of
+the luminosity instead of histograms of the three color
+components. It should generally show a flat histogram. But
+because of the quantization effects described above, you
+might see high bars interleaved with low bars, with the
+local average being flat. To see local averages, use the
+<b>-width</b> option of <b>pnmhistmap</b>.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pnmhisteq</b> recognizes the following command line
+options:</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can
+abbreviate any option to its shortest unique prefix.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-gray</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>When processing a color image, only gray pixels (those
+with identical red, green, and blue values) are included in
+the histogram and modified in the output image. This is a
+special purpose option intended for images where the actual
+data are gray scale, with color annotations you don&rsquo;t
+want modified. Weather satellite images that show continent
+outlines in color are best processed using this option. The
+option has no effect when the input is a graymap.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-noblack</b></p>
+
+<p style="margin-left:22%;">Do not include black pixels in
+the equalization. The black pixels in the output are exactly
+the black pixels in the input and the number of black pixels
+does not affect the color of any other pixels.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Sometimes,
+black isn&rsquo;t as much a color as a background or
+annotation for the real colors, so you want to treat it
+specially this way. Think of a picture of stars, which is
+nearly all black, but with lots of stars of different
+brightness. You want to change the brightnesses of the stars
+to maximize contrast between them, but if you considered the
+blackness to be significant, all the stars would end up
+close to full white.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.70 (March 2015).</p>
+
+<p style="margin-left:11%;"><b>-nowhite</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Same as
+<b>-noblack</b>, but for the white pixels.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.70 (March 2015).</p>
+
+<p style="margin-left:11%;"><b>-rmap</b> <i>mapfile</i></p>
+
+<p style="margin-left:22%;">Process the image using the
+luminosity map specified by the PGM file <i>mapfile</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The PGM image,
+usually created by an earlier run of <b>pnmhisteq</b> with
+the <b>-wmap</b> option, contains a single row with number
+of columns equal to the maxval (greatest intensity value) of
+the image plus one. Each pixel in the image is transformed
+by looking up its luminosity in the corresponding column in
+the map file (column number = luminosity) and changing it to
+the value given by that column.</p>
+
+<p style="margin-left:11%;"><b>-wmap</b> <i>mapfile</i></p>
+
+<p style="margin-left:22%;">Creates a PGM file
+<i>mapfile</i>, containing the luminosity map computed from
+the histogram of the input image. This map file can be read
+on subsequent runs of <b>pnmhisteq</b> with the <b>-rmap</b>
+option, allowing a group of images to be processed with an
+identical map.</p>
+
+<p style="margin-left:11%;"><b>-verbose</b></p>
+
+<p style="margin-left:22%;">Prints the histogram and
+luminosity map on Standard Error.</p>
+
+<h2>LIMITATIONS
+<a name="LIMITATIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Histogram
+equalization is effective for increasing the visible detail
+in scientific imagery and in some continuous-tone pictures.
+It is often too drastic, however, for scanned halftone
+images, where it does an excellent job of making halftone
+artifacts apparent. You might want to experiment with
+<b>pnmnorm</b> and <b>pnmgamma</b> for more subtle contrast
+enhancement.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The luminosity
+map file supplied by the <b>-rmap</b> option must have the
+same maxval as the input image. This is always the case when
+the map file was created by the <b>-wmap</b> option of
+<b>pnmhisteq</b>. If this restriction causes a problem,
+simply adjust the maxval of the map with <b>pamdepth</b> to
+agree with the input image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the input is
+a PBM file (on which histogram equalization is an identity
+operation), the only effect of passing the file through
+<b>pnmhisteq</b> will be the passage of time.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmnorm</b>(1),
+<b>pnmcat</b>(1), <b>pamdepth</b>(1), <b>pnmgamma</b>(1),
+<b>pnm</b>(1),</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p>[1]</p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Russ, John C. The Image Processing Handbook. Boca Raton:
+CRC Press, 1992. Pages 105-110.</p></td></tr>
+</table>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pnmhisteq.html</b></p>
+<hr>
+</body>
+</html>

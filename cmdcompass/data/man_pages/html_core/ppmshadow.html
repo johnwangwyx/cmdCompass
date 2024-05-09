@@ -1,0 +1,401 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:38 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Ppmshadow User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Ppmshadow User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#LIMITATIONS">LIMITATIONS</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#TEMPORARY FILES">TEMPORARY FILES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ppmshadow - add
+simulated shadows to a PPM image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmshadow</b>
+[<b>-b</b> <i>blur_size</i>] [<b>-k</b>] [<b>-t</b>]
+[<b>-x</b> <i>xoffset</i>] [<b>-y</b> <i>yoffset</i>]
+[<i>ppmfile</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmshadow</b>
+adds a simulated shadow to an image, giving the appearance
+that the contents of the image float above the page, casting
+a diffuse shadow on the background. Shadows can either be
+black, as cast by opaque objects, or translucent, where the
+shadow takes on the color of the object which casts it. You
+can specify the crispness of the shadow and its displacement
+from the image with command line options.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmshadow</b>
+sees your image as a foreground on a background. The
+background color is whatever color the top left pixel of
+your image is. The background is all the pixels that are
+that color and the foreground is everything else. The shadow
+that <b>ppmshadow</b> generates is a shadow of the
+foreground, cast on the background.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The shadow is
+the same size as the foreground, plus some fringes as
+determined by the <b>-b</b> option. It is truncated to fit
+in your image. The output image is the same dimensions as
+the input image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can use
+<b>pamcomp</b> to place a foreground image over a background
+before running <b>ppmshadow</b> on it. You can use
+<b>ppmmake</b> to make the background image (just an image
+of a solid color).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The output has
+the same dimensions and maxval as the input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The blurring to
+make the fringes of the shadow will not have a desirable
+effect if the color depth (maxval) of the image is too low
+-- you need a high maxval to get all the shades needed to
+create a smooth gradient. So if your input has low maxval
+(including most notably if the input is PBM, which means its
+maxval is 1), run it through <b>pamdepth</b> to raise its
+maxval. 255 is usually a good choice.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Input is a PPM
+file named by the <i>ppmfile</i> command line argument; if
+you don&rsquo;t specify <i>ppmfile</i>, the input is
+Standard Input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The output is a
+PPM file, written to Standard Output.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmshadow</b>
+recognizes the following command line options: <b><br>
+-b</b> <i>blur_size</i></p>
+
+<p style="margin-left:22%;">Sets the distance of the light
+source from the image. Larger values move the light source
+closer, casting a more diffuse shadow, while smaller
+settings move the light further away, yielding a sharper
+shadow. <i>blur_size</i> is the number of pixels of fringe
+there is on the shadow, beyond where the shadow would be if
+there were no blurring.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+11 pixels.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Note that this
+option controls only the fringing effect of moving the light
+source closer to the object. It does not make the shadow
+grow or shrink as would happpen in the real world if you
+moved a point light source closer to and further from an
+object.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-k</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Keep the intermediate temporary image files. When
+debugging, these intermediate files provide many clues as to
+the source of an error. See <a href="#tempfiles">below</a>
+for a list of the contents of each file.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-t</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Consider the non-background material in the image
+translucent -- it casts shadows of its own color rather than
+a black shadow, which is default. This often results in
+fuzzy, difficult-to-read images but in some circumstances
+may look better.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-x</b> <i>xoffset</i></p>
+
+<p style="margin-left:22%;">Specifies the displacement of
+the light source to the left of the image. Larger settings
+of <b>xoffset</b> displace the shadow to the right, as would
+be cast by a light further to the left. If not specified,
+the horizontal offset is half of <i>blur_size</i> (above),
+to the left.</p>
+
+<p style="margin-left:11%;"><b>-y</b> <i>yoffset</i></p>
+
+<p style="margin-left:22%;">Specifies the displacement of
+the light source above the top of the image. Larger settings
+displace the shadow downward, corresponding to moving the
+light further above the top of the image. If you don&rsquo;t
+specify <b>-y</b>, the vertical offset defaults to the same
+as the horizontal offset (above), upward.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmshadow</b>
+does not recognize the options common to all programs based
+on libnetpbm (See <a href="index.html#commonoptions"> Common
+Options</a> .) However, the <b>-version</b> option
+works.</p>
+
+<h2>LIMITATIONS
+<a name="LIMITATIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The source
+image must contain sufficient space on the edges in the
+direction in which the shadow is cast to contain the shadow
+-- if it doesn&rsquo;t some of the internal steps may fail.
+You can usually expand the border of a too-tightly-cropped
+image with <b>pnmmargin</b> before processing it with
+<b>ppmshadow</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Black pixels
+and pixels with the same color as the image background
+don&rsquo;t cast a shadow. If this causes unintentional
+&quot;holes&quot; in the shadow, fill the offending areas
+with a color which differs from black or the background by
+RGB values of 1, which will be imperceptible to the viewer.
+Since the comparison is exact, the modified areas will now
+cast shadows.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The background
+color of the source image (which is preserved in the output)
+is deemed to be the color of the pixel at the top left of
+the input image. If that pixel isn&rsquo;t part of the
+background, simply add a one-pixel border at the top of the
+image, generate the shadow image, then delete the border
+from it.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If something
+goes wrong along the way, the error messages from the
+various Netpbm programs <b>ppmshadow</b> calls will, in
+general, provide little or no clue as to where
+<b>ppmshadow</b> went astray. In this case, Specify the
+<b>-k</b> option and examine the intermediate results in the
+temporary files (which this option causes to be preserved).
+If you manually run the commands that <b>ppmshadow</b> runs
+on these files, you can figure out where the problem is. In
+problem cases where you want to manually tweak the image
+generation process along the way, you can keep the
+intermediate files with the <b>-k</b> option, modify them
+appropriately with an image editor, then recombine them with
+the steps used by the code in <b>ppmshadow</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Shadows are by
+default black, as cast by opaque material in the image
+occluding white light. Use the <b>-t</b> option to simulate
+translucent material, where the shadow takes on the color of
+the object that casts it. If the contrast between the image
+and background is insufficient, the <b>-t</b> option may
+yield unattractive results which resemble simple blurring of
+the original image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Because Netpbm
+used to have a maximum maxval of 255, which meant that the
+largest convolution kernel <b>pnmconvol</b> could use was 11
+by 11, <b>ppmshadow</b> includes a horrid, CPU-time-burning
+kludge which, if a blur of greater than 11 is requested,
+performs an initial convolution with an 11 x 11 kernel, then
+calls <b>pnmsmooth</b> (which is itself a program that calls
+<b>pnmconvol</b> with a 3 x 3 kernel) as many times as the
+requested blur exceeds 11. It&rsquo;s ugly, but it gets the
+job done on those rare occasions where you need a blur
+greater than 11.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you wish to
+generate an image at high resolution, then scale it to
+publication size with <b>pamscale</b> in order to eliminate
+jagged edges by resampling, it&rsquo;s best to generate the
+shadow in the original high resolution image, prior to
+scaling it down in size. If you scale first and then add the
+shadow, you&rsquo;ll get an unsightly jagged stripe between
+the edge of material and its shadow, due to resampled pixels
+intermediate between the image and background obscuring the
+shadow.</p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmshadow</b>
+returns status 0 if processing was completed without errors,
+and a nonzero Unix error code if an error prevented
+generation of output. Some errors may result in the script
+aborting, usually displaying error messages from various
+Netpbm components it uses, without returning a nonzero error
+code. When this happens, the output file will be empty, so
+be sure to test this if you need to know if the program
+succeeded.</p>
+
+<h2>TEMPORARY FILES
+<a name="TEMPORARY FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmshadow</b>
+creates a number of temporary files as it executes. It
+creates a new directory for them in the directory named by
+the <b>TMPDIR</b> environment variable, defaulting to
+<b>/tmp</b> if it is not set.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In normal
+operation, <b>ppmshadow</b> finds a unique name for the
+temporary directory and deletes each temporary file as soon
+as it is done with it and leaves no debris around after it
+completes. To preserve the intermediate files for debugging,
+use the <b>-k</b> command line option. In that case, the
+directory name is <b>ppmshadow</b><i>pid</i>, where
+<i>pid</i> is the process ID of the <b>ppmshadow</b>
+process, and the program fails if <b>ppmshadow</b> cannot
+create that directory because the name is already in
+use.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The temporary
+files are: <b><br>
+infile.ppm</b></p>
+
+<p style="margin-left:22%;">A copy of the input.</p>
+
+<p style="margin-left:11%;"><b>background.ppm</b></p>
+
+<p style="margin-left:22%;">Blank image with background of
+source image</p>
+
+<p style="margin-left:11%;"><b>bgmask.ppm</b></p>
+
+<p style="margin-left:22%;">Positive binary mask</p>
+
+<p style="margin-left:11%;"><b>convkernel.ppm</b></p>
+
+<p style="margin-left:22%;">Convolution kernel for blurring
+shadow</p>
+
+<p style="margin-left:11%;"><b>blurredlackshad.ppm</b></p>
+
+<p style="margin-left:22%;">Blurred shadow image before
+coloring</p>
+
+<p style="margin-left:11%;"><b>blurred.ppm</b></p>
+
+<p style="margin-left:22%;">Blurred, colored shadow
+image</p>
+
+<p style="margin-left:11%;"><b>shadow.ppm</b></p>
+
+<p style="margin-left:22%;">Clipped shadow image, offset as
+requested</p>
+
+<p style="margin-left:11%;"><b>shadback.ppm</b></p>
+
+<p style="margin-left:22%;">Generated shadow times positive
+mask</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnm</b>(1),
+<b>pnmmargin</b>(1), <b>pnmconvol</b>(1),
+<b>pamscale</b>(1), <b>pnmsmooth</b>(1), <b>ppm</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">John Walker
+<a href="http://www.fourmilab.ch">http://www.fourmilab.ch</a>
+August 8, 1997</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This software
+is in the public domain. Permission to use, copy, modify,
+and distribute this software and its documentation for any
+purpose and without fee is hereby granted, without any
+conditions or restrictions.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/ppmshadow.html</b></p>
+<hr>
+</body>
+</html>

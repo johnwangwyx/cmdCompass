@@ -1,0 +1,247 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:35 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pnmquant User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pnmquant User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pnmquant -
+quantize the colors in a Netpbm image to a smaller set</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmquant</b>
+[<b>-center</b>|<b>-meancolor</b>|<b>-meanpixel</b>]
+[<b>-floyd</b>|<b>-fs</b>] [<b>-nofloyd</b>|<b>-nofs</b>]
+[<b>-spreadbrightness</b>|<b>-spreadluminosity</b>]
+{[<b>-norandom</b>]|[<b>-randomseed=</b><i>n</i>]}
+<i>ncolors</i> [<i>pnmfile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">All options can
+be abbreviated to their shortest unique prefix. You may use
+two hyphens instead of one to designate an option. You may
+use either white space or equals signs between an option
+name and its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmquant</b>
+reads a PNM image as input. It chooses <i>ncolors</i> colors
+to best represent the image, maps the existing colors to the
+new ones, and writes a PNM image as output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+simply a combination of <b>pnmcolormap</b> and
+<b>pnmremap</b>, where the colors of the input are remapped
+using a color map which is generated from the colors in that
+same input. The options have the same meaning as in those
+programs. See their documentation to understand
+<b>pnmquant</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You may
+actually get fewer than <b>ncolors</b> colors in the output
+because <br>
+the method <b>pnmcolormap</b> uses to choose the best set of
+colors for the <br>
+image is not the same as the method <b>pnmremap</b> uses to
+determine the <br>
+best color from the set to represent an individual color.
+For example, <b><br>
+pnmcolormap</b> may include salmon in the color map as the
+best <br>
+representative of a pink pixel in the input and include
+coral in the color <br>
+map as the best representative of an actual coral pixel in
+the input. But <b><br>
+pnmremap</b> is free to use any color in the color map to
+represent that <br>
+pink pixel and would find coral is a closer match for pink
+than salmon and <br>
+therefore use coral for pink. <b>pnmremap</b> might not use
+salmon <br>
+for <i>any</i> pixel.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This waste of a
+slot in the color map is a consequence of the approximate
+<br>
+method <b>pnmcolormap</b> uses in order to compute the color
+map with a <br>
+practical amount of computation.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Running
+pnmcolormap and pnmremap Separately</b> <br>
+It is much faster to call <b>pnmcolormap</b> and
+<b>pnmremap</b> directly than to run <b>pnmquant</b>. You
+save the overhead of the Perl interpreter and creating two
+extra processes. <b>pnmquant</b> is just a convenience.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Here is an
+example of the relationship between the programs:</p>
+
+<p style="margin-left:11%; margin-top: 1em">This:</p>
+
+<p style="margin-left:11%; margin-top: 1em">$ pnmquant 256
+myimage.pnm &gt;/tmp/colormap.pnm &gt;myimage256.pnm</p>
+
+<p style="margin-left:11%; margin-top: 1em">does
+essentially this:</p>
+
+<p style="margin-left:11%; margin-top: 1em">$ pnmcolormap
+256 myimage.pnm &gt;/tmp/colormap.pnm <br>
+$ pnmremap -mapfile=/tmp/colormap.pnm myimage.pnm
+&gt;myimage256.pnm</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pnmquant</b> recognizes the following command line
+options:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Options
+Passed to pnmcolormap</b> <br>
+These options control the selection of the palette. They are
+options to <b>pnmcolormap</b>(1). <b><br>
+-center <br>
+-meancolor <br>
+-meanpixel <br>
+-spreadbrightness <br>
+-spreadluminosity</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Options
+Passed to pnmremap</b> <br>
+These options control which color from the palette the
+program uses to <br>
+replace a pixel of a certain color from the input. They are
+options to <b>pnmremap</b>(1).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-floyd</b></p></td>
+<td width="80%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-fs</b></p></td>
+<td width="80%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-nofloyd</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-nofs</b></p></td>
+<td width="82%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-norandom <br>
+-randomseed <br>
+-norandom</b></p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmquant</b>
+did not exist before Netpbm 9.21 (January 2001). Before
+that, <b>ppmquant</b> did the same thing, but only on PPM
+images. <b>ppmquant</b> continues to exist, but is only a
+front end (for name compatibility) to <b>pnmquant</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-version</b>
+did not exist before Netpbm 10.75 (June 2016).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-norandom</b>
+did not exist before Netpbm 10.82 (March 2018).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmcolormap</b>(1),
+<b>pnmremap</b>(1), <b>ppmquantall</b>(1),
+<b>pamdepth</b>(1), <b>ppmdither</b>(1), <b>ppmquant</b>(1),
+<b>pnm</b>(1)</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pnmquant.html</b></p>
+<hr>
+</body>
+</html>

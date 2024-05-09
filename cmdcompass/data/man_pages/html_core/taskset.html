@@ -1,0 +1,250 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:53 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>TASKSET</title>
+
+</head>
+<body>
+
+<h1 align="center">TASKSET</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#USAGE">USAGE</a><br>
+<a href="#PERMISSIONS">PERMISSIONS</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#AVAILABILITY">AVAILABILITY</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">taskset - set
+or retrieve a process's CPU affinity</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>taskset</b>
+[options] <i>mask command</i> [<i>argument</i>...]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>taskset</b>
+[options] <b>-p</b> [<i>mask</i>] <i>pid</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>taskset</b> command is used to set or retrieve the CPU
+affinity of a running process given its <i>pid</i>, or to
+launch a new <i>command</i> with a given CPU affinity. CPU
+affinity is a scheduler property that &quot;bonds&quot; a
+process to a given set of CPUs on the system. The Linux
+scheduler will honor the given CPU affinity and the process
+will not run on any other CPUs. Note that the Linux
+scheduler also supports natural CPU affinity: the scheduler
+attempts to keep processes on the same CPU as long as
+practical for performance reasons. Therefore, forcing a
+specific CPU affinity is useful only in certain
+applications.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The CPU
+affinity is represented as a bitmask, with the lowest order
+bit corresponding to the first logical CPU and the highest
+order bit corresponding to the last logical CPU. Not all
+CPUs may exist on a given system but a mask may specify more
+CPUs than are present. A retrieved mask will reflect only
+the bits that correspond to CPUs physically on the system.
+If an invalid mask is given (i.e., one that corresponds to
+no valid CPUs on the current system) an error is returned.
+The masks may be specified in hexadecimal (with or without a
+leading &quot;0x&quot;), or as a CPU list with the
+<b>--cpu-list</b> option. For example,</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>0x00000001</b></p>
+
+<p style="margin-left:17%;">is processor #0,</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>0x00000003</b></p>
+
+<p style="margin-left:17%;">is processors #0 and #1,</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>0xFFFFFFFF</b></p>
+
+<p style="margin-left:17%;">is processors #0 through
+#31,</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>32</b></p>
+
+<p style="margin-left:17%;">is processors #1, #4, and
+#5,</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--cpu-list
+0-2,6</b></p>
+
+<p style="margin-left:17%;">is processors #0, #1, #2, and
+#6.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>--cpu-list
+0-10:2</b></p>
+
+<p style="margin-left:17%;">is processors #0, #2, #4, #6,
+#8 and #10. The suffix &quot;:N&quot; specifies stride in
+the range, for example 0-10:3 is interpreted as 0,3,6,9
+list.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When
+<b>taskset</b> returns, it is guaranteed that the given
+program has been scheduled to a legal CPU.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-a</b>,
+<b>--all-tasks</b></p>
+
+<p style="margin-left:17%;">Set or retrieve the CPU
+affinity of all the tasks (threads) for a given PID.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-c</b>,
+<b>--cpu-list</b></p>
+
+<p style="margin-left:17%;">Interpret <i>mask</i> as
+numerical list of processors instead of a bitmask. Numbers
+are separated by commas and may include ranges. For example:
+<b>0,5,8-11</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-p</b>,
+<b>--pid</b></p>
+
+<p style="margin-left:17%;">Operate on an existing PID and
+do not launch a new task.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Display help text and exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-V</b>,
+<b>--version</b></p>
+
+<p style="margin-left:17%;">Print version and exit.</p>
+
+<h2>USAGE
+<a name="USAGE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The default
+behavior is to run a new command with a given affinity
+mask:</p>
+
+<p style="margin-left:17%;"><b>taskset</b> <i>mask
+command</i> [<i>arguments</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can also
+retrieve the CPU affinity of an existing task:</p>
+
+<p style="margin-left:17%;"><b>taskset -p</b>
+<i>pid</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">Or set it:</p>
+
+<p style="margin-left:17%;"><b>taskset -p</b> <i>mask
+pid</i></p>
+
+<h2>PERMISSIONS
+<a name="PERMISSIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">A user can
+change the CPU affinity of a process belonging to the same
+user. A user must possess <b>CAP_SYS_NICE</b> to change the
+CPU affinity of a process belonging to another user. A user
+can retrieve the affinity mask of any process.</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Written by
+Robert M. Love.</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+&Acirc;&copy; 2004 Robert M. Love. This is free software;
+see the source for copying conditions. There is NO warranty;
+not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>chrt</b>(1),
+<b>nice</b>(1), <b>renice</b>(1),
+<b>sched_getaffinity</b>(2), <b>sched_setaffinity</b>(2)</p>
+
+<p style="margin-left:11%; margin-top: 1em">See
+<b>sched</b>(7) for a description of the Linux scheduling
+scheme.</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For bug
+reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+
+<h2>AVAILABILITY
+<a name="AVAILABILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>taskset</b> command is part of the util-linux package
+which can be downloaded from <i>Linux Kernel Archive</i>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,820 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:28 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamtopng User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamtopng User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#OPTION USAGE">OPTION USAGE</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamtopng -
+convert a Netpbm image to PNG</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtopng</b>
+[<b>-verbose</b>] [<b>-transparent=</b><i>color</i>]
+[<b>-background=</b><i>color</i>]
+[<b>-gamma=</b><i>value</i>] [<b>-chroma=&rsquo;</b><i>wx wy
+<br>
+rx ry gx gy bx by</i><b>&rsquo;</b>]
+[<b>-srgbintent=</b><i>intent</i>]
+[<b>-time=</b>[<i>yy</i>]<i>yy</i><b>-</b><i>mm</i><b>-</b><i>dd
+<br>
+hh</i><b>:</b><i>mm</i><b>:</b><i>ss</i>]
+[<b>-text=</b><i>file</i>] [<b>-ztxt=</b><i>file</i>]
+[<b>-itxt=</b><i>file</i>] [<b>-interlace</b>]
+[<i>pnmfile</i>]</p>
+
+<h2>OPTION USAGE
+<a name="OPTION USAGE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviation of option is acceptable. You may use double
+hyphens instead of a single hyphen to denote options. You
+may use white space in place of the equals sign to separate
+an option name from its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtopng</b>
+reads a Netpbm image as input and produces a PNG image as
+output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Color component
+values in PNG files are either 8 or 16 bits wide, so where
+necessary <b>pamtopng</b> scales colors to have a maxval of
+255 or 65535. In that case, it will add an sBIT chunk to
+indicated the original bit-depth.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtopng</b>
+works only on images with maxval 1, 3, 15, 255, or 65535.
+You can use <b>pamdepth</b> to convert an image with some
+other maxval to one of these.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtopng</b>
+produces a color PNG from a color PAM, even if the only
+colors in the image are shades of gray. To create a graycale
+PNG, from such an image (which might be slightly smaller),
+you can use other Netpbm programs to convert the input to
+grayscale.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Alternative:
+pnmtopng</b> <br>
+Netpbm contains another program for generating PNG images:
+<b>pnmtopng</b>. <b>pnmtopng</b> is a much older program -
+it is in fact the first program in the world that could
+generate a PNG. <b>pnmtopng</b> is a complex, feature-laden
+program. It lets you control various arcane aspects of the
+conversion and create PNGs with various arcane features. It
+does various transformations on the image to create the
+greatest compression possible, to a degree that probably
+doesn&rsquo;t make any difference in the modern world.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The main
+advantage <b>pamtopng</b> has over <b>pnmtopng</b> is that
+the former can use the transparency channel of a PAM image
+to generate the transparency information in the PNG. In
+contrast, handling of the alpha channel is very cumbersome
+with <b>pnmotpng</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">One difference
+that <i>does not</i> exist, that some people might
+incorrectly infer from the names is the possible input
+formats. Both programs can take PBM, PGM, PPM, and PAM
+input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Because
+<b>pnmtopng</b> has been around virtually forever, programs
+and procedures that use it are more portable than those that
+use <b>pamtopng</b>. Its age and popularity also probably
+make it have fewer bugs.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtopng</b>
+does not have any way to do what the following do in
+<b>pnmtopng</b>:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="18%">
+
+
+<p><b>-palette</b></p></td>
+<td width="60%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="18%">
+
+
+<p><b>-history</b></p></td>
+<td width="60%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="18%">
+
+
+<p><b>-filter</b></p></td>
+<td width="60%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="18%">
+
+
+<p><b>-size</b></p></td>
+<td width="60%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="18%">
+
+
+<p><b>-paeth</b></p></td>
+<td width="60%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="18%">
+
+
+<p><b>-hist</b></p></td>
+<td width="60%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="18%">
+
+
+<p><b>-nofilter</b></p></td>
+<td width="60%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="18%">
+
+
+<p><b>-sub</b></p></td>
+<td width="60%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="18%">
+
+
+<p><b>-up</b></p></td>
+<td width="60%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="18%">
+
+
+<p><b>-avg</b></p></td>
+<td width="60%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="18%">
+
+
+<p><b>-force</b></p></td>
+<td width="60%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="18%">
+
+
+<p><b>-libversion</b></p></td>
+<td width="60%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="18%">
+
+
+<p><b>-compression</b></p></td>
+<td width="60%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="18%">
+
+
+<p><b>-comp_</b><i>xxx</i></p></td>
+<td width="60%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">These are some
+of the other functions of <b>pnmtopng</b> that
+<b>pamtopng</b> lacks:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">When you specify a transparent
+or background color that is not in the image,
+<b>pnmtopng</b> can optionally choose the closest one that
+is in the image. <b>pamtopng</b> always uses the exact color
+you specify.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Features that
+exist in both programs are controlled by largely the same
+command syntax. But there are these differences:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em"><b>pnmtopng</b>&rsquo;s
+<b>-rgb</b> option is <b>-chroma</b> in <b>pamtopng</b>.
+<b>-chroma</b> is a better name, and in fact was the name
+that <b>pnmtopng</b> used originally, but we had to change
+it when we had to change the syntax of the option value to
+conform to the rest of Netpbm.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p><b>pnmtopng</b>&rsquo;s <b>-modtime</b> option is
+<b>-time</b> in <b>pamtopng</b>. The origin of
+<b>-modtime</b> is analogous to that of <b>-rgb</b>.</p></td></tr>
+</table>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamtopng</b> recognizes the following command line
+options: <b><br>
+-transparent=</b><i>color</i></p>
+
+<p style="margin-left:22%;"><b>pamtopng</b> marks the
+specified color as transparent in the PNG image -- Every
+pixel of this color is fully transparent. This causes
+<b>pamtopng</b> to include a tRNS chunk in the image
+identifying that color.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Specify the
+color (<i>color</i>) as described for the
+<a href="libnetpbm_image.html#colorname">argument of the
+<b>pnm_parsecolor()</b> library routine</a> . E.g.
+<b>red</b> or <b>rgb:ff/00/0d</b>.</p>
+
+
+<p style="margin-left:11%;"><b>-background=</b><i>color</i></p>
+
+<p style="margin-left:22%;">This causes <b>pamtopng</b> to
+create a background color chunk in the PNG output which can
+be used for subsequent transparency channel or transparent
+color conversions. Specify <i>color</i> the same as for
+<b>-transparent</b>. &nbsp;</p>
+
+<p style="margin-left:11%;"><b>-gamma=</b><i>value</i></p>
+
+<p style="margin-left:22%;">This causes <b>pamtopng</b> to
+create a gAMA chunk. This information helps describe how the
+color values in the PNG must be interpreted. Without the
+gAMA chunk, whatever interprets the PNG must get this
+information separately (or just assume something standard).
+If your input is a true PPM or PGM image, you should specify
+<b>-gamma=.45</b>. But sometimes people generate images
+which are ostensibly PPM except the image uses a different
+gamma transfer function than the one specified for PPM. A
+common case of this is when the image is created by simple
+hardware that doesn&rsquo;t have digital computational
+ability. Also, some simple programs that generate images
+from scratch do it with a gamma transfer in which the gamma
+value is 1.0. &nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>-chroma=</b><i>chroma_list</i></p>
+
+<p style="margin-left:22%;">This option specifies how red,
+green, and blue component values of a pixel specify a
+particular color, by telling the chromaticities of those 3
+primary illuminants and of white (i.e. full strength of all
+three).</p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+<i>chroma_list</i> value is a blank-separated list of 8
+floating point decimal numbers. The CIE-1931 X and Y
+chromaticities (in that order) of each of white, red, green,
+and blue, in that order.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This
+information goes into the PNG&rsquo;s cHRM chunk.</p>
+
+<p style="margin-left:22%; margin-top: 1em">In a shell
+command, make sure you use quotation marks so that the
+blanks in <i>chroma_list</i> don&rsquo;t make the shell see
+multiple command arguments.</p>
+
+
+<p style="margin-left:11%;"><b>-srgbintent=</b><i>intent</i></p>
+
+<p style="margin-left:22%;">This asserts that the input is
+a pseudo-Netpbm image that uses an sRGB color space (unlike
+true Netpbm) and indicates how you intend for the colors to
+be rendered. It causes <b>pamtopng</b> to include an sRGB
+chunk in the PNG image that specifies that intent, so see
+the PNG documentation for more information on what this
+really means.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>intent</i>
+is one of:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="30%">
+
+
+<p><b>perceptual</b></p></td>
+<td width="48%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="30%">
+
+
+<p><b>relativecolorimetric</b></p></td>
+<td width="48%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="30%">
+
+
+<p><b>saturation</b></p></td>
+<td width="48%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="30%">
+
+
+<p><b>absolutecolorimetric</b></p></td>
+<td width="48%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>-text=</b><i>filename</i></p>
+
+<p style="margin-left:22%;">This option lets you include
+arbitrary text strings in the PNG output, as tEXt
+chunks.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><i>filename</i>
+is the name of a file that contains your text strings.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The output
+contains a distinct tEXt chunk for each entry in the
+file.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Here is an
+example of a text string file:</p>
+
+<p style="margin-left:22%; margin-top: 1em">Title PNG
+file</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>Author John Doe</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>Description how to include a text chunk</p></td></tr>
+</table>
+
+<p style="margin-left:22%;">PNG file</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>&quot;Creation Date&quot; 2015-may-11</p></td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p>Software pamtopng</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">The file is
+divided into entries, each entry comprising consecutive
+lines of text. The first line of an entry starts in the
+first column (i.e. the first column is not white space) and
+every other line has white space in the first column. The
+first entry starts in the first line, so it is not valid for
+the first line of the file to have white space in its first
+column.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The first word
+in an entry is the key of the text string (e.g.
+&rsquo;Title&rsquo;). It begins in column one of the line
+and continues up to, but not including, the first delimiter
+character or the end of the line, whichever is first. You
+can enclose the key in double quotes in which case the key
+can consists of multiple words. The quotes are not part of
+the key. The text string per se begins after the key and any
+delimiter characters after it, plus the text in subsequent
+continuation lines.</p>
+
+<p style="margin-left:22%; margin-top: 1em">There is no
+limit on the length of a file line or entry or key or text
+string. There is no limit on the number of entries.</p>
+
+
+<p style="margin-left:11%;"><b>-ztxt=</b><i>filename</i></p>
+
+<p style="margin-left:22%;">The same as <b>-text</b>,
+except the text string is compressed in the PNG output.
+<b>pamtopng</b> uses zTXt chunks instead of a tEXt chunks.
+&nbsp;</p>
+
+
+<p style="margin-left:11%;"><b>-itxt=</b><i>filename</i></p>
+
+<p style="margin-left:22%;">Similar to <b>-text</b>, but
+the text strings can be in a language other than English.
+The PNG image indicates what language that is and includes
+the text string key both in English and that language.
+<b>pamtopng</b> uses iTXt chunks instead of tEXt chunks.</p>
+
+<p style="margin-left:22%; margin-top: 1em">For each
+record, you must specify the language and give the key both
+in English and in the text string language.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Example:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>Language nl-NL Taal nl-NL</p></td></tr>
+</table>
+
+<p style="margin-left:22%;">Title nl-NL Titel PNG file <br>
+Author nl-NL Auteur Pietje Puk <br>
+Description nl-NL Omschrijving Tekst in het Nederlands.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The language
+specification is based on the ISO 639-1 standard, see
+http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes for the
+valid codes. The format is either a two character
+&quot;nl&quot; or an extended code like
+&quot;en-US&quot;.</p>
+
+
+<p style="margin-left:11%;"><b>-time=&rsquo;</b>[<i>yy</i>]<i>yy-mm-dd
+hh:mm:ss</i><b>&rsquo;</b></p>
+
+<p style="margin-left:22%;">This option allows you to
+specify the modification time value to be placed in the PNG
+output. You can specify the year parameter either as a two
+or four digit value. &nbsp;</p>
+
+<p style="margin-left:11%;"><b>-interlace</b></p>
+
+<p style="margin-left:22%;">This causes the PNG file to be
+interlaced, in Adam7 format. The interlaced format is one in
+which the raster data starts with a low-resolution
+representation of the entire image, then continues with
+additional information for the entire image, then even more
+information, etc. In Adam7 in particular, there are seven
+such passes of the whole image. This is useful when you are
+receiving the image over a slow communication line as
+someone is waiting to see it. The simplest thing to do in
+that case is wait for the entire image to arrive and then
+display it instantly, but then the user is wasting time
+staring at a blank space until the whole image arrives. With
+the standard non-interlaced format, the data arrives
+row-by-row starting at the top, so the displayer could
+display each row of the image as it arrives and gradually
+paint down to the bottom. But with an interlaced image, the
+displayer can start by showing a low-resolution version of
+the image, then gradually improve the display as more data
+arrives.</p>
+
+<p style="margin-left:22%; margin-top: 1em">When you
+specify this option, <b>pamtopng</b> must hold the entire
+image in memory at once, whereas without it, the program
+holds only one raster row at a time. If you don&rsquo;t have
+enough memory for that, you might suffer extreme slowdowns
+or failure - not just in the process running
+<b>pamtopng</b>, but potentially throughout the system that
+shares memory with it. <b>pnmtopng</b> does not have this
+limitation (it holds only one row at a time in memory even
+when generating an interlaced PNG).</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.86 (March 2019).</p>
+
+<p style="margin-left:11%;"><b>-verbose</b></p>
+
+<p style="margin-left:22%;">This causes the program to
+display various facts about the conversion. &nbsp;</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pngtopam</b>(1),
+<b>pnmtopng</b>(1), <b>pam</b>(1), <b>pnm</b>(1)</p>
+
+<p style="margin-left:11%; margin-top: 1em">For information
+on the PNG format, see
+<a href="http://www.w3.org/TR/PNG/">http://www.w3.org/TR/PNG/</a>
+,
+<a href="http://libpng.org/pub/png/">http://libpng.org/pub/png/</a>
+,
+<a href="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes">http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes</a>
+and
+<a href="http://schaik.com/png/">http://schaik.com/png/</a>
+.</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtopng</b>
+was new in Netpbm 10.70 (June 2015).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Before
+<b>pamtopng</b>, the two ways to create PNG images with
+Netpbm were <b>pnmtopng</b> and <b>pamrgbatopng</b>. The
+history of the former is discussed above. The latter was
+added to Netpbm in 2005 as a cheap way to fill a significant
+need that <b>pnmtopng</b> did not: the ability to turn the
+alpha channel in a PAM image into the alpha channel in a PNG
+image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Handling of the
+alpha channel with <b>pnmtopng</b> is very cumbersome (as
+was dealing with alpha channels in general before the
+introduction of the PAM format). <b>pamrgbatopng</b> could
+do what people wanted with the alpha channel, but nothing
+else. It was a very small program with literally no command
+line options.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The goal in
+those days was eventually to expand <b>pnmtopng</b> to do
+the PAM alpha channel thing, rename it to <b>pamtopng</b>,
+and retire <b>pamrgbatopng</b>. But <b>pnmtopng</b> is such
+a complex program, because of its dizzying array of features
+and its need for backward compatibility, that adding that
+one capability to it was a daunting task and for ten years
+nobody attempted it.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In 2015, one of
+the authors of the original <b>pnmtopng</b> (from before it
+was even part of Netpbm -- a program that shared essentially
+no lines of code with <b>pnmtopng</b> of 2015) decided to go
+in a different direction. While many features of
+<b>pnmtopng</b> were pretty important and easy to implement,
+many others were probably of no use in the modern world or
+at least not important enough to justify the complexity they
+lent to the code. (The features thought to be outdated were
+ones that were intended to make the PNG output slightly
+smaller - something considerably less important with the
+declining cost of computer resources).</p>
+
+<p style="margin-left:11%; margin-top: 1em">And there was
+an opportunity to drop those features: We could use the new
+name &rsquo;pamtopng&rsquo; for a new program, keep the
+existing program under the name &rsquo;pnmtopng&rsquo;, and
+avoid most backward compatibility trouble.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Therefore,
+Willem van Schaik wrote an intermediate level program that
+had all the most important features of <b>pnmtopng</b>, plus
+the alpha channel handling of <b>pamrgbatopng</b>, with
+nice, simple code. That was <b>pamtopng</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Because
+<b>pamrgbatopng</b> had no options, <b>pamtopng</b> was
+backward compatible with it without even trying. Therefore,
+as soon as we added <b>pamtopng</b> to Netpbm, we removed
+<b>pamrgbatopng</b> and recommended that <b>pamrgbatopng</b>
+be installed as an alias for <b>pamtopng</b>.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1995-1997 by Alexander Lehmann and Willem van Schaik.
+Copyright (C) 2015 by Willem van Schaik.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamtopng.html</b></p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:46 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SETLEDS</title>
+
+</head>
+<body>
+
+<h1 align="center">SETLEDS</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">setleds - set
+the keyboard leds</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>setleds</b>
+[<i>-v</i>] [<i>-L</i>] [<i>-D</i>] [<i>-F</i>]
+[<i>{+|-}num</i>] [<i>{+|-}caps</i>]
+[<i>{+|-}scroll</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Setleds</b>
+reports and changes the led flag settings of a VT (namely
+NumLock, CapsLock and ScrollLock). Without arguments,
+<b>setleds</b> prints the current settings. With arguments,
+it sets or clears the indicated flags (and leaves the others
+unchanged). The settings before and after the change are
+reported if the -v flag is given.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The led flag
+settings are specific for each VT (and the VT corresponding
+to stdin is used).</p>
+
+<p style="margin-left:11%; margin-top: 1em">By default (or
+with option -F), <b>setleds</b> will only change the VT
+flags (and their setting may be reflected by the keyboard
+leds).</p>
+
+<p style="margin-left:11%; margin-top: 1em">With option -D,
+<b>setleds</b> will change both the VT flags and their
+default settings (so that a subsequent reset will not undo
+the change). This might be useful for people who always want
+to have numlock set.</p>
+
+<p style="margin-left:11%; margin-top: 1em">With option -L,
+<b>setleds</b> will not touch the VT flags, but only change
+the leds. From this moment on, the leds will no longer
+reflect the VT flags (but display whatever is put into
+them). The command <b>setleds -L</b> (without further
+arguments) will restore the situation in which the leds
+reflect the VT flags.</p>
+
+<p style="margin-left:11%; margin-top: 1em">One might use
+<b>setleds</b> in /etc/rc to define the initial and default
+state of NumLock, e.g. by</p>
+
+<p style="margin-left:18%;">INITTY=/dev/tty[1-8] <br>
+for tty in $INITTY; do</p>
+
+<p style="margin-left:26%;">setleds -D +num &lt; $tty</p>
+
+<p style="margin-left:18%;">done</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">-num +num</p>
+
+<p style="margin-left:22%;">Clear or set NumLock. (At
+present, the NumLock setting influences the interpretation
+of keypad keys. Pressing the NumLock key complements the
+NumLock setting.)</p>
+
+<p style="margin-left:11%;">-caps +caps</p>
+
+<p style="margin-left:22%;">Clear or set CapsLock. (At
+present, the CapsLock setting complements the Shift key when
+applied to letters. Pressing the CapsLock key complements
+the CapsLock setting.)</p>
+
+<p style="margin-left:11%;">-scroll +scroll</p>
+
+<p style="margin-left:22%;">Clear or set ScrollLock. (At
+present, pressing the ScrollLock key (or ^S/^Q) stops/starts
+console output.)</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In keyboard
+application mode the NumLock key does not influence the
+NumLock flag setting.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>loadkeys</b>(1)</p>
+<hr>
+</body>
+</html>

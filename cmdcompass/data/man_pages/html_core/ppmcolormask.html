@@ -1,0 +1,243 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:37 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Ppmcolormask User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Ppmcolormask User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ppmcolormask -
+produce mask of areas of a certain color in a PPM file</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmcolormask
+-color=</b><i>color_list</i> [<i>ppmfile</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmcolormask</b>
+<i>color</i> [<i>ppmfile</i>]</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ppmcolormask
+-color red testimg.ppm &gt;redmask.pbm <br>
+pamcomp background.ppm testimg.ppm -alpha=redmask.pbm
+&gt;test.ppm</p>
+
+<p style="margin-left:11%; margin-top: 1em">ppmcolormask
+-color=red,pink,salmon testimg.ppm &gt;reddishmask.pbm</p>
+
+<p style="margin-left:11%; margin-top: 1em">ppmcolormask
+-color=bk:red,bk:orange,bk:yellow testimg.ppm
+&gt;firemask.pbm</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmcolormask</b>
+reads a PPM file as input and produces a PBM (bitmap) file
+as output. The output file is the same dimensions as the
+input file and is black in all places where the input file
+is a color indicated by the <b>-color</b> option, and white
+everywhere else.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The output of
+<b>ppmcolormask</b> is useful as a transparency mask input
+to <b>pamcomp</b>. Note that you don&rsquo;t need
+<b>ppmcolormask</b> and <b>pamcomp</b> if you are ultimately
+converting to PNG with <b>pnmtopng</b> because the
+<b>-transparent</b> option on <b>pnmtopng</b> does the same
+thing.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>ppmfile</i>
+is the input file. If you don&rsquo;t specify
+<i>ppmfile</i>, the input is from Standard Input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The output goes
+to Standard Output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the obsolete
+alternative syntax, specifying the <i>color</i> names a
+single exact color to be masked.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmchange</b>
+does a similar thing: it modifies an image by changing
+colors you specify to other colors you specify. The two
+programs give you somewhat different means of specifying
+colors in the input image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To make a mask
+of an image&rsquo;s background, without having to tell it
+what color it is, use <b>pambackground</b>.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>ppmcolormask</b> recognizes the following command line
+option: <b><br>
+-color=</b><i>color_list</i></p>
+
+<p style="margin-left:22%;">This mandatory option specifies
+the colors that are to be masked (where the image is one of
+these colors, the output mask will be black).</p>
+
+<p style="margin-left:22%; margin-top: 1em">Examples:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="50%">
+
+
+<p><b>-color=red</b></p></td>
+<td width="28%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="50%">
+
+
+<p><b>-color=red,pink,salmon</b></p></td>
+<td width="28%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="50%">
+
+
+<p><b>-color=rgb:80/80/ff</b></p></td>
+<td width="28%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="50%">
+
+
+<p><b>-color=bk:red,bk:orange,bk:yellow</b></p></td>
+<td width="28%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:22%; margin-top: 1em"><i>color_list</i>
+is a list of colors separated by commas. Each color is
+either an exact color name as described for the
+<a href="libnetpbm_image.html#colorname">argument of the
+<b>pnm_parsecolor()</b> library routine</a> or one of the
+<a href="libppm.html#berlinkay">Berlin-Kay color names</a> .
+In the latter case, all colors that are better described by
+that Berlin-Kay color name than any other are in the mask
+set.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The algorithm
+<b>ppmcolormask</b> uses to determine to which colors a
+Berlin-Kay color name applies is based on a Sugeno-type
+fuzzy inference system developed by <i>Kenan Kalajdzic</i>
+in 2006. The fuzzy model consists of partially linear
+membership functions defined in the HSV color space.
+Although more complex algorithms for fuzzy color matching
+exist, this algorithm is intentionally simplified to achieve
+a satisfactory speed using relatively compact code.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.34 (June 2006). Before that, you must use
+the <i>color</i> argument and cannot specify a Berlin-Kay
+color.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamfind</b>(1),
+<b>pambackground</b>(1), <b>ppmchange</b>(1),
+<b>pgmtoppm</b>(1), <b>pamcomp</b>(1), <b>pbmmask</b>(1),
+<b>pnmtopng</b>(1), <b>ppm</b>(1)</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/ppmcolormask.html</b></p>
+<hr>
+</body>
+</html>

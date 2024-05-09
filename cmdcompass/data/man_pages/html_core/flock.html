@@ -1,0 +1,324 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:05 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>FLOCK</title>
+
+</head>
+<body>
+
+<h1 align="center">FLOCK</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#AVAILABILITY">AVAILABILITY</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">flock - manage
+locks from shell scripts</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>flock</b>
+[options] <i>file</i>|<i>directory command</i>
+[<i>arguments</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>flock</b>
+[options] <i>file</i>|<i>directory</i> <b>-c</b>
+<i>command</i></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>flock</b>
+[options] <i>number</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This utility
+manages <b>flock</b>(2) locks from within shell scripts or
+from the command line.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The first and
+second of the above forms wrap the lock around the execution
+of a <i>command</i>, in a manner similar to <b>su</b>(1) or
+<b>newgrp</b>(1). They lock a specified <i>file</i> or
+<i>directory</i>, which is created (assuming appropriate
+permissions) if it does not already exist. By default, if
+the lock cannot be immediately acquired, <b>flock</b> waits
+until the lock is available.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The third form
+uses an open file by its file descriptor <i>number</i>. See
+the examples below for how that can be used.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-c</b>,
+<b>--command</b> <i>command</i></p>
+
+<p style="margin-left:17%;">Pass a single <i>command</i>,
+without arguments, to the shell with <b>-c</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-E</b>,
+<b>--conflict-exit-code</b> <i>number</i></p>
+
+<p style="margin-left:17%;">The exit status used when the
+<b>-n</b> option is in use, and the conflicting lock exists,
+or the <b>-w</b> option is in use, and the timeout is
+reached. The default value is <b>1</b>. The <i>number</i>
+has to be in the range of 0 to 255.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-F</b>,
+<b>--no-fork</b></p>
+
+<p style="margin-left:17%;">Do not fork before executing
+<i>command</i>. Upon execution the flock process is replaced
+by <i>command</i> which continues to hold the lock. This
+option is incompatible with <b>--close</b> as there would
+otherwise be nothing left to hold the lock.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-e</b>,
+<b>-x</b>, <b>--exclusive</b></p>
+
+<p style="margin-left:17%;">Obtain an exclusive lock,
+sometimes called a write lock. This is the default.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-n</b>,
+<b>--nb</b>, <b>--nonblock</b></p>
+
+<p style="margin-left:17%;">Fail rather than wait if the
+lock cannot be immediately acquired. See the <b>-E</b>
+option for the exit status used.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-o</b>,
+<b>--close</b></p>
+
+<p style="margin-left:17%;">Close the file descriptor on
+which the lock is held before executing <i>command</i>. This
+is useful if <i>command</i> spawns a child process which
+should not be holding the lock.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-s</b>,
+<b>--shared</b></p>
+
+<p style="margin-left:17%;">Obtain a shared lock, sometimes
+called a read lock.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-u</b>,
+<b>--unlock</b></p>
+
+<p style="margin-left:17%;">Drop a lock. This is usually
+not required, since a lock is automatically dropped when the
+file is closed. However, it may be required in special
+cases, for example if the enclosed command group may have
+forked a background process which should not be holding the
+lock.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-w</b>,
+<b>--wait</b>, <b>--timeout</b> <i>seconds</i></p>
+
+<p style="margin-left:17%;">Fail if the lock cannot be
+acquired within <i>seconds</i>. Decimal fractional values
+are allowed. See the <b>-E</b> option for the exit status
+used. The zero number of <i>seconds</i> is interpreted as
+<b>--nonblock</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--verbose</b></p>
+
+<p style="margin-left:17%;">Report how long it took to
+acquire the lock, or why the lock could not be obtained.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Display help text and exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-V</b>,
+<b>--version</b></p>
+
+<p style="margin-left:17%;">Print version and exit.</p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The command
+uses &lt;sysexits.h&gt; exit status values for everything,
+except when using either of the options <b>-n</b> or
+<b>-w</b> which report a failure to acquire the lock with an
+exit status given by the <b>-E</b> option, or 1 by default.
+The exit status given by <b>-E</b> has to be in the range of
+0 to 255.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When using the
+<i>command</i> variant, and executing the child worked, then
+the exit status is that of the child command.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>flock</b>
+does not detect deadlock. See <b>flock</b>(2) for
+details.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Some file
+systems (e. g. NFS and CIFS) have a limited implementation
+of <b>flock</b>(2) and flock may always fail. For details
+see <b>flock</b>(2), <b>nfs</b>(5) and <b>mount.cifs</b>(8).
+Depending on mount options, flock can always fail there.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Note that
+&quot;shell&gt; &quot; in examples is a command line
+prompt.</p>
+
+<p style="margin-left:11%; margin-top: 1em">shell1&gt;
+flock /tmp -c cat; shell2&gt; flock -w .007 /tmp -c echo;
+/bin/echo $?</p>
+
+<p style="margin-left:17%;">Set exclusive lock to directory
+<i>/tmp</i> and the second command will fail.</p>
+
+<p style="margin-left:11%; margin-top: 1em">shell1&gt;
+flock -s /tmp -c cat; shell2&gt; flock -s -w .007 /tmp -c
+echo; /bin/echo $?</p>
+
+<p style="margin-left:17%;">Set shared lock to directory
+<i>/tmp</i> and the second command will not fail. Notice
+that attempting to get exclusive lock with second command
+would fail.</p>
+
+<p style="margin-left:11%; margin-top: 1em">shell&gt; flock
+-x local-lock-file echo 'a b c'</p>
+
+<p style="margin-left:17%;">Grab the exclusive lock
+&quot;local-lock-file&quot; before running echo with 'a b
+c'.</p>
+
+<p style="margin-left:11%; margin-top: 1em">(; flock -n 9
+|| exit 1; # ... commands executed under lock ...; )
+9&gt;/var/lock/mylockfile</p>
+
+<p style="margin-left:17%;">The form is convenient inside
+shell scripts. The mode used to open the file doesn&rsquo;t
+matter to <b>flock</b>; using <i>&gt;</i> or <i>&gt;&gt;</i>
+allows the lockfile to be created if it does not already
+exist, however, write permission is required. Using
+<i>&lt;</i> requires that the file already exists but only
+read permission is required.</p>
+
+<p style="margin-left:11%; margin-top: 1em">[
+&quot;${FLOCKER}&quot; != &quot;$0&quot; ] &amp;&amp; exec
+env FLOCKER=&quot;$0&quot; flock -en &quot;$0&quot;
+&quot;$0&quot; &quot;$@&quot; || :</p>
+
+<p style="margin-left:17%;">This is useful boilerplate code
+for shell scripts. Put it at the top of the shell script you
+want to lock and it&rsquo;ll automatically lock itself on
+the first run. If the environment variable <b>$FLOCKER</b>
+is not set to the shell script that is being run, then
+execute <b>flock</b> and grab an exclusive non-blocking lock
+(using the script itself as the lock file) before re-execing
+itself with the right arguments. It also sets the
+<b>FLOCKER</b> environment variable to the right value so it
+doesn&rsquo;t run again.</p>
+
+<p style="margin-left:11%; margin-top: 1em">shell&gt; exec
+4&lt;&gt;/var/lock/mylockfile; shell&gt; flock -n 4</p>
+
+<p style="margin-left:17%;">This form is convenient for
+locking a file without spawning a subprocess. The shell
+opens the lock file for reading and writing as file
+descriptor 4, then <b>flock</b> is used to lock the
+descriptor.</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>H. Peter
+Anvin</i> &lt;hpa@zytor.com&gt;</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+&Acirc;&copy; 2003-2006 H. Peter Anvin. This is free
+software; see the source for copying conditions. There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>flock</b>(2)</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For bug
+reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+
+<h2>AVAILABILITY
+<a name="AVAILABILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>flock</b> command is part of the util-linux package which
+can be downloaded from <i>Linux Kernel Archive</i>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>
+<hr>
+</body>
+</html>

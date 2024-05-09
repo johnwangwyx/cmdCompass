@@ -1,0 +1,1018 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:44 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>reportbug</title>
+
+</head>
+<body>
+
+<h1 align="center">reportbug</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#CONFIGURATION FILES">CONFIGURATION FILES</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">reportbug -
+reports a bug to a debbugs server</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>reportbug</b>
+<i>[options] &lt;package | pseudo-package |
+absolute-pathname&gt;</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i><b>reportbug</b></i>
+is primarily designed to report bugs in the Debian
+distribution; by default, it creates an email to the Debian
+bug tracking system at <i>submit@bugs.debian.org</i> with
+information about the bug you&rsquo;ve found, and makes a
+carbon copy of the report for you as well.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Using the
+<b>--bts</b> option, you can also report bugs to other
+servers that use the Debian bug tracking system,
+<b>debbugs</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You may specify
+either a package name or a filename; if you use a filename,
+it must either be an absolute filename (so beginning with a
+<b>/</b>) or if you want <b>reportbug</b> to search the
+system for a filename, see the <b>--filename</b> and
+<b>--path</b> options below. If installed, also
+<b>dlocate</b> is used to identify the filename location and
+thus the package containing it.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can also
+specify a <b>pseudo-package</b>; these are used in the
+Debian bug tracking system to track issues that are not
+related to one specific package. Run <b>reportbug</b>
+without any arguments, then enter <b>other</b> at the
+package prompt, to see a list of the most commonly-used
+<b>pseudo-packages</b>.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The program
+follows the usual GNU command line syntax, with long options
+starting with two dashes (&rsquo;<b>--</b>&rsquo;). A
+summary of options are included below. <b><br>
+-h, --help</b></p>
+
+<p style="margin-left:22%;">Show summary of options.</p>
+
+<p style="margin-left:11%;"><b>--version</b></p>
+
+<p style="margin-left:22%;">Show the version of
+<b>reportbug</b> and exit.</p>
+
+<p style="margin-left:11%;"><b>-A FILENAME,
+--attach=FILENAME</b></p>
+
+<p style="margin-left:22%;">Attach a file to the bug
+report; both text and binary files are acceptable; this
+option can be specified multiple times to attach several
+files. This routine will create a MIME attachment with the
+file included; in some cases (usually text files), it is
+probably better to use <b>-i/--include</b> option. (Please
+note that Debian&rsquo;s bug tracking system has limited
+support for MIME attachments.)</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+supports also globbing (i.e. names with wildcards, like
+file.*) but remember to include them between single quotes
+(the previous example becomes: &rsquo;file.*&rsquo;) else
+the shell would expand it before calling reportbug leading
+to an error.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Be aware that
+when using an external MUA to send the message (such as
+mutt), the attachment feature is not reliable and no file
+might be attached at all: the MUA feature to attach files
+should be used instead (so from within the MUA).</p>
+
+<p style="margin-left:11%;"><b>--archive</b></p>
+
+<p style="margin-left:22%;">Also show archived bugs when
+browsing bugs.</p>
+
+<p style="margin-left:11%;"><b>-b, --no-query-bts</b></p>
+
+<p style="margin-left:22%;">Don&rsquo;t check the Debian
+bug tracking system to see if this problem has already been
+reported; useful for offline use or if you&rsquo;re
+<b>really</b> sure it&rsquo;s a bug.</p>
+
+<p style="margin-left:11%;"><b>--query-bts</b></p>
+
+<p style="margin-left:22%;">Check the Debian bug tracking
+system to see if this problem has already been reported
+(default).</p>
+
+<p style="margin-left:11%;"><b>-B SYSTEM,
+--bts=SYSTEM</b></p>
+
+<p style="margin-left:22%;">Instead of the Debian bug
+server (or the bug server specified in
+<b>/etc/reportbug.conf</b>), use the server specified by
+<b>SYSTEM</b>. Use --bts=help to obtain the list of valid
+values. Note that if your <b>$HOME/.reportbugrc</b> or
+<b>/etc/reportbug.conf</b> include an smtphost setting that
+is specific to your default bug server and not a generic
+smarthost, you may need to override this using
+--smtphost=&lt;host&gt; to be able to report a bug directly
+to <b>SYSTEM</b>.</p>
+
+<p style="margin-left:11%;"><b>--body=BODY</b></p>
+
+<p style="margin-left:22%;">Use the specified <i>BODY</i>
+string as the body of the message. The body text will be
+wrapped at 70 columns, and the normal <b>reportbug</b>
+headers and footers will be added as appropriate. The editor
+prompt and any &quot;special&quot; prompting will be
+bypassed.</p>
+
+<p style="margin-left:11%;"><b>--body-file=BODYFILE,
+--bodyfile=BODYFILE</b></p>
+
+<p style="margin-left:22%;">The contents of the (assumed to
+be) text file <i>BODYFILE</i> will be used as the message
+body. This file is assumed to be properly formatted (i.e.
+reasonable line lengths, etc.). The usual headers and
+footers will be added, and the editor step and
+&quot;special&quot; prompts will be skipped.
+(<i>BODYFILE</i> may also be a named pipe; using a device
+special file may lead to unusual results.)</p>
+
+<p style="margin-left:11%;"><b>-c,
+--no-config-files</b></p>
+
+<p style="margin-left:22%;">Omit configuration files from
+the bug report without asking. By default, you are asked if
+you want to include them; in some cases, doing so may cause
+sensitive information to be sent via email.</p>
+
+<p style="margin-left:11%;"><b>-C CLASS,
+--class=CLASS</b></p>
+
+<p style="margin-left:22%;">Specify report class for GNATS
+BTSes.</p>
+
+<p style="margin-left:11%;"><b>--configure</b></p>
+
+<p style="margin-left:22%;">Rerun the <b>reportbug</b>
+first time configuration routine, and write a new
+<b>$HOME/.reportbugrc</b> file. This will erase any
+pre-existing settings in the file; however, a backup will be
+written as <b>$HOME/.reportbugrc~</b>. Reportbug will exit
+after rewriting its configuration file, hence this option
+cannot usefully be combined with many other options.</p>
+
+<p style="margin-left:11%;"><b>--check-available</b></p>
+
+<p style="margin-left:22%;">Check for newer releases of the
+package at <b>packages.debian.org</b> (default). In
+<b>advanced</b> and <b>expert</b> mode, check
+<b>http://ftp-master.debian.org/new.html</b> too.</p>
+
+
+<p style="margin-left:11%;"><b>--no-check-available</b></p>
+
+<p style="margin-left:22%;">Do not check for newer releases
+of the package at <b>packages.debian.org</b>.</p>
+
+<p style="margin-left:11%;"><b>--debconf</b></p>
+
+<p style="margin-left:22%;">Include debconf settings in
+your report.</p>
+
+<p style="margin-left:11%;"><b>--no-debconf</b></p>
+
+<p style="margin-left:22%;">Do not include debconf settings
+from your report.</p>
+
+<p style="margin-left:11%;"><b>-d, --debug</b></p>
+
+<p style="margin-left:22%;">Don&rsquo;t send a real bug
+report to Debian; send it to yourself instead. This is
+primarily used for testing by the maintainer.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--test</b></p></td>
+<td width="2%"></td>
+<td width="66%">
+
+
+<p>Operate in test mode (maintainer use only).</p></td>
+<td width="12%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--draftpath=DRAFTPATH</b></p>
+
+<p style="margin-left:22%;">Save the draft (for example,
+when exiting and saving the report without reporting it)
+into <i>DRAFTPATH</i> directory (default /tmp).</p>
+
+<p style="margin-left:11%;"><b>-e EDITOR,
+--editor=EDITOR</b></p>
+
+<p style="margin-left:22%;">Specify the editor to use,
+overriding any <b>EDITOR</b> or <b>VISUAL</b> environment
+variable setting.</p>
+
+<p style="margin-left:11%;"><b>--email=ADDRESS</b></p>
+
+<p style="margin-left:22%;">Set the email address your
+report should appear to be sent from (i.e. the address that
+appears in the <b>From</b> header). This should be the
+actual Internet email address on its own (i.e. without a
+real name or comment part, like <b>foo@example.com</b>).
+This setting will override the <b>EMAIL</b> and
+<b>DEBEMAIL</b> environment variables, but not
+<b>REPORTBUGEMAIL</b>.</p>
+
+<p style="margin-left:11%;"><b>--envelope-from</b></p>
+
+<p style="margin-left:22%;">Specify the Envelope From mail
+header (also known as Return-path); by default it&rsquo;s
+the From address but it can be selected a different one in
+case the MTA doesn&rsquo;t canonicalize local users to
+public addresses. This can be set to the empty string if the
+MTA does not allow setting the Envelope From.</p>
+
+
+<p style="margin-left:11%;"><b>--mbox-reader-cmd=MBOX_READER_CMD</b></p>
+
+<p style="margin-left:22%;">Specify a command to open the
+bug reports mbox file. You can use <b>%s</b> to substitute
+the mbox file to be used, and <b>%%</b> to insert a literal
+percent sign. If no <b>%s</b> is specified, the mbox file
+name is supplied at the end of the argument list.</p>
+
+<p style="margin-left:11%;"><b>-f FILENAME,
+--filename=FILENAME</b></p>
+
+<p style="margin-left:22%;">Report a bug in the package
+containing <i>FILENAME</i> so you don&rsquo;t have to figure
+out what package the file belongs to. The path will be
+searched for an exact path for <i>FILENAME</i> before
+attempting to broaden the search to all files. If
+<b>dlocate</b> is installed, <i>FILENAME</i> is actually a
+regular expression.</p>
+
+
+<p style="margin-left:11%;"><b>--from-buildd=BUILDD_FORMAT</b></p>
+
+<p style="margin-left:22%;">This options is a shortcut for
+buildd admins to report bugs from buildd log; the option
+expects a value in the format of <i>$source_$version</i>
+where <i>$source</i> is the source package the bug will be
+reported against and <i>$version</i> is its version.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--path</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>If the <b>-f/--filename</b> option is also specified,
+only search the path for the specified <i>FILENAME</i>.
+Specifying an absolute path with the <b>-f/--filename</b>
+option (i.e. one beginning with a <b>/</b>) overrides this
+behavior.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-g, --gnupg, --gpg</b></p>
+
+<p style="margin-left:22%;">Attach a digital signature to
+the bug report using <b>GnuPG</b> (the GNU Privacy Guard).
+(This argument will be ignored if you are using an MUA to
+edit and send your report.)</p>
+
+<p style="margin-left:11%;"><b>-G, --gnus</b></p>
+
+<p style="margin-left:22%;">Use the Gnus mail and news
+reader to send your report, rather than using the
+editor.</p>
+
+<p style="margin-left:11%;"><b>-H HEADER,
+--header=HEADER</b></p>
+
+<p style="margin-left:22%;">Add a custom RFC2822 header to
+your email. Do not use this option if you want to submit the
+report using your MUA, because custom headers cannot be
+passed from reportbug to the MUA reliably. To send a carbon
+copy of the report to another recipient using
+<i>X-Debbugs-CC</i>, please see the <b>--list-cc</b>
+option.</p>
+
+<p style="margin-left:11%;"><b>-i FILE,
+--include=FILE</b></p>
+
+<p style="margin-left:22%;">Include the specified
+<i>FILE</i> as part of the body of the message to be edited.
+Can be used multiple times to add multiple files; text-only
+please! From a suggestion by Michael Alan Dorman in the
+<b>bug</b> mailing list. (See also the <b>-A/--attach</b>
+option.)</p>
+
+<p style="margin-left:11%;"><b>-I,
+--no-check-installed</b></p>
+
+<p style="margin-left:22%;">Do not check whether the
+package is installed before filing a report. This is
+generally only useful when filing a report on a package you
+know is not installed on your system.</p>
+
+<p style="margin-left:11%;"><b>--check-installed</b></p>
+
+<p style="margin-left:22%;">Check if the specified package
+is installed when filing reports. (This is the default
+behavior of <b>reportbug</b>.)</p>
+
+<p style="margin-left:11%;"><b>-j JUSTIFICATION,
+--justification=JUSTIFICATION</b></p>
+
+<p style="margin-left:22%;">Bugs in Debian that have
+<b>serious</b>, <b>grave</b>, or <b>critical</b> severities
+must meet certain criteria to be classified as such. This
+option allows you to specify the justification for a
+release-critical bug, instead of being prompted for it.</p>
+
+<p style="margin-left:11%;"><b>-k, --kudos</b></p>
+
+<p style="margin-left:22%;">Send appreciative email to the
+recorded maintainer address, rather than filing a bug
+report. (You can also send kudos to
+<i>packagename@packages.debian.org</i>, for packages in the
+Debian archive; however, this option uses the Maintainer
+address from the control file, so it works with other
+package sources too.)</p>
+
+<p style="margin-left:11%;"><b>-K KEYID,
+--keyid=KEYID</b></p>
+
+<p style="margin-left:22%;">Private key to use for
+PGP/GnuPG signatures. If not specified, the first key in the
+secret keyring that matches your email address will be
+used.</p>
+
+<p style="margin-left:11%;"><b>--latest-first</b></p>
+
+<p style="margin-left:22%;">Display the bug reports list
+sorted and with the latest reports at the top.</p>
+
+<p style="margin-left:11%;"><b>--license</b></p>
+
+<p style="margin-left:22%;">Show <b>reportbug</b>&rsquo;s
+copyright and license information on standard output.</p>
+
+<p style="margin-left:11%;"><b>--list-cc=ADDRESS</b></p>
+
+<p style="margin-left:22%;">Send a carbon copy of the
+report to the specified list after a report number is
+assigned; this is the equivalent to the option <i>-P
+&rsquo;X-Debbugs-CC: ADDRESS&rsquo;</i>. This option will
+only work as intended with <b>debbugs</b> systems.</p>
+
+<p style="margin-left:11%;"><b>--list-cc-me</b></p>
+
+<p style="margin-left:22%;">Send a carbon copy of the
+report to your automatically detected email address after a
+report number is assigned. This sets an <i>X-Debbugs-CC</i>
+pseudo-header specifying that address. This option will only
+work as intended with <b>debbugs</b> systems. See the
+documentation for the <i>--email</i> option and the
+<i>ENVIRONMENT</i> section for information on how reportbug
+detects your email address.</p>
+
+<p style="margin-left:11%;"><b>-m, --maintonly</b></p>
+
+<p style="margin-left:22%;">Only send the bug to the
+package maintainer; the bug tracking system will not send a
+copy to the bug report distribution lists.</p>
+
+
+<p style="margin-left:11%;"><b>--max-attachment-size=MAX_ATTACHMENT_SIZE</b></p>
+
+<p style="margin-left:22%;">Specify the maximum size any
+attachment file can have (this also include the file for
+--body-file option). If an attachment file is too big, there
+could be problems in delivering the email (and also to
+compose it), so we set a limit to attachment size. By
+default this is 10 megabytes.</p>
+
+<p style="margin-left:11%;"><b>--mirror=MIRRORS</b></p>
+
+<p style="margin-left:22%;">Add a BTS mirror.</p>
+
+<p style="margin-left:11%;"><b>--mode=MODE</b></p>
+
+<p style="margin-left:22%;">Set the operating mode for
+<b>reportbug</b>. <b>reportbug</b> currently has four
+operating modes: <b>novice</b> (the default),
+<b>standard</b>, <b>advanced</b>, and <b>expert</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>novice</b>
+mode is designed to minimize prompting about things that
+&quot;ordinary users&quot; would be unlikely to know or care
+about, shifting the triage burden onto the maintainer.
+Checking for new versions is only done for the stable
+distribution in this mode. It is currently the default
+mode.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>standard</b>
+mode includes a relatively large number of prompts and tries
+to encourage users to not file frivolous or duplicate bug
+reports.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>advanced</b>
+mode is like <b>standard</b> mode, but may include shortcuts
+suitable for more advanced users of Debian, without being as
+close to the metal (and potential flamage) as <b>expert</b>
+mode. (Currently, the only differences from <b>standard</b>
+mode are that it assumes familiarity with the
+&quot;new&quot; queue; it allows the reporting of bugs on
+&quot;dependency&quot; packages; and it does not prompt
+where to insert the report text in the editor.)</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>expert</b>
+mode is designed to minimize prompts that are designed to
+discourage frivolous or unnecessary bug reports,
+&quot;severity inflation,&quot; and the like. In
+<b>expert</b> mode, <b>reportbug</b> assumes the user is
+thoroughly familiar with Debian policies. In practice, this
+means that reporters are no longer required to justify
+setting a high severity on a bug report, and certain
+automated cleanups of the message are bypassed. Individuals
+who do not regularly contribute to the Debian project are
+<i>highly</i> discouraged from using expert mode, as it can
+lead to flamage from maintainers when used improperly.</p>
+
+<p style="margin-left:11%;"><b>-M, --mutt</b></p>
+
+<p style="margin-left:22%;">Instead of spawning an editor
+to revise the bug report, use the <b>mutt</b> mail reader to
+edit and send it.</p>
+
+<p style="margin-left:11%;"><b>--mta=MTA</b></p>
+
+<p style="margin-left:22%;">Specify an alternate
+<i>MTA</i>, instead of <b>/usr/sbin/sendmail</b> (the
+default). Any <b>smtphost</b> setting will override this
+one.</p>
+
+<p style="margin-left:11%;"><b>--mua=MUA</b></p>
+
+<p style="margin-left:22%;">Instead of spawning an editor
+to revise the bug report, use the specified <i>MUA</i> (mail
+user agent) to edit and send it. <b>--mutt</b> and
+<b>--nmh</b> options are processed.</p>
+
+<p style="margin-left:11%;"><b>-n, --mh, --nmh</b></p>
+
+<p style="margin-left:22%;">Instead of spawning an editor
+to revise the bug report, use the <b>comp</b> command (part
+of the <b>nmh</b> and <b>mh</b> mail systems) to edit and
+send it.</p>
+
+<p style="margin-left:11%;"><b>-N BUGNUMBER, --bugnumber
+BUGNUMBER</b></p>
+
+<p style="margin-left:22%;">Run <b>reportbug</b> against
+the specified bug report, useful when following-up a bug and
+its number is already known.</p>
+
+<p style="margin-left:11%;"><b>--no-bug-script</b></p>
+
+<p style="margin-left:22%;">Do not execute the bug script
+(if present); this option can be useful together with
+--template to suppress every interactive actions, since some
+bug scripts can ask questions.</p>
+
+<p style="margin-left:11%;"><b>--no-cc-menu</b></p>
+
+<p style="margin-left:22%;">Don&rsquo;t display the menu to
+enter additional addresses (CC).</p>
+
+<p style="margin-left:11%;"><b>--no-tags-menu</b></p>
+
+<p style="margin-left:22%;">Don&rsquo;t display the menu to
+enter additional tags.</p>
+
+<p style="margin-left:11%;"><b>-o FILE,
+--output=FILE</b></p>
+
+<p style="margin-left:22%;">Instead of sending an email,
+redirect it to the specified filename.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The output file
+is a full dump of the email message, so it contains both
+headers and mail body. If you want to use it as a template
+to create a new bug report, see the --resume-saved
+option.</p>
+
+<p style="margin-left:11%;"><b>-O, --offline</b></p>
+
+<p style="margin-left:22%;">Disable all external queries.
+Currently has the same effect as <b>--no-check-available
+--no-query-bts</b>.</p>
+
+<p style="margin-left:11%;"><b>-p, --print</b></p>
+
+<p style="margin-left:22%;">Instead of sending an email,
+print the bug report to standard output, so you can redirect
+it to a file or pipe it to another program.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+only outputs a template for a bug report (but, differently
+from <b>--template</b> it&rsquo;s more interactive); you
+will need to fill in the long description.</p>
+
+<p style="margin-left:11%;"><b>--paranoid</b></p>
+
+<p style="margin-left:22%;">Show the contents of the
+message before it is sent, including all headers.
+Automatically disabled if in template mode.</p>
+
+<p style="margin-left:11%;"><b>--no-paranoid</b></p>
+
+<p style="margin-left:22%;">Don&rsquo;t show the full
+contents of the message before it is sent (default).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>--pgp</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Attach a digital signature to the bug report using
+<b>PGP</b> (Pretty Good Privacy). Please note, however, that
+the Debian project is phasing out the use of <b>PGP</b> in
+favor of <b>GnuPG</b>. (This argument will be ignored if
+using an MUA to edit and send your report.)</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--proxy=PROXY,
+--http_proxy=PROXY</b></p>
+
+<p style="margin-left:22%;">Specify the WWW proxy server to
+use to handle the query of the bug tracking system. You
+should only need this parameter if you are behind a
+firewall. The <i>PROXY</i> argument should be formatted as a
+valid HTTP URL, including (if necessary) a port number; for
+example, <b>http://192.168.1.1:3128/</b>.</p>
+
+<p style="margin-left:11%;"><b>-P PSEUDO-HEADER,
+--pseudo-header=PSEUDO-HEADER</b></p>
+
+<p style="margin-left:22%;">Add a custom pseudo-header to
+your report; for example, to add the <i>mytag</i> usertag
+for the user <i>humberto@example.com</i> to the bug, you
+could use <i>-P &rsquo;User: humberto@example.com&rsquo; -P
+&rsquo;Usertags: mytag&rsquo;</i>.</p>
+
+<p style="margin-left:11%;"><b>-q, --quiet</b></p>
+
+<p style="margin-left:22%;">Suppress diagnostic messages to
+standard error.</p>
+
+<p style="margin-left:11%;"><b>-Q, --query-only</b></p>
+
+<p style="margin-left:22%;">Do not submit a bug report;
+just query the BTS. Option ignored if you specify
+<b>--no-bts-query</b>.</p>
+
+<p style="margin-left:11%;"><b>--query-source</b></p>
+
+<p style="margin-left:22%;">Query on all binary packages
+built by the same source, not just the binary package
+specified.</p>
+
+<p style="margin-left:11%;"><b>--no-query-source</b></p>
+
+<p style="margin-left:22%;">Only query on the binary
+package specified on the command line.</p>
+
+<p style="margin-left:11%;"><b>--realname=NAME</b></p>
+
+<p style="margin-left:22%;">Set the real name
+(human-readable name) to use for your report.</p>
+
+<p style="margin-left:11%;"><b>--report-quiet</b></p>
+
+<p style="margin-left:22%;">Register the bug in the bug
+tracking system, but don&rsquo;t send a report to the
+package maintainer or anyone else. Don&rsquo;t do this
+unless you&rsquo;re the maintainer of the package in
+question, or you really know what you are doing.</p>
+
+<p style="margin-left:11%;"><b>--reply-to=ADDRESS,
+--replyto=ADDRESS</b></p>
+
+<p style="margin-left:22%;">Set the <b>Reply-To</b> address
+header in your report.</p>
+
+<p style="margin-left:11%;"><b>-r TEMPFILE,
+--resume-saved=TEMPFILE</b></p>
+
+<p style="margin-left:22%;">Use this to resume an unsent
+report previously saved by reportbug. Note that attachments
+stored in <i>TEMPFILE</i> are ignored; if you want to attach
+any files you need to do that again.</p>
+
+<p style="margin-left:11%;"><b>-s SUBJECT,
+--subject=SUBJECT</b></p>
+
+<p style="margin-left:22%;">Set the subject of the bug
+report (i.e. a brief explanation of the problem, less than
+60 characters). If you do not specify this switch, you will
+be prompted for a subject.</p>
+
+<p style="margin-left:11%;"><b>--security-team</b></p>
+
+<p style="margin-left:22%;">If the &rsquo;security&rsquo;
+tag is set, this option will explicitly specify to send the
+report only to the Debian Security Team, as this is an
+undisclosed vulnerability.</p>
+
+<p style="margin-left:11%;"><b>--no-security-team</b></p>
+
+<p style="margin-left:22%;">If the &rsquo;security&rsquo;
+tag is set, this option will explicitly specify to not send
+the report only to the Debian Security Team, as this is not
+an undisclosed vulnerability.</p>
+
+<p style="margin-left:11%;"><b>-S SEVERITY,
+--severity=SEVERITY</b></p>
+
+<p style="margin-left:22%;">Specify a severity level, from
+<b>critical</b>, <b>grave</b>, <b>serious</b>,
+<b>important</b>, <b>normal</b>, <b>minor</b>, and
+<b>wishlist</b>.</p>
+
+
+<p style="margin-left:11%;"><b>--smtphost=HOST[:PORT]</b></p>
+
+<p style="margin-left:22%;">Use the mail transport agent
+(MTA) at <b>HOST</b> to send your report, instead of your
+local <b>/usr/sbin/sendmail</b> program. This should
+generally be your ISP&rsquo;s outgoing mail server; you can
+also use &rsquo;localhost&rsquo; if you have a working mail
+server running on your machine. If the <b>PORT</b> is
+omitted, the standard port for SMTP, port 25, is used.</p>
+
+<p style="margin-left:11%;"><b>--timeout=SECONDS</b></p>
+
+<p style="margin-left:22%;">Specify the network timeout,
+the number of seconds to wait for a resource to respond. If
+nothing is specified, a default timeout of 1 minute is
+selected.</p>
+
+<p style="margin-left:22%; margin-top: 1em">In case of a
+network error, there are chances it&rsquo;s due to a too low
+timeout: try passing the --timeout option with a higher
+value than default.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>--tls</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>If using SMTP, use Transport Layer Security (TLS)
+encryption to secure the connection to the mail server. Some
+SMTP servers may require this option. Note that this option
+is ignored if you connect to your SMTP server via port 465,
+which already implies using SSL/TLS.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--smtpuser=USERNAME</b></p>
+
+<p style="margin-left:22%;">If using SMTP, use the
+specified <i>USERNAME</i> for authentication.</p>
+
+
+<p style="margin-left:11%;"><b>--smtppasswd=PASSWORD</b></p>
+
+<p style="margin-left:22%;">If using SMTP, use the
+specified <i>PASSWORD</i> for authentication. If the
+password isn&rsquo;t specified on the command line or in the
+configuration file, a prompt will be displayed asking for
+it.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Use of this
+option is insecure on multiuser systems. Instead, you should
+set this option in <b>$HOME/.reportbugrc</b> and ensure it
+is only readable by your user (e.g. with <b>chmod 600
+$HOME/.reportbugrc</b>).</p>
+
+<p style="margin-left:11%;"><b>--src, --source</b></p>
+
+<p style="margin-left:22%;">Specify to report the bug
+against the source package, and not the binary package
+(default behaviour). In order for this option to work, you
+have to populate the relevant &rsquo;deb-src&rsquo; lines in
+/etc/apt/sources.list so that apt cache will know about
+source packages too.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You can also
+specify the package name with a &rsquo;src:&rsquo; prefix
+instead of using this option if you already know the name of
+the source package.</p>
+
+<p style="margin-left:11%;"><b>-t TYPE, --type=TYPE</b></p>
+
+<p style="margin-left:22%;">Specify the type of report to
+be submitted; currently accepts either <b>gnats</b> or
+<b>debbugs</b>.</p>
+
+<p style="margin-left:11%;"><b>-T TAG, --tag=TAG</b></p>
+
+<p style="margin-left:22%;">Specify a tag to be filed on
+this report, for example <b>--tag=patch</b>. Multiple tags
+can be specified using multiple <b>-T/--tag</b>
+arguments.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Alternatively,
+you can specify the &rsquo;tag&rsquo; <b>none</b> to bypass
+the tags prompt without specifying any tags; this will also
+ignore any tags specified on the command line.</p>
+
+<p style="margin-left:11%;"><b>--template</b></p>
+
+<p style="margin-left:22%;">Output a template report to
+standard output. Differently from <b>-p/--print</b>, it
+tries to be not interactive, and presents a template without
+user&rsquo;s input. You may need to combine it with
+--no-bug-script if you want to avoid all user
+interaction.</p>
+
+<p style="margin-left:11%;"><b>-u INTERFACE,
+--interface=INTERFACE, --ui=INTERFACE</b></p>
+
+<p style="margin-left:22%;">Specify the user interface to
+use. Valid options are <b>text</b>, <b>urwid</b>, and
+<b>gtk</b>; default is taken from the <b>reportbug</b>
+configuration files.</p>
+
+<p style="margin-left:11%;"><b>-v, --verify</b></p>
+
+<p style="margin-left:22%;">Verify the integrity of the
+package (if installed) using <b>debsums</b> before
+reporting.</p>
+
+<p style="margin-left:11%;"><b>--no-verify</b></p>
+
+<p style="margin-left:22%;">Do not verify the integrity of
+the package with <b>debsums</b>.</p>
+
+<p style="margin-left:11%;"><b>-V VERSION,
+--package-version=VERSION</b></p>
+
+<p style="margin-left:22%;">Specify the version of the
+package the problem was found in. This is probably most
+useful if you are reporting a bug in a package that is not
+installable or installed on a different system.</p>
+
+<p style="margin-left:11%;"><b>-x, --no-cc</b></p>
+
+<p style="margin-left:22%;">Don&rsquo;t send a blind carbon
+copy (BCC) of the bug report to the submitter (i.e.
+yourself).</p>
+
+<p style="margin-left:11%;"><b>-z, --no-compress</b></p>
+
+<p style="margin-left:22%;">Don&rsquo;t compress
+configuration files by removing comments and blank
+lines.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>reportbug
+lynx-ssl</b></p>
+
+<p style="margin-left:22%;">Report a bug in the lynx-ssl
+package.</p>
+
+<p style="margin-left:11%;"><b>reportbug --path
+--filename=ls</b></p>
+
+<p style="margin-left:22%;">Report a bug in the installed
+package that includes a program in your path called
+<b>ls</b>.</p>
+
+<h2>CONFIGURATION FILES
+<a name="CONFIGURATION FILES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">From version
+0.22 on, <b>reportbug</b> has supported a simple run control
+file syntax. Commands are read from
+<b>/etc/reportbug.conf</b> and <b>$HOME/.reportbugrc</b>
+with commands in the latter overriding those in the
+former.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Commands are
+not case sensitive, and currently take 0 or 1 argument;
+arguments containing whitespace must be enclosed in
+quotes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Any line
+starting with <b>#</b> is taken to be a comment and will be
+ignored.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Generally,
+options corresponding to the long options for
+<b>reportbug</b> are supported, without leading <b>--</b>
+sequences. See <b>reportbug.conf(5)</b> for all acceptable
+options and detailed information.</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>VISUAL</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Editor to use for editing your
+bug report.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>EDITOR</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Editor to use for editing the bug report (overridden by
+<b>VISUAL</b>).</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>REPORTBUGEMAIL, DEBEMAIL,
+EMAIL</b></p>
+
+<p style="margin-left:22%;">Email address to use as your
+from address (in this order). If no environment variable
+exists, the default is taken from your user name and
+<b>/etc/mailname</b>.</p>
+
+<p style="margin-left:11%;"><b>DEBFULLNAME, DEBNAME,
+NAME</b></p>
+
+<p style="margin-left:22%;">Real name to use; default is
+taken from <b>/etc/passwd</b>.</p>
+
+<p style="margin-left:11%;"><b>REPLYTO</b></p>
+
+<p style="margin-left:22%;">Address for <b>Reply-To</b>
+header in outgoing mail.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>MAILCC</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Use the specified CC address on your email. Note you can
+also use the <b>-H</b> option for this (and for Bcc&rsquo;s
+too).</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>MAILBCC</b></p>
+
+<p style="margin-left:22%;">Use the specified BCC address,
+instead of your email address. (CC and BCC based on
+suggestions from Herbert Thielen in the <b>bug</b>
+wishlist).</p>
+
+<p style="margin-left:11%;"><b>http_proxy</b></p>
+
+<p style="margin-left:22%;">Provides the address of a proxy
+server to handle the BTS query. This should be a valid
+<b>http</b> URL for a proxy server, including any required
+port number (simply specifying a hostname, or omitting a
+port other than 80, WILL NOT WORK).</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>reportbug</b>
+should probably be compatible with other bug tracking
+systems, like <b>bugzilla</b> (used by the GNOME and Mozilla
+projects) and <b>jitterbug</b> (used by Samba, AbiSource and
+FreeCiv) but it isn&rsquo;t.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">reportbug.conf(5),
+<i>http://www.debian.org/Bugs/Developer#tags</i> for
+available tags, querybts(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Chris Lawrence
+&lt;lawrencc@debian.org&gt;, Sandro Tosi
+&lt;morph@debian.org&gt;.</p>
+<hr>
+</body>
+</html>

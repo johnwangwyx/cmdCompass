@@ -1,0 +1,906 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:06 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>PIC</title>
+
+</head>
+<body>
+
+<h1 align="center">PIC</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#USAGE">USAGE</a><br>
+<a href="#CONVERSION">CONVERSION</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#BUGS">BUGS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pic - compile
+pictures for troff or TeX</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p style="margin-top: 1em"><b>pic</b></p></td>
+<td width="2%"></td>
+<td width="35%">
+
+
+<p style="margin-top: 1em">[<b>-nvCSU</b>] [<i>file</i>
+...]</p> </td>
+<td width="48%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p style="margin-top: 1em"><b>pic</b></p></td>
+<td width="2%"></td>
+<td width="35%">
+
+
+<p style="margin-top: 1em"><b>-t</b> [<b>-cvzCSU</b>]
+[<i>file</i> ...]</p></td>
+<td width="48%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page describes the GNU version of <b>pic</b>, which is part
+of the groff document formatting system. <b>pic</b> compiles
+descriptions of pictures embedded within <b>troff</b> or TeX
+input files into commands that are understood by TeX or
+<b>troff</b>. Each picture starts with a line beginning with
+<b>.PS</b> and ends with a line beginning with <b>.PE</b>.
+Anything outside of <b>.PS</b> and <b>.PE</b> is passed
+through without change.</p>
+
+<p style="margin-left:11%; margin-top: 1em">It is the
+user&rsquo;s responsibility to provide appropriate
+definitions of the <b>PS</b> and <b>PE</b> macros. When the
+macro package being used does not supply such definitions
+(for example, old versions of -ms), appropriate definitions
+can be obtained with <b>-mpic</b>: These will center each
+picture.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Options that do
+not take arguments may be grouped behind a single <b>-</b>.
+The special option <b>--</b> can be used to mark the end of
+the options. A filename of <b>-</b> refers to the standard
+input.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-C</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Recognize <b>.PS</b> and <b>.PE</b> even when followed
+by a character other than space or newline.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-S</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Safer mode; do not execute <b>sh</b> commands. This can
+be useful when operating on untrustworthy input (enabled by
+default).</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-U</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Unsafe mode; revert the default option <b>-S</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-n</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Don&rsquo;t use the groff extensions to the troff
+drawing commands. You should use this if you are using a
+postprocessor that doesn&rsquo;t support these extensions.
+The extensions are described in <b>groff_out</b>(5). The
+<b>-n</b> option also causes <b>pic</b> not to use
+zero-length lines to draw dots in troff mode.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-t</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>TeX mode.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-c</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Be more compatible with <b>tpic</b>. Implies <b>-t</b>.
+Lines beginning with <b>\</b> are not passed through
+transparently. Lines beginning with <b>.</b> are passed
+through with the initial <b>.</b> changed to <b>\</b>. A
+line beginning with <b>.ps</b> is given special treatment:
+it takes an optional integer argument specifying the line
+thickness (pen size) in milliinches; a missing argument
+restores the previous line thickness; the default line
+thickness is 8 milliinches. The line thickness thus
+specified takes effect only when a non-negative line
+thickness has not been specified by use of the
+<b>thickness</b> attribute or by setting the
+<b>linethick</b> variable.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-v</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Print the version number.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-z</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>In TeX mode draw dots using zero-length lines.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+options supported by other versions of <b>pic</b> are
+ignored:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>-D</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Draw all lines using the \D
+escape sequence. <b>pic</b> always does this.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-T&nbsp;</b><i>dev</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Generate output for the <b>troff</b> device <i>dev</i>.
+This is unnecessary because the <b>troff</b> output
+generated by <b>pic</b> is device-independent.</p></td></tr>
+</table>
+
+<h2>USAGE
+<a name="USAGE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This section
+describes only the differences between GNU <b>pic</b> and
+the original version of <b>pic</b>. Many of these
+differences also apply to newer versions of Unix <b>pic</b>.
+A complete documentation is available in the file</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><i>/usr/share/doc/groff-base/pic.ms.gz</i></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>TeX mode</b>
+<br>
+TeX mode is enabled by the <b>-t</b> option. In TeX mode,
+<b>pic</b> will define a vbox called <b>\graph</b> for each
+picture. Use the <b>figname</b> command to change the name
+of the vbox. You must yourself print that vbox using, for
+example, the command</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>\centerline{\box\graph}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Actually, since
+the vbox has a height of zero (it is defined with \vtop)
+this will produce slightly more vertical space above the
+picture than below it;</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>\centerline{\raise
+1em\box\graph}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">would avoid
+this.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To make the
+vbox having a positive height and a depth of zero (as used
+e.g. by LaTeX&rsquo;s <b>graphics.sty</b>), define the
+following macro in your document:</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>\def\gpicbox#1{%
+<br>
+\vbox{\unvbox\csname #1\endcsname\kern 0pt}}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Now you can
+simply say <b>\gpicbox{graph}</b> instead of \box\graph.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You must use a
+TeX driver that supports the <b>tpic</b> specials, version
+2.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Lines beginning
+with <b>\</b> are passed through transparently; a <b>%</b>
+is added to the end of the line to avoid unwanted spaces.
+You can safely use this feature to change fonts or to change
+the value of <b>\baselineskip</b>. Anything else may well
+produce undesirable results; use at your own risk. Lines
+beginning with a period are not given any special
+treatment.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Commands
+<br>
+for</b> <i>variable</i> <b>=</b> <i>expr1</i> <b>to</b>
+<i>expr2</i> [<b>by</b> [<b>*</b>]<i>expr3</i>] <b>do</b>
+<i>X body X</i></p>
+
+<p style="margin-left:22%;">Set <i>variable</i> to
+<i>expr1</i>. While the value of <i>variable</i> is less
+than or equal to <i>expr2</i>, do <i>body</i> and increment
+<i>variable</i> by <i>expr3</i>; if <b>by</b> is not given,
+increment <i>variable</i> by 1. If <i>expr3</i> is prefixed
+by <b>*</b> then <i>variable</i> will instead be multiplied
+by <i>expr3</i>. The value of <i>expr3</i> can be negative
+for the additive case; <i>variable</i> is then tested
+whether it is greater than or equal to <i>expr2</i>. For the
+multiplicative case, <i>expr3</i> must be greater than zero.
+If the constraints aren&rsquo;t met, the loop isn&rsquo;t
+executed. <i>X</i> can be any character not occurring in
+<i>body</i>.</p>
+
+<p style="margin-left:11%;"><b>if</b> <i>expr</i>
+<b>then</b> <i>X if-true X</i> [<b>else</b> <i>Y if-false
+Y</i>]</p>
+
+<p style="margin-left:22%;">Evaluate <i>expr</i>; if it is
+non-zero then do <i>if-true</i>, otherwise do
+<i>if-false</i>. <i>X</i> can be any character not occurring
+in <i>if-true</i>. <i>Y</i> can be any character not
+occurring in <i>if-false</i>.</p>
+
+<p style="margin-left:11%;"><b>print</b> <i>arg</i>...</p>
+
+<p style="margin-left:22%;">Concatenate the arguments and
+print as a line on stderr. Each <i>arg</i> must be an
+expression, a position, or text. This is useful for
+debugging.</p>
+
+<p style="margin-left:11%;"><b>command</b>
+<i>arg</i>...</p>
+
+<p style="margin-left:22%;">Concatenate the arguments and
+pass them through as a line to troff or TeX. Each <i>arg</i>
+must be an expression, a position, or text. This has a
+similar effect to a line beginning with <b>.</b> or
+<b>\</b>, but allows the values of variables to be passed
+through. For example,</p>
+
+<p style="margin-left:32%; margin-top: 1em"><b>.PS <br>
+x = 14 <br>
+command &quot;.ds string x is &quot; x &quot;.&quot; <br>
+.PE <br>
+\*[string]</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">prints</p>
+
+<p style="margin-left:32%; margin-top: 1em"><b>x is
+14.</b></p>
+
+<p style="margin-left:11%;"><b>sh</b> <i>X command
+X</i></p>
+
+<p style="margin-left:22%;">Pass <i>command</i> to a shell.
+<i>X</i> can be any character not occurring in
+<i>command</i>.</p>
+
+<p style="margin-left:11%;"><b>copy
+&quot;</b><i>filename</i><b>&quot;</b></p>
+
+<p style="margin-left:22%;">Include <i>filename</i> at this
+point in the file.</p>
+
+<p style="margin-left:11%;"><b>copy</b>
+[<b>&quot;</b><i>filename</i><b>&quot;</b>] <b>thru</b> <i>X
+body X</i> [<b>until &quot;</b><i>word</i><b>&quot;</b>]
+<b><br>
+copy</b> [<b>&quot;</b><i>filename</i><b>&quot;</b>]
+<b>thru</b> <i>macro</i> [<b>until
+&quot;</b><i>word</i><b>&quot;</b>]</p>
+
+<p style="margin-left:22%;">This construct does <i>body</i>
+once for each line of <i>filename</i>; the line is split
+into blank-delimited words, and occurrences of
+<b>$</b><i>i</i> in <i>body</i>, for <i>i</i> between 1 and
+9, are replaced by the <i>i</i>-th word of the line. If
+<i>filename</i> is not given, lines are taken from the
+current input up to <b>.PE</b>. If an <b>until</b> clause is
+specified, lines will be read only until a line the first
+word of which is <i>word</i>; that line will then be
+discarded. <i>X</i> can be any character not occurring in
+<i>body</i>. For example,</p>
+
+<p style="margin-left:32%; margin-top: 1em"><b>.PS <br>
+copy thru % circle at ($1,$2) % until &quot;END&quot; <br>
+1 2 <br>
+3 4 <br>
+5 6 <br>
+END <br>
+box <br>
+.PE</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">is equivalent
+to</p>
+
+<p style="margin-left:32%; margin-top: 1em"><b>.PS <br>
+circle at (1,2) <br>
+circle at (3,4) <br>
+circle at (5,6) <br>
+box <br>
+.PE</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">The commands to
+be performed for each line can also be taken from a macro
+defined earlier by giving the name of the macro as the
+argument to <b>thru</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>reset <br>
+reset</b> <i>variable1</i>[<b>,</b>] <i>variable2
+...</i></p>
+
+<p style="margin-left:22%;">Reset pre-defined variables
+<i>variable1</i>, <i>variable2</i> ... to their default
+values. If no arguments are given, reset all pre-defined
+variables to their default values. Note that assigning a
+value to <b>scale</b> also causes all pre-defined variables
+that control dimensions to be reset to their default values
+times the new value of scale.</p>
+
+<p style="margin-left:11%;"><b>plot</b> <i>expr</i>
+[<b>&quot;</b><i>text</i><b>&quot;</b>]</p>
+
+<p style="margin-left:22%;">This is a text object which is
+constructed by using <i>text</i> as a format string for
+sprintf with an argument of <i>expr</i>. If <i>text</i> is
+omitted a format string of <b>&quot;%g&quot;</b> is used.
+Attributes can be specified in the same way as for a normal
+text object. Be very careful that you specify an appropriate
+format string; <b>pic</b> does only very limited checking of
+the string. This is deprecated in favour of
+<b>sprintf</b>.</p>
+
+
+<p style="margin-left:11%;"><i>variable&nbsp;</i><b>:=&nbsp;</b><i>expr</i></p>
+
+<p style="margin-left:22%;">This is similar to <b>=</b>
+except <i>variable</i> must already be defined, and
+<i>expr</i> will be assigned to <i>variable</i> without
+creating a variable local to the current block. (By
+contrast, <b>=</b> defines the variable in the current block
+if it is not already defined there, and then changes the
+value in the current block only.) For example, the
+following:</p>
+
+<p style="margin-left:32%; margin-top: 1em"><b>.PS <br>
+x = 3 <br>
+y = 3 <br>
+[ <br>
+x := 5 <br>
+y = 5 <br>
+] <br>
+print x &quot; &quot; y <br>
+.PE</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">prints</p>
+
+<p style="margin-left:32%; margin-top: 1em"><b>5 3</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Arguments of
+the form</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>X anything
+X</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">are also
+allowed to be of the form</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>{&nbsp;</b><i>anything&nbsp;</i><b>}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">In this case
+<i>anything</i> can contain balanced occurrences of <b>{</b>
+and <b>}</b>. Strings may contain <i>X</i> or imbalanced
+occurrences of <b>{</b> and <b>}</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Expressions</b>
+<br>
+The syntax for expressions has been significantly
+extended:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>x&nbsp;</i><b>^&nbsp;</b><i>y</i>
+(exponentiation) <b><br>
+sin(</b><i>x</i><b>) <br>
+cos(</b><i>x</i><b>) <br>
+atan2(</b><i>y</i><b>,&nbsp;</b><i>x</i><b>) <br>
+log(</b><i>x</i><b>)</b> (base 10) <b><br>
+exp(</b><i>x</i><b>)</b> (base 10, i.e. 10^<i>x</i>) <b><br>
+sqrt(</b><i>x</i><b>) <br>
+int(</b><i>x</i><b>) <br>
+rand()</b> (return a random number between 0 and 1) <b><br>
+rand(</b><i>x</i><b>)</b> (return a random number between 1
+and <i>x</i>; deprecated) <b><br>
+srand(</b><i>x</i><b>)</b> (set the random number seed)
+<b><br>
+max(</b><i>e1</i><b>,&nbsp;</b><i>e2</i><b>) <br>
+min(</b><i>e1</i><b>,&nbsp;</b><i>e2</i><b>) <br>
+!</b><i>e <br>
+e1</i> <b>&amp;&amp;</b> <i>e2 <br>
+e1</i> <b>||</b> <i>e2 <br>
+e1</i> <b>==</b> <i>e2 <br>
+e1</i> <b>!=</b> <i>e2 <br>
+e1</i> <b>&gt;=</b> <i>e2 <br>
+e1</i> <b>&gt;</b> <i>e2 <br>
+e1</i> <b>&lt;=</b> <i>e2 <br>
+e1</i> <b>&lt;</b> <i>e2</i> <b><br>
+&quot;</b><i>str1</i><b>&quot; ==
+&quot;</b><i>str2</i><b>&quot; <br>
+&quot;</b><i>str1</i><b>&quot; !=
+&quot;</b><i>str2</i><b>&quot;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">String
+comparison expressions must be parenthesised in some
+contexts to avoid ambiguity.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Other
+Changes</b> <br>
+A bare expression, <i>expr</i>, is acceptable as an
+attribute; it is equivalent to <i>dir&nbsp;expr</i>, where
+<i>dir</i> is the current direction. For example</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>line
+2i</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">means draw a
+line 2&nbsp;inches long in the current direction. The
+&rsquo;i&rsquo; (or &rsquo;I&rsquo;) character is ignored;
+to use another measurement unit, set the <i>scale</i>
+variable to an appropriate value.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The maximum
+width and height of the picture are taken from the variables
+<b>maxpswid</b> and <b>maxpsht</b>. Initially these have
+values 8.5 and 11.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Scientific
+notation is allowed for numbers. For example</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>x =
+5e-2</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Text attributes
+can be compounded. For example,</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>&quot;foo&quot;
+above ljust</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">is valid.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There is no
+limit to the depth to which blocks can be examined. For
+example,</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>[A: [B: [C:
+box ]]] with .A.B.C.sw at 1,2 <br>
+circle at last [].A.B.C</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">is
+acceptable.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Arcs now have
+compass points determined by the circle of which the arc is
+a part.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Circles,
+ellipses, and arcs can be dotted or dashed. In TeX mode
+splines can be dotted or dashed also.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Boxes can have
+rounded corners. The <b>rad</b> attribute specifies the
+radius of the quarter-circles at each corner. If no
+<b>rad</b> or <b>diam</b> attribute is given, a radius of
+<b>boxrad</b> is used. Initially, <b>boxrad</b> has a value
+of&nbsp;0. A box with rounded corners can be dotted or
+dashed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Boxes can have
+slanted sides. This effectively changes the shape of a box
+from a rectangle to an arbitrary parallelogram. The
+<b>xslanted</b> and <b>yslanted</b> attributes specify the x
+and y&nbsp;offset of the box&rsquo;s upper right corner from
+its default position.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <b>.PS</b>
+line can have a second argument specifying a maximum height
+for the picture. If the width of zero is specified the width
+will be ignored in computing the scaling factor for the
+picture. Note that GNU <b>pic</b> will always scale a
+picture by the same amount vertically as well as
+horizontally. This is different from the DWB 2.0 <b>pic</b>
+which may scale a picture by a different amount vertically
+than horizontally if a height is specified.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each text
+object has an invisible box associated with it. The compass
+points of a text object are determined by this box. The
+implicit motion associated with the object is also
+determined by this box. The dimensions of this box are taken
+from the width and height attributes; if the width attribute
+is not supplied then the width will be taken to be
+<b>textwid</b>; if the height attribute is not supplied then
+the height will be taken to be the number of text strings
+associated with the object times <b>textht</b>. Initially
+<b>textwid</b> and <b>textht</b> have a value of 0.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In (almost all)
+places where a quoted text string can be used, an expression
+of the form</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>sprintf(&quot;</b><i>format</i><b>&quot;,&nbsp;</b><i>arg</i><b>,</b>...<b>)</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">can also be
+used; this will produce the arguments formatted according to
+<i>format</i>, which should be a string as described in
+<b>printf</b>(3) appropriate for the number of arguments
+supplied.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The thickness
+of the lines used to draw objects is controlled by the
+<b>linethick</b> variable. This gives the thickness of lines
+in points. A negative value means use the default thickness:
+in TeX output mode, this means use a thickness of 8
+milliinches; in TeX output mode with the <b>-c</b> option,
+this means use the line thickness specified by <b>.ps</b>
+lines; in troff output mode, this means use a thickness
+proportional to the pointsize. A zero value means draw the
+thinnest possible line supported by the output device.
+Initially it has a value of -1. There is also a
+<b>thick</b>[<b>ness</b>] attribute. For example,</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>circle
+thickness 1.5</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">would draw a
+circle using a line with a thickness of 1.5 points. The
+thickness of lines is not affected by the value of the
+<b>scale</b> variable, nor by the width or height given in
+the <b>.PS</b> line.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Boxes
+(including boxes with rounded corners or slanted sides),
+circles and ellipses can be filled by giving them an
+attribute of <b>fill</b>[<b>ed</b>]. This takes an optional
+argument of an expression with a value between 0 and 1; 0
+will fill it with white, 1 with black, values in between
+with a proportionally gray shade. A value greater than 1 can
+also be used: this means fill with the shade of gray that is
+currently being used for text and lines. Normally this will
+be black, but output devices may provide a mechanism for
+changing this. Without an argument, then the value of the
+variable <b>fillval</b> will be used. Initially this has a
+value of 0.5. The invisible attribute does not affect the
+filling of objects. Any text associated with a filled object
+will be added after the object has been filled, so that the
+text will not be obscured by the filling.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Three
+additional modifiers are available to specify colored
+objects: <b>outline</b>[<b>d</b>] sets the color of the
+outline, <b>shaded</b> the fill color, and
+<b>colo</b>[<b>u</b>]<b>r</b>[<b>ed</b>] sets both. All
+three keywords expect a suffix specifying the color, for
+example</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>circle
+shaded &quot;green&quot; outline &quot;black&quot;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Currently,
+color support isn&rsquo;t available in TeX mode. Predefined
+color names for <b>groff</b> are in the device macro files,
+for example <b>ps.tmac</b>; additional colors can be defined
+with the <b>.defcolor</b> request (see the manual page of
+<b>troff</b>(1) for more details).</p>
+
+<p style="margin-left:11%; margin-top: 1em">To change the
+name of the vbox in TeX mode, set the pseudo-variable
+<b>figname</b> (which is actually a specially parsed
+command) within a picture. Example:</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>.PS <br>
+figname = foobar; <br>
+... <br>
+.PE</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">The picture is
+then available in the box <b>\foobar</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pic</b>
+assumes that at the beginning of a picture both glyph and
+fill color are set to the default value.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Arrow heads
+will be drawn as solid triangles if the variable
+<b>arrowhead</b> is non-zero and either TeX mode is enabled
+or the <b>-n</b> option has not been given. Initially
+<b>arrowhead</b> has a value of&nbsp;1. Note that solid
+arrow heads are always filled with the current outline
+color.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The troff
+output of <b>pic</b> is device-independent. The <b>-T</b>
+option is therefore redundant. All numbers are taken to be
+in inches; numbers are never interpreted to be in troff
+machine units.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Objects can
+have an <b>aligned</b> attribute. This will only work if the
+postprocessor is <b>grops</b>, or <b>gropdf</b>. Any text
+associated with an object having the <b>aligned</b>
+attribute will be rotated about the center of the object so
+that it is aligned in the direction from the start point to
+the end point of the object. Note that this attribute will
+have no effect for objects whose start and end points are
+coincident.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In places where
+<i>n</i><b>th</b> is allowed
+<b>&rsquo;</b><i>expr</i><b>&rsquo;th</b> is also allowed.
+Note that <b>&rsquo;th</b> is a single token: no space is
+allowed between the <b>&rsquo;</b> and the <b>th</b>. For
+example,</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>for i = 1 to
+4 do { <br>
+line from &rsquo;i&rsquo;th box.nw to &rsquo;i+1&rsquo;th
+box.se <br>
+}</b></p>
+
+<h2>CONVERSION
+<a name="CONVERSION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">To obtain a
+stand-alone picture from a <b>pic</b> file, enclose your
+<b>pic</b> code with <b>.PS</b> and <b>.PE</b> requests;
+<b>roff</b> configuration commands may be added at the
+beginning of the file, but no <b>roff</b> text.</p>
+
+<p style="margin-left:11%; margin-top: 1em">It is necessary
+to feed this file into <b>groff</b> without adding any page
+information, so you must check which <b>.PS</b> and
+<b>.PE</b> requests are actually called. For example, the mm
+macro package adds a page number, which is very annoying. At
+the moment, calling standard <b>groff</b> without any macro
+package works. Alternatively, you can define your own
+requests, e.g. to do nothing:</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>.de PS <br>
+.. <br>
+.de PE <br>
+..</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>groff</b>
+itself does not provide direct conversion into other
+graphics file formats. But there are lots of possibilities
+if you first transform your picture into PostScript&reg;
+format using the <b>groff</b> option <b>-Tps</b>. Since this
+<i>ps</i>-file lacks BoundingBox information it is not very
+useful by itself, but it may be fed into other conversion
+programs, usually named <b>ps2</b><i>other</i> or
+<b>psto</b><i>other</i> or the like. Moreover, the
+PostScript interpreter <b>ghostscript</b> (<b>gs</b>) has
+built-in graphics conversion devices that are called with
+the option</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>gs
+-sDEVICE=</b><i>&lt;devname&gt;</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">Call</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>gs
+--help</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">for a list of
+the available devices.</p>
+
+<p style="margin-left:11%; margin-top: 1em">An alternative
+may be to use the <b>-Tpdf</b> option to convert your
+picture directly into <b>PDF</b> format. The MediaBox of the
+file produced can be controlled by passing a <b>-P-p</b>
+papersize to groff.</p>
+
+<p style="margin-left:11%; margin-top: 1em">As the
+Encapsulated PostScript File Format <b>EPS</b> is getting
+more and more important, and the conversion wasn&rsquo;t
+regarded trivial in the past you might be interested to know
+that there is a conversion tool named <b>ps2eps</b> which
+does the right job. It is much better than the tool
+<b>ps2epsi</b> packaged with <b>gs</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For bitmapped
+graphic formats, you should use <b>pstopnm</b>; the
+resulting (intermediate) <b>PNM</b> file can be then
+converted to virtually any graphics format using the tools
+of the <b>netpbm</b> package.</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/usr/share/groff/1.22.4/tmac/pic.tmac</i></p>
+
+<p style="margin-left:22%;">Example definitions of the
+<b>PS</b> and <b>PE</b> macros.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>troff</b>(1),
+<b>groff_out</b>(5), <b>tex</b>(1), <b>gs</b>(1),
+<b>ps2eps</b>(1), <b>pstopnm</b>(1), <b>ps2epsi</b>(1),
+<b>pnm</b>(5)</p>
+
+<p style="margin-left:11%; margin-top: 1em">Eric S.
+Raymond, <i>Making Pictures With GNU PIC. <br>
+/usr/share/doc/groff-base/pic.ps</i> (this file, together
+with its source file, pic.ms, is part of the groff
+documentation)</p>
+
+<p style="margin-left:11%; margin-top: 1em">Tpic: Pic for
+TeX</p>
+
+<p style="margin-left:11%; margin-top: 1em">Brian W.
+Kernighan,
+<a href="http://cm.bell-labs.com/cm/cs/cstr/116.ps.gz"><i>PIC
+&mdash; A Graphics Language for Typesetting (User
+Manual)</i></a>. AT&amp;T Bell Laboratories, Computing
+Science Technical Report No.&nbsp;116 (revised May,
+1991).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ps2eps</b>
+is available from CTAN mirrors, e.g.
+<a href="ftp://ftp.dante.de/tex-archive/support/ps2eps/">ftp://ftp.dante.de/tex-archive/support/ps2eps/</a></p>
+
+<p style="margin-left:11%; margin-top: 1em">W. Richard
+Stevens,
+<a href="http://www.kohala.com/start/troff/pic2html.html"><i>Turning
+PIC into HTML</i></a></p>
+
+<p style="margin-left:11%; margin-top: 1em">W. Richard
+Stevens,
+<a href="http://www.kohala.com/start/troff/pic.examples.ps"><i>Examples
+of</i> pic <i>Macros</i></a></p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Input
+characters that are invalid for <b>groff</b> (i.e., those
+with ASCII code 0, or 013 octal, or between 015 and 037
+octal, or between 0200 and 0237 octal) are rejected even in
+TeX mode.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+interpretation of <b>fillval</b> is incompatible with the
+pic in 10th edition Unix, which interprets 0 as black and 1
+as white.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">PostScript&reg;
+is a registered trademark of Adobe Systems
+Incorporation.</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,728 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:33:57 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>CHEM</title>
+
+</head>
+<body>
+
+<h1 align="center">CHEM</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#THE LANGUAGE">THE LANGUAGE</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">chem - groff
+preprocessor for producing chemical structure diagrams</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p style="margin-top: 1em"><b>chem</b></p></td>
+<td width="1%"></td>
+<td width="30%">
+
+
+<p style="margin-top: 1em">[<b>--</b>] [<i>filespec</i>
+...]</p> </td>
+<td width="52%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p style="margin-top: 1em"><b>chem</b></p></td>
+<td width="1%"></td>
+<td width="30%">
+
+
+<p style="margin-top: 1em"><b>-h</b></p></td>
+<td width="52%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>chem</b></p></td>
+<td width="1%"></td>
+<td width="30%">
+
+
+<p><b>--help</b></p></td>
+<td width="52%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p style="margin-top: 1em"><b>chem</b></p></td>
+<td width="1%"></td>
+<td width="30%">
+
+
+<p style="margin-top: 1em"><b>-v</b></p></td>
+<td width="52%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>chem</b></p></td>
+<td width="1%"></td>
+<td width="30%">
+
+
+<p><b>--version</b></p></td>
+<td width="52%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><i>chem</i></b>
+produces chemical structure diagrams. Today&rsquo;s version
+is best suited for organic chemistry (bonds, rings). The
+<b>chem</b> program is a <b>groff</b> preprocessor like
+<b>eqn</b>, <b>pic</b>, <b>tbl</b>, etc. It generates
+<i>pic</i> output such that all <i>chem</i> parts are
+translated into diagrams of the <i>pic</i> language.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A
+<i>filespec</i> argument is either a file name of an
+existing file or a minus character <b>-</b>, meaning
+standard input. If no argument is specified then standard
+input is taken automatically. <b>-h</b> and <b>--help</b>
+display a usage message, whereas <b>-v</b> and
+<b>--version</b> display version information; all exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The program
+<b>chem</b> originates from the Perl source file
+<i>chem.pl</i>. It tells <b>pic</b> to include a copy of the
+macro file <i>chem.pic</i>. Moreover the <i>groff</i> source
+file <i>pic.tmac</i> is loaded.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In a style
+reminiscent of <i>eqn</i> and <i>pic</i>, the <i>chem</i>
+diagrams are written in a special language.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A set of
+<i>chem</i> lines looks like this</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>.cstart</b>
+<i><br>
+chem data</i> <b><br>
+.cend</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Lines
+containing the keywords <b>.cstart</b> and <b>.cend</b>
+start and end the input for <b>chem</b>, respectively. In
+<i>pic</i> context, i.e., after the call of <b>.PS</b>,
+<i>chem</i> input can optionally be started by the line
+<b>begin&nbsp;chem</b> and ended by the line with the single
+word <b>end</b> instead.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Anything
+outside these initialization lines is copied through without
+modification; all data between the initialization lines is
+converted into <i>pic</i> commands to draw the diagram.</p>
+
+<p style="margin-left:11%; margin-top: 1em">As an
+example,</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>.cstart <br>
+CH3 <br>
+bond <br>
+CH3 <br>
+.cend</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">prints two
+<b>CH3</b> groups with a bond between them.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To actually
+view this, you must run <b>chem</b> followed by
+<b>groffer</b>:</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>chem [file
+...] | groffer</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">If you want to
+create just <b>groff</b> output, you must run <b>chem</b>
+followed by <b>groff</b> with the option <b>-p</b> for the
+activation of <b>pic</b>:</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>chem [file
+...] | groff -p ...</b></p>
+
+<h2>THE LANGUAGE
+<a name="THE LANGUAGE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The <i>chem</i>
+input language is rather small. It provides rings of several
+styles and a way to glue them together as desired, bonds of
+several styles, moieties (e.g., <b>C</b>, <b>NH3</b>, ...,
+and strings.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Setting
+Variables</b> <br>
+There are some variables that can be set by commands. Such
+commands have two possible forms, either</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>variable
+value</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">or</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><i>variable</i>
+<b>=</b> <i>value</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">This sets the
+given <i>variable</i> to the argument <i>value</i>. If more
+arguments are given only the last argument is taken, all
+other arguments are ignored.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There are only
+a few variables to be set by these commands: <b><br>
+textht</b> <i>arg</i></p>
+
+<p style="margin-left:22%;">Set the height of the text to
+<i>arg</i>; default is 0.16.</p>
+
+<p style="margin-left:11%;"><b>cwid</b> <i>arg</i></p>
+
+<p style="margin-left:22%;">Set the character width to
+<i>arg</i>; default is 0.12.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>db</b> <i>arg</i></p></td>
+<td width="2%"></td>
+<td width="66%">
+
+
+<p>Set the bond length to <i>arg</i>; default is 0.2.</p></td>
+<td width="12%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>size</b> <i>arg</i></p>
+
+<p style="margin-left:22%;">Scale the diagram to make it
+look plausible at point size <i>arg</i>; default is 10
+point.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Bonds</b>
+<br>
+This</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="6%">
+
+
+<p style="margin-top: 1em"><b>bond</b></p></td>
+<td width="1%"></td>
+<td width="66%">
+
+
+<p style="margin-top: 1em">[<i>direction</i>]
+[<i>length&nbsp;n</i>]
+[<b>from&nbsp;</b><i>Name</i>|<i>picstuff</i>]</p> </td>
+<td width="5%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">draws a single
+bond in direction from nearest corner of <i>Name</i>.
+<b>bond</b> can also be <b>double bond</b>, <b>front
+bond</b>, <b>back bond</b>, etc. (We will get back to
+<i>Name</i> soon.)</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>direction</i>
+is the angle in degrees (0&nbsp;up, positive clockwise) or a
+direction word like <b>up</b>, <b>down</b>, <b>sw</b>
+(=&nbsp;southwest), etc. If no direction is specified, the
+bond goes in the current direction (usually that of the last
+bond).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Normally the
+bond begins at the last object placed; this can be changed
+by naming a <b>from</b> place. For instance, to make a
+simple alkyl chain:</p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-44571.png" alt="Image grohtml-44571.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em">A length in
+inches may be specified to override the default length.
+Other <i>pic</i> commands can be tacked on to the end of a
+bond command, to created dotted or dashed bonds or to
+specify a <b>to</b> place.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Rings</b>
+<br>
+There are lots of rings, but only 5 and 6-sided rings get
+much support. <b>ring</b> by itself is a 6-sided ring;
+<b>benzene</b> is the benzene ring with a circle inside.
+<b>aromatic</b> puts a circle into any kind of ring.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="6%">
+
+
+<p style="margin-top: 1em"><b>ring</b></p></td>
+<td width="1%"></td>
+<td width="71%">
+
+
+
+<p style="margin-top: 1em">[<b>pointing&nbsp;</b>(<b>up</b>|<b>right</b>|<b>left</b>|<b>down</b>)]
+[<b>aromatic</b>]
+[<b>put&nbsp;Mol&nbsp;at&nbsp;</b><i>n</i>]
+[<b>double&nbsp;</b><i>i</i>,<i>j&nbsp;k</i>,<i>l&nbsp;</i>...
+[<i>picstuff</i>]</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The vertices of
+a ring are numbered 1, 2, ... from the vertex that points in
+the natural compass direction. So for a hexagonal ring with
+the point at the top, the top vertex is&nbsp;1, while if the
+ring has a point at the east side, that is vertex&nbsp;1.
+This is expressed as</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>R1: ring
+pointing up <br>
+R2: ring pointing right</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">The ring
+vertices are named <b>.V1</b>, ..., <b>.V</b><i>n</i>, with
+<b>.V1</b> in the pointing direction. So the corners of
+<b>R1</b> are <b>R1.V1</b> (the <i>top</i>), <b>R1.V2</b>,
+<b>R1.V3</b>, <b>R1.V4</b> (the <i>bottom</i>), etc.,
+whereas for <b>R2</b>, <b>R2.V1</b> is the rightmost vertex
+and <b>R2.V4</b> the leftmost. These vertex names are used
+for connecting bonds or other rings. For example,</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>R1: benzene
+pointing right <br>
+R2: benzene pointing right with .V6 at R1.V2</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">creates two
+benzene rings connected along a side.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Interior double
+bonds are specified as
+<b>double&nbsp;</b><i>n1</i><b>,</b><i>n2&nbsp;n3</i><b>,</b><i>n4&nbsp;</i>...;
+each number pair adds an interior bond. So the alternate
+form of a benzene ring is</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>ring double
+1,2 3,4 5,6</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Heterocycles
+(rings with something other than carbon at a vertex) are
+written as
+<b>put&nbsp;</b><i>X&nbsp;</i><b>at&nbsp;</b><i>V</i>, as
+in</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>R: ring put
+N at 1 put O at 2</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">In this
+heterocycle, <b>R.N</b> and <b>R.O</b> become synonyms for
+<b>R.V1</b> and <b>R.V2</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There are two
+5-sided rings. <b>ring5</b> is pentagonal with a side that
+matches the 6-sided ring; it has four natural directions. A
+<b>flatring</b> is a 5-sided ring created by chopping one
+corner of a 6-sided ring so that it exactly matches the
+6-sided rings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The description
+of a ring has to fit on a single line.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Moieties and
+Strings</b> <br>
+A moiety is a string of characters beginning with a capital
+letter, such as N(C2H5)2. Numbers are converted to
+subscripts (unless they appear to be fractional values, as
+in N2.5H). The name of a moiety is determined from the
+moiety after special characters have been stripped out:
+e.g., N(C2H5)2) has the name NC2H52.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Moieties can be
+specified in two kinds. Normally a moiety is placed right
+after the last thing mentioned, separated by a semicolon
+surrounded by spaces, e.g.,</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>B1: bond ;
+OH</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Here the moiety
+is <b>OH</b>; it is set after a bond.</p>
+
+<p style="margin-left:11%; margin-top: 1em">As the second
+kind a moiety can be positioned as the first word in a
+<i>pic</i>-like command, e.g.,</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>CH3 at C +
+(0.5,0.5)</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Here the moiety
+is <b>CH3</b>. It is placed at a position relative to
+<b>C</b>, a moiety used earlier in the chemical
+structure.</p>
+
+<p style="margin-left:11%; margin-top: 1em">So moiety names
+can be specified as <i>chem</i> positions everywhere in the
+<i>chem</i> code. Beneath their printing moieties are names
+for places.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The moiety
+<b>BP</b> is special. It is not printed but just serves as a
+mark to be referred to in later <i>chem</i> commands. For
+example,</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>bond ;
+BP</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">sets a mark at
+the end of the bond. This can be used then for specifying a
+place. The name <b>BP</b> is derived from <i>branch
+point</i> (i.e., line crossing).</p>
+
+<p style="margin-left:11%; margin-top: 1em">A string within
+double quotes <b>&quot;</b> is interpreted as a part of a
+<i>chem</i> command. It represents a string that should be
+printed (without the quotes). Text within quotes
+&quot;...&quot; is treated more or less like a moiety except
+that no changes are made to the quoted part.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Names</b>
+<br>
+In the alkyl chain above, notice that the carbon atom
+<b>C</b> was used both to draw something and as the name for
+a place. A moiety always defines a name for a place; you can
+use your own names for places instead, and indeed, for rings
+you will have to. A name is just</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><i>Name</i><b>:</b>
+...</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>Name</i> is
+often the name of a moiety like <b>CH3</b>, but it need not
+to be. Any name that begins with a capital letter and which
+contains only letters and numbers is valid:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>First:</b></p></td>
+<td width="1%"></td>
+<td width="28%">
+
+
+<p><b>bond</b></p></td>
+<td width="40%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+</td>
+<td width="1%"></td>
+<td width="28%">
+
+
+<p><b>bond 30 from First</b></p></td>
+<td width="40%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Miscellaneous</b>
+<br>
+The specific construction</p>
+
+<p style="margin-left:22%;"><b>bond&nbsp;</b>... <b>;
+moiety</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">is equivalent
+to</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>bond <br>
+moiety</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Otherwise, each
+item has to be on a separate line (and only one line). Note
+that there must be whitespace after the semicolon which
+separates the commands.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A period
+character <b>.</b> or a single quote <b>&rsquo;</b> in the
+first column of a line signals a <i>troff</i> command, which
+is copied through as-is.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A line whose
+first non-blank character is a hash character (<b>#</b>) is
+treated as a comment and thus ignored. However, hash
+characters within a word are kept.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A line whose
+first word is <b>pic</b> is copied through as-is after the
+word <b>pic</b> has been removed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The command</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>size</b>
+<i>n</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">scales the
+diagram to make it look plausible at point
+size&nbsp;<i>n</i> (default is 10&nbsp;point).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Anything else
+is assumed to be <i>pic</i> code, which is copied through
+with a label.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Since
+<b>chem</b> is a <b>pic</b> preprocessor, it is possible to
+include <i>pic</i> statements in the middle of a diagram to
+draw things not provided for by <i>chem</i> itself. Such
+<i>pic</i> statements should be included in <i>chem</i> code
+by adding <b>pic</b> as the first word of this line for
+clarity.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+<i>pic</i> commands are accepted as <i>chem</i> commands, so
+no <b>pic</b> command word is needed:</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>define</b>
+Start the definition of <i>pic</i> macro within
+<i>chem</i>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p><b>[</b></p></td>
+<td width="9%"></td>
+<td width="48%">
+
+
+<p>Start a block composite.</p></td>
+<td width="20%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p><b>]</b></p></td>
+<td width="9%"></td>
+<td width="48%">
+
+
+<p>End a block composite.</p></td>
+<td width="20%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p><b>{</b></p></td>
+<td width="9%"></td>
+<td width="48%">
+
+
+<p>Start a macro definition block.</p></td>
+<td width="20%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p><b>}</b></p></td>
+<td width="9%"></td>
+<td width="48%">
+
+
+<p>End a macro definition block.</p></td>
+<td width="20%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The macro names
+from <b>define</b> statements are stored and their call is
+accepted as a <i>chem</i> command as well.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>WISH
+LIST</b> <br>
+This TODO list was collected by Brian Kernighan.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Error checking
+is minimal; errors are usually detected and reported in an
+oblique fashion by <i>pic</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There is no
+library or file inclusion mechanism, and there is no
+shorthand for repetitive structures.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The extension
+mechanism is to create <i>pic</i> macros, but these are
+tricky to get right and don&rsquo;t have all the properties
+of built-in objects.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There is no
+in-line chemistry yet (e.g., analogous to the $...$
+construct of eqn).</p>
+
+<p style="margin-left:11%; margin-top: 1em">There is no way
+to control entry point for bonds on groups. Normally a bond
+connects to the carbon atom if entering from the top or
+bottom and otherwise to the nearest corner.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Bonds from
+substituted atoms on heterocycles do not join at the proper
+place without adding a bit of <i>pic</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There is no
+decent primitive for brackets.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Text (quoted
+strings) doesn&rsquo;t work very well.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A squiggle bond
+is needed.</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/usr/share/groff/1.22.4/pic/chem.pic</i></p>
+
+<p style="margin-left:22%;">A collection of <i>pic</i>
+macros needed by <b>chem</b>.</p>
+
+
+<p style="margin-left:11%;"><i>/usr/share/groff/1.22.4/tmac/pic.tmac</i></p>
+
+<p style="margin-left:22%;">A macro file which redefines
+<b>.PS</b> and <b>.PE</b> to center <i>pic</i> diagrams.</p>
+
+
+<p style="margin-left:11%;"><i>/usr/share/doc/groff-base/examples/chem/</i>*<i>.chem</i></p>
+
+<p style="margin-left:22%;">Example files for
+<i>chem</i>.</p>
+
+
+<p style="margin-left:11%;"><i>/usr/share/doc/groff-base/examples/chem/122/</i>*<i>.chem</i></p>
+
+<p style="margin-left:22%;">Example files from the
+classical <i>chem</i> article <i>CHEM &ndash; A Program for
+Typesetting Chemical Structure Diagrams</i>
+[CSTR&nbsp;#122].</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The GNU version
+of <b>chem</b> was written by
+<a href="mailto:groff-bernd.warken-72@web.de">Bernd
+Warken</a>. It is based on the documentation of Brian
+Kernighan&rsquo;s original <i>awk</i> version of <i>chem</i>
+at
+<a href="http://cm.bell-labs.com/cm/cs/who/bwk/index.html">http://cm.bell-labs.com/cm/cs/who/bwk/index.html</a>.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>groff</b>(1),
+<b>pic</b>(1), <b>groffer</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can still
+get the original
+<a href="http://cm.bell-labs.com/netlib/typesetting/chem.gz">chem
+awk source</a>. Its <b>README</b> file was used for this
+manual page.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The other
+classical document on <i>chem</i> is
+<a href="http://cm.bell-labs.com/cm/cs/cstr/122.ps.gz"><i>CHEM
+&ndash; A Program for Typesetting Chemical Structure
+Diagrams</i> [CSTR&nbsp;#122]</a>.</p>
+<hr>
+</body>
+</html>

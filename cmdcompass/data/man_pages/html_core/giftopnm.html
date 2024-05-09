@@ -1,0 +1,355 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:06 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Giftopnm User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Giftopnm User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#RESTRICTIONS">RESTRICTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#LICENSE">LICENSE</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">giftopnm -
+convert a GIF file into a PNM image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>giftopnm</b>
+[<b>--alphaout=</b>{<i>alpha-filename</i>,<b>-</b>}]
+[<b>-verbose</b>] [<b>-comments</b>]
+[<b>-image=</b>{<i>N</i>,<b>all</b>}] [<b>-repair</b>]
+[<b>-quitearly</b>] [<i>GIFfile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviation of option is acceptable. You may use double
+hyphens instead of single hyphen to denote options. You may
+use white space in place of the equals sign to separate an
+option name from its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em">This is a
+graphics format converter from the GIF format to the PNM
+(i.e. PBM, PGM, or PPM) format.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the image
+contains only black and maximally bright white, the output
+is PBM. If the image contains more than those two colors,
+but only grays, the output is PGM. If the image contains
+other colors, the output is PPM.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A GIF image
+contains rectangular pixels. They all have the same aspect
+ratio, but may not be square (it&rsquo;s actually quite
+unusual for them not to be square, but it could happen). The
+pixels of a Netpbm image are always square. Because of the
+engineering complexity to do otherwise, <b>giftopnm</b>
+converts a GIF image to a Netpbm image pixel-for-pixel. This
+means if the GIF pixels are not square, the Netpbm output
+image has the wrong aspect ratio. In this case,
+<b>giftopnm</b> issues an informational message telling you
+to run <b>pamscale</b> to correct the output.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>giftopnm</b> recognizes the following command line
+options: <b><br>
+--alphaout=</b><i>alpha-filename</i></p>
+
+<p style="margin-left:22%;"><b>giftopnm</b> creates a PBM
+file containing the transparency information from the input
+image. This transparency image is the same dimensions as the
+input image, and each pixel of the transparency image tells
+whether the corresponding pixel of the input image is
+transparent. Black means transparent; white means opaque. If
+you don&rsquo;t specify <b>--alphaout</b>, <b>giftopnm</b>
+does not generate a transparency file, and if the input
+image has a transparency channel, <b>giftopnm</b> simply
+discards it.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you specify
+<b>-</b> as the filename, <b>giftopnm</b> writes the
+transparency output to Standard Output and discards the
+image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">See
+<b>pamcomp</b>(1) for one way to use the transparency output
+file.</p>
+
+<p style="margin-left:11%;"><b>-verbose</b></p>
+
+<p style="margin-left:22%;">Produce verbose output about
+the GIF file input.</p>
+
+<p style="margin-left:11%;"><b>-comments</b></p>
+
+<p style="margin-left:22%;">With this option,
+<b>giftopnm</b> issues messages showing the GIF comments (A
+GIF89 stream can contain comments in comment
+extensions).</p>
+
+<p style="margin-left:22%; margin-top: 1em">By default,
+<b>giftopnm</b> ignores comment extensions.</p>
+
+
+<p style="margin-left:11%;"><b>-image=</b>{<i>N</i>,<b>all</b>}</p>
+
+<p style="margin-left:22%;">This option identifies which
+image from the GIF stream you want. You can select either
+one image or all the images. Select all the images with
+<b>all</b>. Select one image by specifying its sequence
+number in the stream: <b>1</b>, <b>2</b>, <b>3</b>, etc.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+just Image 1.</p>
+
+<p style="margin-left:22%; margin-top: 1em">A GIF stream
+normally contains only one image, so you don&rsquo;t need
+this option. But some streams, including animated GIFs, have
+multiple images.</p>
+
+<p style="margin-left:22%; margin-top: 1em">When you select
+multiple GIF images, the output is a PNM stream with
+multiple images.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you specify
+a single image, <b>giftopnm</b> must read and partially
+validate the images before that in the stream. It may or may
+not do the same for the images after it; see
+<b>-quitearly</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The <b>all</b>
+value was added in Netpbm 10.16 (June 2003). Earlier
+<b>giftopnm</b> can extract only one image.</p>
+
+<p style="margin-left:11%;"><b>-repair</b></p>
+
+<p style="margin-left:22%;">This option makes
+<b>giftopnm</b> try to salvage what it can from an invalid
+GIF input.</p>
+
+<p style="margin-left:22%; margin-top: 1em">In particular,
+when <b>giftopnm</b> detects that the GIF input is invalid
+so that it is impossible to determine what the pixels are
+intended to be, it produces a single arbitrary color for all
+further pixels in the image. <b>giftopnm</b> processes the
+image from top to bottom, left to right, so this means the
+bottommost pixels will be this padding.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>giftopnm</b>
+issues warning messages when it salvages an image in this
+way.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Without this
+option, <b>giftopnm</b> fails when it detects invalid GIF
+input. Any output it produces is arbitrary, and typically is
+not a valid PNM image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">It is fairly
+common for an image to be corrupted such that is started off
+as a valid GIF, but had the end of the file cut off. An
+interrupted network transfer tends to do this. In this case,
+<b>giftopnm</b>&rsquo;s salvage operation will produce a
+valid PNM image of the proper dimensions, but with a single
+arbitrary color for the pixels that were left out of the
+file.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.38 (March 2007). From 10.32 through 10.37,
+<b>giftopnm</b> always fails if it detects invalid GIF
+input. Before 10.32, it succeeds in the case of a truncated
+image, and replaces the missing pixels with arbitrary
+colors, not necessarily all the same (The pre-10.32 behavior
+wasn&rsquo;t actually intended by the design).</p>
+
+<p style="margin-left:11%;"><b>-quitearly</b></p>
+
+<p style="margin-left:22%;">This option makes
+<b>giftopnm</b> stop reading its input file as soon as it
+has converted and output the images from the input that you
+requested. By default, <b>giftopnm</b> reads until the end
+of the GIF stream, ignoring any data after the images you
+requested.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Two reasons
+<i>not</i> to use this option:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>The input file is a pipe and the process that is filling
+that pipe expects the pipe to take the entire stream and
+will fail or get stuck if it doesn&rsquo;t.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>You want to validate the entire GIF stream.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">Two reasons to
+use this option:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">It saves the time and other
+resources to read the end of the stream.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>There are errors in the end of the stream that make
+<b>giftopnm</b> fail.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">This option has
+no effect if you also specify <b>-image=all</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.35 (August 2006). Before that,
+<b>giftopnm</b> always reads the entire stream.</p>
+
+<h2>RESTRICTIONS
+<a name="RESTRICTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This does not
+correctly handle the Plain Text Extension of the GIF89
+standard, since I did not have any example input files
+containing them.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtogif</b>(1),
+<b>ppmcolormask</b>(1), <b>pamcomp</b>(1),
+<a href="http://www.lcdf.org/gifsicle">http://www.lcdf.org/gifsicle</a>
+, <b>ppm</b>(1).</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (c)
+1993 by David Koblas (<i>koblas@netcom.com</i>)</p>
+
+<h2>LICENSE
+<a name="LICENSE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">As a historical
+note, for a long time if you used <b>giftopnm</b>, you were
+using a patent on the LZW compression method which was owned
+by Unisys, and in all probability you did not have a license
+from Unisys to do so. Unisys typically asked $5000 for a
+license for trivial use of the patent. Unisys never enforced
+the patent against trivial users, and made statements that
+it is much less concerned about people using the patent for
+decompression (which is what <b>giftopnm</b> does than for
+compression. The patent expired in 2003.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Rumor has it
+that IBM also owns a patent covering <b>giftopnm</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A replacement
+for the GIF format that has never required any patent
+license to use is the PNG format.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/giftopnm.html</b></p>
+<hr>
+</body>
+</html>

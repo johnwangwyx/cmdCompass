@@ -1,0 +1,326 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:28 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamtowinicon User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamtowinicon User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#IMAGES">IMAGES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamtowinicon -
+convert Netpbm PAM images to a Microsoft Windows icon
+file</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtowinicon</b>
+[<b>-pngthreshold=</b><i>threshold</i>]
+[<b>-truetransparent</b>] [<b>-verbose</b>]
+[<i>pam_file</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">All options can
+be abbreviated to their shortest unique prefix. You may use
+two hyphens instead of one to designate an option. You may
+use either white space or equals signs between an option
+name and its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtowinicon</b>
+reads an RGB_ALPHA Netpbm PAM file and converts it to a
+Microsoft Windows icon file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The output goes
+to Standard Output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The input is a
+multi-image PAM file; each image becomes an icon in the
+output file. If you have input images in multiple files, you
+can simply combine them with <b>cat</b> and pass the result
+to <b>pamtowinicon</b>.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions">Common Options</a> ),
+<b>pamtowinicon</b> recognizes the following command line
+options: <b><br>
+-pngthreshold=</b><i>threshold</i></p>
+
+<p style="margin-left:22%;"><b>pamtowinicon</b> encodes
+images with resolutions above or equal <i>threshold</i> by
+<i>threshold</i> as PNG by running <b>pnmtopng</b>(1). Other
+images it encodes using the more traditional BMP format.</p>
+
+<p style="margin-left:22%; margin-top: 1em">When the
+program uses PNG encoding for a 5-channel PAM with separate
+AND mask (see below), it discards the AND mask. Because PNG
+has always had the ability to specify transparency, the
+Windows icon format does not provide for a separate and mask
+when the icon is encoded in PNG.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default
+value for <i>threshold</i> is 128.</p>
+
+<p style="margin-left:11%;"><b>-truetransparent</b></p>
+
+<p style="margin-left:22%;">Make all pixels outside the
+opaque area black, avoiding inversion and other effects on
+the background of the image (see <b>Windows
+Icons</b>(1)).</p>
+
+<p style="margin-left:11%;"><b>-verbose</b></p>
+
+<p style="margin-left:22%;">Print more messages</p>
+
+<h2>IMAGES
+<a name="IMAGES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtowinicon</b>
+reads a (multi-image) Netpbm PAM file as input and outputs
+an single Windows icon file containing those images.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The images in
+the icon file are in the same order as in the PAM input.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>PAM Input
+<br>
+pamtowinicon</b> interprets the PAM images as follows, based
+on the number of channels.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%">
+</td>
+<td width="8%"></td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="77%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="8%">
+</td>
+<td width="77%">
+</td></tr>
+</table>
+
+
+<p align="center"><img src="grohtml-125691.png" alt="Image grohtml-125691.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em">The tuple types
+of the PAMs are irrelevant.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>AND Mask</b>
+<br>
+The so-called &quot;AND mask&quot; is a special feature of
+Microsoft Windows icons. It is required for all BMP encoded
+images. At the first sight, the AND mask is a 1-bit
+transparency channel, but it is also used for e.g. shading
+the icon while dragging. See <b>Windows Icons</b>(1) for
+details.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If there is no
+explicit AND mask, but transparency data in the input image,
+<b>pamtowinicon</b> sets the AND mask to opaque where the
+sample in the transparency channel is below maxval, and to
+transparent elsewhere.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If no
+transparency data is present in the input image,
+<b>pamtowinicon</b> assumes the whole image to be fully
+opaque.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>BMP
+Output</b> <br>
+When BMP encoding an image, <b>pamtowinicon</b> tries to use
+the most compact <b>BI_RGB</b> format allowed for icon
+images with a color depth of eight bits per channel.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtowinicon</b>
+generates neither 16-bit <b>BI_RGB</b> nor
+<b>BI_BITFIELDS</b> BMP encoded images, even if the maxval
+of the input PAM is not 255.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="24%">
+
+
+<p style="margin-top: 1em"><b>winicontopam</b>(1)</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="24%">
+
+
+<p><b>ppmtowinicon</b>(1)</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="24%">
+
+
+<p><b>pam</b>(1)</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="24%">
+
+
+<p><b>Windows Icons</b>(1)</p></td>
+<td width="54%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">For information
+on the PNG format, see
+<a href="http://schaik.com/png">http://schaik.com/png</a>
+.</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtowinicon</b>
+was new in Netpbm 10.63 (June 2013). It obsoleted
+<b>ppmtowinicon</b> by providing more function and
+conforming better to Netpbm conventions.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+2013 by Ludolf Holzheid.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Translated to
+Netpbm coding style by Bryan Henderson.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamtowinicon.html</b></p>
+<hr>
+</body>
+</html>

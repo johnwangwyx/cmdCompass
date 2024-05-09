@@ -1,0 +1,849 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:56 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>tset</title>
+
+</head>
+<body>
+
+<h1 align="center">tset</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SETTING THE ENVIRONMENT">SETTING THE ENVIRONMENT</a><br>
+<a href="#TERMINAL TYPE MAPPING">TERMINAL TYPE MAPPING</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#COMPATIBILITY">COMPATIBILITY</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>tset</b>,
+<b>reset</b> - terminal initialization</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>tset</b>
+[<b>-IQVcqrsw</b>] [<b>-</b>] [<b>-e</b> <i>ch</i>]
+[<b>-i</b> <i>ch</i>] [<b>-k</b> <i>ch</i>] [<b>-m</b>
+<i>mapping</i>] [<i>terminal</i>] <b><br>
+reset</b> [<b>-IQVcqrsw</b>] [<b>-</b>] [<b>-e</b>
+<i>ch</i>] [<b>-i</b> <i>ch</i>] [<b>-k</b> <i>ch</i>]
+[<b>-m</b> <i>mapping</i>] [<i>terminal</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>tset -
+initialization</b> <br>
+This program initializes terminals.</p>
+
+<p style="margin-left:11%; margin-top: 1em">First,
+<b>tset</b> retrieves the current terminal mode settings for
+your terminal. It does this by successively testing</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="32%">
+
+
+<p>the standard error,</p></td>
+<td width="51%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="32%">
+
+
+<p>standard output,</p></td>
+<td width="51%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="32%">
+
+
+<p>standard input and</p></td>
+<td width="51%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="32%">
+
+
+<p>ultimately &ldquo;/dev/tty&rdquo;</p></td>
+<td width="51%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">to obtain
+terminal settings. Having retrieved these settings,
+<b>tset</b> remembers which file descriptor to use when
+updating settings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Next,
+<b>tset</b> determines the type of terminal that you are
+using. This determination is done as follows, using the
+first terminal type found.</p>
+
+<p style="margin-left:11%; margin-top: 1em">1. The
+<b>terminal</b> argument specified on the command line.</p>
+
+<p style="margin-left:11%; margin-top: 1em">2. The value of
+the <b>TERM</b> environmental variable.</p>
+
+<p style="margin-left:11%; margin-top: 1em">3. (BSD systems
+only.) The terminal type associated with the standard error
+output device in the <i>/etc/ttys</i> file. (On
+System-V-like UNIXes and systems using that convention,
+<b>getty</b>(8) does this job by setting <b>TERM</b>
+according to the type passed to it by
+<i>/etc/inittab</i>.)</p>
+
+<p style="margin-left:11%; margin-top: 1em">4. The default
+terminal type, &ldquo;unknown&rdquo;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the terminal
+type was not specified on the command-line, the <b>-m</b>
+option mappings are then applied (see the section
+<b>TERMINAL TYPE MAPPING</b> for more information). Then, if
+the terminal type begins with a question mark
+(&ldquo;?&rdquo;), the user is prompted for confirmation of
+the terminal type. An empty response confirms the type, or,
+another type can be entered to specify a new type. Once the
+terminal type has been determined, the terminal description
+for the terminal is retrieved. If no terminal description is
+found for the type, the user is prompted for another
+terminal type.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Once the
+terminal description is retrieved,</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">if the &ldquo;<b>-w</b>&rdquo;
+option is enabled, <b>tset</b> may update the
+terminal&rsquo;s window size.</p></td></tr>
+</table>
+
+<p style="margin-left:17%; margin-top: 1em">If the window
+size cannot be obtained from the operating system, but the
+terminal description (or environment, e.g., <b>LINES</b> and
+<b>COLUMNS</b> variables specify this), use this to set the
+operating system&rsquo;s notion of the window size.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">if the &ldquo;<b>-c</b>&rdquo;
+option is enabled, the backspace, interrupt and line kill
+characters (among many other things) are set</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>unless the &ldquo;<b>-I</b>&rdquo; option is enabled,
+the terminal and tab <i>initialization</i> strings are sent
+to the standard error output, and <b>tset</b> waits one
+second (in case a hardware reset was issued).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>Finally, if the erase, interrupt and line kill
+characters have changed, or are not set to their default
+values, their values are displayed to the standard error
+output.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><b>reset -
+reinitialization</b> <br>
+When invoked as <b>reset</b>, <b>tset</b> sets the terminal
+modes to &ldquo;sane&rdquo; values:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">sets cooked and echo modes,</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>turns off cbreak and raw modes,</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>turns on newline translation and</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>resets any unset special characters to their default
+values</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">before doing
+the terminal initialization described above. Also, rather
+than using the terminal <i>initialization</i> strings, it
+uses the terminal <i>reset</i> strings.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>reset</b> command is useful after a program dies leaving
+a terminal in an abnormal state:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="31%">
+
+
+<p style="margin-top: 1em">you may have to type</p></td>
+<td width="52%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>&lt;LF&gt;</i><b>reset</b><i>&lt;LF&gt;</i></p>
+
+<p style="margin-left:17%; margin-top: 1em">(the line-feed
+character is normally control-J) to get the terminal to
+work, as carriage-return may no longer work in the abnormal
+state.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Also, the terminal will often
+not echo the command.</p></td>
+<td width="5%">
+</td></tr>
+</table>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The options are
+as follows:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-c</b></p></td>
+<td width="4%"></td>
+<td width="51%">
+
+
+<p style="margin-top: 1em">Set control characters and
+modes.</p> </td>
+<td width="31%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-e&nbsp;</b><i>ch</i></p>
+
+<p style="margin-left:18%;">Set the erase character to
+<i>ch</i>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-I</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>Do not send the terminal or tab initialization strings
+to the terminal.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-i&nbsp;</b><i>ch</i></p>
+
+<p style="margin-left:18%;">Set the interrupt character to
+<i>ch</i>.</p>
+
+<p style="margin-left:11%;"><b>-k&nbsp;</b><i>ch</i></p>
+
+<p style="margin-left:18%;">Set the line kill character to
+<i>ch</i>.</p>
+
+
+<p style="margin-left:11%;"><b>-m&nbsp;</b><i>mapping</i></p>
+
+<p style="margin-left:18%;">Specify a mapping from a port
+type to a terminal. See the section <b>TERMINAL TYPE
+MAPPING</b> for more information.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-Q</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>Do not display any values for the erase, interrupt and
+line kill characters. Normally <b>tset</b> displays the
+values for control characters which differ from the
+system&rsquo;s default values.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-q</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>The terminal type is displayed to the standard output,
+and the terminal is not initialized in any way. The option
+&ldquo;-&rdquo; by itself is equivalent but archaic.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-r</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>Print the terminal type to the standard error
+output.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-s</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>Print the sequence of shell commands to initialize the
+environment variable <b>TERM</b> to the standard output. See
+the section <b>SETTING THE ENVIRONMENT</b> for details.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-V</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>reports the version of ncurses which was used in this
+program, and exits.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-w</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>Resize the window to match the size deduced via
+<b>setupterm</b>(3X). Normally this has no effect, unless
+<b>setupterm</b> is not able to detect the window size.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The arguments
+for the <b>-e</b>, <b>-i</b>, and <b>-k</b> options may
+either be entered as actual characters or by using the
+&ldquo;hat&rdquo; notation, i.e., control-h may be specified
+as &ldquo;^H&rdquo; or &ldquo;^h&rdquo;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If neither
+<b>-c</b> or <b>-w</b> is given, both options are
+assumed.</p>
+
+<h2>SETTING THE ENVIRONMENT
+<a name="SETTING THE ENVIRONMENT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">It is often
+desirable to enter the terminal type and information about
+the terminal&rsquo;s capabilities into the shell&rsquo;s
+environment. This is done using the <b>-s</b> option.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When the
+<b>-s</b> option is specified, the commands to enter the
+information into the shell&rsquo;s environment are written
+to the standard output. If the <b>SHELL</b> environmental
+variable ends in &ldquo;csh&rdquo;, the commands are for
+<b>csh</b>, otherwise, they are for <b>sh</b>(1). Note, the
+<b>csh</b> commands set and unset the shell variable
+<b>noglob</b>, leaving it unset. The following line in the
+<b>.login</b> or <b>.profile</b> files will initialize the
+environment correctly:</p>
+
+<p style="margin-left:11%; margin-top: 1em">eval `tset -s
+options ... `</p>
+
+<h2>TERMINAL TYPE MAPPING
+<a name="TERMINAL TYPE MAPPING"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">When the
+terminal is not hardwired into the system (or the current
+system information is incorrect) the terminal type derived
+from the <i>/etc/ttys</i> file or the <b>TERM</b>
+environmental variable is often something generic like
+<b>network</b>, <b>dialup</b>, or <b>unknown</b>. When
+<b>tset</b> is used in a startup script it is often
+desirable to provide information about the type of terminal
+used on such ports.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <b>-m</b>
+options maps from some set of conditions to a terminal type,
+that is, to tell <b>tset</b> &ldquo;If I&rsquo;m on this
+port at a particular speed, guess that I&rsquo;m on that
+kind of terminal&rdquo;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The argument to
+the <b>-m</b> option consists of an optional port type, an
+optional operator, an optional baud rate specification, an
+optional colon (&ldquo;:&rdquo;) character and a terminal
+type. The port type is a string (delimited by either the
+operator or the colon character). The operator may be any
+combination of &ldquo;&gt;&rdquo;, &ldquo;&lt;&rdquo;,
+&ldquo;@&rdquo;, and &ldquo;!&rdquo;; &ldquo;&gt;&rdquo;
+means greater than, &ldquo;&lt;&rdquo; means less than,
+&ldquo;@&rdquo; means equal to and &ldquo;!&rdquo; inverts
+the sense of the test. The baud rate is specified as a
+number and is compared with the speed of the standard error
+output (which should be the control terminal). The terminal
+type is a string.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the terminal
+type is not specified on the command line, the <b>-m</b>
+mappings are applied to the terminal type. If the port type
+and baud rate match the mapping, the terminal type specified
+in the mapping replaces the current type. If more than one
+mapping is specified, the first applicable mapping is
+used.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For example,
+consider the following mapping: <b>dialup&gt;9600:vt100</b>.
+The port type is dialup , the operator is &gt;, the baud
+rate specification is 9600, and the terminal type is vt100.
+The result of this mapping is to specify that if the
+terminal type is <b>dialup</b>, and the baud rate is greater
+than 9600 baud, a terminal type of <b>vt100</b> will be
+used.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If no baud rate
+is specified, the terminal type will match any baud rate. If
+no port type is specified, the terminal type will match any
+port type. For example, <b>-m dialup:vt100 -m :?xterm</b>
+will cause any dialup port, regardless of baud rate, to
+match the terminal type vt100, and any non-dialup port type
+to match the terminal type ?xterm. Note, because of the
+leading question mark, the user will be queried on a default
+port as to whether they are actually using an xterm
+terminal.</p>
+
+<p style="margin-left:11%; margin-top: 1em">No whitespace
+characters are permitted in the <b>-m</b> option argument.
+Also, to avoid problems with meta-characters, it is
+suggested that the entire <b>-m</b> option argument be
+placed within single quote characters, and that <b>csh</b>
+users insert a backslash character (&ldquo;\&rdquo;) before
+any exclamation marks (&ldquo;!&rdquo;).</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">A <b>reset</b>
+command appeared in 1BSD (March 1978), written by Kurt
+Shoens. This program set the <i>erase</i> and <i>kill</i>
+characters to <b>^H</b> (backspace) and <b>@</b>
+respectively. Mark Horton improved that in 3BSD (October
+1979), adding <i>intr</i>, <i>quit</i>,
+<i>start</i>/<i>stop</i> and <i>eof</i> characters as well
+as changing the program to avoid modifying any user
+settings. That version of <b>reset</b> did not use the
+termcap database.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A separate
+<b>tset</b> command was provided in 1BSD by Eric Allman,
+using the termcap database. Allman&rsquo;s comments in the
+source code indicate that he began work in October 1977,
+continuing development over the next few years.</p>
+
+<p style="margin-left:11%; margin-top: 1em">According to
+comments in the source code, the <b>tset</b> program was
+modified in September 1980, to use logic copied from the
+3BSD &ldquo;reset&rdquo; when it was invoked as
+<b>reset</b>. This version appeared in 4.1cBSD, late in
+1982.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Other
+developers (e.g., Keith Bostic and Jim Bloom) continued to
+modify <b>tset</b> until 4.4BSD was released in 1993.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>ncurses</b> implementation was lightly adapted from the
+4.4BSD sources for a terminfo environment by Eric S. Raymond
+&lt;esr@snark.thyrsus.com&gt;.</p>
+
+<h2>COMPATIBILITY
+<a name="COMPATIBILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Neither IEEE
+Std 1003.1/The Open Group Base Specifications Issue 7
+(POSIX.1-2008) nor X/Open Curses Issue 7 documents
+<b>tset</b> or <b>reset</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The AT&amp;T
+<b>tput</b> utility (AIX, HPUX, Solaris) incorporated the
+terminal-mode manipulation as well as termcap-based features
+such as resetting tabstops from <b>tset</b> in BSD (4.1c),
+presumably with the intention of making <b>tset</b>
+obsolete. However, each of those systems still provides
+<b>tset</b>. In fact, the commonly-used <b>reset</b> utility
+is always an alias for <b>tset</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <b>tset</b>
+utility provides for backward-compatibility with BSD
+environments (under most modern UNIXes, <b>/etc/inittab</b>
+and <b>getty</b>(8) can set <b>TERM</b> appropriately for
+each dial-up line; this obviates what was
+<b>tset</b>&rsquo;s most important use). This implementation
+behaves like 4.4BSD <b>tset</b>, with a few exceptions
+specified here.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A few options
+are different because the <b>TERMCAP</b> variable is no
+longer supported under terminfo-based <b>ncurses</b>:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">The <b>-S</b> option of BSD
+<b>tset</b> no longer works; it prints an error message to
+the standard error and dies.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>The <b>-s</b> option only sets <b>TERM</b>, not
+<b>TERMCAP</b>.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">There was an
+undocumented 4.4BSD feature that invoking <b>tset</b> via a
+link named &ldquo;TSET&rdquo; (or via any other name
+beginning with an upper-case letter) set the terminal to use
+upper-case only. This feature has been omitted.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <b>-A</b>,
+<b>-E</b>, <b>-h</b>, <b>-u</b> and <b>-v</b> options were
+deleted from the <b>tset</b> utility in 4.4BSD. None of them
+were documented in 4.3BSD and all are of limited utility at
+best. The <b>-a</b>, <b>-d</b>, and <b>-p</b> options are
+similarly not documented or useful, but were retained as
+they appear to be in widespread use. It is strongly
+recommended that any usage of these three options be changed
+to use the <b>-m</b> option instead. The <b>-a</b>,
+<b>-d</b>, and <b>-p</b> options are therefore omitted from
+the usage summary above.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Very old
+systems, e.g., 3BSD, used a different terminal driver which
+was replaced in 4BSD in the early 1980s. To accommodate
+these older systems, the 4BSD <b>tset</b> provided a
+<b>-n</b> option to specify that the new terminal driver
+should be used. This implementation does not provide that
+choice.</p>
+
+<p style="margin-left:11%; margin-top: 1em">It is still
+permissible to specify the <b>-e</b>, <b>-i</b>, and
+<b>-k</b> options without arguments, although it is strongly
+recommended that such usage be fixed to explicitly specify
+the character.</p>
+
+<p style="margin-left:11%; margin-top: 1em">As of 4.4BSD,
+executing <b>tset</b> as <b>reset</b> no longer implies the
+<b>-Q</b> option. Also, the interaction between the - option
+and the <i>terminal</i> argument in some historic
+implementations of <b>tset</b> has been removed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <b>-c</b>
+and <b>-w</b> options are not found in earlier
+implementations. However, a different window size-change
+feature was provided in 4.4BSD.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">In 4.4BSD, <b>tset</b> uses the
+window size from the termcap description to set the window
+size if <b>tset</b> is not able to obtain the window size
+from the operating system.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>In ncurses, <b>tset</b> obtains the window size using
+<b>setupterm</b>, which may be from the operating system,
+the <b>LINES</b> and <b>COLUMNS</b> environment variables or
+the terminal description.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Obtaining the
+window size from the terminal description is common to both
+implementations, but considered obsolescent. Its only
+practical use is for hardware terminals. Generally speaking,
+a window size would be unset only if there were some problem
+obtaining the value from the operating system (and
+<b>setupterm</b> would still fail). For that reason, the
+<b>LINES</b> and <b>COLUMNS</b> environment variables may be
+useful for working around window-size problems. Those have
+the drawback that if the window is resized, those variables
+must be recomputed and reassigned. To do this more easily,
+use the <b>resize</b>(1) program.</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The <b>tset</b>
+command uses these environment variables: <br>
+SHELL</p>
+
+<p style="margin-left:18%;">tells <b>tset</b> whether to
+initialize <b>TERM</b> using <b>sh</b>(1) or <b>csh</b>(1)
+syntax.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>TERM</p></td>
+<td width="1%"></td>
+<td width="82%">
+
+
+<p>Denotes your terminal type. Each terminal type is
+distinct, though many are similar.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">TERMCAP</p>
+
+<p style="margin-left:18%;">may denote the location of a
+termcap database. If it is not an absolute pathname, e.g.,
+begins with a &ldquo;/&rdquo;, <b>tset</b> removes the
+variable from the environment before looking for the
+terminal description.</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">/etc/ttys</p>
+
+<p style="margin-left:18%;">system port name to terminal
+type mapping database (BSD versions only).</p>
+
+<p style="margin-left:11%;">/etc/terminfo</p>
+
+<p style="margin-left:18%;">terminal capability
+database</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>csh</b>(1),
+<b>sh</b>(1), <b>stty</b>(1), <b>terminfo</b>(3NCURSES),
+<b>tty</b>(4), <b>terminfo</b>(5), <b>ttys</b>(4),
+<b>environ</b>(7)</p>
+
+<p style="margin-left:11%; margin-top: 1em">This describes
+<b>ncurses</b> version 6.4 (patch 20221231).</p>
+<hr>
+</body>
+</html>

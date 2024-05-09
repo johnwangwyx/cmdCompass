@@ -1,0 +1,289 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:11 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Ilbmtoppm User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Ilbmtoppm User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#LIMITATIONS">LIMITATIONS</a><br>
+<a href="#REFERENCES">REFERENCES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ilbmtoppm -
+convert an ILBM file into a PPM image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ilbmtoppm</b>
+[<b>-ignore</b>&lt;chunkID&gt;<b>]</b> [ <b>-isham</b> |
+<b>-isnotham</b> | <b>-isehb</b> | <b>-isnotehb</b> |
+<b>-isdeep</b> | <b>-isnotdeep</b> ] [<b>-cmaponly</b>]
+[<b>-adjustcolors</b>] [<b>-transparent</b> <i>color</i>]
+[<b>-maskfile</b> <i>filename</i> [<b>-verbose</b>]
+[<i>ILBMfile</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ilbmtoppm</b>
+reads an IFF ILBM file as input and produces a PPM image as
+output. <b>ilbmtoppm</b> can handle the following ILBM
+types:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Normal ILBMs with 1-16 planes.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Amiga Extra_Halfbrite (EHB)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Amiga HAM with 3-16 planes.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>24 bit.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Multiplatte (normal or HAM) pictures.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Color map (BMHD + CMAP chunk only, nPlanes = 0).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Unofficial direct color. 1-16 planes for each color
+component.</p> </td></tr>
+</table>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ilbmtoppm</b>
+uses these ILBM chunks: BMHD, CMAP, CAMG (only HAM &amp; EHB
+flags used), PCHG, BODY unofficial DCOL chunk to identify
+direct color ILBM. It ignores these chunks: GRAB, DEST,
+SPRT, CRNG, CCRT, CLUT, DPPV, DRNG, EPSF. It ignores, but
+displays in verbose mode, these: NAME, AUTH, (c), ANNO, DPI.
+It skips chunks whose type it doesn&rsquo;t recognize.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>ilbmtoppm</b> recognizes the following command line
+options: <b><br>
+-transparent</b> <i>color</i></p>
+
+<p style="margin-left:22%;">This is the color that should
+&quot;show through&quot; in places where the image is
+transparent.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>color</i> is
+like the <a href="libnetpbm_image.html#colorname">argument
+of the <b>pnm_parsecolor()</b> library routine</a> .</p>
+
+<p style="margin-left:11%;"><b>-verbose</b></p>
+
+<p style="margin-left:22%;">Give some information about the
+ILBM file.</p>
+
+<p style="margin-left:11%;"><b>-ignore</b>
+<i>chunkID</i></p>
+
+<p style="margin-left:22%;">Skip a chunk. <i>chunkID</i> is
+the 4-letter IFF chunk identifier of the chunk to be
+skipped.</p>
+
+<p style="margin-left:11%;"><b>-isham</b> |
+<b>-isehb</b></p>
+
+<p style="margin-left:22%;">Treat the input file as a HAM
+or Extra_Halfbrite picture, even if these flags are not set
+in the CAMG chunk (or if there is no CAMG chunk).</p>
+
+<p style="margin-left:11%;"><b>-maskfile</b>
+<i>filename</i></p>
+
+<p style="margin-left:22%;">This names a file for
+<b>ilbmtoppm</b> to create with the image&rsquo;s
+transparency mask. The mask file is a PBM image which maps
+to the input image with white pixels representing
+transparent pixels in the image and black pixels
+representing opaque pixels.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you
+don&rsquo;t specfy this, or the image does not contain
+transparency information, <b>ilbmtoppm</b> does not create a
+mask file.</p>
+
+<p style="margin-left:11%;"><b>-cmaponly</b></p>
+
+<p style="margin-left:22%;">With this option,
+<b>ilbmtoppm</b> generates a PPM of the ILBM&rsquo;s
+<i>color map</i>, not the image itself.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>ilbmtoppm</b>
+does the same thing even without <b>-cmaponly</b> if the
+ILBM is a pure color map stream (it has a bitmap header with
+an <i>nplanes</i> value of zero or has no BODY chunk.</p>
+
+<p style="margin-left:11%;"><b>-adjustcolors</b></p>
+
+<p style="margin-left:22%;">If all colors in the CMAP have
+a value of less then 16, ilbmtoppm assumes a 4-bit colormap
+and gives a warning. With this option the colormap is scaled
+to 8 bits.</p>
+
+<h2>LIMITATIONS
+<a name="LIMITATIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+multipalette PCHG BigLineChanges and Huffman decompression
+code is untested.</p>
+
+<h2>REFERENCES
+<a name="REFERENCES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Amiga ROM
+Kernel Reference Manual - Devices (3rd Ed.) Addison Wesley,
+ISBN 0-201-56775-X</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmtoilbm</b>(1),
+<b>ppm</b>(1)</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1989 by Jef Poskanzer.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Modified
+October 1993 by Ingo Wilken
+(<i>Ingo.Wilken@informatik.uni-oldenburg.de</i>)</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/ilbmtoppm.html</b></p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,244 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:44 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Rawtopgm User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Rawtopgm User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">rawtopgm -
+convert raw grayscale bytes to a PGM image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>rawtopgm</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-bpp</b>
+[<b>1</b>|<b>2</b>]]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-littleendian</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-maxval</b>
+<i>N</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-headerskip</b>
+<i>N</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-rowskip</b>
+<i>N</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-tb</b>|<b>-topbottom</b>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">[<i>width
+height</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<i>imagefile</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>rawtopgm</b>
+reads raw grayscale values as input and produces a PGM image
+as output. The input file is just a sequence of pure binary
+numbers, either one or two bytes each, either bigendian or
+littleendian, representing gray values. They may be arranged
+either top to bottom, left to right or bottom to top, left
+to right. There may be arbitrary header information at the
+start of the file (to which <b>rawtopgm</b> pays no
+attention at all other than the header&rsquo;s size).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Arguments to
+<b>rawtopgm</b> tell how to interpret the pixels (a function
+that is served by a header in a regular graphics
+format).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>width</i> and <i>height</i> parameters tell the
+dimensions of the image. If you omit these parameters,
+<b>rawtopgm</b> assumes it is a quadratic image and bases
+the dimensions on the size of the input stream. If this size
+is not a perfect square, <b>rawtopgm</b> fails.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When you
+don&rsquo;t specify <i>width</i> and <i>height</i>,
+<b>rawtopgm</b> reads the entire input stream into storage
+at once, which may take a lot of storage. Otherwise,
+<b>rawtopgm</b> ordinarily stores only one row at a
+time.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you
+don&rsquo;t specify <i>imagefile</i>, or specify <b>-</b>,
+the input is from Standard Input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The PGM output
+is to Standard Output.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>rawtopgm</b> recognizes the following command line
+options: <b><br>
+-maxval</b> <i>N</i></p>
+
+<p style="margin-left:22%;"><i>N</i> is the maxval for the
+gray values in the input, and is also the maxval of the PGM
+output image. The default is the maximum value that can be
+represented in the number of bytes used for each sample
+(i.e. 255 or 65535).</p>
+
+<p style="margin-left:11%;"><b>-bpp</b>
+[<b>1</b>|<b>2</b>]</p>
+
+<p style="margin-left:22%;">tells the number of bytes that
+represent each sample in the input. If the value is
+<b>2</b>, The most significant byte is first in the
+stream.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+1 byte per sample.</p>
+
+<p style="margin-left:11%;"><b>-littleendian</b></p>
+
+<p style="margin-left:22%;">says that the bytes of each
+input sample are ordered with the least significant byte
+first. Without this option, <b>rawtopgm</b> assumes MSB
+first. This obviously has no effect when there is only one
+byte per sample.</p>
+
+<p style="margin-left:11%;"><b>-headerskip</b> <i>N</i></p>
+
+<p style="margin-left:22%;"><b>rawtopgm</b> skips over
+<i>N</i> bytes at the beginning of the stream and reads the
+image immediately after. The default is 0.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This is useful
+when the input is actually some graphics format that has a
+descriptive header followed by an ordinary raster, and you
+don&rsquo;t have a program that understands the header or
+you want to ignore the header.</p>
+
+<p style="margin-left:11%;"><b>-rowskip</b> <i>N</i></p>
+
+<p style="margin-left:22%;">If there is padding at the ends
+of the rows, you can skip it with this option. Note that
+rowskip need not be an integer. Amazingly, I once had an
+image with 0.376 bytes of padding per row. This turned out
+to be due to a file-transfer problem, but I was still able
+to read the image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Skipping a
+fractional byte per row means skipping one byte per multiple
+rows.</p>
+
+<p style="margin-left:11%;"><b>-bt -bottomfirst</b></p>
+
+<p style="margin-left:22%;">By default, <b>rawtopgm</b>
+assumes the pixels in the input go top to bottom, left to
+right. If you specify <b>-bt</b> or <b>-bottomfirst</b>,
+<b>rawtopgm</b> assumes the pixels go bottom to top, left to
+right. The Molecular Dynamics and Leica confocal format, for
+example, use the latter arrangement.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you
+don&rsquo;t specify <b>-bt</b> when you should or vice
+versa, the resulting image is upside down, which you can
+correct with <b>pamflip</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+causes <b>rawtopgm</b> to read the entire input stream into
+storage at once, which may take a lot of storage. Normally,
+<b>rawtopgm</b> stores only one row at a time.</p>
+
+<p style="margin-left:22%; margin-top: 1em">For backwards
+compatibility, <b>rawtopgm</b> also accepts <b>-tb</b> <br>
+and <b>-topbottom</b> to mean exactly the same thing. The
+reasons these are named backwards is that the original
+author thought of it as specifying that the wrong results of
+assuming the data is top to bottom should be corrected by
+flipping the result top for bottom. Today, we think of it as
+simply specifying the format of the input data so that there
+are no wrong results.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pgm</b>(1),
+<b>rawtoppm</b>(1), <b>pamflip</b>(1)</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1989 by Jef Poskanzer. Modified June 1993 by Oliver Trepte,
+<i>oliver@fysik4.kth.se</i></p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/rawtopgm.html</b></p>
+<hr>
+</body>
+</html>

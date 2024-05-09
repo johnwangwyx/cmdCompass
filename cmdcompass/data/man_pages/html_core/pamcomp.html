@@ -1,0 +1,517 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:25 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamcomp User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamcomp User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#ARGUMENTS">ARGUMENTS</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamcomp -
+composite (overlay) two Netpbm images together</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamcomp</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-align=</b>{<b>left</b>
+| <b>center</b> | <b>right</b> | <b>beyondleft</b> |
+<b>beyondright</b>}] [<b>-valign=</b>{<b>top</b> |
+<b>middle</b> | <b>bottom</b>| <b>above</b> | <b>below</b>}]
+[<b>-xoff=</b><i>X</i>] [<b>-yoff=</b><i>Y</i>]
+[<b>-alpha=</b><i>alpha-pgmfile</i>] [<b>-invert</b>]
+[<b>-opacity=</b><i>opacity</i>] [<b>-mixtransparency</b>]
+[<b>-linear</b>] <i>overlay_file</i> [<i>underlying_file</i>
+[<i>output_file</i>]]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviation of option is acceptable. You may use double
+hyphens instead of single hyphen to denote options. You may
+use white space in place of the equals sign to separate an
+option name from its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamcomp</b>
+reads two images and produces a composite image with one of
+the images overlayed on top of the other, possible
+translucently. The images need not be the same size. The
+input and outputs are Netpbm format image files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In its simplest
+use, <b>pamcomp</b> simply places the image in the file
+<i>overlay_file</i> on top of the image in the file
+<i>underlying_file</i>, blocking out the part of
+<i>underlying_file</i> beneath it.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you add the
+<b>-alpha</b> option, then <b>pamcomp</b> uses the image in
+file <i>alpha-pgmfile</i> as a transparency mask, which
+means it determines the level of transparency of each point
+in the overlay image. The transparency mask must have the
+same dimensions as the overlay image. In places where the
+transparency mask defines the overlay image to be opaque,
+the composite output contains only the contents of the
+overlay image; the underlying image is totally blocked out.
+In places where the transparency mask defines the overlay
+image to be transparent, the composite output contains none
+of the overlay image; the underlying image shows through
+completely. In places where the transparency mask shows a
+value in between opaque and transparent (translucence), the
+composite image contains a mixture of the overlay image and
+the underlying image and the level of translucence
+determines how much of each.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+transparency mask is a PGM file in which a white pixel
+represents opaqueness and a black pixel transparency.
+Anything in between is translucent. (Like any Netpbm
+program, <b>pamcomp</b> will see a PBM file as if it is
+PGM).</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the overlay
+image is a PAM image of tuple type RGB_ALPHA or
+GRAYSCALE_ALPHA, then the overlay image contains
+transparency information itself and <b>pamcomp</b> uses it
+the same way as the transparency mask described above. If
+you supply both an overlay image that has transparency
+information and a transparency mask, <b>pamcomp</b>
+multiplies the two opacities to get the opacity of the
+overlay pixel.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Before Netpbm
+10.25 (October 2004), <b>pamcomp</b> did not recognize the
+transparency information in a PAM image -- it just ignored
+it. So people had to make appropriate transparency masks in
+order to have a non-opaque overlay. Some Netpbm programs
+that convert from image formats that contain transparency
+information are not able to create RGB_ALPHA or
+GRAYSCALE_ALPHA PAM output, so you have to use the old
+method -- extract the transparency information from the
+original into a separate transparency mask and use that as
+input to <b>pamcomp</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The output
+image is always of the same dimensions as the underlying
+image. <b>pamcomp</b> uses only parts of the overlay image
+that fit within the underlying image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The output
+image is a PAM image. Its tuples are color, grayscale, or
+black and white, whichever is the &quot;highest&quot; format
+between the two input images. The maxval of the output is
+the least common multiple of the maxvals of the input, up to
+the maximum possible PAM maxval, 65535.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The output has
+an opacity channel if and only if the underlying image does,
+and then the opacities are as described under the
+<b>-mixtransparency</b> option. Before Netpbm 10.56
+(September 2011), the output never has an opacity
+channel.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To specify
+where on the underlying image to place the overlay image,
+use the <b>-align</b>, <b>-valign</b>, <b>-xoff</b>, and
+<b>-yoff</b> options. Without these options, the default
+horizontal position is flush left and the default vertical
+position is flush top.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The overlay
+image, in the position you specify, need not fit entirely
+within the underlying image. <b>pamcomp</b> uses only the
+parts of the overlay image that appear above the underlying
+image. It is possible to specify positioning such that
+<i>none</i> of the overlay image is over the underlying
+image -- i.e. the overlay is out of frame. If you do that,
+<b>pamcomp</b> issues a warning.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The overlay and
+underlying images may be of different formats (e.g.
+overlaying a PBM text image over a full color PPM image) and
+have different maxvals. The output image has the more
+general of the two input formats and a maxval that is the
+least common multiple the two maxvals (or the maximum maxval
+allowable by the format, if the LCM is more than that).</p>
+
+<h2>ARGUMENTS
+<a name="ARGUMENTS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>overlay_file</i> argument is the name of the file
+containing the <br>
+overly image, while <i>underlying_file</i> is the name of
+the file <br>
+containing the underlying image. For either, you may specify
+&rsquo;-&rsquo; <br>
+to indicate Standard Input, and <i>underlying</i> file
+defaults to Standard <br>
+Input. Make sure you aren&rsquo;t specifying (or defaulting)
+Standard Input as <br>
+both.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that there
+may be a third input file, identified by an
+<b>-alphafile</b> option.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>output_file</i> argument is the name of the file to which
+<b><br>
+pamcomp</b> writes the output, creating or truncating it
+first. You may <br>
+specify &rsquo;-&rsquo; to indicate Standard Output, in
+which <br>
+case <b>pamcomp</b> does not truncate it. Note that
+<b>pamcomp</b> is <br>
+unusual among Netpbm programs, as a historical accident, in
+having an output <br>
+file argument; Netpbm programs normally write to Standard
+Output only.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamcomp</b> recognizes the following command line
+options: <b><br>
+-align=</b><i>alignment</i></p>
+
+<p style="margin-left:22%;">This option selects the basic
+horizontal position of the overlay image with respect to the
+underlying image, in syntax reminiscent of HTML. <b>left</b>
+means flush left, <b>center</b> means centered, and
+<b>right</b> means flush right.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+<b>-xoff</b> option modifies this position.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>beyondleft</b>
+means just out of frame to the left -- the right edge of the
+overlay is flush with the left edge of the underlying image.
+<b>beyondright</b> means just out of frame to the right.
+These alignments are useful only if you add a <b>-xoff</b>
+option. These two values were added in Netpbm 10.10 (October
+2002).</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+<b>left</b>.</p>
+
+
+<p style="margin-left:11%;"><b>-valign=</b><i>alignment</i></p>
+
+<p style="margin-left:22%;">This option selects the basic
+vertical position of the overlay image with respect to the
+underlying image, in syntax reminiscent of HTML. <b>top</b>
+means flush top, <b>middle</b> means centered, and
+<b>bottom</b> means flush bottom.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+<b>-yoff</b> option modifies this position.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>above</b>
+means just out of frame to the top -- the bottom edge of the
+overlay is flush with the top edge of the underlying image.
+<b>below</b> means just out of frame to the bottom. These
+alignments are useful only if you add a <b>-yoff</b> option.
+These two values were added in Netpbm 10.10 (October
+2002).</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+<b>top</b>.</p>
+
+<p style="margin-left:11%;"><b>-xoff=</b><i>x</i></p>
+
+<p style="margin-left:22%;">This option modifies the
+horizontal positioning of the overlay image with respect to
+the underlying image as selected by the <b>-align</b>
+option. <b>pamcomp</b> shifts the overlay image from that
+basic position <i>x</i> pixels to the right. <i>x</i> can be
+negative to indicate shifting to the left.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The overlay
+need not fit entirely (or at all) on the underlying image.
+<b>pamcomp</b> uses only the parts that lie over the
+underlying image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Before Netpbm
+10.10 (October 2002), <b>-xoff</b> was mutually exclusive
+with <b>-align</b> and always measured from the left
+edge.</p>
+
+<p style="margin-left:11%;"><b>-yoff=</b><i>y</i></p>
+
+<p style="margin-left:22%;">This option modifies the
+vertical positioning of the overlay image with respect to
+the underlying image as selected by the <b>-valign</b>
+option. <b>pamcomp</b> shifts the overlay image from that
+basic position <i>y</i> pixels downward. <i>y</i> can be
+negative to indicate shifting upward.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The overlay
+need not fit entirely (or at all) on the underlying image.
+<b>pamcomp</b> uses only the parts that lie over the
+underlying image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Before Netpbm
+10.10 (October 2002), <b>-xoff</b> was mutually exclusive
+with <b>-valign</b> and always measured from the top
+edge.</p>
+
+
+<p style="margin-left:11%;"><b>-alpha=</b><i>alpha-pgmfile</i></p>
+
+<p style="margin-left:22%;">This option names a file that
+contains the transparency mask. If you don&rsquo;t specify
+this option, there is no transparency mask, which is
+equivalent to having a transparency mask specify total
+opaqueness everywhere.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You can specify
+<b>-</b> as the value of this option and the transparency
+mask will come from Standard Input. If you do this,
+don&rsquo;t specify Standard Input as the source of any
+other input image.</p>
+
+<p style="margin-left:11%;"><b>-invert</b></p>
+
+<p style="margin-left:22%;">This option inverts the sense
+of the values in the transparency mask, which effectively
+switches the roles of the overlay image and the underlying
+image in places where the two intersect.</p>
+
+
+<p style="margin-left:11%;"><b>-opacity=</b><i>opacity</i></p>
+
+<p style="margin-left:22%;">This option tells how opaque
+the overlay image is to be, i.e. how much of the composite
+image should be from the overlay image, as opposed to the
+underlying image. <i>opacity</i> is a floating point number,
+with 1.0 meaning the overlay image is totally opaque and 0.0
+meaning it is totally transparent. The default is 1.0.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you specify
+a transparency mask (the <b>-alpha</b> option),
+<b>pamcomp</b> uses the product of the opacity indicated by
+the transparency mask (as modified by the <b>-invert</b>
+option, as a fraction, and this opacity value. The
+<b>-invert</b> option does not apply to this opacity
+value.</p>
+
+<p style="margin-left:22%; margin-top: 1em">As a simple
+opacity value, the value makes sense only if it is between 0
+and 1, inclusive. However, <b>pamcomp</b> accepts all values
+and performs the same arithmetic computation using whatever
+value you provide. An opacity value less than zero means the
+underlay image is intensified and then the overlay image is
+&quot;subtracted&quot; from it. An opacity value greater
+than unity means the overlay image is intensified and the
+underlay image subtracted from it. In either case,
+<b>pamcomp</b> clips the resulting color component
+intensities so they are nonnegative and don&rsquo;t exceed
+the output image&rsquo;s maxval.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This may seem
+like a strange thing to do, but it has uses. You can use it
+to brighten or darken or saturate or desaturate areas of the
+underlay image. See <b>this description</b>(1) of the
+technique.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+added in Netpbm 10.6 (July 2002). Before Netpbm 10.15 (April
+2003), values less than zero or greater than unity were not
+allowed.</p>
+
+<p style="margin-left:11%;"><b>-mixtransparency</b></p>
+
+<p style="margin-left:22%;">This option controls what
+<b>pamcomp</b> does where both the underlying and overlay
+image are non-opaque.</p>
+
+<p style="margin-left:22%; margin-top: 1em">By default, the
+output image has the same transparency as the underlying
+image and the transparency of the underlying image has no
+effect on the composition of color.</p>
+
+<p style="margin-left:22%; margin-top: 1em">But with this
+option, <b>pamcomp</b> composes the image according to a
+plastic transparency metaphor: the underlying and overlay
+images are plastic slides. The output image is the slide you
+get when you stack up those two slides. So the transparency
+of the output is a combination of the transparency of the
+inputs and the transparency of the underlying image affects
+the underlying image&rsquo;s contribution to the output
+image&rsquo;s color.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Unlike the
+metaphorical slide, a PAM pixel has a color even where it is
+completely transparent, so <b>pamcomp</b> departs from the
+metaphor in that case and makes the output color identical
+to the underlying image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.56 (September 2011). Before that, the
+output is always opaque and the <b>pamcomp</b> ignores the
+transparency of the underlying image.</p>
+
+<p style="margin-left:11%;"><b>-linear</b></p>
+
+<p style="margin-left:22%;">This option indicates that the
+inputs are not true Netpbm images but rather a
+light-intesity-proportional variation. This is relevant only
+when you mix pixels, using the <b>-opacity</b> option or a
+transparency mask (the <b>-alpha</b> option).</p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+transparency mask and <b>-opacity</b> values indicate a
+fraction of the light intensity of a pixel. But the PNM and
+PNM-equivalent PAM image formats represent intensities with
+gamma-adjusted numbers that are not linearly proportional to
+intensity. So <b>pamcomp</b>, by default, performs a
+calculation on each sample read from its input and each
+sample written to its output to convert between these
+gamma-adjusted numbers and internal intensity-proportional
+numbers.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Sometimes you
+are not working with true PNM or PAM images, but rather a
+variation in which the sample values are in fact directly
+proportional to intensity. If so, use the <b>-linear</b>
+option to tell <b>pamcomp</b> this. <b>pamcomp</b> then will
+skip the conversions.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The conversion
+takes time. And the difference between
+intensity-proportional values and gamma-adjusted values may
+be small enough that you would barely see a difference in
+the result if you just pretended that the gamma-adjusted
+values were in fact intensity-proportional. So just to save
+time, at the expense of some image quality, you can specify
+<b>-linear</b> even when you have true PPM input and expect
+true PPM output.</p>
+
+<p style="margin-left:22%; margin-top: 1em">For the first
+13 years of Netpbm&rsquo;s life, until Netpbm 10.20 (January
+2004), <b>pamcomp</b>&rsquo;s predecessor <b>pnmcomp</b>
+always treated the PPM samples as intensity-proportional
+even though they were not, and drew few complaints. So using
+<b>-linear</b> as a lie is a reasonable thing to do if speed
+is important to you.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Another
+technique to consider is to convert your PNM image to the
+linear variation with <b>pnmgamma</b>, run <b>pamcomp</b> on
+it and other transformations that like linear PNM, and then
+convert it back to true PNM with <b>pnmgamma -ungamma</b>.
+<b>pnmgamma</b> is often faster than <b>pamcomp</b> in doing
+the conversion.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pammixmulti.html</b>(1)
+mixes together two or more images of the same size, in
+various ways.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmmix</b>(1)
+and <b>pnmpaste</b>(1) are simpler, less general versions of
+the same tool.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmcolormask</b>(1)
+and <b>pbmmask</b>(1), and <b>pambackground</b>(1) can help
+with generating a transparency mask.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmcomp</b>(1)
+is an older program that runs faster, but has less
+function.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnm</b>(1)</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamcomp</b>
+was new in Netpbm 10.21 (March 2004). Its predecessor,
+<b>pnmcomp</b>, was one of the first programs added to
+Netpbm when the project went global in 1993.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1992 by David Koblas (<i>koblas@mips.com</i>).</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamcomp.html</b></p>
+<hr>
+</body>
+</html>

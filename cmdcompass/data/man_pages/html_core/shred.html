@@ -1,0 +1,214 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:47 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SHRED</title>
+
+</head>
+<body>
+
+<h1 align="center">SHRED</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">shred -
+overwrite a file to hide its contents, and optionally delete
+it</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>shred</b>
+[<i>OPTION</i>]... <i>FILE</i>...</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Overwrite the
+specified FILE(s) repeatedly, in order to make it harder for
+even very expensive hardware probing to recover the
+data.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If FILE is -,
+shred standard output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Mandatory
+arguments to long options are mandatory for short options
+too. <b><br>
+-f</b>, <b>--force</b></p>
+
+<p style="margin-left:22%;">change permissions to allow
+writing if necessary</p>
+
+<p style="margin-left:11%;"><b>-n</b>,
+<b>--iterations</b>=<i>N</i></p>
+
+<p style="margin-left:22%;">overwrite N times instead of
+the default (3)</p>
+
+
+<p style="margin-left:11%;"><b>--random-source</b>=<i>FILE</i></p>
+
+<p style="margin-left:22%;">get random bytes from FILE</p>
+
+<p style="margin-left:11%;"><b>-s</b>,
+<b>--size</b>=<i>N</i></p>
+
+<p style="margin-left:22%;">shred this many bytes (suffixes
+like K, M, G accepted)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-u</b></p></td>
+<td width="8%"></td>
+<td width="67%">
+
+
+<p>deallocate and remove file after overwriting</p></td>
+<td width="11%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>--remove</b>[=<i>HOW</i>]</p>
+
+<p style="margin-left:22%;">like <b>-u</b> but give control
+on HOW to delete; See below</p>
+
+<p style="margin-left:11%;"><b>-v</b>, <b>--verbose</b></p>
+
+<p style="margin-left:22%;">show progress</p>
+
+<p style="margin-left:11%;"><b>-x</b>, <b>--exact</b></p>
+
+<p style="margin-left:22%;">do not round file sizes up to
+the next full block;</p>
+
+<p style="margin-left:22%; margin-top: 1em">this is the
+default for non-regular files</p>
+
+<p style="margin-left:11%;"><b>-z</b>, <b>--zero</b></p>
+
+<p style="margin-left:22%;">add a final overwrite with
+zeros to hide shredding</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--help</b></p></td>
+<td width="2%"></td>
+<td width="40%">
+
+
+<p>display this help and exit</p></td>
+<td width="38%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--version</b></p>
+
+<p style="margin-left:22%;">output version information and
+exit</p>
+
+<p style="margin-left:11%; margin-top: 1em">Delete FILE(s)
+if <b>--remove</b> (<b>-u</b>) is specified. The default is
+not to remove the files because it is common to operate on
+device files like <i>/dev/hda</i>, and those files usually
+should not be removed. The optional HOW parameter indicates
+how to remove a directory entry: &rsquo;unlink&rsquo; =&gt;
+use a standard unlink call. &rsquo;wipe&rsquo; =&gt; also
+first obfuscate bytes in the name. &rsquo;wipesync&rsquo;
+=&gt; also sync each obfuscated byte to the device. The
+default mode is &rsquo;wipesync&rsquo;, but note it can be
+expensive.</p>
+
+<p style="margin-left:11%; margin-top: 1em">CAUTION: shred
+assumes the file system and hardware overwrite data in
+place. Although this is common, many platforms operate
+otherwise. Also, backups and mirrors may contain unremovable
+copies that will let a shredded file be recovered later. See
+the GNU coreutils manual for details.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Written by
+Colin Plumb.</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">GNU coreutils
+online help: &lt;https://www.gnu.org/software/coreutils/&gt;
+<br>
+Report any translation bugs to
+&lt;https://translationproject.org/team/&gt;</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+&copy; 2022 Free Software Foundation, Inc. License GPLv3+:
+GNU GPL version 3 or later
+&lt;https://gnu.org/licenses/gpl.html&gt;. <br>
+This is free software: you are free to change and
+redistribute it. There is NO WARRANTY, to the extent
+permitted by law.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Full
+documentation
+&lt;https://www.gnu.org/software/coreutils/shred&gt; <br>
+or available locally via: info '(coreutils) shred
+invocation'</p>
+<hr>
+</body>
+</html>

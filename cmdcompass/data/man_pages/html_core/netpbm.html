@@ -1,0 +1,1879 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:20 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>User manual for Netpbm</title>
+
+</head>
+<body>
+
+<h1 align="center">User manual for Netpbm</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#Overview Of Netpbm">Overview Of Netpbm</a><br>
+<a href="#Table Of Contents">Table Of Contents</a><br>
+<a href="#The Netpbm Programs">The Netpbm Programs</a><br>
+<a href="#The Netpbm Formats">The Netpbm Formats</a><br>
+<a href="#The Netpbm Library">The Netpbm Library</a><br>
+<a href="#netpbm-config">netpbm-config</a><br>
+<a href="#Memory Usage">Memory Usage</a><br>
+<a href="#CPU Usage">CPU Usage</a><br>
+<a href="#Netpbm For Gimp">Netpbm For Gimp</a><br>
+<a href="#Companion Software">Companion Software</a><br>
+<a href="#Other Graphics Software">Other Graphics Software</a><br>
+<a href="#Other Graphics Formats">Other Graphics Formats</a><br>
+<a href="#History">History</a><br>
+<a href="#Author">Author</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">netpbm - netpbm
+library overview</p>
+
+<h2>Overview Of Netpbm
+<a name="Overview Of Netpbm"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Netpbm</b>
+is a package of graphics programs and a programming
+library.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There are over
+330 separate programs in the package, most of which have
+&quot;pbm&quot;, &quot;pgm&quot;, &quot;ppm&quot;,
+&quot;pam&quot;, or &quot;pnm&quot; in their names. For
+example, <b>pamscale</b>(1) and <b>giftopnm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em">For example,
+you might use <b>pamscale</b> to shrink an image by 10%. Or
+use <b>pamcomp</b> to overlay one image on top of another.
+Or use <b>pbmtext</b> to create an image of text. Or reduce
+the number of colors in an image with <b>pnmquant</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Netpbm</b>
+is an open source software package, distributed via the
+<a href="http://sourceforge.net/projects/netpbm">Sourceforge
+<b>netpbm</b> project</a> .</p>
+
+<h2>Table Of Contents
+<a name="Table Of Contents"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="53%">
+
+
+<p style="margin-top: 1em"><a href="#overview">Overview Of
+Netpbm</a></p> </td>
+<td width="25%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="53%">
+
+
+<p><a href="#formats">The Netpbm Formats</a></p></td>
+<td width="25%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="53%">
+
+
+<p><a href="#impconv">Implied Format Conversion</a></p></td>
+<td width="25%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="53%">
+
+
+<p><a href="#transparency">Netpbm and Transparency</a></p></td>
+<td width="25%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="53%">
+
+
+<p><a href="#programs">The Netpbm Programs</a></p></td>
+<td width="25%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="53%">
+
+
+<p><a href="#commonoptions">Common Options</a></p></td>
+<td width="25%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="53%">
+
+
+<p><a href="#directory">Directory</a></p></td>
+<td width="25%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="53%">
+
+
+<p><a href="#prognotes">How To Use The Programs</a></p></td>
+<td width="25%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="53%">
+
+
+<p><a href="#libnetpbm">The Netpbm Library</a></p></td>
+<td width="25%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="53%">
+
+
+<p><a href="#config">netpbm-config</a></p></td>
+<td width="25%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="53%">
+
+
+<p><a href="#memoryusage">Memory Usage</a></p></td>
+<td width="25%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="53%">
+
+
+<p><a href="#cpuusage">CPU Usage</a></p></td>
+<td width="25%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="53%">
+
+
+<p><a href="#netpbmforgimp">Netpbm For Gimp</a></p></td>
+<td width="25%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="53%">
+
+
+<p><a href="#companion">Companion Software</a></p></td>
+<td width="25%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="53%">
+
+
+<p><a href="#phpnetpbm">PHP-NetPBM</a></p></td>
+<td width="25%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="53%">
+
+
+<p><a href="#othersoftware">Other Graphics Software</a></p></td>
+<td width="25%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="53%">
+
+
+<p><a href="#viewers">Image Viewers</a></p></td>
+<td width="25%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="53%">
+
+
+<p><a href="#capturers">Image Capturers</a></p></td>
+<td width="25%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="53%">
+
+
+<p><a href="#visual">Visual Graphics Software</a></p></td>
+<td width="25%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="53%">
+
+
+<p><a href="#programmingtools">Programming Tools</a></p></td>
+<td width="25%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="53%">
+
+
+<p><a href="#toolsforformats">Tools For Specific Graphics
+Formats</a></p> </td>
+<td width="25%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="53%">
+
+
+<p><a href="#document">Document/Graphics Software</a></p></td>
+<td width="25%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="53%">
+
+
+<p><a href="#otherothersoftware">Other</a></p></td>
+<td width="25%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="53%">
+
+
+<p><a href="#otherfmt">Other Graphics Formats</a></p></td>
+<td width="25%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="53%">
+
+
+<p><a href="#history">History</a></p></td>
+<td width="25%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="53%">
+
+
+<p><a href="#author">Author</a></p></td>
+<td width="25%">
+</td></tr>
+</table>
+
+<h2>The Netpbm Programs
+<a name="The Netpbm Programs"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The Netpbm
+programs are generally useful run by a person from a command
+shell, but are also designed to be used by programs. A
+common characteristic of Netpbm programs is that they are
+simple, fundamental building blocks. They are most powerful
+when stacked in pipelines. Netpbm programs do not use
+graphical user interfaces and do not seek input from a user.
+The only programs that display graphics at all are the very
+primitive display programs <b>pamx</b> and
+<b>ppmsvgalib</b>, and they don&rsquo;t do anything but
+that.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each of these
+programs has its own manual, as linked in the directory
+below.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The Netpbm
+programs can read and write files greater than 2 GiB
+wherever the underlying system can. There may be exceptions
+where the programs use external libraries (The JPEG library,
+etc.) to access files and the external library does not have
+large file capability. Before Netpbm 10.15 (April 2003), no
+Netpbm program could read a file that large.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Common
+Options</b> <br>
+There are a few options that are present on all programs
+that are based on the Netpbm library, including virtually
+all Netpbm programs. These are not mentioned in the
+individual manuals for the programs.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can use two
+hyphens instead of one on these options if you like.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>-quiet</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Suppress all informational
+messages that would otherwise be issued to Standard Error.
+(To be precise, this only works to the extent that the
+program in question implements the Netpbm convention of
+issuing all informational messages via the
+<b>pm_message()</b> service of the Netpbm library).</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-version</b></p>
+
+<p style="margin-left:22%;">Instead of doing anything else,
+report the version of the <b>libnetpbm</b> library linked
+with the program (it may have been linked statically into
+the program, or dynamically linked at run time). Normally,
+the Netpbm programs and the library are installed at the
+same time, so this tells you the version of the program and
+all the other Netpbm files it uses as well.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-plain</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>If the program generates an image in PNM format,
+generate it in the &quot;plain&quot; (aka &quot;ascii&quot;)
+version of the format, as opposed to the &quot;raw&quot;
+(aka &quot;binary&quot;) version.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">Note that the
+other Netpbm format, PAM, does not have plain and raw
+versions, so this option has no effect on a program that
+generates PAM output.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+introduced in Netpbm 10.10 (October 2002). From Netpbm 10.32
+(February 2006) through Netpbm 10.62 (March 2013), the
+option is invalid with a program that generates PAM output
+(instead of ignoring the option, the program fails).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Directory</b>
+<br>
+Here is a complete list of all the Netpbm programs (with
+links to their manuals):</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Netpbm
+program directory</b>(1)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>How To Use
+The Programs</b> <br>
+As a collection of primitive tools, the power of Netpbm is
+multiplied by the power of all the other unix tools you can
+use with them. These notes remind you of some of the more
+useful ways to do this. Often, when people want to add high
+level functions to the Netpbm tools, they have overlooked
+some existing tool that, in combination with Netpbm, already
+does it.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Often, you need
+to apply some conversion or edit to a whole bunch of
+files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">As a rule,
+Netpbm programs take one input file and produce one output
+file, usually on Standard Output. This is for flexibility,
+since you so often have to pipeline many tools together.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Here is an
+example of a shell command to convert all your of PNG files
+(named *.png) to JPEG files named *.jpg: <br>
+for i in *.png; do pngtopam $i | ppmtojpeg
+&gt;&rsquo;basename $i .png&rsquo;.jpg; done</p>
+
+<p style="margin-left:11%; margin-top: 1em">Or you might
+just generate a stream of individual shell commands, one per
+file, with awk or perl. Here&rsquo;s how to brighten 30 YUV
+images that make up one second of a movie, keeping the
+images in the same files:</p>
+
+<p style="margin-left:11%; margin-top: 1em">ls *.yuv <br>
+| perl -ne &rsquo;chomp; <br>
+print yuvtoppm $_ | pambrighten -value +100 | ppmtoyuv
+&gt;tmp$$.yuv; <br>
+mv tmp$$.yuv $_ <br>
+&rsquo; <br>
+| sh</p>
+
+<p style="margin-left:11%; margin-top: 1em">The tools
+<b>find</b> (with the <b>-exec</b> option) and <b>xargs</b>
+are also useful for simple manipulation of groups of
+files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Some
+shells&rsquo; &quot;process substitution&quot; facility can
+help where a non-Netpbm program expects you to identify a
+disk file for input and you want it to use the result of a
+Netpbm manipulation. Say the hypothetical program
+<b>printcmyk</b> takes the filename of a Tiff CMYK file as
+input and what you have is a PNG file <b>abc.png</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Try: <br>
+printcmyk &lt;({ pngtopam abc.png | pnmtotiffcmyk ; })</p>
+
+<p style="margin-left:11%; margin-top: 1em">It works in the
+other direction too, if you have a program that makes you
+name its output file and you want the output to go through a
+Netpbm tool.</p>
+
+<h2>The Netpbm Formats
+<a name="The Netpbm Formats"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">All of the
+programs work with a set of graphics formats called the
+&quot;netpbm&quot; formats. Specifically, these formats are
+<b>pbm</b>(1), <b>pgm</b>(1), <b>ppm</b>(1), and
+<b>pam</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The first three
+of these are sometimes known generically as
+&quot;pnm&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Many of the
+Netpbm programs convert from a Netpbm format to another
+format or vice versa. This is so you can use the Netpbm
+programs to work on graphics of any format. It is also
+common to use a combination of Netpbm programs to convert
+from one non-Netpbm format to another non-Netpbm format.
+Netpbm has converters for about 100 graphics formats, and as
+a package Netpbm lets you do more graphics format
+conversions than any other computer graphics facility.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The Netpbm
+formats are all raster formats, i.e. they describe an image
+as a matrix of rows and columns of pixels. In the PBM
+format, the pixels are black and white. In the PGM format,
+pixels are shades of gray. In the PPM format, the pixels are
+in full color. The PAM format is more sophisticated. A
+replacement for all three of the other formats, it can
+represent matrices of general data including but not limited
+to black and white, grayscale, and color images.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Programs
+designed to work with PBM images have &quot;pbm&quot; in
+their names. Programs designed to work with PGM, PPM, and
+PAM images similarly have &quot;pgm&quot;, &quot;ppm&quot;,
+and &quot;pam&quot; in their names.</p>
+
+<p style="margin-left:11%; margin-top: 1em">All Netpbm
+programs designed to read PGM images see PBM images as if
+they were PGM too. All Netpbm programs designed to read PPM
+images see PGM and PBM images as if they were PPM. See
+<a href="#impconv"> Implied Format Conversion</a> .</p>
+
+<p style="margin-left:11%; margin-top: 1em">Programs that
+have &quot;pnm&quot; in their names read PBM, PGM, and PPM
+but unlike &quot;ppm&quot; programs, they distinguish
+between those formats and their function depends on the
+format. For example, <b>pnmtopng</b>(1) creates a black and
+white PNG output image if its input is PBM or PGM, but a
+color PNG output image if its input is PPM. And
+<b>pnmrotate</b> produces an output image of the same format
+as the input. A hypothetical <b>ppmrotate</b> program would
+also read all three PNM input formats, but would see them
+all as PPM and would always generate PPM output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Programs that
+have &quot;pam&quot; in their names read all the Netpbm
+formats: PBM, PGM, PPM, and PAM. They sometimes treat them
+all as if they are PAM, using an implied conversion, but
+often they recognize the individual formats and behave
+accordingly, like a &quot;pnm&quot; program does. See
+<a href="#impconv">Implied Format Conversion</a> .</p>
+
+<p style="margin-left:11%; margin-top: 1em">Finally, there
+are subformats of PAM that are equivalent to PBM, PGM, and
+PPM respectively, and Netpbm programs designed to read PBM,
+PGM, and/or PPM see those PAM images as if they were the
+former. For example, <b>ppmhist</b> can analyze a PAM image
+of tuple type RGB (i.e. a color image) as if it were
+PPM.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If it seems
+wasteful to you to have three separate PNM formats, be aware
+that there is a historical reason for it. In the beginning,
+there were only PBMs. PGMs came later, and then PPMs. Much
+later came PAM, which realizes the possibility of having
+just one aggregate format.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The formats are
+described in the specifications of <b>pbm</b>(1),
+<b>pgm</b>(1), <b>ppm</b>(1), and <b>pam</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Implied
+Format Conversion</b> <br>
+A program that uses the PGM library subroutines to read an
+image can read a PBM image as well as a PGM image. The
+program sees the PBM image as if it were the equivalent PGM
+image, with a maxval of 255. <b>note:</b> This sometimes
+confuses people who are looking at the formats at a lower
+layer than they ought to be because a zero value in a PBM
+raster means white, while a zero value in a PGM raster means
+black.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A program that
+uses the PPM library subroutines to read an image can read a
+PGM image as well as a PPM image and a PBM image as well as
+a PGM image. The program sees the PBM or PGM image as if it
+were the equivalent PPM image, with a maxval of 255 in the
+PBM case and the same maxval as the PGM in the PGM case.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A program that
+uses the PAM library subroutines to read an image can read a
+PBM, PGM, or PPM image as well as a PAM image. The program
+sees a PBM image as if it were the equivalent PAM image with
+tuple type <b>BLACKANDWHITE</b>. It sees a PGM image as if
+it were the equivalent PAM image with tuple type
+<b>GRAYSCALE</b>. It sees a PPM image as if it were the
+equivalent PAM image with tuple type <b>RGB</b>. But the
+program actually can see deeper if it wants to. It can tell
+exactly which format the input was and may respond
+accordingly. For example, a PAM program typically produces
+output in the same format as its input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A program that
+uses the PGM library subroutines to read an image can read a
+PAM image as well a PGM image, if the PAM is a grayscale or
+black and white visual image. That canonically means the PAM
+has a depth of 1 and a tuple type of GRAYSCALE or
+BLACKANDWHITE, but most Netpbm programs are fairly liberal
+and will take any PAM at all, ignoring all but the first
+plane.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There is a
+similar implied conversion for PPM library subroutines
+reading PAM. There is nothing similar for PBM, so if you
+need for a PBM program to read a PAM image, run it through
+<b>pamtopnm</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Netpbm and
+Transparency</b> <br>
+In many graphics formats, there&rsquo;s a means of
+indicating that certain parts of the image are wholly or
+partially transparent, meaning that if it were displayed
+&quot;over&quot; another image, the other image would show
+through there. Netpbm formats deliberately omit that
+capability, since their purpose is to be extremely
+simple.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In Netpbm, you
+handle transparency via a transparency mask in a separate
+(slightly redefined) PGM image. In this pseudo-PGM, what
+would normally be a pixel&rsquo;s intensity is instead an
+opaqueness value. See <b>pgm</b>(1). <b>pamcomp</b>(1) is an
+example of a program that uses a PGM transparency mask.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Another means
+of representing transparency information has recently
+developed in Netpbm, using PAM images. In spite of the
+argument given above that Netpbm formats should be too
+simple to have transparency information built in, it turns
+out to be extremely inconvenient to have to carry the
+transparency information around separately. This is
+primarily because Unix shells don&rsquo;t provide easy ways
+to have networks of pipelines. You get one input and one
+output from each program in a pipeline. So you&rsquo;d like
+to have both the color information and the transparency
+information for an image in the same pipe at the same
+time.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For that
+reason, some new (and recently renovated) Netpbm programs
+recognize and generate a PAM image with tuple type RGB_ALPHA
+or GRAYSCALE_ALPHA, which contains a plane for the
+transparency information. See <b>the PAM
+specification</b>(1).</p>
+
+<h2>The Netpbm Library
+<a name="The Netpbm Library"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The Netpbm
+programming library, <b>libnetpbm</b>(1), makes it easy to
+write programs that manipulate graphic images. Its main
+function is to read and write files in the Netpbm formats,
+and because the Netpbm package contains converters for all
+the popular graphics formats, if your program reads and
+writes the Netpbm formats, you can use it with any
+formats.</p>
+
+<p style="margin-left:11%; margin-top: 1em">But the library
+also contain some utility functions, such as character
+drawing and RGB/YCrCb conversion.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The library has
+the conventional C linkage. Virtually all programs in the
+Netpbm package are based on the Netpbm library.</p>
+
+<h2>netpbm-config
+<a name="netpbm-config"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In a standard
+installation of Netpbm, there is a program named
+<b>netpbm-config</b> in the regular program search path. We
+don&rsquo;t consider this a Netpbm program -- it&rsquo;s
+just an ancillary part of a Netpbm installation. This
+program tells you information about the Netpbm installation,
+and is intended to be run by other programs that interface
+with Netpbm. In fact, <b>netpbm-config</b> is really a
+configuration file, like those you typically see in the
+<i>/etc/</i> directory of a Unix system.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Example: <br>
+$netpbm-config --datadir <br>
+/usr/local/netpbm/data</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you write a
+program that needs to access a Netpbm data file, it can use
+such a shell command to find out where the Netpbm data files
+are.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>netpbm-config</b>
+is the only file that must be installed in a standard
+directory (it must be in a directory that is in the default
+program search path). You can use <b>netpbm-config</b> as a
+bootstrap to find all the other Netpbm files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There is no
+detailed documentation of <b>netpbm-config</b>. If
+you&rsquo;re in a position to use it, you should have no
+trouble reading the file itself to figure out how to use
+it.</p>
+
+<h2>Memory Usage
+<a name="Memory Usage"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">An important
+characteristic that varies among graphics software is how
+much memory it uses, and how. Does it read an entire image
+into memory, work on it there, then write it out all at
+once? Does it read one and write one pixel at a time? In
+Netpbm, it differs from one program to the next, but there
+are some generalizations we can make.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Most Netpbm
+programs keep one row of pixels at a time in memory. Such a
+program reads a row from an input file, processes it, then
+writes a row to an output file. Some programs execute
+algorithms that can&rsquo;t work like that, so they keep a
+small window of rows in memory. Others must keep the entire
+image in memory. If you think of what job the program does,
+you can probably guess which one it does.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When Netpbm
+keeps a pixel in memory, it normally uses a lot more space
+for it than it occupies in the Netpbm image file format.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The older
+programs (most of Netpbm) use 12 bytes per pixel. This is
+true even for a PBM image, for which it only really takes
+one bit to totally describe the pixel. Netpbm does this
+expansion to make implementing the programs easier -- it
+uses the same format regardless of the type of image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Newer programs
+use the &quot;pam&quot; family of library functions
+internally, which use memory a little differently. These
+functions are designed to handle generic tuples with a
+variable numbers of planes, so no fixed size per-tuple
+storage is possible. A program of this type uses 4 bytes per
+sample (a tuple is composed of samples), plus a pointer (4-8
+bytes) per tuple. In a graphic image, a tuple is a pixel. So
+an ordinary color image takes 16-20 bytes per pixel.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When
+considering memory usage, it is important to remember that
+memory and disk storage are equivalent in two ways:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Memory is often virtual, backed
+by swap space on disk storage. So accessing memory may mean
+doing disk I/O.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Files are usually cached and buffered, so that accessing
+a disk file may just mean accessing memory.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">This means that
+the consequences of whether a program works from the image
+file or from a memory copy are not straightforward.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that an
+image takes a lot less space in a Netpbm format file, and
+therefore in an operating system&rsquo;s file cache, than in
+Netpbm&rsquo;s in-memory format. In non-Netpbm image
+formats, the data is even smaller. So reading through an
+input file multiple times instead of keeping a copy in
+regular memory can be the best use of memory, and many
+Netpbm programs do that. But some files can&rsquo;t be read
+multiple times. In particular, you can&rsquo;t rewind and
+re-read a pipe, and a pipe is often the input for a Netpbm
+program. Netpbm programs that re-read files detect such
+input files and read them into a temporary file, then read
+that temporary file multiple times.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A few Netpbm
+programs use an in-memory format that is just one bit per
+pixel. These are programs that convert between PBM and a
+format that has a raster format very much like PBM&rsquo;s.
+In this case, it would actually make the program more
+complicated (in addition to much slower) to use
+Netpbm&rsquo;s generic 12 byte or 8 byte pixel
+representation.</p>
+
+<p style="margin-left:11%; margin-top: 1em">By the way, the
+old axiom that memory is way faster than disk is not
+necessarily true. On small systems, it typically is true,
+but on a system with a large network of disks, especially
+with striping, it is quite easy for the disk storage to be
+capable of supplying data faster than the CPU can use
+it.</p>
+
+<h2>CPU Usage
+<a name="CPU Usage"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">People
+sometimes wonder what CPU facilities Netpbm programs and the
+Netpbm programming library use. The programs never depend on
+particular features existing (assuming they&rsquo;re
+compiled properly), but the speed and cost of running a
+program varies depending upon the CPU features.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that when
+you download a binary that someone else compiled, even
+though it appears to be compiled properly for your machine,
+it may be compiled improperly for that machine if it is old,
+because the person who compiled it may have chosen to
+exploit features of newer CPUs in the line. For example, an
+x86 program may be compiled to use instructions that are
+present on an 80486, but not on an 80386. You would probably
+not know this until you run the program and it crashes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">But the default
+build options almost always build binaries that are as
+backward compatible with old CPUs as possible. An exception
+is a build for a 64 bit x86 CPU. While the builder could
+build a program that runs on a 32 bit x86, it does not do so
+by default. A default build builds a program will not run on
+an older 32-bit-only x86 CPU.</p>
+
+<p style="margin-left:11%; margin-top: 1em">One common
+build option is to use MMX/SSE operands with x86 CPUs. Those
+are not available on older x86 CPUs. The builder by default
+does not generate code that uses MMX/SSE when building for
+32 bit x86 CPUs, but does when building for 64 bit x86.</p>
+
+<p style="margin-left:11%; margin-top: 1em">One area of
+particular importance is floating point arithmetic. The
+Netpbm image formats are based on integers, and Netpbm
+arithmetic is done with integers where possible. But there
+is one significant area that is floating point: programs
+that must deal with light intensity. The Netpbm formats use
+integers that are proportional to brightness, and brightness
+is exponentially related to light intensity. The programs
+have to keep the intermediate intensity values in floating
+point in order not to lose precision. And the conversion
+(gamma function) between the two is heavy-duty floating
+point arithmetic.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Programs that
+mix pixels together have to combine light intensity, so they
+do heavy floating point. Three of the most popular Netpbm
+programs do that: <b>pamscale</b>(1) (shrink/expand an
+image), <b>pamcomp</b>(1) (overlay an image over another
+one), and <b>pamditherbw</b>(1) (Make a black and white
+image that approximates a grayscale image).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The Netpbm
+image formats use 16 bit integers. The Netpbm code uses
+&quot;unsigned int&quot; size integers to work with
+them.</p>
+
+<h2>Netpbm For Gimp
+<a name="Netpbm For Gimp"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The Gimp is a
+visual image editor for Unix and X, so it does the kinds of
+things that Netpbm does, but interactively in a
+user-friendly way. The Gimp knows a variety of graphics file
+formats and image transformations, but you can extend it
+with plugins.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A particularly
+easy way to write a Gimp plugin is to write a Netpbm program
+(remember that a fundamental mission of Netpbm is make
+writing image manipulation programs easy) and then use
+<b><a href="http://netpbm2gimp.sourceforge.net/"></b>netpbm2gimp<b></a></b>
+to compile that same source code into a Gimp plugin.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can turn a
+program that converts from a certain graphics file format to
+Netpbm format into a Gimp <i>load</i> plugin. Likewise, you
+can turn a program that converts <i>to</i> a certain
+graphics format <i>from</i> Netpbm format into a Gimp
+<i>store</i> plugin. Finally, a program that transforms
+images in Netpbm format can become a <i>process</i>
+plugin.</p>
+
+<p style="margin-left:11%; margin-top: 1em">And the
+<b>netpbm2gimp</b> project has already packaged for you a
+few hundred of the Netpbm programs as Gimp plugins. With
+this package you can, for example, edit an image in any of
+the arcane graphics file formats that Netpbm understands but
+no other image editor in existence does.</p>
+
+<h2>Companion Software
+<a name="Companion Software"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>PHP-NetPBM</b>
+<br>
+If you&rsquo;re using Netpbm to do graphics for a website,
+you can invoke the Netpbm programs from a PHP script. To
+make this even easier, check out
+<a href="http://sourceforge.net/projects/phpnetpbm">PHP-NetPBM</a>
+, a PHP class that interacts with Netpbm. Its main goal is
+to decrease the pain of using Netpbm when working with
+images in various formats. It includes macro commands to
+perform manipulations on many files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">I can&rsquo;t
+actually recommend PHP-NetPBM. I spent some time staring at
+it and was unable to make sense of it. Some documentation is
+in fractured English and other is in an unusual character
+set. But a PHP expert might be able to figure it out and get
+some use out of it.</p>
+
+<h2>Other Graphics Software
+<a name="Other Graphics Software"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Netpbm contains
+primitive building blocks. It certainly is not a complete
+graphics software library.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Command Line
+Programs <br>
+ImageMagick</b> does many of the same things - mainly the
+more popular ones - that Netpbm does, including conversion
+between popular formats and basic editing. <b>convert</b>,
+<b>mogrify</b>, <b>montage</b>, and <b>animate</b> are
+popular programs from the <b>ImageMagick</b> package.
+<b>ImageMagick</b> runs on Unix, Windows, Windows NT,
+Macintosh, and VMS.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ImageMagick</b>
+also contains the program <b>display</b>, which is a
+<a href="#viewers">viewer</a> and <a href="#visual">visual
+editor</a> .</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Image
+Viewers</b> <br>
+The first thing you will want to make use of any of these
+tools is a viewer. (On GNU/Linux, you can use Netpbm&rsquo;s
+<b>pamx</b> or <b>ppmsvgalib</b> in a pinch, but it is
+pretty limiting). <b>zgv</b> is a good full service viewer
+to use on a GNU/Linux system with the SVGALIB graphics
+display driver library. You can find <b>zgv</b> at
+<b><a href="ftp://ftp.ibiblio.org/pub/Linux/apps/graphics/viewers/svga"></b>ftp://ftp.ibiblio.org/pub/Linux/apps/graphics/viewers/svga<b></a>
+.</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>zgv</b> even
+has a feature in it wherein you can visually crop an image
+and write an output file of the cropped image using
+<b>pamcut</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em">See the
+<b>-s</b> option to <b>zgv</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For the X
+inclined, there is also <b>xzgv</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>xwud</b> (X
+Window Undump) is a classic application program in the X
+Window System that displays an image in an X window. It
+takes the special X Window Dump format as input; you can use
+Netpbm&rsquo;s <b>pnmtoxwd</b>(1) to create it. You&rsquo;re
+probably better off just using Netpbm&rsquo;s
+<b>pamx</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>xloadimage</b>
+and its extension <b>xli</b> are also common ways to display
+a graphic image in X.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>gqview</b>
+is a more modern X-based image viewer.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>qiv</b> is a
+small, very fast viewer for X.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To play mpeg
+movies, such as produced by <b>ppmtompeg</b>, try
+<b>mplayer</b>(1) or
+<b><a href="http://sourceforge.net/projects/xine"></b>xine<b></a>
+.</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">See
+<b><a href="ftp://metalab.unc.edu/pub/Linux/apps/graphics/viewers/X"></b>ftp://metalab.unc.edu/pub/Linux/apps/graphics/viewers/X<b></a></b>
+.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Image
+Capturers <br>
+xwd</b> (X Window Dump), a classic application program in
+the X Window System, captures the contents of an X window,
+in its own special image format, called X Window Dump File.
+You can use Netpbm&rsquo;s <b>xwdtopnm</b>(1) to turn it
+into something more useful. <br>
+
+<a href="http://www.rcdrummond.net/fbdump/"><b>fbdump</b></a>
+Capturers the current contents of a video display on the
+local computer and generates a PPM image of it. It works
+with Linux framebuffer devices.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Visual
+Graphics Software</b> <br>
+Visual graphics software is modern point-and-click software
+that displays an image and lets you work on it and see the
+results as you go. This is fundamentally different from what
+Netpbm programs do.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>xv</b> is a
+very old and very popular simple image editor in the Unix
+world. It does not have much in the way of current support,
+or maintenance, though.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Gimp is a
+visual image editor for Unix and the X Window System, in the
+same category as the more famous, less capable, and much
+more expensive Adobe Photoshop, etc. for Windows. See
+<b><a href="http://www.gimp.org"></b>http://www.gimp.org<b></a></b>
+. And you can add most of Netpbm&rsquo;s function to Gimp
+using
+<a href="http://netpbm2gimp.sourceforge.net/">Netpbm2gimp</a>
+.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ImageMagick</b>
+contains the program <b>display</b>, which is another visual
+image editor. It has fewer functions than Gimp. This program
+uses the X Window System. The package also contains
+<a href="#othercmdline">command line</a> graphics
+programs.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Electric Eyes,
+<b>kuickshow</b>, and <b>gthumb</b> are also visual editors
+for the X/Window system, and <b>KView</b> and
+<b>gwenview</b> are specifically for KDE.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Programming
+Tools</b> <br>
+If you&rsquo;re writing a program in C to draw and
+manipulate images, check out
+<a href="https://github.com/libgd/libgd">gd</a> . Netpbm
+contains a C library for drawing images
+(<b>libnetpbm</b>&rsquo;s &quot;ppmd&quot; routines), but it
+is not as capable or documented as <b>gd</b>. There are
+wrapper libraries available for Perl, PHP, and other
+language.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can easily
+run any Netpbm program from a C program with the
+<b>pm_system</b> function from the Netpbm programming
+library, but that is less efficient than <b>gd</b> functions
+that do the same thing. <br>
+<a href="http://cairographics.org/">Cairo</a> is
+similar.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Ilib</b> is
+a C subroutine library with functions for adding text to an
+image (as you might do at a higher level with
+<b>pbmtext</b>, <b>pamcomp</b>, etc.). It works with Netpbm
+input and output. Find it at
+<b><a href="http://www.k5n.us/Ilib.php"></b>k5n.us<b></a></b>
+. Netpbm also includes character drawing functions in the
+<b>libnetpbm</b>(1) library, but they do not have as fancy
+font capabilities (see <b>ppmdraw</b>(1) for an example of
+use of the Netpbm character drawing functions). <br>
+<a href="http://www.pango.org/">Pango</a> is another text
+rendering library, with an emphasis on
+internationalization.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Pango and Cairo
+complement each other and work well together.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>GD</b> is a
+library of graphics routines that is part of PHP. It has a
+subset of Netpbm&rsquo;s functions and has been found to
+resize images more slowly and with less quality.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Tools For
+Specific Graphics Formats <br>
+mencode</b>, which is part of the <b>mplayer</b>(1) package,
+creates movie files. It&rsquo;s like a much more advanced
+version of <b>ppmtompeg</b>(1), without the Netpbm building
+block simplicity. <br>
+
+<a href="http://mjpeg.sourceforge.net"><b>MJPEGTools</b></a>
+is software for dealing with the MJPEG movie format.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To create an
+animated GIF, or extract a frame from one, use
+<b>gifsicle</b>. <b>gifsicle</b> converts between animated
+GIF and still GIF, and you can use <b>pamtogif</b> and
+<b>giftopnm</b> to connect up to all the Netpbm utilities.
+See
+<b><a href="http://www.lcdf.org/gifsicle"></b>http://www.lcdf.org/gifsicle<b></a></b>
+.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To convert an
+image of text to text (optical character recognition - OCR),
+use <b>gocr</b> (think of it as an inverse of
+<b>pbmtext</b>). See
+<b><a href="http://jocr.sourceforge.net/"></b>http://jocr.sourceforge.net/<b></a></b>
+. <b><br>
+
+<a href="http://schaik.com/pngsuite"></b>http://schaik.com/pngsuite<b></a></b>
+contains a PNG test suite -- a whole bunch of PNG images
+exploiting the various features of the PNG format.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Other versions
+of Netpbm&rsquo;s <b>pnmtopng</b>/<b>pngtopam</b> are at
+http://www.schaik.com/png/pnmtopng.html&quot; (1).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The version in
+Netpbm was actually based on that package a long time ago,
+and you can expect to find better exploitation of the PNG
+format, especially recent enhancements, in that package. It
+may be a little less consistent with the Netpbm project and
+less exploitive of recent Netpbm format enhancements,
+though. <b><br>
+
+<a href="http://pngwriter.sourceforge.net"></b>pngwriter<b></a></b>
+is a C++ library for creating PNG images. With it, you plot
+an image pixel by pixel. You can also render text with the
+FreeType2 library.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>jpegtran</b>
+Does some of the same transformations as Netpbm is famous
+for, but does them specifically on JPEG files and does them
+without loss of information. By contrast, if you were to use
+Netpbm, you would first decompress the JPEG image to Netpbm
+format, then transform the image, then compress it back to
+JPEG format. In that recompression, you lose a little image
+information because JPEG is a lossy compression. Of course,
+only a few kinds of lossless transformation are possible.
+<b>jpegtran</b> comes with the Independent JPEG
+Group&rsquo;s (
+<a href="http://www.ijg.org">http://www.ijg.org)</a> JPEG
+library.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Some tools to
+deal with EXIF files (see also Netpbm&rsquo;s
+<b>jpegtopnm</b>(1) and <b>pnmtojpeg</b>(1)):</p>
+
+<p style="margin-left:11%; margin-top: 1em">To dump
+(interpret) an EXIF header: Exifdump ((
+<a href="http://www.math.u-psud.fr/~bousch/exifdump.py">http://www.math.u-psud.fr/~bousch/exifdump.py)</a>
+) or
+<a href="http://www.sentex.net/~mwandel/jhead">Jhead</a>
+.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A Python EXIF
+library and dumper:
+<a href="http://pyexif.sourceforge.net.">http://pyexif.sourceforge.net.</a></p>
+
+<p style="margin-left:11%; margin-top: 1em">Here&rsquo;s
+some software to work with IOCA (Image Object Content
+Architecture):
+<a href="http://www.forminnovation.com">ImageToolbox</a>
+($2500, demo available). This can convert from TIFF -&gt;
+IOCA and back again. <br>
+
+<a href="https://ameri-imager.software.informer.com/">Ameri-Imager</a>
+is an image and video editor. ($40 Windows only).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnm2ppa</b>
+converts to HP&rsquo;s &quot;Winprinter&quot; format (for HP
+710, 720, 820, 1000, etc). It is a superset of
+Netpbm&rsquo;s <b>pbmtoppa</b> and handles, notably, color.
+However, it is more of a printer driver than a Netpbm-style
+primitive graphics building block. See
+<a href="http://sourceforge.net/projects/pnm2ppa">The
+Pnm2ppa /Sourceforge Project</a></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>DjVuLibre</b>
+is a package of software for using the DjVu format. It
+includes viewers, browser plugins, decoders, simple
+encoders, and utilities. The encoders and decoders can
+convert between DjVu and PNM. See
+<a href="http://djvu.sourceforge.net/"> the DjVu
+website.</a></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Document/Graphics
+Software</b> <br>
+There is a large class of software that does document
+processing, and that is somewhat related to graphics because
+documents contain graphics and a page of a document is for
+many purposes a graphic image. Because of this slight
+intersection with graphics, I cover document processing
+software here briefly, but it is for the most part beyond
+the scope of this document.</p>
+
+<p style="margin-left:11%; margin-top: 1em">First, we look
+at where Netpbm meets document processing. <b>pstopnm</b>
+converts from Postscript and PDF to PNM. It effectively
+renders the document into images of printed pages.
+<b>pstopnm</b> is nothing but a convenient wrapper for
+<a href="http://www.ghostscript.com/">Ghostscript</a> , and
+in particular Netpbm-format device drivers that are part of
+it. <b>pnmtops</b> and <b>pbmtoepsi</b> convert a PNM image
+to a Postscript program for printing the image. But to
+really use PDF and Postscript files, you generally need more
+complex document processing software.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Adobe invented
+Postscript and PDF and products from Adobe are for many
+purposes the quintessential Postscript and PDF tools.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Adobe&rsquo;s
+free Acrobat Reader displays PDF and converts to Postscript.
+The Acrobat Reader for unix has a program name of
+&quot;acroread&quot; and the -toPostScript option (also see
+the -level2 option) is useful.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Other software
+from Adobe, available for purchase, interprets and creates
+Postscript and PDF files. &quot;Distill&quot; is a program
+that converts Postscript to PDF. <br>
+<a href="http://www.foolabs.com/xpdf/"><b>xpdf</b></a> also
+reads PDF files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">GSview,
+ghostview, gv, ggv, and kghostview are some other viewers
+for Postscript and PDF files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The program
+<b>ps2pdf</b>, part of Ghostscript, converts from Postscript
+to PDF.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>bmpp</b>(1)
+converts from Netpbm and other formats to PDF.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Two packages
+that produce more kinds of Encapsulated Postscript than the
+Netpbm programs, including compressed kinds, are
+<b>bmpp</b>(1) and
+<a href="http://imgtops.sourceforge.net/">imgtops</a> .</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>dvips</b>
+converts from DVI format to Postscript. DVI is the format
+that Tex produces. Netpbm can convert from Postscript to
+PNM. Thus, you can use these in combination to work with
+Tex/Latex documents graphically. <br>
+<a href="http://wvware.sourceforge.net"><b>wvware</b></a>
+converts a Microsoft Word document (.doc file) to various
+other formats. While the web page doesn&rsquo;t seem to
+mention it, it reportedly can extract an embedded image in a
+Word document as a PNG. <br>
+<a href="http://www.verypdf.com/artprint">Document
+Printer</a> converts various print document formats
+(Microsoft Word, PDF, HTML, etc.) to various graphic image
+formats. ($38, Windows only).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Latex2html
+converts Latex document source to HTML document source. Part
+of that involves graphics, and Latex2html uses Netpbm tools
+for some of that. But Latex2html through its history has had
+some rather esoteric codependencies with Netpbm. Older
+Latex2html doesn&rsquo;t work with current Netpbm.
+Latex2html-99.2beta8 works, though.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Other</b>
+<br>
+The <b>file</b> program looks at a file and tells you what
+kind of file it is. It recognizes most of the graphics
+formats with which Netpbm deals, so it is pretty handy for
+graphics work. Netpbm&rsquo;s <b>anytopnm</b>(1) program
+depends on <b>file.</b> See
+<b><a href="ftp://ftp.astron.com/pub/file"></b>ftp://ftp.astron.com/pub/file<b></a></b>
+.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<a href="http://www.cs.utah.edu/gdc/projects/urt">Utah
+Raster Toolkit</a> from the
+<a href="http://www.cs.utah.edu/gdc">Geometric Design And
+Computation group</a> in the Department of Computer Science
+at University of Utah serves a lot of the same purpose as
+Netpbm, but without the emphasis on format conversions. This
+package is based on the RLE format, which you can convert to
+and from the Netpbm formats.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Ivtools</b>
+is a suite of free X Window System drawing editors for
+Postscript, Tex, and web graphics production, as well as an
+embeddable and extendable vector graphic shell. It uses the
+Netpbm facilities. See
+<b><a href="http://www.ivtools.org"></b>http://www.ivtools.org<b></a></b>
+.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Chisato
+Yamauchi &lt;cyamauch@ir.isas.jaxa.jp&gt; has written a free
+c/Fortran graphic library:
+<a href="http://www.ir.isas.jaxa.jp/~cyamauch/eggx_procall/">EGGX/ProCall</a>
+. He says he tried to write the ultimate easy-to-use graphic
+kit for X. It is for drawing upon an X11 window, but for
+storage, it outputs PPM. He suggests Netpbm to convert to
+other formats.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The program
+<b>morph</b> morphs one image into another. It uses Targa
+format images, but you can use <b>tgatoppm</b> and
+<b>ppmtotga</b> to deal with that format. You have to use
+the graphical (X/Tk) Xmorph to create the mesh files that
+you must feed to <b>morph</b>. <b>morph</b> is part of the
+Xmorph package. See
+<b><a href="http://xmorph.sourceforge.net/"></b>http://xmorph.sourceforge.net/<b></a></b>
+.</p>
+
+<h2>Other Graphics Formats
+<a name="Other Graphics Formats"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">People never
+seem to tire of inventing new graphics formats, often
+completely redundant with pre-existing ones. Netpbm cannot
+keep up with them. Here is a list of a few that we know
+Netpbm does <i>not</i> handle (yet).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Various
+commercial Windows software handles dozens of formats that
+Netpbm does not, especially formats typically used with
+Windows programs. ImageMagick is probably the most used free
+image format converter and it also handles lots of formats
+Netpbm does not.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">WebP was announced by Google in
+October 2010 as a more compressed replacement for JFIF (aka
+JPEG) on the web.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>JPEG-LS is similar to JFIF (aka JPEG) except that it is
+capable of representing all the information in any raster
+image, so you could convert from, say, PNM, without losing
+any information.
+<a href="http://charls.codeplex.com">CharLS</a> is a
+programming library for JPEG-LS.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Lossless JPEG is a similarly lossless variation of JPEG.
+It predates every other lossless JPEG variation, but had
+only brief interest. You can find code for encoding and
+decoding Lossless JPEG on
+<a href="https://github.com/thorfdbg/libjpeg">GitHub</a>
+.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>JPEG XR offers greater dynamic range, a wider range of
+colors, and more efficient compression than JFIF (aka JPEG).
+Windows and Internet Explorer understand this format,
+starting with Windows 7 and Internet Explorer 9, along with
+many other programs. This format was previously known as
+Windows Media Photo and HD Photo.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Direct Draw Surface (DDS)is the de facto standard
+wrapper format for S3 texture compression, as used in all
+modern realtime graphics applications. Besides Windows-based
+tools, there is a <b>Gimp</b> plugin for this format.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>DjVu is a web-centric format and software platform for
+distributing documents and images. Promoters say it is a
+good replacement for PDF, PS, TIFF, JFIF(JPEG), and GIF for
+distributing scanned documents, digital documents, or
+high-resolution pictures, because it downloads faster,
+displays and renders faster, looks nicer on a screen, and
+consumes less client resources than competing formats.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">For more
+information, see <a href="http://djvu.sourceforge.net/"> the
+DjVu website.</a></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+
+<p style="margin-top: 1em"><a href="http://www.web3d.org/x3d/specifications/vrml">VRML
+(Virtual Reality Modelling Language)</a></p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>CALS (originated by US Department Of Defense, favored by
+architects). It is described in this 1997 listing of
+graphics formats:
+<a href="http://www.faqs.org/faqs/graphics/fileformats-faq/part3/">
+http://www.faqs.org/faqs/graphics/fileformats-faq/part3/</a>
+. CALS has at times been an abbreviation of various things,
+all of which appear to be essentially the same format, but
+possibly slightly different:</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Computer Aided Logistics Support</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Computer Aided Acquisition and Logistics Support</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Continuous Acquisition and Life-cycle Support</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Commerce At Light Speed</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">The US Navy
+publishes
+<a href="https://www.navsea.navy.mil/Home/Warfare-Centers/NSWC-Carderock/Resources/Technical-Information-Systems/IETMs/Specifications-Standards/CALS-Standards/">specs</a>
+for it.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">array formats dx, general,
+netcdf, CDF, hdf, cm</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>CGM+</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>HDR formats OpenEXR, SGI TIFF LogLuv, floating point
+TIFF, Radiance RGBE</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Windows Meta File (.WMF). Libwmf converts from WMF to
+things like Latex, PDF, PNG. Some of these can be input to
+Netpbm.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Microsoft Word .doc format. Microsoft keeps a
+proprietary hold on this format. Any software you see that
+can handle it is likely to cost money.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>RTF</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>DXF (AutoCAD)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>IOCA (Image Object Content Architecture) The
+specification of this format is documented by IBM:
+<a href="http://publibz.boulder.ibm.com/epubs/pdf/c3168055.pdf">
+Data Stream and Object Architectures: Image Object Content
+Ar- chitecture Reference</a> . See above for software that
+processes this format.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>OpenEXR is an HDR format (like <b>PFM</b>(1)). See
+<a href="http://www.openexr.com"> http://www.openexr.com</a>
+.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Xv Visual Schnauzer thumbnail image. This is a rather
+antiquated format used by the Xv program. In Netpbm circles,
+it is best known for the fact that it is very similar to
+Netpbm formats and uses the same signature (&quot;P7&quot;)
+as PAM because it was developed as sort of a fork of the
+Netpbm format specifications.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>YUV 4:2:0, aka YUV 420, and the similar YUV 4:4:4, YUV
+4:2:2, YUV 4:1:1, YUV 4:1:1s, and YUV 4:1:0. Video systems
+often use this.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p><a href="http://en.wikipedia.org/wiki/MJPEG">MJPEG</a>
+movie format.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>YUV4MPEG2 is a movie format whose purpose is similar to
+that of the Netpbm formats for still images. You use it for
+manipulating movies, but not for storing or transmitting
+them. The only known use of the format is with
+<a href="http://mjpeg.sourceforge.net"><b>MJPEGTools</b></a>
+. The programs <b>pnmtoy4m</b> and <b>y4mtopnm</b> (and
+predecessors <b>ppmtoy4m</b> and <b>y4mtoppm</b>) in that
+package convert between a Netpbm stream and a YUV4MPEG2
+stream. As you might guess from the name, YUV4MPEG2 uses a
+YUV representation of data, which is more convenient than
+the Netpbm formats&rsquo; RGB representation for working
+with data that is ultimately MPEG2.</p></td></tr>
+</table>
+
+<h2>History
+<a name="History"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Netpbm has a
+long history, starting with Jef Poskanzer&rsquo;s Pbmplus
+package in 1988. See the <b>Netpbm web site</b>(1) for
+details.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The file
+<b>doc/HISTORY</b> in the Netpbm source code contains a
+detailed change history release by release.</p>
+
+<h2>Author
+<a name="Author"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Netpbm is based
+on the Pbmplus package by Jef Poskanzer, first distributed
+in 1988 and maintained by him until 1991. But the package
+contains work by countless other authors, added since
+Jef&rsquo;s original work. In fact, the name is derived from
+the fact that the work was contributed by people all over
+the world via the Internet, when such collaboration was
+still novel enough to merit naming the package after it.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Bryan Henderson
+has been maintaining Netpbm since 1999. In addition to
+packaging work by others, Bryan has also written a
+significant amount of new material for the package.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/index.html</b></p>
+<hr>
+</body>
+</html>

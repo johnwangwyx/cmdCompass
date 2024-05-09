@@ -1,0 +1,185 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:00 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>DBUS-UUIDGEN</title>
+
+</head>
+<body>
+
+<h1 align="center">DBUS-UUIDGEN</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#BUGS">BUGS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">dbus-uuidgen -
+Utility to generate UUIDs</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em"><b>dbus-uuidgen</b> [--version]
+[--ensure&nbsp;[<i>=FILENAME</i>]]
+[--get&nbsp;[<i>=FILENAME</i>]]</p> </td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>dbus-uuidgen</b> command generates or reads a universally
+unique ID.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that the
+D-Bus UUID has no relationship to RFC 4122 and does not
+generate UUIDs compatible with that spec. Many systems have
+a separate command for that (often called
+&quot;uuidgen&quot;).</p>
+
+<p style="margin-left:11%; margin-top: 1em">See
+<b><font color="#0000FF">http://www.freedesktop.org/software/dbus/</font></b>
+<font color="#000000">for more information about
+D-Bus.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+primary usage of <b>dbus-uuidgen</b> is to run in the
+post-install script of a D-Bus package like this:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">dbus-uuidgen
+--ensure</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">This
+will ensure that /var/lib/dbus/machine-id exists and has the
+uuid in it. It won't overwrite an existing uuid, since this
+id should remain fixed for a single machine until the next
+reboot at least.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+important properties of the machine UUID are that 1) it
+remains unchanged until the next reboot and 2) it is
+different for any two running instances of the OS kernel.
+That is, if two processes see the same UUID, they should
+also see the same shared memory, UNIX domain sockets, local
+X displays, localhost.localdomain resolution, process IDs,
+and so forth.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">If
+you run <b>dbus-uuidgen</b> with no options it just prints a
+new uuid made up out of thin air.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">If
+you run it with --get, it prints the machine UUID by
+default, or the UUID in the specified file if you specify a
+file.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">If
+you try to change an existing machine-id on a running
+system, it will probably result in bad things happening.
+Don't try to change this file. Also, don't make it the same
+on two different systems; it needs to be different anytime
+there are two different kernels running.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+UUID should be different on two different virtual machines,
+because there are two different kernels.</font></p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+following options are supported:</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--get[=FILENAME]</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">If a
+filename is not given, defaults to
+localstatedir/lib/dbus/machine-id (localstatedir is usually
+/var). If this file exists and is valid, the uuid in the
+file is printed on stdout. Otherwise, the command exits with
+a nonzero status.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--ensure[=FILENAME]</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">If a
+filename is not given, defaults to
+localstatedir/lib/dbus/machine-id (localstatedir is usually
+/var). If this file exists then it will be validated, and a
+failure code returned if it contains the wrong thing. If the
+file does not exist, it will be created with a new uuid in
+it. On success, prints no output.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--version</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Print the
+version of dbus-uuidgen</font></p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">See</font>
+<b><font color="#0000FF">http://www.freedesktop.org/software/dbus/doc/AUTHORS</font></b></p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Please
+send bug reports to the D-Bus mailing list or bug tracker,
+see</font>
+<b><font color="#0000FF">http://www.freedesktop.org/software/dbus/</font></b></p>
+<hr>
+</body>
+</html>

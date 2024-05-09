@@ -1,0 +1,176 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:35:00 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Xpmtoppm User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Xpmtoppm User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#LIMITATIONS">LIMITATIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">xpmtoppm -
+convert an X11 pixmap to a PPM image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>xpmtoppm</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>--alphaout=</b>{<i>alpha-filename</i>,<b>-</b>}]
+[<b>-verbose</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<i>xpmfile</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>xpbtoppm</b>
+reads an X11 pixmap (XPM version 1 or 3) as input and
+produces a PPM image as output.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>xpmtoppm</b> recognizes the following command line
+options: <b><br>
+--alphaout=</b><i>alpha-filename</i></p>
+
+<p style="margin-left:22%;"><b>xpmtoppm</b> creates a PBM
+file containing the transparency mask for the image. If the
+input image doesn&rsquo;t contain transparency information,
+the <i>alpha-filename</i> file contains all white (opaque)
+transparency values. If you don&rsquo;t specify
+<b>--alphaout</b>, <b>xpmtoppm</b> does not generate a
+transparency file, and if the input image has transparency
+information, <b>xpmtoppm</b> simply discards it.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you specify
+<b>-</b> as the filename, <b>xpmtoppm</b> writes the
+transparency output to Standard Output and discards the
+image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">See
+<b>pamcomp</b>(1) for one way to use the transparency output
+file.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>xpmtoppm</b>
+can&rsquo;t handle a line longer than 8K characters in the
+XPM input. If an input line exceeds this limit,
+<b>xpmtoppm</b> quits with an error message to that effect.
+Before Netpbm 10.30 (October 2005), the limit was 2K.</p>
+
+<p style="margin-left:11%;"><b>--verbose</b></p>
+
+<p style="margin-left:22%;"><b>xpmtoppm</b> prints
+information about its processing on Standard Error.</p>
+
+<h2>LIMITATIONS
+<a name="LIMITATIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>xpmtoppm</b>
+recognizes only a limited set of the features of XPM Version
+3; i.e. it rejects as invalid many valid XPM images.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The only place
+a comment block is valid is starting in Column 1 of the line
+immediately after &quot;static char ...&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In addition,
+<b>ppmtoxpm</b> properly recognizes any single-line comment
+that begins in Column 1 in the color table part of the
+file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There must be
+for every pixel a default colorname for a color type
+visual.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Before Netpbm
+10.58 (March 2012), zero bytes per pixel causes the program
+to fail with a message about premature EOF on input.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmtoxpm</b>(1),
+<b>pamcomp</b>(1), <b>ppm</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1991 by Jef Poskanzer.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Upgraded to
+work with XPM version 3 by Arnaud Le
+Hors&lt;<i>lehors@mirsa.inria.fr</i>&gt;, Tue Apr 9
+1991.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/xpmtoppm.html</b></p>
+<hr>
+</body>
+</html>

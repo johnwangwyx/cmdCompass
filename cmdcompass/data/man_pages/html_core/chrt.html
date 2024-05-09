@@ -1,0 +1,305 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:33:57 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>CHRT</title>
+
+</head>
+<body>
+
+<h1 align="center">CHRT</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#POLICIES">POLICIES</a><br>
+<a href="#SCHEDULING OPTIONS">SCHEDULING OPTIONS</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#USAGE">USAGE</a><br>
+<a href="#PERMISSIONS">PERMISSIONS</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#AVAILABILITY">AVAILABILITY</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">chrt -
+manipulate the real-time attributes of a process</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>chrt</b>
+[options] <i>priority command argument</i> ...</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>chrt</b>
+[options] <b>-p</b> [<i>priority</i>] <i>PID</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i><b>chrt</b></i>
+sets or retrieves the real-time scheduling attributes of an
+existing <i>PID</i>, or runs <i>command</i> with the given
+attributes.</p>
+
+<h2>POLICIES
+<a name="POLICIES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-o</b>,
+<b>--other</b></p>
+
+<p style="margin-left:17%;">Set scheduling policy to
+<b>SCHED_OTHER</b> (time-sharing scheduling). This is the
+default Linux scheduling policy.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-f</b>,
+<b>--fifo</b></p>
+
+<p style="margin-left:17%;">Set scheduling policy to
+<b>SCHED_FIFO</b> (first in-first out).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-r</b>,
+<b>--rr</b></p>
+
+<p style="margin-left:17%;">Set scheduling policy to
+<b>SCHED_RR</b> (round-robin scheduling). When no policy is
+defined, the <b>SCHED_RR</b> is used as the default.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-b</b>,
+<b>--batch</b></p>
+
+<p style="margin-left:17%;">Set scheduling policy to
+<b>SCHED_BATCH</b> (scheduling batch processes).
+Linux-specific, supported since 2.6.16. The priority
+argument has to be set to zero.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-i</b>,
+<b>--idle</b></p>
+
+<p style="margin-left:17%;">Set scheduling policy to
+<b>SCHED_IDLE</b> (scheduling very low priority jobs).
+Linux-specific, supported since 2.6.23. The priority
+argument has to be set to zero.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-d</b>,
+<b>--deadline</b></p>
+
+<p style="margin-left:17%;">Set scheduling policy to
+<b>SCHED_DEADLINE</b> (sporadic task model deadline
+scheduling). Linux-specific, supported since 3.14. The
+priority argument has to be set to zero. See also
+<b>--sched-runtime</b>, <b>--sched-deadline</b> and
+<b>--sched-period</b>. The relation between the options
+required by the kernel is runtime &lArr; deadline &lArr;
+period. <b>chrt</b> copies <i>period</i> to <i>deadline</i>
+if <b>--sched-deadline</b> is not specified and
+<i>deadline</i> to <i>runtime</i> if <b>--sched-runtime</b>
+is not specified. It means that at least
+<b>--sched-period</b> has to be specified. See
+<b>sched</b>(7) for more details.</p>
+
+<h2>SCHEDULING OPTIONS
+<a name="SCHEDULING OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-T</b>,
+<b>--sched-runtime</b> <i>nanoseconds</i></p>
+
+<p style="margin-left:17%;">Specifies runtime parameter for
+<b>SCHED_DEADLINE</b> policy (Linux-specific).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-P</b>,
+<b>--sched-period</b> <i>nanoseconds</i></p>
+
+<p style="margin-left:17%;">Specifies period parameter for
+<b>SCHED_DEADLINE</b> policy (Linux-specific).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-D</b>,
+<b>--sched-deadline</b> <i>nanoseconds</i></p>
+
+<p style="margin-left:17%;">Specifies deadline parameter
+for <b>SCHED_DEADLINE</b> policy (Linux-specific).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-R</b>,
+<b>--reset-on-fork</b></p>
+
+<p style="margin-left:17%;">Use <b>SCHED_RESET_ON_FORK</b>
+or <b>SCHED_FLAG_RESET_ON_FORK</b> flag. Linux-specific,
+supported since 2.6.31.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each thread has
+a <i>reset-on-fork</i> scheduling flag. When this flag is
+set, children created by <b>fork</b>(2) do not inherit
+privileged scheduling policies. After the
+<i>reset-on-fork</i> flag has been enabled, it can be reset
+only if the thread has the <b>CAP_SYS_NICE</b> capability.
+This flag is disabled in child processes created by
+<b>fork</b>(2).</p>
+
+<p style="margin-left:11%; margin-top: 1em">More precisely,
+if the <i>reset-on-fork</i> flag is set, the following rules
+apply for subsequently created children:</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; If the
+calling thread has a scheduling policy of <b>SCHED_FIFO</b>
+or <b>SCHED_RR</b>, the policy is reset to
+<b>SCHED_OTHER</b> in child processes.</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; If the
+calling process has a negative nice value, the nice value is
+reset to zero in child processes.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-a</b>,
+<b>--all-tasks</b></p>
+
+<p style="margin-left:17%;">Set or retrieve the scheduling
+attributes of all the tasks (threads) for a given PID.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-m</b>,
+<b>--max</b></p>
+
+<p style="margin-left:17%;">Show minimum and maximum valid
+priorities, then exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-p</b>,
+<b>--pid</b></p>
+
+<p style="margin-left:17%;">Operate on an existing PID and
+do not launch a new task.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-v</b>,
+<b>--verbose</b></p>
+
+<p style="margin-left:17%;">Show status information.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Display help text and exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-V</b>,
+<b>--version</b></p>
+
+<p style="margin-left:17%;">Print version and exit.</p>
+
+<h2>USAGE
+<a name="USAGE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The default
+behavior is to run a new command:</p>
+
+<p style="margin-left:17%;"><b>chrt</b> <i>priority
+command</i> [<i>arguments</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can also
+retrieve the real-time attributes of an existing task:</p>
+
+<p style="margin-left:17%;"><b>chrt -p</b> <i>PID</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">Or set
+them:</p>
+
+<p style="margin-left:17%;"><b>chrt -r -p</b> <i>priority
+PID</i></p>
+
+<h2>PERMISSIONS
+<a name="PERMISSIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">A user must
+possess <b>CAP_SYS_NICE</b> to change the scheduling
+attributes of a process. Any user can retrieve the
+scheduling information.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Only
+<b>SCHED_FIFO</b>, <b>SCHED_OTHER</b> and <b>SCHED_RR</b>
+are part of POSIX 1003.1b Process Scheduling. The other
+scheduling attributes may be ignored on some systems.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Linux' default
+scheduling policy is <b>SCHED_OTHER</b>.</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Robert
+Love</i> &lt;rml@tech9.net&gt;, <i>Karel Zak</i>
+&lt;kzak@redhat.com&gt;</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>nice</b>(1),
+<b>renice</b>(1), <b>taskset</b>(1), <b>sched</b>(7)</p>
+
+<p style="margin-left:11%; margin-top: 1em">See
+<b>sched_setscheduler</b>(2) for a description of the Linux
+scheduling scheme.</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For bug
+reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+
+<h2>AVAILABILITY
+<a name="AVAILABILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The <b>chrt</b>
+command is part of the util-linux package which can be
+downloaded from <i>Linux Kernel Archive</i>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>
+<hr>
+</body>
+</html>

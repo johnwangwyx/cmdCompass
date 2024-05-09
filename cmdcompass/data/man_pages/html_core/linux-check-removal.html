@@ -1,0 +1,140 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:15 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>LINUX-CHECK-REMOVAL</title>
+
+</head>
+<body>
+
+<h1 align="center">LINUX-CHECK-REMOVAL</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#ENVIRONMENT VARIABLES">ENVIRONMENT VARIABLES</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">linux-check-removal
+- check whether removal of a kernel is safe</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="41%">
+
+
+
+<p style="margin-top: 1em"><b>linux-check-removal&nbsp;</b><i>VERSION</i></p> </td>
+<td width="48%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i><b>linux-check-removal</b></i>
+is intended to be called from the prerm maintainer scripts
+of Linux kernel packages.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>VERSION</i> argument must be the kernel version string as
+shown by <b>uname -r</b> and used in filenames.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the
+currently running kernel matches <i>VERSION</i>,
+<b>linux-check-removal</b> normally prompts the user to
+confirm this potentially dangerous action and fails if the
+user chooses to abort. There are two exceptions to this
+behaviour:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>If the current environment is a chroot or container, it
+is assumed that the running kernel is independent of any
+installed kernel package and the command always quietly
+succeeds</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="2%"></td>
+<td width="86%">
+
+
+<p>If debconf prompts are disabled, the command warns if
+removing the running kernel but always succeeds</p></td></tr>
+</table>
+
+<h2>ENVIRONMENT VARIABLES
+<a name="ENVIRONMENT VARIABLES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>DEBIAN_FRONTEND</i></p>
+
+<p style="margin-left:22%;">Name of the preferred debconf
+front-end. If set to <i>noninteractive</i>, debconf prompts
+are disabled and <b>linux-check-removal</b> always quietly
+succeeds.</p>
+
+
+<p style="margin-left:11%;"><i>DPKG_MAINTSCRIPT_PACKAGE</i></p>
+
+<p style="margin-left:22%;">Name of the package to be
+removed, automatically set by dpkg.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>linux-check-removal</b>
+and this manual page were written by Ben Hutchings as part
+of the Debian <b>linux-base</b> package.</p>
+<hr>
+</body>
+</html>

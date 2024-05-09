@@ -1,0 +1,215 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:56 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>UCFR</title>
+
+</head>
+<body>
+
+<h1 align="center">UCFR</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#USAGE">USAGE</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ucfr - Update
+Configuration File Registry: associate packages with
+configuration files</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ucfr</b>
+[<i>options</i>] <i>&lt;Package&gt; &lt;Path to
+configuration file&gt;</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Where
+<i>Package</i> is the package associated with the
+configuration file (and, in some sense, its owner), and
+<i>Path to configuration file</i> is the full path to the
+location (usually under /etc) where the configuration file
+lives, and is potentially modified by the end user. Please
+note that usually this means that we register actual files,
+and not symbolic links to files. <b>ucfr</b> will follow
+symbolic links and register the real file, and not the
+symbolic link.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This script
+maintains an association between configuration files and
+packages, and is meant to help provide facilities that
+<i>dpkg</i> provides conffiles for configuration files and
+not shipped in a <b>Debian</b> package, but handled by the
+postinst by <i>ucf</i> instead. This script is idempotent,
+associating a package to a file multiple times is not an
+error. It is normally an error to try to associate a file
+which is already associated with another package, but this
+can be overridden by using the <i>--force</i> option.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h,
+--help</b></p>
+
+<p style="margin-left:22%;">Print a short usage message</p>
+
+<p style="margin-left:11%;"><b>-n, --no-action</b></p>
+
+<p style="margin-left:22%;">Dry run. Print the actions that
+would be taken if the script is invoked, but take no
+action.</p>
+
+<p style="margin-left:11%;"><b>-d [n], --debug [n]</b></p>
+
+<p style="margin-left:22%;">Set the debug level to the
+(optional) level <i>n</i> (n defaults to 1). This turns on
+copious debugging information.</p>
+
+<p style="margin-left:11%;"><b>-p, --purge</b></p>
+
+<p style="margin-left:22%;">Removes all vestiges of the
+association between the named package and the configuration
+file from the registry. The association must already exist;
+if the configuration file is associated with some other
+package, an error happens, unless the option <i>--force</i>
+is also given. In that case, the any associations for the
+configuration file are removed from the registry, whether or
+not the package name matches. This action is idempotent,
+asking for an association to be purged multiple times does
+not result in an error, since attempting to remove an
+non-existent association is silently ignored unless the
+<i>--verbose</i> option is used (in which case it just
+issues a diagnostic).</p>
+
+<p style="margin-left:11%;"><b>-v, --verbose</b></p>
+
+<p style="margin-left:22%;">Make the script be very verbose
+about setting internal variables.</p>
+
+<p style="margin-left:11%;"><b>-f, --force</b></p>
+
+<p style="margin-left:22%;">This option forces operations
+requested even if the configuration file in consideration is
+owned by another package. This allows a package to
+<i>hijack</i> a configuration file from another package, or
+to purge the association between the file and some other
+package in the registry.</p>
+
+<p style="margin-left:11%;"><b>--state-dir
+/path/to/dir</b></p>
+
+<p style="margin-left:22%;">Set the state directory to
+/path/to/dir instead of the default <i>/var/lib/ucf.</i>
+Used mostly for testing.</p>
+
+<h2>USAGE
+<a name="USAGE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The most common
+case usage is pretty simple: a single line invocation in the
+postinst on configure, and another single line in the postrm
+to tell <b>ucfr</b> to forget about the association with the
+configuration file on purge (using the --purge option) is
+all that is needed (assuming ucfr is still on the
+system).</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/var/lib/ucf/registry,</i>
+and <i>/var/lib/ucf/registry.X,</i> where <i>X</i> is a
+small integer, where previous versions of the registry are
+stored.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/etc/ucf.conf</i></p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If the package
+<i>foo</i> wants to use ucfr to associate itself with a
+configuration file <i>foo.conf,</i> a simple invocation of
+ucfr in the postinst file is all that is needed:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ucfr</b>
+<i>foo /etc/foo.conf</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">On purge, one
+should tell ucf to forget about the file (see detailed
+examples in /usr/share/doc/ucf/examples):</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ucfr</b>
+<i>--purge foo /etc/foo.conf</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">If you want to
+remove all the conf files for a given package <i>foo,</i>
+the simplest way is to use <b>ucfq.</b> For example</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ucfq</b>
+<i>-w foo |</i> <b>cut</b> <i>-d : -f 1 |</i> <b>while
+read</b> <i>cfile ;</i> <b>do ucfr</b> <i>-v $cfile ;</i>
+<b>done</b></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ucf(1),
+ucf.conf(5).</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was written Manoj Srivastava
+&lt;srivasta@debian.org&gt;, for the Debian GNU/Linux
+system.</p>
+<hr>
+</body>
+</html>

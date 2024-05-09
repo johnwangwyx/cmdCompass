@@ -1,0 +1,237 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:52 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SYSTEMD-MACHINE-ID-SETUP</title>
+
+</head>
+<body>
+
+<h1 align="center">SYSTEMD-MACHINE-ID-SETUP</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#NOTES">NOTES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">systemd-machine-id-setup
+- Initialize the machine ID in /etc/machine-id</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="37%">
+
+
+
+<p style="margin-top: 1em"><b>systemd-machine-id-setup</b></p> </td>
+<td width="52%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-machine-id-setup</b>
+may be used by system installer tools to initialize the
+machine ID stored in /etc/machine-id at install time, with a
+provisioned or randomly generated ID. See
+<b>machine-id</b>(5) for more information about this
+file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the tool is
+invoked without the <b>--commit</b> switch, /etc/machine-id
+is initialized with a valid, new machine ID if it is missing
+or empty. The new machine ID will be acquired in the
+following fashion:</p>
+
+<p style="margin-left:17%; margin-top: 1em">1. If a valid
+D-Bus machine ID is already configured for the system, the
+D-Bus machine ID is copied and used to initialize the
+machine ID in /etc/machine-id.</p>
+
+<p style="margin-left:17%; margin-top: 1em">2. If run
+inside a KVM virtual machine and a UUID is configured (via
+the <b>-uuid</b> option), this UUID is used to initialize
+the machine ID. The caller must ensure that the UUID passed
+is sufficiently unique and is different for every booted
+instance of the VM.</p>
+
+<p style="margin-left:17%; margin-top: 1em">3. Similarly,
+if run inside a Linux container environment and a UUID is
+configured for the container, this is used to initialize the
+machine ID. For details, see the documentation of the
+<b><font color="#0000FF">Container Interface</font></b>
+<small><font color="#000000">[1]</font></small>
+<font color="#000000">.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">4.
+Otherwise, a new ID is randomly generated.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+<b>--commit</b> switch may be used to commit a transient
+machined ID to disk, making it persistent. For details, see
+below.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Use
+<b>systemd-firstboot</b>(1) to initialize the machine ID on
+mounted (but not booted) system images.</font></p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+following options are understood:</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--root=</b><i>path</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Takes a
+directory path as argument. All paths operated on will be
+prefixed with the given alternate <i>root</i> path,
+including the path for /etc/machine-id itself.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--image=</b><i>path</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Takes a
+path to a device node or regular file as argument. This is
+similar to <b>--root=</b> as described above, but operates
+on a disk image instead of a directory tree.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--commit</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Commit a
+transient machine ID to disk. This command may be used to
+convert a transient machine ID into a persistent one. A
+transient machine ID file is one that was bind mounted from
+a memory file system (usually &quot;tmpfs&quot;) to
+/etc/machine-id during the early phase of the boot process.
+This may happen because /etc/ is initially read-only and was
+missing a valid machine ID file at that point.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">This
+command will execute no operation if /etc/machine-id is not
+mounted from a memory file system, or if /etc/ is read-only.
+The command will write the current transient machine ID to
+disk and unmount the /etc/machine-id mount point in a
+race-free manner to ensure that this file is always valid
+and accessible for other processes.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">This
+command is primarily used by the
+<b>systemd-machine-id-commit.service</b>(8) early boot
+service.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--print</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Print the
+machine ID generated or committed after the operation is
+complete.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>-h</b>,
+<b>--help</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Print a
+short help text and exit.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--version</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Print a
+short version string and exit.</font></p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">On
+success, 0 is returned, a non-zero failure code
+otherwise.</font></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>systemd</b>(1),
+<b>machine-id</b>(5),
+<b>systemd-machine-id-commit.service</b>(8),
+<b>dbus-uuidgen</b>(1),
+<b>systemd-firstboot</b>(1)</font></p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">1.</font></p> </td>
+<td width="2%"></td>
+<td width="29%">
+
+
+<p style="margin-top: 1em"><font color="#000000">Container
+Interface</font></p> </td>
+<td width="54%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">https://systemd.io/CONTAINER_INTERFACE</font></p>
+<hr>
+</body>
+</html>

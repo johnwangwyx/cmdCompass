@@ -1,0 +1,703 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:29 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pbmtext User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pbmtext User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#USAGE">USAGE</a><br>
+<a href="#FONTS">FONTS</a><br>
+<a href="#MULTI-BYTE INPUT">MULTI-BYTE INPUT</a><br>
+<a href="#LIMITATIONS">LIMITATIONS</a><br>
+<a href="#TIPS">TIPS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pbmtext -
+render text into a PBM image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbmtext</b>
+[<b>-wchar</b>] [<b>-font</b> <i>fontfile</i>]
+[<b>-builtin</b> <i>fontname</i>] [<b>-space</b>
+<i>pixels</i>] [<b>-lspace</b> <i>pixels</i>]
+[<b>-nomargins</b>] [<b>-width</b> <i>pixels</i>]
+[<b>-load-entire-font</b>] [<b>-verbose</b>]
+[<b>-dry-run</b>] [<b>-text-dump</b>] [<i>text</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviation of option is acceptable. You may use double
+hyphens instead of single hyphen to denote options. You may
+use white space in place of the equals sign to separate an
+option name from its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbmtext</b>
+takes the specified text, either a single line from the
+command line or multiple lines from standard input, and
+renders it into a PBM graphical image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The text
+rendered is all the non-option command line arguments,
+separated by spaces, except that if there are no non-option
+command line arguments, it is Standard Input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the image,
+each line of input is a line of output. Lines are <br>
+delimited by newline characters.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The program
+renders any character in an input line that is not in the
+font <br>
+as a space. Note that control characters usually
+aren&rsquo;t in the font, but <br>
+some fonts have glyphs for them. The newline characters that
+delimit lines <br>
+in of Standard Input are not in any line.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Tab characters
+are rendered as a number of spaces; any entry in the font
+<br>
+for the tab code point is irrelevant. The number of spaces
+is such as to <br>
+create tab stops every 8 characters. Note that this is not
+useful if the <br>
+font is proportional.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The image is
+just wide enough for the longest line of text, plus margins,
+and just high enough to contain the lines of text, plus
+margins.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The left and
+right margins are twice the width of the widest character in
+the font; the top and bottom margins are the height of the
+tallest character in the font. But if the text is only one
+line, all the margins are half of this. You can use the
+<b>-nomargins</b> option to eliminate the margins.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbmtext</b>
+renders left to right. It cannot render vertically or right
+to left.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbmtextps</b>
+does the same thing as <b>pbmtext</b>, but uses Ghostscript
+to generate the characters, which means you can use
+Postscript fonts. But it also means you have to have
+Ghostscript installed and it isn&rsquo;t as fast. Also,
+<b>pbmtextps</b> generates only one line of text, whereas
+<b>pbmtext</b> can create multiple lines.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbmtext</b>
+is meant for simple text. If you&rsquo;re working with a
+<i>document</i>, you would be better off using a document
+formatting program to &quot;print&quot; to a Postscript
+file, then feeding that Postscript to <b>pstopnm</b>.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pbmtext</b> recognizes the following command line
+options:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-wchar</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>By default, <b>pbmtext</b> takes a single-byte character
+stream as input. When you specify <b>-wchar</b>, it treats
+input text as a multibyte character stream encoded according
+to the current locale. Normally, the user would supply a BDF
+font file encoded in ISO-10646-1 with a <b>-font</b>
+option.</p> </td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">With
+<b>-wchar</b>, you cannot supply the text on the command
+line; it must be fed from standard input.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.82 (March 2018).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em"><b>-font</b></p></td>
+<td width="82%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-builtin</b></p>
+
+<p style="margin-left:22%;"><b>-builtin</b> selects a font
+among those built into Netpbm.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>-font</b>
+selects a font that you supply yourself either as an X
+Window System
+<a href="http://xfree86.org/current/bdf.pdf">BDF (Bitmap
+Distribution Format)</a> file or as a PBM file in a special
+form.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+the built in font &quot;bdf.&quot;</p>
+
+
+<p style="margin-left:22%; margin-top: 1em">&quot;bdf&quot;
+is Times-Roman 15 pixels high. (That&rsquo;s about 14 point
+type printed at 75 dpi).</p>
+
+
+<p style="margin-left:22%; margin-top: 1em">&quot;fixed&quot;
+is a built in fixed width font.</p>
+
+<p style="margin-left:22%; margin-top: 1em">For information
+about other fonts, and how to make one of your own, see
+<a href="#fonts">Fonts</a> below.</p>
+
+<p style="margin-left:11%;"><b>-space</b> <i>pixels</i></p>
+
+<p style="margin-left:22%;">Add <i>pixels</i> pixels of
+space between characters. This is in addition to whatever
+space surrounding characters is built into the font, which
+is usually enough to produce a reasonable string of
+text.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>pixels</i>
+may be fractional, in which case the number of pixels added
+varies so as to achieve the specified average. For example
+<b>-space=1.5</b> causes half the spaces to be 1 pixel and
+half to be 2 pixels.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>pixels</i>
+may be negative to crowd text together, but the author has
+not put much thought or testing into how this works in every
+possible case, so it might cause disastrous results.</p>
+
+<p style="margin-left:11%;"><b>-lspace</b>
+<i>pixels</i></p>
+
+<p style="margin-left:22%;">Add <i>pixels</i> pixels of
+space between lines. This is in addition to whatever space
+above and below characters is built into the font, which is
+usually enough to produce a reasonable line spacing.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>pixels</i>
+must be a whole number.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>pixels</i>
+may be negative to crowd lines together, but the author has
+not put much thought or testing into how this works in every
+possible case, so it might cause disastrous results.</p>
+
+<p style="margin-left:11%;"><b>-nomargins</b></p>
+
+<p style="margin-left:22%;">By default, <b>pbmtext</b> adds
+margins all around the image as described above. This option
+causes <b>pbmtext</b> not to add any margins.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Note that there
+may still be space beyond the edges of the type because a
+character itself may include space at its edges. To
+eliminate all surrounding background, so the type touches
+all four edges of the image, use <b>pnmcrop</b>.</p>
+
+<p style="margin-left:11%;"><b>-width</b> <i>pixels</i></p>
+
+<p style="margin-left:22%;">This specifies how much
+horizontal space the text is supposed to fit into.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If the input is
+one line, <b>pbmtext</b> breaks it into multiple lines as
+needed to fit the specified width. It breaks it between
+characters, but does not pay attention to white space; it
+may break in the middle of a word and a line may begin or
+end with white space.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If the input is
+multiple lines, <b>pbmtext</b> assumes you already have line
+breaks where they make sense, and <b>pbmtext</b> simply
+truncates each line as needed to fit the specified
+width.</p>
+
+<p style="margin-left:11%;"><b>-load-entire-font</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">When you use a
+BDF font, <b>pbmtext</b> will normally load from the font
+<br>
+only the characters needed for your text, not wasting time
+loading other <br>
+characters. With this option, <b>pbmtext</b> will instead
+read the entire <br>
+font. It won&rsquo;t make any difference in the rendered
+output, but it lets <br>
+you check the integrity of the font file.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.91 (June 2020). Before that, <b>pbmtext</b>
+always reads the entire font.</p>
+
+<p style="margin-left:11%;"><b>-verbose</b></p>
+
+<p style="margin-left:22%;">This makes <b>pbmtext</b> issue
+informtional messages about its processing.</p>
+
+<p style="margin-left:11%;"><b>-dry-run</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">With this
+option, instead of outputting an image of the text,
+<b>pbmtext</b> just writes to Standard Output a message
+telling the dimensions of the image it would have
+produced.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You can specify
+only one of <b>-dry-run</b> and <b>-text-dump</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.75 (June 2016).</p>
+
+<p style="margin-left:11%;"><b>-text-dump</b></p>
+
+<p style="margin-left:22%;">This option causes
+<b>pbmtext</b> just to write to Standard Output the text in
+ASCII that would be rendered. The output reflects any text
+formatting, unprintable character substitution, tab
+expansion, etc. It is for diagnosing problems. This option
+was new in Netpbm 10.82 (March 2018).</p>
+
+<p style="margin-left:22%; margin-top: 1em">When
+<b>-wchar</b> is in effect, the output text will be in the
+encoding specified by the current locale.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You can specify
+only one of <b>-dry-run</b> and <b>-text-dump</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.82 (March 2018).</p>
+
+<h2>USAGE
+<a name="USAGE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Often, you want
+to place text over another image. One way to do this is with
+<b>ppmlabel</b>. For more flexible (but complex) drawing of
+text on an image, there is <b>ppmdraw</b>. These do not give
+you the font options that <b>pbmtext</b> does, though.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Another way is
+to use <b>pbmtext</b> to create an image containing the
+text, then use <b>pamcomp</b> to overlay the text image onto
+your base image. To make only the text (and not the entire
+rectangle containing it) cover the base image, you will need
+to give <b>pamcomp</b> a mask, via its <b>-alpha</b> option.
+You can just use the text image itself as the mask, as long
+as you also specify the <b>-invert</b> option to
+<b>pamcomp</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you want to
+overlay colored text instead of black, just use
+<b>ppmchange</b> to change all black pixels to the color of
+your choice before overlaying the text image. But still use
+the original black and white image for the transparency
+mask.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you want the
+text at an angle, use <b>pnmrotate</b> on the text image
+(and transparency mask) before overlaying.</p>
+
+<h2>FONTS
+<a name="FONTS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">There are three
+kinds of fonts you an use with <b>pbmtext</b>:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="12%">
+
+
+<p>built in</p></td>
+<td width="66%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="12%">
+
+
+<p>BDF</p></td>
+<td width="66%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="12%">
+
+
+<p>PBM</p></td>
+<td width="66%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Built In
+Fonts</b> <br>
+There are two built in fonts: <b>bdf</b> and <b>fixed</b>.
+You select these fonts with a <b>-builtin</b> option.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>bdf</b> is
+the default when you specify no font information on the
+command line. <i>The naming reflects the fact that it shares
+many characteristics of BDF style fonts. When this font was
+implemented,</i> <b>pbmtext</b> <i>did not have the ability
+to read arbitrary BDF fonts specified by the</i>
+<b>-font</b> <i>option. There is no external font file
+involved.</i></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>bdf</b> is
+encoded in ISO 8859-1 (Latin 1, 8-bit). In addition to
+English it can handle most West European languages (Spanish,
+French, German, Swedish ...) This set lacks the Euro
+currency sign.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>fixed</b> is
+ASCII (7-bit) only.</p>
+
+<p style="margin-left:11%; margin-top: 1em">While it is not
+an error to do so, you should not use the above built-in
+fonts with <b>-wchar</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>BDF Font</b>
+<br>
+BDF is an ancient font format that at one time was standard
+for the X Window System. Now, you don&rsquo;t see it very
+often, but you can find some BDF fonts on the
+<a href="http://cvsweb.xfree86.org/cvsweb/xc/fonts/bdf/">Xfree86</a>
+web site.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can get the
+full package of the BDF fonts from XFree86 (see above) from
+the
+<a href="http://netpbm.sourceforge.net/bdffont.tgz">Netpbm
+web site</a> .</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>PBM Font</b>
+<br>
+To create a font as a PBM file (to use with the <b>-font</b>
+option), you just create a PBM image of the text matrix
+below.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The first step
+is to display text matrix below on the screen, e.g. in an
+X11 window.</p>
+
+<p style="margin-left:11%; margin-top: 1em">M
+&quot;,/^_[&rsquo;jpqy| M</p>
+
+<p style="margin-left:11%; margin-top: 1em">/
+!&quot;#$%&amp;&rsquo;()*+ / <br>
+&lt; ,-./01234567 &lt; <br>
+&gt; 89:;&lt;=&gt;?@ABC &gt; <br>
+@ DEFGHIJKLMNO @ <br>
+_ PQRSTUVWXYZ[ _ <br>
+{ \]^_&rsquo;abcdefg { <br>
+} hijklmnopqrs } <br>
+~ tuvwxyz{|}~ ~</p>
+
+<p style="margin-left:11%; margin-top: 1em">M
+&quot;,/^_[&rsquo;jpqy| M</p>
+
+<p style="margin-left:11%; margin-top: 1em">Make sure
+it&rsquo;s a fixed width font -- This should display as a
+perfect rectangle.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Also, try to
+use a simple display program. Pbmtext divides this into a
+matrix of cells, all the same size, each containing one
+character, so it is important that whatever you use to
+display it display with uniform horizontal and vertical
+spacing. Fancy word processing programs sometimes stretch
+characters in both directions to fit certain dimensions, and
+that won&rsquo;t work. Sometimes a display program scales a
+font to show a character larger or smaller than its natural
+size. That too won&rsquo;t often work because the rounding
+involved in such scaling causes non-uniform distances
+between characters.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you display
+the text matrix improperly, the usual symptom is that when
+you try to use the font, <b>pbmtext</b> fails with an error
+message telling you that the number of lines in the font
+isn&rsquo;t divisible by 11, or it can&rsquo;t find the
+blank band around the inner rectangle. Sometimes the symptom
+is that one of the characters displays with a piece of the
+character that is next to it in the matrix. For example,
+&quot;l&quot; might display with a little piece of the
+&quot;m&quot; attached on its right.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Do a screen
+grab or window dump of that text, using for instance
+<b>xwd</b>, <b>xgrabsc</b>, or <b>screendump</b>. Convert
+the result into a pbm file. If necessary, use <b>pamcut</b>
+to remove anything you grabbed in addition to the text
+pictured above (or be a wimp and use a graphical editor such
+as Gimp). Finally, run it through <b>pnmcrop</b> to make
+sure the edges are right up against the text. <b>pbmtext</b>
+can figure out the sizes and spacings from that.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There are some
+historical computer fonts, such as that used by the original
+IBM PC, in the form that you can screen-grab and turn into a
+PBM font file available from <b>Stewart</b> C Russell&quot;
+(1). There are fonts with various duodecimal digit glyphs at
+<a href="http://treisaran.deviantart.com/gallery/38695571/NetPBM-Fonts">
+treisara.deviantart.com</a> .</p>
+
+<p style="margin-left:11%; margin-top: 1em">PBM fonts
+cannot be used with <b>-wchar</b>.</p>
+
+<h2>MULTI-BYTE INPUT
+<a name="MULTI-BYTE INPUT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In the past,
+English text was encoded in 7-bit ASCII. 8-bit and multibyte
+encodings were needed only for non-English languages. This
+is not the case today. As of this writing, 90% of all web
+pages are encoded in UTF-8. While many of them are actually
+restricted to 7-bit ASCII, which is a subset of UTF-8,
+English text encoded in UTF-8 commonly employs &quot;66
+99&quot; style quotation marks, which do not appear in
+ASCII.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If your input
+text is UTF-8, you should use <b>-wchar</b>. You may have to
+tweak the locale setting. <b>pbmtext</b> recognizes code
+points up to 65535. This is sufficient for the vast majority
+of text written in modern languages.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the default
+single-byte (or &quot;narrow&quot;) character mode,
+<b>pbmtext</b> can handle 7-bit and 8-bit character sets.
+Examples are ASCII, ISO 8859 family, koi8-r/u and VISCII. It
+is up to the user to supply a BDF file covering the
+necessary glyphs with the &quot;-font&quot; option. The font
+file must be in the right encoding.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbmtext</b>
+does not inspect the encoding of the font file.</p>
+
+<h2>LIMITATIONS
+<a name="LIMITATIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If the text is
+from Standard Input, no line may be longer than 4999
+characters. If one is, the program aborts with an
+appropriate error message.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the text is
+from Standard Input and contains a null character, the
+results are abnormal. Lines may be truncated, and a single
+line may be considered multiple lines. Normal text does not
+contain null characters, so this isn&rsquo;t a big
+problem.</p>
+
+<h2>TIPS
+<a name="TIPS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If you get
+garbled output, check the input text encoding and font file
+encoding. When using <b>-wchar</b>, also check the current
+locale.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To convert the
+encoding of a text file, use <b>iconv</b> or
+<b>luit</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To check the
+encoding of a BDF file, examine the CHARSET_REGISTRY line
+and the next line, which should be CHARSET_ENCODING:</p>
+
+<p style="margin-left:11%; margin-top: 1em">$ grep -A1
+CHARSET_REGISTRY font-a.bdf <br>
+CHARSET_REGISTRY &quot;ISO8859&quot; <br>
+CHARSET_ENCODING &quot;1&quot;</p>
+
+<p style="margin-left:11%; margin-top: 1em">$ grep -A1
+CHARSET_REGISTRY font-b.bdf <br>
+CHARSET_REGISTRY &quot;ISO10646&quot; <br>
+CHARSET_ENCODING &quot;1&quot;</p>
+
+<p style="margin-left:11%; margin-top: 1em">The latter is
+Unicode. BDF files coded in ISO 16046-1 usually work for
+Western European languages, because ISO 16046-1 expands ISO
+8859-1 (also called &quot;Latin-1&quot;) while maintaining
+the first 256 code points. ISO 8859-1 itself is a superset
+of ASCII. Run the above command and verify the necessary
+glyphs are present.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>IMPORTANT:</b>
+For input text, a different rule applies. If you feed ISO
+8859-1 text to <b>pbmtext -wchar</b> set up for UTF-8, the
+output will be garbled. Unicode provides several encoding
+schemes and different ones are in effect for input text and
+font. <i>The difference between Unicode codepoint and the
+various encodings is a formidable stumbling block; beware of
+web pages that get the concept wrong.</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">75% of the BDF
+files in the font collection available from
+<a href="http://netpbm.sourceforge.net/bdffont.tgz">the
+Netpbm website</a> are in ISO 10646-1. Many have the Euro
+sign, Greek letters, etc., but they are placed at code
+points available to <b>pbmtext</b> only with
+<b>-wchar</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Before
+<b>pbmtext</b> had the <b>-wchar</b> option, one often had
+to produce a BDF file in an 8-bit encoding from a master BDF
+file encoded in ISO 10646-1.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There are
+several programs that perform BDF encoding conversion. If
+you have the X Window System installed, first look for
+<b>ucs2any</b>. If you don&rsquo;t, you can download
+<b>ucs2any.pl</b> from <b>Unicode fonts and tools</b> for
+X11&quot; (1). This website has much useful information on
+fonts.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Another
+converter is <b>trbdf</b>, included in the
+&quot;trscripts&quot; package, available in some GNU/Linux
+distributions.</p>
+
+<p style="margin-left:11%; margin-top: 1em">BDF files
+encoded in ISO 8859-2, ISO 8859-7, koi8-r, etc. are
+available from <b>ISO 8859 Alphabet</b> Soup&quot; (1) and
+its sister page <b>The Cyrillic Charset</b> Soup&quot; (1).
+Though the information is dated, these pages give a good
+overview of 8-bit character sets.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To convert OTF
+or TTF font files to BDF, use
+<a href="http://www.math.nmsu.edu/~mleisher/Software/otf2bdf">
+<b>otf2bdf</b> by Mike Leisher</a> .</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pbmtextps</b>(1),
+<b>pamcut</b>(1), <b>pnmcrop</b>(1), <b>pamcomp</b>(1),
+<b>ppmchange</b>(1), <b>pnmrotate</b>(1),
+<b>ppmlabel</b>(1), <b>ppmdraw</b>(1), <b>pstopnm</b>(1),
+<b>pbm</b>(1),
+<b><a href="http://www.pango.org"></b>Pango<b></a></b> ,
+<b><a href="http://cairographics.org"></b>Cairo<b></a></b></p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1993 by Jef Poskanzer and George Phillips</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pbmtext.html</b></p>
+<hr>
+</body>
+</html>

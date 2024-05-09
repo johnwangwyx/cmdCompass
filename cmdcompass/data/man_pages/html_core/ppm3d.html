@@ -1,0 +1,215 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:37 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Ppm3d User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Ppm3d User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#ARGUMENTS">ARGUMENTS</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ppm3d - convert
+two PPM images into an anaglyph (red/blue 3d glasses)
+PPM</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppm3d</b>
+[<b>-color</b>] [<b>-offset=</b><i>horizontal_offset</i>]
+<i>leftppmfile rightppmfile</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">Deprecated
+optional 3rd argument: <i>horizontal_offset</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppm3d</b>
+reads two PPM images as input and produces a PPM as output,
+with the images overlapping by the specified number of
+pixels in blue-green/red format. The idea is that if you
+look at the image with 3-D glasses (glasses that admit only
+red through one eye and only green or blue through the
+other), you see an image with depth. This is called an
+anaglyph stereogram.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppm3d</b>
+can produce either of two kinds of anaglyph stereogram:
+monochrome or color. Use the <b>-color</b> option to
+choose.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the
+monochrome version, <b>ppm3d</b> ignores any color
+(actually, chrominance) in the input images and produces a
+result which is monochrome. Viewed through red-green glasses
+it is yellow, but without any other color in the field, your
+brain tends to see it as grayscale.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the color
+version, <b>ppm3d</b> generates a result which is close to
+the color of the original. It&rsquo;s not great, though,
+because each eye necessarily cannot see the entire spectrum.
+Red and cyan don&rsquo;t work well, but most other colors --
+especially when heavily saturated -- come out quite
+well.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To view a color
+anaglyph stereogram, you need glasses with a left lens that
+admits only red light and a right lens that admits only blue
+and green light. (The right lens may be called a cyan lens
+because that is its pigment in white light; don&rsquo;t be
+misled into thinking that cyan is the only color that gets
+through it). Your brain is wired so that even though the
+components of light are coming in through different eyes,
+they mix in your brain to form the same sensation as if you
+were looking at the combined light with both eyes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The input PPMs
+must be the same dimensions.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To make a
+different kind of stereogram, use <b>pamstereogram</b>. That
+makes a stereogram that you view without special glasses,
+just by letting your eyes unfocus so that each eye sees
+different parts of the image.</p>
+
+<h2>ARGUMENTS
+<a name="ARGUMENTS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The mandatory
+arguments are file names of the left and right input
+images.</p>
+
+<p style="margin-left:11%; margin-top: 1em">An optional
+third argument specifies the same thing as the value of the
+<b>-offset</b> argument, but is deprecated because -offset
+is easier to use and read. Before Netpbm 10.38 (March 2007),
+this third argument is the only way to specify the
+offset.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>ppm3d</b> recognizes the following command line options:
+<b><br>
+-offset=</b><i>horizontal_offset</i></p>
+
+<p style="margin-left:22%;">This option indicates the
+amount, in pixels, by which the left and image is offset to
+the right of the right image in the output.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The effect of
+this option is to move the entire image forward (positive
+numbers) or backward (negative numbers). With a zero offset,
+the main subject of the picture appears in the plane of the
+picture (i.e. if the image is projected on a screen, the
+location of the screen). The main subject is the subject at
+the location where the line of sight of the left camera
+intersects the line of sight of the right camera -- the main
+subject appears at the same location in both the left and
+right images.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Default is
+zero.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.38 (March 2007). Before that, use the third
+argument instead. Also, before Netpbm 10.38 the default is
++30 pixels.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-color</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>This option causes <b>ppm3d</b> to generate a color
+anaglyph stereogram. By default, it generates
+monochrome.</p> </td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.38 (March 2007).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamstereogram</b>(1)
+<b>ppm</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1993 by David K. Drum.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/ppm3d.html</b></p>
+<hr>
+</body>
+</html>

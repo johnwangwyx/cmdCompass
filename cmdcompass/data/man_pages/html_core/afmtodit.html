@@ -1,0 +1,415 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:33:53 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>AFMTODIT</title>
+
+</head>
+<body>
+
+<h1 align="center">AFMTODIT</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">afmtodit -
+create font files for use with groff -Tps and -Tpdf</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="12%">
+
+
+<p style="margin-top: 1em"><b>afmtodit</b></p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p style="margin-top: 1em">[<b>-ckmnsx</b>]
+[<b>-a&nbsp;</b><i>n</i>] [<b>-d&nbsp;</b><i>desc-file</i>]
+[<b>-e&nbsp;</b><i>enc-file</i>]
+[<b>-f&nbsp;</b><i>internal-name</i>]
+[<b>-i&nbsp;</b><i>n</i>]
+[<b>-o&nbsp;</b><i>output-file</i>] <i>afm-file map-file
+font</i></p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="12%">
+
+
+<p style="margin-top: 1em"><b>afmtodit</b></p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p style="margin-top: 1em"><b>-v</b></p></td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><i>afmtodit</i></b>
+creates a font file for use with <i>groff</i>, <i>grops</i>,
+and <i>gropdf</i>. <i>afmtodit</i> is written in Perl; you
+must have Perl version 5.004 or newer installed in order to
+run <i>afmtodit</i>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>afm-file</i>
+is the AFM (Adobe Font Metric) file for the font.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>map-file</i>
+is a file that says which <i>groff</i> character names map
+onto each PostScript character name; this file should
+contain a sequence of lines of the form</p>
+
+<p style="margin-left:22%;"><i>ps-char groff-char</i></p>
+
+<p style="margin-left:11%;">where <i>ps-char</i> is the
+PostScript name of the character and <i>groff-char</i> is
+the groff name of the character (as used in the <i>groff</i>
+font file). The same <i>ps-char</i> can occur multiple times
+in the file; each <i>groff-char</i> must occur at most once.
+Lines starting with &rsquo;#&rsquo; and blank lines are
+ignored. If the file isn&rsquo;t found in the current
+directory, it is searched for in the <i>devps/generate</i>
+subdirectory of the default font directory.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If a PostScript
+character is not mentioned in <i>map-file</i>, and a generic
+<i>groff</i> glyph name can&rsquo;t be deduced using the
+Adobe Glyph List (AGL, built into <i>afmtodit</i>), then
+<i>afmtodit</i> puts the PostScript character into the
+<i>groff</i> font file as an unnamed character which can
+only be accessed by the &rsquo;\N&rsquo; escape sequence in
+a <i>roff</i> document. In particular, this is true for
+glyph variants named in the form &ldquo;foo.bar&rdquo;; all
+glyph names containing one or more periods are mapped to
+unnamed entities. If option <b>-e</b> is not specified, the
+encoding defined in the AFM file (i.e., entries with
+non-negative character codes) is used. Refer to section
+&ldquo;Using Symbols&rdquo; in <i>Groff: The GNU
+Implementation of troff</i>, the <i>groff</i> Texinfo
+manual, which describes how <i>groff</i> glyph names are
+constructed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Characters not
+encoded in the AFM file (i.e., entries which have
+&rsquo;-1&rsquo; as the character code) are still available
+in <i>groff</i>; they get glyph index values greater than
+255 (or greater than the biggest character code used in the
+AFM file in the unlikely case that it is greater than 255)
+in the <i>groff</i> font file. Glyph indices of unencoded
+characters don&rsquo;t have a specific order; it is best to
+access them with glyph names only.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>groff</i> font file will be output to a file called
+<i>font</i>, unless the <b>-o</b> option is used.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If there is a
+downloadable font file for the font, it may be listed in the
+file <i>/usr/share/groff/1.22.4/font/devps/download</i>; see
+<i>grops</i>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the
+<b>-i</b> option is used, <i>afmtodit</i> will automatically
+generate an italic correction, a left italic correction and
+a subscript correction for each character (the significance
+of these parameters is explained in <i>groff_font</i>(5));
+these parameters may be specified for individual characters
+by adding to the <i>afm-file</i> lines of the form:</p>
+
+
+<p style="margin-left:22%;"><b>italicCorrection&nbsp;</b><i>ps-char&nbsp;n</i>
+<b><br>
+leftItalicCorrection&nbsp;</b><i>ps-char&nbsp;n</i> <b><br>
+subscriptCorrection&nbsp;</b><i>ps-char&nbsp;n</i></p>
+
+<p style="margin-left:11%;">where <i>ps-char</i> is the
+PostScript name of the character, and <i>n</i> is the
+desired value of the corresponding parameter in thousandths
+of an em. These parameters are normally needed only for
+italic (or oblique) fonts.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Whitespace is
+permitted between a command-line option and its
+argument.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>-a</b><i>n</i></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Use <i>n</i> as the slant parameter in the font file;
+this is used by <i>groff</i> in the positioning of accents.
+By default <i>afmtodit</i> uses the negative of the
+<b>ItalicAngle</b> specified in the AFM file; with true
+italic fonts it is sometimes desirable to use a slant that
+is less than this. If you find that characters from an
+italic font have accents placed too far to the right over
+them, then use the <b>-a</b> option to give the font a
+smaller slant.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>-c</b></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>Include comments in the font file in order to identify
+the PostScript font.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-d</b><i>desc-file</i></p>
+
+<p style="margin-left:22%;">The device description file is
+<i>desc-file</i> rather than the default <i>DESC</i>. If not
+found in the current directory, the <i>devps</i>
+subdirectory of the default font directory is searched (this
+is true for both the default device description file and a
+file given with option <b>-d</b>).</p>
+
+<p style="margin-left:11%;"><b>-e</b><i>enc-file</i></p>
+
+<p style="margin-left:22%;">The PostScript font should be
+reencoded to use the encoding described in <i>enc-file</i>.
+The format of <i>enc-file</i> is described in
+<i>grops</i>(1). If not found in the current directory, the
+<i>devps</i> subdirectory of the default font directory is
+searched.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-f</b><i>name</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The internal name of the <i>groff</i> font is set to
+<i>name</i>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-i</b><i>n</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Generate an italic correction for each character so that
+the character&rsquo;s width plus the character&rsquo;s
+italic correction is equal to <i>n</i> thousandths of an em
+plus the amount by which the right edge of the
+character&rsquo;s bounding box is to the right of the
+character&rsquo;s origin. If this would result in a negative
+italic correction, use a zero italic correction instead.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">Also generate a
+subscript correction equal to the product of the tangent of
+the slant of the font and four fifths of the x-height of the
+font. If this would result in a subscript correction greater
+than the italic correction, use a subscript correction equal
+to the italic correction instead.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Also generate a
+left italic correction for each character equal to <i>n</i>
+thousandths of an em plus the amount by which the left edge
+of the character&rsquo;s bounding box is to the left of the
+character&rsquo;s origin. The left italic correction may be
+negative unless option <b>-m</b> is given.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option is
+normally needed only with italic (or oblique) fonts. The
+font files distributed with <i>groff</i> were created using
+an option of <b>-i50</b> for italic fonts.</p>
+
+
+<p style="margin-left:11%;"><b>-o</b><i>output-file</i></p>
+
+<p style="margin-left:22%;">The output file is
+<i>output-file</i> instead of <i>font</i>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-k</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Omit any kerning data from the <i>groff</i> font; use
+only for monospaced (constant-width) fonts.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-m</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Prevent negative left italic correction values. Roman
+font files distributed with <i>groff</i> were created with
+<b>-i0&nbsp;-m</b> to improve spacing with
+<i>eqn</i>(1).</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-n</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Don&rsquo;t output a <b>ligatures</b> command for this
+font; use with monospaced (constant-width) fonts.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-s</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>The font is special. The effect of this option is to add
+the <b>special</b> command to the font file.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-v</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Print version and exit.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-x</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Don&rsquo;t use the built-in Adobe Glyph List.</p></td></tr>
+</table>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/usr/share/groff/1.22.4/font/devps/DESC</i></p>
+
+<p style="margin-left:22%;">Device description file.</p>
+
+
+<p style="margin-left:11%;"><i>/usr/share/groff/1.22.4/font/devps/</i>F</p>
+
+<p style="margin-left:22%;">Font description file for font
+<i>F</i>.</p>
+
+
+<p style="margin-left:11%;"><i>/usr/share/groff/1.22.4/font/devps/download</i></p>
+
+<p style="margin-left:22%;">List of downloadable fonts.</p>
+
+
+<p style="margin-left:11%;"><i>/usr/share/groff/1.22.4/font/devps/text.enc</i></p>
+
+<p style="margin-left:22%;">Encoding used for text
+fonts.</p>
+
+
+<p style="margin-left:11%;"><i>/usr/share/groff/1.22.4/font/devps/generate/textmap</i></p>
+
+<p style="margin-left:22%;">Standard mapping.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Groff: The
+GNU Implementation of troff</i>, by Trent A. Fisher and
+Werner Lemberg, is the primary <i>groff</i> manual. Section
+&ldquo;Using Symbols&rdquo; may be of particular note. You
+can browse it interactively with &ldquo;info '(groff)Using
+Symbols'&rdquo;.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>groff</i>(1),
+<i>gropdf</i>(1), <i>grops</i>(1), <i>groff_font</i>(5),
+<i>perl</i>(1)</p>
+<hr>
+</body>
+</html>

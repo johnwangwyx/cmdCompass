@@ -1,0 +1,387 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:12 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Infotopam User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Infotopam User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#LIMITATIONS">LIMITATIONS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">infotopam -
+convert Amiga .info icons to PAM</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>infotopam</b>
+[<b>-forcecolor</b>] [<b>-numcolors</b> <i>numcolors</i>]
+[<b>-selected</b>] [<i>index color</i> ...]
+[<i>filename</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviation of option is acceptable. You may use double
+hyphens instead of single hyphen to denote options. You may
+use white space in place of the equals sign to separate an
+option name from its value.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">By default,
+<b>infotopam</b> converts the first icon in a .info
+file:</p>
+
+<p style="margin-left:11%; margin-top: 1em">infotopam
+amiga.info &gt; amiga.first.pam</p>
+
+<p style="margin-left:11%; margin-top: 1em">Use the
+<i>-selected</i> option to convert the second icon in a
+.info file. Here <b>infotopam</b> reads from Standard
+Input:</p>
+
+<p style="margin-left:11%; margin-top: 1em">infotopam
+-selected &lt; amiga.info &gt; amiga.second.pam</p>
+
+<p style="margin-left:11%; margin-top: 1em">Use the
+<i>-forcecolor</i> option to force color conversion for a 1
+bit-plane .info file:</p>
+
+<p style="margin-left:11%; margin-top: 1em">infotopam
+-forcecolor bw.info &gt; bw.pam</p>
+
+<p style="margin-left:11%; margin-top: 1em">Use
+<i>-numcolors</i> to override colors for indexes 0 and 3.
+Notice the two ways to specify the color:</p>
+
+<p style="margin-left:11%; margin-top: 1em">infotopam
+-numcolors 2 0 green 3 #FF0000 icon.info &gt; icon.pam</p>
+
+<p style="margin-left:11%; margin-top: 1em">Since Amiga
+monitors do not use square pixels, some icons may appear
+squished. Filtering the output through <b>pamscale</b> can
+fix this:</p>
+
+<p style="margin-left:11%; margin-top: 1em">infotopam
+squish.info | pamtopnm | pamscale -yscale 1.7 &gt;
+normal.pnm</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>infotopam</b>
+converts an Amiga .info (icon) file to a PAM image.
+<b>infotopam</b> reads a .info file from <i>filename</i>, or
+from Standard Input if you do not specify a file name, and
+writes the converted PAM image to Standard Output.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>infotopam</b>
+currently handles 1 and 2 bit-plane icons. If the .info icon
+only has 1 bit-plane, <b>infotopam</b> generates a bitmap
+(black&amp;white) PAM image; otherwise it generates a color
+PAM image. You can force <b>infotopam</b> to convert 1
+bit-plane images to color PAM images by using the
+<i>-forcecolor</i> option.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>infotopam</b> recognizes the following command line
+options: <b><br>
+-forcecolor</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Forces
+<b>infotopam</b> to convert 1 bit-plane icons to color PAM
+<br>
+images instead of bitmap PAM images. <b>infotopam</b> uses
+the index 2 <br>
+color for black and the index 1 color for white (more on
+this <br>
+below).</p>
+
+<p style="margin-left:11%;"><b>-numcolors</b>
+<i>numcolors</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Tells
+<b>infotopam</b> how many colors to override. Pixels in the
+<br>
+Amiga .info files are assigned an index value rather than a
+specific color. <br>
+The standard colors for a 2 bit-plane icon are:</p>
+
+<p style="margin-left:22%; margin-top: 1em">Index 0: Blue
+(00, 55, AA) <br>
+Index 1: White (FF, FF, FF) <br>
+Index 2: Black (00, 00, 20) <br>
+Index 3: Orange (FF, 8A, 00)</p>
+
+<p style="margin-left:22%; margin-top: 1em">To override the
+colors, first specify how many colors to override using
+<i><br>
+-numcolors</i>, then specify an (<i>index color</i>) pair
+for each color <br>
+you want to override, where <i>index</i> is a value from 0
+to 3 and <i><br>
+color</i> the new color for that index. Specify <i>color</i>
+as <br>
+described for the
+<a href="libnetpbm_image.html#colorname"><b>pnm_parsecolor()</b>
+argument</a> .</p>
+
+<p style="margin-left:11%;"><b>-selected</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Tells
+<b>infotopam</b> to convert the selected (second) icon
+instead of <br>
+the normal (first) icon. Each Amiga .info icon file contains
+two icon <br>
+images. The first image is the normal, unselected icon, and
+the second <br>
+image is the selected icon. By default <b>infotopam</b>
+converts the first <br>
+icon. You can tell <b>infotopam</b> to convert the second
+icon by using the <i><br>
+-selected</i> option.</p>
+
+<p style="margin-left:11%; margin-top: 1em">All options can
+be abbreviated to their shortest unique prefix.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pam</b>(1)
+<b>pamtopnm</b>(1) <b>pamscale</b>(1)</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Thanks to the
+following people on comp.sys.amiga.programmer for tips and
+pointers on decoding the info file format:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="41%">
+
+
+<p>Ben Hutchings</p></td>
+<td width="37%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="41%">
+
+
+<p>Thomas Richter</p></td>
+<td width="37%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="41%">
+
+
+<p>Kjetil Svalastog Matheussen</p></td>
+<td width="37%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="41%">
+
+
+<p>Anders Melchiorsen</p></td>
+<td width="37%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="41%">
+
+
+<p>Dirk Stoecker</p></td>
+<td width="37%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="41%">
+
+
+<p>Ronald V.D.</p></td>
+<td width="37%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The format of
+the Amiga .info file is as follows:</p>
+
+<p style="margin-left:11%; margin-top: 1em">DiskObject
+header 78 bytes <br>
+Optional DrawerData header 56 bytes <br>
+First icon header 20 bytes <br>
+First icon data Varies <br>
+Second icon header 20 bytes <br>
+Second icon data Varies</p>
+
+<p style="margin-left:11%; margin-top: 1em">The DiskObject
+header contains, among other things, the magic number
+(0xE310), the object width and height (inside the embedded
+Gadget header), and the version.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each icon
+header contains the icon width and height, which can be
+smaller than the object width and height, and the number of
+bit-planes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The icon data
+has the following format:</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><i>BIT-PLANE</i>
+planes, each with <i>HEIGHT</i> rows of (<i>WIDTH</i> <br>
++15) / 16 * 2 bytes length.</p>
+
+<p style="margin-left:11%; margin-top: 1em">So if you have
+a 9x3x2 icon, the icon data will look like this:</p>
+
+<p style="margin-left:11%; margin-top: 1em">aaaa aaaa a000
+0000 <br>
+aaaa aaaa a000 0000 <br>
+aaaa aaaa a000 0000 <br>
+bbbb bbbb b000 0000 <br>
+bbbb bbbb b000 0000 <br>
+bbbb bbbb b000 0000</p>
+
+<p style="margin-left:11%; margin-top: 1em">where <i>a</i>
+is a bit for the first bit-plane, <i>b</i> is a bit for the
+second bit-plane, and <i>0</i> is padding. Thanks again to
+Ben Hutchings for his very helpful post!</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>infotopam</b>
+was new in Netpbm 10.22 (April 2004).</p>
+
+<h2>LIMITATIONS
+<a name="LIMITATIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>infotopam</b>
+currently only handles 1 and 2 bit-plane icons.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There is no
+<b>pamtoinfo</b> command, since the .info files contain a
+lot more than just icon data, and mapping the colors would
+be difficult.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+2000, 2004 by Richard Griswold.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/infotopam.html</b></p>
+<hr>
+</body>
+</html>

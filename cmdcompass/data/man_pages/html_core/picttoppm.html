@@ -1,0 +1,562 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:33 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Picttoppm User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Picttoppm User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#LIMITATIONS">LIMITATIONS</a><br>
+<a href="#FONTS">FONTS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">picttoppm -
+convert a Macintosh PICT file to a PPM</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>picttoppm</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-verbose=</b><i>n</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-fullres</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-noheader</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-quickdraw</b>]
+[<b>-fontdir</b> <i>file</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<i>pictfile</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>picttoppm</b>
+reads a PICT file (version 1 or 2) and outputs a PPM
+image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">PICT is an
+image format that was developed by Apple Computer in 1984 as
+the native format for Macintosh graphics. A PICT image is
+encoded in QuickDraw commands. The PICT format is a
+meta-format that can be used for both bitmap images and
+vector images. PICT is also known as &quot;Macintosh
+Picture&quot; format, or the QuickDraw Picture format.</p>
+
+<p style="margin-left:11%; margin-top: 1em">PICT files are
+primarily used to exchange graphics between various
+Macintosh applications.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In MacOS X, PDF
+replaces PICT as the main graphics format.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>picttoppm</b> recognizes the following command line
+options: <b><br>
+-fontdir</b> <i>file</i></p>
+
+<p style="margin-left:22%;">Make the list of BDF fonts in
+<i>file</i> available for use by <b>picttoppm</b> when
+drawing text. See below for the format of the fontdir file.
+This is in addition to the built-in fonts and those in the
+file <b>fontdir</b>.</p>
+
+<p style="margin-left:11%;"><b>-fullres</b></p>
+
+<p style="margin-left:22%;">Force any images in the PICT
+file to be output with at least their full resolution. A
+PICT file may indicate that a contained image is to be
+scaled down before output. This option forces images to
+retain their sizes and prevent information loss. This option
+disables all PICT operations except images.</p>
+
+<p style="margin-left:11%;"><b>-noheader</b></p>
+
+<p style="margin-left:22%;">Do not assume the first 512
+bytes of the file are a header. All PICT files have such a
+header, but this is useful when you have PICT data that was
+not stored in the data fork of a PICT file.</p>
+
+<p style="margin-left:11%;"><b>-quickdraw</b></p>
+
+<p style="margin-left:22%;">Execute only pure quickdraw
+operations. In particular, turn off the interpretation of
+special PostScript printer operations.</p>
+
+<p style="margin-left:11%;"><b>-verbose=</b><i>n</i></p>
+
+<p style="margin-left:22%;">Print a whole bunch of
+information about the PICT file and the conversion process
+that only <b>picttoppm</b> hackers really care about.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>n</i> is the
+verbosity level, 0-2.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Before Netpbm
+10.98 (March 2022), this option is a flag option that you
+specify multiple times to specify increasing verbosity.</p>
+
+<h2>LIMITATIONS
+<a name="LIMITATIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The PICT file
+format is a general drawing format. <b>picttoppm</b> does
+not recognize all the drawing commands, but it does fully
+implement all image commands and mostly implements line,
+rectangle, polygon and text drawing. It is useful for
+converting scanned images and some drawing conversion.</p>
+
+<p style="margin-left:11%; margin-top: 1em">With
+<b>-fullres</b>, <b>picttoppm</b> ignores text drawing
+commands. Beginning in Netpbm 10.45 (December 2008), it
+issues a warning message when it omits text for this
+reason.</p>
+
+<h2>FONTS
+<a name="FONTS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Some of the
+information in a PICT file is text, with a number indicating
+the font in which the text is supposed to rendered.
+<b>picttoppm</b> has one built-in font, but you can add
+others by directing <b>picttoppm</b> to BDF font files,
+which you do with font directory files.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>picttoppm</b>
+automatically uses the file named <b>fontdir</b> in the
+current directory, if it exists. You may specify an
+additional font directory file with the <b>-fontdir</b>
+option.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Obviously the
+font definitions are strongly related to the Macintosh. You
+can find more font numbers and information about fonts in
+Macintosh documentation.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Font
+Directory File Format</b> <br>
+Each line in the file is either a comment or font
+information. A comment begins with <b>#</b>. The font
+information consists of 4 whitespace separated fields. The
+first is the font number, the second is the font size in
+pixels, the third is the font style and the fourth is the
+name of a BDF file containing the font. The BDF format is
+defined by the X Window System and is beyond the scope of
+this document.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The font number
+indicates the type face. Here is a list of known font
+numbers and their faces.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>0</p></td>
+<td width="8%"></td>
+<td width="24%">
+
+
+<p>Chicago</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>1</p></td>
+<td width="8%"></td>
+<td width="24%">
+
+
+<p>application font</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>2</p></td>
+<td width="8%"></td>
+<td width="24%">
+
+
+<p>New York</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>3</p></td>
+<td width="8%"></td>
+<td width="24%">
+
+
+<p>Geneva</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>4</p></td>
+<td width="8%"></td>
+<td width="24%">
+
+
+<p>Monaco</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>5</p></td>
+<td width="8%"></td>
+<td width="24%">
+
+
+<p>Venice</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>6</p></td>
+<td width="8%"></td>
+<td width="24%">
+
+
+<p>London</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>7</p></td>
+<td width="8%"></td>
+<td width="24%">
+
+
+<p>Athens</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>8</p></td>
+<td width="8%"></td>
+<td width="24%">
+
+
+<p>San Franciso</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>9</p></td>
+<td width="8%"></td>
+<td width="24%">
+
+
+<p>Toronto</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>11</p></td>
+<td width="8%"></td>
+<td width="24%">
+
+
+<p>Cairo</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>12</p></td>
+<td width="8%"></td>
+<td width="24%">
+
+
+<p>Los Angeles</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>20</p></td>
+<td width="8%"></td>
+<td width="24%">
+
+
+<p>Times Roman</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>21</p></td>
+<td width="8%"></td>
+<td width="24%">
+
+
+<p>Helvetica</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>22</p></td>
+<td width="8%"></td>
+<td width="24%">
+
+
+<p>Courier</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>23</p></td>
+<td width="8%"></td>
+<td width="24%">
+
+
+<p>Symbol</p></td>
+<td width="54%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>24</p></td>
+<td width="8%"></td>
+<td width="24%">
+
+
+<p>Taliesin</p></td>
+<td width="54%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The font style
+indicates a variation on the font. Multiple variations may
+apply to a font and the font style is the sum of the
+variation numbers which are:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em">1</p></td>
+<td width="8%"></td>
+<td width="15%">
+
+
+<p style="margin-top: 1em">Boldface</p></td>
+<td width="63%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>2</p></td>
+<td width="8%"></td>
+<td width="15%">
+
+
+<p>Italic</p></td>
+<td width="63%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>4</p></td>
+<td width="8%"></td>
+<td width="15%">
+
+
+<p>Underlined</p></td>
+<td width="63%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>8</p></td>
+<td width="8%"></td>
+<td width="15%">
+
+
+<p>Outlined</p></td>
+<td width="63%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>16</p></td>
+<td width="8%"></td>
+<td width="15%">
+
+
+<p>Shadow</p></td>
+<td width="63%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>32</p></td>
+<td width="8%"></td>
+<td width="15%">
+
+
+<p>Condensed</p></td>
+<td width="63%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>64</p></td>
+<td width="8%"></td>
+<td width="15%">
+
+
+<p>Extended</p></td>
+<td width="63%">
+</td></tr>
+</table>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Inside
+Macintosh volumes 1 and 5, <b>ppmtopict</b>(1),
+<b>ppm</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright 1993
+George Phillips</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/picttoppm.html</b></p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,348 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:26 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pammixmulti User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pammixmulti User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#ARGUMENTS">ARGUMENTS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#Table Of Contents">Table Of Contents</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pammixmulti -
+blend together multiple PAM images</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pammixmulti</b>
+<br>
+[<b>--blend</b>=average|random|mask] <br>
+[<b>--maskfile</b>=<i>filename</i>] <br>
+[<b>--stdev</b>=<i>number</i>] <br>
+[<b>--randomseed</b> <i>integer</i>] <i><br>
+filename</i> ...</p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviation of an option is acceptable. You can use a
+single hyphen instead of double hyphens to denote options.
+You can use white space in place of the equals sign to
+separate an option name from its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This file is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pammixmulti</b>
+mixes two or more images to produce a new image. The program
+provides multiple ways to interpret &quot;mix.&quot;</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pammixmulti</b> recognizes the following command line
+options: <b><br>
+--blend</b>=average|random|mask</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+specifies how the input images should be mixed to produce
+the output image. With <b>--blend</b>=average (the default),
+each pixel in the output is produced by averaging the
+corresponding pixels from all the input images. With
+<b>--blend</b>=random, each pixel in the output is produced
+by selecting the corresponding pixel from one of the input
+images, chosen at random on a per-pixel basis. With
+<b>--blend</b>=mask, each pixel in the output is produced by
+a weighted average of the corresponding pixels from all the
+input images based on the grayscale level of an additional
+mask image.</p>
+
+
+<p style="margin-left:11%;"><b>--maskfile</b>=<i>filename</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">In conjunction
+with <b>--blend</b>=mask, this option names a grayscale mask
+file to control the blending of each pixel. (If the file is
+not grayscale, the first channel is treated as gray). Where
+the mask file is black, the first image is selected. Where
+the mask file is white, the last image is selected.
+Intermediate levels of gray select intermediate images.</p>
+
+
+<p style="margin-left:11%;"><b>--stdev</b>=<i>number</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">When used with
+<b>--blend</b>=mask, this option controls how smoothly the
+various input images are mixed to produce each output pixel.
+For example, consider running <b>pammixmulti</b> with three
+input images and a mask image that uses gray levels from 0
+to 255. Given <b>--stdev</b>=0.0, gray levels 0-84 produce
+exclusively image 1; gray levels 85-170 produce exclusively
+image 2; and gray levels 171-255 produce exclusively image
+3. If the argument to <b>--stdev</b> is positive, images are
+blended according to a normal distribution. Hence, gray
+levels around 85 produce an output pixel that includes
+roughly equal amounts of the corresponding pixel from images
+1 and 2 but less of the corresponding pixel from image 3. As
+<i>number</i> tends towards the number of input images
+(going beyond that has diminishing impact), the output tends
+to look more like <b>--blend</b>=average. <i>number</i>
+defaults to 0.25.</p>
+
+<p style="margin-left:11%;"><b>--randomseed</b>
+<i>integer</i></p>
+
+<p style="margin-left:22%;">This is the seed for the random
+number generator used with <b>--blend=random</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Use this to
+ensure you get the same image on separate invocations.</p>
+
+<h2>ARGUMENTS
+<a name="ARGUMENTS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">You supply the
+names of the files to mix as non-option arguments.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Average a bunch
+of PPM images to produce a new PAM image: <br>
+pammixmulti input*.ppm &gt;output.ppm</p>
+
+<p style="margin-left:11%; margin-top: 1em">Mix these same
+images by taking each pixel from a randomly selected input
+image:</p>
+
+<p style="margin-left:11%; margin-top: 1em">pammixmulti
+--blend=random input*.ppm &gt;output.ppm</p>
+
+<p style="margin-left:11%; margin-top: 1em">Use a mask
+image to control the fading among input images on a
+pixel-by-pixel basis:</p>
+
+<p style="margin-left:11%; margin-top: 1em">pammixmulti
+--blend=mask --maskfile=mask.pgm &gt;output.pam \ <br>
+one.pam two.pam three.pam four.pam</p>
+
+<p style="margin-left:11%; margin-top: 1em">Do the same but
+with more abrupt transitions:</p>
+
+<p style="margin-left:11%; margin-top: 1em">pammixmulti
+--blend=mask --maskfile=mask.pgm --stdev=0.0 &gt;output.pam
+\ <br>
+one.pam two.pam three.pam four.pam</p>
+
+<p style="margin-left:11%; margin-top: 1em">and now with
+more gradual transitions:</p>
+
+<p style="margin-left:11%; margin-top: 1em">pammixmulti
+--blend=mask --maskfile=mask.pgm --stdev=1.0 &gt;output.pam
+\ <br>
+one.pam two.pam three.pam four.pam</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pammixmulti</b>
+was new in Netpbm 10.85 (December 2018).</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright 2018
+Scott Pakin, scott+pbm@pakin.org.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamcomp</b>(1),
+<b>ppmmix</b>(1), <b>pamarith</b>(1), <b>pnm</b>(1),
+<b>pam</b>(1)</p>
+
+<h2>Table Of Contents
+<a name="Table Of Contents"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="16%">
+
+
+
+<p style="margin-top: 1em"><a href="#synopsis">SYNOPSIS</a></p> </td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="16%">
+
+
+<p><a href="#description">DESCRIPTION</a></p></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="16%">
+
+
+<p><a href="#options">OPTIONS</a></p></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="16%">
+
+
+<p><a href="#arguments">ARGUMENTS</a></p></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="16%">
+
+
+<p><a href="#examples">EXAMPLES</a></p></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="16%">
+
+
+<p><a href="#history">HISTORY</a></p></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="16%">
+
+
+<p><a href="#author">AUTHOR</a></p></td>
+<td width="62%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="16%">
+
+
+<p><a href="#seealso">SEE ALSO</a></p></td>
+<td width="62%">
+</td></tr>
+</table>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pammixmulti.html</b></p>
+<hr>
+</body>
+</html>

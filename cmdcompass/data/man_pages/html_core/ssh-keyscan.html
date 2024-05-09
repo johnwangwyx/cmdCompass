@@ -1,0 +1,217 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:50 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title></title>
+</head>
+<body>
+
+<hr>
+
+
+<p>SSH-KEYSCAN(1) BSD General Commands Manual
+SSH-KEYSCAN(1)</p>
+
+<p style="margin-top: 1em"><b>NAME</b></p>
+
+<p style="margin-left:6%;"><b>ssh-keyscan</b> &mdash;
+gather SSH public keys from servers</p>
+
+<p style="margin-top: 1em"><b>SYNOPSIS</b></p>
+
+<p style="margin-left:22%;"><b>ssh-keyscan</b>
+[<b>-46cDHv</b>] [<b>-f&nbsp;</b><i>file</i>]
+[<b>-p&nbsp;</b><i>port</i>] [<b>-T&nbsp;</b><i>timeout</i>]
+[<b>-t&nbsp;</b><i>type</i>]
+[<i>host&nbsp;</i>|&nbsp;<i>addrlist&nbsp;namelist</i>]</p>
+
+<p style="margin-top: 1em"><b>DESCRIPTION</b></p>
+
+<p style="margin-left:6%;"><b>ssh-keyscan</b> is a utility
+for gathering the public SSH host keys of a number of hosts.
+It was designed to aid in building and verifying
+<i>ssh_known_hosts</i> files, the format of which is
+documented in sshd(8). <b>ssh-keyscan</b> provides a minimal
+interface suitable for use by shell and perl scripts.</p>
+
+
+<p style="margin-left:6%; margin-top: 1em"><b>ssh-keyscan</b>
+uses non-blocking socket I/O to contact as many hosts as
+possible in parallel, so it is very efficient. The keys from
+a domain of 1,000 hosts can be collected in tens of seconds,
+even when some of those hosts are down or do not run
+sshd(8). For scanning, one does not need login access to the
+machines that are being scanned, nor does the scanning
+process involve any encryption.</p>
+
+<p style="margin-left:6%; margin-top: 1em">Hosts to be
+scanned may be specified by hostname, address or by CIDR
+network range (e.g. 192.168.16/28). If a network range is
+specified, then all addresses in that range will be
+scanned.</p>
+
+<p style="margin-left:6%; margin-top: 1em">The options are
+as follows:</p>
+
+<p style="margin-top: 1em"><b>-4</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Force
+<b>ssh-keyscan</b> to use IPv4 addresses only.</p>
+
+<p style="margin-top: 1em"><b>-6</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Force
+<b>ssh-keyscan</b> to use IPv6 addresses only.</p>
+
+<p style="margin-top: 1em"><b>-c</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Request
+certificates from target hosts instead of plain keys.</p>
+
+<p style="margin-top: 1em"><b>-D</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Print keys
+found as SSHFP DNS records. The default is to print keys in
+a format usable as a ssh(1) <i>known_hosts</i> file.</p>
+
+<p style="margin-top: 1em"><b>-f</b> <i>file</i></p>
+
+<p style="margin-left:17%;">Read hosts or &ldquo;addrlist
+namelist&rdquo; pairs from <i>file</i>, one per line. If
+&rsquo;-&rsquo; is supplied instead of a filename,
+<b>ssh-keyscan</b> will read from the standard input. Names
+read from a file must start with an address, hostname or
+CIDR network range to be scanned. Addresses and hostnames
+may optionally be followed by comma-separated name or
+address aliases that will be copied to the output. For
+example:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">192.168.11.0/24
+<br>
+10.20.1.1 <br>
+happy.example.org <br>
+10.0.0.1,sad.example.org</p>
+
+<p style="margin-top: 1em"><b>-H</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Hash all
+hostnames and addresses in the output. Hashed names may be
+used normally by ssh(1) and sshd(8), but they do not reveal
+identifying information should the file&rsquo;s contents be
+disclosed.</p>
+
+<p style="margin-top: 1em"><b>-p</b> <i>port</i></p>
+
+<p style="margin-left:17%;">Connect to <i>port</i> on the
+remote host.</p>
+
+<p style="margin-top: 1em"><b>-T</b> <i>timeout</i></p>
+
+<p style="margin-left:17%;">Set the timeout for connection
+attempts. If <i>timeout</i> seconds have elapsed since a
+connection was initiated to a host or since the last time
+anything was read from that host, the connection is closed
+and the host in question considered unavailable. The default
+is 5 seconds.</p>
+
+<p style="margin-top: 1em"><b>-t</b> <i>type</i></p>
+
+<p style="margin-left:17%;">Specify the type of the key to
+fetch from the scanned hosts. The possible values are
+&ldquo;dsa&rdquo;, &ldquo;ecdsa&rdquo;,
+&ldquo;ed25519&rdquo;, &ldquo;ecdsa-sk&rdquo;,
+&ldquo;ed25519-sk&rdquo;, or &ldquo;rsa&rdquo;. Multiple
+values may be specified by separating them with commas. The
+default is to fetch &ldquo;rsa&rdquo;, &ldquo;ecdsa&rdquo;,
+&ldquo;ed25519&rdquo;, &ldquo;ecdsa-sk&rdquo;, and
+&ldquo;ed25519-sk&rdquo; keys.</p>
+
+<p style="margin-top: 1em"><b>-v</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">Verbose mode:
+print debugging messages about progress.</p>
+
+<p style="margin-left:6%; margin-top: 1em">If an
+ssh_known_hosts file is constructed using <b>ssh-keyscan</b>
+without verifying the keys, users will be vulnerable to
+<i>man in the middle</i> attacks. On the other hand, if the
+security model allows such a risk, <b>ssh-keyscan</b> can
+help in the detection of tampered keyfiles or man in the
+middle attacks which have begun after the ssh_known_hosts
+file was created.</p>
+
+<p style="margin-top: 1em"><b>FILES</b></p>
+
+
+<p style="margin-left:6%;"><i>/etc/ssh/ssh_known_hosts</i></p>
+
+<p style="margin-top: 1em"><b>EXAMPLES</b></p>
+
+<p style="margin-left:6%;">Print the RSA host key for
+machine <i>hostname</i>:</p>
+
+<p style="margin-left:14%; margin-top: 1em">$ ssh-keyscan
+-t rsa hostname</p>
+
+<p style="margin-left:6%; margin-top: 1em">Search a network
+range, printing all supported key types:</p>
+
+<p style="margin-left:14%; margin-top: 1em">$ ssh-keyscan
+192.168.0.64/25</p>
+
+<p style="margin-left:6%; margin-top: 1em">Find all hosts
+from the file <i>ssh_hosts</i> which have new or different
+keys from those in the sorted file
+<i>ssh_known_hosts</i>:</p>
+
+<p style="margin-left:14%; margin-top: 1em">$ ssh-keyscan
+-t rsa,dsa,ecdsa,ed25519 -f ssh_hosts | \</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="24%"></td>
+<td width="11%">
+
+
+<p>sort -u - ssh_known_hosts | diff ssh_known_hosts -</p></td>
+<td width="65%">
+</td></tr>
+</table>
+
+<p style="margin-top: 1em"><b>SEE ALSO</b></p>
+
+<p style="margin-left:6%;">ssh(1), sshd(8)</p>
+
+<p style="margin-top: 1em"><i>Using DNS to Securely Publish
+Secure Shell (SSH) Key Fingerprints</i></p>
+
+<p style="margin-left:6%;">,</p>
+
+<p>RFC 4255 , <br>
+2006 .</p>
+
+<p style="margin-top: 1em"><b>AUTHORS</b></p>
+
+<p style="margin-left:6%;">David Mazieres
+&lt;<i>dm@lcs.mit.edu</i>&gt; wrote the initial version, and
+Wayne Davison &lt;<i>wayned@users.sourceforge.net</i>&gt;
+added support for protocol version 2.</p>
+
+<p style="margin-left:6%; margin-top: 1em">BSD
+October&nbsp;28, 2022 BSD</p>
+<hr>
+</body>
+</html>

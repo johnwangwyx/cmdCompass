@@ -1,0 +1,211 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:00 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>DBUS-RUN-SESSION</title>
+
+</head>
+<body>
+
+<h1 align="center">DBUS-RUN-SESSION</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">dbus-run-session
+- start a process as a new D-Bus session</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em"><b>dbus-run-session</b>
+[--config-file&nbsp;<i>FILENAME</i>]
+[--dbus-daemon&nbsp;<i>BINARY</i>] [--] <i>PROGRAM</i>
+[<i>ARGUMENTS</i>...]</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em"><b>dbus-run-session</b>
+--help</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em"><b>dbus-run-session</b>
+--version</p> </td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dbus-run-session</b>
+is used to start a session bus instance of
+<b>dbus-daemon</b> from a shell script, and start a
+specified program in that session. The <b>dbus-daemon</b>
+will run for as long as the program does, after which it
+will terminate.</p>
+
+<p style="margin-left:11%; margin-top: 1em">One use is to
+run a shell with its own <b>dbus-daemon</b> in a text-mode
+or SSH session, and have the <b>dbus-daemon</b> terminate
+automatically on leaving the sub-shell, like this:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">dbus-run-session
+-- bash</p>
+
+<p style="margin-left:11%; margin-top: 1em">or to replace
+the login shell altogether, by combining
+<b>dbus-run-session</b> with the <b>exec</b> builtin:</p>
+
+<p style="margin-left:11%; margin-top: 1em">exec
+dbus-run-session -- bash</p>
+
+<p style="margin-left:11%; margin-top: 1em">Another use is
+to run regression tests and similar things in an isolated
+D-Bus session, to avoid either interfering with the
+&quot;real&quot; D-Bus session or relying on there already
+being a D-Bus session active, for instance:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">dbus-run-session
+-- make check</p>
+
+<p style="margin-left:11%; margin-top: 1em">or (in
+<b>automake</b>(1)):</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">AM_TESTS_ENVIRONMENT
+= export MY_DEBUG=all; <br>
+LOG_COMPILER = dbus-run-session <br>
+AM_LOG_FLAGS = --</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--config-file=</b><i>FILENAME</i>,
+<b>--config-file</b> <i>FILENAME</i></p>
+
+<p style="margin-left:17%;">Pass
+<b>--config-file=</b><i>FILENAME</i> to the bus daemon,
+instead of passing it the <b>--session</b> argument. See
+<b>dbus-daemon</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--dbus-daemon=</b><i>BINARY</i>,
+<b>--dbus-daemon</b> <i>BINARY</i></p>
+
+<p style="margin-left:17%;">Run <i>BINARY</i> as
+<b>dbus-daemon</b>(1), instead of searching the <b>PATH</b>
+in the usual way for an executable called
+<b>dbus-daemon</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--help</b></p>
+
+<p style="margin-left:17%;">Print usage information and
+exit.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--version</b></p>
+
+<p style="margin-left:17%;">Print the version of
+dbus-run-session and exit.</p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dbus-run-session</b>
+exits with the exit status of <i>PROGRAM</i>, 0 if the
+<b>--help</b> or <b>--version</b> options were used, 127 on
+an error within <b>dbus-run-session</b> itself, or
+128+<i>n</i> if the <i>PROGRAM</i> was killed by signal
+<i>n</i>.</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>PATH</b> is
+searched to find <i>PROGRAM</i>, and (if the --dbus-daemon
+option is not used or its argument does not contain a
+<b>/</b> character) to find <b>dbus-daemon</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The session
+bus' address is made available to <i>PROGRAM</i> in the
+environment variable <b>DBUS_SESSION_BUS_ADDRESS</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The variables
+<b>DBUS_SESSION_BUS_PID</b>,
+<b>DBUS_SESSION_BUS_WINDOWID</b>,
+<b>DBUS_STARTER_BUS_TYPE</b> and <b>DBUS_STARTER_ADDRESS</b>
+are removed from the environment, if present.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Please send bug
+reports to the D-Bus mailing list or bug tracker, see
+<b><font color="#0000FF">http://www.freedesktop.org/software/dbus/</font></b></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><font color="#000000">dbus-daemon</font></b><font color="#000000">(1),
+<b>dbus-launch</b>(1)</font></p>
+<hr>
+</body>
+</html>

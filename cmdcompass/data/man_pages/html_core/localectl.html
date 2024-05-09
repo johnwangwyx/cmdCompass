@@ -1,0 +1,490 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:15 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>LOCALECTL</title>
+
+</head>
+<body>
+
+<h1 align="center">LOCALECTL</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#COMMANDS">COMMANDS</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#NOTES">NOTES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">localectl -
+Control the system locale and keyboard layout settings</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="49%">
+
+
+<p style="margin-top: 1em"><b>localectl</b> [OPTIONS...]
+{COMMAND}</p> </td>
+<td width="40%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>localectl</b>
+may be used to query and change the system locale and
+keyboard layout settings. It communicates with
+<b>systemd-localed</b>(8) to modify files such as
+/etc/locale.conf and /etc/vconsole.conf.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The system
+locale controls the language settings of system services and
+of the UI before the user logs in, such as the display
+manager, as well as the default for users after login.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The keyboard
+settings control the keyboard layout used on the text
+console and of the graphical UI before the user logs in,
+such as the display manager, as well as the default for
+users after login.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that the
+changes performed using this tool might require the initrd
+to be rebuilt to take effect during early system boot. The
+initrd is not rebuilt automatically by localectl, this task
+has to be performed manually, usually using a tool like
+<b>dracut</b>(8).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that
+<b>systemd-firstboot</b>(1) may be used to initialize the
+system locale for mounted (but not booted) system
+images.</p>
+
+<h2>COMMANDS
+<a name="COMMANDS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+commands are understood:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>status</b></p>
+
+<p style="margin-left:17%;">Show current settings of the
+system locale and keyboard mapping. If no command is
+specified, this is the implied default.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>set-locale
+LOCALE</b>, <b>set-locale VARIABLE=LOCALE...</b></p>
+
+<p style="margin-left:17%;">Set the system locale. This
+takes one locale such as &quot;en_US.UTF-8&quot;, or takes
+one or more locale assignments such as
+&quot;LANG=de_DE.utf8&quot;,
+&quot;LC_MESSAGES=en_GB.utf8&quot;, and so on. If one locale
+without variable name is provided, then &quot;LANG=&quot;
+locale variable will be set. See <b>locale</b>(7) for
+details on the available settings and their meanings. Use
+<b>list-locales</b> for a list of available locales (see
+below).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>list-locales</b></p>
+
+<p style="margin-left:17%;">List available locales useful
+for configuration with <b>set-locale</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>set-keymap
+MAP [TOGGLEMAP]</b></p>
+
+<p style="margin-left:17%;">Set the system keyboard mapping
+for the console and X11. This takes a mapping name (such as
+&quot;de&quot; or &quot;us&quot;), and possibly a second one
+to define a toggle keyboard mapping. Unless
+<b>--no-convert</b> is passed, the selected setting is also
+applied as the default system keyboard mapping of X11, after
+converting it to the closest matching X11 keyboard mapping.
+Use <b>list-keymaps</b> for a list of available keyboard
+mappings (see below).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>list-keymaps</b></p>
+
+<p style="margin-left:17%;">List available keyboard
+mappings for the console, useful for configuration with
+<b>set-keymap</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>set-x11-keymap
+LAYOUT [MODEL [VARIANT [OPTIONS]]]</b></p>
+
+<p style="margin-left:17%;">Set the system default keyboard
+mapping for X11 and the virtual console. This takes a
+keyboard mapping name (such as &quot;de&quot; or
+&quot;us&quot;), and possibly a model, variant, and options,
+see <b>kbd</b>(4) for details. Unless <b>--no-convert</b> is
+passed, the selected setting is also applied as the system
+console keyboard mapping, after converting it to the closest
+matching console keyboard mapping.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>list-x11-keymap-models</b>,
+<b>list-x11-keymap-layouts</b>, <b>list-x11-keymap-variants
+[LAYOUT]</b>, <b>list-x11-keymap-options</b></p>
+
+<p style="margin-left:17%;">List available X11 keymap
+models, layouts, variants and options, useful for
+configuration with <b>set-keymap</b>. The command
+<b>list-x11-keymap-variants</b> optionally takes a layout
+parameter to limit the output to the variants suitable for
+the specific layout.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+options are understood:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--no-ask-password</b></p>
+
+<p style="margin-left:17%;">Do not query the user for
+authentication for privileged operations.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--no-convert</b></p>
+
+<p style="margin-left:17%;">If <b>set-keymap</b> or
+<b>set-x11-keymap</b> is invoked and this option is passed,
+then the keymap will not be converted from the console to
+X11, or X11 to console, respectively.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-H</b>,
+<b>--host=</b></p>
+
+<p style="margin-left:17%;">Execute the operation remotely.
+Specify a hostname, or a username and hostname separated by
+&quot;@&quot;, to connect to. The hostname may optionally be
+suffixed by a port ssh is listening on, separated by
+&quot;:&quot;, and then a container name, separated by
+&quot;/&quot;, which connects directly to a specific
+container on the specified host. This will use SSH to talk
+to the remote machine manager instance. Container names may
+be enumerated with <b>machinectl -H</b> <i>HOST</i>. Put
+IPv6 addresses in brackets.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-M</b>,
+<b>--machine=</b></p>
+
+<p style="margin-left:17%;">Execute operation on a local
+container. Specify a container name to connect to,
+optionally prefixed by a user name to connect as and a
+separating &quot;@&quot; character. If the special string
+&quot;.host&quot; is used in place of the container name, a
+connection to the local system is made (which is useful to
+connect to a specific user's user bus: &quot;--user
+--machine=lennart@.host&quot;). If the &quot;@&quot; syntax
+is not used, the connection is made as root user. If the
+&quot;@&quot; syntax is used either the left hand side or
+the right hand side may be omitted (but not both) in which
+case the local user name and &quot;.host&quot; are
+implied.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Print a short help text and
+exit.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--version</b></p>
+
+<p style="margin-left:17%;">Print a short version string
+and exit.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--no-pager</b></p>
+
+<p style="margin-left:17%;">Do not pipe output into a
+pager.</p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">On success, 0
+is returned, a non-zero failure code otherwise.</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_LOG_LEVEL</i></p>
+
+<p style="margin-left:17%;">The maximum log level of
+emitted messages (messages with a higher log level, i.e.
+less important ones, will be suppressed). Either one of (in
+order of decreasing importance) <b>emerg</b>, <b>alert</b>,
+<b>crit</b>, <b>err</b>, <b>warning</b>, <b>notice</b>,
+<b>info</b>, <b>debug</b>, or an integer in the range 0...7.
+See <b>syslog</b>(3) for more information.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_LOG_COLOR</i></p>
+
+<p style="margin-left:17%;">A boolean. If true, messages
+written to the tty will be colored according to
+priority.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This setting is
+only useful when messages are written directly to the
+terminal, because <b>journalctl</b>(1) and other tools that
+display logs will color messages based on the log level on
+their own.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_LOG_TIME</i></p>
+
+<p style="margin-left:17%;">A boolean. If true, console log
+messages will be prefixed with a timestamp.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This setting is
+only useful when messages are written directly to the
+terminal or a file, because <b>journalctl</b>(1) and other
+tools that display logs will attach timestamps based on the
+entry metadata on their own.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_LOG_LOCATION</i></p>
+
+<p style="margin-left:17%;">A boolean. If true, messages
+will be prefixed with a filename and line number in the
+source code where the message originates.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note that the
+log location is often attached as metadata to journal
+entries anyway. Including it directly in the message text
+can nevertheless be convenient when debugging programs.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_LOG_TID</i></p>
+
+<p style="margin-left:17%;">A boolean. If true, messages
+will be prefixed with the current numerical thread ID
+(TID).</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note that the
+this information is attached as metadata to journal entries
+anyway. Including it directly in the message text can
+nevertheless be convenient when debugging programs.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_LOG_TARGET</i></p>
+
+<p style="margin-left:17%;">The destination for log
+messages. One of <b>console</b> (log to the attached tty),
+<b>console-prefixed</b> (log to the attached tty but with
+prefixes encoding the log level and &quot;facility&quot;,
+see <b>syslog</b>(3), <b>kmsg</b> (log to the kernel
+circular log buffer), <b>journal</b> (log to the journal),
+<b>journal-or-kmsg</b> (log to the journal if available, and
+to kmsg otherwise), <b>auto</b> (determine the appropriate
+log target automatically, the default), <b>null</b> (disable
+log output).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_PAGER</i></p>
+
+<p style="margin-left:17%;">Pager to use when
+<b>--no-pager</b> is not given; overrides <i>$PAGER</i>. If
+neither <i>$SYSTEMD_PAGER</i> nor <i>$PAGER</i> are set, a
+set of well-known pager implementations are tried in turn,
+including <b>less</b>(1) and <b>more</b>(1), until one is
+found. If no pager implementation is discovered no pager is
+invoked. Setting this environment variable to an empty
+string or the value &quot;cat&quot; is equivalent to passing
+<b>--no-pager</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note: if
+<i>$SYSTEMD_PAGERSECURE</i> is not set,
+<i>$SYSTEMD_PAGER</i> (as well as <i>$PAGER</i>) will be
+silently ignored.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_LESS</i></p>
+
+<p style="margin-left:17%;">Override the options passed to
+<b>less</b> (by default &quot;FRSXMK&quot;).</p>
+
+<p style="margin-left:17%; margin-top: 1em">Users might
+want to change two options in particular:</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>K</b></p>
+
+<p style="margin-left:23%;">This option instructs the pager
+to exit immediately when Ctrl+C is pressed. To allow
+<b>less</b> to handle Ctrl+C itself to switch back to the
+pager command prompt, unset this option.</p>
+
+<p style="margin-left:23%; margin-top: 1em">If the value of
+<i>$SYSTEMD_LESS</i> does not include &quot;K&quot;, and the
+pager that is invoked is <b>less</b>, Ctrl+C will be ignored
+by the executable, and needs to be handled by the pager.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>X</b></p>
+
+<p style="margin-left:23%;">This option instructs the pager
+to not send termcap initialization and deinitialization
+strings to the terminal. It is set by default to allow
+command output to remain visible in the terminal even after
+the pager exits. Nevertheless, this prevents some pager
+functionality from working, in particular paged output
+cannot be scrolled with the mouse.</p>
+
+<p style="margin-left:17%; margin-top: 1em">See
+<b>less</b>(1) for more discussion.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_LESSCHARSET</i></p>
+
+<p style="margin-left:17%;">Override the charset passed to
+<b>less</b> (by default &quot;utf-8&quot;, if the invoking
+terminal is determined to be UTF-8 compatible).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_PAGERSECURE</i></p>
+
+<p style="margin-left:17%;">Takes a boolean argument. When
+true, the &quot;secure&quot; mode of the pager is enabled;
+if false, disabled. If <i>$SYSTEMD_PAGERSECURE</i> is not
+set at all, secure mode is enabled if the effective UID is
+not the same as the owner of the login session, see
+<b>geteuid</b>(2) and <b>sd_pid_get_owner_uid</b>(3). In
+secure mode, <b>LESSSECURE=1</b> will be set when invoking
+the pager, and the pager shall disable commands that open or
+create new files or start new subprocesses. When
+<i>$SYSTEMD_PAGERSECURE</i> is not set at all, pagers which
+are not known to implement secure mode will not be used.
+(Currently only <b>less</b>(1) implements secure mode.)</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note: when
+commands are invoked with elevated privileges, for example
+under <b>sudo</b>(8) or <b>pkexec</b>(1), care must be taken
+to ensure that unintended interactive features are not
+enabled. &quot;Secure&quot; mode for the pager may be
+enabled automatically as describe above. Setting
+<i>SYSTEMD_PAGERSECURE=0</i> or not removing it from the
+inherited environment allows the user to invoke arbitrary
+commands. Note that if the <i>$SYSTEMD_PAGER</i> or
+<i>$PAGER</i> variables are to be honoured,
+<i>$SYSTEMD_PAGERSECURE</i> must be set too. It might be
+reasonable to completely disable the pager using
+<b>--no-pager</b> instead.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_COLORS</i></p>
+
+<p style="margin-left:17%;">Takes a boolean argument. When
+true, <b>systemd</b> and related utilities will use colors
+in their output, otherwise the output will be monochrome.
+Additionally, the variable can take one of the following
+special values: &quot;16&quot;, &quot;256&quot; to restrict
+the use of colors to the base 16 or 256 ANSI colors,
+respectively. This can be specified to override the
+automatic decision based on <i>$TERM</i> and what the
+console is connected to.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>$SYSTEMD_URLIFY</i></p>
+
+<p style="margin-left:17%;">The value must be a boolean.
+Controls whether clickable links should be generated in the
+output for terminal emulators supporting this. This can be
+specified to override the decision that <b>systemd</b> makes
+based on <i>$TERM</i> and other conditions.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd</b>(1),
+<b>locale</b>(7), <b>locale.conf</b>(5),
+<b>vconsole.conf</b>(5), <b>loadkeys</b>(1), <b>kbd</b>(4),
+<b><font color="#0000FF">The XKB Configuration
+Guide</font></b>
+<small><font color="#000000">[1]</font></small>
+<font color="#000000">, <b>systemctl</b>(1),
+<b>systemd-localed.service</b>(8),
+<b>systemd-firstboot</b>(1), <b>dracut</b>(8)</font></p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">1.</font></p> </td>
+<td width="2%"></td>
+<td width="41%">
+
+
+<p style="margin-top: 1em"><font color="#000000">The XKB
+Configuration Guide</font></p></td>
+<td width="42%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">http://www.x.org/releases/current/doc/xorg-docs/input/XKB-Config.html</font></p>
+<hr>
+</body>
+</html>

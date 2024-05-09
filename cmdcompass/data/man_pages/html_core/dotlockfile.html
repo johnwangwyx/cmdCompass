@@ -1,0 +1,307 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:01 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>DOTLOCKFILE</title>
+
+</head>
+<body>
+
+<h1 align="center">DOTLOCKFILE</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#RETURN&nbsp;VALUE">RETURN&nbsp;VALUE</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#SEE&nbsp;ALSO">SEE&nbsp;ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">dotlockfile -
+Utility to manage lockfiles</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dotlockfile
+-l</b> [<b>-r</b> <i>retries</i>] [<b>-i</b>
+<i>interval</i>] [<b>-p</b>] [<b>-q</b>]
+&lt;<b>-m&nbsp;</b>| <i>lockfile</i>&gt; <b><br>
+dotlockfile -l</b> [<b>-r</b> <i>retries</i>] [<b>-i</b>
+<i>interval</i>] [<b>-p</b>] [<b>-q</b>]
+&lt;<b>-m&nbsp;</b>| <i>lockfile</i>&gt; [<b>-P</b>]
+<i>cmd&nbsp;</i>args ... <b><br>
+dotlockfile</b> -u&nbsp;<b>|&nbsp;</b>-t</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dotlockfile</b>
+is a command line utility to reliably create, test and
+remove lockfiles. It creates lockfiles <i>reliably</i> on
+local and NFS filesystems, because the crucial steps of
+testing for a preexisting lockfile and creating it are
+performed <i>atomically</i> by a <i>single</i> call to
+<i>link</i>(2). Manpage <i>lockfile_create</i>(3) describes
+the used algorithm.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>dotlockfile</b>
+is installed with attribute <b>SETGID&nbsp;</b><i>mail</i>
+and thus can also be used to lock and unlock mailboxes
+<i>even</i> if the mailspool directory is only writable by
+group mail.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The name
+<b>dotlockfile</b> comes from the way mailboxes are locked
+for updates on a lot of UNIX systems. A lockfile is created
+with the same filename as the mailbox but with the string
+&quot;<i>.lock</i>&quot; appended.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The names
+<b>dotlock</b> and <b>lockfile</b> were already taken
+&ndash; hence the name <b>dotlockfile</b> <i>:)</i>.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-l</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Create a lockfile if no
+preexisting valid lockfile is found, else wait and retry
+according to option <b>-r</b>. Retry interval can be
+explicitly set with option <b>-i</b>. This option
+(<b>-l</b>) is the default, so it can be left off.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">A lockfile is
+treated as valid, <br>
+&bull;&nbsp;&nbsp;if it holds the <i>process-id</i> of a
+running process, <br>
+&bull;&nbsp;&nbsp;or if it does not hold any
+<i>process-id</i> and has been touched less than
+5&nbsp;minutes ago (timestamp is younger than
+5&nbsp;minutes).</p>
+
+<p style="margin-left:11%;"><b>-r retries</b></p>
+
+<p style="margin-left:22%;">The number of times
+<b>dotlockfile</b> retries to acquire the lock if it failed
+the first time before giving up. The initial sleep after
+failing to acquire the lock is 5&nbsp;seconds. After each
+retry the sleep interval is increased incrementally by
+5&nbsp;seconds up to a maximum sleep of 60&nbsp;seconds
+between tries unless overridden by <b>-i</b>. The default
+number of retries is 5. To try only once, use &quot;<b>-r
+0</b>&quot;. To try indefinitely, use &quot;<b>-r
+-1</b>&quot;.</p>
+
+<p style="margin-left:11%;"><b>-i interval</b></p>
+
+<p style="margin-left:22%;">Sets a consistent retry
+interval.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-u</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Remove a lockfile.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-t</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Touch an existing lockfile (update the timestamp).
+Useful for lockfiles on NFS filesystems. For lockfiles on
+local filesystems the <b>-p</b> option is preferable.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-p</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Write the <i>process-id</i> of the calling process (or
+dotlockfile itself if a command is executed) into the
+lockfile. Also when testing for an existing lockfile, check
+the contents for the <i>process-id</i> of a running process
+to verify if the lockfile is still valid. Obviously useful
+only for lockfiles on local filesystems.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-m</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Lock or unlock the current users mailbox. The path to
+the mailbox is the default system mailspool directory
+(usually <i>/var/mail</i>) with the username as gotten from
+<i>getpwuid</i>() appended. If the environment variable
+<i>$MAIL</i> is set, that is used instead. Then the string
+&quot;<i>.lock</i>&quot; is appended to get the name of the
+actual lockfile.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-q</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Don&rsquo;t print warnings or errors to the standard
+error output. Used internally by liblockfile when it spawns
+<b>dotlockfile</b> as a helper program.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-P</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>On successful &quot;lock and spawn command&quot;,
+don&rsquo;t exit with status zero, but pass through the exit
+value of the spawned command.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">lockfile</p>
+
+<p style="margin-left:22%;">The lockfile to be created or
+removed. Must not be specified if the <b>-m</b> option is
+given.</p>
+
+<p style="margin-left:11%;"><i>command</i> argument ...</p>
+
+<p style="margin-left:22%;">Create lockfile, run the
+<i>command</i> , wait for it to exit, and remove
+lockfile.</p>
+
+<h2>RETURN&nbsp;VALUE
+<a name="RETURN&nbsp;VALUE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Zero on
+success, and non-zero on failure. When locking (the default,
+or with the <b>-l</b> option) <b>dotlockfile</b> returns the
+same values as the library function
+<i>lockfile_create</i>(3). Unlocking a non-existent lockfile
+is not an error.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Unless the
+<b>-P</b> option was supplied, when a command is executed,
+the return value does not correspond with that of the
+command that was run. If locking and unlocking was
+successful, the exit status is zero.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The lockfile is
+created exactly as named on the command line. The extension
+&quot;<i>.lock</i>&quot; is <i>not</i> automatically
+appended.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This utility is
+a lot like the <i>lockfile</i>(1) utility included with
+<i>procmail</i>, and the <i>mutt_dotlock</i>(1) utility
+included with <i>mutt</i>. However the command-line
+arguments differ, and so does the return status. It is
+believed, that <i>dotlockfile</i> is the most flexible
+implementation, since it automatically detects when it needs
+to use privileges to lock a mailbox, and does it safely.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The above
+mentioned <i>lockfile_create</i>(3) manpage is present in
+the <i>liblockfile-dev</i> package.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">None known.</p>
+
+<h2>SEE&nbsp;ALSO
+<a name="SEE&nbsp;ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>lockfile_create</i>(3),
+<i>maillock</i>(3)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Miquel van
+Smoorenburg</p>
+<hr>
+</body>
+</html>

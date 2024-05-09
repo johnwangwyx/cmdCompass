@@ -1,0 +1,533 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:35 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pnmremap User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pnmremap User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#PARAMETERS">PARAMETERS</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pnmremap -
+replace colors in a PNM image with colors from another
+set</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmremap</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-mapfile=</b><i>palettefile</i></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-floyd</b>|<b>-fs</b>|<b>-nfloyd</b>|<b>-nofs</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">{[<b>-norandom</b>]|<b>randomseed=</b><i>n</i>}</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-firstisdefault</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-verbose</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-missingcolor=</b><i>colorspec</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<i>pnmfile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">All options can
+be abbreviated to their shortest unique prefix. You may use
+two hyphens instead of one to designate an option. You may
+use either white space or an equals sign between an option
+name and its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmremap</b>
+replaces the colors in an input image with those from a
+palette you specify. Where colors in the input are present
+in the palette, they just stay the same in the output. But
+where the input contains a color that is not in the palette,
+<b>pnmremap</b> gives you these choices:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Choose the closest color from the palette.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Choose the first color from the palette.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Use a color specified by a command option
+(<b>-missing</b>).</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Dither. This means rather than mapping pixel by pixel,
+<b>pnmremap</b> uses colors from the palette to try to make
+multi-pixel regions of the output have the same average
+color as the input (for another kind of dithering, see
+<b>ppmdither</b>).</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Two reasons to
+use this program are: 1) you want to reduce the number of
+colors in the input image; and 2) you need to feed the image
+to something that can handle only certain colors.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To reduce
+colors, you can generate the palette with
+<b>pnmcolormap</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">By default,
+<b>pnmremap</b> maps an input color that is not in the
+palette to the closest color that <i>is</i> in the palette.
+Closest means with the smallest Cartesian distance in the
+red, green, blue brightness space (smallest sum of the
+squares of the differences in red, green, and blue ITU-R
+Recommendation BT.709 gamma-adjusted intensities).</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can instead
+specify a single default color for <b>pnmremap</b> to use
+for any color in the input image that is not in the palette.
+Use the <b>-missing</b> option for this.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can also
+specify that the first color in the palette image is the
+default. Use the <b>-firstisdefault</b> option for this.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The palette is
+simply a PNM image. The colors of the pixels in the image
+are the colors in the palette. Where the pixels appear in
+the image, and the dimensions of the image, are irrelevant.
+Multiple pixels of the same color are fine. However, a
+palette image is typically a single row with one pixel per
+color.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you specify
+<b>-missing</b>, the color you so specify is in the palette
+in addition to whatever is in the palette image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For historical
+reasons, Netpbm sometimes calls the palette a
+&quot;colormap.&quot; But it doesn&rsquo;t really map
+anything. <b>pnmremap</b> creates its own map, based on the
+palette, to map colors from the input image to output
+colors.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Palette/Image
+Type Mismatch</b> <br>
+In the simple case, the palette image is of the same depth
+(number of planes, i.e. number of components in each tuple
+(pixel)) as the input image and <b>pnmremap</b> just does a
+straightforward search of the palette for each input tuple
+(pixel). In fact, <b>pnmremap</b> doesn&rsquo;t even care if
+the image is a visual image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">But what about
+when the depths differ? In that case, <b>pnmremap</b>
+converts the input image (in its own memory) to match the
+palette and then proceeds as above.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There are only
+two such cases in which <b>pnmremap</b> knows how to do the
+conversion: when one of them is tuple type RGB, depth 3, and
+the other is tuple type GRAYSCALE or BLACKANDWHITE, depth 1;
+and vice versa.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In any other
+case, <b>pnmremap</b> issues and error message and
+fails.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that as
+long as your input and palette images are PNM, they&rsquo;ll
+always fall into one of the cases <b>pnmremap</b> can
+handle. There&rsquo;s an issue only if you&rsquo;re using
+some exotic PAM image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Before Netpbm
+10.27 (March 2005), <b>pnmremap</b> could not handle the
+case of a palette of greater depth than the input image. (It
+would issue an error message and fail in that case). You can
+use <b>ppmtoppm</b> to increase the depth of the input image
+to work around this limitation.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In any case,
+the output image has the same tuple type and depth as the
+palette image.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Multiple
+Image Stream <br>
+pnmremap</b> handles a multiple image input stream,
+producing a multiple image output stream. The input images
+need not be similar in any way.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Before Netpbm
+10.30 (October 2005), <b>pnmremap</b> ignored any image
+after the first.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Examples</b>
+<br>
+pnmcolormap testimg.ppm 256 &gt;palette.ppm</p>
+
+<p style="margin-left:11%; margin-top: 1em">pnmremap
+-map=palette.ppm testimg.ppm &gt;reduced_testimg.ppm</p>
+
+<p style="margin-left:11%; margin-top: 1em">To limit colors
+to a certain set, a typical example is to create an image
+for posting on the World Wide Web, where different browsers
+know different colors. But all browsers are supposed to know
+the 216 &quot;web safe&quot; colors which are essentially
+all the colors you can represent in a PPM image with a
+maxval of 5. So you can do this:</p>
+
+<p style="margin-left:11%; margin-top: 1em">pamseq 3 5
+&gt;websafe.pam</p>
+
+<p style="margin-left:11%; margin-top: 1em">pnmremap
+-map=websafe.pam testimg.ppm &gt;websafe_testimg.ppm</p>
+
+<p style="margin-left:11%; margin-top: 1em">Another useful
+palette is one for the 8 color IBM TTL color set, which you
+can create with <br>
+pamseq 3 1 &gt;ibmttl.pam</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you want to
+quantize one image to use the colors in another one, just
+use the second one as the palette. You don&rsquo;t have to
+reduce it down to only one pixel of each color, just use it
+as is.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The output
+image has the same type and maxval as the palette image.</p>
+
+<h2>PARAMETERS
+<a name="PARAMETERS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">There is one
+parameter, which is required: The file specification of the
+input PNM file.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pnmremap</b> recognizes the following command line
+options: <b><br>
+-mapfile=</b><i>palettefilename</i></p>
+
+<p style="margin-left:22%;">This names the file that
+contains the palette image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option is
+mandatory.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-floyd</b></p></td>
+<td width="80%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-fs</b></p></td>
+<td width="80%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-nofloyd</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-nofs</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>These options determine whether <b>pnmremap</b> does
+Floyd-Steinberg dithering. Without Floyd-Steinberg,
+<b>pnmremap</b> selects the output color of a pixel based on
+the color of only the corresponding input pixel. With
+Floyd-Steinberg, <b>pnmremap</b> considers regions of pixels
+such that the average color of a region is the same in the
+output as in the input. The dithering effect appears as a
+dot pattern up close, but from a distance, the dots blend so
+that you see more colors than are present in the color
+map.</p> </td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">As an example,
+if your color map contains only black and white, and the
+input image has 4 adjacent pixels of gray, <b>pnmremap</b>
+with Floyd-Steinberg would generate output pixels black,
+white, black, white, which from a distance looks gray. But
+without Floyd-Steinberg, <b>pnmremap</b> would generate 4
+white pixels, white being the single-pixel approximation of
+gray.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em">Floyd-Steinberg
+gives vastly better results on images where unmodified
+quantization has banding or other artifacts, especially when
+going to a small number of colors such as the above IBM set.
+However, it does take substantially more CPU time.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>-fs</b> is a
+synonym for <b>-floyd</b>. <b>-nofs</b> is a synonym for
+<b>-nofloyd</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+<b>-nofloyd</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Before Netpbm
+10.46 (March 2009), dithering doesn&rsquo;t work quite as
+you expect if the color map has a lower maxval than the
+input. <b>pnmremap</b> reduces the color resolution to the
+color map&rsquo;s maxval before doing any dithering, so the
+dithering does not have the effect of making the image, at a
+distance, appear to have the original maxval. In current
+Netpbm, it does.</p>
+
+<p style="margin-left:11%;"><b>-norandom</b></p>
+
+<p style="margin-left:22%;">This option affects a detail of
+the Floyd-Steinberg dithering process. It has no effect if
+you aren&rsquo;t doing Floyd-Steinberg dithering.</p>
+
+<p style="margin-left:22%; margin-top: 1em">By default,
+<b>pnmremap</b> initializes the error propagation
+accumulator to random values to avoid the appearance of
+unwanted patterns. This is an extension of the original
+Floyd-Steinberg algorithm.</p>
+
+<p style="margin-left:22%; margin-top: 1em">A drawback of
+this is that the same <b>pnmremap</b> on the same input
+produces slightly different output every time, which makes
+comparison difficult.</p>
+
+<p style="margin-left:22%; margin-top: 1em">With
+<b>-norandom</b>, <b>pnmremap</b> initializes the error
+accumulators to zero and the output is completely
+predictable.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Alternatively,
+you can use <b>-randomseed</b> to get randomization across
+the image, but still have repeatable results.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You cannot
+specify this along with <b>-randomseed</b>.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>-norandom</b>
+was new in Netpbm 10.39 (June 2007).</p>
+
+
+<p style="margin-left:11%;"><b>-randomseed=</b><i>n</i></p>
+
+<p style="margin-left:22%;">This option affects a detail of
+the Floyd-Steinberg dithering process. It has no effect if
+you aren&rsquo;t doing Floyd-Steinberg dithering.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+supplies the seed for the random number generator used in
+the randomization process described in the explanation of
+the <b>-norandom</b> option. If you run <b>pnmremap</b>
+twice with the same <b>-randomseed</b> value, you will get
+identical results.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you do not
+specify <b>-randomseed</b>, <b>pnmremap</b> chooses a seed
+at random, adding another level of randomness to the
+dithering.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You cannot
+specify this along with <b>-norandom</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.82 (March 2018).</p>
+
+<p style="margin-left:11%;"><b>-firstisdefault</b></p>
+
+<p style="margin-left:22%;">This tells <b>pnmremap</b> to
+map any input color that is not in the palette to the first
+color in the palette (the color of the pixel in the top left
+corner of the palette image)</p>
+
+<p style="margin-left:22%; margin-top: 1em">See
+<a href="#description">DESCRIPTION</a> .</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you specify
+<b>-firstisdefault</b>, the maxval of your input must match
+the maxval of your palette image.</p>
+
+
+<p style="margin-left:11%;"><b>-missingcolor=</b><i>colorspec</i></p>
+
+<p style="margin-left:22%;">This specifies the default
+color for <b>pnmremap</b> to map to a color in the input
+image that isn&rsquo;t in the palette. <i>color</i> may or
+may not be in the palette image; it is part of the palette
+regardless.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><i>colorspec</i>
+is as described for the
+<a href="libnetpbm_image.html#colorname">argument of the
+<b>pnm_parsecolor()</b> library routine</a> .</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you specify
+<b>-missingcolor</b>, the maxval of your input must match
+the maxval of your palette image.</p>
+
+<p style="margin-left:11%;"><b>-verbose</b></p>
+
+<p style="margin-left:22%;">Display helpful messages about
+the mapping process.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmcolormap</b>(1),
+<b>pamlookup</b>(1), <b>pnmquant</b>(1),
+<b>ppmquantall</b>(1), <b>pamdepth</b>(1),
+<b>ppmdither</b>(1), <b>ppmquant</b>(1), <b>pamseq</b>(1),
+<b>ppm</b>(1)</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmremap</b>
+first appeared in Netpbm 9.23 (January 2002). Before that,
+its function was available only as part of the function of
+<b>pnmquant</b> (which was derived from the much older
+<b>ppmquant</b>). Color quantization really has two main
+subfunctions, so Netpbm 9.23 split it out into two separate
+programs: <b>pnmcolormap</b> and <b>pnmremap</b> and then
+Netpbm 9.24 replaced <b>pnmquant</b> with a program that
+simply calls <b>pnmcolormap</b> and <b>pnmremap</b>.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1989, 1991 by Jef Poskanzer.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pnmremap.html</b></p>
+<hr>
+</body>
+</html>

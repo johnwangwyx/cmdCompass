@@ -1,0 +1,674 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:43 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pstopnm User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pstopnm User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#OPTION USAGE">OPTION USAGE</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#LIMITATIONS">LIMITATIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pstopnm -
+convert a PostScript file to a PNM image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pstopnm</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-stdout</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-forceplain</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-help</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-dpi=</b><i>dpi</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-xsize=</b><i>pixels</i>]
+[<b>-ysize=</b><i>pixels</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-xborder=</b><i>frac</i>]
+[<b>-yborder=</b><i>frac</i>] [<b>-landscape</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-portrait</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-nocrop</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-pbm</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">|<b>-pgm</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">|<b>-ppm</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-llx=</b><i>s</i>]
+[<b>-lly=</b><i>s</i>] [<b>-urx=</b><i>s</i>]
+[<b>-ury=</b><i>s</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-verbose</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-xmax=</b><i>pixels</i>]
+[<b>-ymax=</b><i>pixels</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-textalphabits=</b>{<b>1</b>,<b>2</b>,<b>4</b>}]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>psfile</i>[<b>.ps</b>]</p>
+
+<h2>OPTION USAGE
+<a name="OPTION USAGE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviation of option is acceptable. You may use double
+hyphens instead of single hyphen to denote options. You may
+use white space in place of the equals sign to separate an
+option name from its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pstopnm</b>
+reads a PostScript file as input and produces PBM, PGM, or
+PPM images as output. This program simply uses GhostScript
+to render a PostScript file with its PNM device drivers. If
+you don&rsquo;t have GhostScript installed or the version
+you have installed was not built with the relevant PNM
+device drivers, <b>pstopnm</b> will fail. You can see if you
+have the proper environment by issuing the command gs --help
+. If it responds and lists under &quot;Available
+Devices&quot; <b>pbm</b>, <b>pbmraw</b>, <b>pgm</b>,
+<b>pgmraw</b>, <b>pnm</b>, <b>pnmraw</b>, <b>ppm</b>, or
+<b>ppmraw</b>, you&rsquo;re in business.</p>
+
+<p style="margin-left:11%; margin-top: 1em">It&rsquo;s
+important to understand that <b>pstopnm</b> is a Netpbm
+image file format converter only in the broadest sense of
+the word, because Postscript is far from an image file
+format. What <b>pstopnm</b> really is is a Postscript
+renderer - an image generator. One place you&rsquo;ll notice
+the difference is where you expect pstopnm | pnmtops to be
+idempotent (which is not the case). There are details on
+this kind of conversion below.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pstopnm</b>
+uses the value of the <b>GHOSTSCRIPT</b> environment
+variable as the file name for the Ghostscript program. If
+<b>GHOSTSCRIPT</b> is not set, <b>pstopnm</b> searches your
+<b>PATH</b> for a regular file named <b>gs</b>. If it
+doesn&rsquo;t find one, it assumes Ghostscript is in the
+file <b>/usr/bin/gs</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pstopnm</b>
+does not use the Netpbm libraries to generate the output
+files, so may not be entirely consistent with most Netpbm
+programs.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>psfile</i>[<b>.ps</b>]
+is the name of the input file. <b>pstopnm</b> will add the
+<b>ps</b> to the end of the name you specify if no file
+exists by the exact name you specify, but one with
+<b>.ps</b>added does. For Standard Input, use <b>-</b> or
+just don&rsquo;t give any argument.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you use the
+<b>-stdout</b> option or your input is from Standard Input,
+<b>pstopnm</b> outputs images of all the pages as a
+multi-image file to Standard Output. Otherwise,
+<b>pstopnm</b> creates one file for each page in the
+Postscript input. The files are named as follows: If the
+input file is named <b>psfile.ps</b>, the name of the files
+will be <b>psfile001.ppm</b>, <b>psfile002.ppm</b>, etc. The
+filetype suffix is <b>.ppm</b>, <b>.pgm</b>, or <b>.pbm</b>,
+depending on which kind of output you choose with your
+invocation options. If the input file name does not end in
+<b>.ps</b>, the whole file name is used in the output file
+name. For example, if the input file is named
+<b>psfile.old</b>, the output file name is
+<b>psfile.old001.ppm</b>, etc.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that the
+output file selection is inconsistent with most Netpbm
+programs, because it does not default to Standard Output.
+This is for historical reasons, based on the fact that the
+Netpbm formats did not always provide for a sequence of
+images in a single file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When your input
+is from Standard Input, you may feed multiple Encapsulated
+Postscript documents, one after another, and <b>pstopnm</b>
+converts every document and places it in the Standard Output
+stream as an image. But if your input is from a named file,
+<b>pstopnm</b> expects the file to be an Encapsulated
+Postscript file, which means it contains only one
+Enapsulated Postscript document. If the file contains
+multiple concatenated documents, <b>pstopnm</b> ignores
+every document but the first. This distinction does not
+exist for non-EPSF Postscript input - <b>pstopnm</b>
+generates an output image for each page of the input
+regardless of whether the input is from Standard Input or
+from a named file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that you
+can generate both kinds of files - concatenated EPSF and
+multi-page non-EPSF - with <b>pnmtops</b>, selecting with
+the <b>-setpage</b> option.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each output
+image contains a rectangular area of the page to which it
+pertains. See <a href="#dimensions">the Dimensions
+section</a> for details on what part of the input image goes
+into the output image and how big it is in the output and
+what borders and margins are in the output image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">It has been
+reported that on some Postscript Version 1 input,
+Ghostscript, and therefore <b>pstopnm</b>, produces no
+output. To solve this problem, you can convert the file to
+Postscript Version 3 with the program <b>ps2ps</b>. It is
+reported that the program <b>pstops</b> does not work.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Dimensions</b>
+<br>
+This section describes what part of the input image gets
+used in the output and the dimensions of the output,
+including borders and background.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that an
+output image is associated with a single input page.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pstopnm</b>
+starts by taking a rectangular area from the input page.
+That is called the subject image.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pstopnm</b>
+may add borders to the subject image to form what is called
+the bordered subject image.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pstopnm</b>
+places the bordered subject image in the center of the
+output image and clips the edges as necessary to fit the
+computed output image size.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The location of
+the subject image in the Postscript input page is defined by
+four numbers, the lower left corner and the upper right
+corner x and y coordinates. These coordinates are usually
+specified by the BoundingBox DSC statement (a Postscript
+comment) in the PostScript file, but they can be overridden
+by the user by specifying one or more of the following
+options: <b>-llx</b>, <b>-lly</b>, <b>-urx</b>, and
+<b>-ury</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The presence
+and thickness of a border to be added to the subject image
+to form the bordered subject image is controlled by the
+options <b>-xborder</b> and <b>-yborder</b>. If
+<b>pstopnm</b> does not find a BoundingBox statement in the
+input, and you don&rsquo;t specify image area coordinates on
+the command line, <b>pstopnm</b> uses default values. If
+your input is from Standard Input, <b>pstopnm</b> does not
+use the BoundingBox values (because of the technical
+difficulty of extracting that information and still feeding
+the file to Ghostscript), so you either have to specify the
+image area coordinates or take the default.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The output
+image size is a confusing thing. In a Postscript file,
+things have spatial dimensions. For example, a particular
+line may be 3 centimeters long. A Postscript printer is
+supposed to print the line 3 centimeters long, using however
+many pixels that takes, without regard to how big the sheet
+of paper on which it is printing is. In a PNM image, by
+contrast, there is no spatial dimension; there are only
+pixels. You might have a line that is 100 pixels long, but
+the PNM image says nothing about how long that line should
+be on a printed page.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pstopnm</b>
+fills the role of a Postscript printer. The PNM image is a
+virtual printed page. <b>pstopnm</b> must determine how many
+pixels it will use in the output image to represent an inch
+of input image, which is the &quot;output device
+resolution.&quot; Think of it as the number of dots per inch
+the virtual printer prints on the virtual page.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The simplest
+thing is for you to tell <b>pstopnm</b> exactly what output
+device resolution to use, using the <b>-dpi</b> option. If
+you say for example <b>-dpi=300</b> and the bordered subject
+image is 2 inches by 3 inches, the PNM output will be 600
+pixels by 900 pixels. Using this method, the output device
+resolution has to be the same in both directions.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Or you can set
+the output image dimensions with <b>-xsize</b> and
+<b>-ysize</b>. For example, if you say <b>-xsize=1200
+-ysize=1800</b> and the bordered subject image is 2 inches
+wide by 3 inches high, the output image is 1200 by 1800
+pixels, with each pixel representing 1/600 inch of input
+image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the unlikely
+event that you want different output device resolutions in
+the two directions, you could use <b>-xsize</b> and
+<b>-ysize</b> to do that. In the above example, if you
+change <b>-ysize</b> to 900, a pixel still represents 1/600
+inch horizontally, but 1/300 inch vertically.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you specify
+one of <b>-xsize</b> and <b>-ysize</b> and not the other,
+<b>pstopnm</b> defaults the other such that the output
+device resolution is the same in both directions.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+&quot;x&quot; and &quot;y&quot; of <b>-xsize</b> and
+<b>-ysize</b> refer to the image being printed on the page,
+not the page. So if <b>pstopnm</b> prints it in landscape
+orientation, &quot;x&quot; would pertain to the vertical
+direction on the page, i.e. the vertical direction in the
+output PNM image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you specify
+neither the output size nor the output device resolution,
+<b>pstopnm</b> does some weird computation which exists
+mainly for historical reasons:</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you specify
+<b>-nocrop</b>, <b>pstopnm</b> uses the values of
+<b>-xmax</b> and <b>-ymax</b> for the output image
+dimensions. These default to 612 and 792 pixels,
+respectively.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The final case,
+the default, is where you don&rsquo;t specify any size or
+resolution options or <b>-nocrop</b>. This is the most
+complicated case. In this case, <b>pstopnm</b> first chooses
+an output device resolution that would generate the number
+of pixels indicated by <b>-xmax</b> and <b>-ymax</b> from
+the bordered subject image. Then, based on that resolution,
+it chooses an output image size that is just large enough to
+accommodate the subject image (no borders). Remember (above)
+that <b>pstopnm</b> trims the edges of the bordered subject
+image to fit the computed output size.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Ghostscript
+Limitations</b> <br>
+Tests done in 2013 with Ghostscript 8.71 indicate that
+Ghostscript&rsquo;s <b>pgmraw</b> output driver has some
+kind of rounding error that causes the pixel values to
+change slightly, and that means <b>pstopnm</b> generates
+incorrect output when you have monochrome Postscript input.
+But with color Postscript input, <b>pstopnm</b> uses
+Ghostscript&rsquo;s <b>ppmraw</b> output driver and
+generates correct PPM output.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Usage
+Notes</b> <br>
+There is some good advice on converting to and from
+Postscript, in the document Postcript File Conversions&quot;
+(1) by Andrew T. Young.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Reversible
+Conversion</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">If you&rsquo;re
+trying to do the equivalent of the naive pnmtops | pstopnm,
+the following steps will do it.</p>
+
+<p style="margin-left:11%; margin-top: 1em">$ pnmtops
+-nocenter -equalpixels -dpi 72 -noturn testimg.ppm &gt;
+testimg.ps <br>
+$ pstopnm -xborder=0 -yborder=0 -xsize=<i>XSIZE</i>
+-ysize=<i>YSIZE</i> \ <br>
+-portrait -stdout -quiet testimg.ps &gt;testimg2.ppm</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>XSIZE and
+YSIZE above are the image dimensions, which you can get from
+testimg.ps like in the following example (the grep, awk and
+echo commands are just to help demonstrate how the other
+commands work - you wouldn&rsquo;t use those in a
+program).</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">$ grep
+&quot;BoundingBox&quot; testimg.ps <br>
+%%BoundingBox: 0 0 227 149</p>
+
+<p style="margin-left:11%; margin-top: 1em">$ awk
+&rsquo;/%%BoundingBox/ {print $4,$5}&rsquo; testimg.ps <br>
+227 149</p>
+
+<p style="margin-left:11%; margin-top: 1em">$ xysize=$(awk
+&rsquo;/%%BoundingBox/ {print
+&quot;-xsize=&quot;$4,&quot;-ysize=&quot;$5}&rsquo;
+testimg.ps) <br>
+$ echo $xysize</p>
+
+<p style="margin-left:11%; margin-top: 1em">-xsize=227
+-ysize=149</p>
+
+<p style="margin-left:11%; margin-top: 1em">$ pstopnm
+-xborder=0 -yborder=0 $xysize -portrait ... testimg.ps</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that
+Ghostscript bugs can keep this from doing a perfect
+reversible conversion.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pstopnm</b> recognizes the following command line
+options: <b><br>
+-forceplain</b></p>
+
+<p style="margin-left:22%;">forces the output file to be in
+plain (text) format. Otherwise, it is in raw (binary)
+format. See <b>pbm</b>(1), etc. Use this instead of the
+<b>-plain</b> common option if you need plain format
+output.</p>
+
+<p style="margin-left:11%;"><b>-llx=</b><i>bx</i></p>
+
+<p style="margin-left:22%;">selects <i>bx</i> as the lower
+left corner x coordinate (in inches) on the Postscript input
+page of the subject image. See <a href="#dimensions">the
+Dimensions section</a> .</p>
+
+<p style="margin-left:11%;"><b>-lly=</b><i>by</i></p>
+
+<p style="margin-left:22%;">selects <i>by</i> as the lower
+left corner y coordinate (in inches) on the Postscript input
+page of the subject image. See <a href="#dimensions">the
+Dimensions section</a> .</p>
+
+<p style="margin-left:11%;"><b>-landscape</b></p>
+
+<p style="margin-left:22%;">renders the image in landscape
+orientation.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you specify
+neither <b>-portrait</b> nor <b>-landscape</b>,
+<b>pstopnm</b> chooses the orientation that best fits the
+image on the output page.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Landscape means
+printed sideways on the page, not printed the long way.
+Those are different things if the long edge of the page is
+the top one.</p>
+
+<p style="margin-left:11%;"><b>-portrait</b></p>
+
+<p style="margin-left:22%;">renders the image in portrait
+orientation.</p>
+
+<p style="margin-left:22%; margin-top: 1em">See
+<b>-landscape</b>.</p>
+
+<p style="margin-left:11%;"><b>-nocrop</b></p>
+
+<p style="margin-left:22%;">This option causes
+<b>pstopnm</b> to make the output image exactly the
+dimensions of the bordered subject image. By default,
+<b>pstopnm</b> makes the output image the dimensions
+specified by <b>-xmax</b> and <b>-ymax</b>. See
+<a href="#dimensions">the Dimensions section</a> .</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-pbm</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-pgm</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-ppm</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>selects the format of the output file. By default, all
+files are rendered as PPM.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-stdout</b></p>
+
+<p style="margin-left:22%;">causes output to go to Standard
+Output instead of to regular files, one per page (see
+description of output files above). Use <b>pnmsplit</b> to
+extract individual pages from Standard Output.</p>
+
+<p style="margin-left:11%;"><b>-urx=</b><i>tx</i></p>
+
+<p style="margin-left:22%;">selects <i>tx</i> as the upper
+right corner x coordinate (in inches) on the Postscript
+input page of the subject image. See
+<a href="#dimensions">the Dimensions section</a> .</p>
+
+<p style="margin-left:11%;"><b>-ury=</b><i>ty</i></p>
+
+<p style="margin-left:22%;">selects <i>ty</i> as the upper
+right corner y coordinate (in inches) on the Postscript
+input page of the subject image. See
+<a href="#dimensions">the Dimensions section</a> .</p>
+
+<p style="margin-left:11%;"><b>-verbose</b></p>
+
+<p style="margin-left:22%;">prints processing information
+to stdout.</p>
+
+
+<p style="margin-left:11%;"><b>-xborder=</b><i>frac</i></p>
+
+<p style="margin-left:22%;">specifies that the left and
+right borders added to the subject image are to be
+<i>frac</i> times the subject image width. The default value
+is 0.1. See <a href="#dimensions">the Dimensions section</a>
+.</p>
+
+<p style="margin-left:11%;"><b>-xmax=</b><i>xmax</i></p>
+
+<p style="margin-left:22%;">specifies that the output image
+is to be <i>xmax</i> pixels wide. The default is 612. See
+<a href="#dimensions">the Dimensions section</a> .</p>
+
+<p style="margin-left:11%;"><b>-xsize=</b><i>xsize</i></p>
+
+<p style="margin-left:22%;">specifies that the output image
+is to be <i>xsize</i> pixels wide. See
+<a href="#dimensions">the Dimensions section</a> .</p>
+
+
+<p style="margin-left:11%;"><b>-yborder=</b><i>frac</i></p>
+
+<p style="margin-left:22%;">specifies that the top and
+bottom borders added to the subject image are to be
+<i>frac</i> times the subject image height. The default
+value is 0.1. See <a href="#dimensions">the Dimensions
+section</a> .</p>
+
+<p style="margin-left:11%;"><b>-ymax=</b><i>ymax</i></p>
+
+<p style="margin-left:22%;">specifies that the output image
+is to be <i>ymax</i> pixels high. The default is 792. See
+<a href="#dimensions">the Dimensions section</a> .</p>
+
+<p style="margin-left:11%;"><b>-ysize=</b><i>ysize</i></p>
+
+<p style="margin-left:22%;">specifies that the output image
+is to be <i>ymax</i> pixels high. See
+<a href="#dimensions">the Dimensions section</a> .</p>
+
+<p style="margin-left:11%;"><b>-dpi=</b><i>dpi</i></p>
+
+<p style="margin-left:22%;">specifies the output device
+resolution, in dots per inch, of the Postscript printer that
+<b>pstopnm</b> simulates. This is the number of PNM pixels
+<b>pstopnm</b> generates for each inch of image. See
+<a href="#dimensions">the Dimensions section</a> .</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.21 (March 2004).</p>
+
+
+<p style="margin-left:11%;"><b>-textalphabits=</b>{<b>1</b>,<b>2</b>,<b>4</b>}</p>
+
+<p style="margin-left:22%;">This controls subsample
+antialiasing of text. Antialiasing is a form of smoothing
+that eliminates jagged edges on characters. Subsample
+antialiasing is a kind of antialiasing that uses subpixels
+in a box, and the value of this option is the size of that
+box. 4 gives you the best looking output, while 1 causes no
+antialiasing. Smaller numbers make <b>pnmtops</b> use less
+CPU time.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Pstopnm uses
+Ghostscript&rsquo;s <b>TextAlphaBits</b> parameter for
+this.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+4.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.53 (December 2010). Older versions of
+<b>pstopnm</b> do no antialiasing.</p>
+
+<h2>LIMITATIONS
+<a name="LIMITATIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The program
+will produce incorrect results with PostScript files that
+initialize the current transformation matrix. In these
+cases, page translation and rotation will not have any
+effect. To render these files, probably the best bet is to
+use the following options:</p>
+
+<p style="margin-left:11%; margin-top: 1em">pstopnm
+-xborder 0 -yborder 0 -portrait -nocrop file.ps</p>
+
+<p style="margin-left:11%; margin-top: 1em">Additional
+options may be needed if the document is supposed to be
+rendered on a medium different from letter-size paper.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>gs</b>,
+<b>pnmtops</b>(1), <b>psidtopgm</b>(1), <b>pbmtolps</b>(1),
+<b>pbmtoepsi</b>(1), <b>pnmsplit</b>(1), <b>pstofits</b></p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (c)
+1992 Smithsonian Astrophysical Observatory</p>
+
+<p style="margin-left:11%; margin-top: 1em">PostScript is a
+Trademark of Adobe Systems Incorporated.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Alberto
+Accomazzi, WIPL, Center for Astrophysics.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pstopnm.html</b></p>
+<hr>
+</body>
+</html>

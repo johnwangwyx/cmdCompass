@@ -1,0 +1,229 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:12 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>ISPELL-WRAPPER</title>
+
+</head>
+<body>
+
+<h1 align="center">ISPELL-WRAPPER</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#EXAMPLE">EXAMPLE</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ispell-wrapper
+- smart wrapper for ispell</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ispell-wrapper
+[--emacs=name] [--language=regexp] [--dry-run] [ispell
+options] file <br>
+Options (all long only options): <br>
+--emacs=name Set the language to use by emacs dict name <br>
+--language=regexp Set the language to use by name <br>
+--dry-run Only show what would have done</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ispell-wrapper</b>
+is a wrapper script for ispell intended to be used in a
+Debian system in conjunction with the infrastructure
+introduced by the dictionaries-common package. Option
+--dry-run will show the string to be run without doing
+anything else.</p>
+
+<p style="margin-left:11%; margin-top: 1em">It
+automatically sets the <b>-d</b>, <b>-w</b>, and <b>-T</b>
+options to ispell as a function of the chosen language. Of
+course, this only works for dictionary packages that comply
+with the above mentioned Policy.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Here is how the
+language is defined (in order of priority):</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>1)</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>By matching the emacs dict name given in --emacs option
+to the name of one of the emacs dicts names provided by
+installed languages in the system. This match must be exact
+(although is case insensitive). Note that this will override
+any value given in the --language option.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>2)</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>By matching the regexp given in option --language to the
+list of installed languages in the system.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>3)</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>By matching the regexp stored in the environment
+variable <small>ISPELLDEFAULT</small> to the list of
+installed languages in the system.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>4)</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>By using the value stored in the user-specific file
+~/.ispell-default (use <b>select-default-iwrap</b>(1) to set
+it).</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>5)</p></td>
+<td width="3%"></td>
+<td width="83%">
+
+
+<p>By using the value stored in the site-wide file
+/etc/dictionaries-common/ispell-default (use
+<b>select-default-ispell</b>(8) as superuser to set it).</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Note: regexp
+matches are case-insensitive and the
+<small>ISO-8859-1</small> special characters are transformed
+into their <small>ASCII</small> equivalents. German ess-zet
+is equivalent to the character &quot;s&quot; and the ae
+ligature to the character &quot;e&quot;.</p>
+
+<h2>EXAMPLE
+<a name="EXAMPLE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Let us say that
+the following dictionaries are installed in the system (as
+appearing in the Debconf question at installation time):</p>
+
+<p style="margin-left:11%; margin-top: 1em">castellano
+(Spanish TeX mode) <br>
+castellano8 (Spanish 8 bit) <br>
+portugu&ecirc;s (European Portuguese) <br>
+portugu&ecirc;s brasileiro (Brazilian Portuguese)</p>
+
+<p style="margin-left:11%; margin-top: 1em">Choosing the
+regexp (either in the --language option or in the
+environment variable <small>ISPELLDEFAULT</small> ) to be
+&quot;span&quot; will yield an error, since two languages
+will match (&quot;castellano&quot; and
+&quot;castellano8&quot;). However, if the regexp is
+&quot;span.*8&quot;, the language &quot;castellano8 (Spanish
+8 bit)&quot; will be chosen.</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><small>ISPELLDEFAULT</small></p>
+
+<p style="margin-left:17%;">Regexp that matches the name of
+the default language to use, if no --language option is
+given.</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">$HOME/.ispell-default</p>
+
+<p style="margin-left:17%;">Contains the name of the
+language to use, if no --language option is given or if the
+<small>ISPELLDEFAULT</small> environment variable is not
+set. This is a user-specific choice.</p>
+
+
+<p style="margin-left:11%;">/etc/dictionaries-common/ispell-default</p>
+
+<p style="margin-left:17%;">Name of the language to use
+when everything above is not set. This is a system-wide
+setting.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>select-default-ispell</b>(8),
+<b>select-default-iwrap</b>(1)</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Rafael
+Laboissiere</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:33:57 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>CKBCOMP</title>
+
+</head>
+<body>
+
+<h1 align="center">CKBCOMP</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ckbcomp -
+compile a XKB keyboard description to a keymap suitable for
+loadkeys or kbdcontrol</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ckbcomp</b>
+[<i>OPTION</i>...]&nbsp;[<i>XKBLAYOUT&nbsp;</i>[<i>XKBVARIANT&nbsp;</i>[<i>XKBOPTIONS</i>]...]]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>ckbcomp</b> keymap compiler converts a description of an
+XKB keyboard layout into a console keymap that can be read
+directly by <b>loadkeys</b>(1) or <b>kbdcontrol</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em">On its standard
+output <b>ckbcomp</b> dumps the generated keyboard
+definition. The most important difference between the
+arguments of <b>setxkbmap</b>(1) and the arguments of
+<b>ckbcomp</b> is the additional parameter <i>-charmap</i>
+when non-Unicode keyboard map is wanted. Without
+<i>-charmap</i> <b>ckbcomp</b> will generate Unicode
+keyboard.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>General
+options <br>
+-?</b>,<b>-help</b></p>
+
+<p style="margin-left:22%;">Print a usage message and
+exit.</p>
+
+
+<p style="margin-left:11%;"><b>-charmap&nbsp;</b><i>charmap</i></p>
+
+<p style="margin-left:22%;">The encoding to use for the
+output keymap. There should be an character mapping table
+defining this encoding in <i>/usr/share/consoletrans</i>.
+Definitions of the following charmaps are provided:
+<b>ARMSCII-8</b>, <b>CP1251</b>, <b>CP1255</b>,
+<b>CP1256</b>, <b>GEORGIAN-ACADEMY</b>, <b>GEORGIAN-PS</b>,
+<b>IBM1133</b>, <b>ISIRI-3342</b>, <b>ISO-8859-1</b>,
+<b>ISO-8859-2</b>, <b>ISO-8859-3</b>, <b>ISO-8859-4</b>,
+<b>ISO-8859-5</b>, <b>ISO-8859-6</b>, <b>ISO-8859-7</b>,
+<b>ISO-8859-8</b>, <b>ISO-8859-9</b>, <b>ISO-8859-10</b>,
+<b>ISO-8859-11</b>, <b>ISO-8859-13</b>, <b>ISO-8859-14</b>,
+<b>ISO-8859-15</b>, <b>ISO-8859-16</b>, <b>KOI8-R</b>,
+<b>KOI8-U</b>, <b>TIS-620</b> and <b>VISCII</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-I</b><i>dir</i></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Look in the top-level directory <i>dir</i> for files
+included by the keymap description. This option may be used
+multiple times. If a file can not be found in any of the
+specified directories, it will be searched also in some
+other standard locations, such as
+<i>/etc/console-setup/ckb</i>, <i>/usr/share/X11/xkb</i> and
+<i>/etc/X11/xkb</i></p> </td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>-v&nbsp;</b><i>level</i></p>
+
+<p style="margin-left:22%;">Set level of detail for
+listing. The argument <i>level</i> must be a number from 1
+to 10.</p>
+
+<p style="margin-left:11%;"><b>-compact</b></p>
+
+<p style="margin-left:22%;">Generate a compact keymap with
+at most two xkb groups and two levels in each or only one
+xkb-group and up to four levels.</p>
+
+<p style="margin-left:11%;"><b>-freebsd</b></p>
+
+<p style="margin-left:22%;">Generate a keymap for
+FreeBSD.</p>
+
+
+<p style="margin-left:11%;"><b>-backspace&nbsp;</b>[<b>bs</b>|<b>del</b>]</p>
+
+<p style="margin-left:22%;">Specifies the behaviour of the
+<small>&lt;BackSpace&gt;</small> and
+<small>&lt;Delete&gt;</small> keys. Value <b>bs</b>
+specifies VT100-conformant behaviour:
+<small>&lt;BackSpace&gt;</small> will generate <b>^H</b>
+<small>(ASCII BS)</small> and <small>&lt;Delete&gt;</small>
+will generate <b>^?</b> <small>(ASCII DEL).</small> Value
+<b>del</b> specifies VT220-conformant behavior:
+<small>&lt;BackSpace&gt;</small> will generate <b>^?</b>
+<small>(ASCII DEL)</small> and <small>&lt;Delete&gt;</small>
+will generate a special function sequence.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>XKB Keyboard
+Description</b> <br>
+The keyboard layout, variant and options components can be
+also specified directly on the command line. See the
+synopsis of the command. <b><br>
+-symbols&nbsp;</b><i>name</i></p>
+
+<p style="margin-left:22%;">Specifies the symbols component
+name of the XKB keyboard description.</p>
+
+
+<p style="margin-left:11%;"><b>-keycodes&nbsp;</b><i>name</i></p>
+
+<p style="margin-left:22%;">Specifies the keycodes
+component name of the XKB keyboard description.</p>
+
+
+<p style="margin-left:11%;"><b>-rules&nbsp;</b><i>name</i></p>
+
+<p style="margin-left:22%;">The name of the rules file to
+use.</p>
+
+
+<p style="margin-left:11%;"><b>-model&nbsp;</b><i>name</i></p>
+
+<p style="margin-left:22%;">Specifies the keyboard model
+used to choose the component names.</p>
+
+
+<p style="margin-left:11%;"><b>-layout&nbsp;</b><i>name</i></p>
+
+<p style="margin-left:22%;">Specifies the layout used to
+choose the component names.</p>
+
+
+<p style="margin-left:11%;"><b>-variant&nbsp;</b><i>name</i></p>
+
+<p style="margin-left:22%;">Specifies the layout variant
+used to choose the component names.</p>
+
+
+<p style="margin-left:11%;"><b>-option&nbsp;</b><i>name</i></p>
+
+<p style="margin-left:22%;">Adds an option used to choose
+component names.</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>/usr/share/consoletrans
+<br>
+/etc/console-setup/ckb <br>
+/usr/share/X11/xkb <br>
+/etc/X11/xkb</i></p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If the option
+<i>-freebsd</i> is used together with
+<i>-backspace&nbsp;del</i>, then the key
+<small>&lt;Delete&gt;</small> will generate the special code
+<b>fkey70</b>. It is your responsibility to assign the
+appropriate sequence to this special code by using the
+following command:</p>
+
+<p style="margin-left:17%; margin-top: 1em">kbdcontrol -f
+70 &quot;&rsquo;printf
+&rsquo;\033[3~&rsquo;&rsquo;&quot;</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>keyboard</b>(5),
+<b>setxkbmap</b>(1)</p>
+<hr>
+</body>
+</html>

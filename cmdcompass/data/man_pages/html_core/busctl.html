@@ -1,0 +1,707 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:33:55 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>BUSCTL</title>
+
+</head>
+<body>
+
+<h1 align="center">BUSCTL</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#COMMANDS">COMMANDS</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#PARAMETER FORMATTING">PARAMETER FORMATTING</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#NOTES">NOTES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">busctl -
+Introspect the bus</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="60%">
+
+
+<p style="margin-top: 1em"><b>busctl</b> [OPTIONS...]
+[COMMAND] [<i>NAME</i>...]</p></td>
+<td width="29%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>busctl</b>
+may be used to introspect and monitor the D-Bus bus.</p>
+
+<h2>COMMANDS
+<a name="COMMANDS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+commands are understood:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>list</b></p>
+
+<p style="margin-left:17%;">Show all peers on the bus, by
+their service names. By default, shows both unique and
+well-known names, but this may be changed with the
+<b>--unique</b> and <b>--acquired</b> switches. This is the
+default operation if no command is specified.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>status</b>
+[<i>SERVICE</i>]</p>
+
+<p style="margin-left:17%;">Show process information and
+credentials of a bus service (if one is specified by its
+unique or well-known name), a process (if one is specified
+by its numeric PID), or the owner of the bus (if no
+parameter is specified).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>monitor</b>
+[<i>SERVICE</i>...]</p>
+
+<p style="margin-left:17%;">Dump messages being exchanged.
+If <i>SERVICE</i> is specified, show messages to or from
+this peer, identified by its well-known or unique name.
+Otherwise, show all messages on the bus. Use Ctrl+C to
+terminate the dump.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>capture</b>
+[<i>SERVICE</i>...]</p>
+
+<p style="margin-left:17%;">Similar to <b>monitor</b> but
+writes the output in pcapng format (for details, see
+<b><font color="#0000FF">PCAP Next Generation (pcapng)
+Capture File Format</font></b>
+<small><font color="#000000">[1]</font></small>
+<font color="#000000">). Make sure to redirect standard
+output to a file or pipe. Tools like <b>wireshark</b>(1) may
+be used to dissect and view the resulting files.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>tree</b>
+[<i>SERVICE</i>...]</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Shows an
+object tree of one or more services. If <i>SERVICE</i> is
+specified, show object tree of the specified services only.
+Otherwise, show all object trees of all services on the bus
+that acquired at least one well-known name.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>introspect</b>
+<i>SERVICE OBJECT</i> [<i>INTERFACE</i>]</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Show
+interfaces, methods, properties and signals of the specified
+object (identified by its path) on the specified service. If
+the interface argument is passed, the output is limited to
+members of the specified interface.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>call</b>
+<i>SERVICE OBJECT INTERFACE METHOD</i>
+[<i>SIGNATURE&nbsp;</i>[<i>ARGUMENT</i>...]]</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Invoke a
+method and show the response. Takes a service name, object
+path, interface name and method name. If parameters shall be
+passed to the method call, a signature string is required,
+followed by the arguments, individually formatted as
+strings. For details on the formatting used, see below. To
+suppress output of the returned data, use the <b>--quiet</b>
+option.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>emit</b>
+<i>OBJECT INTERFACE SIGNAL</i>
+[<i>SIGNATURE&nbsp;</i>[<i>ARGUMENT</i>...]]</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Emit a
+signal. Takes an object path, interface name and method
+name. If parameters shall be passed, a signature string is
+required, followed by the arguments, individually formatted
+as strings. For details on the formatting used, see below.
+To specify the destination of the signal, use the
+<b>--destination=</b> option.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>get-property</b>
+<i>SERVICE OBJECT INTERFACE PROPERTY</i>...</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Retrieve
+the current value of one or more object properties. Takes a
+service name, object path, interface name and property name.
+Multiple properties may be specified at once, in which case
+their values will be shown one after the other, separated by
+newlines. The output is, by default, in terse format. Use
+<b>--verbose</b> for a more elaborate output
+format.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>set-property</b>
+<i>SERVICE OBJECT INTERFACE PROPERTY SIGNATURE
+ARGUMENT</i>...</font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Set the
+current value of an object property. Takes a service name,
+object path, interface name, property name, property
+signature, followed by a list of parameters formatted as
+strings.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>help</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Show
+command syntax help.</font></p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+following options are understood:</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--address=</b><i>ADDRESS</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Connect
+to the bus specified by <i>ADDRESS</i> instead of using
+suitable defaults for either the system or user bus (see
+<b>--system</b> and <b>--user</b> options).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--show-machine</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">When
+showing the list of peers, show a column containing the
+names of containers they belong to. See
+<b>systemd-machined.service</b>(8).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--unique</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">When
+showing the list of peers, show only &quot;unique&quot;
+names (of the form
+&quot;:<i>number</i>.<i>number</i>&quot;).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--acquired</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">The
+opposite of <b>--unique</b> &mdash; only
+&quot;well-known&quot; names will be shown.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--activatable</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">When
+showing the list of peers, show only peers which have
+actually not been activated yet, but may be started
+automatically if accessed.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--match=</b><i>MATCH</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">When
+showing messages being exchanged, show only the subset
+matching <i>MATCH</i>. See
+<b>sd_bus_add_match</b>(3).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--size=</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">When used
+with the <b>capture</b> command, specifies the maximum bus
+message size to capture (&quot;snaplen&quot;). Defaults to
+4096 bytes.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--list</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">When used
+with the <b>tree</b> command, shows a flat list of object
+paths instead of a tree.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>-q</b>,
+<b>--quiet</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">When used
+with the <b>call</b> command, suppresses display of the
+response message payload. Note that even if this option is
+specified, errors returned will still be printed and the
+tool will indicate success or failure with the process exit
+code.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--verbose</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">When used
+with the <b>call</b> or <b>get-property</b> command, shows
+output in a more verbose format.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--xml-interface</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">When used
+with the <b>introspect</b> call, dump the XML description
+received from the D-Bus
+<b>org.freedesktop.DBus.Introspectable.Introspect</b> call
+instead of the normal output.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--json=</b><i>MODE</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">When used
+with the <b>call</b> or <b>get-property</b> command, shows
+output formatted as JSON. Expects one of &quot;short&quot;
+(for the shortest possible output without any redundant
+whitespace or line breaks) or &quot;pretty&quot; (for a
+pretty version of the same, with indentation and line
+breaks). Note that transformation from D-Bus marshalling to
+JSON is done in a loss-less way, which means type
+information is embedded into the JSON object
+tree.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>-j</b></font></p>
+
+
+<p style="margin-left:17%;"><font color="#000000">Equivalent
+to <b>--json=pretty</b> when invoked interactively from a
+terminal. Otherwise equivalent to <b>--json=short</b>, in
+particular when the output is piped to some other
+program.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--expect-reply=</b><i>BOOL</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">When used
+with the <b>call</b> command, specifies whether
+<b>busctl</b> shall wait for completion of the method call,
+output the returned method response data, and return success
+or failure via the process exit code. If this is set to
+&quot;no&quot;, the method call will be issued but no
+response is expected, the tool terminates immediately, and
+thus no response can be shown, and no success or failure is
+returned via the exit code. To only suppress output of the
+reply message payload, use <b>--quiet</b> above. Defaults to
+&quot;yes&quot;.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--auto-start=</b><i>BOOL</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">When used
+with the <b>call</b> or <b>emit</b> command, specifies
+whether the method call should implicitly activate the
+called service, should it not be running yet but is
+configured to be auto-started. Defaults to
+&quot;yes&quot;.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--allow-interactive-authorization=</b><i>BOOL</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">When used
+with the <b>call</b> command, specifies whether the services
+may enforce interactive authorization while executing the
+operation, if the security policy is configured for this.
+Defaults to &quot;yes&quot;.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--timeout=</b><i>SECS</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">When used
+with the <b>call</b> command, specifies the maximum time to
+wait for method call completion. If no time unit is
+specified, assumes seconds. The usual other units are
+understood, too (ms, us, s, min, h, d, w, month, y). Note
+that this timeout does not apply if <b>--expect-reply=no</b>
+is used, as the tool does not wait for any reply message
+then. When not specified or when set to 0, the default of
+&quot;25s&quot; is assumed.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--augment-creds=</b><i>BOOL</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Controls
+whether credential data reported by <b>list</b> or
+<b>status</b> shall be augmented with data from /proc/. When
+this is turned on, the data shown is possibly inconsistent,
+as the data read from /proc/ might be more recent than the
+rest of the credential information. Defaults to
+&quot;yes&quot;.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--watch-bind=</b><i>BOOL</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Controls
+whether to wait for the specified <b>AF_UNIX</b> bus socket
+to appear in the file system before connecting to it.
+Defaults to off. When enabled, the tool will watch the file
+system until the socket is created and then connect to
+it.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--destination=</b><i>SERVICE</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Takes a
+service name. When used with the <b>emit</b> command, a
+signal is emitted to the specified service.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--user</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Talk to
+the service manager of the calling user, rather than the
+service manager of the system.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--system</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Talk to
+the service manager of the system. This is the implied
+default.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>-H</b>,
+<b>--host=</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Execute
+the operation remotely. Specify a hostname, or a username
+and hostname separated by &quot;@&quot;, to connect to. The
+hostname may optionally be suffixed by a port ssh is
+listening on, separated by &quot;:&quot;, and then a
+container name, separated by &quot;/&quot;, which connects
+directly to a specific container on the specified host. This
+will use SSH to talk to the remote machine manager instance.
+Container names may be enumerated with <b>machinectl -H</b>
+<i>HOST</i>. Put IPv6 addresses in brackets.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>-M</b>,
+<b>--machine=</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Execute
+operation on a local container. Specify a container name to
+connect to, optionally prefixed by a user name to connect as
+and a separating &quot;@&quot; character. If the special
+string &quot;.host&quot; is used in place of the container
+name, a connection to the local system is made (which is
+useful to connect to a specific user's user bus:
+&quot;--user --machine=lennart@.host&quot;). If the
+&quot;@&quot; syntax is not used, the connection is made as
+root user. If the &quot;@&quot; syntax is used either the
+left hand side or the right hand side may be omitted (but
+not both) in which case the local user name and
+&quot;.host&quot; are implied.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>-l</b>,
+<b>--full</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Do not
+ellipsize the output in <b>list</b> command.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--no-pager</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Do not
+pipe output into a pager.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--no-legend</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Do not
+print the legend, i.e. column headers and the footer with
+hints.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>-h</b>,
+<b>--help</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Print a
+short help text and exit.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--version</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Print a
+short version string and exit.</font></p>
+
+<h2>PARAMETER FORMATTING
+<a name="PARAMETER FORMATTING"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+<b>call</b> and <b>set-property</b> commands take a
+signature string followed by a list of parameters formatted
+as string (for details on D-Bus signature strings, see
+the</font> <b><font color="#0000FF">Type system chapter of
+the D-Bus specification</font></b>
+<small><font color="#000000">[2]</font></small>
+<font color="#000000">). For simple types, each parameter
+following the signature should simply be the parameter's
+value formatted as string. Positive boolean values may be
+formatted as &quot;true&quot;, &quot;yes&quot;,
+&quot;on&quot;, or &quot;1&quot;; negative boolean values
+may be specified as &quot;false&quot;, &quot;no&quot;,
+&quot;off&quot;, or &quot;0&quot;. For arrays, a numeric
+argument for the number of entries followed by the entries
+shall be specified. For variants, the signature of the
+contents shall be specified, followed by the contents. For
+dictionaries and structs, the contents of them shall be
+directly specified.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">For
+example,</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">s
+jawoll</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">is
+the formatting of a single string
+&quot;jawoll&quot;.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">as
+3 hello world foobar</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">is
+the formatting of a string array with three entries,
+&quot;hello&quot;, &quot;world&quot; and
+&quot;foobar&quot;.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">a{sv}
+3 One s Eins Two u 2 Yes b true</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">is
+the formatting of a dictionary array that maps strings to
+variants, consisting of three entries. The string
+&quot;One&quot; is assigned the string &quot;Eins&quot;. The
+string &quot;Two&quot; is assigned the 32-bit unsigned
+integer 2. The string &quot;Yes&quot; is assigned a positive
+boolean.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Note
+that the <b>call</b>, <b>get-property</b>, <b>introspect</b>
+commands will also generate output in this format for the
+returned data. Since this format is sometimes too terse to
+be easily understood, the <b>call</b> and
+<b>get-property</b> commands may generate a more verbose,
+multi-line output when passed the <b>--verbose</b>
+option.</font></p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Example&nbsp;1.&nbsp;Write
+and Read a Property</b></font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+following two commands first write a property and then read
+it back. The property is found on the
+&quot;/org/freedesktop/systemd1&quot; object of the
+&quot;org.freedesktop.systemd1&quot; service. The name of
+the property is &quot;LogLevel&quot; on the
+&quot;org.freedesktop.systemd1.Manager&quot; interface. The
+property contains a single string:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">#
+busctl set-property org.freedesktop.systemd1
+/org/freedesktop/systemd1 org.freedesktop.systemd1.Manager
+LogLevel s debug <br>
+# busctl get-property org.freedesktop.systemd1
+/org/freedesktop/systemd1 org.freedesktop.systemd1.Manager
+LogLevel <br>
+s &quot;debug&quot;</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Example&nbsp;2.&nbsp;Terse
+and Verbose Output</b></font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+following two commands read a property that contains an
+array of strings, and first show it in terse format,
+followed by verbose format:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">$
+busctl get-property org.freedesktop.systemd1
+/org/freedesktop/systemd1 org.freedesktop.systemd1.Manager
+Environment <br>
+as 2 &quot;LANG=en_US.UTF-8&quot;
+&quot;PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin&quot;
+<br>
+$ busctl get-property --verbose org.freedesktop.systemd1
+/org/freedesktop/systemd1 org.freedesktop.systemd1.Manager
+Environment <br>
+ARRAY &quot;s&quot; { <br>
+STRING &quot;LANG=en_US.UTF-8&quot;; <br>
+STRING
+&quot;PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin&quot;;
+<br>
+};</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Example&nbsp;3.&nbsp;Invoking
+a Method</b></font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+following command invokes the &quot;StartUnit&quot; method
+on the &quot;org.freedesktop.systemd1.Manager&quot;
+interface of the &quot;/org/freedesktop/systemd1&quot;
+object of the &quot;org.freedesktop.systemd1&quot; service,
+and passes it two strings &quot;cups.service&quot; and
+&quot;replace&quot;. As a result of the method call, a
+single object path parameter is received and
+shown:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">#
+busctl call org.freedesktop.systemd1
+/org/freedesktop/systemd1 org.freedesktop.systemd1.Manager
+StartUnit ss &quot;cups.service&quot; &quot;replace&quot;
+<br>
+o &quot;/org/freedesktop/systemd1/job/42684&quot;</font></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>dbus-daemon</b>(1),</font>
+<b><font color="#0000FF">D-Bus</font></b>
+<small><font color="#000000">[3]</font></small>
+<font color="#000000">, <b>sd-bus</b>(3), <b>systemd</b>(1),
+<b>machinectl</b>(1), <b>wireshark</b>(1)</font></p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">1.</font></p> </td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p style="margin-top: 1em"><font color="#000000">PCAP Next
+Generation (pcapng) Capture File Format</font></p></td>
+<td width="8%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">https://github.com/pcapng/pcapng/</font></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">2.</font></p> </td>
+<td width="2%"></td>
+<td width="71%">
+
+
+<p style="margin-top: 1em"><font color="#000000">Type
+system chapter of the D-Bus specification</font></p></td>
+<td width="12%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">https://dbus.freedesktop.org/doc/dbus-specification.html#type-system</font></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">3.</font></p> </td>
+<td width="2%"></td>
+<td width="8%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">D-Bus</font></p> </td>
+<td width="75%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">https://www.freedesktop.org/wiki/Software/dbus</font></p>
+<hr>
+</body>
+</html>

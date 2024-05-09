@@ -1,0 +1,245 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:24 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pambackground User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pambackground User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pambackground -
+create a mask of the background area of an image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pambackground</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<i>netpbmfile</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-verbose</b>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviations of options are acceptable. You may use double
+hyphens instead of single hyphen to denote options. You may
+use white space in place of the equals sign to separate an
+option name from its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pambackground</b>
+reads a PNM or PAM image as input. It generates as output a
+PAM image that identifies the background area of the image
+(a mask).</p>
+
+<p style="margin-left:11%; margin-top: 1em">To identify the
+background, <b>pambackground</b> assumes the image is a
+foreground image, smaller than the total image size, placed
+over a single-color background. It assumes that foreground
+image is solid -- it does not have holes through which the
+background can be seen. So in specific, <b>pambackground</b>
+first identifies the background color, then finds all
+contiguous pixels of that color in regions touching any edge
+of the image. Think of it as starting at each of the four
+edges and moving inward and spreading out as far as possible
+until it hits pixels of another color (the foreground
+image).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pambackground</b>
+identifies the background color as follows: If any 3 corners
+of the image are the same color, that&rsquo;s the background
+color. If not, but 2 corners are the same color, the
+background color is the color of a pair of identically
+colored corners in this priority order: top, right, left,
+bottom. If no two corners have the same color, the
+background color is the color of the upper left corner.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In a typical
+photograph, the area that you would consider the background
+is many shades of a color, so to <b>pambackground</b> it is
+multiple colors and <b>pambackground</b> will not
+meaningfully identify the background of your image. To use
+<b>pambackground</b> in this case, you might use
+<b>ppmchange</b> to change all similar colors to a single
+one first. For example, if the photograph is a building
+against a blue sky, where nothing remotely sky-blue appears
+in the building, you could use <b>ppmchange</b> to change
+all pixels within 20% of &quot;SkyBlue&quot; to SkyBlue,
+then run <b>pambackground</b> on it.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You might even
+extract the argument for <b>ppmchange</b> from the image in
+question, using <b>pamgetcolor</b>. In the foregoing
+example, we knew the background was approximately SkyBlue,
+but if we didn&rsquo;t we could just get the color of the
+top left pixel, in a form suitable for the color arguments
+of <b>ppmchange</b> like this:</p>
+
+<p style="margin-left:11%; margin-top: 1em">$
+color=$(pamgetcolor 0,0 -infile=/tmp/bodyskl|cut --fields=2
+-delim=&rsquo; &rsquo;)</p>
+
+<p style="margin-left:11%; margin-top: 1em">A more
+convenient means of dealing with a multi-shade background is
+to use <b>pnmquant</b> to produce a version of the image
+with a very small number of colors. The background would
+likely then be all one color.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the
+<b>pnmquant</b> and <b>ppmchange</b> methods above do not
+adequately distinguish foreground colors from background
+colors, you can try a more elaborate method using
+<b>pnmremap</b>. If you can manually create a palette with
+one color to which all the background pixels are similar,
+and other colors to which the foreground pixels are similar,
+you can use it as input to <b>pnmremap</b> to create a
+smarter version of what you get with the <b>pnmquant</b> or
+<b>ppmchange</b> methods, so that <b>pambackground</b> is
+more likely to separate background from foreground as your
+eye does.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The PAM that
+<b>pambackground</b> creates has a single plane, with a
+maxval of 1. The sample value 1 means background; 0 means
+foreground. There is no tuple type. Some older programs (but
+none that are part of Netpbm) don&rsquo;t know what a PAM is
+and expect a mask to be in the form of a PGM or PBM image.
+To convert <b>pambackground</b>&rsquo;s output to PBM, use
+<b>pamtopnm -assume</b>. To convert to PGM, use
+<b>pgmtopgm</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>netpbmfile</i>
+is the file specification of the input file, or <b>-</b> to
+indicate Standard Input. The default is Standard Input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A common use
+for a background mask is with <b>pamcomp</b>. You could
+replace the entire background (or foreground) of your image
+with something else.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Another common
+use is to make an image with the background transparent (in
+some image format that has a concept of transparency) so
+that image can be overlaid onto another image later.
+Netpbm&rsquo;s converters to image formats that have
+transparency (e.g. PNG) let you use the mask that
+<b>pambackground</b> generates to identify the transparent
+areas for the output. You can create a PAM image with
+transparency with <b>pamstack</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To simply make
+a mask of all the areas of a specified color, use
+<b>ppmcolormask</b>. If you have a unique background color
+(one that doesn&rsquo;t occur in the foreground) and know
+what it is, this can create a background mask in cases that
+<b>pambackground</b> cannot: where there are see-through
+holes in the foreground image.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pambackground</b> recognizes the following command line
+option: <b><br>
+-verbose</b></p>
+
+<p style="margin-left:22%;">Tell interesting facts about
+the process.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">$ pambackground
+test.ppm | pnminvert &gt;/tmp/bgmask.pgm <br>
+$ pamcomp -alpha=bgmask.pgm test.ppm wallpaper.ppm
+&gt;output.ppm</p>
+
+<p style="margin-left:11%; margin-top: 1em">$ pnmquant 5
+test.pgm | pambackground test.ppm &gt;/tmp/bgmask.pam</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmcolormask</b>(1),
+<b>pamcomp</b>(1), <b>ppmchange</b>(1), <b>pnmquant</b>(1),
+<b>pnmremap</b>(1), <b>pamtopnm</b>(1), <b>pgmtopgm</b>(1),
+<b>pamstack</b>(1), <b>pamgetcolor</b>(1),
+<b>pbmmaskd</b>(1), <b>pnm</b>(1), <b>pam</b>(1),</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pambackground</b>
+was new in Netpbm 10.37 (December 2006).</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pambackground.html</b></p>
+<hr>
+</body>
+</html>

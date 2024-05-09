@@ -1,0 +1,232 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:13 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Jpeg2ktopam User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Jpeg2ktopam User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#OPTION USAGE">OPTION USAGE</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#ABOUT JPEG-2000">ABOUT JPEG-2000</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">jpeg2ktopam -
+convert JPEG-2000 code stream to PAM/PNM</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>jpeg2ktopam</b>
+[<b>-verbose</b>] [<b>-debuglevel=</b><i>number</i>]
+<i>filename</i></p>
+
+<h2>OPTION USAGE
+<a name="OPTION USAGE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviation of option is acceptable. You may use double
+hyphens instead of single hyphen to denote options. You may
+use white space in place of the equals sign to separate an
+option name from its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>jpeg2ktopam</b>
+converts the named JPEG-2000 file (JP2 or JPC), or Standard
+Input if no file is named, to a PBM, PGM, PPM, or PAM file
+on Standard Output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The JPEG-2000
+specification specifies two different formats: JP2 and
+JPEG-2000 code stream (JPC). JP2 represents a visual image
+quite specifically, whereas JPC is a more or less arbitrary
+array of codes. A JP2 image contains a JPC stream and
+metadata describing how that stream represents a visual
+image. <b>jpeg2ktopam</b> converts both.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the color
+space identified in the image is grayscale
+(JAS_IMAGE_CS_GRAY), <b>jpeg2ktopam</b> generates a PGM
+image, unless the image contains only one bit per pixel, in
+which case <b>jpeg2ktopam</b> generates PBM. If the color
+space is RGB (JAS_IMAGE_CS_RGB), <b>jpeg2ktopam</b>
+generates a PPM image. If the input image is anything else,
+<b>jpeg2ktopam</b> generates a PAM image with no tuple type
+identified.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the PGM and
+PPM cases, <b>jpeg2ktopam</b> assumes the intensity values
+in the input image have the same meaning as for PGM and PPM.
+One thing that implies is the ITU-R Recommendation BT.709
+color space, which means the assumption is false for JP2
+input. JP2 input uses SRGB color encoding. So if you use
+<b>jpeg2ktopam</b> to convert a JP2 image to PPM, it changes
+the visual image (slightly) -- the colors in the output are
+not the same as in the input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the PAM
+image, the output samples are numerically identical to the
+input samples. If the input samples are signed, they are
+represented in two&rsquo;s complement form in the output
+(because PAM samples are always unsigned). The PAM plane
+numbers are identical to the JPC component numbers.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A JPEG-2000
+image has a &quot;precision,&quot; which is the number of
+bits used for each code (in Netpbm lingo,
+&quot;sample&quot;). Actually, each component has a separate
+precision. The maxval of a PGM, PPM, or PAM output is the
+largest number you can represent in the JPEG-2000 precision
+of the JPEG-2000 component with the greatest precision. The
+samples in all components are scaled to that maxval. So if
+the red component has a precision of 4 bits and the green
+component has a precision of 6 bits, the maxval is 63 and
+the red component codes from the JPEG-2000 image are
+multiplied by 63/15 to generate the output samples.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>jpeg2ktopam</b>
+interprets the JPEG-2000 input with the
+<a href="http://www.ece.uvic.ca/~mdadams/jasper/">Jasper
+JPEG-2000 library</a> . See documentation of the library for
+details on what <b>jpeg2ktopam</b> handles. Note that the
+Jasper library contains facilities for writing PNM images,
+but <b>jpeg2ktopam</b> does not use those. It uses the
+Netpbm library instead. Note that the makers of the Jasper
+library write it &quot;JasPer,&quot; but Netpbm
+documentation follows standard American English typography
+rules, which don&rsquo;t allow that kind of
+capitalization.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Use
+<b>pamtojpeg2k</b> to convert in the other direction.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The program
+<b>jasper</b>, which is packaged with the Jasper JPEG-2000
+library, also converts between JPEG-2000 and PNM formats.
+Because it&rsquo;s packaged with the library, it may exploit
+it better, especially recently added features. However,
+since it does not use the Netpbm library to read and write
+the Netpbm formats, it doesn&rsquo;t do as good a job on
+that side.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>jpeg2ktopam</b> recognizes the following command line
+options: <b><br>
+-verbose</b></p>
+
+<p style="margin-left:22%;">This option causes
+<b>jpeg2ktopam</b> to issue informational messages about the
+conversion process.</p>
+
+
+<p style="margin-left:11%;"><b>-debuglevel</b>=<i>number</i></p>
+
+<p style="margin-left:22%;">This option controls debug
+messages from the Jasper library. <b>jpeg2ktopam</b> passes
+<i>number</i> as the debug level to the Jasper JPEG-2000
+decoder.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">jpeg2ktopam
+myimg.jpc &gt;myimg.ppm</p>
+
+<h2>ABOUT JPEG-2000
+<a name="ABOUT JPEG-2000"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">See <b>the
+pamtojpeg2k manual</b>(1) for general information on
+JPEG-2000 compression and the JPEG-2000 formats.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtojpeg2k</b>(1),
+<b>jpegtopnm</b>(1), <b>ppm</b>(1), <b>pgm</b>(1),
+<b>pbm</b>(1), <b>pam</b>(1),</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>jpeg2ktopam</b>
+was added to Netpbm in Release 10.12 (November 2002).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Before Netpbm
+10.49 (December 2009), <b>jpeg2ktopam</b> could not convert
+a JP2 file -- only JPC.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/jpeg2ktopam.html</b></p>
+<hr>
+</body>
+</html>

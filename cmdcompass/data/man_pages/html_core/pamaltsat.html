@@ -1,0 +1,478 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:24 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamaltsat User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamaltsat User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SATURATION METHODS">SATURATION METHODS</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#USAGE NOTES">USAGE NOTES</a><br>
+<a href="#EXTENSIBILITY">EXTENSIBILITY</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#Table Of Contents">Table Of Contents</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamaltsat -
+increase or decrease the saturation of an image using one of
+several alternative methods.</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamaltsat</b>
+[<b>-method</b> <i>name</i>] [<b>-strength</b>
+<i>number</i>] [<b>-linear</b>] [<i>infile</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamaltsat</b>
+decreases or increases the saturation of a Netpbm image by
+one of various non-standard (<i>alt</i>ernative)
+methods.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The input is a
+Netpbm image from Standard Input or a file named by the
+arguments. The output is a Netpbm image in the same format
+written to Standard Output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The most
+conventional way to change the saturation of an image is
+what <b>pambrighten</b> does.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">To increase
+saturation by a factor of 2.1 using the logarithmic
+method:</p>
+
+<p style="margin-left:11%; margin-top: 1em">pamaltsat
+-method log -strength 2.1 test.ppm</p>
+
+<p style="margin-left:11%; margin-top: 1em">To convert a
+color image to grayscale:</p>
+
+<p style="margin-left:11%; margin-top: 1em">pamaltsat
+-strength 0 test.ppm</p>
+
+<h2>SATURATION METHODS
+<a name="SATURATION METHODS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+saturation methods are available.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Logarithmic
+Method</b> <br>
+This saturation model is inspired by the concept of <b>color
+integrity</b>(1), which works with color in terms of
+intensity ratios, where intensity is a value of the
+<a href="https://en.wikipedia.org/wiki/Luminosity_function">luminosity
+function</a> , rather than brightness, or the numerical
+value of the sample in the image file. From this viewpoint,
+it is natural to define the saturation of a color as the
+ratio of maximum and minimum intensities of its primary
+components. In order, however, to make saturation an
+additive value and to endow the <b>-strength</b> parameter
+with the semantics of a multiplier, it is convenient to
+operate on the logarithm of that ratio. The addition of such
+saturations acquires physical sense, and multiplication
+corresponds to the raising of intensity to the power of the
+multiplier.</p>
+
+<p style="margin-left:11%; margin-top: 1em">With this
+method, <b>pamaltsat</b> raises the intensity of each
+component to the power of the <b>strength</b> value. Since
+the total intensity of the resulting color will differ from
+that of the original, it is necessary to restore the
+intensity by multiplying the component intensities of the
+saturated color by the ratio of the intensity of the
+original color to that of the saturated color.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Although it is
+always possible to decrease saturation by any given factor,
+there are two cases where it cannot be increased. When the
+total intensity (or brightness) of a color is too high for
+the desired saturation, <b>pamaltsat</b> applies the maximum
+possible saturation that keeps the original intensity. For
+example, any color with at least one component at the
+maxiumum is already fully saturated. When one of the primary
+components is zero, the definition of saturation given above
+no longer works because of a zero in the denominator.
+<b>pamaltsat</b> offers no special treatment of this
+situation because it does not create discontinuities and
+therefore produces no visible defects at reasonable strength
+levels. When, however, strength approaches infinity, each
+color tends to its primary component with the highest
+intensity.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This method was
+invented by Anton Shepelev.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Spectral
+Method</b> <br>
+This is the default method. It treats color as a spectrum
+with three bands: one for the intensity of each primary
+component. Since neutral gray has a uniform (constant)
+spectrum, saturation can be measured as the difference of
+the spectrum of the given color from the uniform spectrum of
+the same total intensity. The spectral method uses one of
+the simplest measures of such a difference: the difference
+between the highest and lowest component intensities, which
+is an additive value and therefore amenable to
+multiplication with good physical sense. Although a complete
+hue-saturation model can be dervied from this approach,
+<b>pamaltsat</b> need not concern itself with it because it
+always preserves both hue and total intensity.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In order to
+change saturation, <b>pamaltsat</b> first multiplies the
+intensity of each component by the desired strength. The
+saturation of the result is the strength times the
+saturation of the original, and likewise the total
+intensity, but it is then restored by subtraction of the
+neutral gray with a suitable intensity.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The effect of
+this method on each component intensity may be expressed in
+the following equation:</p>
+
+<p style="margin-left:11%; margin-top: 1em">sat = orig *
+strength - Iorig * (strength - 1)</p>
+
+<p style="margin-left:11%; margin-top: 1em">where sat is
+the saturated sample, orig the original sample, and Iorig
+the total intensity of the original color.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The method is
+also related to color integrity because both its operations
+are part of that concept: multiplication of component
+intensities by the same quotient is an important operation
+because changes brightness but keeps color balance, and
+subtraction of a constant from all component intensities is
+described by the inventor of color integrity as
+&rsquo;subtraction of white.&rsquo;</p>
+
+<p style="margin-left:11%; margin-top: 1em">This procedure
+may produce both negative and over-unity component
+intensities. For such samples, <b>pamaltsat</b> decreases
+the strength to the highest value that keeps the resulting
+color in range.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This method was
+invented by Anton Shepelev.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamaltsat</b> recognizes the following command line
+options: <b><br>
+-method</b> <i>method</i></p>
+
+<p style="margin-left:22%;">specifies the saturation method
+to use:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="8%"></td>
+<td width="69%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="8%"></td>
+<td width="69%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="23%"></td>
+<td width="8%"></td>
+<td width="69%">
+</td></tr>
+</table>
+
+
+<p align="center"><img src="grohtml-114261.png" alt="Image grohtml-114261.png"></p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+<b>spectrum</b></p>
+
+<p style="margin-left:11%;"><b>-strength</b>
+<i>strength</i></p>
+
+<p style="margin-left:22%;">This specifies a real
+nonnegative factor whereby to modify saturation. A value
+greater than unity will increase saturation, whereas a value
+less than unity will decrease it. Unity will leave the image
+unchanged, and zero will produce greyscale output according
+to Rec 709.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>pamaltsat</b>
+preserves the total intensity of each pixel and never
+affects neutral gray pixels.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option is
+mandatory.</p>
+
+<p style="margin-left:11%;"><b>-linear</b></p>
+
+<p style="margin-left:22%;">This tells <b>pamaltsat</b>
+that the input is the intensity-linear variation of a Netpbm
+image forat, in which the samples are proportional to light
+intensity rather than to brightness, as they are in true-or
+gamma-adjusted- Netpbm image formats.</p>
+
+<h2>USAGE NOTES
+<a name="USAGE NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Since
+<b>pamaltsat</b> does not affect neutral colors, you should
+adjust the color balance before saturation. You can do this
+with <b>pamlevels</b>.</p>
+
+<h2>EXTENSIBILITY
+<a name="EXTENSIBILITY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamaltsat</b>
+is written with an eye to extending it with new saturation
+methods, which programmers are welcome to contribute. The
+only requirement is that every new method depend on a single
+strength parameter with the semantics described under the
+<b>-strength</b> command-line option.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pambrighten</b>(1),
+<b>ppmflash</b>(1),</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program
+was first submitted by Anton Shepelev
+(<i>anton.txt@gmail.com</i>).</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamaltsat</b>
+was new in Netpbm 10.84 (September 2018).</p>
+
+<h2>Table Of Contents
+<a name="Table Of Contents"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="27%">
+
+
+
+<p style="margin-top: 1em"><a href="#synopsis">SYNOPSIS</a></p> </td>
+<td width="51%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="27%">
+
+
+<p><a href="#description">DESCRIPTION</a></p></td>
+<td width="51%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="27%">
+
+
+<p><a href="#examples">EXAMPLES</a></p></td>
+<td width="51%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="27%">
+
+
+<p><a href="#saturation_methods">SATURATION METHODS</a></p></td>
+<td width="51%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="27%">
+
+
+<p><a href="#options">OPTIONS</a></p></td>
+<td width="51%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="27%">
+
+
+<p><a href="#usage_notes">USAGE NOTES</a></p></td>
+<td width="51%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="27%">
+
+
+<p><a href="#extensibility">EXTENSIBILITY</a></p></td>
+<td width="51%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="27%">
+
+
+<p><a href="#seealso">SEE ALSO</a></p></td>
+<td width="51%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="27%">
+
+
+<p><a href="#author">AUTHOR</a></p></td>
+<td width="51%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="27%">
+
+
+<p><a href="#history">HISTORY</a></p></td>
+<td width="51%">
+</td></tr>
+</table>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamaltsat.html</b></p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,254 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:32 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pgmmorphconv User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pgmmorphconv User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pgmmorphconv -
+perform morphological convolutions: dilation, erosion</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pgmmorphconv</b>
+[ <b><br>
+-erode</b> | <b><br>
+-dilate</b> | <b><br>
+-open</b> | <b><br>
+-close</b> | <b><br>
+-gradient</b> ] <i>templatefile</i> [<i>pgmfile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviation of option is acceptable. You may use double
+hyphens instead of single hyphen to denote options. You may
+use white space in place of the equals sign to separate an
+option name from its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pgmmorphconv</b>
+performs morphological convolutions on a PGM image: dilation
+and erosion.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pgmmorphconv</b>
+performs a &quot;topological&quot; convolution. For each
+pixel of the input, <b>pgmmorphconv</b> generates an output
+pixel in the same position. To determine the intensity of
+the output pixel, <b>pgmmorphconv</b> lays the template
+image over the input image such that the middle pixel of the
+template is over the input pixel in question.
+<b>pgmmorphconv</b> looks at the input pixels underneath
+each white pixel in the template. For a dilation, the
+maximum intensity of all those pixels is the intensity of
+the output pixel. For an erosion, it is the minimum.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Thus, the
+dilation effect is that bright areas of the input get bigger
+and dark areas smaller. The erosion effect is the opposite.
+The simplest template image would be one with a white pixel
+in the middle and the rest black. This would produce an
+output image identical to the input. Another simple template
+image is a fully white square. This causes bright or dark
+areas to expand in all directions. A template image that is
+white on the left side and black on the right would smear
+the image to the right.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The template
+file named by <i>templatefile</i> contains the template
+image as a PBM image. It must have an odd number of rows and
+an odd number of columns, so there is a definite middle
+pixel. It must contain at least one white pixel.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This is similar
+to the continuous convolution done by <b>pnmconvol</b>,
+except that with <b>pnmconvol</b> the output intensity is a
+weighted average of nearby input pixels instead of a minimum
+or maximum.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This
+convolution changes the three Minkowski integrals in a
+predefined way, and can be used to filter an image to
+enhance certain features, to ease their automatic
+recognition.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pgmmorphconv</b> recognizes the following command line
+options:</p>
+
+<p style="margin-left:11%; margin-top: 1em">The options
+<b>-erode</b> and <b>-dilate</b> obviously produce an
+erosion or dilation, respectively.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>-open</b> option causes <b>pgmmorphconv</b> to perform
+first an erode and then a dilate operation. The
+<b>-close</b> option causes a dilate first and then an
+erode. If you specify none of these options, it is the same
+as <b>-dilate</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">With
+<b>-gradient</b>, <b>pgmmorphconv</b> produces an image
+which is the difference between the eroded image and the
+dilated image. <b>-gradient</b> was new in Netpbm 10.70
+(March 2015).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="23%">
+
+
+<p style="margin-top: 1em"><b>pgmminkowski</b>(1)</p></td>
+<td width="55%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="23%">
+
+
+<p><b>pnmconvol</b>(1)</p></td>
+<td width="55%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="23%">
+
+
+<p><b>pgm</b>(1)</p></td>
+<td width="55%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">For more
+information about morphological convolutions, see e.g.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+
+<p style="margin-top: 1em"><a href="http://rugth30.phys.rug.nl/pdf/prechaos.pdf">
+J.S. Kole, K. Michielsen, and H. De Raedt,
+&quot;Morphological Image Analysis of Quantum Motion in
+Billiards&quot;, Phys. Rev. E 63, 016201-1 - 016201-7
+(2001)</a></p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>K. Michielsen and H. De Raedt, &quot;Integral-Geometry
+Morphological Image Analysis&quot;, Phys. Rep. 347, 461-538
+(2001).</p> </td></tr>
+</table>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Luuk van Dijk,
+2001.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Based on work
+which is Copyright (C) 1989, 1991 by Jef Poskanzer.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pgmmorphconv.html</b></p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,468 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:25 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamfunc User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamfunc User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamfunc - Apply
+a simple monadic arithmetic function to a Netpbm image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamfunc</b>
+{ <b>-multiplier=</b><i>realnum</i> |
+<b>-divisor=</b><i>realnum</i> |
+<b>-adder=</b><i>integer</i> |
+<b>-subtractor=</b><i>integer</i> |
+<b>-min=</b><i>wholenum</i> | <b>-max=</b><i>wholenum</i>
+<b>-andmask=</b><i>hexmask</i> <b>-ormask=</b><i>hexmask</i>
+<b>-xormask=</b><i>hexmask</i> <b>-not
+-shiftleft=</b><i>count</i> <b>-shiftright=</b><i>count</i>
+[<b>-changemaxval</b>] } [<i>filespec</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">All options can
+be abbreviated to their shortest unique prefix. You may use
+two hyphens instead of one. You may separate an option name
+and its value with white space instead of an equals
+sign.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamfunc</b>
+reads a Netpbm image as input and produces a Netpbm image as
+output, with the same format, and dimensions as the input.
+<b>pamfunc</b> applies a simple transfer function to each
+sample in the input to generate the corresponding sample in
+the output. The options determine what function.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The samples
+involved are PAM samples. If the input is PBM, PGM, or PPM,
+the output will be that same format, but <b>pamfunc</b>
+applies the functions to the PAM equivalent samples,
+yielding PAM equivalent samples. This can be nonintuitive in
+the <a href="#pbmoddness">PBM</a> case.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamarith</b>
+is the same thing for binary functions -- it takes two
+images as input and applies a specified simple arithmetic
+function (e.g. addition) on pairs of samples from the two to
+produce the single output image.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Values</b>
+<br>
+The functions fall into two categories: arithmetic (such as
+multiply by 5) and bit string (such as and with 01001000).
+For the arithmetic functions, the function arguments and
+results are the fraction that a sample is of the maxval,
+i.e. normal interpretation of PAM tuples. But for the bit
+string functions, the value is the the bit string whose
+value as a binary cipher is the sample value, and the maxval
+indicates the width of the bit string.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Arithmetic
+functions</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">The arithmetic
+functions are those selected by the options
+<b>-multiplier</b>, <b>-divisor</b>, <b>-adder</b>,
+<b>-subtractor</b>, <b>-min</b>, and <b>-max</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">As an example,
+consider an image with maxval 100 and a sample value of 10
+and a function of &quot;multiply by 5.&quot; The argument to
+the function is 10/100 (0.1) and the result is 5 * 0.1 =
+0.5. In the simplest case, the maxval of the output is also
+100, so the output sample value is 0.5 * 100 = 50. As you
+can see, we could just talk about the sample values
+themselves instead of these fractions and get the same
+result (10 * 5 = 50), but we don&rsquo;t.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Where it makes
+a practical difference whether we consider the values to be
+the fraction of the maxval or the sample value alone is
+where <b>pamfunc</b> uses a different maxval in the output
+image than it finds in the input image. See
+<b>-changemaxval</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">So remember in
+reading the descriptions below that the values are 0.1 and
+0.5 in this example, not 10 and 50. All arguments and
+results are in the range [0,1].</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Bit string
+functions</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">The bit string
+functions are those selected by the options <b>-andmask</b>,
+<b>-ormask</b>, <b>-xormask</b>, <b>-not</b>,
+<b>-shiftleft</b>, and <b>-shiftright</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">With these
+functions, the maxval has a very different meaning than in
+normal Netpbm images: it tells how wide (how many bits) the
+bit string is. The maxval must be a full binary count (a
+power of two minus one, such as 0xff) and the number of ones
+in it is the width of the bit string.</p>
+
+<p style="margin-left:11%; margin-top: 1em">As an example,
+consider an image with maxval 15 and a sample value of 5 and
+a function of &quot;and with 0100&quot;. The argument to the
+function is 0101 and the result is 0100.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In this
+example, it doesn&rsquo;t make any practical difference what
+we consider the width of the string to be, as long as it is
+at least 3. If the maxval were 255, the result would be the
+same. But with a bit shift operation, it matters. Consider
+shifting left by 2 bits. In the example, where the input
+value is 0101, the result is 0100. But if the maxval were
+255, the result would be 00010100.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For a masking
+function, the mask value you specify must not have more
+significant bits than the width indicated by the maxval.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For a shifting
+operation, the shift count you specify must not be greater
+than the width indicated by the maxval.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>PBM
+Oddness</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">If you&rsquo;re
+familiar with the PBM format, you may find
+<b>pamfunc</b>&rsquo;s operation on PBM images to be
+nonintuitive. Because in PBM black is represented as 1 and
+white as 0 (1.0 and 0.0 normlized), you might be expecting
+adding 1 to white to yield black.</p>
+
+<p style="margin-left:11%; margin-top: 1em">But the PBM
+format is irrelevant, because <b>pamfunc</b> operates on the
+numbers found in the PAM equivalent (see above). In a PAM
+black and white image, black is 0 and white is 1 (0.0 and
+1.0 normalized). So white plus 1 (clipped to the maximum of
+1.0) is white.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamfunc</b> recognizes the following command line
+options: <b><br>
+-multiplier=</b><i>realnum</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+makes the transfer function that of multiplying by <i><br>
+realnum</i>. <i>realnum</i> must be nonnegative. If the
+result <br>
+is greater than one, it is clipped to one.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Where the input
+is a PGM or PPM image, this has the effect of <br>
+dimming or brightening it. For a different kind of
+brightening, <br>
+see <b>pambrighten</b>(1) and <b>ppmflash</b>(1)</p>
+
+<p style="margin-left:22%; margin-top: 1em">Also, see
+<b>ppmdim</b>(1), which does the same <br>
+thing as <b>pamfunc -multiplier</b> on a PPM image with a
+multiplier <br>
+between zero and one, except it uses integer arithmetic, so
+it may be <br>
+faster.</p>
+
+<p style="margin-left:22%; margin-top: 1em">And
+<b>ppmfade</b>(1) can generate a whole <br>
+sequence of images of brightness declining to black or
+increasing to <br>
+white, if that&rsquo;s what you want.</p>
+
+
+<p style="margin-left:11%;"><b>-divisor=</b><i>realnum</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+makes the transfer function that of dividing by <i><br>
+realnum</i>. <i>realnum</i> must be nonnegative. If the
+result <br>
+is greater than one, it is clipped to one.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This is the
+same function as you would get with <b>-multiplier</b>, <br>
+specifying the multiplicative inverse of <i>realnum</i>.</p>
+
+
+<p style="margin-left:11%;"><b>-adder=</b><i>integer</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+makes the transfer function that of adding <i><br>
+integer</i>/<i>maxval</i>. If the result is greater than
+one, it is <br>
+clipped to one. If it is less than zero, it is clipped to
+zero.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Note that in
+mathematics, this entity is called an &quot;addend,&quot;
+<br>
+and an &quot;adder&quot; is a snake. We use
+&quot;adder&quot; because <br>
+it makes more sense.</p>
+
+
+<p style="margin-left:11%;"><b>-subtractor=</b><i>integer</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+makes the transfer function that of subtracting <i><br>
+integer</i>/<i>maxval</i>. If the result is greater than
+one, it is <br>
+clipped to one. If it is less than zero, it is clipped to
+zero.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Note that in
+mathematics, this entity is called a <br>
+&quot;subtrahend&quot; rather than a &quot;subtractor.&quot;
+We use <br>
+&quot;subtractor&quot; because it makes more sense.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This is the
+same function as you would get with <b>-adder</b>, <br>
+specifying the negative of <i>integer</i>.</p>
+
+
+<p style="margin-left:11%;"><b>-min=</b><i>wholenum</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+makes the transfer function that of taking the maximum of
+<br>
+the argument and <i>wholenum</i>/<i>maxval</i>. I.e the
+minimum value in <br>
+the output will be <i>wholenum</i>/<i>maxval</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If
+<i>wholenum</i>/<i>maxval</i> is greater than one, though,
+every value <br>
+in the output will be one.</p>
+
+
+<p style="margin-left:11%;"><b>-max=</b><i>wholenum</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+makes the transfer function that of taking the minimum of
+<br>
+the argument and <i>wholenum</i>/<i>maxval</i>. I.e the
+maximum value in <br>
+the output will be <i>wholenum</i>/<i>maxval</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If
+<i>wholenum</i>/<i>maxval</i> is greater than one, the
+function is <br>
+idempotent -- the output is identical to the input.</p>
+
+
+<p style="margin-left:11%;"><b>-andmask=</b><i>hexmask</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+makes the transfer function that of bitwise anding <br>
+with <i>hexmask</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>hexmask</i>
+is in hexadecimal. Example: 0f</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.40 (September 2007).</p>
+
+
+<p style="margin-left:11%;"><b>-ormask=</b><i>hexmask</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+makes the transfer function that of bitwise <br>
+inclusive oring with <i>hexmask</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This is
+analogous to <b>-andmask</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.40 (September 2007).</p>
+
+
+<p style="margin-left:11%;"><b>-xormask=</b><i>hexmask</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+makes the transfer function that of bitwise <br>
+exclusive oring with <i>hexmask</i>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This is
+analogous to <b>-andmask</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.40 (September 2007).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-not</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>This option makes the transfer function that of bitwise
+logical</p> </td></tr>
+</table>
+
+<p style="margin-left:22%;">inversion (e.g. sample value
+0xAA becomes 0x55).</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>pnminvert</b>
+does the same thing for a bilevel visual image <br>
+which has maxval 1 or is of PBM type.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.40 (September 2007).</p>
+
+
+<p style="margin-left:11%;"><b>-shiftleft=</b><i>count</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+makes the transfer function that of bitwise shifting <br>
+left by <i>count</i> bits.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.40 (September 2007).</p>
+
+
+<p style="margin-left:11%;"><b>-shiftright=</b><i>count</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+makes the transfer function that of bitwise shifting <br>
+right by <i>count</i> bits.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This is
+analogous to <b>-shiftleft</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.40 (September 2007).</p>
+
+<p style="margin-left:11%;"><b>-changemaxval</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+tells <b>pamfunc</b> to use a different maxval in the output
+image than the maxval of the input image, if it helps. By
+default, the maxval of the output is unchanged from the
+input and <b>pamfunc</b> modifies the sample values as
+necessary to perform the operation.</p>
+
+<p style="margin-left:22%; margin-top: 1em">But there is
+one case where <b>pamfunc</b> can achieve the same result
+just by changing the maxval and leaving the sample values
+unchanged: dividing by a number 1 or greater, or multiplying
+by a number 1 or less. For example, to halve all of the
+values, <b>pamfunc</b> can just double the maxval.</p>
+
+<p style="margin-left:22%; margin-top: 1em">With
+<b>-changemaxval</b>, <b>pamfunc</b> will do just that.</p>
+
+<p style="margin-left:22%; margin-top: 1em">As the Netpbm
+formats have a maximum maxval of 65535, for large divisors,
+<b>pamfunc</b> may not be able to use this method.</p>
+
+<p style="margin-left:22%; margin-top: 1em">An advantage of
+dividing by changing the maxval is that you don&rsquo;t lose
+precision. The higher maxval means higher precision. For
+example, consider an image with a maxval of 100 and sample
+value of 10. You divide by 21 and then multiply by 21 again.
+If <b>pamfunc</b> does this by changing the sample values
+while retaining maxval 100, the division will result in a
+sample value of 0 and the multiplication will also result in
+zero. But if <b>pamfunc</b> instead keeps the sample value
+10 and changes the maxval, the division will result in a
+maxval of 2100 and the multiplication will change it back to
+100, and the round trip is idempotent.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.65 (December 2013).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmdim</b>(1),
+<b>pambrighten</b>(1), <b>pamdepth</b>(1),
+<b>pamarith</b>(1), <b>pamsummcol</b>(1), <b>pamsumm</b>(1),
+<b>ppmfade</b>(1), <b>pnminvert</b>(1), <b>pam</b>(1),
+<b>pnm</b>(1),</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program
+was added to Netpbm in Release 10.3 (June 2002).</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamfunc.html</b></p>
+<hr>
+</body>
+</html>

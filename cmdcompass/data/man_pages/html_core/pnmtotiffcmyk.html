@@ -1,0 +1,358 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:36 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pnmtotiffcmyk User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pnmtotiffcmyk User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pnmtotiffcmyk -
+convert a Netpbm image into a CMYK encoded TIFF file</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="-3%"></td>
+<td width="7%">
+
+
+<p><b>pnmtotiffcmyk</b></p></td>
+<td width="85%">
+
+
+<p>[<b>-none</b>|<b>-packbits</b>|<b>-lzw</b>]</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="-3%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>[<b>-predictor</b> <i>n</i>]</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="-3%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>[<b>-msb2lsb</b>|<b>-lsb2msb</b>]</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="-3%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>[<b>-rowsperstrip</b> <i>n</i>]</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="-3%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>[<b>-lowdotrange</b> <i>n</i>]</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="-3%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>[<b>-highdotrange</b> <i>n</i>]</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="-3%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>[<b>-knormal</b>|<b>-konly</b>|<b>-kremove</b>]</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="-3%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p>[[<b>-default</b>]</p></td></tr>
+</table>
+
+<p style="margin-left:11%;">[<b>-theta</b> <i>deg</i>] <br>
+[<b>-gamma</b> <i>n</i>] <br>
+[<b>-gammap</b> <i>n</i>] <br>
+[<b>-negative</b>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmtotiffcmyk</b>reads
+a PNM image as input and produces a CMYK encoded TIFF file
+as output. It optionally modifies the color balance and
+black level, and modifies removal of CMY from under K.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Output is to
+Standard Output, but unlike with most Netpbm programs,
+Standard Output must be a seekable file. An ordinary file is
+fine, but you cannot pipe the output to another program.
+Furthermore, the program replaces any content currently in
+the file even if it was opened for appending.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtotiff</b>
+generates many other kinds of TIFF files.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pnmtotiffcmyk</b> recognizes the following command line
+options:</p>
+
+<p style="margin-left:11%; margin-top: 1em">The order of
+most options is not important, but options for particular
+conversion algorithms must appear after the algorithm is
+selected (<b>-default</b>,<b>-negative</b>). If you
+don&rsquo;t select an algorithm, <b>pnmtotiffcmyk</b>
+assumes <b>-default</b> and the appropriate options
+(<b>-theta</b>,<b>-gamma</b>,<b>-gammap</b>) can appear
+anywhere.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-none,-packbits,-lzw,-predictor</b>
+<br>
+Tiff files can be compressed. By default,
+<b>pnmtotiffcmyk</b> uses LZW decompression, but
+(apparently) some readers cannot read this, so you may want
+to select a different algorithm
+(<b>-none</b>,<b>-packbits</b>). For LZW compression, a
+<b>-predictor</b> value of 2 forces horizontal differencing
+of scanlines before encoding; a value of 1 forces no
+differencing.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-msb2lsb,-lsb2msb</b>
+<br>
+These options control fill order (default is
+<b>-msb2lsb</b>).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-rowsperstrip</b>
+<br>
+This sets the number of rows in an image strip (data in the
+Tiff files generated by this program is stored in strips -
+each strip is compressed individually). The default gives a
+strip size of no more than 8 kb.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-lowdotrange,-highdotrange</b>
+<br>
+These options set tag values that may be useful for
+printers.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-knormal,-kremove,-konly</b>
+<br>
+These options control the calculation of the CMYK ink
+levels. They are useful only for testing and debugging the
+code.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-kremove</b>
+sets the black (K) levels to zero while leaving the other
+ink levels as they would be if the black level were
+normal.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-konly</b>
+sets all inks to the normal black value.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-default,-negative</b>
+<br>
+These options control what ink levels <b>pnmtotiffcmyk</b>
+uses to represent each input color.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-negative</b>
+selects a simple algorithm that generates a color negative.
+None of the following options apply to this algorithm. The
+algorithm is included as an example in the source code to
+help implementors of other conversions.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-default</b>
+is not necessary, unless you have to countermand a
+<b>-negative</b> on the same command line.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The default
+conversion from RGB to CMYK is as follows: The basic values
+of the 3 pigments are C = 1-R, M = 1-G, Y = 1-B. From this,
+<b>pnmtotiffcmyk</b> chooses a black (K) level which is the
+minimum of those three. It then replaces that much of the 3
+pigments with the black. I.e. it subtracts K from each of
+the basic C, M, and Y values.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The options
+below modify this conversion.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-theta</b>
+<i>deg</i> <b><br>
+-theta</b> provides a simple correction for any color bias
+that may occur in the printed image because, in practice,
+inks do not exactly complement the primary colors. It
+rotates the colors (before black replacement) by <i>deg</i>
+degrees in the color wheel. Unless you are trying to produce
+unusual effects you will need to use small values. Try
+generating three images at -10, 0 (the default) and 10
+degrees and see which has the best color balance.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-gamma</b>
+<i>n</i> <b><br>
+-gamma</b> applies a gamma correction to the black (K) value
+described above. Specifically, instead of calculating the K
+value as min(C,M,Y), <b>pnmtotiffcmyk</b> raises that value
+(normalised to the range 0 to 1) to the <i>n</i>th power. In
+practice, this means that a value greater than 1 makes the
+image lighter and a value less than 1 makes the image
+darker. The range of allowed values is 0.1 to 10.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-gammap</b>
+<i>n</i> <br>
+This option controls the black replacement.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you specify
+<b>-gammap</b>, <b>pnmtotiffcmyk</b> uses the specified
+gamma value in computing how much ink to remove from the 3
+pigments, but still uses the regular gamma value
+(<b>-gamma</b> option) to generate the actual amount of
+black ink with which to replace it.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values of
+<i>n</i> from 0.01 to 10 are valid.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For example, it
+may be best to only subtract black from the colored inks in
+the very darkest regions. In that case, <i>n</i> should be a
+large value, such as 5.</p>
+
+<p style="margin-left:11%; margin-top: 1em">As a special
+case, if <i>n</i> is -1, <b>pnmtotiffcmyk</b> does not
+remove any pigment (but still adds the black ink). This
+means dark areas are even darker. Furthermore, when printed,
+dark areas contain a lot of ink which can make high contrast
+areas, like lettering, appear fuzzy. It&rsquo;s hard to see
+what the utility of this is.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamtotiff</b>(1),
+<b>tifftopnm</b>(1), <b>pnm</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (c)
+1999 Andrew Cooke (Jara Software). Released under the GPL
+with no warranty. See source or COPYRIGHT and LICENCE files
+in distribution for full details.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Much of the
+code uses ideas from other Netpbm programs, written by Jef
+Poskanzer (thanks go to him and libtiff maintainer Sam
+Leffler). A small section of the code - some of the tiff tag
+settings - is derived directly from pnmtotiff, by Jef
+Poskanzer, which, in turn, acknowledges Patrick Naughton
+with the following text:</p>
+
+<p style="margin-left:22%; margin-top: 1em">Derived by Jef
+Poskanzer from ras2tif.c, which is:</p>
+
+<p style="margin-left:22%; margin-top: 1em">Copyright (c)
+1990 by Sun Microsystems, Inc.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Author: Patrick
+J. Naughton <i>naughton@wind.sun.com</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">Permission to
+use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby
+granted, provided that the above copyright notice appear in
+all copies and that both that copyright notice and this
+permission notice appear in supporting documentation.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This file is
+provided AS IS with no warranties of any kind. The author
+shall have no liability with respect to the infringement of
+copyrights, trade secrets or any patents by this file or any
+part thereof. In no event will the author be liable for any
+lost revenue or profits or other special, indirect and
+consequential damages.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pnmtotiffcmyk.html</b></p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,444 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:34 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pnmgamma User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pnmgamma User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#PARAMETERS">PARAMETERS</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#WHAT IS GAMMA?">WHAT IS GAMMA?</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pnmgamma -
+perform gamma adjustment on a PNM image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmgamma</b>
+{ <b><br>
+-bt709tolinear</b> | <b><br>
+-lineartobt709</b> | <b><br>
+-bt709tosrgb</b> | <b><br>
+-srgbtobt709</b> } [<b>-gamma=</b><i>float</i>]
+[<b>-rgamma=</b><i>float</i>] [<b>-ggamma=</b><i>float</i>]
+[<b>-bgamma=</b><i>float</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<i>pnmfile</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmgamma</b>
+[ <b><br>
+-bt709ramp</b> | <b><br>
+-srgbramp</b> ] [<b>-ungamma</b>] [{<i>gamma</i> |
+<i>redgamma greengamma bluegamma</i>} [<i>pnmfile</i>]]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Pnmgamma</b>
+performs gamma adjustment on pseudo-PNM images.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The PPM format
+specification specifies that certain sample values in a file
+represent certain light intensities in an image. In
+particular, they specify that the sample values are directly
+proportional to luminance as defined by ITU-R Recommendation
+BT.709. BT.709 luminance as a function of radiance is a
+power function modified with a linear ramp near black.</p>
+
+<p style="margin-left:11%; margin-top: 1em">However, people
+sometimes work with approximations of PPM and PGM where the
+sample values represent intensity in different ways:</p>
+
+<p style="margin-left:11%; margin-top: 1em">In one common
+variation, the sample value is directly proportional to
+radiance (often called &quot;linear intensity&quot;).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Another popular
+variation is to make the samples proportional to luminance
+as defined by the International Electrotechnical Commission
+(IEC) SRGB standard. The SRGB gamma transfer function is
+like the BT.709 one except with different constants in
+it.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that SRGB
+is often spelled &quot;sRGB&quot;. In this document, we use
+standard English typography, though, which doesn&rsquo;t
+allow for that kind of capitalization.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmgamma</b>
+allows you to manipulate the gamma transfer function, thus
+working with and/or creating pseudo-PPM files that are
+useful for various things.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For example, if
+you feed a true PPM to pnmgamma -bt709tolinear , you get as
+output a file which is PPM in every respect except that the
+sample values are radiances. If you feed such a file to
+pnmgamma -linearto709, you get back a true PPM.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The situation
+for PGM images is analogous. And <b>pnmgamma</b> treats PBM
+images as PGM images.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When you feed a
+radiance-proportional pseudo-PPM image to a display program
+that expects a true PPM, the display appears darker than it
+should, so <b>pnmgamma</b> has the effect of lightening the
+image. When you feed a true PPM to a display program that
+expects radiance-proportional sample values, and therefore
+does a gamma adjustment of its own on them, the display
+appears lighter than it should, so <b>pnmgamma</b> with a
+gamma value less than one (the multiplicative inverse of
+whatever gamma value the display program uses) has the
+effect of darkening the image.</p>
+
+<h2>PARAMETERS
+<a name="PARAMETERS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The form of the
+parameters depends on whether you&rsquo;re using the old
+syntax or the new syntax. With the old syntax, the
+parameters are a mixture of gamma values and the input file
+name. With the new syntax, the only parameter is the input
+file name and you specify gamma values with option.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You use the old
+syntax if you specify <b>-bt709ramp</b> (or its synonym
+<b>-cieramp</b>) or <b>-srgramp</b> or if you don&rsquo;t
+specify any transfer function at all (and thus default to a
+simple exponential). Otherwise, you use the new syntax.</p>
+
+<p style="margin-left:11%; margin-top: 1em">With the old
+syntax, you may specify a single gamma value or 3 separate
+gamma values (red, green, and blue) or no gamma values. In
+any case, the meanings of those parameters is the same as
+the more modern <b>-gamma</b>, <b>-rgamma</b>,
+<b>-ggamma</b>, and <b>-bgamma</b> options described
+below.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pnmgamma</b> recognizes the following command line
+options: <b><br>
+-bt709tolinear</b></p>
+
+<p style="margin-left:22%;">Convert the image from BT.709
+luminance to radiance. I.e. convert from true PPM or PGM to
+a radiance-linear variation that can be used with certain
+tools that need it.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.32 (February 2006).</p>
+
+<p style="margin-left:11%;"><b>-lineartobt709</b></p>
+
+<p style="margin-left:22%;">Convert the image from radiance
+to BT.709 luminance. I.e. convert to true PPM or PGM from a
+radiance-linear variation.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You get true
+BT.709 (ergo true PPM or PGM) only if you use the default
+gamma value (i.e. don&rsquo;t specify <b>-gamma</b>,
+etc.).</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.32 (February 2006).</p>
+
+<p style="margin-left:11%;"><b>-bt709tosrgb</b></p>
+
+<p style="margin-left:22%;">Convert the image from BT.709
+luminance to SRGB luminance. I.e. convert from true PPM or
+PGM to an SRGB-based variation that is required by certain
+tools and display devices.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You get true
+SRGB only if you use the default gamma value (i.e.
+don&rsquo;t specify <b>-gamma</b>, etc.).</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.32 (February 2006).</p>
+
+<p style="margin-left:11%;"><b>-srgbtobt709</b></p>
+
+<p style="margin-left:22%;">Convert the image from SRGB
+luminance to BT.709 luminance. I.e. convert to true PPM or
+PGM from an SRGB-based variation.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.32 (February 2006).</p>
+
+<p style="margin-left:11%;"><b>-bt709ramp</b></p>
+
+<p style="margin-left:22%;">Same as <b>-lineartobt709</b>,
+but using the old syntax.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+renamed in Netpbm 10.32 (February 2006). Before that, its
+name is <b>-cieramp</b>.</p>
+
+<p style="margin-left:11%;"><b>-cieramp</b></p>
+
+<p style="margin-left:22%;">This is an obsolete synonym for
+<b>-bt709ramp</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The name of
+this option comes from a former belief that this was a
+standard of CIE (International Commission On Illumination),
+but it now (August 2005) looks like it never was.</p>
+
+<p style="margin-left:11%;"><b>-srgbramp</b></p>
+
+<p style="margin-left:22%;">Convert the image from radiance
+to SRGB luminance. Note that it is true SRGB only if you use
+the default gamma value (i.e. don&rsquo;t specify any gamma
+parameters).</p>
+
+<p style="margin-left:22%; margin-top: 1em">This is an old
+syntax option. There is no equivalent in the new syntax
+because it really shouldn&rsquo;t be a function of
+<b>pnmgamma</b> at all. It exists solely for backward
+compatibility. The reason it shouldn&rsquo;t exist is that
+the way to do this conversion consistent with the Netpbm
+philosophy is do a <b>-lineartobt709</b> followed by a
+<b>-bt709tosrgb</b>. It&rsquo;s exactly analogous to the way
+you have to convert from PNG to TIFF by doing a
+<b>pngtopam</b> followed by a <b>pnmtotiff</b>. The
+<b>-srgbramp</b> option actually dates to before there was a
+standard definition of what the sample values of a Netpbm
+image measure, and <b>pnmgamma</b> considered
+radiance-linear to be the proper intermediate format.</p>
+
+<p style="margin-left:11%;"><b>-ungamma</b></p>
+
+<p style="margin-left:22%;">Apply the inverse of the
+specified transfer function (i.e. go from gamma-adjusted
+luminance to radiance).</p>
+
+<p style="margin-left:22%; margin-top: 1em">This is valid
+only with <b>-bt709ramp</b> (aka <b>-cieramp</b>),
+<b>-srgbramp</b>, and the default exponential transfer
+function.</p>
+
+<p style="margin-left:11%;"><b>-gamma=</b><i>float</i></p>
+
+<p style="margin-left:22%;">This specifies the gamma value
+to use in the transfer function. All of the transfer
+functions involve an exponent, and the gamma value is that
+exponent.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The standards
+specify a particular gamma value. If you use anything else,
+you are varying from the standard.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+the standard value. For the simple exponential transfer
+function (which is not a standard), the default is 2.2.</p>
+
+<p style="margin-left:22%; margin-top: 1em">In the
+<b>-bt709tosrgb</b> and <b>-srgbtobt709</b> conversions
+there are <i>two</i> exponents. <b>-gamma</b> affects the
+&quot;to&quot; function; the &quot;from&quot; function
+always uses the standard gamma value.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you specify
+one of the component-specific options (<b>-rgamma</b>,
+etc.), that overrides the <b>-gamma</b> value.</p>
+
+<p style="margin-left:22%; margin-top: 1em">With the
+<b>-bt709ramp</b> (aka <b>-cieramp</b>), <b>-srgbramp</b>,
+or the default exponential transfer function, you
+can&rsquo;t actually use this option, but you specify the
+same thing with <a href="#parameters">parameters.</a></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.32 (February 2006).</p>
+
+<p style="margin-left:11%;"><b>-rgamma=</b><i>float</i>
+<b><br>
+-ggamma=</b><i>float</i> <b><br>
+-bgamma=</b><i>float</i></p>
+
+<p style="margin-left:22%;">These options are just like
+<b>-gamma</b>, except they specify the value for a
+particular one of the color components.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you
+don&rsquo;t specify this option for a particular color
+component, the default is the <b>-gamma</b> value (or
+<b>-gamma</b>&rsquo;s default if you didn&rsquo;t specify
+that either).</p>
+
+<p style="margin-left:22%; margin-top: 1em">With the
+<b>-bt709ramp</b> (aka <b>-cieramp</b>), <b>-srgbramp</b>,
+or the default exponential transfer function, you
+can&rsquo;t actually use this option, but you specify the
+same thing with <a href="#parameters">parameters.</a></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.32 (February 2006).</p>
+
+
+<p style="margin-left:11%;"><b>-maxval=</b><i>maxval</i></p>
+
+<p style="margin-left:22%;">This is the maxval of the
+output image. By default, the maxval of the output is the
+same as that of the input.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Because the
+transformation is not linear, you need a greater maxval in
+the output in order not to lose any information from the
+input. For example, if you convert to radiance-linear sample
+values with -ungamma -bt709ramp and default gamma value, and
+your maxval is 255 on both input and output, 3 different
+input sample values all generate output sample value 254. In
+order to have a different output sample value for each input
+sample value, you would need an output maxval at least 3
+times the input maxval.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.32 (February 2006). Before that, you can
+achieve the same result by increasing the maxval of the
+input or decreasing the maxval of the output using
+<b>pamdepth</b>.</p>
+
+<h2>WHAT IS GAMMA?
+<a name="WHAT IS GAMMA?"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">A good
+explanation of gamma is in Charles Poynton&rsquo;s Gamma FAQ
+at http://www.poynton.com/GammaFAQ.html&quot; (1) and Color
+FAQ at http://www.poynton.com/ColorFAQ.html&quot; (1).</p>
+
+<p style="margin-left:11%; margin-top: 1em">In brief: The
+simplest way to code an image is by using sample values that
+are directly proportional to the radiance of the color
+components. Radiance is a physical quantification based on
+the amount of power in the light; it is easily measurable in
+a laboratory, but does not take into account what the light
+looks like to a person. It wastes the sample space because
+the human eye can&rsquo;t discern differences between
+low-radiance colors as well as it can between high-radiance
+colors. So instead, we pass the radiance values through a
+transfer function that makes it so that changing a sample
+value by 1 causes the same level of perceived color change
+anywhere in the sample range. We store those resulting
+values in the image file. That transfer function is called
+the gamma transfer function and the transformation is called
+gamma adjusting.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+gamma-adjusted value, proportional to subjective brightness,
+are known as the luminance of the pixel.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There is no
+precise objective way to measure luminance, since it&rsquo;s
+psychological. Also, perception of brightness varies
+according to a variety of factors, including the surrounding
+in which an image is viewed. Therefore, there is not just
+one gamma transfer function.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Virtually all
+image formats, either specified or de facto, use
+gamma-adjusted values for their sample values.</p>
+
+<p style="margin-left:11%; margin-top: 1em">What&rsquo;s
+really nice about gamma is that by coincidence, the inverse
+function that you have to do to convert the gamma-adjusted
+values back to radiance is done automatically by CRTs. You
+just apply a voltage to the CRT&rsquo;s electron gun that is
+proportional to the gamma-adjusted sample value, and the
+radiance of the light that comes out of the screen is close
+to the radiance value you had before you applied the gamma
+transfer function!</p>
+
+<p style="margin-left:11%; margin-top: 1em">And when you
+consider that computer video devices usually want you to
+store in video memory a value proportional to the signal
+voltage you want to go to the monitor, which the monitor
+turns into a proportional drive voltage on the electron gun,
+it is really convenient to work with gamma-adjusted sample
+values.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnm</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1991 by Bill Davidson and Jef Poskanzer.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pnmgamma.html</b></p>
+<hr>
+</body>
+</html>

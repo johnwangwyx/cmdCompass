@@ -1,0 +1,246 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:50 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>STREAMZIP</title>
+
+</head>
+<body>
+
+<h1 align="center">STREAMZIP</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#SUPPORT">SUPPORT</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">streamzip -
+create a zip file from stdin</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">producer |
+streamzip [opts] | consumer <br>
+producer | streamzip [opts] -zipfile=output.zip</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program
+will read data from &quot;stdin&quot;, compress it into a
+zip container and, by default, write a <i>streamed</i> zip
+file to &quot;stdout&quot;. No temporary files are
+created.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The zip
+container written to &quot;stdout&quot; is, by necessity,
+written in streaming format. Most programs that read Zip
+files can cope with a streamed zip file, but if
+interoperability is important, and your workflow allows you
+to write the zip file directly to disk you can create a
+non-streamed zip file using the &quot;zipfile&quot;
+option.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><small>OPTIONS</small></b>
+<br>
+-zip64</p>
+
+<p style="margin-left:18%;">Create a Zip64-compliant zip
+container. Use this option if the input is greater than
+4Gig.</p>
+
+<p style="margin-left:18%; margin-top: 1em">Default is
+disabled.</p>
+
+<p style="margin-left:11%;">-zipfile=F</p>
+
+<p style="margin-left:18%;">Write zip container to the
+filename &quot;F&quot;.</p>
+
+<p style="margin-left:18%; margin-top: 1em">Use the
+&quot;Stream&quot; option to force the creation of a
+streamed zip file.</p>
+
+<p style="margin-left:11%;">-member-name=M</p>
+
+<p style="margin-left:18%;">This option is used to name the
+&quot;file&quot; in the zip container.</p>
+
+<p style="margin-left:18%; margin-top: 1em">Default is
+&rsquo;-&rsquo;.</p>
+
+<p style="margin-left:11%;">-stream</p>
+
+<p style="margin-left:18%;">Ignored when writing to
+&quot;stdout&quot;.</p>
+
+<p style="margin-left:18%; margin-top: 1em">If the
+&quot;zipfile&quot; option is specified, including this
+option will trigger the creation of a streamed zip file.</p>
+
+<p style="margin-left:18%; margin-top: 1em">Default: Always
+enabled when writing to &quot;stdout&quot;, otherwise
+disabled.</p>
+
+<p style="margin-left:11%;">-method=M</p>
+
+<p style="margin-left:18%;">Compress using method
+&quot;M&quot;.</p>
+
+<p style="margin-left:18%; margin-top: 1em">Valid method
+names are</p>
+
+<p style="margin-left:18%; margin-top: 1em">* store Store
+without compression <br>
+* deflate Use Deflate compression [Deflault] <br>
+* bzip2 Use Bzip2 compression <br>
+* lzma Use LZMA compression <br>
+* xz Use xz compression <br>
+* zstd Use Zstandard compression</p>
+
+<p style="margin-left:18%; margin-top: 1em">Note that Lzma
+compress needs &quot;IO::Compress::Lzma&quot; to be
+installed.</p>
+
+<p style="margin-left:18%; margin-top: 1em">Note that Zstd
+compress needs &quot;IO::Compress::Zstd&quot; to be
+installed.</p>
+
+<p style="margin-left:18%; margin-top: 1em">Default is
+&quot;deflate&quot;.</p>
+
+<p style="margin-left:11%;">-0, -1, -2, -3, -4, -5, -6, -7,
+-8, -9</p>
+
+<p style="margin-left:18%;">Sets the compression level for
+&quot;deflate&quot;. Ignored for all other compression
+methods.</p>
+
+<p style="margin-left:18%; margin-top: 1em">&quot;-0&quot;
+means no compression and &quot;-9&quot; for maximum
+compression.</p>
+
+<p style="margin-left:18%; margin-top: 1em">Default is
+6</p>
+
+<p style="margin-left:11%;">-version</p>
+
+<p style="margin-left:18%;">Display version number</p>
+
+<p style="margin-left:11%;">-help</p>
+
+<p style="margin-left:18%;">Display help</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Examples</b>
+<br>
+Create a zip file bt reading daa from stdin</p>
+
+<p style="margin-left:11%; margin-top: 1em">$ echo Lorem
+ipsum dolor sit | perl ./bin/streamzip &gt;abcd.zip</p>
+
+<p style="margin-left:11%; margin-top: 1em">Check the
+contents of &quot;abcd,zip&quot; with the standard
+&quot;unzip&quot; utility</p>
+
+<p style="margin-left:11%; margin-top: 1em">Archive:
+abcd.zip <br>
+Length Date Time Name <br>
+--------- ---------- ----- ---- <br>
+22 2021-01-08 19:45 - <br>
+--------- ------- <br>
+22 1 file</p>
+
+<p style="margin-left:11%; margin-top: 1em">Notice how the
+&quot;Name&quot; is set to &quot;-&quot;. That is the
+default for a few zip utilities whwre the member name is not
+given.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you want to
+explicitly name the file, use the &quot;-member-name&quot;
+option as follows</p>
+
+<p style="margin-left:11%; margin-top: 1em">$ echo Lorem
+ipsum dolor sit | perl ./bin/streamzip -member-name latin
+&gt;abcd.zip <br>
+$ unzip -l abcd.zip <br>
+Archive: abcd.zip <br>
+Length Date Time Name <br>
+--------- ---------- ----- ---- <br>
+22 2021-01-08 19:47 latin <br>
+--------- ------- <br>
+22 1 file</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>When to
+write a Streamed Zip File</b> <br>
+A Streamed Zip File is useful in situations where you cannot
+seek backwards/forwards in the file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A good examples
+is when you are serving dynamic content from a Web Server
+straight into a socket without needing to create a temporary
+zip file in the filesystsm.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Similarly if
+your workfow uses a Linux pipelined commands.</p>
+
+<h2>SUPPORT
+<a name="SUPPORT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">General
+feedback/questions/bug reports should be sent to
+&lt;https://github.com/pmqs/IO-Compress/issues&gt;
+(preferred) or
+&lt;https://rt.cpan.org/Public/Dist/Display.html?Name=IO-Compress&gt;.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Paul Marquess
+<i>pmqs@cpan.org</i>.</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (c)
+2019-2021 Paul Marquess. All rights reserved.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.</p>
+<hr>
+</body>
+</html>

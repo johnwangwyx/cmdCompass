@@ -1,0 +1,593 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:34 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pnmconvol User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pnmconvol User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pnmconvol -
+general MxN convolution on a Netpbm image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmconvol</b>
+{ <b>-matrix=</b><i>convolution_matrix</i> |
+<b>-matrixfile=</b><i>filename</i>[<b>,</b><i>filename</i>[<b>,</b>
+...]] } [<b>-normalize</b>] [<b>-bias=</b><i>n]</i></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>[netpbmfile]</i></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmconvol</b>
+<i>convolution_matrix_file</i> [<b>-normalize</b>]
+[<b>-nooffset</b>] [<i>netpbmfile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviation of option is acceptable. You may use double
+hyphens instead of single hyphen to denote options. You may
+use white space in place of the equals sign to separate an
+option name from its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmconvol</b>
+reads a Netpbm image as input, convolves it with a specified
+convolution matrix, and writes a Netpbm image as output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A command use
+for convolution is blurring. See examples in the
+<b>pamgauss</b>(1) manual.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Convolution
+means replacing each pixel with a weighted average of the
+nearby pixels. The weights and the area to average are
+determined by the convolution matrix (sometimes called a
+convolution kernel), which you supply in one of several
+ways. See <a href="#convolmatrix"> Convolution Matrix</a>
+.</p>
+
+<p style="margin-left:11%; margin-top: 1em">At the edges of
+the convolved image, where the convolution matrix would
+extend over the edge of the image, <b>pnmconvol</b> just
+copies the input pixels directly to the output. It&rsquo;s
+often better to deal with the pixels near an edge by
+assuming some blank or background color beyond the edge. To
+do that, use <b>pnmpad</b> to add a margin all around whose
+size is half that of your convolution matrix size, not
+counting its center, in the same dimension. (E.g. if your
+convolution matrix is 5 wide by 3 high, use pnmpad -left=2
+-right=2 -top=1 -bottom=1). Feed that enlarged image to
+<b>pnmconvol</b>, then use <b>pamcut</b> to chop the edges
+off the convolved output, getting back to your original
+image dimensions. (E.g. pamcut -left=2 -right=-2 -top=1
+-bottom=-1).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The convolution
+computation can result in a value which is outside the range
+representable in the output. When that happens,
+<b>pnmconvol</b> just clips the output, which means
+brightness is not conserved.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To avoid
+clipping, you may want to scale your input values. For
+example, if your convolution matrix might produce an output
+value as much as double the maximum value in the input, then
+make sure the maxval of the input (which is also the maxval
+of the output) is at least twice the actual maximum value in
+the input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Clipping
+negative numbers deserves special consideration. If your
+convolution matrix includes negative numbers, it is possible
+for <b>pnmconvol</b> to calculate an output pixel as a
+negative value, which <b>pnmconvol</b> would of course clip
+to zero, since Netpbm formats cannot represent negative
+numbers.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Convolution
+Matrix</b> <br>
+There are three ways to specify the convolution matrix:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>directly with a <b>-matrix</b> option.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>In a file (or set of them) named by a <b>-matrixfile</b>
+option, whose contents are similar to a <b>-matrix</b>
+option value.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>With a special PNM file.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The PNM file
+option is the hardest, and exists only because until Netpbm
+10.49 (December 2009), it was the only way.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The regular
+convolution matrix file is slightly easier to read than the
+<b>-matrix</b> option value, and makes your command line
+less messy, but requires you to manage a separate file. With
+the file, you can have separate convolution matrices for the
+individual color components, which you can&rsquo;t do with
+<b>-matrix</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In any case,
+the convolution matrix <b>pnmconvol</b> uses is a matrix of
+real numbers. They can be whole or fractional, positive,
+negative, or zero.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The convolution
+matrix always has an odd width and height, so that there is
+a center element. <b>pnmconvol</b> figuratively places that
+center element over a pixel of the input image and weights
+that pixel and its neighbors as indicated by the convolution
+matrix to produce the pixel in the same location of the
+output image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For a normal
+convolution, where you&rsquo;re neither adding nor
+subtracting total value from the image, but merely moving it
+around, you&rsquo;ll want to make sure that all the numbers
+in the matrix add up to 1. If they don&rsquo;t,
+<b>pnmconvol</b> warns you.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The elements of
+the matrix are actually tuples, one for each sample in the
+input. (I.e. if the input is an RGB image, each element of
+the convolution matrix has one weight for red, one for
+green, and one for blue.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Directly On
+the Command Line</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Here are
+examples of a <b>-matrix</b> option:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">-matrix=0,.2,0;.2,.2,.2;0,.2,0</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">-matrix=-1,3,-1</p>
+
+<p style="margin-left:11%; margin-top: 1em">The value
+consists of each row of the matrix from top to bottom,
+separated by semicolons. Each row consists of the elements
+of the row from left to right, separated by commas. You must
+of course have the same number of elements in each row. Each
+element is a decimal floating point number and is the weight
+to give to each component of a pixel that corresponds to
+that matrix location.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that when
+you supply this option via a shell, semicolon
+(&quot;;&quot;) probably means something to the shell, so
+use quotation marks.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There is no way
+with this method to have different weights for different
+components of a pixel.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>-normalize</b> option is often quite handy with
+<b>-matrix</b> because it lets you quickly throw together
+the command without working out the math to make sure the
+matrix isn&rsquo;t biased. Note that if you use the
+<b>-normalize</b> option, the weights in the matrix
+aren&rsquo;t actually the numbers you specify in the
+<b>-matrix</b> option.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Regular
+Matrix File</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Specify the
+name of the matrix file with a <b>-matrixfile</b> option. Or
+specify a list of them, one for each plane of the image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Examples:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">-matrixfile=mymatrix</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">-matrixfile=myred,mygreen,myblue</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each file
+applies to one plane of the image (e.g. red, green, or
+blue), in order. The matrix in each file must have the same
+dimensions. If the input image has more planes than the
+number of files you specify, the first file applies to the
+extra planes as well.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmconvol</b>
+interprets the file as text, with lines delimited by Unix
+newline characters (line feeds).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each line of
+the file is one row of the matrix, in order from top to
+bottom.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For each row,
+the file contains a floating point decimal number for each
+element in the row, from left to right, separated by spaces.
+This is not just any old white space -- it is exactly one
+space. Two spaces in a row mean you&rsquo;ve specified a
+null string for an element (which is invalid). If you want
+to line up your matrix visually, use leading and trailing
+zeroes in the floating point numbers to do it.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There is no way
+to put comments in the file. There is no signature or any
+other metadata in the file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that if
+you use the <b>-normalize</b> option, the weights in the
+matrix aren&rsquo;t actually what is in the file.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>PNM
+File</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Before Netpbm
+10.49 (December 2009), this was the only way to specify a
+convolution matrix. <b>pnmconvol</b> used this method in an
+attempt to exploit the generic matrix processing
+capabilities of Netpbm, but as the Netpbm formats
+don&rsquo;t directly allow matrices with the kinds of
+numbers you need in a convolution matrix, it is quite
+cumbersome. In fact, there simply is no way to specify some
+convolution matrices with a legal Netpbm image, so to make
+it work, <b>pnmconvol</b> has to relax the Netpbm file
+requirement that sample values be no greater than the
+image&rsquo;s maxval. I.e. it isn&rsquo;t even a real PNM
+file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The way you
+select this method of supplying the convolution matrix is to
+<i>not</i> specify <b>-matrix</b> or <b>-matrixfile</b>.
+When you do that, you must specify a second non-option
+argument -- that is the name of the PNM file (or PNM
+equivalent PAM file).</p>
+
+<p style="margin-left:11%; margin-top: 1em">There are two
+ways <b>pnmconvol</b> interprets the PNM convolution matrix
+image pixels as weights: with offsets, and without
+offsets.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The simpler of
+the two is without offsets. That is what happens when you
+specify the <b>-nooffset</b> option. In that case,
+<b>pnmconvol</b> simply normalizes the sample values in the
+PNM image by dividing by the maxval.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For example,
+here is a sample convolution file that causes an output
+pixel to be a simple average of its corresponding input
+pixel and its 8 neighbors, resulting in a smoothed
+image:</p>
+
+<p style="margin-left:11%; margin-top: 1em">P2 <br>
+3 3 <br>
+18 <br>
+2 2 2 <br>
+2 2 2 <br>
+2 2 2</p>
+
+<p style="margin-left:11%; margin-top: 1em">(Note that the
+above text is an actual PGM file -- you can cut and paste
+it. If you&rsquo;re not familiar with the plain PGM format,
+see <b>the PGM format specification</b>(1)).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmconvol</b>
+divides each of the sample values (2) by the maxval (18) so
+the weight of each of the 9 input pixels gets is 1/9, which
+is exactly what you want to keep the overall brightness of
+the image the same. <b>pnmconvol</b> creates an output pixel
+by multiplying the values of each of 9 pixels by 1/9 and
+adding.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that with
+maxval 18, the range of possible values is 0 to 18. After
+scaling, the range is 0 to 1.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For a normal
+convolution, where you&rsquo;re neither adding nor
+subtracting total value from the image, but merely moving it
+around, you&rsquo;ll want to make sure that all the scaled
+values in (each plane of) your convolution PNM add up to 1,
+which means all the actual sample values add up to the
+maxval. Alternatively, you can use the <b>-normalize</b>
+option to scale the scaled values further to make them all
+add up to 1 automatically.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When you
+<i>don&rsquo;t</i> specify <b>-nooffset</b>,
+<b>pnmconvol</b> applies an offset, the purpose of which is
+to allow you to indicate negative weights even though PNM
+sample values are never negative. In this case,
+<b>pnmconvol</b> subtracts half the maxval from each sample
+and then normalizes by dividing by half the maxval. So to
+get the same result as we did above with <b>-nooffset</b>,
+the convolution matrix PNM image would have to look like
+this:</p>
+
+<p style="margin-left:11%; margin-top: 1em">P2 <br>
+3 3 <br>
+18 <br>
+10 10 10 <br>
+10 10 10 <br>
+10 10 10</p>
+
+<p style="margin-left:11%; margin-top: 1em">To see how this
+works, do the above-mentioned offset: 10 - 18/2 gives 1. The
+normalization step divides by 18/2 = 9, which makes it 1/9 -
+exactly what you want. The equivalent matrix for 5x5
+smoothing would have maxval 50 and be filled with 26.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that with
+maxval 18, the range of possible values is 0 to 18. After
+offset, that&rsquo;s -9 to 9, and after normalizing, the
+range is -1 to 1.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The convolution
+file will usually be a PGM, so that the same convolution
+gets applied to each color component. However, if you want
+to use a PPM and do a different convolution to different
+colors, you can certainly do that.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Other Forms
+of Convolution <br>
+pnmconvol</b> does only arithmetic, linear combination
+convolution. There are other forms of convolution that are
+especially useful in image processing.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pgmmedian</b>
+does median filtering, which is a form of convolution where
+the output pixel value, rather than being a linear
+combination of the pixels in the window, is the median of a
+certain subset of them.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pgmmorphconv</b>
+does dilation and erosion, which is like the median filter
+but the output value is the minimum or maximum of the values
+in the window.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pnmconvol</b> recognizes the following command line
+options: <b><br>
+-matrix=</b><i>convolution_matrix</i></p>
+
+<p style="margin-left:22%;">The value of the convolution
+matrix. See <a href="#matrixopt">Convolution Matrix</a>
+.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You may not
+specify both this and <b>-matrixfile</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.49 (December 2009). Before that, use a PNM
+file for the convolution matrix.</p>
+
+
+<p style="margin-left:11%;"><b>-matrixfile=</b><i>filename</i></p>
+
+<p style="margin-left:22%;">This specifies that you are
+supplying the convolution matrix in a file and names that
+file. See <a href="#matrixfile">Convolution Matrix</a> .</p>
+
+<p style="margin-left:22%; margin-top: 1em">You may not
+specify both this and <b>-matrix</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.49 (December 2009). Before that, use a PNM
+file for the convolution matrix.</p>
+
+<p style="margin-left:11%;"><b>-normalize</b></p>
+
+<p style="margin-left:22%;">This option says to adjust the
+weights in your convolution matrix so they all add up to
+one. You usually want them to add up to one so that the
+convolved result tends to have the same overall brightness
+as the input. With <b>-normalize</b>, <b>pnmconvol</b>
+scales all the weights by the same factor to make the sum
+one. It does this for each plane.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This can be
+quite convenient because you can just throw numbers into the
+matrix that have roughly the right relationship to each
+other and let <b>pnmconvol</b> do the work of normalizing
+them. And you can adjust a matrix by raising or lowering
+certain weights without having to modify all the other
+weights to maintain normalcy. And you can use friendly
+integers.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Example:</p>
+
+<p style="margin-left:22%; margin-top: 1em">$ pnmconvol
+myimage.ppm -normalize -matrix=1,1,1;1,1,1;1,1,1</p>
+
+<p style="margin-left:22%; margin-top: 1em">This is of
+course a basic 3x3 average, but without you having to
+specify 1/9 (.1111111) for each weight.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.50 (March 2010). But before Netpbm 10.79
+(June 2017), it has no effect when you specify the
+convolution matrix via pseudo-PNM file.</p>
+
+<p style="margin-left:11%;"><b>-bias=</b><i>n</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">This specifies
+an amount to add to the convolved value for each sample.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The purpose of
+this addition is normally to handle negative convolution
+results. Because the convolution matrix can contain negative
+numbers, the convolved value for a pixel could be negative.
+But Netpbm formats cannot contain negative sample values, so
+without any bias, such samples would get clipped to zero.
+The bias allows the output image to retain the information,
+and a program that pocesses that output, knowing the bias
+value, could reconstruct the real convolved values.</p>
+
+<p style="margin-left:22%; margin-top: 1em">For example,
+with <b>bias=100</b>, a sample whose convolved value is -5
+appears as 95 in the output, whereas a sample whose
+convolved value is 5 appears as 105 in the output.</p>
+
+<p style="margin-left:22%; margin-top: 1em">A typical value
+for the bias is half the maxval, allowing the same range on
+either side of zero.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If the sample
+value, after adding the bias, is still less than zero,
+<b>pnmconvol</b> clips it to zero. If it exceeds the maxval
+of the output image, it clips it to the maxval.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+zero.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.68 (September 2014).</p>
+
+<p style="margin-left:11%;"><b>-nooffset=</b></p>
+
+<p style="margin-left:22%;">This is part of the obsolete
+PNM image method of specifying the convolution matrix. See
+<a href="#matrixpnm">Convolution Matrix</a> .</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>-nooffset</b> option was new in Netpbm 10.23 (July 2004),
+making it substantially easier to specify a convolution
+matrix, but still hard. In Netpbm 10.49 (December 2009), the
+PNM convolution matrix tyranny was finally ended with the
+<b>-matrix</b> and <b>-matrixfile</b> options. In between,
+<b>pnmconvol</b> was broken for a while because the Netpbm
+library started enforcing the requirement that a sample
+value not exceed the maxval of the image. <b>pnmconvol</b>
+used the Netpbm library to read the PNM convolution matrix
+file, but in the pseudo-PNM format that <b>pnmconvol</b>
+uses, a sample value sometimes has to exceed the maxval.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmsmooth</b>(1),
+<b>pgmmorphconv</b>(1), <b>pgmmedian</b>(1),
+<b>pnmnlfilt</b>(1), <b>pgmkernel</b>(1),
+<b>pamgauss</b>(1), <b>pammasksharpen</b>(1),
+<b>pnmpad</b>(1), <b>pamcut</b>(1), <b>pnm</b>(1)</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1989, 1991 by Jef Poskanzer. Modified 26 November 1994 by
+Mike Burns, <i>burns@chem.psu.edu</i></p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pnmconvol.html</b></p>
+<hr>
+</body>
+</html>

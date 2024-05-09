@@ -1,0 +1,258 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:26 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamrubber User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamrubber User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#PARAMETERS">PARAMETERS</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamrubber - a
+rubber-sheeting utility that stretches an image based on
+control points</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamrubber</b>
+{<b>-tri | -quad</b>} [<b>-linear</b>] [<b>-frame</b>]
+[<b>-randomseed=</b><i>N</i>] <i>cp1x cp1y</i> [<i>cp2x
+cp2y</i> [<i>cp3x cp3y</i> [<i>cp4x cp4y</i>]]] <i>cp1x
+cp1y</i> [<i>cp2x cp2y</i> [<i>cp3x cp3y</i> [<i>cp4x
+cp4y</i>]]] [<i>filename</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviation of options is acceptable. You may use double
+hyphens instead of single hyphen to denote options.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>pamrubber</b> utility converts a pam image into a new
+image with the contents moved around. The transformation is
+often called &quot;rubber sheeting&quot;: you identify
+control points (CP) on the source image and specify new
+positions for those points in the new image.
+<b>pamrubber</b> moves all the pixels around, stretching and
+compressing as necessary, as if the original image were on a
+sheet of rubber and you pulled on the sheet to make the
+control points move to their new locations.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The new image
+has the same dimensions and format as the original.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+transformation can happen in two very different ways, called
+&quot;quad&quot; and &quot;tri.&quot; With the former, you
+must specify four control points (for both source and
+target). These are the corners of two quadrilaterals that
+will act as the coordinate system for both source and target
+images. Consider them as non-orthogonal (0,0), (0,1), (1,0)
+and (1,1) points. This transformation comes close to the one
+<b>pamperspective</b> does, however that program does other
+corrections as well.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When you
+specify less than four control points, the program adds
+control points in the following way. With three control
+points, <b>pamrubber</b> chooses the fourth one such that
+the four points form a parallelogram. With two points,
+<b>pamrubber</b> considers them the opposite corners of a
+rectangle. When you specify only one control point,
+<b>pamrubber</b> uses a rectangle from the top left corner
+of the image to the single control point.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In
+&quot;tri&quot; mode, <b>pamrubber</b> conceptually cuts up
+the source and target image into triangles. It Transforms
+within each corresponding pair of triangles in a stretching
+fashion. It&rsquo;s like pulling on the three corners of the
+triangle. In this mode, each pixel in the source image gets
+mapped to a position in the target image. No pixels are
+lost.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When, in
+&quot;tri&quot; mode, you specify only a single control
+point in the source and target image, <b>pamrubber</b>
+creates four triangles from this point to the four corners
+of the image. With two points, the program creates six
+triangles from the two endpoints of the line connecting the
+two points, again to the four corners of the image. Three
+control points is in a way the core of this utility in
+&quot;tri&quot; mode. Between the three edges of the central
+triangle and the four edges of the image, <b>pamrubber</b>
+constructs another seven triangles. Four control points
+define two central connected triangles. In total this
+results in cutting the source and target image up into ten
+triangles.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In this case
+clearly a picture says more than a thousand words. There is
+a graphical illustration of these various modes at
+<a href="http://www.schaik.com/netpbm/rubber">
+www.schaik.com/netpbm/rubber</a> . An example of how to use
+this type of rubber sheeting in cartography is in the
+article
+<a href="http://www.isprs.org/proceedings/XXXVI/5-W1/papers/21.pdf">
+Visualizing the Landscape of Old-Time Tokyo</a> .</p>
+
+<h2>PARAMETERS
+<a name="PARAMETERS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The parameters
+are control points (<i>cp</i>) in pairs of <i>x</i> and
+<i>y</i>. The source and target image must have the same
+number of control points. The minimum number of values
+specified here is 4 for a single control point in the source
+and target image. The maximum is 16 for four control points
+in each image.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>filename</i>
+is the name of the input file. If you don&rsquo;t specify
+this, <b>pamrubber</b> reads the image from Standard
+Input.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamrubber</b> recognizes the following command line
+options: <b><br>
+-tri</b> | <b>-quad</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This selects
+the type of rubber sheeting done. You must specify exactly
+one of these options.</p>
+
+<p style="margin-left:11%;"><b>-linear</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This determines
+whether <b>pamrubber</b> uses nearest neighbor interpolation
+or bilinear interpolation of four source pixels.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-frame</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>This option causes <b>pamrubber</b> to overlay the
+target image with the edges of the quadrilaterals,
+respectively the triangles used for the rubber sheeting. To
+get the same overlay for the source image, use a
+<b>pamrubber</b> transformation with identical control
+points for source and target.</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>-randomseed=</b><i>N</i></p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>pamrubber</b>
+randomizes some of its output. So that you can produce
+repeatable results, you can choose the seed of the random
+number generator with this option. If you use the same input
+image and the same random number generator seed, you should
+always get the exact same output. By default,
+<b>pamrubber</b> uses the time of day as the seed, so you
+get slightly different output when you run the program twice
+on the same input.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Before Netpbm
+10.61 (December 2012), this was called <b>-randseed</b>, and
+that still works.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pam</b>(1)
+and <b>pamperspective</b>(1)</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamrubber</b>
+was new in Netpbm 10.54 (March 2011).</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Willem van
+Schaik</i> wrote this program in February 2011 and
+contributed it to Netpbm.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamrubber.html</b></p>
+<hr>
+</body>
+</html>

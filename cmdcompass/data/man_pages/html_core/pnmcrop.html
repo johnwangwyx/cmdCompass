@@ -1,0 +1,744 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:34 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pnmcrop User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pnmcrop User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pnmcrop - crop
+a Netpbm image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmcrop</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-white</b>
+|<b>-black</b> |<b>-sides</b> |<b>-bg-color=</b><i>color</i>
+|<b>-bg-corner=</b>{
+<b>topleft</b>|<b>topright</b>|<b>bottomleft</b>|<b>bottomright</b>}
+]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-left</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-right</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-top</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-bottom</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-margin=</b><i>pixels</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-closeness=</b><i>closeness_percent</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-borderfile=</b><i>filename</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-blank-image=</b>{<b>abort</b>|<b>pass</b>|<b>minimize</b>|<b>maxcrop</b>}]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">{[<b>-reportfull</b>]|[<b>-reportsize</b>]}</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-verbose</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<i>pnmfile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviation of option is acceptable. You may use double
+hyphens instead of single hyphen to denote options. You may
+use white space in place of the equals sign to separate an
+option name from its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmcrop</b>
+reads a PBM, PGM, or PPM image as input, removes borders
+that are the background color, and produces the same type of
+image as output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you
+don&rsquo;t specify otherwise, <b>pnmcrop</b> assumes the
+background color is whatever color the top left and right
+corners of the image are and if they are different colors,
+something midway between them. You can specify that the
+background is white or black with the <b>-white</b> and
+<b>-black</b> options or make <b>pnmcrop</b> base its guess
+on all four corners instead of just two with
+<b>-sides</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">By default,
+<b>pnmcrop</b> chops off any stripe of background color it
+finds, on all four sides. You can tell <b>pnmcrop</b> to
+remove only specific borders with the <b>-left</b>,
+<b>-right</b>, <b><br>
+-top</b>, and <b>-bottom</b> options.</p>
+
+<p style="margin-left:11%; margin-top: 1em">But note that
+<b>pnmcrop</b>&rsquo;s determination of the background color
+is independent of which edges you crop, which may not be
+intuitive. For example, imagine an image with a blue border
+at the top and a black border at the bottom and you say to
+crop the bottom (<b>-bottom</b>). You may have expected to
+crop the black border, but you actually won&rsquo;t crop
+anything, because <b>pnmcrop</b> considers the background
+color to be whatever color the top two corners are, which is
+blue, and there is no blue at the bottom of the image. If
+you do want <b>pnmcrop</b> to take the background color from
+the edges being cropped, use <b>-bg-corner</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you want to
+leave some border, use the <b>-margin</b> option. It will
+not only spare some of the border from cropping, but will
+fill in (with what <b>pnmcrop</b> considers the background
+color) if necessary to get up to that size.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the input is
+a multi-image stream, <b>pnmcrop</b> processes each one
+independently and produces a multi-image stream as output.
+It chooses where to crop independently for each image. So if
+you start with a stream of images of the same dimensions,
+you may end up with images of differing dimensions. Before
+Netpbm 10.37 (December 2006), <b>pnmcrop</b> ignored all
+input images but the first.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you want to
+chop a specific amount off the side of an image, use
+<b>pamcut</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you want to
+add different borders after removing the existing ones, use
+<b>pnmcat</b> or <b>pamcomp</b>.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pnmcrop</b> recognizes the following command line
+options:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-white</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Take white to be the background color. <b>pnmcrop</b>
+removes borders which are white.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">You may specify
+at most one of <b>-black</b>, <b>-white</b>, <b>-sides</b>,
+<b>-bg-color</b>, and <b>-bg-corner</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>-black</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Take black to be the background
+color. <b>pnmcrop</b> removes borders which are black.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">You may specify
+at most one of <b>-black</b>, <b>-white</b>, <b>-sides</b>,
+<b>-bg-color</b>, and <b>-bg-corner</b>.</p>
+
+
+<p style="margin-left:11%;"><b>-bg-color=</b><i>color</i></p>
+
+<p style="margin-left:22%;">This tells <b>pnmcrop</b> what
+color is the background - it will crop areas of this color.
+<i>color</i> is a value that would be used as the
+<a href="libnetpbm_image.html#colorname">argument of the
+<b>pnm_parsecolor()</b> library routine</a> .</p>
+
+<p style="margin-left:22%; margin-top: 1em">You may specify
+at most one of <b>-black</b>, <b>-white</b>, <b>-sides</b>,
+<b>-bg-color</b>, and <b>-bg-corner</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.86 (March 2019).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-sides</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Determine the background color from the colors of the
+four corners of the input image. <b>pnmcrop</b> removes
+borders which are of the background color.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">If at least
+three of the four corners are the same color, <b>pnmcrop</b>
+takes that as the background color. If not, <b>pnmcrop</b>
+looks for two corners of the same color in the following
+order, taking the first found as the background color: top,
+left, right, bottom. If all four corners are different
+colors, <b>pnmcrop</b> assumes an average of the four colors
+as the background color.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The
+<b>-sides</b> option slows <b>pnmcrop</b> down, as it reads
+the entire image to determine the background color in
+addition to the up to three times that it would read it
+without <b>-sides</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You may specify
+at most one of <b>-black</b>, <b>-white</b>, <b>-sides</b>,
+<b>-bg-color</b>, and <b>-bg-corner</b>.</p>
+
+
+<p style="margin-left:11%;"><b>-bg-corner=</b>{<b>topleft</b>|<b>topright</b>|<b>bottomleft</b>|<b>bottomright</b></p>
+
+<p style="margin-left:22%;">This option indicates a corner
+which is background. <b>pnmcrop</b> will use the color of
+this corner as the background color and crop edges of that
+color.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You may specify
+at most one of <b>-black</b>, <b>-white</b>, <b>-sides</b>,
+<b>-bg-color</b>, and <b>-bg-corner</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.86 (March 2019).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-left</b></p></td>
+<td width="2%"></td>
+<td width="36%">
+
+
+<p>Remove any left border.</p></td>
+<td width="42%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-right</b></p></td>
+<td width="2%"></td>
+<td width="36%">
+
+
+<p>Remove any right border.</p></td>
+<td width="42%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-top</b></p></td>
+<td width="2%"></td>
+<td width="36%">
+
+
+<p>Remove any top border.</p></td>
+<td width="42%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-bottom</b></p>
+
+<p style="margin-left:22%;">Remove any bottom border.</p>
+
+
+<p style="margin-left:11%;"><b>-margin=</b><i>pixels</i></p>
+
+<p style="margin-left:22%;">Leave <i>pixels</i> pixels of
+border. Expand the border to this size if necessary.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.29 (August 2005).</p>
+
+
+<p style="margin-left:11%;"><b>-closeness=</b><i>closeness_percent</i></p>
+
+<p style="margin-left:22%;">Any color in the image that is
+at least this close to the operative background color is
+considered to be background.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You can use
+this if the image has borders that vary slightly in color,
+such as would be the case in a photograph. Consider a
+photograph against a white screen. The color of the screen
+varies slightly with shading and dirt and such, but is still
+quite distinct in color from the subject of the photograph.
+<b>pnmcrop</b> will choose some particular shade as the
+background color and if you specify an appropriate
+<b>-closeness</b> value, it will correctly identify all of
+the screen as background and crop it off.</p>
+
+<p style="margin-left:22%; margin-top: 1em">To implement
+more complex rules for identifying background, use
+<b>-borderfile</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+zero, which means a pixel&rsquo;s color must exactly match
+the background color for the pixel to be considered part of
+a background border.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.78 (March 2017). With older Netpbm, colors
+must match exactly.</p>
+
+
+<p style="margin-left:11%;"><b>-borderfile=</b><i>filename</i></p>
+
+<p style="margin-left:22%;">Use the image in the file named
+<i>filename</i> instead of the input image to determine
+where the borders of the input image are and the background
+color.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Without this
+option, <b>pnmcrop</b> examines the input image and figures
+out what part of the image is border and what part is
+foreground (not border), as well as the background color.
+With this option, <b>pnmcrop</b> finds the borders in one
+image, then uses the those four border sizes (left, right,
+top, bottom) in cropping a different image. Furthermore, if
+you use <b>-margin</b> to add borders, the color of those
+borders is the background color <b>pnmcrop</b> detects in
+the border file.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The point of
+this is that you may want to help <b>pnmcrop</b> to come to
+a different conclusion as to where the borders are and what
+the background color is by preprocessing the input image.
+For example, consider an image that has speckles of noise in
+its borders. <b>pnmcrop</b> isn&rsquo;t smart enough to
+recognize these as noise; it sees them as foreground image.
+So <b>pnmcrop</b> considers most of your borders to be
+foreground and does not crop them off as you want. To fix
+this, run the image through a despeckler such as
+<b>pbmclean</b> and tell <b>pnmcrop</b> to use the
+despeckled version of the image as the <b>-borderfile</b>
+image, but the original speckled version as the input image.
+That way, you crop the borders, but retain the true
+foreground image, speckles and all.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The border file
+must have the same number of images in it as the input file;
+the background color determination for image N of the input
+is based on the image N of the border file.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.29 (August 2005).</p>
+
+<p style="margin-left:22%; margin-top: 1em">Before Netpbm
+10.46 (March 2009), the original image and not the border
+file determines the background color. <b>pnmcrop</b> fails
+if there is no apparent background color in the original
+image (i.e. the corners of the image don&rsquo;t have a
+common color).</p>
+
+
+<p style="margin-left:11%;"><b>-blank-image=</b>{<b>abort</b>|<b>pass</b>|<b>minimize</b>|<b>maxcrop</b>}</p>
+
+<p style="margin-left:22%;">This determines how
+<b>pnmcrop</b> handles an image which is entirely <br>
+background (blank), a case where cropping doesn&rsquo;t make
+much sense.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p>abort</p></td>
+<td width="4%"></td>
+<td width="75%">
+
+
+<p>program fails, with explanatory message (default)</p></td>
+<td width="3%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p>pass</p></td>
+<td width="4%"></td>
+<td width="75%">
+
+
+<p>Output image is the same as the input image.</p></td>
+<td width="3%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%;"><b>-margin</b> has no
+effect.</p>
+
+<p style="margin-left:11%;">minimize</p>
+
+<p style="margin-left:22%; margin-top: 1em">output is a
+single row, column, or pixel (of the background color). <br>
+If you crop both vertically and horizontally (the default),
+it is a <br>
+single pixel. If you crop only vertically, a single row, of
+the <br>
+original width. If you crop only horizontally, it is a
+single column, <br>
+of the original height.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This is a
+somewhat incongruous result; the mathematically consistent
+<br>
+result of cropping the background from an image that is
+entirely <br>
+background would be an image with no pixels at all. But such
+a thing <br>
+does not exist in the Netpbm formats (and you probably
+wouldn&rsquo;t want <br>
+it anyway, because whoever processes this output may not
+tolerate <br>
+that).</p>
+
+<p style="margin-left:22%; margin-top: 1em">The background
+can be more than one color when you specify <b><br>
+-closeness</b>, so it matters which row, column, or pixel
+remains. <br>
+If you crop on the top and not bottom, it is the last row
+that remains. <br>
+If you crop on both the top and bottom, it is the middle row
+that <br>
+remains. The other cases follow similarly.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you specify
+a margin (<b>-margin</b>), the output image consists <br>
+entirely of the margins; there is no single row, column, or
+pixel <br>
+between the margins. So with <b>-margin</b>, the incongruity
+<br>
+mentioned above does not exist. But before Netpbm 10.92
+(September <br>
+2020), <b>-margin</b> was ignored with
+<b>-blank-image=minimize</b>.</p>
+
+<p style="margin-left:11%;">maxcrop</p>
+
+<p style="margin-left:22%; margin-top: 1em">This odd
+function selects a hypothetical cropping which is not even
+<br>
+possible, and therefore is valid only with
+<b>-reportfull</b> or <b><br>
+-reportsize</b>. The cropping that this selects is a crop of
+the <br>
+entire image on every side on which you request cropping. So
+if you <br>
+request cropping only on the left, of a 600 pixel wide
+image, this <br>
+selects a cropping of 600 pixels from the left and none from
+the other <br>
+three sides. Note that were this cropping actually applied,
+this would <br>
+produce an image with no pixels, which is not a valid Netpbm
+image. But <br>
+it gets stranger still if you request cropping on both the
+right and the <br>
+left. In that case, the cropping selected is a cropping of
+600 pixels <br>
+from both the right and left sides, which would leave a
+negative-width <br>
+image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This is
+actually useful if you are trying to find a single set of
+<br>
+cropping parameters to crop a stream of images. To do this,
+you could <br>
+do a pass with <b>-reportsize</b> and
+<b>-blank-image=maxcrop</b> to <br>
+compute the maximum crop for each edge, and then use those
+numbers in <b><br>
+-crop</b><i>xxx options on a</i> <b>pamcut</b> <i>pass to do
+the crop. <br>
+In this scenario, any all-background (blank) images would
+have no effect <br>
+on the cropping parameters you compute. If you do this, you
+must give <br>
+special consideration to a stream with nothing but blank
+images.</i></p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>-margin</b>
+<i>is always ignored when the image is all
+background.</i></p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>This option
+was new in Netpbm 10.86 (March 2019).</i></p>
+
+<p style="margin-left:11%;"><b>-reportfull</b></p>
+
+<p style="margin-left:22%;">With this option,
+<b>pnmcrop</b> does not actually crop anything. Instead, it
+just prints to Standard Output parameters of the cropping it
+would have done. The output is a single line per image, like
+in this example:</p>
+
+<p style="margin-left:22%; margin-top: 1em">0 +7 -20 -10
+200 300 rgb-255:10/0/255 0.0</p>
+
+<p style="margin-left:22%; margin-top: 1em">The line is
+composed of the following blank-delimited tokens:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>how many pixels would be cropped or padded on the left.
+This is</p></td></tr>
+</table>
+
+<p style="margin-left:22%;">a signed decimal number, where
++ means pad and - means crop. If there <br>
+would be no change, this is unsigned zero.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">same, but for the right
+side.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>same, but for the top.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>same, but for the bottom.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>the resulting image width in pixels, in decimal.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>the resulting image height in pixels, in decimal.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>The color <b>pnmcrop</b> took to be the background
+color, like</p></td></tr>
+</table>
+
+<p style="margin-left:22%;">&rsquo;rgb-255:10/0/255&rsquo;
+(This is a format recognized by <br>
+the
+<a href="libnetpbm_image.html#colorname"><b>pnm_parsecolor()</b></a>
+<br>
+library routine). The maxval in the color specification is
+the maxval of <br>
+the image.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">The closeness value (see
+<b>-closeness</b> option) <b>pnmcrop</b></p></td></tr>
+</table>
+
+<p style="margin-left:22%;">used, in floating point
+decimal.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You cannot use
+<b>-borderfile</b> together with this option.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.86 (March 2019).</p>
+
+<p style="margin-left:11%;"><b>-reportsize</b></p>
+
+<p style="margin-left:22%;">This is like
+<b>-reportfull</b>, but reports only the left, right, top,
+bottom, width, and height.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You cannot use
+<b>-borderfile</b> together with this option.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.86 (March 2019).</p>
+
+<p style="margin-left:11%;"><b>-verbose</b></p>
+
+<p style="margin-left:22%;">Print on Standard Error
+information about the processing, including exactly how much
+is being cropped off of which sides.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamcut</b>(1),
+<b>pamfile</b>(1), <b>pnm</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1989 by Jef Poskanzer.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pnmcrop.html</b></p>
+<hr>
+</body>
+</html>

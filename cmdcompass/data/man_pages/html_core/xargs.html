@@ -1,0 +1,599 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:35:00 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>XARGS</title>
+
+</head>
+<body>
+
+<h1 align="center">XARGS</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#STANDARDS CONFORMANCE">STANDARDS CONFORMANCE</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">xargs - build
+and execute command lines from standard input</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>xargs</b>
+[<i>options</i>] [<i>command</i>
+[<i>initial-arguments</i>]]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page documents the GNU version of <b>xargs</b>. <b>xargs</b>
+reads items from the standard input, delimited by blanks
+(which can be protected with double or single quotes or a
+backslash) or newlines, and executes the <i>command</i>
+(default is <i>echo</i>) one or more times with any
+<i>initial-arguments</i> followed by items read from
+standard input. Blank lines on the standard input are
+ignored.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The command
+line for <i>command</i> is built up until it reaches a
+system-defined limit (unless the <b>-n</b> and <b>-L</b>
+options are used). The specified <i>command</i> will be
+invoked as many times as necessary to use up the list of
+input items. In general, there will be many fewer
+invocations of <i>command</i> than there were items in the
+input. This will normally have significant performance
+benefits. Some commands can usefully be executed in parallel
+too; see the <b>-P</b> option.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Because Unix
+filenames can contain blanks and newlines, this default
+behaviour is often problematic; filenames containing blanks
+and/or newlines are incorrectly processed by <b>xargs</b>.
+In these situations it is better to use the <b>-0</b>
+option, which prevents such problems. When using this option
+you will need to ensure that the program which produces the
+input for <b>xargs</b> also uses a null character as a
+separator. If that program is GNU <b>find</b> for example,
+the <b>-print0</b> option does this for you.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If any
+invocation of the command exits with a status of 255,
+<b>xargs</b> will stop immediately without reading any
+further input. An error message is issued on stderr when
+this happens.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-0,
+--null</b></p>
+
+<p style="margin-left:22%;">Input items are terminated by a
+null character instead of by whitespace, and the quotes and
+backslash are not special (every character is taken
+literally). Disables the end of file string, which is
+treated like any other argument. Useful when input items
+might contain white space, quote marks, or backslashes. The
+GNU find -print0 option produces input suitable for this
+mode.</p>
+
+<p style="margin-left:11%;"><b>-a</b> <i>file</i><b>,
+--arg-file=</b><i>file</i></p>
+
+<p style="margin-left:22%;">Read items from <i>file</i>
+instead of standard input. If you use this option, stdin
+remains unchanged when commands are run. Otherwise, stdin is
+redirected from <i>/dev/null</i>.</p>
+
+
+<p style="margin-left:11%;"><b>--delimiter=</b><i>delim</i><b>,
+-d</b> <i>delim</i></p>
+
+<p style="margin-left:22%;">Input items are terminated by
+the specified character. The specified delimiter may be a
+single character, a C-style character escape such as
+<b>\n</b>, or an octal or hexadecimal escape code. Octal and
+hexadecimal escape codes are understood as for the
+<b>printf</b> command. Multibyte characters are not
+supported. When processing the input, quotes and backslash
+are not special; every character in the input is taken
+literally. The <b>-d</b> option disables any end-of-file
+string, which is treated like any other argument. You can
+use this option when the input consists of simply
+newline-separated items, although it is almost always better
+to design your program to use <b>--null</b> where this is
+possible.</p>
+
+<p style="margin-left:11%;"><b>-E</b> <i>eof-str</i></p>
+
+<p style="margin-left:22%;">Set the end of file string to
+<i>eof-str</i>. If the end of file string occurs as a line
+of input, the rest of the input is ignored. If neither
+<b>-E</b> nor <b>-e</b> is used, no end of file string is
+used.</p>
+
+<p style="margin-left:11%;"><b>-e</b>[<i>eof-str</i>],
+<b>--eof</b>[<i>=eof-str</i>]</p>
+
+<p style="margin-left:22%;">This option is a synonym for
+the <b>-E</b> option. Use <b>-E</b> instead, because it is
+POSIX compliant while this option is not. If <i>eof-str</i>
+is omitted, there is no end of file string. If neither
+<b>-E</b> nor <b>-e</b> is used, no end of file string is
+used.</p>
+
+<p style="margin-left:11%;"><b>-I</b>
+<i>replace-str</i></p>
+
+<p style="margin-left:22%;">Replace occurrences of
+<i>replace-str</i> in the initial-arguments with names read
+from standard input. Also, unquoted blanks do not terminate
+input items; instead the separator is the newline character.
+Implies <b>-x</b> and <b>-L</b> 1.</p>
+
+<p style="margin-left:11%;"><b>-i</b>[<i>replace-str</i>],
+<b>--replace</b>[<i>=replace-str</i>]</p>
+
+<p style="margin-left:22%;">This option is a synonym for
+<b>-I</b><i>replace-str</i> if <i>replace-str</i> is
+specified. If the <i>replace-str</i> argument is missing,
+the effect is the same as <b>-I</b>{}. This option is
+deprecated; use <b>-I</b> instead.</p>
+
+<p style="margin-left:11%;"><b>-L</b> <i>max-lines</i></p>
+
+<p style="margin-left:22%;">Use at most <i>max-lines</i>
+nonblank input lines per command line. Trailing blanks cause
+an input line to be logically continued on the next input
+line. Implies <b>-x</b>.</p>
+
+<p style="margin-left:11%;"><b>-l</b>[<i>max-lines</i>],
+<b>--max-lines</b>[=<i>max-lines</i>]</p>
+
+<p style="margin-left:22%;">Synonym for the <b>-L</b>
+option. Unlike <b>-L</b>, the <i>max-lines</i> argument is
+optional. If <i>max-lines</i> is not specified, it defaults
+to one. The <b>-l</b> option is deprecated since the POSIX
+standard specifies <b>-L</b> instead.</p>
+
+<p style="margin-left:11%;"><b>-n</b> <i>max-args</i><b>,
+--max-args</b>=<i>max-args</i></p>
+
+<p style="margin-left:22%;">Use at most <i>max-args</i>
+arguments per command line. Fewer than <i>max-args</i>
+arguments will be used if the size (see the <b>-s</b>
+option) is exceeded, unless the <b>-x</b> option is given,
+in which case <b>xargs will exit.</b></p>
+
+<p style="margin-left:11%;"><b>-P</b> <i>max-procs</i>,
+<b>--max-procs</b>=<i>max-procs</i></p>
+
+<p style="margin-left:22%;">Run up to <i>max-procs</i>
+processes at a time; the default is 1. If <i>max-procs</i>
+is 0, <b>xargs</b> will run as many processes as possible at
+a time. Use the <b>-n</b> option or the <b>-L</b> option
+with <b>-P</b>; otherwise chances are that only one exec
+will be done. While <b>xargs</b> is running, you can send
+its process a SIGUSR1 signal to increase the number of
+commands to run simultaneously, or a SIGUSR2 to decrease the
+number. You cannot increase it above an
+implementation-defined limit (which is shown with
+--show-limits). You cannot decrease it below 1. <b>xargs</b>
+never terminates its commands; when asked to decrease, it
+merely waits for more than one existing command to terminate
+before starting another.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>Please
+note</b> that it is up to the called processes to properly
+manage parallel access to shared resources. For example, if
+more than one of them tries to print to stdout, the output
+will be produced in an indeterminate order (and very likely
+mixed up) unless the processes collaborate in some way to
+prevent this. Using some kind of locking scheme is one way
+to prevent such problems. In general, using a locking scheme
+will help ensure correct output but reduce performance. If
+you don&rsquo;t want to tolerate the performance difference,
+simply arrange for each process to produce a separate output
+file (or otherwise use separate resources).</p>
+
+<p style="margin-left:11%;"><b>-o, --open-tty</b></p>
+
+<p style="margin-left:22%;">Reopen stdin as <i>/dev/tty</i>
+in the child process before executing the command. This is
+useful if you want <b>xargs</b> to run an interactive
+application.</p>
+
+<p style="margin-left:11%;"><b>-p, --interactive</b></p>
+
+<p style="margin-left:22%;">Prompt the user about whether
+to run each command line and read a line from the terminal.
+Only run the command line if the response starts with
+&rsquo;y&rsquo; or &rsquo;Y&rsquo;. Implies <b>-t</b>.</p>
+
+
+<p style="margin-left:11%;"><b>--process-slot-var</b>=<i>name</i></p>
+
+<p style="margin-left:22%;">Set the environment variable
+<i>name</i> to a unique value in each running child process.
+Values are reused once child processes exit. This can be
+used in a rudimentary load distribution scheme, for
+example.</p>
+
+<p style="margin-left:11%;"><b>-r,
+--no-run-if-empty</b></p>
+
+<p style="margin-left:22%;">If the standard input does not
+contain any nonblanks, do not run the command. Normally, the
+command is run once even if there is no input. This option
+is a GNU extension.</p>
+
+<p style="margin-left:11%;"><b>-s</b> <i>max-chars</i>,
+<b>--max-chars</b><i>=max-chars</i></p>
+
+<p style="margin-left:22%;">Use at most <i>max-chars</i>
+characters per command line, including the command and
+initial-arguments and the terminating nulls at the ends of
+the argument strings. The largest allowed value is
+system-dependent, and is calculated as the argument length
+limit for exec, less the size of your environment, less 2048
+bytes of headroom. If this value is more than 128KiB, 128Kib
+is used as the default value; otherwise, the default value
+is the maximum. 1KiB is 1024 bytes. <b>xargs</b>
+automatically adapts to tighter constraints.</p>
+
+<p style="margin-left:11%;"><b>--show-limits</b></p>
+
+<p style="margin-left:22%;">Display the limits on the
+command-line length which are imposed by the operating
+system, <b>xargs</b>&rsquo; choice of buffer size and the
+<b>-s</b> option. Pipe the input from <i>/dev/null</i> (and
+perhaps specify <b>--no-run-if-empty</b>) if you don&rsquo;t
+want <b>xargs</b> to do anything.</p>
+
+<p style="margin-left:11%;"><b>-t, --verbose</b></p>
+
+<p style="margin-left:22%;">Print the command line on the
+standard error output before executing it.</p>
+
+<p style="margin-left:11%;"><b>-x, --exit</b></p>
+
+<p style="margin-left:22%;">Exit if the size (see the
+<b>-s</b> option) is exceeded.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--help</b></p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>Print a summary of the options to <b>xargs</b> and
+exit.</p> </td>
+<td width="3%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--version</b></p>
+
+<p style="margin-left:22%;">Print the version number of
+<b>xargs</b> and exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The options
+<b>--max-lines</b> (<b>-L</b>, <b>-l</b>), <b>--replace</b>
+(<b>-I</b>, <b>-i</b>) and <b>--max-args</b> (<b>-n</b>) are
+mutually exclusive. If some of them are specified at the
+same time, then <b>xargs</b> will generally use the option
+specified last on the command line, i.e., it will reset the
+value of the offending option (given before) to its default
+value. Additionally, <b>xargs</b> will issue a warning
+diagnostic on <i>stderr</i>. The exception to this rule is
+that the special <i>max-args</i> value <i>1</i>
+(&rsquo;<b>-n</b><i>1</i>&rsquo;) is ignored after the
+<b>--replace</b> option and its aliases <b>-I</b> and
+<b>-i</b>, because it would not actually conflict.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>find /tmp
+-name core -type f -print | xargs /bin/rm -f</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Find files
+named <b>core</b> in or below the directory <b>/tmp</b> and
+delete them. Note that this will work incorrectly if there
+are any filenames containing newlines or spaces.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>find /tmp
+-name core -type f -print0 | xargs -0 /bin/rm -f</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Find files
+named <b>core</b> in or below the directory <b>/tmp</b> and
+delete them, processing filenames in such a way that file or
+directory names containing spaces or newlines are correctly
+handled.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>find /tmp
+-depth -name core -type f -delete</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Find files
+named <b>core</b> in or below the directory <b>/tmp</b> and
+delete them, but more efficiently than in the previous
+example (because we avoid the need to use <b>fork</b>(2) and
+<b>exec</b>(2) to launch <b>rm</b> and we don&rsquo;t need
+the extra <b>xargs</b> process).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>cut -d: -f1
+&lt; /etc/passwd | sort | xargs echo</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Generates a
+compact listing of all the users on the system.</p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>xargs</b>
+exits with the following status:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="4%">
+
+
+<p>0</p></td>
+<td width="6%"></td>
+<td width="68%">
+
+
+<p>if it succeeds</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="4%">
+
+
+<p>123</p></td>
+<td width="6%"></td>
+<td width="68%">
+
+
+<p>if any invocation of the command exited with status
+1-125</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="4%">
+
+
+<p>124</p></td>
+<td width="6%"></td>
+<td width="68%">
+
+
+<p>if the command exited with status 255</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="4%">
+
+
+<p>125</p></td>
+<td width="6%"></td>
+<td width="68%">
+
+
+<p>if the command is killed by a signal</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="4%">
+
+
+<p>126</p></td>
+<td width="6%"></td>
+<td width="68%">
+
+
+<p>if the command cannot be run</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="4%">
+
+
+<p>127</p></td>
+<td width="6%"></td>
+<td width="68%">
+
+
+<p>if the command is not found</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="4%">
+
+
+<p>1</p></td>
+<td width="6%"></td>
+<td width="68%">
+
+
+<p>if some other error occurred.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Exit codes
+greater than 128 are used by the shell to indicate that a
+program died due to a fatal signal.</p>
+
+<h2>STANDARDS CONFORMANCE
+<a name="STANDARDS CONFORMANCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">As of GNU xargs
+version 4.2.9, the default behaviour of <b>xargs</b> is not
+to have a logical end-of-file marker. POSIX (IEEE Std
+1003.1, 2004 Edition) allows this.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The -l and -i
+options appear in the 1997 version of the POSIX standard,
+but do not appear in the 2004 version of the standard.
+Therefore you should use -L and -I instead,
+respectively.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The -o option
+is an extension to the POSIX standard for better
+compatibility with BSD.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The POSIX
+standard allows implementations to have a limit on the size
+of arguments to the <b>exec</b> functions. This limit could
+be as low as 4096 bytes including the size of the
+environment. For scripts to be portable, they must not rely
+on a larger value. However, I know of no implementation
+whose actual limit is that small. The <b>--show-limits</b>
+option can be used to discover the actual limits in force on
+the current system.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">It is not
+possible for <b>xargs</b> to be used securely, since there
+will always be a time gap between the production of the list
+of input files and their use in the commands that
+<b>xargs</b> issues. If other users have access to the
+system, they can manipulate the filesystem during this time
+window to force the action of the commands <b>xargs</b> runs
+to apply to files that you didn&rsquo;t intend. For a more
+detailed discussion of this and related problems, please
+refer to the &rsquo;&rsquo;Security
+Considerations&rsquo;&rsquo; chapter in the findutils
+Texinfo documentation. The <b>-execdir</b> option of
+<b>find</b> can often be used as a more secure
+alternative.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When you use
+the <b>-I</b> option, each line read from the input is
+buffered internally. This means that there is an upper limit
+on the length of input line that <b>xargs</b> will accept
+when used with the <b>-I</b> option. To work around this
+limitation, you can use the <b>-s</b> option to increase the
+amount of buffer space that <b>xargs</b> uses, and you can
+also use an extra invocation of <b>xargs</b> to ensure that
+very long lines do not occur. For example:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>somecommand
+| xargs -s 50000 echo | xargs -I &rsquo;{}&rsquo; -s 100000
+rm &rsquo;{}&rsquo;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Here, the first
+invocation of <b>xargs</b> has no input line length limit
+because it doesn&rsquo;t use the <b>-i</b> option. The
+second invocation of <b>xargs</b> does have such a limit,
+but we have ensured that it never encounters a line which is
+longer than it can handle. This is not an ideal solution.
+Instead, the <b>-i</b> option should not impose a line
+length limit, which is why this discussion appears in the
+BUGS section. The problem doesn&rsquo;t occur with the
+output of <b>find</b>(1) because it emits just one filename
+per line.</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">GNU findutils
+online help:
+&lt;https://www.gnu.org/software/findutils/#get-help&gt;
+<br>
+Report any translation bugs to
+&lt;https://translationproject.org/team/&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">Report any
+other issue via the form at the GNU Savannah bug
+tracker:</p>
+
+
+<p style="margin-left:22%;">&lt;https://savannah.gnu.org/bugs/?group=findutils&gt;</p>
+
+<p style="margin-left:11%;">General topics about the GNU
+findutils package are discussed at the <i>bug-findutils</i>
+mailing list:</p>
+
+
+<p style="margin-left:22%;">&lt;https://lists.gnu.org/mailman/listinfo/bug-findutils&gt;</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+&copy; 1990-2022 Free Software Foundation, Inc. License
+GPLv3+: GNU GPL version 3 or later
+&lt;https://gnu.org/licenses/gpl.html&gt;. <br>
+This is free software: you are free to change and
+redistribute it. There is NO WARRANTY, to the extent
+permitted by law.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>find</b>(1),
+<b>kill</b>(1), <b>locate</b>(1), <b>updatedb</b>(1),
+<b>fork</b>(2), <b>execvp</b>(3), <b>locatedb</b>(5),
+<b>signal</b>(7)</p>
+
+<p style="margin-left:11%; margin-top: 1em">Full
+documentation
+&lt;https://www.gnu.org/software/findutils/xargs&gt; <br>
+or available locally via: <b>info xargs</b></p>
+<hr>
+</body>
+</html>

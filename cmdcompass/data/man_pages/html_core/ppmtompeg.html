@@ -1,0 +1,1422 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:39 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Ppmtompeg User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Ppmtompeg User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#PARAMETER FILE">PARAMETER FILE</a><br>
+<a href="#GENERAL USAGE INFORMATION">GENERAL USAGE INFORMATION</a><br>
+<a href="#PARALLEL OPERATION">PARALLEL OPERATION</a><br>
+<a href="#SPEED">SPEED</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ppmtompeg -
+encode an MPEG-1 bitstream</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmtompeg</b>
+[<i>options</i>] <i>parameter-file</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmtompeg</b>
+produces an MPEG-1 video stream. MPEG-1 is the first great
+video compression method, and is what is used in Video CDs
+(VCD). <b>ppmtompeg</b> originated in the year 1995. DVD
+uses a more advanced method, MPEG-2. There is an even newer
+method called MPEG-4 which is also called Divx. I
+don&rsquo;t know where one finds that used.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There&rsquo;s
+technically a difference between a compression method for
+video and an actual file (stream) format for a movie, and I
+don&rsquo;t know if it can be validly said that the format
+of the stream <b>ppmtompeg</b> produces is MPEG-1.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Mencoder from
+the <a href="http://www.mplayerhq.hu">Mplayer package</a> is
+probably superior for most video format generation needs, if
+for no other reason than that it is more popular.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The programming
+library <a href="http://pm2v.free.fr"><b>PM2V</b></a>
+generates MPEG-2 streams.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Use
+<a href="http://www.mplayerhq.hu">Mplayer</a> (not part of
+Netpbm) to do the reverse conversion: to create a series of
+PNM files from an MPEG stream.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>param_file</i>
+is a parameter file which includes a list of input files and
+other parameters. The file is described in detail below.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To understand
+this program, you need to understand something about the
+complex MPEG-1 format. One source of information about this
+standard format is the section Introduction to MPEG in the
+<a href="http://www.faqs.org/faqs/compression-faq/">Compression
+FAQ</a> .</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>-gop</b>, <b>-combine_gops</b>, <b>-frames</b>, and
+<b>-combine_frames</b> options are all mutually exclusive.
+<b><br>
+-stat stat_file</b></p>
+
+<p style="margin-left:22%;">This option causes
+<b>ppmtompeg</b> to append the statistics that it write to
+Standard Output to the file <i>stat_file</i> as well. The
+statistics use the following abbreviations: bits per block
+(bpb), bits per frame (bpf), seconds per frame (spf), and
+bits per second (bps).</p>
+
+<p style="margin-left:22%; margin-top: 1em">These
+statistics include how many I, P, and B frames there were,
+and information about compression and quality.</p>
+
+<p style="margin-left:11%;"><b>-quiet</b>
+<i>num_seconds</i></p>
+
+<p style="margin-left:22%;">causes <b>ppmtompeg</b> not to
+report remaining time more often than every
+<i>num_seconds</i> seconds (unless the time estimate rises,
+which will happen near the beginning of the run). A negative
+value tells <b>ppmtompeg</b> not to report at all. 0 is the
+default (reports once after each frame). Note that the time
+remaining is an estimate and does not take into account time
+to read in frames.</p>
+
+<p style="margin-left:11%;"><b>-realquiet</b></p>
+
+<p style="margin-left:22%;">causes <b>ppmtompeg</b> to run
+silently, with the only screen output being errors.
+Particularly useful when reading input from stdin. The
+equivalent of the <b>-quiet</b> common option of most other
+Netpbm programs.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-no_frame_summary</b></p>
+
+<p style="margin-left:22%;">This option prevents
+<b>ppmtompeg</b> from printing a summary line for each
+frame</p>
+
+<p style="margin-left:11%;"><b>-float_dct</b></p>
+
+<p style="margin-left:22%;">forces <b>ppmtompeg</b> to use
+a more accurate, yet more computationally expensive version
+of the DCT.</p>
+
+<p style="margin-left:11%;"><b>-gop</b> <i>gop_num</i></p>
+
+<p style="margin-left:22%;">causes <b>ppmtompeg</b> to
+encode only the numbered GOP (first GOP is 0). The parameter
+file is the same as for normal usage. The output file will
+be the normal output file with the suffix
+<b>.gop.</b><i>gop_num</i>. <b>ppmtompeg</b> does not output
+any sequence information.</p>
+
+<p style="margin-left:11%;"><b>-combine_gops</b></p>
+
+<p style="margin-left:22%;">causes <b>ppmtompeg</b> simply
+to combine some GOP files into a single MPEG output stream.
+<b>ppmtompeg</b> inserts a sequence header and trailer. In
+this case, the parameter file needs only to contain the SIZE
+value, an output file, and perhaps a list of input GOP files
+(see below).</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you
+don&rsquo;t supply a list of input GOP files is used, then
+<b>ppmtompeg</b> assumes you&rsquo;re using the same
+parameter file you used when you created the input (with the
+<b>-gop</b> option) and calculates the corresponding gop
+filenames itself. If this is not the case, you can specify
+input GOP files in the same manner as normal input files --
+except instead of using INPUT_DIR, INPUT, and END_INPUT, use
+GOP_INPUT_DIR, GOP_INPUT, and GOP_END_INPUT. If no input GOP
+files are specified, then the default is to use the output
+file name with suffix <b>.gop.</b><i>gop_num</i>, with
+<i>gop_num</i> starting from 0, as the input files.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Thus, unless
+you&rsquo;re mixing and matching GOP files from different
+sources, you can simply use the same parameter file for
+creating the GOP files (<b>-gop</b>) and for later turning
+them into an MPEG stream (<b>-combine_gops</b>).</p>
+
+<p style="margin-left:11%;"><b>-frames</b> <i>first_frame
+last_frame</i></p>
+
+<p style="margin-left:22%;">This option causes
+<b>ppmtompeg</b> to encode only the frames numbered
+<i>first_frame</i> to <i>last_frame</i>, inclusive. The
+parameter file is the same as for normal usage. The output
+will be placed in separate files, one per frame, with the
+file names being the normal output file name with the suffix
+<b>.frame.</b><i>frame_num</i>. No GOP header information is
+output. (Thus, the parameter file need not include the
+GOP_SIZE value)</p>
+
+<p style="margin-left:22%; margin-top: 1em">Use
+<b>ppmtompeg -combine_frames</b> to combine these frames
+later into an MPEG stream.</p>
+
+<p style="margin-left:11%;"><b>-combine_frames</b></p>
+
+<p style="margin-left:22%;">This option causes
+<b>ppmtompeg</b> simply to combine some individual MPEG
+frames (such as you might have created with an earlier run
+of <b>ppmtompeg -frames</b>) into a single MPEG stream.
+Sequence and GOP headers are inserted appropriately. In this
+case, the parameter file needs to contain only the SIZE
+value, the GOP_SIZE value, an output file, and perhaps a
+list of frame files (see below).</p>
+
+<p style="margin-left:22%; margin-top: 1em">The parameter
+file may specify input frame files in the same manner as
+normal input files -- except instead of using INPUT_DIR,
+INPUT, and END_INPUT, use FRAME_INPUT_DIR, FRAME_INPUT, and
+FRAME_END_INPUT. If no input frame files are specified, then
+the default is to use the output file name with suffix
+<b>.frame.</b><i>frame_num</i>, with <i>frame_num</i>
+starting from 0, as the input files.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-nice</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>This option causes <b>ppmtompeg</b> to run any remote
+processes &quot;nicely,&quot; i.e. at low priority. (This is
+relevant only if you are running <b>ppmtompeg</b> in
+parallel mode. Otherwise, there are no remote processes).
+See &rsquo;man nice.&rsquo;</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-max_machines</b>
+<i>num_machines</i></p>
+
+<p style="margin-left:22%;">This option causes
+<b>ppmtompeg</b> to use no more than <i>num_machines</i>
+machines as slaves for use in parallel encoding.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-snr</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>This option causes <b>ppmtompeg</b> to include the
+signal-to-noise ratio in the reported statistics. Prints SNR
+(Y U V) and peak SNR (Y U V) for each frame. In summary,
+prints averages of luminance only (Y). SNR is defined as
+10*log(variance of original/variance of error). Peak SNR is
+defined as 20*log(255/RMSE). Note that <b>ppmtompeg</b> runs
+a little slower when you use this option.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-mse</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>This option causes <b>ppmtompeg</b> to report the mean
+squared error per block. It also automatically reports the
+quality of the images, so there is no need to specify
+<b>-snr</b> then.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-bit_rate_info</b>
+<i>rate_file</i></p>
+
+<p style="margin-left:22%;">This option makes
+<b>ppmtompeg</b> write bit rate information into the file
+<i>rate_file</i>. Bit rate information is bits per frame,
+and also bits per I-frame-to-I-frame.</p>
+
+<p style="margin-left:11%;"><b>-mv_histogram</b></p>
+
+<p style="margin-left:22%;">This option causes
+<b>ppmtompeg</b> to print a histogram of the motion vectors
+as part of statistics. There are three histograms -- one for
+P frame, one for forward B frame, and one for backward B
+frame motion vectors.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The output is
+in the form of a matrix, each entry corresponding to one
+motion vector in the search window. The center of the matrix
+represents (0,0) motion vectors.</p>
+
+<p style="margin-left:11%;"><b>-debug_sockets</b></p>
+
+<p style="margin-left:22%;">This option causes
+<b>ppmtompeg</b> to print to Standard Output messages that
+narrate the communication between the machines when you run
+<b>ppmtompeg</b> in <a href="#parallel">parallel mode</a>
+.</p>
+
+<p style="margin-left:11%;"><b>-debug_machines</b></p>
+
+<p style="margin-left:22%;">This option causes
+<b>ppmtompeg</b> to print to Standard Output messages that
+narrate the progress of the conversion on the various
+machines when you run <b>ppmtompeg</b> in
+<a href="#parallel">parallel mode</a> .</p>
+
+<h2>PARAMETER FILE
+<a name="PARAMETER FILE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The parameter
+file <b>must</b> contain the following lines (except when
+using the <b>-combine_gops</b> or <b>-combine_frames</b>
+options): <b><br>
+PATTERN</b> <i>pattern</i></p>
+
+<p style="margin-left:22%;">This statement specifies the
+pattern (sequence) of I frames, P frames, and B frames.
+<i>pattern</i> is just a sequence of the letters I, P, and B
+with nothing between. Example:</p>
+
+<p style="margin-left:22%; margin-top: 1em">PATTERN
+IBBPBBPBBPBBPBB <br>
+&lt;/pre&gt;</p>
+
+<p style="margin-left:22%; margin-top: 1em">See <br>
+<a href="#ipb">I Frames, P Frames, B Frames </a> <br>
+.</p>
+
+<p style="margin-left:11%;"><b>OUTPUT</b> <i>output
+file</i></p>
+
+<p style="margin-left:22%;">This names the file where the
+output MPEG stream goes.</p>
+
+<p style="margin-left:11%;"><b>INPUT_DIR</b>
+<i>directory</i></p>
+
+<p style="margin-left:22%;">This statement tells where the
+input images (frames) come from. <br>
+If each frame is in a separate file, <i>directory</i> is the
+directory <br>
+where they all are. You may use <b>.</b> to refer to the
+current <br>
+directory. A null <i>directory</i> refers to the root
+directory of the <br>
+system file tree.</p>
+
+<p style="margin-left:22%; margin-top: 1em">To have
+<b>ppmtompeg</b> read all the frames serially from Standard
+<br>
+Input, specify <br>
+INPUT_DIR stdin</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>INPUT</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>This line must be followed by a list of the input files
+(in display order) and then the line <b>END_INPUT</b>.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">There are three
+types of lines between INPUT and END_INPUT. First, a line
+may simply be the name of an input file. Second, the line
+may be of the form <i>single_star_expr</i>
+<b>[</b><i>x</i><b>-</b><i>y</i><b>]</b>.
+<i>single_star_expr</i> can have a single <b>*</b> in it. It
+is replaced by all the numbers between x and y inclusive.
+So, for example, the line <b>tennis*.ppm [12-15]</b> refers
+to the files tennis12.ppm, tennis13.ppm, tennis14.ppm,
+tennis15.ppm.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Uniform
+zero-padding occurs, as well. For example, the line
+<b>football.*.ppm [001-130]</b> refers to the files
+football.001.ppm, football.002.ppm, ..., football.009.ppm,
+football.010.ppm, ..., football.130.ppm.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The third type
+of line is: <i>single_star_expr</i>
+<b>[</b><i>x</i><b>-</b><i>y</i><b>+</b><i>s</i><b>]</b>,
+where the line is treated exactly as above, except that we
+skip by <i>s</i>. Thus, the line <b>football.*.ppm
+[001-130+4]</b> refers to the files football.001.ppm,
+football.005.ppm, football.009.ppm, football.013.ppm,
+etc.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Furthermore, a
+line may specify a shell command to execute to generate
+lines to be interpreted as described above, as if those
+lines were in the parameter file instead. Use back ticks,
+like in the Bourne Shell, like this:</p>
+
+<p style="margin-left:22%; margin-top: 1em">&rsquo;cat
+myfilelist&rsquo;</p>
+
+<p style="margin-left:22%; margin-top: 1em">If input is
+from Standard Input (per the <b>INPUT_DIR</b> statement),
+<b>ppmtompeg</b> ignores the <b>INPUT</b>/<b>END_INPUT</b>
+block, but it still must be present.</p>
+
+<p style="margin-left:11%;"><b>BASE_FILE_FORMAT</b>
+{<b>PPM</b> | <b>PNM</b> | <b>YUV</b> |</p>
+
+<p style="margin-left:22%;"><b>JPEG</b> | <b>JMOVIE</b>}
+<b>ppmtompeg</b> must convert all input files to one of the
+following formats as a first step of processing: PNM, YUV,
+JPEG(v4), or JMOVIE. (The conversion may be trivial if your
+input files are already in one of these formats). This line
+specifies which of the four formats. PPM is actually a
+subset of PNM. The separate specification is allowed for
+backward compatibility. Use PNM instead of PPM in new
+applications.</p>
+
+<p style="margin-left:11%;"><b>INPUT_CONVERT</b>
+<i>conversion_command</i></p>
+
+<p style="margin-left:22%;">You must specify how to convert
+a file to the base file format. If no conversion is
+necessary, then you would just say:</p>
+
+<p style="margin-left:22%; margin-top: 1em">INPUT_CONVERT
+*</p>
+
+<p style="margin-left:22%; margin-top: 1em">Otherwise,
+<i>conversion_command</i> is a shell command that causes an
+image in the format your specified with
+<b>BASE_FILE_FORMAT</b> to be written to Standard Output.
+<b>ppmtompeg</b> executes the command once for each line
+between <b>INPUT</b> and <b>END_INPUT</b> (which is
+normally, but not necessarily, a file name). In the
+conversion command, <b>ppmtompeg</b> replaces each
+&rsquo;*&rsquo; with the contents of that line.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you had a
+bunch of gif files, you might say: <br>
+INPUT_CONVERT giftopnm *</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you have a
+bunch of separate a.Y, a.U, and a.V files (where <br>
+the U and V have already been subsampled), then you might
+say:</p>
+
+<p style="margin-left:22%; margin-top: 1em">INPUT_CONVERT
+cat *.Y *.U *.V</p>
+
+<p style="margin-left:22%; margin-top: 1em">Input
+conversion is not allowed with input from stdin, so use</p>
+
+<p style="margin-left:22%; margin-top: 1em">INPUT_CONVERT
+*</p>
+
+<p style="margin-left:22%; margin-top: 1em">as described
+above.</p>
+
+<p style="margin-left:11%;"><b>SIZE</b>
+<i>width</i><b>x</b><i>height</i></p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>width</i>
+and <i>height</i> are the width and height of each frame in
+pixels.</p>
+
+<p style="margin-left:22%; margin-top: 1em">When
+<b>ppmtompeg</b> can get this information from the input
+image files, it ignores the <b>SIZE</b> parameter and you
+may omit it.</p>
+
+<p style="margin-left:22%; margin-top: 1em">When the image
+files are in YUV format, the files don&rsquo;t contain
+dimension information, so <b>SIZE</b> is required.</p>
+
+<p style="margin-left:22%; margin-top: 1em">When
+<b>ppmtompeg</b> is running in parallel mode, not all of the
+processes in the network have access to the image files, so
+<b>SIZE</b> is required and must give the same dimensions as
+the input image files.</p>
+
+<p style="margin-left:11%;"><b>YUV_SIZE</b>
+<i>width</i><b>x</b><i>height</i></p>
+
+<p style="margin-left:22%;">This is an obsolete synonym of
+<b>SIZE</b>.</p>
+
+<p style="margin-left:11%;"><b>YUV_FORMAT</b>
+{<b>ABEKAS</b> | <b>PHILLIPS</b> | <b>UCB</b> |</p>
+
+<p style="margin-left:22%;"><b>EYUV</b> | <i>pattern</i>}
+This is meaningful only when <b>BASE_FILE_FORMAT</b>
+specifies YUV format, and then it is required. It specifies
+the sub-format of the YUV class.</p>
+
+<p style="margin-left:11%;"><b>GOP_SIZE</b> <i>n</i></p>
+
+<p style="margin-left:22%;"><i>n</i> is the number of
+frames in a Group of Pictures. Except that because a GOP
+must start with an I frame, <b>ppmtompeg</b> makes a GOP as
+much longer than <i>n</i> as it has to to make the next GOP
+start with an I frame.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Normally, it
+makes sense to make your GOP size a multiple of your pattern
+length (the latter is determined by the PATTERN parameter
+file statement).</p>
+
+<p style="margin-left:22%; margin-top: 1em">See
+<a href="#gop">Group Of Pictures</a> .</p>
+
+<p style="margin-left:11%;"><b>SLICES_PER_FRAME</b>
+<i>n</i></p>
+
+<p style="margin-left:22%;"><i>n</i> is roughly the number
+of slices per frame. Note, at least one MPEG player may
+complain if slices do not start at the left side of an
+image. To ensure this does not happen, make sure the number
+of rows is divisible by SLICES_PER_FRAME.</p>
+
+<p style="margin-left:11%;"><b>PIXEL</b> {<b>FULL</b> |
+<b>HALF</b>}</p>
+
+<p style="margin-left:22%;">use half-pixel motion vectors,
+or just full-pixel ones It is usually important that you use
+half-pixel motion vectors, because it results in both better
+quality and better compression.</p>
+
+<p style="margin-left:11%;"><b>RANGE</b> <i>n</i></p>
+
+<p style="margin-left:22%;">Use a search range of <i>n</i>
+pixels in each of the four directions from a subject pixel.
+(So the search window is a square <i>n</i>*2 pixels on a
+side).</p>
+
+<p style="margin-left:11%;"><b>PSEARCH_ALG</b>
+{<b>EXHAUSTIVE</b> | <b>TWOLEVEL</b> |</p>
+
+<p style="margin-left:22%;"><b>SUBSAMPLE</b> |
+<b>LOGARITHMIC</b>} This statement tells <b>ppmtompeg</b>
+what kind of search <br>
+technique (algorithm) to use for P frames. You select the
+desired <br>
+combination of speed and compression. <b>EXHAUSTIVE</b>
+gives the <br>
+best compression, but <b>LOGARITHMIC</b> is the fastest.
+<b><br>
+TWOLEVEL</b> is an exhaustive full-pixel search, followed by
+a <br>
+local half- pixel search around the best full-pixel vector
+(the <br>
+PIXEL option is ignored for this search technique).</p>
+
+<p style="margin-left:11%;"><b>BSEARCH_ALG</b>
+{<b>SIMPLE</b> | <b>CROSS2</b> | <b>EXHAUSTIVE</b>}</p>
+
+<p style="margin-left:22%;">This statement tells
+<b>ppmtompeg</b> what kind of search <br>
+technique (algorithm) to use for B frames. <b>SIMPLE</b>
+means <br>
+find best forward and backward vectors, then interpolate.
+<b><br>
+CROSS2</b> means find those two vectors, then see what
+backward <br>
+vector best matches the best forward vector, and vice versa.
+<b><br>
+EXHAUSTIVE</b> does an n-squared search and is <i><br>
+extremely</i> slow in relation to the others (<b>CROSS2</b>
+<br>
+is about half as fast as <b>SIMPLE</b>).</p>
+
+<p style="margin-left:11%;"><b>IQSCALE</b> <i>n</i></p>
+
+<p style="margin-left:22%;">Use <i>n</i> as the qscale for
+I frames. <br>
+See <a href="#qscale">Qscale</a> .</p>
+
+<p style="margin-left:11%;"><b>PQSCALE</b> <i>n</i></p>
+
+<p style="margin-left:22%;">Use <i>n</i> as the qscale for
+P frames. <br>
+See <a href="#qscale">Qscale</a> .</p>
+
+<p style="margin-left:11%;"><b>BQSCALE</b> <i>n</i></p>
+
+<p style="margin-left:22%;">Use <i>n</i> as the qscale for
+B frames. <br>
+See <a href="#qscale">Qscale</a> .</p>
+
+<p style="margin-left:11%;"><b>REFERENCE_FRAME</b>
+{<b>ORIGINAL</b> | <b>DECODED</b>}</p>
+
+<p style="margin-left:22%;">This statement determines
+whether <b>ppmtompeg</b> uses the original images or the
+decoded images when computing motion vectors. Using decoded
+images is more accurate and should increase the playback
+quality of the output, but it makes the encoding take longer
+and seems to give worse compression. It also causes some
+complications with parallel encoding. (see the section on
+parallel encoding). One thing you can do as a trade-off is
+select <b>ORIGINAL</b> here, and lower the qscale (see
+<b>QSCALE</b> if the quality is not good enough.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>Original or
+Decoded? (Normalized)</b></p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-159691.png" alt="Image grohtml-159691.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+lines are optional: <b><br>
+FORCE_ENCODE_LAST_FRAME</b></p>
+
+<p style="margin-left:22%;">This statement is obsolete. It
+does nothing.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Before Netpbm
+10.26 (January 2005), <b>ppmtompeg</b> would drop trailing B
+frames from your movie, since a movie can&rsquo;t end with a
+B frame. (See <a href="#ipb">I Frames, P Frames, B
+Frames</a> .) You would have to specify
+<b>FORCE_ENCODE_LAST_FRAME</b> to stop that from happening
+and get the same function that <b>ppmtompeg</b> has
+today.</p>
+
+<p style="margin-left:11%;"><b>NIQTABLE</b></p>
+
+<p style="margin-left:22%;">This statement specifies a
+custom non-intra quantization table. If you don&rsquo;t
+specify this statement, <b>ppmtompeg</b> uses a default
+non-intra quantization table.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The 8 lines
+immediately following <b>NIQTABLE</b> specify the
+quantization table. Each line defines a table row and
+consists of 8 integers, whitespace-delimited, which define
+the table columns.</p>
+
+<p style="margin-left:11%;"><b>IQTABLE</b></p>
+
+<p style="margin-left:22%;">This is analogous to NIQTABLE,
+but for the intra quantization table.</p>
+
+<p style="margin-left:11%;"><b>ASPECT_RATIO</b>
+<i>ratio</i></p>
+
+<p style="margin-left:22%;">This statement specifies the
+aspect ratio for <b>ppmtompeg</b> to specify in the MPEG
+output. I&rsquo;m not sure what this is used for.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>ratio</i>
+must be 1.0, 0.6735, 0.7031, 0.7615, 0.8055, 0.8437, 0.8935,
+0.9157, 0.9815, 1.0255, 1.0695, 1.0950, 1.1575, or
+1.2015.</p>
+
+<p style="margin-left:11%;"><b>FRAME_RATE</b>
+<i>rate</i></p>
+
+<p style="margin-left:22%;">This specifies the frame rate
+for <b>ppmtompeg</b> to specify in the MPEG output. Some
+players use this value to determine the playback rate.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>rate</i>
+must be 23.976, 24, 25, 29.97, 30, 50, 59.94, or 60.</p>
+
+<p style="margin-left:11%;"><b>BIT_RATE</b> <i>rate</i></p>
+
+<p style="margin-left:22%;">This specifies the bit rate for
+Constant Bit Rate (CBR) encoding.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>rate</i>
+must be an integer.</p>
+
+<p style="margin-left:11%;"><b>BUFFER_SIZE</b>
+<i>size</i></p>
+
+<p style="margin-left:22%;">This specifies the value
+<b>ppmtompeg</b> is to specify in the MPEG output for the
+Video Buffering Verifier (VBV) buffer size needed to decode
+the sequence.</p>
+
+<p style="margin-left:22%; margin-top: 1em">A Video
+Verifying Buffer is a buffer in which a decoder keeps the
+decoded bits in order to match the uneven speed of the
+decoding with the required constant playback speed.</p>
+
+<p style="margin-left:22%; margin-top: 1em">As
+<b>ppmtompeg</b> encodes the image, it simulates the
+decoding process in terms of how many bits would be in the
+VBV as each frame gets decoded, assuming a VBV of the size
+you indicate.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you specify
+the <b>WARN_VBV_UNDERFLOW</b> statement, <b>ppmtompeg</b>
+issues a warning each time the simulation underflows the
+buffer, which suggests that an underflow would occur on
+playback, which suggests the buffer is too small.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you specify
+the <b>WARN_VBV_OVERFLOW</b> statement, <b>ppmtompeg</b>
+issues a warning each time the simulation overflows the
+buffer, which suggests that an overflow would occur on
+playback, which suggests the buffer is too small.</p>
+
+<p style="margin-left:11%;"><b>WARN_VBV_UNDERFLOW <br>
+WARN_VBV_OVERFLOW</b></p>
+
+<p style="margin-left:22%;">See <b>BUFFER_SIZE</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">These options
+were new in Netpbm 10.26 (January 2005). Before that,
+<b>ppmtompeg</b> issued the warnings always.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The following
+statements apply only to parallel operation:</p>
+
+<p style="margin-left:11%;"><b>PARALLEL</b></p>
+
+<p style="margin-left:22%;">This statement, paired with
+<b>END PARALLEL</b>, is what causes <b>ppmtompeg</b> to
+operate in parallel mode. See <a href="#parallel">Parallel
+Operation</a> .</p>
+
+<p style="margin-left:11%;"><b>END PARALLEL</b></p>
+
+<p style="margin-left:22%;">This goes with
+<b>PARALLEL</b>.</p>
+
+<p style="margin-left:11%;"><b>PARALLEL_TEST_FRAMES</b>
+<i>n</i></p>
+
+<p style="margin-left:22%;">The master starts off by
+measuring each slave&rsquo;s speed. It does this by giving
+each slave <i>n</i> frames to encode and noting how long the
+slave takes to finish. These are not just test frames,
+though -- they&rsquo;re real frames and the results become
+part of the output. <b>ppmtompeg</b> is old and measures
+time in undivided seconds, so to get useful timings, specify
+enough frames that it will take at least 5 seconds to
+process them. The default is 10.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you specify
+<b>FORCE_I_ALIGN</b>, <b>ppmtompeg</b> will increase the
+test frames value enough to maintain the alignment.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If there
+aren&rsquo;t enough frames for every slave to have the
+indicated number of test frames, <b>ppmtompeg</b> will give
+some slaves fewer.</p>
+
+<p style="margin-left:11%;"><b>PARALLEL_TIME_CHUNKS</b>
+<i>t</i></p>
+
+<p style="margin-left:22%;">When you specify this
+statement, the master attempts to feed work to the slaves in
+chunks that take <i>t</i> seconds to process. It uses the
+speed measurement it made when it started up (see
+PARALLEL_TEST_FRAMES) to decide how many frames to put in
+the chunk. This statement obviously doesn&rsquo;t affect the
+first batch of work sent to each slave, which is the one
+used to measure the slave&rsquo;s speed.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Smaller values
+of <i>t</i> increase communication, but improve load
+balancing. The default is 30 seconds.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You may specify
+only one of PARALLEL_TIME_CHUNKS, PARALLEL_CHUNK_TAPER, and
+PARALLEL_PERFECT. PARALLEL_CHUNK_TAPER is usually best.</p>
+
+
+<p style="margin-left:11%;"><b>PARALLEL_CHUNK_TAPER</b></p>
+
+<p style="margin-left:22%;">When you specify this
+statement, the master distributes work like with
+PARALLEL_TIME_CHUNKS, except that the master chooses the
+number of seconds for the chunks. It starts with a large
+number and, as it gets closer to finishing the job, reduces
+it. That way, it reduces scheduling overhead when precise
+scheduling isn&rsquo;t helpful, but still prevents a slave
+from finishing early after all the work has already been
+handed out to the other slaves, and then sitting idle while
+there&rsquo;s still work to do.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You may specify
+only one of PARALLEL_TIME_CHUNKS, PARALLEL_CHUNK_TAPER, and
+PARALLEL_PERFECT. PARALLEL_CHUNK_TAPER is usually best.</p>
+
+<p style="margin-left:11%;"><b>PARALLEL_PERFECT</b></p>
+
+<p style="margin-left:22%;">If this statement is present,
+<b>ppmtompeg</b> schedules on the assumption that each
+machine is about the same speed. The master will simply
+divide up the frames evenly between the slaves -- each slave
+gets the same number of frames. If some slaves are faster
+than others, they will finish first and remain idle while
+the slower slaves continue.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This has the
+advantage of minimal scheduling overhead. Where slaves have
+different speeds, though, it makes inefficient use of the
+fast ones. Where slaves are the same speed, it also has the
+disadvantage that they all finish at the same time and feed
+their output to the single Combine Server in a burst, which
+makes less efficient use of the Combine Server and thus can
+increase the total elapsed time.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You may specify
+only one of PARALLEL_TIME_CHUNKS, PARALLEL_CHUNK_TAPER, and
+PARALLEL_PERFECT. PARALLEL_CHUNK_TAPER is usually best.</p>
+
+<p style="margin-left:11%;"><b>RSH</b>
+<i>remote_shell_command</i></p>
+
+<p style="margin-left:22%;"><b>ppmtompeg</b> executes the
+shell command <i>remote_shell_command</i> to start a process
+on another machine. The default command is <b>rsh</b>, and
+whatever command you specify must have compatible semantics.
+<b>ssh</b> is usually compatible. The command
+<b>ppmtompeg</b> uses is one like this: <b>ssh
+remote.host.com -l username shellcommand</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Be sure to set
+up <b>.rhosts</b> files or SSH key authorizations where
+needed. Otherwise, you&rsquo;ll have to type in
+passwords.</p>
+
+<p style="margin-left:22%; margin-top: 1em">On some HP
+machines, <b>rsh</b> is the restricted shell, and you want
+to specify <b>remsh</b>.</p>
+
+<p style="margin-left:11%;"><b>FORCE_I_ALIGN</b></p>
+
+<p style="margin-left:22%;">This statement forces each
+slave to encode a chunk of frames which is a multiple of the
+pattern length (see <b>PATTERN</b>). Since the first frame
+in any pattern is an I frame, this forces each chunk encoded
+by a slave to begin with an I frame.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This document
+used to say there was an argument to <b>FORCE_I_ALIGN</b>
+which was the number of frames <b>ppmtompeg</b> would use
+(and was required to be a multiple of the pattern length).
+But <b>ppmtompeg</b> has apparently always ignored that
+argument, and it does now.</p>
+
+<p style="margin-left:11%;"><b>KEEP_TEMP_FILES</b></p>
+
+<p style="margin-left:22%;">This statement causes
+<b>ppmtompeg</b> not to delete the temporary files it uses
+to transmit encoded frames to the combine server. This means
+you will be left with a file for each frame, the same as you
+would get with the <b>-frames</b> option.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This is mostly
+useful for debugging.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This works only
+if you&rsquo;re using a shared filesystem to communicate
+between the servers.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.26 (January 2005).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Parameter
+File Notes</b> <br>
+If you use the <b>-combine_gops</b> option, then you need to
+specify only the SIZE and OUTPUT values in the parameter
+file. In addition, the parameter file may specify input GOP
+files in the same manner as normal input files -- except
+instead of using INPUT_DIR, INPUT, and END_INPUT, use
+GOP_INPUT_DIR, GOP_INPUT, and GOP_END_INPUT. If you specify
+no input GOP files, then <b>ppmtompeg</b> uses by default
+the output file name with suffix <b>.gop.</b><i>gop_num</i>,
+with <i>gop_num</i> starting from 0, as the input files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you use the
+<b>-combine_frames</b> option, then you need to specify only
+the SIZE, GOP_SIZE, and OUTPUT values in the parameter file.
+In addition, the parameter file may specify input frame
+files in the same manner as normal input files -- except
+instead of using INPUT_DIR, INPUT, and END_INPUT, use
+FRAME_INPUT_DIR, FRAME_INPUT, and FRAME_END_INPUT. If no
+input frame files are specified, then the default is to use
+the output file name with suffix
+<b>.frame.</b><i>frame_num</i>, with <i>frame_num</i>
+starting from 0, as the input files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Any number of
+spaces and tabs may come between each option and value.
+Lines beginning with <b>#</b> are ignored. Any other lines
+are ignored except for those between INPUT and END_INPUT.
+This allows you to use the same parameter file for normal
+usage and for <b>-combine_gops</b> and
+<b>-combine_frames</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The file format
+is case-sensitive so all keywords should be in upper
+case.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The statements
+may appear in any order, except that the order within a
+block statement (such as INPUT ... END INPUT) is
+significant.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmtompeg</b>
+is prepared to handle up to 16 B frames between reference
+frames when encoding with input from stdin. (To build a
+modified <b>ppmtompeg</b> with a higher limit, change the
+constant B_FRAME_RUN in frame.c and recompile).</p>
+
+<h2>GENERAL USAGE INFORMATION
+<a name="GENERAL USAGE INFORMATION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Qscale</b>
+<br>
+The quantization scale values (qscale) give a trade-off
+between quality and compression. Using different Qscale
+values has very little effect on speed. The qscale values
+can be set separately for I, P, and B frames.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You select the
+qscale values with the <b>IQSCALE</b>, <b>PQSCALE</b>, and
+<b>BSCALE</b> parameter file statements.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A qscale value
+is an integer from 1 to 31. Larger numbers give better
+compression, but worse quality. In the following, the
+quality numbers are peak signal-to-noise ratio, defined as:
+<b>signal-to-noise formula</b>
+<img src="-C" alt="Image -C" width="100" height="100"> where
+MSE is the mean squared error.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Flower garden
+tests:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Qscale vs
+Quality</b></p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-159692.png" alt="Image grohtml-159692.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Qscale vs
+Compression</b></p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-159693.png" alt="Image grohtml-159693.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Search
+Techniques</b> <br>
+There are several different motion vector search techniques
+available. There are different techniques available for P
+frame search and B frame search. Using different search
+techniques present little difference in quality, but a large
+difference in compression and speed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There are 4
+types of P frame search: Exhaustive, TwoLevel, SubSample,
+and Logarithmic.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There are 3
+types of B frame search: Exhaustive, Cross2, and Simple.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The recommended
+search techniques are TwoLevel and Logarithmic for P frame
+search, and Cross2 and Simple for B frame search. Here are
+some numbers comparing the different search methods:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>P frame
+Motion Vector Search (Normalized)</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><a href="#smallbetter">
+</a> <a href="#largefaster"> </a> <a href="#largebetter">
+</a></p>
+
+
+<p align="center"><img src="grohtml-159694.png" alt="Image grohtml-159694.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>B frame
+Motion Vector Search (Normalized)</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><a href="#smallbetter">
+</a> <a href="#largefaster"> </a> <a href="#largebetter">
+</a></p>
+
+
+<p align="center"><img src="grohtml-159695.png" alt="Image grohtml-159695.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em">1Smaller
+numbers are better compression.</p>
+
+<p style="margin-left:11%; margin-top: 1em">2Larger numbers
+mean faster execution.</p>
+
+<p style="margin-left:11%; margin-top: 1em">3Larger numbers
+mean better quality.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For some
+reason, Simple seems to give better compression, but it
+depends on the image sequence.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Select the
+search techniques with the <b>PSEARCH_ALG</b> and
+<b>BSEARCH_ALG</b> parameter file statements.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Group Of
+Pictures (GOP)</b> <br>
+A Group of Pictures (GOP) is a roughly independently
+decodable sequence of frames. An MPEG video stream is made
+of one or more GOP&rsquo;s. You may specify how many frames
+should be in each GOP with the <b>GOP_SIZE</b> parameter
+file statement. A GOP always starts with an I frame.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Instead of
+encoding an entire sequence, you can encode a single GOP. To
+do this, use the <b>-gop</b> command option. You can later
+join the resulting GOP files at any time by running
+<b>ppmtompeg</b> with the <b>-combine_gops</b> command
+option.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Slices</b>
+<br>
+A slice is an independently decodable unit in a frame. It
+can be as small as one macroblock, or it can be as big as
+the entire frame. Barring transmission error, adding slices
+does not change quality or speed; the only effect is
+slightly worse compression. More slices are used for noisy
+transmission so that errors are more recoverable. Since
+usually errors are not such a problem, we usually just use
+one slice per frame.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Control the
+slice size with the <b>SLICES_PER_FRAME</b> parameter file
+statement.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Some MPEG
+playback systems require that each slice consist of whole
+rows of macroblocks. If you are encoding for this kind of
+player, if the height of the image is H pixels, then you
+should set the SLICES_PER_FRAME to some number which divides
+H/16. For example, if the image is 240 pixels (15
+macroblocks) high, then you should use only 15, 5, 3, or 1
+slices per frame.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note: these
+MPEG playback systems are really wrong, since the MPEG
+standard says this doesn&rsquo;t have to be so.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Search
+Window</b> <br>
+The search window is the window in which <b>ppmtompeg</b>
+searches for motion vectors. The window is a square. You can
+specify the size of the square, and whether to allow
+half-pixel motion vectors or not, with the <b>RANGE</b> and
+<b>PIXEL</b> parameter file statements.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>I Frames, P
+Frames, B Frames</b> <br>
+In MPEG-1, a movie is represented as a sequence of MPEG
+frames, each of which is an I Frame, a P Frame, or a B
+Frame. Each represents an actual frame of the movie
+(don&rsquo;t get confused by the dual use of the word
+&quot;frame.&quot; A movie frame is a graphical image. An
+MPEG frame is a set of data that describes a movie
+frame).</p>
+
+<p style="margin-left:11%; margin-top: 1em">An I frame
+(&quot;intra&quot; frame) describes a movie frame in
+isolation -- without respect to any other frame in the
+movie. A P frame (&quot;predictive&quot; frame) describes a
+movie frame by describing how it differs from the movie
+frame described by the latest preceding I or P frame. A B
+frame (&quot;bidirectional&quot; frame) describes a movie
+frame by describing how it differs from the movie frames
+described by the nearest I or P frame before <i>and</i>
+after it.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that the
+first frame of a movie must be described by an I frame
+(because there is no previous movie frame) and the last
+movie frame must be described by an I or P frame (because
+there is no subsequent movie frame).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Beyond that,
+you can choose which frames are represented by which types.
+You specify a pattern, such as IBPBP and <b>ppmtompeg</b>
+simply repeats it over and over throughout the movie. The
+pattern affects speed, quality, and stream size. Here is a
+chart which shows some of the trade-offs:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Comparison
+of I/P/B Frames (Normalized)</b></p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-159696.png" alt="Image grohtml-159696.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em">(this is with
+constant qscale)</p>
+
+<p style="margin-left:11%; margin-top: 1em">A standard
+sequence is IBBPBBPBBPBBPBB.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Select the
+sequence with the <b>PATTERN</b> parameter file
+statement.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Since the last
+MPEG frame cannot be a B frame (see above), if the pattern
+you specify indicates a B frame for the last movie frame of
+the movie, <b>ppmtompeg</b> makes it an I frame instead.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Before Netpbm
+10.26 (January 2005), <b>ppmtompeg</b> instead drops the
+trailing B frames by default, and you need the
+<b>FORCE_ENCODE_LAST_FRAME</b> parameter file statement to
+make it do this.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The MPEG frames
+don&rsquo;t appear in the MPEG-1 stream in the same order
+that the corresponding movie frames appear in the movie --
+the B frames come after the I and P frames on which they are
+based. For example, if the movie is 4 frames that you will
+represent with the pattern IBBP, the MPEG-1 stream will
+start with an I frame describing movie frame 0. The next
+frame in the MPEG-1 stream is a P frame describing movie
+frame 3. The last two frames in the MPEG-1 stream are B
+frames describing movie frames 1 and 2, respectively.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Specifying
+Input and Output Files</b> <br>
+Specify the input frame images with the <b>INPUT_DIR</b>,
+<b>INPUT</b>, <b>END_INPUT</b>, <b>BASE_FILE_FORMAT</b>,
+<b>SIZE</b>, <b>YUV_FORMAT</b> and <b>INPUT_CONVERT</b>
+parameter file statements.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Specify the
+output file with the <b>OUTPUT</b> parameter file
+statement.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Statistics
+<br>
+ppmtompeg</b> can generate a variety of statistics about the
+encoding. See the <b>-stat</b>, <b>-snr</b>,
+<b>-mv_histogram</b>, <b>-quiet</b>,
+<b>-no_frame_summary</b>, and <b>-bit_rate_info</b>
+options.</p>
+
+<h2>PARALLEL OPERATION
+<a name="PARALLEL OPERATION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">You can run
+<b>ppmtompeg</b> on multiple machines at once, encoding the
+same MPEG stream. When you do, the machines are used as
+shown in the following diagram. We call this &quot;parallel
+mode.&quot;</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmtompeg-par.gif</b>
+<img src="-C" alt="Image -C" width="100" height="100"></p>
+
+<p style="margin-left:11%; margin-top: 1em">To do parallel
+processing, put the statement</p>
+
+<p style="margin-left:11%; margin-top: 1em">PARALLEL</p>
+
+<p style="margin-left:11%; margin-top: 1em">in the
+parameter file, followed by a listing of the machines, one
+machine per line, then</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">END_PARALLEL</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each of the
+machine lines must be in one of two forms. If the machine
+has filesystem access to the input files, then the line
+is:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>machine user
+executable</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">The executable
+is normally <b>ppmtompeg</b> (you may need to give the
+complete path if you&rsquo;ve built for different
+architectures). If the machine does not have filesystem
+access to the input files, the line is:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>REMOTE</b>
+<i>machine user executable parameter file</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>-max_machines</b> command option limits the number of
+machines <b>ppmtompeg</b> will use. If you specify more
+machines in the parameter file than <b>-max_machines</b>
+allows, <b>ppmtompeg</b> uses only the machines listed
+first. This is handy if you want to experiment with
+different amounts of parallelism.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In general, you
+should use full path file names when describing executables
+and parameter files. This <i>includes</i> the parameter file
+argument on the original invocation of <b>ppmtompeg</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">All file names
+must be the same on all systems (so if e.g. you&rsquo;re
+using an NFS filesystem, you must make sure it is mounted at
+the same mountpoint on all systems).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Because not all
+of the processes involved in parallel operation have easy
+access to the input files, you must specify the <b>SIZE</b>
+parameter file statement when you do parallel operation.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The machine on
+which you originally invoke <b>ppmtompeg</b> is the master
+machine. It hosts a &quot;combine server,&quot;, a
+&quot;decode server,&quot; and a number of &quot;i/o
+servers,&quot; all as separate processes. The other machines
+in the network (listed in the parameter file) are slave
+machines. Each hosts a single process that continuously
+requests work from the master and does it. The slave process
+does the computation to encode MPEG frames. It processes
+frames in batches identified by the master.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The master uses
+a remote shell command to start a process on a slave
+machine. By default, it uses an <b>rsh</b> shell command to
+do this. But use the <b>RSH</b> parameter file statement to
+control this. The shell command the master executes remotely
+is <b>ppmtompeg</b>, but with options to indicate that it is
+to perform slave functions.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The various
+machines talk to each other over TCP connections. Each
+machine finds and binds to a free TCP port number and tells
+its partners the port number. These port numbers are at
+least 2048.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Use the
+PARALLEL_TEST_FRAMES, PARALLEL_TIME_CHUNKS, and
+PARALLEL_PERFECT parameter file statements to control the
+way the master divides up work among the slaves.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Use the
+<b>-nice</b> command option to cause all slave processes to
+run &quot;nicely,&quot; i.e. as low priority processes. That
+way, this substantial and long-running CPU load will have
+minimal impact on other, possibly interactive, users of the
+systems.</p>
+
+<h2>SPEED
+<a name="SPEED"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Here is a look
+at <b>ppmtompeg</b> speed, in single-node (not parallel)
+operation:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Compression
+Speed</b></p>
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-159697.png" alt="Image grohtml-159697.png"></p>
+
+<p style="margin-left:11%;">1A macroblock is a 16x16 pixel
+square</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+measurements in the table are with inputs and outputs via a
+conventional locally attached filesystem. If you are using a
+network filesystem over a single 10 MB/s Ethernet, that
+constrains your speed more than your CPU speed. In that
+case, don&rsquo;t expect to get better than 4 or 5 frames
+per second no matter how fast your CPUs are.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Network speed
+is even more of a bottleneck when the slaves do not have
+filesystem access to the input files -- i.e. you declare
+them REMOTE.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Where I/O is
+the bottleneck, size of the input frames can make a big
+difference. So YUV input is better than PPM, and JPEG is
+better than both.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When
+you&rsquo;re first trying to get parallel mode working, be
+sure to use the <b>-debug_machines</b> option so you can see
+what&rsquo;s going on. Also, <b>-debug_sockets</b> can help
+you diagnose communication problems.</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Kevin Gong - University of
+California, Berkeley, <i>keving@cs.berkeley.edu</i></p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Ketan Patel - University of California, Berkeley,
+<i>kpatel@cs.berkeley.edu</i></p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Dan Wallach - University of California, Berkeley,
+<i>dwallach@cs.berkeley.edu</i></p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Darryl Brown - University of California, Berkeley,
+<i>darryl@cs.berkeley.edu</i></p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Eugene Hung - University of California, Berkeley,
+<i>eyhung@cs.berkeley.edu</i></p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Steve Smoot - University of California, Berkeley,
+<i>smoot@cs.berkeley.edu</i></p> </td></tr>
+</table>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/ppmtompeg.html</b></p>
+<hr>
+</body>
+</html>

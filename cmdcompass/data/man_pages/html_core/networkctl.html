@@ -1,0 +1,493 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:20 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>NETWORKCTL</title>
+
+</head>
+<body>
+
+<h1 align="center">NETWORKCTL</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#COMMANDS">COMMANDS</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#NOTES">NOTES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">networkctl -
+Query or modify the status of network links</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="63%">
+
+
+<p style="margin-top: 1em"><b>networkctl</b> [OPTIONS...]
+COMMAND [LINK...]</p></td>
+<td width="26%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>networkctl</b>
+may be used to query or modify the state of the network
+links as seen by <b>systemd-networkd</b>. Please refer to
+<b>systemd-networkd.service</b>(8) for an introduction to
+the basic concepts, functionality, and configuration
+syntax.</p>
+
+<h2>COMMANDS
+<a name="COMMANDS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+commands are understood:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>list</b>
+[<i>PATTERN...</i>]</p>
+
+<p style="margin-left:17%;">Show a list of existing links
+and their status. If one or more <i>PATTERN</i>s are
+specified, only links matching one of them are shown. If no
+further arguments are specified shows all links, otherwise
+just the specified links. Produces output similar to:</p>
+
+<p style="margin-left:23%; margin-top: 1em">IDX LINK TYPE
+OPERATIONAL SETUP <br>
+1 lo loopback carrier unmanaged <br>
+2 eth0 ether routable configured <br>
+3 virbr0 ether no-carrier unmanaged <br>
+4 virbr0-nic ether off unmanaged</p>
+
+<p style="margin-left:23%; margin-top: 1em">4 links
+listed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The operational
+status is one of the following:</p>
+
+<p style="margin-left:17%; margin-top: 1em">missing</p>
+
+<p style="margin-left:23%;">the device is missing</p>
+
+<p style="margin-left:17%; margin-top: 1em">off</p>
+
+<p style="margin-left:23%;">the device is powered down</p>
+
+<p style="margin-left:17%; margin-top: 1em">no-carrier</p>
+
+<p style="margin-left:23%;">the device is powered up, but
+it does not yet have a carrier</p>
+
+<p style="margin-left:17%; margin-top: 1em">dormant</p>
+
+<p style="margin-left:23%;">the device has a carrier, but
+is not yet ready for normal traffic</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">degraded-carrier</p>
+
+<p style="margin-left:23%;">one of the bonding or bridge
+slave network interfaces is in off, no-carrier, or dormant
+state, and the master interface has no address.</p>
+
+<p style="margin-left:17%; margin-top: 1em">carrier</p>
+
+<p style="margin-left:23%;">the link has a carrier, or for
+bond or bridge master, all bonding or bridge slave network
+interfaces are enslaved to the master</p>
+
+<p style="margin-left:17%; margin-top: 1em">degraded</p>
+
+<p style="margin-left:23%;">the link has carrier and
+addresses valid on the local link configured. For bond or
+bridge master this means that not all slave network
+interfaces have carrier but at least one does.</p>
+
+<p style="margin-left:17%; margin-top: 1em">enslaved</p>
+
+<p style="margin-left:23%;">the link has carrier and is
+enslaved to bond or bridge master network interface</p>
+
+<p style="margin-left:17%; margin-top: 1em">routable</p>
+
+<p style="margin-left:23%;">the link has carrier and
+routable address configured. For bond or bridge master it is
+not necessary for all slave network interfaces to have
+carrier, but at least one must.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The setup
+status is one of the following:</p>
+
+<p style="margin-left:17%; margin-top: 1em">pending</p>
+
+<p style="margin-left:23%;">udev is still processing the
+link, we don't yet know if we will manage it</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">initialized</p>
+
+<p style="margin-left:23%;">udev has processed the link,
+but we don't yet know if we will manage it</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">configuring</p>
+
+<p style="margin-left:23%;">in the process of retrieving
+configuration or configuring the link</p>
+
+<p style="margin-left:17%; margin-top: 1em">configured</p>
+
+<p style="margin-left:23%;">link configured
+successfully</p>
+
+<p style="margin-left:17%; margin-top: 1em">unmanaged</p>
+
+<p style="margin-left:23%;">networkd is not handling the
+link</p>
+
+<p style="margin-left:17%; margin-top: 1em">failed</p>
+
+<p style="margin-left:23%;">networkd failed to manage the
+link</p>
+
+<p style="margin-left:17%; margin-top: 1em">linger</p>
+
+<p style="margin-left:23%;">the link is gone, but has not
+yet been dropped by networkd</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>status</b>
+[<i>PATTERN...</i>]</p>
+
+<p style="margin-left:17%;">Show information about the
+specified links: type, state, kernel module driver, hardware
+and IP address, configured DNS servers, etc. If one or more
+<i>PATTERN</i>s are specified, only links matching one of
+them are shown.</p>
+
+<p style="margin-left:17%; margin-top: 1em">When no links
+are specified, an overall network status is shown. Also see
+the option <b>--all</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Produces output
+similar to:</p>
+
+<p style="margin-left:23%; margin-top: 1em">&acirc; State:
+routable <br>
+Online state: online <br>
+Address: 10.193.76.5 on eth0 <br>
+192.168.122.1 on virbr0 <br>
+169.254.190.105 on eth0 <br>
+fe80::5054:aa:bbbb:cccc on eth0 <br>
+Gateway: 10.193.11.1 (CISCO SYSTEMS, INC.) on eth0 <br>
+DNS: 8.8.8.8 <br>
+8.8.4.4</p>
+
+<p style="margin-left:17%; margin-top: 1em">In the overall
+network status, the online state depends on the individual
+online state of all required links. Managed links are
+required for online by default. In this case, the online
+state is one of the following:</p>
+
+<p style="margin-left:17%; margin-top: 1em">unknown</p>
+
+<p style="margin-left:23%;">all links have unknown online
+status (i.e. there are no required links)</p>
+
+<p style="margin-left:17%; margin-top: 1em">offline</p>
+
+<p style="margin-left:23%;">all required links are
+offline</p>
+
+<p style="margin-left:17%; margin-top: 1em">partial</p>
+
+<p style="margin-left:23%;">some, but not all, required
+links are online</p>
+
+<p style="margin-left:17%; margin-top: 1em">online</p>
+
+<p style="margin-left:23%;">all required links are
+online</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>lldp</b>
+[<i>PATTERN...</i>]</p>
+
+<p style="margin-left:17%;">Show discovered LLDP (Link
+Layer Discovery Protocol) neighbors. If one or more
+<i>PATTERN</i>s are specified only neighbors on those
+interfaces are shown. Otherwise shows discovered neighbors
+on all interfaces. Note that for this feature to work,
+<i>LLDP=</i> must be turned on for the specific interface,
+see <b>systemd.network</b>(5) for details.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Produces output
+similar to:</p>
+
+<p style="margin-left:23%; margin-top: 1em">LINK CHASSIS ID
+SYSTEM NAME CAPS PORT ID PORT DESCRIPTION <br>
+enp0s25 00:e0:4c:00:00:00 GS1900 ..b........ 2 Port #2</p>
+
+<p style="margin-left:23%; margin-top: 1em">Capability
+Flags: <br>
+o - Other; p - Repeater; b - Bridge; w - WLAN Access Point;
+r - Router; <br>
+t - Telephone; d - DOCSIS cable device; a - Station; c -
+Customer VLAN; <br>
+s - Service VLAN, m - Two-port MAC Relay (TPMR)</p>
+
+<p style="margin-left:23%; margin-top: 1em">1 neighbors
+listed.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>label</b></p>
+
+<p style="margin-left:17%;">Show numerical address labels
+that can be used for address selection. This is the same
+information that <b>ip-addrlabel</b>(8) shows. See
+<b><font color="#0000FF">RFC 3484</font></b>
+<small><font color="#000000">[1]</font></small>
+<font color="#000000">for a discussion of address
+labels.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">Produces
+output similar to:</font></p>
+
+
+<p style="margin-left:23%; margin-top: 1em"><font color="#000000">Prefix/Prefixlen
+Label <br>
+::/0 1 <br>
+fc00::/7 5 <br>
+fec0::/10 11 <br>
+2002::/16 2 <br>
+3ffe::/16 12 <br>
+2001:10::/28 7 <br>
+2001::/32 6 <br>
+::ffff:0.0.0.0/96 4 <br>
+::/96 3 <br>
+::1/128 0</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>delete</b>
+<i>DEVICE...</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Deletes
+virtual netdevs. Takes interface name or index
+number.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>up</b>
+<i>DEVICE...</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Bring
+devices up. Takes interface name or index number.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>down</b>
+<i>DEVICE...</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Bring
+devices down. Takes interface name or index
+number.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>renew</b>
+<i>DEVICE...</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Renew
+dynamic configurations e.g. addresses received from DHCP
+server. Takes interface name or index number.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>forcerenew</b>
+<i>DEVICE...</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Send a
+FORCERENEW message to all connected clients, triggering DHCP
+reconfiguration. Takes interface name or index
+number.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>reconfigure</b>
+<i>DEVICE...</i></font></p>
+
+
+<p style="margin-left:17%;"><font color="#000000">Reconfigure
+network interfaces. Takes interface name or index number.
+Note that this does not reload .netdev or .network
+corresponding to the specified interface. So, if you edit
+config files, it is necessary to call <b>networkctl
+reload</b> first to apply new settings.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>reload</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Reload
+.netdev and .network files. If a new .netdev file is found,
+then the corresponding netdev is created. Note that even if
+an existing .netdev is modified or removed,
+<b>systemd-networkd</b> does not update or remove the
+netdev. If a new, modified or removed .network file is
+found, then all interfaces which match the file are
+reconfigured.</font></p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+following options are understood:</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>-a
+--all</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Show all
+links with <b>status</b>.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>-s
+--stats</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Show link
+statistics with <b>status</b>.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>-l</b>,
+<b>--full</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Do not
+ellipsize the output.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>-n</b>,
+<b>--lines=</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">When used
+with <b>status</b>, controls the number of journal lines to
+show, counting from the most recent ones. Takes a positive
+integer argument. Defaults to 10.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--json=</b><i>MODE</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Shows
+output formatted as JSON. Expects one of &quot;short&quot;
+(for the shortest possible output without any redundant
+whitespace or line breaks), &quot;pretty&quot; (for a pretty
+version of the same, with indentation and line breaks) or
+&quot;off&quot; (to turn off JSON output, the
+default).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>-h</b>,
+<b>--help</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Print a
+short help text and exit.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--version</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Print a
+short version string and exit.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--no-legend</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Do not
+print the legend, i.e. column headers and the footer with
+hints.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--no-pager</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Do not
+pipe output into a pager.</font></p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">On
+success, 0 is returned, a non-zero failure code
+otherwise.</font></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>systemd-networkd.service</b>(8),
+<b>systemd.network</b>(5), <b>systemd.netdev</b>(5),
+<b>ip</b>(8)</font></p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">1.</font></p> </td>
+<td width="2%"></td>
+<td width="12%">
+
+
+<p style="margin-top: 1em"><font color="#000000">RFC
+3484</font></p> </td>
+<td width="71%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">https://tools.ietf.org/html/rfc3484</font></p>
+<hr>
+</body>
+</html>

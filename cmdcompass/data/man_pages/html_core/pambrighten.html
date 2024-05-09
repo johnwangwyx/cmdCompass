@@ -1,0 +1,255 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:24 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pambrighten User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pambrighten User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pambrighten -
+change a PPM image&rsquo;s Saturation and Value</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pambrighten</b>
+[<b>-saturation=</b>[<b>+</b>|<b>-</b>]<i>saturation_percent</i>]
+[<b>-value=</b>[<b>+</b>|<b>-</b>]<i>value_percent</i>]
+[<i>netpbmfile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviation of option is acceptable. You may use double
+hyphens instead of single hyphen to denote options. You may
+use white space in place of the equals sign to separate an
+option name from its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pambrighten</b>
+increases or decreases the Saturation and Value (from the
+HSV color space) of each pixel of a Netpbm image. You
+specify the percentage change for each of those
+parameters.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can also
+remap the colors of the pixels so their Values cover the
+full range of possible Values.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The input image
+is from the file named <i>netpbmfile</i>, or Standard Input
+if <i>netpbmfile</i> is not specified.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The output
+format is the same as the input format and any extra
+channels, such as transparency, are passed through.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">Hue-Saturation-Value,
+or HSV, is one way to represent a color, like the more
+well-known RGB. Hue, Saturation, and Value are numbers in
+the range from 0 to 1. We always capitalize them in this
+document when we mean the number from the HSV color space,
+especially since &quot;value&quot; as a conventional English
+word has a much more abstract meaning.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Value is a
+measure of how bright the color is, relative to some
+specified maximum (the Netpbm formats are also defined in
+terms of a specified maximum brightness -- For the purposes
+of this program, they are the same). In particular, it is
+the brightness of the brightest primary color component of
+the color divided by the maximum brightness possible for a
+component. Zero Value means black. White has full Value.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Hue is an
+indication of the secondary color with the same brightness
+that most closely approximates the color. A secondary color
+is made of a combination of at most two of the primary
+colors.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Saturation is a
+measure of how close the color is to the color indicated by
+the Hue and Value. A lower number means more light of the
+third primary color must be added to get the exact color.
+Full Saturation means the color is a secondary color. Zero
+Saturation means the color is gray (or black or white).
+Decreasing the saturation of a color tends to make it washed
+out.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If it is
+impossible to increase the Value of a pixel by the amount
+you specify (e.g. the Value is .5 and you specify +200%),
+<b>pambrighten</b> increases it to full Value instead.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If it is
+impossible to increase the Saturation of a pixel by the
+amount you specify (e.g. it is already half saturated and
+you specify +200%), <b>pambrighten</b> increases it to full
+Saturation instead.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For a simpler
+kind of brightening, you can use <b>pamfunc -multiplier</b>
+simply to increase the brightness of each pixel by a
+specified percentage, clipping each RGB component where the
+calculated brightness would exceed full brightness. Thus,
+the brightest colors in the image would change chromaticity
+in addition to not getting the specified brightness boost.
+For <i>decreasing</i> brightness, <b>pamfunc</b> should do
+the same thing as <b>pambrighten</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmflash</b>
+does another kind of brightening. It changes the color of
+each pixel to bring it a specified percentage closer to
+white. This increases the value and saturation.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pambrighten</b>
+is meant to replace <b>ppmbrighten</b>. It is the same as
+<b>ppmbrighten</b>, except that it recognizes the various
+Netpbm image formats rather than treating them all as PPM.
+The output format is the same as the input format and extra
+channels in a PAM image (such as a transparency channel) get
+passed through.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you want to
+modify the hues in the image, use <b>pamhue</b>.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">To double the
+Value of each pixel: <br>
+pambrighten -value=100</p>
+
+<p style="margin-left:11%; margin-top: 1em">To double the
+Saturation and halve the Value of each pixel: <br>
+pambrighten -saturation=+100 -value=-50</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pambrighten</b> recognizes the following command line
+options: <b><br>
+-value=</b><i>value_percent</i></p>
+
+<p style="margin-left:22%;">This option specifies the
+amount, as a percentage, by which you want to increase the
+Value of each pixel. It may be negative.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+zero.</p>
+
+
+<p style="margin-left:11%;"><b>-saturation=</b><i>value_percent</i></p>
+
+<p style="margin-left:22%;">This option specifies the
+amount, as a percentage, by which you want to increase the
+Saturation of each pixel. It may be negative.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+zero.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmnorm</b>(1),
+<b>ppmdim</b>(1), <b>pamfunc</b>(1), <b>ppmflash</b>(1),
+<b>pamaltsat</b>(1), <b>pamdepth</b>(1), <b>pnmgamma</b>(1),
+<b>pamhue</b>(1), <b>ppmhist</b>(1), <b>ppm</b>(1)</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pambrighten</b>
+was new in Netphm 10.86 (March 2019). It was a PAM
+conversion of the much older <b>ppmbrighten</b>.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1990 by Brian Moffet. Copyright (C) 1989 by Jef
+Poskanzer.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Permission to
+use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby
+granted, provided that the above copyright notice appear in
+all copies and that both that copyright notice and this
+permission notice appear in supporting documentation. This
+software is provided &quot;as is&quot; without express or
+implied warranty.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pambrighten.html</b></p>
+<hr>
+</body>
+</html>

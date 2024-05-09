@@ -1,0 +1,595 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:18 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>MDIG</title>
+
+</head>
+<body>
+
+<h1 align="center">MDIG</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#ANYWHERE OPTIONS">ANYWHERE OPTIONS</a><br>
+<a href="#GLOBAL OPTIONS">GLOBAL OPTIONS</a><br>
+<a href="#LOCAL OPTIONS">LOCAL OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">mdig - DNS
+pipelined lookup utility</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mdig</b>
+<i>{@server</i>} [<b>-f</b> filename] [<b>-h</b>]
+[<b>-v</b>] [ [<b>-4</b>] | [<b>-6</b>] ] [<b>-m</b>]
+[<b>-b</b> address] [<b>-p</b> port#] [<b>-c</b> class]
+[<b>-t</b> type] [<b>-i</b>] [<b>-x</b> addr]
+[plusopt...]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>mdig</b>
+{<b>-h</b>}</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>mdig</b>
+[@server] {global-opt...} { {local-opt...} {query} ...}</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mdig</b> is
+a multiple/pipelined query version of <i>dig</i>: instead of
+waiting for a response after sending each query, it begins
+by sending all queries. Responses are displayed in the order
+in which they are received, not in the order the
+corresponding queries were sent.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>mdig</b>
+options are a subset of the <i>dig</i> options, and are
+divided into &quot;anywhere options,&quot; which can occur
+anywhere, &quot;global options,&quot; which must occur
+before the query name (or they are ignored with a warning),
+and &quot;local options,&quot; which apply to the next query
+on the command line.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>@server</b> option is a mandatory global option. It is
+the name or IP address of the name server to query. (Unlike
+<i>dig</i>, this value is not retrieved from
+<b>/etc/resolv.conf</b>.) It can be an IPv4 address in
+dotted-decimal notation, an IPv6 address in colon-delimited
+notation, or a hostname. When the supplied <b>server</b>
+argument is a hostname, <b>mdig</b> resolves that name
+before querying the name server.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>mdig</b>
+provides a number of query options which affect the way in
+which lookups are made and the results displayed. Some of
+these set or reset flag bits in the query header, some
+determine which sections of the answer get printed, and
+others determine the timeout and retry strategies.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each query
+option is identified by a keyword preceded by a plus sign
+(<b>+</b>). Some keywords set or reset an option. These may
+be preceded by the string <b>no</b> to negate the meaning of
+that keyword. Other keywords assign values to options like
+the timeout interval. They have the form
+<b>+keyword=value</b>.</p>
+
+<h2>ANYWHERE OPTIONS
+<a name="ANYWHERE OPTIONS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-f</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">This option makes <b>mdig</b>
+operate in batch mode by reading a list of lookup requests
+to process from the file <b>filename</b>. The file contains
+a number of queries, one per line. Each entry in the file
+should be organized in the same way they would be presented
+as queries to <b>mdig</b> using the command-line
+interface.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-h</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>This option causes <b>mdig</b> to print detailed help
+information, with the full list of options, and exit.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-v</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>This option causes <b>mdig</b> to print the version
+number and exit.</p></td></tr>
+</table>
+
+<h2>GLOBAL OPTIONS
+<a name="GLOBAL OPTIONS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-4</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">This option forces <b>mdig</b>
+to only use IPv4 query transport.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-6</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>This option forces <b>mdig</b> to only use IPv6 query
+transport.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-b address</b></p>
+
+<p style="margin-left:22%;">This option sets the source IP
+address of the query to <b>address</b>. This must be a valid
+address on one of the host's network interfaces or
+&quot;0.0.0.0&quot; or &quot;::&quot;. An optional port may
+be specified by appending &quot;#&lt;port&gt;&quot;</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-m</b></p></td>
+<td width="8%"></td>
+<td width="66%">
+
+
+<p>This option enables memory usage debugging.</p></td>
+<td width="12%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-p port#</b></p>
+
+<p style="margin-left:22%;">This option is used when a
+non-standard port number is to be queried. <b>port#</b> is
+the port number that <b>mdig</b> sends its queries to,
+instead of the standard DNS port number 53. This option is
+used to test a name server that has been configured to
+listen for queries on a non-standard port number.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The global
+query options are: <b><br>
++additional, +noadditional</b></p>
+
+<p style="margin-left:22%;">This option displays [or does
+not display] the additional section of a reply. The default
+is to display it.</p>
+
+<p style="margin-left:11%;"><b>+all, +noall</b></p>
+
+<p style="margin-left:22%;">This option sets or clears all
+display flags.</p>
+
+<p style="margin-left:11%;"><b>+answer, +noanswer</b></p>
+
+<p style="margin-left:22%;">This option displays [or does
+not display] the answer section of a reply. The default is
+to display it.</p>
+
+<p style="margin-left:11%;"><b>+authority,
++noauthority</b></p>
+
+<p style="margin-left:22%;">This option displays [or does
+not display] the authority section of a reply. The default
+is to display it.</p>
+
+<p style="margin-left:11%;"><b>+besteffort,
++nobesteffort</b></p>
+
+<p style="margin-left:22%;">This option attempts to display
+[or does not display] the contents of messages which are
+malformed. The default is to not display malformed
+answers.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>+burst</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>This option delays queries until the start of the next
+second.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>+cl, +nocl</b></p>
+
+<p style="margin-left:22%;">This option displays [or does
+not display] the CLASS when printing the record.</p>
+
+<p style="margin-left:11%;"><b>+comments,
++nocomments</b></p>
+
+<p style="margin-left:22%;">This option toggles the display
+of comment lines in the output. The default is to print
+comments.</p>
+
+<p style="margin-left:11%;"><b>+continue,
++nocontinue</b></p>
+
+<p style="margin-left:22%;">This option toggles
+continuation on errors (e.g. timeouts).</p>
+
+<p style="margin-left:11%;"><b>+crypto, +nocrypto</b></p>
+
+<p style="margin-left:22%;">This option toggles the display
+of cryptographic fields in DNSSEC records. The contents of
+these fields are unnecessary to debug most DNSSEC validation
+failures and removing them makes it easier to see the common
+failures. The default is to display the fields. When
+omitted, they are replaced by the string
+&quot;[omitted]&quot;; in the DNSKEY case, the key ID is
+displayed as the replacement, e.g., <b>[ key id = value
+]</b>.</p>
+
+<p style="margin-left:11%;"><b>+dscp=value</b></p>
+
+<p style="margin-left:22%;">This option formerly set the
+DSCP value used when sending a query. It is now obsolete,
+and has no effect.</p>
+
+<p style="margin-left:11%;"><b>+multiline,
++nomultiline</b></p>
+
+<p style="margin-left:22%;">This option toggles printing of
+records, like the SOA records, in a verbose multi-line
+format with human-readable comments. The default is to print
+each record on a single line, to facilitate machine parsing
+of the <b>mdig</b> output.</p>
+
+<p style="margin-left:11%;"><b>+question,
++noquestion</b></p>
+
+<p style="margin-left:22%;">This option prints [or does not
+print] the question section of a query when an answer is
+returned. The default is to print the question section as a
+comment.</p>
+
+<p style="margin-left:11%;"><b>+rrcomments,
++norrcomments</b></p>
+
+<p style="margin-left:22%;">This option toggles the display
+of per-record comments in the output (for example,
+human-readable key information about DNSKEY records). The
+default is not to print record comments unless multiline
+mode is active.</p>
+
+<p style="margin-left:11%;"><b>+short, +noshort</b></p>
+
+<p style="margin-left:22%;">This option provides [or does
+not provide] a terse answer. The default is to print the
+answer in a verbose form.</p>
+
+<p style="margin-left:11%;"><b>+split=W</b></p>
+
+<p style="margin-left:22%;">This option splits long hex- or
+base64-formatted fields in resource records into chunks of
+<b>W</b> characters (where <b>W</b> is rounded up to the
+nearest multiple of 4). <b>+nosplit</b> or <b>+split=0</b>
+causes fields not to be split. The default is 56 characters,
+or 44 characters when multiline mode is active.</p>
+
+<p style="margin-left:11%;"><b>+tcp, +notcp</b></p>
+
+<p style="margin-left:22%;">This option uses [or does not
+use] TCP when querying name servers. The default behavior is
+to use UDP.</p>
+
+<p style="margin-left:11%;"><b>+ttlid, +nottlid</b></p>
+
+<p style="margin-left:22%;">This option displays [or does
+not display] the TTL when printing the record.</p>
+
+<p style="margin-left:11%;"><b>+ttlunits,
++nottlunits</b></p>
+
+<p style="margin-left:22%;">This option displays [or does
+not display] the TTL in friendly human-readable time units
+of &quot;s&quot;, &quot;m&quot;, &quot;h&quot;,
+&quot;d&quot;, and &quot;w&quot;, representing seconds,
+minutes, hours, days, and weeks. This implies +ttlid.</p>
+
+<p style="margin-left:11%;"><b>+vc, +novc</b></p>
+
+<p style="margin-left:22%;">This option uses [or does not
+use] TCP when querying name servers. This alternate syntax
+to <i>+tcp</i> is provided for backwards compatibility. The
+<b>vc</b> stands for &quot;virtual circuit&quot;.</p>
+
+<h2>LOCAL OPTIONS
+<a name="LOCAL OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-c
+class</b></p>
+
+<p style="margin-left:22%;">This option sets the query
+class to <b>class</b>. It can be any valid query class which
+is supported in BIND 9. The default query class is
+&quot;IN&quot;.</p>
+
+<p style="margin-left:11%;"><b>-t type</b></p>
+
+<p style="margin-left:22%;">This option sets the query type
+to <b>type</b>. It can be any valid query type which is
+supported in BIND 9. The default query type is
+&quot;A&quot;, unless the <i>-x</i> option is supplied to
+indicate a reverse lookup with the &quot;PTR&quot; query
+type.</p>
+
+<p style="margin-left:11%;"><b>-x addr</b></p>
+
+<p style="margin-left:22%;">Reverse lookups - mapping
+addresses to names - are simplified by this option.
+<b>addr</b> is an IPv4 address in dotted-decimal notation,
+or a colon-delimited IPv6 address. <b>mdig</b> automatically
+performs a lookup for a query name like
+<b>11.12.13.10.in-addr.arpa</b> and sets the query type and
+class to PTR and IN respectively. By default, IPv6 addresses
+are looked up using nibble format under the IP6.ARPA
+domain.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The local query
+options are: <b><br>
++aaflag, +noaaflag</b></p>
+
+<p style="margin-left:22%;">This is a synonym for
+<i>+aaonly</i>, <i>+noaaonly</i>.</p>
+
+<p style="margin-left:11%;"><b>+aaonly, +noaaonly</b></p>
+
+<p style="margin-left:22%;">This sets the <b>aa</b> flag in
+the query.</p>
+
+<p style="margin-left:11%;"><b>+adflag, +noadflag</b></p>
+
+<p style="margin-left:22%;">This sets [or does not set] the
+AD (authentic data) bit in the query. This requests the
+server to return whether all of the answer and authority
+sections have all been validated as secure, according to the
+security policy of the server. AD=1 indicates that all
+records have been validated as secure and the answer is not
+from a OPT-OUT range. AD=0 indicates that some part of the
+answer was insecure or not validated. This bit is set by
+default.</p>
+
+<p style="margin-left:11%;"><b>+bufsize=B</b></p>
+
+<p style="margin-left:22%;">This sets the UDP message
+buffer size advertised using EDNS0 to <b>B</b> bytes. The
+maximum and minimum sizes of this buffer are 65535 and 0
+respectively. Values outside this range are rounded up or
+down appropriately. Values other than zero cause a EDNS
+query to be sent.</p>
+
+<p style="margin-left:11%;"><b>+cdflag, +nocdflag</b></p>
+
+<p style="margin-left:22%;">This sets [or does not set] the
+CD (checking disabled) bit in the query. This requests the
+server to not perform DNSSEC validation of responses.</p>
+
+<p style="margin-left:11%;"><b>+cookie=####,
++nocookie</b></p>
+
+<p style="margin-left:22%;">This sends [or does not send] a
+COOKIE EDNS option, with an optional value. Replaying a
+COOKIE from a previous response allows the server to
+identify a previous client. The default is
+<b>+nocookie</b>.</p>
+
+<p style="margin-left:11%;"><b>+dnssec, +nodnssec</b></p>
+
+<p style="margin-left:22%;">This requests that DNSSEC
+records be sent by setting the DNSSEC OK (DO) bit in the OPT
+record in the additional section of the query.</p>
+
+<p style="margin-left:11%;"><b>+edns[=#], +noedns</b></p>
+
+<p style="margin-left:22%;">This specifies [or does not
+specify] the EDNS version to query with. Valid values are 0
+to 255. Setting the EDNS version causes an EDNS query to be
+sent. <b>+noedns</b> clears the remembered EDNS version.
+EDNS is set to 0 by default.</p>
+
+<p style="margin-left:11%;"><b>+ednsflags[=#],
++noednsflags</b></p>
+
+<p style="margin-left:22%;">This sets the must-be-zero EDNS
+flag bits (Z bits) to the specified value. Decimal, hex, and
+octal encodings are accepted. Setting a named flag (e.g. DO)
+is silently ignored. By default, no Z bits are set.</p>
+
+<p style="margin-left:11%;"><b>+ednsopt[=code[:value]],
++noednsopt</b></p>
+
+<p style="margin-left:22%;">This specifies [or does not
+specify] an EDNS option with code point <b>code</b> and an
+optional payload of <b>value</b> as a hexadecimal string.
+<b>+noednsopt</b> clears the EDNS options to be sent.</p>
+
+<p style="margin-left:11%;"><b>+expire, +noexpire</b></p>
+
+<p style="margin-left:22%;">This toggles sending of an EDNS
+Expire option.</p>
+
+<p style="margin-left:11%;"><b>+nsid, +nonsid</b></p>
+
+<p style="margin-left:22%;">This toggles inclusion of an
+EDNS name server ID request when sending a query.</p>
+
+<p style="margin-left:11%;"><b>+recurse, +norecurse</b></p>
+
+<p style="margin-left:22%;">This toggles the setting of the
+RD (recursion desired) bit in the query. This bit is set by
+default, which means <b>mdig</b> normally sends recursive
+queries.</p>
+
+<p style="margin-left:11%;"><b>+retry=T</b></p>
+
+<p style="margin-left:22%;">This sets the number of times
+to retry UDP queries to server to <b>T</b> instead of the
+default, 2. Unlike <i>+tries</i>, this does not include the
+initial query.</p>
+
+
+<p style="margin-left:11%;"><b>+subnet=addr[/prefix-length],
++nosubnet</b></p>
+
+<p style="margin-left:22%;">This sends [or does not send]
+an EDNS Client Subnet option with the specified IP address
+or network prefix.</p>
+
+<p style="margin-left:11%;"><b>mdig +subnet=0.0.0.0/0, or
+simply mdig +subnet=0</b></p>
+
+<p style="margin-left:22%;">This sends an EDNS
+client-subnet option with an empty address and a source
+prefix-length of zero, which signals a resolver that the
+client's address information must <i>not</i> be used when
+resolving this query.</p>
+
+<p style="margin-left:11%;"><b>+timeout=T</b></p>
+
+<p style="margin-left:22%;">This sets the timeout for a
+query to <b>T</b> seconds. The default timeout is 5 seconds
+for UDP transport and 10 for TCP. An attempt to set <b>T</b>
+to less than 1 results in a query timeout of 1 second being
+applied.</p>
+
+<p style="margin-left:11%;"><b>+tries=T</b></p>
+
+<p style="margin-left:22%;">This sets the number of times
+to try UDP queries to server to <b>T</b> instead of the
+default, 3. If <b>T</b> is less than or equal to zero, the
+number of tries is silently rounded up to 1.</p>
+
+<p style="margin-left:11%;"><b>+udptimeout=T</b></p>
+
+<p style="margin-left:22%;">This sets the timeout between
+UDP query retries to <b>T</b>.</p>
+
+<p style="margin-left:11%;"><b>+unknownformat,
++nounknownformat</b></p>
+
+<p style="margin-left:22%;">This prints [or does not print]
+all RDATA in unknown RR-type presentation format (see <i>RFC
+3597</i>). The default is to print RDATA for known types in
+the type's presentation format.</p>
+
+<p style="margin-left:11%;"><b>+yaml, +noyaml</b></p>
+
+<p style="margin-left:22%;">This toggles printing of the
+responses in a detailed YAML format.</p>
+
+<p style="margin-left:11%;"><b>+zflag, +nozflag</b></p>
+
+<p style="margin-left:22%;">This sets [or does not set] the
+last unassigned DNS header flag in a DNS query. This flag is
+off by default.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>dig(1)</i>,
+<i>RFC 1035</i>.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Internet
+Systems Consortium</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">2024, Internet
+Systems Consortium</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:33:56 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>BZEXE</title>
+
+</head>
+<body>
+
+<h1 align="center">BZEXE</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#CAVEATS">CAVEATS</a><br>
+<a href="#BUGS">BUGS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">bzexe -
+compress executable files in place</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>bzexe</b> [
+name ... ]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>bzexe</i> utility allows you to compress executables in
+place and have them automatically uncompress and execute
+when you run them (at a penalty in performance). For example
+if you execute &rsquo;&rsquo;bzexe /bin/cat&rsquo;&rsquo; it
+will create the following two files: <br>
+-r-xr-xr-x 1 root bin 9644 Feb 11 11:16 /bin/cat <br>
+-r-xr-xr-x 1 bin bin 24576 Nov 23 13:21 /bin/cat~ <br>
+/bin/cat~ is the original file and /bin/cat is the
+self-uncompressing executable file. You can remove /bin/cat~
+once you are sure that /bin/cat works properly.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This utility is
+most useful on systems with very small disks.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-d</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Decompress the given executables
+instead of compressing them.</p></td></tr>
+</table>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">bzip2(1),
+znew(1), zmore(1), zcmp(1), zforce(1)</p>
+
+<h2>CAVEATS
+<a name="CAVEATS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The compressed
+executable is a shell script. This may create some security
+holes. In particular, the compressed executable relies on
+the PATH environment variable to find <i>gzip</i> and some
+other utilities <i>(tail, chmod, ln, sleep).</i></p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>bzexe</i>
+attempts to retain the original file attributes on the
+compressed executable, but you may have to fix them manually
+in some cases, using <i>chmod</i> or <i>chown.</i></p>
+<hr>
+</body>
+</html>

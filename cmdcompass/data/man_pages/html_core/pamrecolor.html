@@ -1,0 +1,490 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:26 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamrecolor User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamrecolor User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamrecolor -
+alter colors without affecting luminance</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamrecolor</b>
+[<b>--colorspace</b>=<i>name</i>]
+[<b>--rmult</b>=<i>fraction</i>]
+[<b>--gmult</b>=<i>fraction</i>]
+[<b>--bmult</b>=<i>fraction</i>]
+[<b>--targetcolor</b>=<i>color</i>]
+[<b>--colorfile</b>=<i>file</i>]
+[<b>-randomseed=</b><i>integer</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<i>infile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviation of option is acceptable. You may use double
+hyphens instead of single hyphen to denote options. You may
+use white space in place of the equals sign to separate an
+option name from its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamrecolor</b>
+changes an image&rsquo;s colors to be as close as possible
+to given target colors but with the constraint that the
+luminance not be modified. That is, the original image and
+the target image will look identical if both are converted
+to grayscale (e.g. with <b>ppmtopgm</b>(1)). You can have
+<b>pamrecolor</b> select target colors randomly, specify a
+single hue for the entire image, or take the target colors
+from a target image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+real Netpbm images, <b>pamrecolor</b> works on pseudo-Netpbm
+images based on arbitrary color spaces. You can define the
+color space explicitly or choose one of many that
+<b>pamrecolor</b> knows by name.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The output is a
+PAM image on standard output. Options control the exact
+format of the PAM. If you want a PNM (PBM, PGM, or PPM)
+image, use <b>pamtopnm</b>(1) on the output. There is no
+need to convert if you will use the image as input to a
+current Netpbm program, but many other programs don&rsquo;t
+know what a PAM is.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamrecolor</b> recognizes the following command line
+options: <b><br>
+--colorspace</b>=<i>name</i></p>
+
+<p style="margin-left:22%;">Designate the color space to
+use for determining the contribution to luminance of each of
+the red, green, and blue color channels. For example, in the
+SMPTE-C color space an RGB color is converted to grayscale
+by multiplying the red channel by 0.2124132, the green
+channel by 0.7010437, and the blue channel by 0.0865432 and
+summing the resulting three products.</p>
+
+<p style="margin-left:22%; margin-top: 1em">When you use
+this option, the input and output images are not true Netpbm
+images, because the Netpbm image format specifies a
+particular color space. Instead, you are using a variation
+on the format in which the sample values in the raster have
+different meaning. Many programs that ostensibly use Netpbm
+images actually use a variation with a different color
+space. For example, <a href="http://www.gimp.org/">GIMP</a>
+uses sRGB internally and if you have GIMP generate a Netpbm
+image file, it really generates a variation of the format
+that uses sRGB.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>pamrecolor</b>
+knows the following color spaces (<i>name</i> values):</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p>adobe</p></td>
+<td width="4%"></td>
+<td width="69%">
+
+
+<p>Adobe RGB (1998) with a D65 reference white</p></td>
+<td width="9%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p>apple</p></td>
+<td width="4%"></td>
+<td width="69%">
+
+
+<p>Apple RGB with a D65 reference white</p></td>
+<td width="9%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p>cie</p></td>
+<td width="4%"></td>
+<td width="69%">
+
+
+<p>CIE with an Illuminant E reference white</p></td>
+<td width="9%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p>ntsc</p></td>
+<td width="4%"></td>
+<td width="69%">
+
+
+<p>NTSC RGB with an Illuminant C reference white</p></td>
+<td width="9%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p>pal</p></td>
+<td width="4%"></td>
+<td width="69%">
+
+
+<p>PAL/SECAM with a D65 reference white</p></td>
+<td width="9%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;">smpte-c</p>
+
+<p style="margin-left:22%; margin-top: 1em">SMPTE-C with a
+D65 reference white</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>srgb</p></td>
+<td width="5%"></td>
+<td width="63%">
+
+
+<p>sRGB with a D65 reference white</p></td>
+<td width="15%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>wide</p></td>
+<td width="5%"></td>
+<td width="63%">
+
+
+<p>Wide-gamut RGB with a D50 reference white</p></td>
+<td width="15%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">The default is
+&quot;ntsc&quot; because this is the color space that the
+Netpbm formats and many graphics utilities use. As a
+counterexample, <a href="http://www.gimp.org/">GIMP</a> uses
+sRGB as its native color space.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The luminance
+values <b>pamrecolor</b> uses for each of the above come
+from Bruce Lindbloom&rsquo;s Computing RGB-to-XYZ and
+XYZ-to-RGB matrices&quot; (1) page.</p>
+
+<p style="margin-left:11%;"><b>--rmult</b>=<i>fraction</i>
+<b><br>
+--gmult</b>=<i>fraction</i> <b><br>
+--bmult</b>=<i>fraction</i></p>
+
+<p style="margin-left:22%;">Instead of selecting a color
+space by name, you can specify explicitly the contribution
+of each color channel to the overall luminance as red,
+green, and blue multipliers. These three options must be
+used together, and the three <i>fraction</i> values must sum
+to 1.0. For example, you can specify the ProPhoto (ROMM) RGB
+color space with &quot;<b>--rmult</b>=0.2880402
+<b>--gmult</b>=0.7118741 <b>--bmult</b>=0.0000857&quot;.</p>
+
+
+<p style="margin-left:11%;"><b>--targetcolor</b>=<i>color</i></p>
+
+<p style="margin-left:22%;">Designate <i>color</i> as the
+target color for the image. <b>pamrecolor</b> will make each
+pixel as close as possible to <i>color</i> subject to the
+constraint that the luminance must stay the same as in the
+original image. Specify <i>color</i> as in the
+<a href="libnetpbm_image.html#colorname">argument of the
+<b>pnm_parsecolor()</b> library routine</a>
+(e.g.,&nbsp;&quot;hotpink&quot; or &quot;#ff69b4&quot;).</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you specify
+neither <b>--targetcolor</b> nor <b>--colorfile</b>,
+<b>pamrecolor</b> will randomly select a target color for
+each pixel of the input image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You may not
+specify both <b>-targetcolor</b> and <b>-colorfile</b>.</p>
+
+
+<p style="margin-left:11%;"><b>--colorfile</b>=<i>file</i></p>
+
+<p style="margin-left:22%;">Take per-pixel target colors
+from Netpbm file <i>file</i> instead of using a single
+target color for the entire image. <i>file</i> should be a
+PPM or color PAM image. If the image in the file wider or
+taller than the input image, <b>pamrecolor</b> uses only the
+left and top part of it. If the image is narrower or
+shorter, <b>pamrecolor</b> considers the image to be
+repeated in a tile pattern.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you specify
+neither <b>--targetcolor</b> nor <b>--colorfile</b>,
+<b>pamrecolor</b> will randomly select a target color for
+each pixel of the input image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You may not
+specify both <b>-targetcolor</b> and <b>-colorfile</b>.</p>
+
+
+<p style="margin-left:11%;"><b>-randomseed=</b><i>integer</i></p>
+
+<p style="margin-left:22%;">This is the seed for the random
+number generator that generates the pixels.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Use this to
+ensure you get the same image on separate invocations.</p>
+
+<p style="margin-left:22%; margin-top: 1em">By default,
+<b>pamrecolor</b> uses a seed derived from the time of day
+and process ID, which gives you fairly uncorrelated results
+in multiple invocations.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.61 (December 2012).</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This command
+tints an image yellow:</p>
+
+<p style="margin-left:11%; margin-top: 1em">pamrecolor
+--targetcolor=yellow colorpic.pam &gt; yellowpic.pam</p>
+
+<p style="margin-left:11%; margin-top: 1em">This command
+takes the colors from <b>colorpicture.ppm</b> and applies
+them to <b>graypicture.pgm</b>:</p>
+
+<p style="margin-left:11%; margin-top: 1em">pamrecolor
+--colorfile=colorpic.ppm graypic.pgm &gt;
+colorizedpic.pam</p>
+
+<p style="margin-left:11%; margin-top: 1em">The grayscale
+version of <b>colorizedpic.pam</b> will look just like
+graypic.pgm. Note that if you use a non-Netpbm tool to do
+the conversion to grayscale, you may additionally need to
+specify an appropriate <b>--colorspace</b> value for your
+conversion tool.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Here are a
+couple of fun special effects you can produce with
+<b>pamrecolor</b>:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Specify a color file that is identical to the input
+image but with some large, colored text added to it. The
+text will &quot;magically&quot; vanish when the image is
+converted to grayscale.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Provide a low-contrast grayscale image - perhaps a
+secret message written in similar shades of gray - as the
+input file and a colorful but completely different image as
+the color file. If done carefully, the grayscale image can
+be hidden by the colorful image. Only people who know to
+convert the result to grayscale can recover the original
+grayscale image.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>Use <b>--targetcolor</b>=tan to make an image look like
+an old-timey photograph (or, more precisely, a
+<a href="http://en.wikipedia.org/wiki/Photographic_print_toning">sepia-toned
+photograph</a> of the late 1800s).</p></td></tr>
+</table>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Scott Pakin
+wrote <b>pamrecolor</b> in July 2010.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamrecolor</b>
+was new in Netpbm 10.52 (September 2010).</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+2010 Scott Pakin, <i>scott+pbm@pakin.org</i></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="18%">
+
+
+<p style="margin-top: 1em"><b>ppmtopgm</b>(1)</p></td>
+<td width="60%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="18%">
+
+
+<p><b>ppmchange</b>(1)</p></td>
+<td width="60%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="18%">
+
+
+<p><b>pnmremap</b>(1)</p></td>
+<td width="60%">
+</td></tr>
+</table>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamrecolor.html</b></p>
+<hr>
+</body>
+</html>

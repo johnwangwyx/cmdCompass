@@ -1,0 +1,1958 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:07 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>GROFF</title>
+
+</head>
+<body>
+
+<h1 align="center">GROFF</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#USING GROFF">USING GROFF</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#INSTALLATION DIRECTORIES">INSTALLATION DIRECTORIES</a><br>
+<a href="#AVAILABILITY">AVAILABILITY</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">groff -
+front-end for the groff document formatting system</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em"><b>groff</b></p></td>
+<td width="2%"></td>
+<td width="80%">
+
+
+
+<p style="margin-top: 1em">[<b>-abcegijklpstzCEGNRSUVXZ</b>]
+[<b>-d&nbsp;</b><i>cs</i>] [<b>-D&nbsp;</b><i>arg</i>]
+[<b>-f&nbsp;</b><i>fam</i>] [<b>-F&nbsp;</b><i>dir</i>]
+[<b>-I&nbsp;</b><i>dir</i>] [<b>-K&nbsp;</b><i>arg</i>]
+[<b>-L&nbsp;</b><i>arg</i>] [<b>-m&nbsp;</b><i>name</i>]
+[<b>-M&nbsp;</b><i>dir</i>] [<b>-n&nbsp;</b><i>num</i>]
+[<b>-o&nbsp;</b><i>list</i>] [<b>-P&nbsp;</b><i>arg</i>]
+[<b>-r&nbsp;</b><i>cn</i>] [<b>-T&nbsp;</b><i>dev</i>]
+[<b>-w&nbsp;</b><i>name</i>] [<b>-W&nbsp;</b><i>name</i>]
+[<i>file</i> ...]</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em"><b>groff</b></p></td>
+<td width="2%"></td>
+<td width="80%">
+
+
+<p style="margin-top: 1em"><b>-h</b></p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>groff</b></p></td>
+<td width="2%"></td>
+<td width="80%">
+
+
+<p><b>--help</b></p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em"><b>groff</b></p></td>
+<td width="2%"></td>
+<td width="80%">
+
+
+<p style="margin-top: 1em"><b>-v</b> [<i>option</i>
+...]</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>groff</b></p></td>
+<td width="2%"></td>
+<td width="80%">
+
+
+<p><b>--version</b> [<i>option</i> ...]</p></td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This document
+describes the <b>groff</b> program, the main front-end for
+the <i>groff</i> document formatting system. The
+<i>groff</i> program and macro suite is the implementation
+of a <b>roff</b>(7) system within the free software
+collection <a href="http://www.gnu.org">GNU</a>. The
+<i>groff</i> system has all features of the classical
+<i>roff</i>, but adds many extensions.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>groff</b> program allows control of the whole
+<i>groff</i> system by command-line options. This is a great
+simplification in comparison to the classical case (which
+uses pipes only).</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The command
+line is parsed according to the usual GNU convention.
+Whitespace is permitted between a command-line option and
+its argument. Options can be grouped behind a single
+&rsquo;-&rsquo; (minus character). A filename of <b>-</b>
+(minus character) denotes the standard input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">As <b>groff</b>
+is a wrapper program for <b>troff</b> both programs share a
+set of options. But the <b>groff</b> program has some
+additional, native options and gives a new meaning to some
+<b>troff</b> options. On the other hand, not all
+<b>troff</b> options can be fed into <b>groff</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Native groff
+Options</b> <br>
+The following options either do not exist for <b>troff</b>
+or are differently interpreted by <b>groff</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-D&nbsp;</b><i>arg</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Set default input encoding used by <b>preconv</b> to
+<i>arg</i>. Implies <b>-k</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-e</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Preprocess with <b>eqn</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-g</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Preprocess with <b>grn</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-G</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Preprocess with <b>grap</b>. Implies <b>-p</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-h</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--help</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Print a help message.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-I&nbsp;</b><i>dir</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>This option may be used to specify a directory to search
+for files (both those on the command line and those named in
+<b>.psbb</b> and <b>.so</b> requests, and <b>\X&rsquo;ps:
+import&rsquo;</b> , <b>\X&rsquo;ps: file&rsquo;</b> and
+<b>\X&rsquo;pdf: pdfpic&rsquo;</b> escapes). The current
+directory is always searched first. This option may be
+specified more than once; the directories are searched in
+the order specified. No directory search is performed for
+files specified using an absolute path. This option implies
+the <b>-s</b> option.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-j</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Preprocess with <b>chem</b>. Implies <b>-p</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-k</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Preprocess with <b>preconv</b>. This is run before any
+other preprocessor. Please refer to <b>preconv</b>&rsquo;s
+manual page for its behaviour if no <b>-K</b> (or <b>-D</b>)
+option is specified.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-K&nbsp;</b><i>arg</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Set input encoding used by <b>preconv</b> to <i>arg</i>.
+Implies <b>-k</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-l</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Send the output to a spooler program for printing. The
+command that should be used for this is specified by the
+<b>print</b> command in the device description file, see
+<b>groff_font</b>(5). If this command is not present, the
+output is piped into the <b>lpr</b>(1) program by default.
+See options <b>-L</b> and <b>-X</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-L&nbsp;</b><i>arg</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Pass <i>arg</i> to the spooler program. Several
+arguments should be passed with a separate -L option each.
+Note that <b>groff</b> does not prepend &rsquo;-&rsquo; (a
+minus sign) to <i>arg</i> before passing it to the spooler
+program.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-N</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Don&rsquo;t allow newlines within <i>eqn</i> delimiters.
+This is the same as the <b>-N</b> option in <b>eqn</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-p</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Preprocess with <b>pic</b>.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-P&nbsp;</b><i>-option</i>
+<b><br>
+
+-P&nbsp;</b><i>-option&nbsp;</i><b>-P&nbsp;</b><i>arg</i></p>
+
+<p style="margin-left:22%;">Pass <i>-option</i> or
+<i>-option&nbsp;arg</i> to the postprocessor. The option
+must be specified with the necessary preceding minus sign(s)
+&rsquo;-&rsquo; or &rsquo;--&rsquo; because <b>groff</b>
+does not prepend any dashes before passing it to the
+postprocessor. For example, to pass a title to the
+<b>gxditview</b> postprocessor, the shell command</p>
+
+<p style="margin-left:32%; margin-top: 1em">groff -X -P
+-title -P &rsquo;groff it&rsquo; <i>foo</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">is equivalent
+to</p>
+
+<p style="margin-left:32%; margin-top: 1em">groff -X -Z
+<i>foo</i> | gxditview -title &rsquo;groff it&rsquo; -</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-R</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Preprocess with <b>refer</b>. No mechanism is provided
+for passing arguments to <b>refer</b> because most
+<b>refer</b> options have equivalent language elements that
+can be specified within the document. See <b>refer</b>(1)
+for more details.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-s</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Preprocess with <b>soelim</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-S</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Safer mode. Pass the <b>-S</b> option to <b>pic</b> and
+disable the following <b>troff</b> requests: <b>.open</b>,
+<b>.opena</b>, <b>.pso</b>, <b>.sy</b>, and <b>.pi</b>. For
+security reasons, safer mode is enabled by default.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-t</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Preprocess with <b>tbl</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-T&nbsp;</b><i>dev</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Set output device to <i>dev</i>. For this device,
+<b>troff</b> generates the <i>intermediate output</i>; see
+<b>groff_out</b>(5). Then <b>groff</b> calls a postprocessor
+to convert <b>troff</b>&rsquo;s <i>intermediate output</i>
+to its final format. Real devices in <b>groff</b> are</p></td></tr>
+</table>
+
+<p style="margin-left:32%; margin-top: 1em">dvi</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="8%"></td>
+<td width="3%"></td>
+<td width="57%">
+
+
+<p style="margin-top: 1em">TeX DVI format (postprocessor is
+<b>grodvi</b>).</p> </td></tr>
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="8%">
+
+
+<p>html</p></td>
+<td width="3%"></td>
+<td width="57%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="8%">
+
+
+<p>xhtml</p></td>
+<td width="3%"></td>
+<td width="57%">
+
+
+<p>HTML and XHTML output (preprocessors are <b>soelim</b>
+and <b>pre-grohtml</b>, postprocessor is
+<b>post-grohtml</b>).</p> </td></tr>
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="8%">
+
+
+<p>lbp</p></td>
+<td width="3%"></td>
+<td width="57%">
+
+
+<p>Canon CAPSL printers (LBP-4 and LBP-8 series laser
+printers; postprocessor is <b>grolbp</b>).</p></td></tr>
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="8%">
+
+
+<p>lj4</p></td>
+<td width="3%"></td>
+<td width="57%">
+
+
+<p>HP LaserJet4 compatible (or other PCL5 compatible)
+printers (postprocessor is <b>grolj4</b>).</p></td></tr>
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="8%">
+
+
+<p>ps</p></td>
+<td width="3%"></td>
+<td width="57%">
+
+
+<p>PostScript output (postprocessor is <b>grops</b>).</p></td></tr>
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="8%">
+
+
+<p>pdf</p></td>
+<td width="3%"></td>
+<td width="57%">
+
+
+<p>Portable Document Format (PDF) output (postprocessor is
+<b>gropdf</b>).</p> </td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">For the
+following TTY output devices (postprocessor is always
+<b>grotty</b>), <b>-T</b> selects the output encoding:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="10%">
+
+
+<p style="margin-top: 1em">ascii</p></td>
+<td width="1%"></td>
+<td width="57%">
+
+
+<p style="margin-top: 1em">7bit ASCII.</p></td></tr>
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="10%">
+
+
+<p>cp1047</p></td>
+<td width="1%"></td>
+<td width="57%">
+
+
+<p>Latin-1 character set for EBCDIC hosts.</p></td></tr>
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="10%">
+
+
+<p>latin1</p></td>
+<td width="1%"></td>
+<td width="57%">
+
+
+<p>ISO 8859-1.</p></td></tr>
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="10%">
+
+
+<p>utf8</p></td>
+<td width="1%"></td>
+<td width="57%">
+
+
+<p>Unicode character set in UTF-8 encoding. This mode has
+the most useful fonts for TTY mode, so it is the best mode
+for TTY output.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">The following
+arguments select <b>gxditview</b> as the
+&rsquo;postprocessor&rsquo; (it is rather a viewing
+program):</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="10%">
+
+
+<p style="margin-top: 1em">X75</p></td>
+<td width="1%"></td>
+<td width="57%">
+
+
+<p style="margin-top: 1em">75dpi resolution, 10pt document
+base font.</p></td></tr>
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="10%">
+
+
+<p>X75-12</p></td>
+<td width="1%"></td>
+<td width="57%">
+
+
+<p>75dpi resolution, 12pt document base font.</p></td></tr>
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="10%">
+
+
+<p>X100</p></td>
+<td width="1%"></td>
+<td width="57%">
+
+
+<p>100dpi resolution, 10pt document base font.</p></td></tr>
+</table>
+
+<p style="margin-left:32%;">X100-12</p>
+
+<p style="margin-left:43%;">100dpi resolution, 12pt
+document base font.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default
+device is <b>ps</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-U</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Unsafe mode. Reverts to the (old) unsafe behaviour; see
+option <b>-S</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-v</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--version</b></p>
+
+<p style="margin-left:22%;">Output version information of
+<b>groff</b> and of all programs that are run by it; that
+is, the given command line is parsed in the usual way,
+passing <b>-v</b> to all subprograms.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-V</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Output the pipeline that would be run by <b>groff</b>
+(as a wrapper program) on the standard output, but do not
+execute it. If given more than once, the commands are both
+printed on the standard error and run.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-X</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Use <b>gxditview</b> instead of using the usual
+postprocessor to (pre)view a document. The printing spooler
+behavior as outlined with options <b>-l</b> and <b>-L</b> is
+carried over to <b>gxditview</b>(1) by determining an
+argument for the <b>-printCommand</b> option of
+<b>gxditview</b>(1). This sets the default <b>Print</b>
+action and the corresponding menu entry to that value.
+<b>-X</b> only produces good results with <b>-Tps</b>,
+<b>-TX75</b>, <b>-TX75-12</b>, <b>-TX100</b>, and
+<b>-TX100-12</b>. The default resolution for previewing
+<b>-Tps</b> output is 75dpi; this can be changed by passing
+the <b>-resolution</b> option to <b>gxditview</b>, for
+example</p> </td></tr>
+</table>
+
+<p style="margin-left:32%; margin-top: 1em">groff -X
+-P-resolution -P100 -man foo.1</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-z</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Suppress output generated by
+<b>troff</b>. Only error messages are printed.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-Z</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Do not automatically postprocess <i>groff intermediate
+output</i> in the usual manner. This will cause the
+<b>troff</b> <i>output</i> to appear on standard output,
+replacing the usual postprocessor output; see
+<b>groff_out</b>(5).</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Transparent
+Options</b> <br>
+The following options are transparently handed over to the
+formatter program <b>troff</b> that is called by
+<b>groff</b> subsequently. These options are described in
+more detail in <b>troff</b>(1).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em"><b>-a</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">ASCII approximation of
+output.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-b</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Backtrace on error or warning.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-c</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Disable color output. Please consult the
+<b>grotty</b>(1) man page for more details.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-C</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Enable compatibility mode.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-d&nbsp;</b><i>cs</i></p></td>
+<td width="4%"></td>
+<td width="78%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>-d&nbsp;</b><i>name</i><b>=</b><i>s</i></p>
+
+<p style="margin-left:22%;">Define string.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-E</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Disable <b>troff</b> error messages.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-f&nbsp;</b><i>fam</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Set default font family.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-F&nbsp;</b><i>dir</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Set path for device <i>DESC</i> files.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-i</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Process standard input after the specified input
+files.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-m&nbsp;</b><i>name</i></p>
+
+<p style="margin-left:22%;">Include macro file
+name<i>.tmac</i> (or <i>tmac.</i>name); see also
+<b>groff_tmac</b>(5).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-M&nbsp;</b><i>dir</i></p></td>
+<td width="2%"></td>
+<td width="40%">
+
+
+<p>Path for macro files.</p></td>
+<td width="38%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-n&nbsp;</b><i>num</i></p></td>
+<td width="2%"></td>
+<td width="40%">
+
+
+<p>Number the first page <i>num</i>.</p></td>
+<td width="38%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-o&nbsp;</b><i>list</i></p>
+
+<p style="margin-left:22%;">Output only pages in
+<i>list</i>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-r&nbsp;</b><i>cn</i></p></td>
+<td width="82%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:11%;"><b>-r&nbsp;</b><i>name</i><b>=</b><i>n</i></p>
+
+<p style="margin-left:22%;">Set number register.</p>
+
+<p style="margin-left:11%;"><b>-w&nbsp;</b><i>name</i></p>
+
+<p style="margin-left:22%;">Enable warning <i>name</i>. See
+<b>troff</b>(1) for names.</p>
+
+<p style="margin-left:11%;"><b>-W&nbsp;</b><i>name</i></p>
+
+<p style="margin-left:22%;">disable warning <i>name</i>.
+See <b>troff</b>(1) for names.</p>
+
+<h2>USING GROFF
+<a name="USING GROFF"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The <i>groff
+system</i> implements the infrastructure of classical roff;
+see <b>roff</b>(7) for a survey on how a <i>roff</i> system
+works in general. Due to the front-end programs available
+within the <i>groff</i> system, using <i>groff</i> is much
+easier than <i>classical roff</i>. This section gives an
+overview of the parts that constitute the <i>groff</i>
+system. It complements <b>roff</b>(7) with
+<i>groff</i>-specific features. This section can be regarded
+as a guide to the documentation around the <i>groff</i>
+system.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Paper
+Size</b> <br>
+The <i>virtual</i> paper size used by <b>troff</b> to format
+the input is controlled globally with the requests
+<b>.po</b>, <b>.pl</b>, and <b>.ll</b>. See
+<b>groff_tmac</b>(5) for the &rsquo;papersize&rsquo; macro
+package which provides a convenient interface.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>physical</i> paper size, giving the actual dimensions of
+the paper sheets, is controlled by output devices like
+<b>grops</b> with the command-line options <b>-p</b> and
+<b>-l</b>. See <b>groff_font</b>(5) and the man pages of the
+output devices for more details. <b>groff</b> uses the
+command-line option <b>-P</b> to pass options to output
+devices; for example, the following selects A4 paper in
+landscape orientation for the PS device:</p>
+
+<p style="margin-left:22%; margin-top: 1em">groff -Tps
+-P-pa4 -P-l ...</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Front-ends</b>
+<br>
+The <b>groff</b> program is a wrapper around the
+<b>troff</b>(1) program. It allows one to specify the
+preprocessors by command-line options and automatically runs
+the postprocessor that is appropriate for the selected
+device. Doing so, the sometimes tedious piping mechanism of
+classical <b>roff</b>(7) can be avoided.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>grog</b>(1) program can be used for guessing the correct
+<i>groff</i> command line to format a file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>groffer</b>(1) program is an all-around viewer for
+<i>groff</i> files and man pages.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Preprocessors</b>
+<br>
+The <i>groff</i> preprocessors are reimplementations of the
+classical preprocessors with moderate extensions. The
+standard preprocessors distributed with the <i>groff</i>
+package are</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>eqn</b>(1)</p></td>
+<td width="2%"></td>
+<td width="52%">
+
+
+<p>for mathematical formulae,</p></td>
+<td width="26%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>grn</b>(1)</p></td>
+<td width="2%"></td>
+<td width="52%">
+
+
+<p>for including <b>gremlin</b>(1) pictures,</p></td>
+<td width="26%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>pic</b>(1)</p></td>
+<td width="2%"></td>
+<td width="52%">
+
+
+<p>for drawing diagrams,</p></td>
+<td width="26%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>chem</b>(1)</p>
+
+<p style="margin-left:22%;">for chemical structure
+diagrams,</p>
+
+<p style="margin-left:11%;"><b>refer</b>(1)</p>
+
+<p style="margin-left:22%;">for bibliographic
+references,</p>
+
+<p style="margin-left:11%;"><b>soelim</b>(1)</p>
+
+<p style="margin-left:22%;">for including macro files from
+standard locations,</p>
+
+<p style="margin-left:11%; margin-top: 1em">and</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>tbl</b>(1)</p></td>
+<td width="2%"></td>
+<td width="16%">
+
+
+<p>for tables.</p></td>
+<td width="62%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">A new
+preprocessor not available in classical <i>troff</i> is
+<b>preconv</b>(1) which converts various input encodings to
+something <b>groff</b> can understand. It is always run
+first before any other preprocessor.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Besides these,
+there are some internal preprocessors that are automatically
+run with some devices. These aren&rsquo;t visible to the
+user.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Macro
+Packages</b> <br>
+Macro packages can be included by option <b>-m</b>. The
+<i>groff</i> system implements and extends all classical
+macro packages in a compatible way and adds some packages of
+its own. Actually, the following macro packages come with
+<i>groff</i>:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>man</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">The traditional man page format;
+see <b>groff_man</b>(7). It can be specified on the command
+line as <b>-man</b> or <b>-m&nbsp;man</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>mandoc</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The general package for man pages; it automatically
+recognizes whether the documents uses the <i>man</i> or the
+<i>mdoc</i> format and branches to the corresponding macro
+package. It can be specified on the command line as
+<b>-mandoc</b> or <b>-m&nbsp;mandoc</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>mdoc</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The BSD-style man page format; see <b>groff_mdoc</b>(7).
+It can be specified on the command line as <b>-mdoc</b> or
+<b>-m&nbsp;mdoc</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>me</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The classical <i>me</i> document format; see
+<b>groff_me</b>(7). It can be specified on the command line
+as <b>-me</b> or <b>-m&nbsp;me</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>mm</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The classical <i>mm</i> document format; see
+<b>groff_mm</b>(7). It can be specified on the command line
+as <b>-mm</b> or <b>-m&nbsp;mm</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>ms</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The classical <i>ms</i> document format; see
+<b>groff_ms</b>(7). It can be specified on the command line
+as <b>-ms</b> or <b>-m&nbsp;ms</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>www</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>HTML-like macros for inclusion in arbitrary <i>groff</i>
+documents; see <b>groff_www</b>(7).</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Details on the
+naming of macro files and their placement can be found in
+<b>groff_tmac</b>(5); this man page also documents some
+other, minor auxiliary macro packages not mentioned
+here.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Programming
+Language</b> <br>
+General concepts common to all <i>roff</i> programming
+languages are described in <b>roff</b>(7).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>groff</i> extensions to the classical <i>troff</i>
+language are documented in <b>groff_diff</b>(7).</p>
+
+<p style="margin-left:11%; margin-top: 1em">An overview of
+language features, including all supported escapes and
+requests, can be found in <b>groff</b>(7).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Formatters</b>
+<br>
+The central <i>roff</i> formatter within the <i>groff</i>
+system is <b>troff</b>(1). It provides the features of both
+the classical <i>troff</i> and <i>nroff</i>, as well as the
+<i>groff</i> extensions. The command-line option <b>-C</b>
+switches <b>troff</b> into <i>compatibility mode</i> which
+tries to emulate classical <i>roff</i> as much as
+possible.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There is a
+shell script <b>nroff</b>(1) that emulates the behavior of
+classical <b>nroff</b>. It tries to automatically select the
+proper output encoding, according to the current locale.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The formatter
+program generates <i>intermediate output</i>; see
+<b>groff_out</b>(7).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Devices</b>
+<br>
+In <i>roff</i>, the output targets are called
+<i>devices</i>. A device can be a piece of hardware, e.g., a
+printer, or a software file format. A device is specified by
+the option <b>-T</b>. The <i>groff</i> devices are as
+follows.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>ascii</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Text output using the
+<b>ascii</b>(7) character set.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>cp1047</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Text output using the EBCDIC code page IBM cp1047 (e.g.,
+OS/390 Unix).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>dvi</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>TeX DVI format.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>html</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>HTML output.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>latin1</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Text output using the ISO Latin-1 (ISO 8859-1) character
+set; see <b>iso_8859_1</b>(7).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>lbp</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Output for Canon CAPSL printers (LBP-4 and LBP-8 series
+laser printers).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>lj4</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>HP LaserJet4-compatible (or other PCL5-compatible)
+printers.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>ps</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>PostScript output; suitable for printers and previewers
+like <b>gv</b>(1).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>pdf</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>PDF files; suitable for viewing with tools such as
+<b>evince</b>(1) and <b>okular</b>(1).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>utf8</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Text output using the Unicode (ISO 10646) character set
+with UTF-8 encoding; see <b>unicode</b>(7).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>xhtml</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>XHTML output.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>X75</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>75dpi X Window System output suitable for the previewers
+<b>xditview</b>(1x) and <b>gxditview</b>(1). A variant for a
+12pt document base font is <b>X75-12</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>X100</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>100dpi X Window System output suitable for the
+previewers <b>xditview</b>(1x) and <b>gxditview</b>(1). A
+variant for a 12pt document base font is <b>X100-12</b>.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The
+postprocessor to be used for a device is specified by the
+<b>postpro</b> command in the device description file; see
+<b>groff_font</b>(5). This can be overridden with the
+<b>-X</b> option.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The default
+device is <b>ps</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Postprocessors</b>
+<i><br>
+groff</i> provides 3&nbsp;hardware postprocessors: <b><br>
+grolbp</b>(1)</p>
+
+<p style="margin-left:22%;">for some Canon printers,</p>
+
+<p style="margin-left:11%;"><b>grolj4</b>(1)</p>
+
+<p style="margin-left:22%;">for printers compatible to the
+HP LaserJet&nbsp;4 and PCL5,</p>
+
+<p style="margin-left:11%;"><b>grotty</b>(1)</p>
+
+<p style="margin-left:22%;">for text output using various
+encodings, e.g., on text-oriented terminals or line
+printers.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Today, most
+printing or drawing hardware is handled by the operating
+system, by device drivers, or by software interfaces,
+usually accepting PostScript. Consequently, there
+isn&rsquo;t an urgent need for more hardware device
+postprocessors.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>groff</i> software devices for conversion into other
+document file formats are <b><br>
+grodvi</b>(1)</p>
+
+<p style="margin-left:22%;">for the DVI format,</p>
+
+<p style="margin-left:11%;"><b>grohtml</b>(1)</p>
+
+<p style="margin-left:22%;">for HTML and XHTML formats,</p>
+
+<p style="margin-left:11%;"><b>grops</b>(1)</p>
+
+<p style="margin-left:22%;">for PostScript.</p>
+
+<p style="margin-left:11%;"><b>gropdf</b>(1)</p>
+
+<p style="margin-left:22%;">for PDF.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Combined with
+the many existing free conversion tools this should be
+sufficient to convert a <i>troff</i> document into virtually
+any existing data format.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Utilities</b>
+<br>
+The following utility programs around <i>groff</i> are
+available. <b><br>
+addftinfo</b>(1)</p>
+
+<p style="margin-left:22%;">Add information to <i>troff</i>
+font description files for use with <i>groff</i>.</p>
+
+<p style="margin-left:11%;"><b>afmtodit</b>(1)</p>
+
+<p style="margin-left:22%;">Create font description files
+for PostScript device.</p>
+
+<p style="margin-left:11%;"><b>eqn2graph</b>(1)</p>
+
+<p style="margin-left:22%;">Convert an <b>eqn</b> image
+into a cropped image.</p>
+
+<p style="margin-left:11%;"><b>gdiffmk</b>(1)</p>
+
+<p style="margin-left:22%;">Mark differences between
+<i>groff</i>, <i>nroff</i>, or <i>troff</i> files.</p>
+
+<p style="margin-left:11%;"><b>grap2graph</b>(1)</p>
+
+<p style="margin-left:22%;">Convert a <b>grap</b> diagram
+into a cropped bitmap image.</p>
+
+<p style="margin-left:11%;"><b>groffer</b>(1)</p>
+
+<p style="margin-left:22%;">General viewer program for
+<i>groff</i> files and man pages.</p>
+
+<p style="margin-left:11%;"><b>gxditview</b>(1)</p>
+
+<p style="margin-left:22%;">The <i>groff</i> X viewer, the
+GNU version of <b>xditview</b>.</p>
+
+<p style="margin-left:11%;"><b>hpftodit</b>(1)</p>
+
+<p style="margin-left:22%;">Create font description files
+for lj4 device.</p>
+
+<p style="margin-left:11%;"><b>indxbib</b>(1)</p>
+
+<p style="margin-left:22%;">Make inverted index for
+bibliographic databases.</p>
+
+<p style="margin-left:11%;"><b>lkbib</b>(1)</p>
+
+<p style="margin-left:22%;">Search bibliographic
+databases.</p>
+
+<p style="margin-left:11%;"><b>lookbib</b>(1)</p>
+
+<p style="margin-left:22%;">Interactively search
+bibliographic databases.</p>
+
+<p style="margin-left:11%;"><b>pdfroff</b>(1)</p>
+
+<p style="margin-left:22%;">Create PDF documents using
+<b>groff</b>.</p>
+
+<p style="margin-left:11%;"><b>pfbtops</b>(1)</p>
+
+<p style="margin-left:22%;">Translate a PostScript font in
+.pfb format to ASCII.</p>
+
+<p style="margin-left:11%;"><b>pic2graph</b>(1)</p>
+
+<p style="margin-left:22%;">Convert a <b>pic</b> diagram
+into a cropped image.</p>
+
+<p style="margin-left:11%;"><b>tfmtodit</b>(1)</p>
+
+<p style="margin-left:22%;">Create font description files
+for TeX DVI device.</p>
+
+<p style="margin-left:11%;"><b>xditview</b>(1x)</p>
+
+<p style="margin-left:22%;"><i>roff</i> viewer historically
+distributed with the X Window System.</p>
+
+<p style="margin-left:11%;"><b>xtotroff</b>(1)</p>
+
+<p style="margin-left:22%;">Convert X font metrics into GNU
+<i>troff</i> font metrics.</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Normally, the
+path separator in the following environment variables is the
+colon; this may vary depending on the operating system. For
+example, DOS and Windows use a semicolon instead. <i><br>
+GROFF_BIN_PATH</i></p>
+
+<p style="margin-left:22%;">This search path, followed by
+<i>PATH</i>, is used for commands that are executed by
+<b>groff</b>. If it is not set then the directory where the
+<i>groff</i> binaries were installed is prepended to
+<i>PATH</i>.</p>
+
+
+<p style="margin-left:11%;"><i>GROFF_COMMAND_PREFIX</i></p>
+
+<p style="margin-left:22%;">When there is a need to run
+different <i>roff</i> implementations at the same time
+<i>groff</i> provides the facility to prepend a prefix to
+most of its programs that could provoke name clashings at
+run time (default is to have none). Historically, this
+prefix was the character <b>g</b>, but it can be anything.
+For example, <b>gtroff</b> stood for <i>groff</i>&rsquo;s
+<b>troff</b>, <b>gtbl</b> for the <i>groff</i> version of
+<b>tbl</b>. By setting <i>GROFF_COMMAND_PREFIX</i> to
+different values, the different <i>roff</i> installations
+can be addressed. More exactly, if it is set to prefix
+<i>xxx</i> then <b>groff</b> as a wrapper program internally
+calls <i>xxx</i><b>troff</b> instead of <b>troff</b>. This
+also applies to the preprocessors <b>eqn</b>, <b>grn</b>,
+<b>pic</b>, <b>refer</b>, <b>tbl</b>, <b>soelim</b>, and to
+the utilities <b>indxbib</b> and <b>lookbib</b>. This
+feature does not apply to any programs different from the
+ones above (most notably <b>groff</b> itself) since they are
+unique to the <i>groff</i> package.</p>
+
+<p style="margin-left:11%;"><i>GROFF_ENCODING</i></p>
+
+<p style="margin-left:22%;">The value of this environment
+value is passed to the <b>preconv</b> preprocessor to select
+the encoding of input files. Setting this option implies
+<b>groff</b>&rsquo;s command-line option <b>-k</b> (this is,
+<b>groff</b> actually always calls <b>preconv</b>). If set
+without a value, <b>groff</b> calls <b>preconv</b> without
+arguments. An explicit <b>-K</b> command-line option
+overrides the value of <i>GROFF_ENCODING</i>. See
+<b>preconv</b>(1) for details.</p>
+
+<p style="margin-left:11%;"><i>GROFF_FONT_PATH</i></p>
+
+<p style="margin-left:22%;">A list of directories in which
+to search for the <i>dev</i>name directory in addition to
+the default ones. See <b>troff</b>(1) and
+<b>groff_font</b>(5) for more details.</p>
+
+<p style="margin-left:11%;"><i>GROFF_TMAC_PATH</i></p>
+
+<p style="margin-left:22%;">A list of directories in which
+to search for macro files in addition to the default
+directories. See <b>troff</b>(1) and <b>groff_tmac</b>(5)
+for more details.</p>
+
+<p style="margin-left:11%;"><i>GROFF_TMPDIR</i></p>
+
+<p style="margin-left:22%;">The directory in which
+temporary files are created. If this is not set but the
+environment variable <i>TMPDIR</i> instead, temporary files
+are created in the directory <i>TMPDIR</i>. On MS-DOS and
+Windows platforms, the environment variables <i>TMP</i> and
+<i>TEMP</i> (in that order) are searched also, after
+<i>GROFF_TMPDIR</i> and <i>TMPDIR</i>. Otherwise, temporary
+files are created in <i>/tmp</i>. The <b>refer</b>(1),
+<b>groffer</b>(1), <b>grohtml</b>(1), and <b>grops</b>(1)
+commands use temporary files.</p>
+
+<p style="margin-left:11%;"><i>GROFF_TYPESETTER</i></p>
+
+<p style="margin-left:22%;">Preset the default device. If
+this is not set the <b>ps</b> device is used as default.
+This device name is overwritten by the option <b>-T</b>.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+example illustrates the power of the <b>groff</b> program as
+a wrapper around <b>troff</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To process a
+<i>roff</i> file using the preprocessors <b>tbl</b> and
+<b>pic</b> and the <b>me</b> macro set, classical
+<i>troff</i> had to be called by</p>
+
+<p style="margin-left:22%; margin-top: 1em">pic foo.me |
+tbl | troff -me -Tlatin1 | grotty</p>
+
+<p style="margin-left:11%; margin-top: 1em">Using
+<b>groff</b>, this pipe can be shortened to the equivalent
+command</p>
+
+<p style="margin-left:22%; margin-top: 1em">groff -p -t -me
+-T latin1 foo.me</p>
+
+<p style="margin-left:11%; margin-top: 1em">An even easier
+way to call this is to use <b>grog</b>(1) to guess the
+preprocessor and macro options and execute the generated
+command (by using backquotes to specify shell command
+substitution)</p>
+
+<p style="margin-left:22%; margin-top: 1em">`grog -Tlatin1
+foo.me`</p>
+
+<p style="margin-left:11%; margin-top: 1em">The simplest
+way is to view the contents in an automated way by
+calling</p>
+
+<p style="margin-left:22%; margin-top: 1em">groffer
+foo.me</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">On EBCDIC hosts
+(e.g., OS/390 Unix), output devices <b>ascii</b> and
+<b>latin1</b> aren&rsquo;t available. Similarly, output for
+EBCDIC code page <b>cp1047</b> is not available on ASCII
+based operating systems.</p>
+
+<h2>INSTALLATION DIRECTORIES
+<a name="INSTALLATION DIRECTORIES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>groff</i>
+installs files in varying locations depending on its
+compile-time configuration. On this installation, the
+following locations are used. <i><br>
+/etc/X11/app-defaults</i></p>
+
+<p style="margin-left:22%;">Application defaults directory
+for <i>gxditview</i>(1).</p>
+
+<p style="margin-left:11%;"><i>/usr/bin</i></p>
+
+<p style="margin-left:22%;">Directory containing
+<i>groff</i>&rsquo;s executable commands.</p>
+
+
+<p style="margin-left:11%;"><i>/usr/share/groff/1.22.4/eign</i></p>
+
+<p style="margin-left:22%;">List of common words for
+<i>indxbib</i>(1).</p>
+
+
+<p style="margin-left:11%;"><i>/usr/share/groff/1.22.4</i></p>
+
+<p style="margin-left:22%;">Directory for data files.</p>
+
+
+<p style="margin-left:11%;"><i>/usr/dict/papers/Ind</i></p>
+
+<p style="margin-left:22%;">Default index for
+<i>lkbib</i>(1) and <i>refer</i>(1).</p>
+
+
+<p style="margin-left:11%;"><i>/usr/share/doc/groff-base</i></p>
+
+<p style="margin-left:22%;">Documentation directory.</p>
+
+
+<p style="margin-left:11%;"><i>/usr/share/doc/groff-base/examples</i></p>
+
+<p style="margin-left:22%;">Example directory.</p>
+
+
+<p style="margin-left:11%;"><i>/usr/share/groff/1.22.4/font</i></p>
+
+<p style="margin-left:22%;">Font directory.</p>
+
+
+<p style="margin-left:11%;"><i>/usr/share/doc/groff-base/html</i></p>
+
+<p style="margin-left:22%;">HTML documentation
+directory.</p>
+
+<p style="margin-left:11%;"><i>/usr/lib/font</i></p>
+
+<p style="margin-left:22%;">Legacy font directory.</p>
+
+
+<p style="margin-left:11%;"><i>/usr/share/groff/site-font</i></p>
+
+<p style="margin-left:22%;">Local font directory.</p>
+
+
+<p style="margin-left:11%;"><i>/usr/share/groff/site-tmac</i></p>
+
+<p style="margin-left:22%;">Local macro package
+(<i>tmac</i> file) directory.</p>
+
+
+<p style="margin-left:11%;"><i>/usr/share/groff/1.22.4/tmac</i></p>
+
+<p style="margin-left:22%;">Macro package (<i>tmac</i>
+file) directory.</p>
+
+
+<p style="margin-left:11%;"><i>/usr/share/groff/1.22.4/oldfont</i></p>
+
+<p style="margin-left:22%;">Font directory for
+compatibility with old versions of <i>groff</i>; see
+<i>grops</i>(1).</p>
+
+
+<p style="margin-left:11%;"><i>/usr/share/doc/groff-base/pdf</i></p>
+
+<p style="margin-left:22%;">PDF documentation
+directory.</p>
+
+
+<p style="margin-left:11%;"><i>/usr/lib/groff/site-tmac</i></p>
+
+<p style="margin-left:22%;">System macro package
+(<i>tmac</i> file) directory.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>groff Macro
+Directory</b> <br>
+This contains all information related to macro packages.
+Note that more than a single directory is searched for those
+files as documented in <b>groff_tmac</b>(5). For the
+<i>groff</i> installation corresponding to this document, it
+is located at <i>/usr/share/groff/1.22.4/tmac</i>. The
+following files contained in the <i>groff macro
+directory</i> have a special meaning: <i><br>
+troffrc</i></p>
+
+<p style="margin-left:22%;">Initialization file for
+<i>troff</i>. This is interpreted by <b>troff</b> before
+reading the macro sets and any input.</p>
+
+<p style="margin-left:11%;"><i>troffrc-end</i></p>
+
+<p style="margin-left:22%;">Final startup file for
+<i>troff</i>. It is parsed after all macro sets have been
+read.</p>
+
+<p style="margin-left:11%;">name<i>.tmac <br>
+tmac.</i>name</p>
+
+<p style="margin-left:22%;">Macro file for macro package
+<i>name</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>groff Font
+Directory</b> <br>
+This contains all information related to output devices.
+Note that more than a single directory is searched for those
+files; see <b>troff</b>(1). For the <i>groff</i>
+installation corresponding to this document, it is located
+at <i>/usr/share/groff/1.22.4/font</i>. The following files
+contained in the <i>groff font directory</i> have a special
+meaning: <i><br>
+dev</i>name<i>/DESC</i></p>
+
+<p style="margin-left:22%;">Device description file for
+device <i>name</i>, see <b>groff_font</b>(5).</p>
+
+<p style="margin-left:11%;"><i>dev</i>name<i>/</i>F</p>
+
+<p style="margin-left:22%;">Font file for font <i>F</i> of
+device <i>name</i>.</p>
+
+<h2>AVAILABILITY
+<a name="AVAILABILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Information on
+how to get <i>groff</i> and related information is available
+at the <a href="http://www.gnu.org/software/groff">groff
+page of the GNU website</a>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Three
+<i>groff</i> mailing lists are available:</p>
+
+
+<p style="margin-left:22%;"><a href="mailto:bug-groff@gnu.org">bug
+tracker activity (read-only)</a>; <br>
+<a href="mailto:groff@gnu.org">general discussion</a>; and
+<br>
+<a href="mailto:groff-commit@gnu.org">commit activity
+(read-only)</a>, which reports changes to
+<i>groff</i>&rsquo;s source code repository by its
+developers.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Details on
+repository access and much more can be found in the file
+<i>README</i> at the top directory of the <i>groff</i>
+source package.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A free
+implementation of the <b>grap</b> preprocessor, written by
+<a href="mailto:faber@lunabase.org">Ted Faber</a>, can be
+found at the
+<a href="http://www.lunabase.org/~faber/Vault/software/grap/">grap
+website</a>. This is the only <i>grap</i> supported by
+<i>groff</i>.</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>groff</b>
+was written by <a href="mailto:jjc@jclark.com">James
+Clark</a>. This document was rewritten, enhanced, and put
+under the FDL license in 2002 by
+<a href="mailto:groff-bernd.warken-72@web.de">Bernd
+Warken</a>.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Groff: The
+GNU Implementation of troff</i>, by Trent A. Fisher and
+Werner Lemberg, is the primary <i>groff</i> manual. You can
+browse it interactively with &ldquo;info groff&rdquo;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Due to its
+complex structure, the <i>groff</i> system has many man
+pages. They can be read with <b>man</b>(1) or
+<b>groffer</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em">But there are
+special sections of <i>man pages</i>. <i>groff</i> has man
+pages in sections <b>1</b>, <b>5</b>,<b>and</b> 7<b>.</b>
+When there are several <i>man pages</i> with the same name
+in the same <i>man</i> section, the one with the lowest
+section is should as first. The other man pages can be shown
+anyway by adding the section number as argument before the
+man page name. Reading the man page about the <i>groff</i>
+language is done by one of</p>
+
+<p style="margin-left:22%;"><b>man 7 groff <br>
+groffer 7 groff</b></p>
+
+<p style="margin-left:11%;">Introduction, history and
+further readings:</p>
+
+<p style="margin-left:22%;"><b>roff</b>(7).</p>
+
+<p style="margin-left:11%;">Viewer for groff files:</p>
+
+<p style="margin-left:22%;"><b>groffer</b>(1),
+<b>gxditview</b>(1), <b>xditview</b>(1x).</p>
+
+<p style="margin-left:11%;">Wrapper programs for
+formatters:</p>
+
+<p style="margin-left:22%;"><b>groff</b>(1),
+<b>grog</b>(1).</p>
+
+<p style="margin-left:11%;">Roff preprocessors:</p>
+
+<p style="margin-left:22%;"><b>eqn</b>(1), <b>grn</b>(1),
+<b>pic</b>(1), <b>chem</b>(1), <b>preconv</b>(1),
+<b>refer</b>(1), <b>soelim</b>(1), <b>tbl</b>(1),
+<b>grap</b>(1).</p>
+
+<p style="margin-left:11%;">Roff language with the groff
+extensions:</p>
+
+<p style="margin-left:22%;"><b>groff</b>(7),
+<b>groff_char</b>(7), <b>groff_diff</b>(7),
+<b>groff_font</b>(5).</p>
+
+<p style="margin-left:11%;">Roff formatter programs:</p>
+
+<p style="margin-left:22%;"><b>nroff</b>(1),
+<b>troff</b>(1), <b>ditroff</b>(7).</p>
+
+<p style="margin-left:11%;">The intermediate output
+language:</p>
+
+<p style="margin-left:22%;"><b>groff_out</b>(7).</p>
+
+<p style="margin-left:11%;">Postprocessors for the output
+devices:</p>
+
+<p style="margin-left:22%;"><b>grodvi</b>(1),
+<b>grohtml</b>(1), <b>grolbp</b>(1), <b>grolj4</b>(1),
+<b>lj4_font</b>(5), <b>grops</b>(1), <b>gropdf</b>(1),
+<b>grotty</b>(1).</p>
+
+<p style="margin-left:11%;">Groff macro packages and
+macro-specific utilities:</p>
+
+<p style="margin-left:22%;"><b>groff_tmac</b>(5),
+<b>groff_man</b>(7), <b>groff_mdoc</b>(7),
+<b>groff_me</b>(7), <b>groff_mm</b>(7), <b>groff_mmse</b>(7)
+(only in Swedish locales), <b>groff_mom</b>(7),
+<b>groff_ms</b>(7), <b>groff_www</b>(7),
+<b>groff_trace</b>(7), <b>mmroff</b>(7).</p>
+
+<p style="margin-left:11%;">The following utilities are
+available:</p>
+
+<p style="margin-left:22%;"><b>addftinfo</b>(1),
+<b>afmtodit</b>(1), <b>eqn2graph</b>(1), <b>gdiffmk</b>(1),
+<b>grap2graph</b>(1), <b>groffer</b>(1),
+<b>gxditview</b>(1), <b>hpftodit</b>(1), <b>indxbib</b>(1),
+<b>lkbib</b>(1), <b>lookbib</b>(1), <b>pdfroff</b>(1),
+<b>pfbtops</b>(1), <b>pic2graph</b>(1), <b>tfmtodit</b>(1),
+<b>xtotroff</b>(1).</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,1577 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:51 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SYSTEMD-ANALYZE</title>
+
+</head>
+<body>
+
+<h1 align="center">SYSTEMD-ANALYZE</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#NOTES">NOTES</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">systemd-analyze
+- Analyze and debug system manager</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em"><b>systemd-analyze</b>
+[OPTIONS...] [time]</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em"><b>systemd-analyze</b>
+[OPTIONS...] blame</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em"><b>systemd-analyze</b>
+[OPTIONS...] critical-chain [<i>UNIT</i>...]</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em"><b>systemd-analyze</b>
+[OPTIONS...] dump [<i>PATTERN</i>...]</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em"><b>systemd-analyze</b>
+[OPTIONS...] plot [&gt;file.svg]</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em"><b>systemd-analyze</b>
+[OPTIONS...] dot [<i>PATTERN</i>...] [&gt;file.dot]</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em"><b>systemd-analyze</b>
+[OPTIONS...] unit-files</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em"><b>systemd-analyze</b>
+[OPTIONS...] unit-paths</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em"><b>systemd-analyze</b>
+[OPTIONS...] exit-status [<i>STATUS</i>...]</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em"><b>systemd-analyze</b>
+[OPTIONS...] capability [<i>CAPABILITY</i>...]</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em"><b>systemd-analyze</b>
+[OPTIONS...] condition <i>CONDITION</i>...</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em"><b>systemd-analyze</b>
+[OPTIONS...] syscall-filter [<i>SET</i>...]</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em"><b>systemd-analyze</b>
+[OPTIONS...] filesystems [<i>SET</i>...]</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em"><b>systemd-analyze</b>
+[OPTIONS...] calendar <i>SPEC</i>...</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em"><b>systemd-analyze</b>
+[OPTIONS...] timestamp <i>TIMESTAMP</i>...</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em"><b>systemd-analyze</b>
+[OPTIONS...] timespan <i>SPAN</i>...</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em"><b>systemd-analyze</b>
+[OPTIONS...] cat-config <i>NAME</i>|<i>PATH</i>...</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em"><b>systemd-analyze</b>
+[OPTIONS...] compare-versions <i>VERSION1</i> [<i>OP</i>]
+<i>VERSION2</i></p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em"><b>systemd-analyze</b>
+[OPTIONS...] verify [<i>FILE</i>...]</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em"><b>systemd-analyze</b>
+[OPTIONS...] security <i>UNIT</i>...</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em"><b>systemd-analyze</b>
+[OPTIONS...] inspect-elf <i>FILE</i>...</p></td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-analyze</b>
+may be used to determine system boot-up performance
+statistics and retrieve other state and tracing information
+from the system and service manager, and to verify the
+correctness of unit files. It is also used to access special
+functions useful for advanced system manager debugging.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If no command
+is passed, <b>systemd-analyze time</b> is implied.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-analyze
+time</b> <br>
+This command prints the time spent in the kernel before
+userspace has been reached, the time spent in the initrd
+before normal system userspace has been reached, and the
+time normal system userspace took to initialize. Note that
+these measurements simply measure the time passed up to the
+point where all system services have been spawned, but not
+necessarily until they fully finished initialization or the
+disk is idle.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;1.&nbsp;Show
+how long the boot took</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"># in a
+container <br>
+$ systemd-analyze time <br>
+Startup finished in 296ms (userspace) <br>
+multi-user.target reached after 275ms in userspace</p>
+
+<p style="margin-left:17%; margin-top: 1em"># on a real
+machine <br>
+$ systemd-analyze time <br>
+Startup finished in 2.584s (kernel) + 19.176s (initrd) +
+47.847s (userspace) = 1min 9.608s <br>
+multi-user.target reached after 47.820s in userspace</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-analyze
+blame</b> <br>
+This command prints a list of all running units, ordered by
+the time they took to initialize. This information may be
+used to optimize boot-up times. Note that the output might
+be misleading as the initialization of one service might be
+slow simply because it waits for the initialization of
+another service to complete. Also note: <b>systemd-analyze
+blame</b> doesn't display results for services with
+<i>Type=simple</i>, because systemd considers such services
+to be started immediately, hence no measurement of the
+initialization delays can be done. Also note that this
+command only shows the time units took for starting up, it
+does not show how long unit jobs spent in the execution
+queue. In particular it shows the time units spent in
+&quot;activating&quot; state, which is not defined for units
+such as device units that transition directly from
+&quot;inactive&quot; to &quot;active&quot;. This command
+hence gives an impression of the performance of program
+code, but cannot accurately reflect latency introduced by
+waiting for hardware and similar events.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;2.&nbsp;Show
+which units took the most time during boot</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$
+systemd-analyze blame <br>
+32.875s pmlogger.service <br>
+20.905s systemd-networkd-wait-online.service <br>
+13.299s dev-vda1.device <br>
+... <br>
+23ms sysroot.mount <br>
+11ms initrd-udevadm-cleanup-db.service <br>
+3ms sys-kernel-config.mount</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-analyze
+critical-chain [</b><i>UNIT</i>...] <br>
+This command prints a tree of the time-critical chain of
+units (for each of the specified <i>UNIT</i>s or for the
+default target otherwise). The time after the unit is active
+or started is printed after the &quot;@&quot; character. The
+time the unit takes to start is printed after the
+&quot;+&quot; character. Note that the output might be
+misleading as the initialization of services might depend on
+socket activation and because of the parallel execution of
+units. Also, similarly to the <b>blame</b> command, this
+only takes into account the time units spent in
+&quot;activating&quot; state, and hence does not cover units
+that never went through an &quot;activating&quot; state
+(such as device units that transition directly from
+&quot;inactive&quot; to &quot;active&quot;). Moreover it
+does not show information on jobs (and in particular not
+jobs that timed out).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;3.&nbsp;systemd-analyze
+critical-chain</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$
+systemd-analyze critical-chain <br>
+multi-user.target @47.820s <br>
+&acirc;&acirc;pmie.service @35.968s +548ms <br>
+&acirc;&acirc;pmcd.service @33.715s +2.247s <br>
+&acirc;&acirc;network-online.target @33.712s <br>
+&acirc;&acirc;systemd-networkd-wait-online.service @12.804s
++20.905s <br>
+&acirc;&acirc;systemd-networkd.service @11.109s +1.690s <br>
+&acirc;&acirc;systemd-udevd.service @9.201s +1.904s <br>
+&acirc;&acirc;systemd-tmpfiles-setup-dev.service @7.306s
++1.776s <br>
+&acirc;&acirc;kmod-static-nodes.service @6.976s +177ms <br>
+&acirc;&acirc;systemd-journald.socket <br>
+&acirc;&acirc;system.slice <br>
+&acirc;&acirc;-.slice</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-analyze
+dump [</b><i>pattern</i>...] <br>
+Without any parameter, this command outputs a (usually very
+long) human-readable serialization of the complete service
+manager state. Optional glob pattern may be specified,
+causing the output to be limited to units whose names match
+one of the patterns. The output format is subject to change
+without notice and should not be parsed by applications.
+This command is rate limited for unprivileged users.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;4.&nbsp;Show
+the internal state of user manager</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$
+systemd-analyze --user dump <br>
+Timestamp userspace: Thu 2019-03-14 23:28:07 CET <br>
+Timestamp finish: Thu 2019-03-14 23:28:07 CET <br>
+Timestamp generators-start: Thu 2019-03-14 23:28:07 CET <br>
+Timestamp generators-finish: Thu 2019-03-14 23:28:07 CET
+<br>
+Timestamp units-load-start: Thu 2019-03-14 23:28:07 CET <br>
+Timestamp units-load-finish: Thu 2019-03-14 23:28:07 CET
+<br>
+-&gt; Unit proc-timer_list.mount: <br>
+Description: /proc/timer_list <br>
+... <br>
+-&gt; Unit default.target: <br>
+Description: Main user target <br>
+...</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-analyze
+plot</b> <br>
+This command prints an SVG graphic detailing which system
+services have been started at what time, highlighting the
+time they spent on initialization.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;5.&nbsp;Plot
+a bootchart</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$
+systemd-analyze plot &gt;bootup.svg <br>
+$ eog bootup.svg&amp;</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-analyze
+dot [</b><i>pattern</i>...] <br>
+This command generates textual dependency graph description
+in dot format for further processing with the GraphViz
+<b>dot</b>(1) tool. Use a command line like
+<b>systemd-analyze dot | dot -Tsvg &gt;systemd.svg</b> to
+generate a graphical dependency tree. Unless <b>--order</b>
+or <b>--require</b> is passed, the generated graph will show
+both ordering and requirement dependencies. Optional pattern
+globbing style specifications (e.g. *.target) may be given
+at the end. A unit dependency is included in the graph if
+any of these patterns match either the origin or destination
+node.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;6.&nbsp;Plot
+all dependencies of any unit whose name starts with
+&quot;avahi-daemon&quot;</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$
+systemd-analyze dot 'avahi-daemon.*' | dot -Tsvg
+&gt;avahi.svg <br>
+$ eog avahi.svg</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;7.&nbsp;Plot
+the dependencies between all known target units</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$
+systemd-analyze dot --to-pattern='*.target'
+--from-pattern='*.target' \ <br>
+| dot -Tsvg &gt;targets.svg <br>
+$ eog targets.svg</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-analyze
+unit-paths</b> <br>
+This command outputs a list of all directories from which
+unit files, .d overrides, and .wants, .requires symlinks may
+be loaded. Combine with <b>--user</b> to retrieve the list
+for the user manager instance, and <b>--global</b> for the
+global configuration of user manager instances.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;8.&nbsp;Show
+all paths for generated units</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$
+systemd-analyze unit-paths | grep '^/run' <br>
+/run/systemd/system.control <br>
+/run/systemd/transient <br>
+/run/systemd/generator.early <br>
+/run/systemd/system <br>
+/run/systemd/system.attached <br>
+/run/systemd/generator <br>
+/run/systemd/generator.late</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that this
+verb prints the list that is compiled into
+<b>systemd-analyze</b> itself, and does not communicate with
+the running manager. Use</p>
+
+<p style="margin-left:17%; margin-top: 1em">systemctl
+[--user] [--global] show -p UnitPath --value</p>
+
+<p style="margin-left:11%; margin-top: 1em">to retrieve the
+actual list that the manager uses, with any empty
+directories omitted.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-analyze
+exit-status [</b><i>STATUS</i>...] <br>
+This command prints a list of exit statuses along with their
+&quot;class&quot;, i.e. the source of the definition (one of
+&quot;glibc&quot;, &quot;systemd&quot;, &quot;LSB&quot;, or
+&quot;BSD&quot;), see the Process Exit Codes section in
+<b>systemd.exec</b>(5). If no additional arguments are
+specified, all known statuses are shown. Otherwise, only the
+definitions for the specified codes are shown.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;9.&nbsp;Show
+some example exit status names</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$
+systemd-analyze exit-status 0 1 {63..65} <br>
+NAME STATUS CLASS <br>
+SUCCESS 0 glibc <br>
+FAILURE 1 glibc <br>
+- 63 - <br>
+USAGE 64 BSD <br>
+DATAERR 65 BSD</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-analyze
+capability [</b><i>CAPABILITY</i>...] <br>
+This command prints a list of Linux capabilities along with
+their numeric IDs. See <b>capabilities</b>(7) for details.
+If no argument is specified the full list of capabilities
+known to the service manager and the kernel is shown.
+Capabilities defined by the kernel but not known to the
+service manager are shown as &quot;cap_???&quot;.
+Optionally, if arguments are specified they may refer to
+specific cabilities by name or numeric ID, in which case
+only the indicated capabilities are shown in the table.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;10.&nbsp;Show
+some example capability names</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$
+systemd-analyze capability 0 1 {30..32} <br>
+NAME NUMBER <br>
+cap_chown 0 <br>
+cap_dac_override 1 <br>
+cap_audit_control 30 <br>
+cap_setfcap 31 <br>
+cap_mac_override 32</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-analyze
+condition</b> <i>CONDITION</i>... <br>
+This command will evaluate <i>Condition*=...</i> and
+<i>Assert*=...</i> assignments, and print their values, and
+the resulting value of the combined condition set. See
+<b>systemd.unit</b>(5) for a list of available conditions
+and asserts.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;11.&nbsp;Evaluate
+conditions that check kernel versions</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$
+systemd-analyze condition 'ConditionKernelVersion = !
+&lt;4.0' \ <br>
+'ConditionKernelVersion = &gt;=5.1' \ <br>
+'ConditionACPower=|false' \ <br>
+'ConditionArchitecture=|!arm' \ <br>
+'AssertPathExists=/etc/os-release' <br>
+test.service: AssertPathExists=/etc/os-release succeeded.
+<br>
+Asserts succeeded. <br>
+test.service: ConditionArchitecture=|!arm succeeded. <br>
+test.service: ConditionACPower=|false failed. <br>
+test.service: ConditionKernelVersion=&gt;=5.1 succeeded.
+<br>
+test.service: ConditionKernelVersion=!&lt;4.0 succeeded.
+<br>
+Conditions succeeded.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-analyze
+syscall-filter [</b><i>SET</i>...] <br>
+This command will list system calls contained in the
+specified system call set <i>SET</i>, or all known sets if
+no sets are specified. Argument <i>SET</i> must include the
+&quot;@&quot; prefix.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-analyze
+filesystems [</b><i>SET</i>...] <br>
+This command will list filesystems in the specified
+filesystem set <i>SET</i>, or all known sets if no sets are
+specified. Argument <i>SET</i> must include the
+&quot;@&quot; prefix.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-analyze
+calendar</b> <i>EXPRESSION</i>... <br>
+This command will parse and normalize repetitive calendar
+time events, and will calculate when they elapse next. This
+takes the same input as the <i>OnCalendar=</i> setting in
+<b>systemd.timer</b>(5), following the syntax described in
+<b>systemd.time</b>(7). By default, only the next time the
+calendar expression will elapse is shown; use
+<b>--iterations=</b> to show the specified number of next
+times the expression elapses. Each time the expression
+elapses forms a timestamp, see the <b>timestamp</b> verb
+below.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;12.&nbsp;Show
+leap days in the near future</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$
+systemd-analyze calendar --iterations=5 '*-2-29 0:0:0' <br>
+Original form: *-2-29 0:0:0 <br>
+Normalized form: *-02-29 00:00:00 <br>
+Next elapse: Sat 2020-02-29 00:00:00 UTC <br>
+From now: 11 months 15 days left <br>
+Iter. #2: Thu 2024-02-29 00:00:00 UTC <br>
+From now: 4 years 11 months left <br>
+Iter. #3: Tue 2028-02-29 00:00:00 UTC <br>
+From now: 8 years 11 months left <br>
+Iter. #4: Sun 2032-02-29 00:00:00 UTC <br>
+From now: 12 years 11 months left <br>
+Iter. #5: Fri 2036-02-29 00:00:00 UTC <br>
+From now: 16 years 11 months left</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-analyze
+timestamp</b> <i>TIMESTAMP</i>... <br>
+This command parses a timestamp (i.e. a single point in
+time) and outputs the normalized form and the difference
+between this timestamp and now. The timestamp should adhere
+to the syntax documented in <b>systemd.time</b>(7), section
+&quot;PARSING TIMESTAMPS&quot;.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;13.&nbsp;Show
+parsing of timestamps</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$
+systemd-analyze timestamp yesterday now tomorrow <br>
+Original form: yesterday <br>
+Normalized form: Mon 2019-05-20 00:00:00 CEST <br>
+(in UTC): Sun 2019-05-19 22:00:00 UTC <br>
+UNIX seconds: @15583032000 <br>
+From now: 1 day 9h ago</p>
+
+<p style="margin-left:17%; margin-top: 1em">Original form:
+now <br>
+Normalized form: Tue 2019-05-21 09:48:39 CEST <br>
+(in UTC): Tue 2019-05-21 07:48:39 UTC <br>
+UNIX seconds: @1558424919.659757 <br>
+From now: 43us ago</p>
+
+<p style="margin-left:17%; margin-top: 1em">Original form:
+tomorrow <br>
+Normalized form: Wed 2019-05-22 00:00:00 CEST <br>
+(in UTC): Tue 2019-05-21 22:00:00 UTC <br>
+UNIX seconds: @15584760000 <br>
+From now: 14h left</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-analyze
+timespan</b> <i>EXPRESSION</i>... <br>
+This command parses a time span (i.e. a difference between
+two timestamps) and outputs the normalized form and the
+equivalent value in microseconds. The time span should
+adhere to the syntax documented in <b>systemd.time</b>(7),
+section &quot;PARSING TIME SPANS&quot;. Values without units
+are parsed as seconds.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;14.&nbsp;Show
+parsing of timespans</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$
+systemd-analyze timespan 1s 300s '1year 0.000001s' <br>
+Original: 1s <br>
+&Icirc;&frac14;s: 1000000 <br>
+Human: 1s</p>
+
+<p style="margin-left:17%; margin-top: 1em">Original: 300s
+<br>
+&Icirc;&frac14;s: 300000000 <br>
+Human: 5min</p>
+
+<p style="margin-left:17%; margin-top: 1em">Original: 1year
+0.000001s <br>
+&Icirc;&frac14;s: 31557600000001 <br>
+Human: 1y 1us</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-analyze
+cat-config</b> <i>NAME</i>|<i>PATH</i>... <br>
+This command is similar to <b>systemctl cat</b>, but
+operates on config files. It will copy the contents of a
+config file and any drop-ins to standard output, using the
+usual systemd set of directories and rules for precedence.
+Each argument must be either an absolute path including the
+prefix (such as /etc/systemd/logind.conf or
+/usr/lib/systemd/logind.conf), or a name relative to the
+prefix (such as systemd/logind.conf).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;15.&nbsp;Showing
+logind configuration</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$
+systemd-analyze cat-config systemd/logind.conf <br>
+# /etc/systemd/logind.conf <br>
+... <br>
+[Login] <br>
+NAutoVTs=8 <br>
+...</p>
+
+<p style="margin-left:17%; margin-top: 1em">#
+/usr/lib/systemd/logind.conf.d/20-test.conf <br>
+... some override from another package</p>
+
+<p style="margin-left:17%; margin-top: 1em">#
+/etc/systemd/logind.conf.d/50-override.conf <br>
+... some administrator override</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-analyze
+compare-versions</b> <i>VERSION1</i> [<i>OP</i>]
+<i>VERSION2</i> <br>
+This command has two distinct modes of operation, depending
+on whether the operator <i>OP</i> is specified.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the first
+mode &mdash; when <i>OP</i> is not specified &mdash; it will
+compare the two version strings and print either
+&quot;<i>VERSION1</i> &lt; <i>VERSION2</i>&quot;, or
+&quot;<i>VERSION1</i> == <i>VERSION2</i>&quot;, or
+&quot;<i>VERSION1</i> &gt; <i>VERSION2</i>&quot; as
+appropriate.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The exit status
+is <b>0</b> if the versions are equal, <b>11</b> if the
+version of the right is smaller, and <b>12</b> if the
+version of the left is smaller. (This matches the convention
+used by <b>rpmdev-vercmp</b>.)</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the second
+mode &mdash; when <i>OP</i> is specified &mdash; it will
+compare the two version strings using the operation
+<i>OP</i> and return <b>0</b> (success) if they condition is
+satisfied, and <b>1</b> (failure) otherwise. <b>OP</b> may
+be <b>lt</b>, <b>le</b>, <b>eq</b>, <b>ne</b>, <b>ge</b>,
+<b>gt</b>. In this mode, no output is printed. (This matches
+the convention used by <b>dpkg</b>(1)
+<b>--compare-versions</b>.)</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;16.&nbsp;Compare
+versions of a package</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$
+systemd-analyze compare-versions
+systemd-250~rc1.fc36.aarch64 systemd-251.fc36.aarch64 <br>
+systemd-250~rc1.fc36.aarch64 &lt; systemd-251.fc36.aarch64
+<br>
+$ echo $? <br>
+12</p>
+
+<p style="margin-left:17%; margin-top: 1em">$
+systemd-analyze compare-versions 1 lt 2; echo $? <br>
+0 <br>
+$ systemd-analyze compare-versions 1 ge 2; echo $? <br>
+1</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-analyze
+verify</b> <i>FILE</i>... <br>
+This command will load unit files and print warnings if any
+errors are detected. Files specified on the command line
+will be loaded, but also any other units referenced by them.
+A unit's name on disk can be overridden by specifying an
+alias after a colon; see below for an example. The full unit
+search path is formed by combining the directories for all
+command line arguments, and the usual unit load paths. The
+variable <i>$SYSTEMD_UNIT_PATH</i> is supported, and may be
+used to replace or augment the compiled in set of unit load
+paths; see <b>systemd.unit</b>(5). All units files present
+in the directories containing the command line arguments
+will be used in preference to the other paths.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+errors are currently detected:</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; unknown
+sections and directives,</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; missing
+dependencies which are required to start the given unit,</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; man
+pages listed in <i>Documentation=</i> which are not found in
+the system,</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; commands
+listed in <i>ExecStart=</i> and similar which are not found
+in the system or not executable.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;17.&nbsp;Misspelt
+directives</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$ cat
+./user.slice <br>
+[Unit] <br>
+WhatIsThis=11 <br>
+Documentation=man:nosuchfile(1) <br>
+Requires=different.service</p>
+
+<p style="margin-left:17%; margin-top: 1em">[Service] <br>
+Description=x</p>
+
+<p style="margin-left:17%; margin-top: 1em">$
+systemd-analyze verify ./user.slice <br>
+[./user.slice:9] Unknown lvalue 'WhatIsThis' in section
+'Unit' <br>
+[./user.slice:13] Unknown section 'Service'. Ignoring. <br>
+Error: org.freedesktop.systemd1.LoadFailed: <br>
+Unit different.service failed to load: <br>
+No such file or directory. <br>
+Failed to create user.slice/start: Invalid argument <br>
+user.slice: man nosuchfile(1) command failed with code
+16</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;18.&nbsp;Missing
+service units</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$ tail
+./a.socket ./b.socket <br>
+==&gt; ./a.socket &lt;== <br>
+[Socket] <br>
+ListenStream=100</p>
+
+<p style="margin-left:17%; margin-top: 1em">==&gt;
+./b.socket &lt;== <br>
+[Socket] <br>
+ListenStream=100 <br>
+Accept=yes</p>
+
+<p style="margin-left:17%; margin-top: 1em">$
+systemd-analyze verify ./a.socket ./b.socket <br>
+Service a.service not loaded, a.socket cannot be started.
+<br>
+Service b@0.service not loaded, b.socket cannot be
+started.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;19.&nbsp;Aliasing
+a unit</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$ cat
+/tmp/source <br>
+[Unit] <br>
+Description=Hostname printer</p>
+
+<p style="margin-left:17%; margin-top: 1em">[Service] <br>
+Type=simple <br>
+ExecStart=/usr/bin/echo %H <br>
+MysteryKey=true</p>
+
+<p style="margin-left:17%; margin-top: 1em">$
+systemd-analyze verify /tmp/source <br>
+Failed to prepare filename /tmp/source: Invalid argument</p>
+
+<p style="margin-left:17%; margin-top: 1em">$
+systemd-analyze verify /tmp/source:alias.service <br>
+/tmp/systemd-analyze-XXXXXX/alias.service:7: Unknown key
+name 'MysteryKey' in section 'Service', ignoring.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-analyze
+security [</b><i>UNIT</i>...] <br>
+This command analyzes the security and sandboxing settings
+of one or more specified service units. If at least one unit
+name is specified the security settings of the specified
+service units are inspected and a detailed analysis is
+shown. If no unit name is specified, all currently loaded,
+long-running service units are inspected and a terse table
+with results shown. The command checks for various
+security-related service settings, assigning each a numeric
+&quot;exposure level&quot; value, depending on how important
+a setting is. It then calculates an overall exposure level
+for the whole unit, which is an estimation in the range
+0.0...10.0 indicating how exposed a service is
+security-wise. High exposure levels indicate very little
+applied sandboxing. Low exposure levels indicate tight
+sandboxing and strongest security restrictions. Note that
+this only analyzes the per-service security features systemd
+itself implements. This means that any additional security
+mechanisms applied by the service code itself are not
+accounted for. The exposure level determined this way should
+not be misunderstood: a high exposure level neither means
+that there is no effective sandboxing applied by the service
+code itself, nor that the service is actually vulnerable to
+remote or local attacks. High exposure levels do indicate
+however that most likely the service might benefit from
+additional settings applied to them.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Please note
+that many of the security and sandboxing settings
+individually can be circumvented &mdash; unless combined
+with others. For example, if a service retains the privilege
+to establish or undo mount points many of the sandboxing
+options can be undone by the service code itself. Due to
+that is essential that each service uses the most
+comprehensive and strict sandboxing and security settings
+possible. The tool will take into account some of these
+combinations and relationships between the settings, but not
+all. Also note that the security and sandboxing settings
+analyzed here only apply to the operations executed by the
+service code itself. If a service has access to an IPC
+system (such as D-Bus) it might request operations from
+other services that are not subject to the same
+restrictions. Any comprehensive security and sandboxing
+analysis is hence incomplete if the IPC access policy is not
+validated too.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;20.&nbsp;Analyze
+systemd-logind.service</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">$
+systemd-analyze security --no-pager systemd-logind.service
+<br>
+NAME DESCRIPTION EXPOSURE <br>
+&acirc; PrivateNetwork= Service has access to the host's
+network 0.5 <br>
+&acirc; User=/DynamicUser= Service runs as root user 0.4
+<br>
+&acirc; DeviceAllow= Service has no device ACL 0.2 <br>
+&acirc; IPAddressDeny= Service blocks all IP address ranges
+<br>
+... <br>
+&acirc; Overall exposure level for systemd-logind.service:
+4.1 OK &eth;</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-analyze
+inspect-elf</b> <i>FILE</i>... <br>
+This command will load the specified files, and if they are
+ELF objects (executables, libraries, core files, etc.) it
+will parse the embedded packaging metadata, if any, and
+print it in a table or json format. See the
+<b><font color="#0000FF">Packaging Metadata</font></b>
+<small><font color="#000000">[1]</font></small>
+<font color="#000000">documentation for more
+information.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Example&nbsp;21.&nbsp;Table
+output</b></font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">$
+systemd-analyze inspect-elf --json=pretty
+/tmp/core.fsverity.1000.f77dac5dc161402aa44e15b7dd9dcf97.58561.1637106137000000
+<br>
+{ <br>
+&quot;elfType&quot; : &quot;coredump&quot;, <br>
+&quot;elfArchitecture&quot; : &quot;AMD x86-64&quot;, <br>
+&quot;/home/bluca/git/fsverity-utils/fsverity&quot; : { <br>
+&quot;type&quot; : &quot;deb&quot;, <br>
+&quot;name&quot; : &quot;fsverity-utils&quot;, <br>
+&quot;version&quot; : &quot;1.3-1&quot;, <br>
+&quot;buildId&quot; :
+&quot;7c895ecd2a271f93e96268f479fdc3c64a2ec4ee&quot; <br>
+}, <br>
+&quot;/home/bluca/git/fsverity-utils/libfsverity.so.0&quot;
+: { <br>
+&quot;type&quot; : &quot;deb&quot;, <br>
+&quot;name&quot; : &quot;fsverity-utils&quot;, <br>
+&quot;version&quot; : &quot;1.3-1&quot;, <br>
+&quot;buildId&quot; :
+&quot;b5e428254abf14237b0ae70ed85fffbb98a78f88&quot; <br>
+} <br>
+}</font></p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+following options are understood:</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--system</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Operates
+on the system systemd instance. This is the implied
+default.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--user</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Operates
+on the user systemd instance.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--global</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Operates
+on the system-wide configuration for user systemd
+instance.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--order</b>,
+<b>--require</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">When used
+in conjunction with the <b>dot</b> command (see above),
+selects which dependencies are shown in the dependency
+graph. If <b>--order</b> is passed, only dependencies of
+type <i>After=</i> or <i>Before=</i> are shown. If
+<b>--require</b> is passed, only dependencies of type
+<i>Requires=</i>, <i>Requisite=</i>, <i>Wants=</i> and
+<i>Conflicts=</i> are shown. If neither is passed, this
+shows dependencies of all these types.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--from-pattern=</b>,
+<b>--to-pattern=</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">When used
+in conjunction with the <b>dot</b> command (see above), this
+selects which relationships are shown in the dependency
+graph. Both options require a <b>glob</b>(7) pattern as an
+argument, which will be matched against the left-hand and
+the right-hand, respectively, nodes of a
+relationship.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">Each
+of these can be used more than once, in which case the unit
+name must match one of the values. When tests for both sides
+of the relation are present, a relation must pass both tests
+to be shown. When patterns are also specified as positional
+arguments, they must match at least one side of the
+relation. In other words, patterns specified with those two
+options will trim the list of edges matched by the
+positional arguments, if any are given, and fully determine
+the list of edges shown otherwise.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--fuzz=</b><i>timespan</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">When used
+in conjunction with the <b>critical-chain</b> command (see
+above), also show units, which finished <i>timespan</i>
+earlier, than the latest unit in the same level. The unit of
+<i>timespan</i> is seconds unless specified with a different
+unit, e.g. &quot;50ms&quot;.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--man=no</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Do not
+invoke <b>man</b>(1) to verify the existence of man pages
+listed in <i>Documentation=</i>.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--generators</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Invoke
+unit generators, see <b>systemd.generator</b>(7). Some
+generators require root privileges. Under a normal user,
+running with generators enabled will generally result in
+some warnings.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--recursive-errors=</b><i>MODE</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Control
+verification of units and their dependencies and whether
+<b>systemd-analyze verify</b> exits with a non-zero process
+exit status or not. With <b>yes</b>, return a non-zero
+process exit status when warnings arise during verification
+of either the specified unit or any of its associated
+dependencies. With <b>no</b>, return a non-zero process exit
+status when warnings arise during verification of only the
+specified unit. With <b>one</b>, return a non-zero process
+exit status when warnings arise during verification of
+either the specified unit or its immediate dependencies. If
+this option is not specified, zero is returned as the exit
+status regardless whether warnings arise during verification
+or not.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--root=</b><i>PATH</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">With
+<b>cat-files</b> and <b>verify</b>, operate on files
+underneath the specified root path <i>PATH</i>.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--image=</b><i>PATH</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">With
+<b>cat-files</b> and <b>verify</b>, operate on files inside
+the specified image path <i>PATH</i>.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--offline=</b><i>BOOL</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">With
+<b>security</b>, perform an offline security review of the
+specified unit files, i.e. does not have to rely on PID 1 to
+acquire security information for the files like the
+<b>security</b> verb when used by itself does. This means
+that <b>--offline=</b> can be used with <b>--root=</b> and
+<b>--image=</b> as well. If a unit's overall exposure level
+is above that set by <b>--threshold=</b> (default value is
+100), <b>--offline=</b> will return an error.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--profile=</b><i>PATH</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">With
+<b>security --offline=</b>, takes into consideration the
+specified portable profile when assessing unit settings. The
+profile can be passed by name, in which case the well-known
+system locations will be searched, or it can be the full
+path to a specific drop-in file.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--threshold=</b><i>NUMBER</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">With
+<b>security</b>, allow the user to set a custom value to
+compare the overall exposure level with, for the specified
+unit files. If a unit's overall exposure level, is greater
+than that set by the user, <b>security</b> will return an
+error. <b>--threshold=</b> can be used with
+<b>--offline=</b> as well and its default value is
+100.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--security-policy=</b><i>PATH</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">With
+<b>security</b>, allow the user to define a custom set of
+requirements formatted as a JSON file against which to
+compare the specified unit file(s) and determine their
+overall exposure level to security threats.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000"><b>Table&nbsp;1.&nbsp;Accepted
+Assessment Test Identifiers</b></font></p></table>
+
+
+<p align="center"><font color="#000000"><b><img src="grohtml-187951.png" alt="Image grohtml-187951.png"></b></font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">See
+example &quot;JSON Policy&quot; below.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--json=</b><i>MODE</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">With the
+<b>security</b> command, generate a JSON formatted output of
+the security analysis table. The format is a JSON array with
+objects containing the following fields: <i>set</i> which
+indicates if the setting has been enabled or not,
+<i>name</i> which is what is used to refer to the setting,
+<i>json_field</i> which is the JSON compatible identifier of
+the setting, <i>description</i> which is an outline of the
+setting state, and <i>exposure</i> which is a number in the
+range 0.0...10.0, where a higher value corresponds to a
+higher security threat. The JSON version of the table is
+printed to standard output. The <i>MODE</i> passed to the
+option can be one of three: <b>off</b> which is the default,
+<b>pretty</b> and <b>short</b> which respectively output a
+prettified or shorted JSON version of the security
+table.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--iterations=</b><i>NUMBER</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">When used
+with the <b>calendar</b> command, show the specified number
+of iterations the specified calendar expression will elapse
+next. Defaults to 1.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--base-time=</b><i>TIMESTAMP</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">When used
+with the <b>calendar</b> command, show next iterations
+relative to the specified point in time. If not specified
+defaults to the current time.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--unit=</b><i>UNIT</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">When used
+with the <b>condition</b> command, evaluate all the
+<i>Condition*=...</i> and <i>Assert*=...</i> assignments in
+the specified unit file. The full unit search path is formed
+by combining the directories for the specified unit with the
+usual unit load paths. The variable
+<i>$SYSTEMD_UNIT_PATH</i> is supported, and may be used to
+replace or augment the compiled in set of unit load paths;
+see <b>systemd.unit</b>(5). All units files present in the
+directory containing the specified unit will be used in
+preference to the other paths.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>-H</b>,
+<b>--host=</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Execute
+the operation remotely. Specify a hostname, or a username
+and hostname separated by &quot;@&quot;, to connect to. The
+hostname may optionally be suffixed by a port ssh is
+listening on, separated by &quot;:&quot;, and then a
+container name, separated by &quot;/&quot;, which connects
+directly to a specific container on the specified host. This
+will use SSH to talk to the remote machine manager instance.
+Container names may be enumerated with <b>machinectl -H</b>
+<i>HOST</i>. Put IPv6 addresses in brackets.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>-M</b>,
+<b>--machine=</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Execute
+operation on a local container. Specify a container name to
+connect to, optionally prefixed by a user name to connect as
+and a separating &quot;@&quot; character. If the special
+string &quot;.host&quot; is used in place of the container
+name, a connection to the local system is made (which is
+useful to connect to a specific user's user bus:
+&quot;--user --machine=lennart@.host&quot;). If the
+&quot;@&quot; syntax is not used, the connection is made as
+root user. If the &quot;@&quot; syntax is used either the
+left hand side or the right hand side may be omitted (but
+not both) in which case the local user name and
+&quot;.host&quot; are implied.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>-q</b>,
+<b>--quiet</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Suppress
+hints and other non-essential output.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>-h</b>,
+<b>--help</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Print a
+short help text and exit.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--version</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Print a
+short version string and exit.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--no-pager</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Do not
+pipe output into a pager.</font></p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">For
+most commands, 0 is returned on success, and a non-zero
+failure code otherwise.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">With
+the verb <b>compare-versions</b>, in the two-argument form,
+<b>12</b>, <b>0</b>, <b>11</b> is returned if the second
+version string is respectively larger, equal, or smaller to
+the first. In the three-argument form, <b>0</b> or <b>1</b>
+if the condition is respectively true or false.</font></p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>$SYSTEMD_LOG_LEVEL</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">The
+maximum log level of emitted messages (messages with a
+higher log level, i.e. less important ones, will be
+suppressed). Either one of (in order of decreasing
+importance) <b>emerg</b>, <b>alert</b>, <b>crit</b>,
+<b>err</b>, <b>warning</b>, <b>notice</b>, <b>info</b>,
+<b>debug</b>, or an integer in the range 0...7. See
+<b>syslog</b>(3) for more information.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>$SYSTEMD_LOG_COLOR</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">A
+boolean. If true, messages written to the tty will be
+colored according to priority.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">This
+setting is only useful when messages are written directly to
+the terminal, because <b>journalctl</b>(1) and other tools
+that display logs will color messages based on the log level
+on their own.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>$SYSTEMD_LOG_TIME</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">A
+boolean. If true, console log messages will be prefixed with
+a timestamp.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">This
+setting is only useful when messages are written directly to
+the terminal or a file, because <b>journalctl</b>(1) and
+other tools that display logs will attach timestamps based
+on the entry metadata on their own.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>$SYSTEMD_LOG_LOCATION</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">A
+boolean. If true, messages will be prefixed with a filename
+and line number in the source code where the message
+originates.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">Note
+that the log location is often attached as metadata to
+journal entries anyway. Including it directly in the message
+text can nevertheless be convenient when debugging
+programs.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>$SYSTEMD_LOG_TID</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">A
+boolean. If true, messages will be prefixed with the current
+numerical thread ID (TID).</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">Note
+that the this information is attached as metadata to journal
+entries anyway. Including it directly in the message text
+can nevertheless be convenient when debugging
+programs.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>$SYSTEMD_LOG_TARGET</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">The
+destination for log messages. One of <b>console</b> (log to
+the attached tty), <b>console-prefixed</b> (log to the
+attached tty but with prefixes encoding the log level and
+&quot;facility&quot;, see <b>syslog</b>(3), <b>kmsg</b> (log
+to the kernel circular log buffer), <b>journal</b> (log to
+the journal), <b>journal-or-kmsg</b> (log to the journal if
+available, and to kmsg otherwise), <b>auto</b> (determine
+the appropriate log target automatically, the default),
+<b>null</b> (disable log output).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>$SYSTEMD_PAGER</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Pager to
+use when <b>--no-pager</b> is not given; overrides
+<i>$PAGER</i>. If neither <i>$SYSTEMD_PAGER</i> nor
+<i>$PAGER</i> are set, a set of well-known pager
+implementations are tried in turn, including <b>less</b>(1)
+and <b>more</b>(1), until one is found. If no pager
+implementation is discovered no pager is invoked. Setting
+this environment variable to an empty string or the value
+&quot;cat&quot; is equivalent to passing
+<b>--no-pager</b>.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">Note:
+if <i>$SYSTEMD_PAGERSECURE</i> is not set,
+<i>$SYSTEMD_PAGER</i> (as well as <i>$PAGER</i>) will be
+silently ignored.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>$SYSTEMD_LESS</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Override
+the options passed to <b>less</b> (by default
+&quot;FRSXMK&quot;).</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">Users
+might want to change two options in particular:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000"><b>K</b></font></p>
+
+<p style="margin-left:23%;"><font color="#000000">This
+option instructs the pager to exit immediately when Ctrl+C
+is pressed. To allow <b>less</b> to handle Ctrl+C itself to
+switch back to the pager command prompt, unset this
+option.</font></p>
+
+
+<p style="margin-left:23%; margin-top: 1em"><font color="#000000">If
+the value of <i>$SYSTEMD_LESS</i> does not include
+&quot;K&quot;, and the pager that is invoked is <b>less</b>,
+Ctrl+C will be ignored by the executable, and needs to be
+handled by the pager.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000"><b>X</b></font></p>
+
+<p style="margin-left:23%;"><font color="#000000">This
+option instructs the pager to not send termcap
+initialization and deinitialization strings to the terminal.
+It is set by default to allow command output to remain
+visible in the terminal even after the pager exits.
+Nevertheless, this prevents some pager functionality from
+working, in particular paged output cannot be scrolled with
+the mouse.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">See
+<b>less</b>(1) for more discussion.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>$SYSTEMD_LESSCHARSET</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Override
+the charset passed to <b>less</b> (by default
+&quot;utf-8&quot;, if the invoking terminal is determined to
+be UTF-8 compatible).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>$SYSTEMD_PAGERSECURE</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Takes a
+boolean argument. When true, the &quot;secure&quot; mode of
+the pager is enabled; if false, disabled. If
+<i>$SYSTEMD_PAGERSECURE</i> is not set at all, secure mode
+is enabled if the effective UID is not the same as the owner
+of the login session, see <b>geteuid</b>(2) and
+<b>sd_pid_get_owner_uid</b>(3). In secure mode,
+<b>LESSSECURE=1</b> will be set when invoking the pager, and
+the pager shall disable commands that open or create new
+files or start new subprocesses. When
+<i>$SYSTEMD_PAGERSECURE</i> is not set at all, pagers which
+are not known to implement secure mode will not be used.
+(Currently only <b>less</b>(1) implements secure
+mode.)</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">Note:
+when commands are invoked with elevated privileges, for
+example under <b>sudo</b>(8) or <b>pkexec</b>(1), care must
+be taken to ensure that unintended interactive features are
+not enabled. &quot;Secure&quot; mode for the pager may be
+enabled automatically as describe above. Setting
+<i>SYSTEMD_PAGERSECURE=0</i> or not removing it from the
+inherited environment allows the user to invoke arbitrary
+commands. Note that if the <i>$SYSTEMD_PAGER</i> or
+<i>$PAGER</i> variables are to be honoured,
+<i>$SYSTEMD_PAGERSECURE</i> must be set too. It might be
+reasonable to completely disable the pager using
+<b>--no-pager</b> instead.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>$SYSTEMD_COLORS</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Takes a
+boolean argument. When true, <b>systemd</b> and related
+utilities will use colors in their output, otherwise the
+output will be monochrome. Additionally, the variable can
+take one of the following special values: &quot;16&quot;,
+&quot;256&quot; to restrict the use of colors to the base 16
+or 256 ANSI colors, respectively. This can be specified to
+override the automatic decision based on <i>$TERM</i> and
+what the console is connected to.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><i>$SYSTEMD_URLIFY</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">The value
+must be a boolean. Controls whether clickable links should
+be generated in the output for terminal emulators supporting
+this. This can be specified to override the decision that
+<b>systemd</b> makes based on <i>$TERM</i> and other
+conditions.</font></p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>Example&nbsp;22.&nbsp;JSON
+Policy</b></font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+JSON file passed as a path parameter to
+<b>--security-policy=</b> has a top-level JSON object, with
+keys being the assessment test identifiers mentioned above.
+The values in the file should be JSON objects with one or
+more of the following fields: <b>description_na</b>
+(string), <b>description_good</b> (string),
+<b>description_bad</b> (string), <b>weight</b> (unsigned
+integer), and <b>range</b> (unsigned integer). If any of
+these fields corresponding to a specific id of the unit file
+is missing from the JSON object, the default built-in field
+value corresponding to that same id is used for security
+analysis as default. The weight and range fields are used in
+determining the overall exposure level of the unit files:
+the value of each setting is assigned a badness score, which
+is multiplied by the policy weight and divided by the policy
+range to determine the overall exposure that the setting
+implies. The computed badness is summed across all settings
+in the unit file, normalized to the 1...100 range, and used
+to determine the overall exposure level of the unit. By
+allowing users to manipulate these fields, the 'security'
+verb gives them the option to decide for themself which ids
+are more important and hence should have a greater effect on
+the exposure level. A weight of &quot;0&quot; means the
+setting will not be checked.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">{
+<br>
+&quot;PrivateDevices&quot;: <br>
+{ <br>
+&quot;description_good&quot;: &quot;Service has no access to
+hardware devices&quot;, <br>
+&quot;description_bad&quot;: &quot;Service potentially has
+access to hardware devices&quot;, <br>
+&quot;weight&quot;: 1000, <br>
+&quot;range&quot;: 1 <br>
+}, <br>
+&quot;PrivateMounts&quot;: <br>
+{ <br>
+&quot;description_good&quot;: &quot;Service cannot install
+system mounts&quot;, <br>
+&quot;description_bad&quot;: &quot;Service may install
+system mounts&quot;, <br>
+&quot;weight&quot;: 1000, <br>
+&quot;range&quot;: 1 <br>
+}, <br>
+&quot;PrivateNetwork&quot;: <br>
+{ <br>
+&quot;description_good&quot;: &quot;Service has no access to
+the host's network&quot;, <br>
+&quot;description_bad&quot;: &quot;Service has access to the
+host's network&quot;, <br>
+&quot;weight&quot;: 2500, <br>
+&quot;range&quot;: 1 <br>
+}, <br>
+&quot;PrivateTmp&quot;: <br>
+{ <br>
+&quot;description_good&quot;: &quot;Service has no access to
+other software's temporary files&quot;, <br>
+&quot;description_bad&quot;: &quot;Service has access to
+other software's temporary files&quot;, <br>
+&quot;weight&quot;: 1000, <br>
+&quot;range&quot;: 1 <br>
+}, <br>
+&quot;PrivateUsers&quot;: <br>
+{ <br>
+&quot;description_good&quot;: &quot;Service does not have
+access to other users&quot;, <br>
+&quot;description_bad&quot;: &quot;Service has access to
+other users&quot;, <br>
+&quot;weight&quot;: 1000, <br>
+&quot;range&quot;: 1 <br>
+} <br>
+}</font></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>systemd</b>(1),
+<b>systemctl</b>(1)</font></p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="12%"></td>
+<td width="3%">
+
+
+
+<p style="margin-top: 1em"><font color="#000000">1.</font></p> </td>
+<td width="2%"></td>
+<td width="28%">
+
+
+<p style="margin-top: 1em"><font color="#000000">Packaging
+Metadata</font></p> </td>
+<td width="55%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:17%;"><font color="#000000">https://systemd.io/COREDUMP_PACKAGE_METADATA/</font></p>
+<hr>
+</body>
+</html>

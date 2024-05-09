@@ -1,0 +1,533 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:53 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>tabs</title>
+
+</head>
+<body>
+
+<h1 align="center">tabs</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#PORTABILITY">PORTABILITY</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>tabs</b> -
+set tabs on a terminal</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>tabs</b>
+[<i>options</i>]] <i>[tabstop-list]</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The <b>tabs</b>
+program clears and sets tab-stops on the terminal. This uses
+the terminfo <b>clear_all_tabs</b> and <b>set_tab</b>
+capabilities. If either is absent, <b>tabs</b> is unable to
+clear/set tab-stops. The terminal should be configured to
+use hard tabs, e.g.,</p>
+
+<pre style="margin-left:17%; margin-top: 1em">stty tab0</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">Like
+<b>clear</b>(1), <b>tabs</b> writes to the standard output.
+You can redirect the standard output to a file (which
+prevents <b>tabs</b> from actually changing the tabstops),
+and later <b>cat</b> the file to the screen, setting
+tabstops at that point.</p>
+
+<p style="margin-left:11%; margin-top: 1em">These are
+hardware tabs, which cannot be queried rapidly by
+applications running in the terminal, if at all. Curses and
+other full-screen applications may use hardware tabs in
+optimizing their output to the terminal. If the hardware
+tabstops differ from the information in the terminal
+database, the result is unpredictable. Before running curses
+programs, you should either reset tab-stops to the standard
+interval</p>
+<pre style="margin-left:17%; margin-top: 1em">tabs -8</pre>
+
+<p style="margin-left:11%; margin-top: 1em">or use the
+<b>reset</b> program, since the normal initialization
+sequences do not ensure that tab-stops are reset.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>General
+Options <br>
+-T</b><i>name</i></p>
+
+<p style="margin-left:18%;">Tell <b>tabs</b> which terminal
+type to use. If this option is not given, <b>tabs</b> will
+use the <b>$TERM</b> environment variable. If that is not
+set, it will use the <i>ansi+tabs</i> entry.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-d</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>The debugging option shows a ruler line, followed by two
+data lines. The first data line shows the expected tab-stops
+marked with asterisks. The second data line shows the actual
+tab-stops, marked with asterisks.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-n</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>This option tells <b>tabs</b> to check the options and
+run any debugging option, but not to modify the terminal
+settings.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-V</b></p></td>
+<td width="4%"></td>
+<td width="82%">
+
+
+<p>reports the version of ncurses which was used in this
+program, and exits.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The <b>tabs</b>
+program processes a single list of tab stops. The last
+option to be processed which defines a list is the one that
+determines the list to be processed.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Implicit
+Lists</b> <br>
+Use a single number as an option, e.g.,
+&ldquo;<b>-5</b>&rdquo; to set tabs at the given interval
+(in this case 1, 6, 11, 16, 21, etc.). Tabs are repeated up
+to the right margin of the screen.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Use
+&ldquo;<b>-0</b>&rdquo; to clear all tabs.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Use
+&ldquo;<b>-8</b>&rdquo; to set tabs to the standard
+interval.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Explicit
+Lists</b> <br>
+An explicit list can be defined after the options (this does
+not use a &ldquo;-&rdquo;). The values in the list must be
+in increasing numeric order, and greater than zero. They are
+separated by a comma or a blank, for example,</p>
+
+<pre style="margin-left:17%; margin-top: 1em">tabs 1,6,11,16,21
+tabs 1 6 11 16 21</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">Use a
+&ldquo;+&rdquo; to treat a number as an increment relative
+to the previous value, e.g.,</p>
+
+<pre style="margin-left:17%; margin-top: 1em">tabs 1,+5,+5,+5,+5</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">which is
+equivalent to the 1,6,11,16,21 example.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Predefined
+Tab-Stops</b> <br>
+POSIX defines several predefined lists of tab stops.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-a</b></p></td>
+<td width="4%"></td>
+<td width="53%">
+
+
+<p style="margin-top: 1em">Assembler, IBM S/370, first
+format</p> </td>
+<td width="29%">
+</td></tr>
+</table>
+
+<p style="margin-left:18%;">1,10,16,36,72</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p style="margin-top: 1em"><b>-a2</b></p></td>
+<td width="3%"></td>
+<td width="54%">
+
+
+<p style="margin-top: 1em">Assembler, IBM S/370, second
+format</p> </td>
+<td width="28%">
+</td></tr>
+</table>
+
+<p style="margin-left:18%;">1,10,16,40,72</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-c</b></p></td>
+<td width="4%"></td>
+<td width="31%">
+
+
+<p style="margin-top: 1em">COBOL, normal format</p></td>
+<td width="51%">
+</td></tr>
+</table>
+
+<p style="margin-left:18%;">1,8,12,16,20,55</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p style="margin-top: 1em"><b>-c2</b></p></td>
+<td width="3%"></td>
+<td width="31%">
+
+
+<p style="margin-top: 1em">COBOL compact format</p></td>
+<td width="51%">
+</td></tr>
+</table>
+
+<p style="margin-left:18%;">1,6,10,14,49</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p style="margin-top: 1em"><b>-c3</b></p></td>
+<td width="3%"></td>
+<td width="45%">
+
+
+<p style="margin-top: 1em">COBOL compact format
+extended</p> </td>
+<td width="37%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:18%;">1,6,10,14,18,22,26,30,34,38,42,46,50,54,58,62,67</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-f</b></p></td>
+<td width="4%"></td>
+<td width="11%">
+
+
+<p style="margin-top: 1em">FORTRAN</p></td>
+<td width="71%">
+</td></tr>
+</table>
+
+<p style="margin-left:18%;">1,7,11,15,19,23</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-p</b></p></td>
+<td width="4%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em">PL/I</p></td>
+<td width="75%">
+</td></tr>
+</table>
+
+
+<p style="margin-left:18%;">1,5,9,13,17,21,25,29,33,37,41,45,49,53,57,61</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-s</b></p></td>
+<td width="4%"></td>
+<td width="10%">
+
+
+<p style="margin-top: 1em">SNOBOL</p></td>
+<td width="72%">
+</td></tr>
+</table>
+
+<p style="margin-left:18%;">1,10,55</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-u</b></p></td>
+<td width="4%"></td>
+<td width="33%">
+
+
+<p style="margin-top: 1em">UNIVAC 1100 Assembler</p></td>
+<td width="49%">
+</td></tr>
+</table>
+
+<p style="margin-left:18%;">1,12,20,44</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Margins</b>
+<br>
+A few terminals provide the capability for changing their
+left/right margins. The tabs program has an option to use
+this feature: <b><br>
++m&nbsp;</b><i>margin</i></p>
+
+<p style="margin-left:18%;">The effect depends on whether
+the terminal has the margin capabilities:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="2%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="75%">
+
+
+<p>If the terminal provides the capability for setting the
+left margin, tabs uses this, and adjusts the available width
+for tab-stops.</p></td></tr>
+<tr valign="top" align="left">
+<td width="18%"></td>
+<td width="2%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="75%">
+
+
+<p>If the terminal does not provide the margin
+capabilities, tabs imitates the effect, putting the tab
+stops at the appropriate place on each line. The
+terminal&rsquo;s left-margin is not modified.</p></td></tr>
+</table>
+
+<p style="margin-left:18%; margin-top: 1em">If the
+<i>margin</i> parameter is omitted, the default is 10. Use
+<b>+m0</b> to reset the left margin, i.e., to the left edge
+of the terminal&rsquo;s display. Before setting a
+left-margin, tabs resets the margin to reduce problems which
+might arise on moving the cursor before the current
+left-margin.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When setting or
+resetting the left-margin, tabs may reset the
+right-margin.</p>
+
+<h2>PORTABILITY
+<a name="PORTABILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>IEEE Std
+1003.1/The Open Group Base Specifications Issue 7</i>
+(POSIX.1-2008) describes a <b>tabs</b> utility. However</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p style="margin-top: 1em">This standard describes a
+<b>+m</b> option, to set a terminal&rsquo;s left-margin.
+Very few of the entries in the terminal database provide the
+<b>smgl</b> (<b>set_left_margin</b>) or <b>smglp</b>
+(<b>set_left_margin_parm</b>) capability needed to support
+the feature.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="83%">
+
+
+<p>There is no counterpart in X/Open Curses Issue 7 for
+this utility, unlike <b>tput</b>(1).</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The <b>-d</b>
+(debug) and <b>-n</b> (no-op) options are extensions not
+provided by other implementations.</p>
+
+<p style="margin-left:11%; margin-top: 1em">A <b>tabs</b>
+utility appeared in PWB/Unix 1.0 (1977). There was a reduced
+version of the <b>tabs</b> utility in Unix 7th edition and
+in 3BSD (1979). The latter supported a single
+&ldquo;-n&rdquo; option (to cause the first tab stop to be
+set on the left margin). That option is not documented by
+POSIX.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The PWB/Unix
+<b>tabs</b> utility, which was included in System III
+(1980), used built-in tables rather than the terminal
+database, to support a half-dozen hardcopy terminal
+(printer) types. It also had built-in logic to support the
+left-margin, as well as a feature for copying the tab
+settings from a file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Later versions
+of Unix, e.g., SVr4, added support for the terminal
+database, but kept the tables to support the printers. In an
+earlier development effort, the tab-stop initialization
+provided by <b>tset</b> (1982) and incorporated into
+<b>tput</b> uses the terminal database,</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <b>+m</b>
+option was documented in the Base Specifications Issue 5
+(Unix98, 1997), and omitted in Issue 6 (Unix03, 2004)
+without documenting the rationale, though an introductory
+comment <i>&ldquo;and optionally adjusts the
+margin&rdquo;</i> remains, overlooked in the removal. The
+documented <b>tabs</b> utility in Issues 6 and later has no
+mechanism for setting margins. The <b>+m</b> option in this
+implementation differs from the feature in SVr4 by using
+terminal capabilities rather than built-in tables.</p>
+
+<p style="margin-left:11%; margin-top: 1em">POSIX documents
+no limits on the number of tab stops. Documentation for
+other implementations states that there is a limit on the
+number of tab stops (e.g., 20 in PWB/Unix&rsquo;s
+<b>tabs</b> utility). While some terminals may not accept an
+arbitrary number of tab stops, this implementation will
+attempt to set tab stops up to the right margin of the
+screen, if the given list happens to be that long.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<i>Rationale</i> section of the POSIX documentation goes
+into some detail about the ways the committee considered
+redesigning the <b>tabs</b> and <b>tput</b> utilities,
+without proposing an improved solution. It comments that</p>
+
+<p style="margin-left:18%; margin-top: 1em">no known
+historical version of tabs supports the capability of
+setting arbitrary tab stops.</p>
+
+<p style="margin-left:11%; margin-top: 1em">However, the
+<i>Explicit Lists</i> described in this manual page were
+implemented in PWB/Unix. Those provide the capability of
+setting abitrary tab stops.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>infocmp</b>(1),
+<b>tset</b>(1), <b>ncurses</b>(3NCURSES),
+<b>terminfo</b>(5).</p>
+
+<p style="margin-left:11%; margin-top: 1em">This describes
+<b>ncurses</b> version 6.4 (patch 20221231).</p>
+<hr>
+</body>
+</html>

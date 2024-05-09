@@ -1,0 +1,238 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:25 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamdice User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamdice User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#EXAMPLE">EXAMPLE</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamdice - slice
+a Netpbm image into many horizontally and/or vertically</p>
+
+<h2>EXAMPLE
+<a name="EXAMPLE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">$ pamdice
+myimage.ppm -outstem=myimage_part -width=10 -height=8 <br>
+$ pamundice myimage_part_%1d_%1a.ppm -across=10 -down=8
+&gt;myimage.ppm</p>
+
+<p style="margin-left:11%; margin-top: 1em">$ pamdice
+myimage.ppm -outstem=myimage_part -height=12 -voverlap=9</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamdice</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-outstem=</b><i>filenamestem</i></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-width=</b><i>width</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-height=</b><i>height</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-hoverlap=</b><i>hoverlap</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-voverlap=</b><i>voverlap</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-verbose</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<i>filename</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can use the
+minimum unique abbreviation of the options. You can use two
+hyphens instead of one. You can separate an option name from
+its value with white space instead of an equals sign.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamdice</b>
+reads a PAM, PBM, PGM, or PPM image as input and splits it
+horizontally and/or vertically into equal size pieces and
+writes them into separate files as the same kind of image.
+You can optionally make the pieces overlap.</p>
+
+<p style="margin-left:11%; margin-top: 1em">See the
+<b>-outstem</b> option for information on naming of the
+output files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>-width</b> and <b>-height</b> options determine the size
+of the output pieces.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamundice</b>
+can rejoin the images. For finer control, you can also
+use</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmcat</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">One use for
+this is to make pieces that take less computer resources
+than the whole image to process. For example, you might have
+an image so large that an image editor can&rsquo;t read it
+all into memory or processes it very slowly. With
+<b>pamdice</b>, you can split it into smaller pieces, edit
+one at a time, and then reassemble them.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Another use for
+this is to print a large image in small printer-sized pieces
+that you can glue together. <b>ppmglobe</b> does a similar
+thing; it lets you glue the pieces together into a
+sphere.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you want to
+cut pieces from an image individually, not in a regular
+grid, use <b>pamcut</b>.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamdice</b> recognizes the following command line
+options: <b><br>
+-outstem=</b>filenamestem</p>
+
+<p style="margin-left:22%;">This option determines the
+names of the output files. Each output file is named
+<i>filenamestem</i><b>_</b><i>y</i><b>_</b><i>x</i><b>.</b><i>type</i>
+where <i>filenamestem</i> is the value of the
+<b>-outstem</b> option, <i>x</i> and y are the horizontal
+and vertical locations, respectively, in the input image of
+the output image, zero being the leftmost and top, and
+<i>type</i> is <b>.pbm</b>, <b>.pgm</b>, <b>.ppm</b>, or
+<b>.pam</b>, depending on the type of image.</p>
+
+<p style="margin-left:11%;"><b>-width=</b><i>width</i></p>
+
+<p style="margin-left:22%;">gives the width in pixels of
+the output images. The rightmost pieces are smaller than
+this if the input image is not a multiple of <i>width</i>
+pixels wide.</p>
+
+
+<p style="margin-left:11%;"><b>-height=</b><i>height</i></p>
+
+<p style="margin-left:22%;">gives the height in pixels of
+the output images. The bottom pieces are smaller than this
+if the input image is not a multiple of <i>height</i> pixels
+high.</p>
+
+
+<p style="margin-left:11%;"><b>-hoverlap=</b><i>hoverlap</i></p>
+
+<p style="margin-left:22%;">gives the horizontal overlap in
+pixels between output images. Each image in a row will
+overlap the previous one by <i>hoverlap</i> pixels. By
+default, there is no overlap.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.23 (July 2004).</p>
+
+
+<p style="margin-left:11%;"><b>-voverlap=</b><i>voverlap</i></p>
+
+<p style="margin-left:22%;">gives the vertical overlap in
+pixels between output images. Each row of images will
+overlap the previous row by <i>voverlap</i> pixels. By
+default, there is no overlap.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.23 (July 2004).</p>
+
+<p style="margin-left:11%;"><b>-verbose</b></p>
+
+<p style="margin-left:22%;">Print information about the
+processing to Standard Error.</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamdice</b>
+was new in Netpbm 9.25 (March 2002).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Before Netpbm
+10.29 (August 2005), there was a limit of 100 slices in each
+direction.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamundice</b>(1),
+<b>pamcut</b>(1), <b>pnmcat</b>(1), <b>pgmslice</b>(1),
+<b>ppmglobe</b>(1) <b>pnm</b>(1) <b>pam</b>(1)</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamdice.html</b></p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:32 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pgmminkowski User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pgmminkowski User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pgmminkowski -
+compute Minkowski integral</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pgmminkowski</b>
+<i>pgmfile</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pgmminkowski</b>
+computes the 3 Minkowski integrals of a PGM image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The Minkowski
+integrals mathematically characterize the shapes in the
+image and hence are the basis of &quot;morphological image
+analysis.&quot;</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">Hadwiger&rsquo;s
+theorem has it that these integrals are the only
+motion-invariant, additive and conditionally continuous
+functions of a two-dimensional image, which means that they
+are preserved under certain kinds of deformations of the
+image. On top of that, they are very easy and quickly
+calculated. This makes them of interest for certain kinds of
+pattern recognition.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Basically, the
+Minkowski integrals are the area, total perimeter length,
+and the Euler characteristic of the image, where these
+metrics apply to the foreground image, not the rectangular
+PGM image itself. The foreground image consists of all the
+pixels in the image that are white. For a grayscale image,
+there is some threshold of intensity applied to categorize
+pixels into black and white, and the Minkowski integrals are
+calculated as a function of this threshold value. The total
+surface area refers to the number of white pixels in the PGM
+and the perimeter is the sum of perimeters of each closed
+white region in the PGM.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For a grayscale
+image, these numbers are a function of the threshold of what
+you want to call black or white. <b>pgmminkowski</b> reports
+these numbers as a function of the threshold for all
+possible threshold values. Since the total surface area can
+increase only as a function of the threshold, it is a
+reparameterization of the threshold. It turns out that if
+you consider the other two functions, the boundary length
+and the Euler characteristic, as a function of the first
+one, the surface, you get two functions that are a
+fingerprint of the picture. This fingerprint is e.g.
+sufficient to recognize the difference between pictures of
+different crystal lattices under a scanning tunnelling
+electron microscope.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For more
+information about Minkowski integrals, see e.g.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p><a href="http://rugth30.phys.rug.nl/pdf/prechaos.pdf">
+J.S. Kole, K. Michielsen, and H. De Raedt,
+&quot;Morphological Image Analysis of Quantum Motion in
+Billiards&quot;, Phys. Rev. E 63, 016201-1 - 016201-7
+(2001)</a></p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>K. Michielsen and H. De Raedt, &quot;Integral-Geometry
+Morphological Image Analysis&quot;, Phys. Rep. 347, 461-538
+(2001).</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">The output is
+suitable for direct use as a datafile in <b>gnuplot</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the three Minkowski integrals, <b>pgmminkowski</b> also
+lists the horizontal and vertical edge counts.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">There are no
+command line options defined specifically for
+<b>pgmminkowski</b>, but it recognizes the options common to
+all programs based on libnetpbm (See
+<a href="index.html#commonoptions"> Common Options</a>
+.)</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pgmmorphconv</b>(1)
+<b>pbmminkowski</b>(1) <b>pgm</b>(1)</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Luuk van Dijk,
+2001.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Based on work
+which is Copyright (C) 1989, 1991 by Jef Poskanzer.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pgmminkowski.html</b></p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:27 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamsumm User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamsumm User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamsumm -
+Summarize the samples in a Netpbm image arithmetically</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamsumm</b>
+{ <b>-sum</b> | <b>-mean</b> | <b>-min</b> | <b>-max</b> }
+[<b>-normalize</b>] [<b>-brief</b>] [<i>imagefile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">All options can
+be abbreviated to their shortest unique prefix. You may use
+two hyphens instead of one. You may separate an option name
+and its value with white space instead of an equals
+sign.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamsumm</b>
+reads a Netpbm image (PNM or PAM) and performs a summary
+function over all the samples in all the rows, columns, and
+planes and prints the result to Standard Output.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamsumm</b>
+performs the operation on the actual sample values. In the
+case of a PGM or PPM or PAM equivalent (i.e. a visual
+image), this is not the same as the light intensities
+represented by those samples. See the format specifications
+of <b>PGM</b>(1), <b>PPM</b>(1), and <b>PAM</b>(1), for the
+precise meanings of samples in these formats. If you want to
+do arithmetic on light intensities of such a visual image,
+you can use <b>pnmgamma</b> to convert it to one with
+samples proportional to light intensity, and then use
+<b>pamsumm</b> on the result.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you want to
+summarize by column (e.g. add up the columns separately),
+use <b>pamsummcol</b>. If you want to summarize by row, use
+a combination of <b>pamsummcol</b> and <b>pamflip</b>. If
+you want to summarize a particular plane, use
+<b>pamchannel</b> to extract it and then <b>pamsumm</b>.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamsumm</b> recognizes the following command line
+options:</p>
+
+<p style="margin-left:11%; margin-top: 1em">You must
+specify exactly one of <b>-sum</b>, <b>-mean</b>,
+<b>-min</b>, or <b>-max</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-sum</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>This option makes the summary function addition.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-mean</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>This option makes the summary function arithmetic
+mean.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-min</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>This option makes the summary function arithmetic
+minimum.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-max</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>This option makes the summary function arithmetic
+maximum.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-normalize</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+causes each sample to be normalized to a fraction <br>
+(in the range 0..1) so the result is independent of the
+image&rsquo;s <br>
+maxval. E.g. if you request the mean of an image which has
+maxval <br>
+200 and all the samples have value 50, <b>pamsumm</b> will
+give you <br>
+50 as an answer. But <b>pamsumm -normalize</b> will give you
+.25.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If instead you
+want a result that is independent of maxval but still <br>
+in integers, you can use <b>pamdepth</b> to convert the
+input to some <br>
+standard maxval and not use <b>-normalize</b>. For example,
+if you want <br>
+the mean brightness of a PPM image, on a scale of 0 to 99,
+do</p>
+
+<p style="margin-left:22%; margin-top: 1em">pamdepth 99
+myimage.ppm | pamsumm -mean</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.22 (April 2004)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-brief</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>This option causes <b>pamsumm</b> to display the answer
+as a bare</p></td></tr>
+</table>
+
+<p style="margin-left:22%;">number, rather than in a
+complete sentence.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.22 (April 2004)</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamsummcol</b>(1),
+<b>pam</b>(1),</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamsumm</b>
+was added to Netpbm in Release 10.21 (March 2004).</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamsumm.html</b></p>
+<hr>
+</body>
+</html>

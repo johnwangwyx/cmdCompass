@@ -1,0 +1,206 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:39 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Ppmtopjxl User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Ppmtopjxl User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ppmtopjxl -
+convert a PPM image to an HP PaintJet XL PCL file</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ppmtopjxl
+[<b>-nopack</b>] [<b>-gamma</b> <i>n</i>]
+[<b>-presentation</b>] [<b>-dark</b>] [<b>-diffuse</b>]
+[<b>-cluster</b>] [<b>-dither</b>] [<b>-xshift</b> <i>s</i>]
+[<b>-yshift</b> <i>s</i>] [<b>-xshift</b> <i>s</i>]
+[<b>-yshift</b> <i>s</i>]
+[{<b>-xsize</b>|<b>-width</b>|<b>-xscale</b>} <i>s</i>]
+[{<b>-ysize</b>|<b>-height</b>|<b>-yscale</b>} <i>s</i>]
+[<i>ppmfile</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmtopjxl</b>
+reads a PPM image as input and produces a PCL file suitable
+for printing on an HP PaintJet XL printer as output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The generated
+file is not suitable for printing on a normal PrintJet
+printer. The <b>-nopack</b> option generates a file which
+does not use the normal TIFF 4.0 compression method and thus
+might be printable on a normal PaintJet printer (not an
+XL).</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>ppmtopjxl</b> recognizes the following command line
+options: <b><br>
+-nopack</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Generate a file
+which does not use the normal TIFF 4.0 compression method.
+This file might be printable on a normal PaintJet printer
+(not an XL).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-gamma</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Set the gamma correction for the image. The useful range
+for the PaintJet XL is approximately 0.6 to 1.5.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-dither</b>,
+<b>-cluster</b>, <b>-diffuse</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Alter the
+rendering algorithm used for images. These options select
+ordered dithering, clustered ordered dithering, or error
+diffusion respectively.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-dark</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Enhance images with a dark background when they are
+reduced in size.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-presentation</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Turn on
+presentation mode, in which two passes are made over the
+paper to increase ink density. You should use this only for
+images where quality is critical.</p>
+
+<p style="margin-left:11%;"><b>-xsize</b>,
+<b>-ysize</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Resize the
+image. The parameter to either of these options is
+interpreted as the number of dots to set the width or height
+to, but you may append an optional dimension of
+&rsquo;<b>pt</b>&rsquo; (points), &rsquo;<b>dp</b>&rsquo;
+(decipoints), &rsquo;<b>in</b>&rsquo; (inches), or
+&rsquo;<b>cm</b>&rsquo; (centimetres). If you specify only
+one dimension, <b>ppmtopjxl</b> will scale the other one
+appropriately.</p>
+
+<p style="margin-left:11%;"><b>-width</b>,
+<b>-height</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Synonyms of
+<b>-xsize</b> and <b>-ysize</b>.</p>
+
+<p style="margin-left:11%;"><b>-xscale</b>,
+<b>-yscale</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Alternatives to
+<b>-xsize</b> and <b>-ysize</b>. Scale the image by a simple
+factor.</p>
+
+<p style="margin-left:11%;"><b>-xshift</b>,
+<b>-yshift</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">Shift the image
+on the page. These move the image the specified dimensions
+right and down.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmtopclxl</b>(1),
+<b>pbmtolj</b>(1), <b>ppmtolj</b>(1), <b>ppmtopj</b>(1),
+<b>thinkjettopbm</b>(1), <b>ppm</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Angus
+Duggan</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/ppmtopjxl.html</b></p>
+<hr>
+</body>
+</html>

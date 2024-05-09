@@ -1,0 +1,230 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:48 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SOELIM</title>
+
+</head>
+<body>
+
+<h1 align="center">SOELIM</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#USAGE">USAGE</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">soelim -
+interpret .so requests in groff input</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><b>soelim</b></p></td>
+<td width="2%"></td>
+<td width="41%">
+
+
+<p style="margin-top: 1em">[<b>-Crtv</b>]
+[<b>-I&nbsp;</b><i>dir</i>] [<i>file</i> ...]</p></td>
+<td width="37%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>soelim</b>
+reads <i>files</i> and replaces lines of the form</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>.so&nbsp;</b><i>file</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">by the contents
+of <i>file</i>. It is useful if files included with
+<b>.so</b> need to be preprocessed. Normally, <b>soelim</b>
+should be invoked with the <b>-s</b> option of
+<b>groff</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">To embed
+&rsquo;\&rsquo; in the file name, write &rsquo;\\&rsquo; or
+&rsquo;\e&rsquo;. To embed a space, write
+&rsquo;\&nbsp;&rsquo;. Any other escape sequence in
+<i>file</i> makes <b>soelim</b> ignore the whole line.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that there
+must be no whitespace between the leading dot and the two
+characters &rsquo;s&rsquo; and &rsquo;o&rsquo;. Otherwise,
+only <b>groff</b> interprets the <b>.so</b> request (and
+<b>soelim</b> ignores it).</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Whitespace is
+permitted between a command-line option and its
+argument.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-C</b></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>Recognize <b>.so</b> even when followed by a character
+other than space or newline.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>-I</b><i>dir</i></p></td>
+<td width="4%"></td>
+<td width="78%">
+
+
+<p>This option may be used to add a directory to the search
+path for files (both those on the command line and those
+named in <b>.so</b> requests). The search path is
+initialized with the current directory. This option may be
+specified more than once; the directories are then searched
+in the order specified (but before the current directory).
+If you want to make the current directory be read before
+other directories, add <b>-I.</b> at the appropriate
+place.</p> </td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">No directory
+search is performed for files with an absolute file
+name.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-r</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">Do not add <b>.lf</b> requests
+(for general use, with non-groff files).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-t</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Don&rsquo;t emit <b>.lf</b> requests but TeX comment
+lines (starting with &rsquo;%&rsquo;) giving the current
+file and line number.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-v</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Print the version number.</p></td></tr>
+</table>
+
+<h2>USAGE
+<a name="USAGE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The normal
+processing sequence of groff is this:</p>
+
+<p style="margin-left:11%; margin-top: 1em">input sourced
+<br>
+file file <br>
+| | <br>
+v v <br>
+preprocessor -&gt; troff -&gt; postprocessor <br>
+| <br>
+v <br>
+output <br>
+file</p>
+
+<p style="margin-left:11%; margin-top: 1em">That is, files
+sourced with <b>.so</b> are normally read <i>only</i> by
+<b>troff</b> (the actual formatter). <b>soelim</b> is
+<i>not</i> required for <b>troff</b> to source files.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If a file to be
+sourced should also be preprocessed, it must already be read
+<i>before</i> the input file passes through the
+preprocessor. This is handled by <b>soelim</b>:</p>
+
+<p style="margin-left:11%; margin-top: 1em">input <br>
+file <br>
+| <br>
+v <br>
+soelim -&gt; preprocessor -&gt; troff -&gt; postprocessor
+<br>
+^ | <br>
+| v <br>
+sourced output <br>
+file file</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>groff</b>(1)</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,305 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:54 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>toe</title>
+
+</head>
+<body>
+
+<h1 align="center">toe</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>toe</b> -
+table of (terminfo) entries</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>toe</b>
+[<b>-v</b>[<i>n</i>]] [<b>-ahsuUV</b>] <i>file...</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">With no
+options, <b>toe</b> lists all available terminal types by
+primary name with descriptions. File arguments specify the
+directories to be scanned; if no such arguments are given,
+your default terminfo directory is scanned. If you also
+specify the <b>-h</b> option, a directory header will be
+issued as each directory is entered.</p>
+
+<p style="margin-left:11%; margin-top: 1em">There are other
+options intended for use by terminfo file maintainers:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-a</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>report on all of the terminal databases which ncurses
+would search, rather than only the first one that it
+finds.</p> </td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">If the
+<b>-s</b> is also given, <b>toe</b> adds a column to the
+report, showing (like <b>conflict</b>(1)) which entries
+which belong to a given terminal database. An &quot;*&quot;
+marks entries which differ, and &quot;+&quot; marks
+equivalent entries.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Without the
+<b>-s</b> option, <b>toe</b> does not attempt to merge
+duplicates in its report</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-s</b></p></td>
+<td width="8%"></td>
+<td width="53%">
+
+
+<p style="margin-top: 1em">sort the output by the entry
+names.</p> </td>
+<td width="25%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-u</b> <i>file</i></p>
+
+<p style="margin-left:22%;">says to write a report to the
+standard output, listing dependencies in the given
+terminfo/termcap source file. The report condenses the
+&ldquo;use&rdquo; relation: each line consists of the
+primary name of a terminal that has use capabilities,
+followed by a colon, followed by the whitespace-separated
+primary names of all terminals which occur in those use
+capabilities, followed by a newline</p>
+
+<p style="margin-left:11%;"><b>-U</b> <i>file</i></p>
+
+<p style="margin-left:22%;">says to write a report to the
+standard output, listing reverse dependencies in the given
+terminfo/termcap source file. The report reverses the
+&ldquo;use&rdquo; relation: each line consists of the
+primary name of a terminal that occurs in use capabilities,
+followed by a colon, followed by the whitespace-separated
+primary names of all terminals which depend on it, followed
+by a newline.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+<p><b>-v</b><i>n</i></p></td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p>specifies that (verbose) output be written to standard
+error, showing <b>toe</b>&rsquo;s progress.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">The optional
+parameter <i>n</i> is a number from 1 to 10, interpreted as
+for <b>tic</b>(1). If ncurses is built without tracing
+support, the optional parameter is ignored.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em"><b>-V</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">reports the version of ncurses
+which was used in this program, and exits.</p></td></tr>
+</table>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Without
+sorting, the <b>-a</b> option reports all of the names found
+in all of the terminal databases found by the
+<b>TERMINFO</b> and <b>TERMINFO_DIRS</b> environment
+variables:</p>
+
+<pre style="margin-left:17%; margin-top: 1em">MtxOrb162      16x2 Matrix Orbital LCD display
+MtxOrb204      20x4 Matrix Orbital LCD display
+MtxOrb         Generic Matrix Orbital LCD display
+qvt101+        qume qvt 101 PLUS product
+qvt119+-25     QVT 119 PLUS with 25 data lines
+qansi-g        QNX ANSI
+qvt103         qume qvt 103
+qnxw           QNX4 windows
+qansi-w        QNX ansi for windows
+qnxm           QNX4 with mouse events
+qvt203-25-w    QVT 203 PLUS with 25 by 132 columns
+qansi-t        QNX ansi without console writes
+.&nbsp;.&nbsp;.</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">Use the
+<b>-a</b> and <b>-s</b> options together to show where each
+terminal description was found:</p>
+
+<pre style="margin-left:17%; margin-top: 1em">--&gt; /usr/local/ncurses/share/terminfo
+----&gt; /usr/share/terminfo
+*-+-:     9term          Plan9 terminal emulator for X
+*---:     Eterm          Eterm with xterm-style color support (X Window System)
+*-*-:     Eterm-256color Eterm with xterm 256-colors
+*-*-:     Eterm-88color  Eterm with 88 colors
+*-+-:     MtxOrb         Generic Matrix Orbital LCD display
+*-+-:     MtxOrb162      16x2 Matrix Orbital LCD display
+*-+-:     MtxOrb204      20x4 Matrix Orbital LCD display
+*-*-:     NCR260VT300WPP NCR 2900_260 vt300 wide mode pc+  kybd
+*-+-:     aaa            ann arbor ambassador/30 lines
+*-+-:     aaa+dec        ann arbor ambassador in dec vt100 mode
+*-+-:     aaa+rv         ann arbor ambassador in reverse video
+.&nbsp;.&nbsp;.</pre>
+
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>/etc/terminfo/?/*</b></p>
+
+<p style="margin-left:18%;">Compiled terminal description
+database.</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This utility is
+not provided by other implementations. There is no relevant
+X/Open or POSIX standard for <b>toe</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The program
+name refers to a developer&rsquo;s pun:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="23%">
+
+
+<p><b>tic</b>,</p></td>
+<td width="60%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="23%">
+
+
+<p><b>tac</b> (now <b>tack</b>),</p></td>
+<td width="60%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="5%"></td>
+<td width="23%">
+
+
+<p><b>toe</b>.</p></td>
+<td width="60%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">It replaced a
+<b>-T</b> option which was briefly supported by the ncurses
+<b>infocmp</b> utility in 1995.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The <b>-a</b>
+and <b>-s</b> options were added to <b>toe</b> several years
+later (2006 and 2011, respectively).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>captoinfo</b>(1),
+<b>infocmp</b>(1), <b>infotocap</b>(1), <b>tic</b>(1),
+<b>ncurses</b>(3NCURSES), <b>terminfo</b>(5).</p>
+
+<p style="margin-left:11%; margin-top: 1em">This describes
+<b>ncurses</b> version 6.4 (patch 20221231).</p>
+<hr>
+</body>
+</html>

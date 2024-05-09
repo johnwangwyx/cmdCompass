@@ -1,0 +1,362 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:37 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>POD2TEXT</title>
+
+</head>
+<body>
+
+<h1 align="center">POD2TEXT</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#DIAGNOSTICS">DIAGNOSTICS</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#COPYRIGHT AND LICENSE">COPYRIGHT AND LICENSE</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pod2text -
+Convert POD data to formatted ASCII text</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pod2text
+[<b>-aclostu</b>] [<b>--code</b>]
+[<b>--errors</b>=<i>style</i>] [<b>-i</b> <i>indent</i>]
+<br>
+[<b>-q</b>&Acirc;&nbsp;<i>quotes</i>] [<b>--nourls</b>]
+[<b>--stderr</b>] [<b>-w</b>&Acirc;&nbsp;<i>width</i>] <br>
+[<i>input</i> [<i>output</i> ...]]</p>
+
+<p style="margin-left:11%; margin-top: 1em">pod2text
+<b>-h</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pod2text</b>
+is a front-end for Pod::Text and its subclasses. It uses
+them to generate formatted <small>ASCII</small> text from
+<small>POD</small> source. It can optionally use either
+termcap sequences or <small>ANSI</small> color escape
+sequences to format the text.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>input</i> is
+the file to read for <small>POD</small> source (the
+<small>POD</small> can be embedded in code). If <i>input</i>
+isn&rsquo;t given, it defaults to &quot;STDIN&quot;.
+<i>output</i>, if given, is the file to which to write the
+formatted output. If <i>output</i> isn&rsquo;t given, the
+formatted output is written to &quot;STDOUT&quot;. Several
+<small>POD</small> files can be processed in the same
+<b>pod2text</b> invocation (saving module load and compile
+times) by providing multiple pairs of <i>input</i> and
+<i>output</i> files on the command line.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-a</b>,
+<b>--alt</b></p>
+
+<p style="margin-left:17%;">Use an alternate output format
+that, among other things, uses a different heading style and
+marks &quot;=item&quot; entries with a colon in the left
+margin.</p>
+
+<p style="margin-left:11%;"><b>--code</b></p>
+
+<p style="margin-left:17%;">Include any non-POD text from
+the input file in the output as well. Useful for viewing
+code documented with <small>POD</small> blocks with the
+<small>POD</small> rendered and the code left intact.</p>
+
+<p style="margin-left:11%;"><b>-c</b>, <b>--color</b></p>
+
+<p style="margin-left:17%;">Format the output with
+<small>ANSI</small> color escape sequences. Using this
+option requires that Term::ANSIColor be installed on your
+system.</p>
+
+
+<p style="margin-left:11%;"><b>--errors</b>=<i>style</i></p>
+
+<p style="margin-left:17%;">Set the error handling style.
+&quot;die&quot; says to throw an exception on any
+<small>POD</small> formatting error. &quot;stderr&quot; says
+to report errors on standard error, but not to throw an
+exception. &quot;pod&quot; says to include a <small>POD
+ERRORS</small> section in the resulting documentation
+summarizing the errors. &quot;none&quot; ignores
+<small>POD</small> errors entirely, as much as possible.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The default is
+&quot;die&quot;.</p>
+
+<p style="margin-left:11%;"><b>-i</b> <i>indent</i>,
+<b>--indent=</b><i>indent</i></p>
+
+<p style="margin-left:17%;">Set the number of spaces to
+indent regular text, and the default indentation for
+&quot;=over&quot; blocks. Defaults to 4 spaces if this
+option isn&rsquo;t given.</p>
+
+<p style="margin-left:11%;"><b>-h</b>, <b>--help</b></p>
+
+<p style="margin-left:17%;">Print out usage information and
+exit.</p>
+
+<p style="margin-left:11%;"><b>-l</b>, <b>--loose</b></p>
+
+<p style="margin-left:17%;">Print a blank line after a
+&quot;=head1&quot; heading. Normally, no blank line is
+printed after &quot;=head1&quot;, although one is still
+printed after &quot;=head2&quot;, because this is the
+expected formatting for manual pages; if you&rsquo;re
+formatting arbitrary text documents, using this option is
+recommended.</p>
+
+<p style="margin-left:11%;"><b>-m</b> <i>width</i>,
+<b>--left-margin</b>=<i>width</i>,
+<b>--margin</b>=<i>width</i></p>
+
+<p style="margin-left:17%;">The width of the left margin in
+spaces. Defaults to 0. This is the margin for all text,
+including headings, not the amount by which regular text is
+indented; for the latter, see <b>-i</b> option.</p>
+
+<p style="margin-left:11%;"><b>--nourls</b></p>
+
+<p style="margin-left:17%;">Normally, L&lt;&gt; formatting
+codes with a <small>URL</small> but anchor text are
+formatted to show both the anchor text and the
+<small>URL.</small> In other words:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">L&lt;foo|http://example.com/&gt;</p>
+
+<p style="margin-left:17%; margin-top: 1em">is formatted
+as:</p>
+
+<p style="margin-left:17%; margin-top: 1em">foo
+&lt;http://example.com/&gt;</p>
+
+<p style="margin-left:17%; margin-top: 1em">This flag, if
+given, suppresses the <small>URL</small> when anchor text is
+given, so this example would be formatted as just
+&quot;foo&quot;. This can produce less cluttered output in
+cases where the URLs are not particularly important.</p>
+
+<p style="margin-left:11%;"><b>-o</b>,
+<b>--overstrike</b></p>
+
+<p style="margin-left:17%;">Format the output with
+overstrike printing. Bold text is rendered as character,
+backspace, character. Italics and file names are rendered as
+underscore, backspace, character. Many pagers, such as
+<b>less</b>, know how to convert this to bold or underlined
+text.</p>
+
+<p style="margin-left:11%;"><b>-q</b> <i>quotes</i>,
+<b>--quotes</b>=<i>quotes</i></p>
+
+<p style="margin-left:17%;">Sets the quote marks used to
+surround C&lt;&gt; text to <i>quotes</i>. If <i>quotes</i>
+is a single character, it is used as both the left and right
+quote. Otherwise, it is split in half, and the first half of
+the string is used as the left quote and the second is used
+as the right quote.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>quotes</i>
+may also be set to the special value &quot;none&quot;, in
+which case no quote marks are added around C&lt;&gt;
+text.</p>
+
+<p style="margin-left:11%;"><b>-s</b>,
+<b>--sentence</b></p>
+
+<p style="margin-left:17%;">Assume each sentence ends with
+two spaces and try to preserve that spacing. Without this
+option, all consecutive whitespace in non-verbatim
+paragraphs is compressed into a single space.</p>
+
+<p style="margin-left:11%;"><b>--stderr</b></p>
+
+<p style="margin-left:17%;">By default, <b>pod2text</b>
+dies if any errors are detected in the <small>POD</small>
+input. If <b>--stderr</b> is given and no <b>--errors</b>
+flag is present, errors are sent to standard error, but
+<b>pod2text</b> does not abort. This is equivalent to
+&quot;--errors=stderr&quot; and is supported for backward
+compatibility.</p>
+
+<p style="margin-left:11%;"><b>-t</b>, <b>--termcap</b></p>
+
+<p style="margin-left:17%;">Try to determine the width of
+the screen and the bold and underline sequences for the
+terminal from termcap, and use that information in
+formatting the output. Output will be wrapped at two columns
+less than the width of your terminal device. Using this
+option requires that your system have a termcap file
+somewhere where Term::Cap can find it and requires that your
+system support termios. With this option, the output of
+<b>pod2text</b> will contain terminal control sequences for
+your current terminal type.</p>
+
+<p style="margin-left:11%;"><b>-u</b>, <b>--utf8</b></p>
+
+<p style="margin-left:17%;">By default, <b>pod2text</b>
+tries to use the same output encoding as its input encoding
+(to be backward-compatible with older versions). This option
+says to instead force the output encoding to
+<small>UTF-8.</small></p>
+
+<p style="margin-left:17%; margin-top: 1em">Be aware that,
+when using this option, the input encoding of your
+<small>POD</small> source should be properly declared unless
+it&rsquo;s US-ASCII. Pod::Simple will attempt to guess the
+encoding and may be successful if it&rsquo;s Latin-1 or
+<small>UTF-8,</small> but it will warn, which by default
+results in a <b>pod2text</b> failure. Use the
+&quot;=encoding&quot; command to declare the encoding. See
+<b>perlpod</b>(1) for more information.</p>
+
+<p style="margin-left:11%;"><b>-w</b>,
+<b>--width=</b><i>width</i>, <b>-</b><i>width</i></p>
+
+<p style="margin-left:17%;">The column at which to wrap
+text on the right-hand side. Defaults to 76, unless
+<b>-t</b> is given, in which case it&rsquo;s two columns
+less than the width of your terminal device.</p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">As long as all
+documents processed result in some output, even if that
+output includes errata (a &quot;POD ERRORS&quot; section
+generated with &quot;--errors=pod&quot;), <b>pod2text</b>
+will exit with status 0. If any of the documents being
+processed do not result in an output document,
+<b>pod2text</b> will exit with status 1. If there are syntax
+errors in a <small>POD</small> document being processed and
+the error handling style is set to the default of
+&quot;die&quot;, <b>pod2text</b> will abort immediately with
+exit status 255.</p>
+
+<h2>DIAGNOSTICS
+<a name="DIAGNOSTICS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">If
+<b>pod2text</b> fails with errors, see Pod::Text and
+Pod::Simple for information about what those errors might
+mean. Internally, it can also produce the following
+diagnostics: <br>
+-c (--color) requires Term::ANSIColor be installed</p>
+
+<p style="margin-left:17%;">(F) <b>-c</b> or <b>--color</b>
+were given, but Term::ANSIColor could not be loaded.</p>
+
+<p style="margin-left:11%;">Unknown option: %s</p>
+
+<p style="margin-left:17%;">(F) An unknown command line
+option was given.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In addition,
+other Getopt::Long error messages may result from invalid
+command-line options.</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><small>COLUMNS</small></p>
+
+<p style="margin-left:17%;">If <b>-t</b> is given,
+<b>pod2text</b> will take the current width of your screen
+from this environment variable, if available. It overrides
+terminal width information in <small>TERMCAP.</small></p>
+
+<p style="margin-left:11%;"><small>TERMCAP</small></p>
+
+<p style="margin-left:17%;">If <b>-t</b> is given,
+<b>pod2text</b> will use the contents of this environment
+variable if available to determine the correct formatting
+sequences for your current terminal device.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Russ Allbery
+&lt;rra@cpan.org&gt;.</p>
+
+<h2>COPYRIGHT AND LICENSE
+<a name="COPYRIGHT AND LICENSE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+1999-2001, 2004, 2006, 2008, 2010, 2012-2019 Russ Allbery
+&lt;rra@cpan.org&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+free software; you may redistribute it and/or modify it
+under the same terms as Perl itself.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Pod::Text,
+Pod::Text::Color, Pod::Text::Overstrike, Pod::Text::Termcap,
+Pod::Simple, <b>perlpod</b>(1)</p>
+
+<p style="margin-left:11%; margin-top: 1em">The current
+version of this script is always available from its web site
+at &lt;https://www.eyrie.org/~eagle/software/podlators/&gt;.
+It is also part of the Perl core distribution as of
+5.6.0.</p>
+<hr>
+</body>
+</html>

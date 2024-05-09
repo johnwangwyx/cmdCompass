@@ -1,0 +1,379 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:33:58 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>COLUMN</title>
+
+</head>
+<body>
+
+<h1 align="center">COLUMN</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#AVAILABILITY">AVAILABILITY</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">column -
+columnate lists</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>column</b>
+[options] [<i>file</i> ...]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>column</b> utility formats its input into multiple
+columns. The util support three modes:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>columns are
+filled before rows</b></p>
+
+<p style="margin-left:17%;">This is the default mode
+(required by backward compatibility).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>rows are
+filled before columns</b></p>
+
+<p style="margin-left:17%;">This mode is enabled by option
+<b>-x, --fillrows</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>table</b></p>
+
+<p style="margin-left:17%;">Determine the number of columns
+the input contains and create a table. This mode is enabled
+by option <b>-t, --table</b> and columns formatting is
+possible to modify by <b>--table-</b>* options. Use this
+mode if not sure. The output is aligned to the terminal
+width in interactive mode and the 80 columns in
+non-interactive mode (see <b>--output-width</b> for more
+details).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Input is taken
+from <i>file</i>, or otherwise from standard input. Empty
+lines are ignored and all invalid multibyte sequences are
+encoded by x&lt;hex&gt; convention.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The argument
+<i>columns</i> for <b>--table-</b>* options is a comma
+separated list of the column names as defined by
+<b>--table-columns</b> or it&rsquo;s column number in order
+as specified by input. It&rsquo;s possible to mix names and
+numbers. The special placeholder '0' (e.g. -R0) may be used
+to specify all columns.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-J,
+--json</b></p>
+
+<p style="margin-left:17%;">Use JSON output format to print
+the table, the option <b>--table-columns</b> is required and
+the option <b>--table-name</b> is recommended.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-c,
+--output-width</b> <i>width</i></p>
+
+<p style="margin-left:17%;">Output is formatted to a width
+specified as number of characters. The original name of this
+option is <b>--columns</b>; this name is deprecated since
+v2.30. Note that input longer than <i>width</i> is not
+truncated by default. The default is a terminal width and
+the 80 columns in non-interactive mode. The column headers
+are never truncated.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-d,
+--table-noheadings</b></p>
+
+<p style="margin-left:17%;">Do not print header. This
+option allows the use of logical column names on the command
+line, but keeps the header hidden when printing the
+table.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-o,
+--output-separator</b> <i>string</i></p>
+
+<p style="margin-left:17%;">Specify the columns delimiter
+for table output (default is two spaces).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-s,
+--separator</b> <i>separators</i></p>
+
+<p style="margin-left:17%;">Specify the possible input item
+delimiters (default is whitespace).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-t,
+--table</b></p>
+
+<p style="margin-left:17%;">Determine the number of columns
+the input contains and create a table. Columns are delimited
+with whitespace, by default, or with the characters supplied
+using the <b>--output-separator</b> option. Table output is
+useful for pretty-printing.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-N,
+--table-columns</b> <i>names</i></p>
+
+<p style="margin-left:17%;">Specify the columns names by
+comma separated list of names. The names are used for the
+table header or to address column in option arguments.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-l,
+--table-columns-limit</b> <i>number</i></p>
+
+<p style="margin-left:17%;">Specify maximal number of the
+input columns. The last column will contain all remaining
+line data if the limit is smaller than the number of the
+columns in the input data.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-R,
+--table-right</b> <i>columns</i></p>
+
+<p style="margin-left:17%;">Right align text in the
+specified columns.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-T,
+--table-truncate</b> <i>columns</i></p>
+
+<p style="margin-left:17%;">Specify columns where text can
+be truncated when necessary, otherwise very long table
+entries may be printed on multiple lines.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-E,
+--table-noextreme</b> <i>columns</i></p>
+
+<p style="margin-left:17%;">Specify columns where is
+possible to ignore unusually long (longer than average)
+cells when calculate column width. The option has impact to
+the width calculation and table formatting, but the printed
+text is not affected.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The option is
+used for the last visible column by default.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-e,
+--table-header-repeat</b></p>
+
+<p style="margin-left:17%;">Print header line for each
+page.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-W,
+--table-wrap</b> <i>columns</i></p>
+
+<p style="margin-left:17%;">Specify columns where is
+possible to use multi-line cell for long text when
+necessary.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-H,
+--table-hide</b> <i>columns</i></p>
+
+<p style="margin-left:17%;">Don&rsquo;t print specified
+columns. The special placeholder '-' may be used to hide all
+unnamed columns (see <b>--table-columns</b>).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-O,
+--table-order</b> <i>columns</i></p>
+
+<p style="margin-left:17%;">Specify columns order on
+output.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-n,
+--table-name</b> <i>name</i></p>
+
+<p style="margin-left:17%;">Specify the table name used for
+JSON output. The default is &quot;table&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-L,
+--keep-empty-lines</b></p>
+
+<p style="margin-left:17%;">Preserve whitespace-only lines
+in the input. The default is ignore empty lines at all. This
+option&rsquo;s original name was <b>--table-empty-lines</b>
+but is now deprecated because it gives the false impression
+that the option only applies to table mode.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-r,
+--tree</b> <i>column</i></p>
+
+<p style="margin-left:17%;">Specify column to use tree-like
+output. Note that the circular dependencies and other
+anomalies in child and parent relation are silently
+ignored.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-i,
+--tree-id</b> <i>column</i></p>
+
+<p style="margin-left:17%;">Specify column with line ID to
+create child-parent relation.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-p,
+--tree-parent</b> <i>column</i></p>
+
+<p style="margin-left:17%;">Specify column with parent ID
+to create child-parent relation.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-x,
+--fillrows</b></p>
+
+<p style="margin-left:17%;">Fill rows before filling
+columns.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Display help text and exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-V</b>,
+<b>--version</b></p>
+
+<p style="margin-left:17%;">Print version and exit.</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The environment
+variable <b>COLUMNS</b> is used to determine the size of the
+screen if no other information is available.</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>column</b> command appeared in 4.3BSD-Reno.</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Version 2.23
+changed the <b>-s</b> option to be non-greedy, for
+example:</p>
+
+<p style="margin-left:17%; margin-top: 1em">printf
+&quot;a:b:c\n1::3\n&quot; | column -t -s ':'</p>
+
+<p style="margin-left:11%; margin-top: 1em">Old output:</p>
+
+<p style="margin-left:17%; margin-top: 1em">a b c <br>
+1 3</p>
+
+<p style="margin-left:11%; margin-top: 1em">New output
+(since util-linux 2.23):</p>
+
+<p style="margin-left:17%; margin-top: 1em">a b c <br>
+1 3</p>
+
+<p style="margin-left:11%; margin-top: 1em">Historical
+versions of this tool indicated that &quot;rows are filled
+before columns&quot; by default, and that the <b>-x</b>
+option reverses this. This wording did not reflect the
+actual behavior, and it has since been corrected (see
+above). Other implementations of <b>column</b> may continue
+to use the older documentation, but the behavior should be
+identical in any case.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Print fstab
+with header line and align number to the right:</p>
+
+<p style="margin-left:17%; margin-top: 1em">sed 's/#.*//'
+/etc/fstab | column --table --table-columns
+SOURCE,TARGET,TYPE,OPTIONS,PASS,FREQ --table-right
+PASS,FREQ</p>
+
+<p style="margin-left:11%; margin-top: 1em">Print fstab and
+hide unnamed columns:</p>
+
+<p style="margin-left:17%; margin-top: 1em">sed 's/#.*//'
+/etc/fstab | column --table --table-columns
+SOURCE,TARGET,TYPE --table-hide -</p>
+
+<p style="margin-left:11%; margin-top: 1em">Print a
+tree:</p>
+
+<p style="margin-left:17%; margin-top: 1em">echo -e '1 0
+A\n2 1 AA\n3 1 AB\n4 2 AAA\n5 2 AAB' | column --tree-id 1
+--tree-parent 2 --tree 3 <br>
+1 0 A <br>
+2 1 |-AA <br>
+4 2 | |-AAA <br>
+5 2 | &rsquo;-AAB <br>
+3 1 &rsquo;-AB</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>colrm</b>(1),
+<b>ls</b>(1), <b>paste</b>(1), <b>sort</b>(1)</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For bug
+reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+
+<h2>AVAILABILITY
+<a name="AVAILABILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>column</b> command is part of the util-linux package
+which can be downloaded from <i>Linux Kernel Archive</i>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>
+<hr>
+</body>
+</html>

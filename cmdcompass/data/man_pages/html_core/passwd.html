@@ -1,0 +1,362 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:28 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>PASSWD</title>
+
+</head>
+<body>
+
+<h1 align="center">PASSWD</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#CAVEATS">CAVEATS</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#EXIT VALUES">EXIT VALUES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">passwd - change
+user password</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="37%">
+
+
+<p style="margin-top: 1em"><b>passwd</b> [<i>options</i>]
+[<i>LOGIN</i>]</p> </td>
+<td width="52%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>passwd</b> command changes passwords for user accounts. A
+normal user may only change the password for their own
+account, while the superuser may change the password for any
+account. <b>passwd</b> also changes the account or
+associated password validity period.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Password
+Changes</b> <br>
+The user is first prompted for their old password, if one is
+present. This password is then encrypted and compared
+against the stored password. The user has only one chance to
+enter the correct password. The superuser is permitted to
+bypass this step so that forgotten passwords may be
+changed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">After the
+password has been entered, password aging information is
+checked to see if the user is permitted to change the
+password at this time. If not, <b>passwd</b> refuses to
+change the password and exits.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The user is
+then prompted twice for a replacement password. The second
+entry is compared against the first and both are required to
+match in order for the password to be changed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Then, the
+password is tested for complexity. As a general guideline,
+passwords should consist of 6 to 8 characters including one
+or more characters from each of the following sets:</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; lower
+case alphabetics</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; digits 0
+thru 9</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+punctuation marks</p>
+
+<p style="margin-left:11%; margin-top: 1em">Care must be
+taken not to include the system default erase or kill
+characters. <b>passwd</b> will reject any password which is
+not suitably complex.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Hints for
+user passwords</b> <br>
+The security of a password depends upon the strength of the
+encryption algorithm and the size of the key space. The
+legacy <i>UNIX</i> System encryption method is based on the
+NBS DES algorithm. More recent methods are now recommended
+(see <b>ENCRYPT_METHOD</b>). The size of the key space
+depends upon the randomness of the password which is
+selected.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Compromises in
+password security normally result from careless password
+selection or handling. For this reason, you should not
+select a password which appears in a dictionary or which
+must be written down. The password should also not be a
+proper name, your license number, birth date, or street
+address. Any of these may be used as guesses to violate
+system security.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can find
+advice on how to choose a strong password on
+http://en.wikipedia.org/wiki/Password_strength</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The options
+which apply to the <b>passwd</b> command are:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-a</b>,
+<b>--all</b></p>
+
+<p style="margin-left:17%;">This option can be used only
+with <b>-S</b> and causes show status for all users.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-d</b>,
+<b>--delete</b></p>
+
+<p style="margin-left:17%;">Delete a user's password (make
+it empty). This is a quick way to disable a password for an
+account. It will set the named account passwordless.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-e</b>,
+<b>--expire</b></p>
+
+<p style="margin-left:17%;">Immediately expire an account's
+password. This in effect can force a user to change their
+password at the user's next login.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Display help message and
+exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-i</b>,
+<b>--inactive&nbsp;</b><i>INACTIVE</i></p>
+
+<p style="margin-left:17%;">This option is used to disable
+an account after the password has been expired for a number
+of days. After a user account has had an expired password
+for <i>INACTIVE</i> days, the user may no longer sign on to
+the account.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-k</b>,
+<b>--keep-tokens</b></p>
+
+<p style="margin-left:17%;">Indicate password change should
+be performed only for expired authentication tokens
+(passwords). The user wishes to keep their non-expired
+tokens as before.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-l</b>,
+<b>--lock</b></p>
+
+<p style="margin-left:17%;">Lock the password of the named
+account. This option disables a password by changing it to a
+value which matches no possible encrypted value (it adds a
+&acute;!&acute; at the beginning of the password).</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note that this
+does not disable the account. The user may still be able to
+login using another authentication token (e.g. an SSH key).
+To disable the account, administrators should use <b>usermod
+--expiredate 1</b> (this set the account's expire date to
+Jan 2, 1970).</p>
+
+<p style="margin-left:17%; margin-top: 1em">Users with a
+locked password are not allowed to change their
+password.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-n</b>,
+<b>--mindays&nbsp;</b><i>MIN_DAYS</i></p>
+
+<p style="margin-left:17%;">Set the minimum number of days
+between password changes to <i>MIN_DAYS</i>. A value of zero
+for this field indicates that the user may change their
+password at any time.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-q</b>,
+<b>--quiet</b></p>
+
+<p style="margin-left:17%;">Quiet mode.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-r</b>,
+<b>--repository&nbsp;</b><i>REPOSITORY</i></p>
+
+<p style="margin-left:17%;">change password in
+<i>REPOSITORY</i> repository</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-R</b>,
+<b>--root&nbsp;</b><i>CHROOT_DIR</i></p>
+
+<p style="margin-left:17%;">Apply changes in the
+<i>CHROOT_DIR</i> directory and use the configuration files
+from the <i>CHROOT_DIR</i> directory. Only absolute paths
+are supported.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-S</b>,
+<b>--status</b></p>
+
+<p style="margin-left:17%;">Display account status
+information. The status information consists of 7 fields.
+The first field is the user's login name. The second field
+indicates if the user account has a locked password (L), has
+no password (NP), or has a usable password (P). The third
+field gives the date of the last password change. The next
+four fields are the minimum age, maximum age, warning
+period, and inactivity period for the password. These ages
+are expressed in days.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-u</b>,
+<b>--unlock</b></p>
+
+<p style="margin-left:17%;">Unlock the password of the
+named account. This option re-enables a password by changing
+the password back to its previous value (to the value before
+using the <b>-l</b> option).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-w</b>,
+<b>--warndays&nbsp;</b><i>WARN_DAYS</i></p>
+
+<p style="margin-left:17%;">Set the number of days of
+warning before a password change is required. The
+<i>WARN_DAYS</i> option is the number of days prior to the
+password expiring that a user will be warned that their
+password is about to expire.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-x</b>,
+<b>--maxdays&nbsp;</b><i>MAX_DAYS</i></p>
+
+<p style="margin-left:17%;">Set the maximum number of days
+a password remains valid. After <i>MAX_DAYS</i>, the
+password is required to be changed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Passing the
+number <i>-1</i> as <i>MAX_DAYS</i> will remove checking a
+password's validity.</p>
+
+<h2>CAVEATS
+<a name="CAVEATS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Password
+complexity checking may vary from site to site. The user is
+urged to select a password as complex as he or she feels
+comfortable with.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Users may not
+be able to change their password on a system if NIS is
+enabled and they are not logged into the NIS server.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>passwd</b>
+uses PAM to authenticate users and to change their
+passwords.</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">/etc/passwd</p>
+
+<p style="margin-left:17%;">User account information.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">/etc/shadow</p>
+
+<p style="margin-left:17%;">Secure user account
+information.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">/etc/pam.d/passwd</p>
+
+<p style="margin-left:17%;">PAM configuration for
+<b>passwd</b>.</p>
+
+<h2>EXIT VALUES
+<a name="EXIT VALUES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>passwd</b> command exits with the following values:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>0</i></p>
+
+<p style="margin-left:17%;">success</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>1</i></p>
+
+<p style="margin-left:17%;">permission denied</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>2</i></p>
+
+<p style="margin-left:17%;">invalid combination of
+options</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>3</i></p>
+
+<p style="margin-left:17%;">unexpected failure, nothing
+done</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>4</i></p>
+
+<p style="margin-left:17%;">unexpected failure, passwd file
+missing</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>5</i></p>
+
+<p style="margin-left:17%;">passwd file busy, try again</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>6</i></p>
+
+<p style="margin-left:17%;">invalid argument to option</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>chpasswd</b>(8),
+<b>passwd</b>(5), <b>shadow</b>(5), <b>usermod</b>(8).</p>
+<hr>
+</body>
+</html>

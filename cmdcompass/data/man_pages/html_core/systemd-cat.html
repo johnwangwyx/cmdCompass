@@ -1,0 +1,217 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:51 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>SYSTEMD-CAT</title>
+
+</head>
+<body>
+
+<h1 align="center">SYSTEMD-CAT</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">systemd-cat -
+Connect a pipeline or program's output with the journal</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="75%">
+
+
+<p style="margin-top: 1em"><b>systemd-cat [OPTIONS...]
+[COMMAND] [ARGUMENTS...]</b></p></td>
+<td width="14%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="75%">
+
+
+<p style="margin-top: 1em"><b>systemd-cat
+[OPTIONS...]</b></p> </td>
+<td width="14%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd-cat</b>
+may be used to connect the standard input and output of a
+process to the journal, or as a filter tool in a shell
+pipeline to pass the output the previous pipeline element
+generates to the journal.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If no parameter
+is passed, <b>systemd-cat</b> will write everything it reads
+from standard input (stdin) to the journal.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If parameters
+are passed, they are executed as command line with standard
+output (stdout) and standard error output (stderr) connected
+to the journal, so that all it writes is stored in the
+journal.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+options are understood:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Print a short help text and
+exit.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--version</b></p>
+
+<p style="margin-left:17%;">Print a short version string
+and exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-t</b>,
+<b>--identifier=</b></p>
+
+<p style="margin-left:17%;">Specify a short string that is
+used to identify the logging tool. If not specified, no
+identification string is written to the journal.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-p</b>,
+<b>--priority=</b></p>
+
+<p style="margin-left:17%;">Specify the default priority
+level for the logged messages. Pass one of
+&quot;emerg&quot;, &quot;alert&quot;, &quot;crit&quot;,
+&quot;err&quot;, &quot;warning&quot;, &quot;notice&quot;,
+&quot;info&quot;, &quot;debug&quot;, or a value between 0
+and 7 (corresponding to the same named levels). These
+priority values are the same as defined by <b>syslog</b>(3).
+Defaults to &quot;info&quot;. Note that this simply controls
+the default, individual lines may be logged with different
+levels if they are prefixed accordingly. For details, see
+<b>--level-prefix=</b> below.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--stderr-priority=</b></p>
+
+<p style="margin-left:17%;">Specifies the default priority
+level for messages from the process's standard error output
+(stderr). Usage of this option is the same as the
+<b>--priority=</b> option, above, and both can be used at
+once. When both are used, <b>--priority=</b> will specify
+the default priority for standard output (stdout).</p>
+
+<p style="margin-left:17%; margin-top: 1em">If
+<b>--stderr-priority=</b> is not specified, messages from
+stderr will still be logged, with the same default priority
+level as stdout.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Also, note that
+when stdout and stderr use the same default priority, the
+messages will be strictly ordered, because one channel is
+used for both. When the default priority differs, two
+channels are used, and so stdout messages will not be
+strictly ordered with respect to stderr messages - though
+they will tend to be approximately ordered.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--level-prefix=</b></p>
+
+<p style="margin-left:17%;">Controls whether lines read are
+parsed for syslog priority level prefixes. If enabled (the
+default), a line prefixed with a priority prefix such as
+&quot;&lt;5&gt;&quot; is logged at priority 5
+(&quot;notice&quot;), and similarly for the other priority
+levels. Takes a boolean argument.</p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">On success, 0
+is returned, a non-zero failure code otherwise.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;1.&nbsp;Invoke
+a program</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">This calls
+/bin/ls with standard output and error connected to the
+journal:</p>
+
+<p style="margin-left:17%; margin-top: 1em"># systemd-cat
+ls</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example&nbsp;2.&nbsp;Usage
+in a shell pipeline</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">This builds a
+shell pipeline also invoking /bin/ls and writes the output
+it generates to the journal:</p>
+
+<p style="margin-left:17%; margin-top: 1em"># ls |
+systemd-cat</p>
+
+<p style="margin-left:11%; margin-top: 1em">Even though the
+two examples have very similar effects, the first is
+preferable, since only one process is running at a time and
+both stdout and stderr are captured, while in the second
+example, only stdout is captured.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>systemd</b>(1),
+<b>systemctl</b>(1), <b>logger</b>(1)</p>
+<hr>
+</body>
+</html>

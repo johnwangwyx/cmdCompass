@@ -1,0 +1,1114 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:33:59 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title></title>
+</head>
+<body>
+
+<hr>
+
+
+<p>CVTSUDOERS(1) BSD General Commands Manual
+CVTSUDOERS(1)</p>
+
+<p style="margin-top: 1em"><b>NAME</b></p>
+
+<p style="margin-left:6%;"><b>cvtsudoers</b> &mdash;
+convert between sudoers file formats</p>
+
+<p style="margin-top: 1em"><b>SYNOPSIS</b></p>
+
+<p style="margin-left:21%;"><b>cvtsudoers</b>
+[<b>-ehMpV</b>] [<b>-b&nbsp;</b><i>dn</i>]
+[<b>-c&nbsp;</b><i>conf_file</i>]
+[<b>-d&nbsp;</b><i>deftypes</i>]
+[<b>-f&nbsp;</b><i>output_format</i>]
+[<b>-i&nbsp;</b><i>input_format</i>]
+[<b>-I&nbsp;</b><i>increment</i>]
+[<b>-l&nbsp;</b><i>log_file</i>]
+[<b>-m&nbsp;</b><i>filter</i>]
+[<b>-o&nbsp;</b><i>output_file</i>]
+[<b>-O&nbsp;</b><i>start_point</i>]
+[<b>-P&nbsp;</b><i>padding</i>]
+[<b>-s&nbsp;</b><i>sections</i>]
+[<i>input_file&nbsp;...</i>]</p>
+
+<p style="margin-top: 1em"><b>DESCRIPTION</b></p>
+
+<p style="margin-left:6%;">The <b>cvtsudoers</b> utility
+accepts one or more security policies in either
+<i>sudoers</i> or LDIF format as input, and generates a
+single policy of the specified format as output. The default
+input format is <i>sudoers.</i> The default output format is
+LDIF. It is only possible to convert a policy file that is
+syntactically correct.</p>
+
+<p style="margin-left:6%; margin-top: 1em">If no
+<i>input_file</i> is specified, or if it is &rsquo;-&rsquo;,
+the policy is read from the standard input. Input files may
+be optionally prefixed with a host name followed by a colon
+(&rsquo;:&rsquo;) to make the policy rules specific to a
+host when merging multiple files. By default, the result is
+written to the standard output.</p>
+
+<p style="margin-left:6%; margin-top: 1em">The options are
+as follows:</p>
+
+<p style="margin-top: 1em"><b>-b</b> <i>dn</i>,
+<b>--base</b>=<i>dn</i></p>
+
+<p style="margin-left:17%;">The base DN (distinguished
+name) that will be used when performing LDAP queries.
+Typically this is of the form
+&ldquo;ou=SUDOers,dc=my-domain,dc=com&rdquo; for the domain
+my-domain.com. If this option is not specified, the value of
+the SUDOERS_BASE environment variable will be used instead.
+Only necessary when converting to LDIF format.</p>
+
+<p style="margin-top: 1em"><b>-c</b> <i>conf_file</i>,
+<b>--config</b>=<i>conf_file</i></p>
+
+<p style="margin-left:17%;">Specify the path to the
+configuration file. Defaults to
+<i>/etc/cvtsudoers.conf</i>.</p>
+
+<p style="margin-top: 1em"><b>-d</b> <i>deftypes</i>,
+<b>--defaults</b>=<i>deftypes</i></p>
+
+<p style="margin-left:17%;">Only convert <i>Defaults</i>
+entries of the specified types. One or more <i>Defaults</i>
+types may be specified, separated by a comma
+(&rsquo;,&rsquo;). The supported types are:</p>
+
+<p style="margin-top: 1em">all</p>
+
+<p style="margin-left:28%; margin-top: 1em">All Defaults
+entries.</p>
+
+<p style="margin-top: 1em">global</p>
+
+<p style="margin-left:28%; margin-top: 1em">Global Defaults
+entries that are applied regardless of user, runas, host, or
+command.</p>
+
+<p style="margin-top: 1em">user</p>
+
+<p style="margin-left:28%; margin-top: 1em">Per-user
+Defaults entries.</p>
+
+<p style="margin-top: 1em">runas</p>
+
+<p style="margin-left:28%; margin-top: 1em">Per-runas user
+Defaults entries.</p>
+
+<p style="margin-top: 1em">host</p>
+
+<p style="margin-left:28%; margin-top: 1em">Per-host
+Defaults entries.</p>
+
+<p style="margin-top: 1em">command</p>
+
+<p style="margin-left:28%; margin-top: 1em">Per-command
+Defaults entries.</p>
+
+<p style="margin-left:17%; margin-top: 1em">See the
+<b>Defaults</b> section in sudoers(5) for more
+information.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If the
+<b>-d</b> option is not specified, all <i>Defaults</i>
+entries will be converted.</p>
+
+<p style="margin-top: 1em"><b>-e</b>,
+<b>--expand-aliases</b></p>
+
+<p style="margin-left:17%;">Expand aliases in
+<i>input_file</i>. Aliases are preserved by default when the
+output <i>format</i> is JSON or sudoers.</p>
+
+<p style="margin-top: 1em"><b>-f</b> <i>output_format</i>,
+<b>--output-format</b>=<i>output_format</i></p>
+
+<p style="margin-left:17%;">Specify the output format
+(case-insensitive). The following formats are supported:</p>
+
+<p style="margin-top: 1em">CSV</p>
+
+<p style="margin-left:28%; margin-top: 1em">CSV
+(comma-separated value) files are often used by spreadsheets
+and report generators. See <i>CSV output format</i> for more
+details.</p>
+
+<p style="margin-top: 1em">JSON</p>
+
+<p style="margin-left:28%; margin-top: 1em">JSON
+(JavaScript Object Notation) files are usually easier for
+third-party applications to consume than the traditional
+<i>sudoers</i> format. The various values have explicit
+types which removes much of the ambiguity of the
+<i>sudoers</i> format. See <i>JSON output format</i> for
+more details.</p>
+
+<p style="margin-top: 1em">LDIF</p>
+
+<p style="margin-left:28%; margin-top: 1em">LDIF (LDAP Data
+Interchange Format) files can be imported into an LDAP
+server for use with sudoers.ldap(5).</p>
+
+<p style="margin-left:28%; margin-top: 1em">Conversion to
+LDIF has the following limitations:</p>
+
+<p style="margin-top: 1em"><b>&bull;</b></p>
+
+<p style="margin-left:32%;">Command, host, runas, and
+user-specific Defaults lines cannot be translated as they
+don&rsquo;t have an equivalent in the sudoers LDAP
+schema.</p>
+
+<p style="margin-top: 1em"><b>&bull;</b></p>
+
+<p style="margin-left:32%;">Command, host, runas, and user
+aliases are not supported by the sudoers LDAP schema so they
+are expanded during the conversion.</p>
+
+<p style="margin-top: 1em">sudoers</p>
+
+<p style="margin-left:28%; margin-top: 1em">Traditional
+sudoers format. A new sudoers file will be reconstructed
+from the parsed input file. Comments are not preserved and
+data from any include files will be output inline.</p>
+
+
+<p style="margin-top: 1em"><b>--group-file</b>=<i>file</i></p>
+
+<p style="margin-left:17%;">When the <b>-M</b> option is
+also specified, perform group queries using <i>file</i>
+instead of the system group database.</p>
+
+<p style="margin-top: 1em"><b>-h</b>, <b>--help</b></p>
+
+<p style="margin-left:17%;">Display a short help message to
+the standard output and exit.</p>
+
+<p style="margin-top: 1em"><b>-i</b> <i>input_format</i>,
+<b>--input-format</b>=<i>input_format</i></p>
+
+<p style="margin-left:17%;">Specify the input format. The
+following formats are supported:</p>
+
+<p style="margin-top: 1em">LDIF</p>
+
+<p style="margin-left:28%; margin-top: 1em">LDIF (LDAP Data
+Interchange Format) files can be exported from an LDAP
+server to convert security policies used by sudoers.ldap(5).
+If a base DN (distinguished name) is specified, only
+sudoRole objects that match the base DN will be processed.
+Not all sudoOptions specified in a sudoRole can be
+translated from LDIF to sudoers format.</p>
+
+<p style="margin-top: 1em">sudoers</p>
+
+<p style="margin-left:28%; margin-top: 1em">Traditional
+sudoers format. This is the default input format.</p>
+
+<p style="margin-top: 1em"><b>-I</b> <i>increment</i>,
+<b>--increment</b>=<i>increment</i></p>
+
+<p style="margin-left:17%;">When generating LDIF output,
+increment each sudoOrder attribute by the specified number.
+Defaults to an increment of 1.</p>
+
+<p style="margin-top: 1em"><b>-l</b> <i>log_file</i>,
+<b>--logfile</b>=<i>log_file</i></p>
+
+<p style="margin-left:17%;">Log conversion warnings to
+<i>log_file</i> instead of to the standard error. This is
+particularly useful when merging multiple <i>sudoers</i>
+files, which can generate a large number of warnings.</p>
+
+<p style="margin-top: 1em"><b>-m</b> <i>filter</i>,
+<b>--match</b>=<i>filter</i></p>
+
+<p style="margin-left:17%;">Only output rules that match
+the specified <i>filter</i>. A <i>filter</i> expression is
+made up of one or more <b>key =</b> <i>value</i> pairs,
+separated by a comma (&rsquo;,&rsquo;). The <b>key</b> may
+be &ldquo;cmnd&rdquo; (or &ldquo;cmd&rdquo;),
+&ldquo;host&rdquo;, &ldquo;group&rdquo;, or
+&ldquo;user&rdquo;. For example, <b>user</b> =
+<i>operator</i> or <b>host</b> = <i>www</i>. An upper-case
+<i>Cmnd_Alias</i>, <i>Host_alias</i>, or <i>User_Alias</i>
+may be specified as the &ldquo;cmnd&rdquo;,
+&ldquo;host&rdquo;, or &ldquo;user&rdquo;.</p>
+
+<p style="margin-left:17%; margin-top: 1em">A matching
+<i>sudoers</i> rule may also include users, groups, and
+hosts that are not part of the <i>filter</i>. This can
+happen when a rule includes multiple users, groups, or
+hosts. To prune out any non-matching user, group, or host
+from the rules, the <b>-p</b> option may be used.</p>
+
+<p style="margin-left:17%; margin-top: 1em">By default, the
+password and group databases are not consulted when matching
+against the filter so the users and groups do not need to be
+present on the local system (see the <b>-M</b> option). Only
+aliases that are referenced by the filtered policy rules
+will be displayed.</p>
+
+<p style="margin-top: 1em"><b>-M</b>,
+<b>--match-local</b></p>
+
+<p style="margin-left:17%;">When the <b>-m</b> option is
+also specified, use password and group database information
+when matching users and groups in the filter. Only users and
+groups in the filter that exist on the local system will
+match, and a user&rsquo;s groups will automatically be added
+to the filter. If the <b>-M</b> is <i>not</i> specified,
+users and groups in the filter do not need to exist on the
+local system, but all groups used for matching must be
+explicitly listed in the filter.</p>
+
+<p style="margin-top: 1em"><b>-o</b> <i>output_file</i>,
+<b>--output</b>=<i>output_file</i></p>
+
+<p style="margin-left:17%;">Write the converted output to
+<i>output_file</i>. If no <i>output_file</i> is specified,
+or if it is &rsquo;-&rsquo;, the converted <i>sudoers</i>
+policy will be written to the standard output.</p>
+
+<p style="margin-top: 1em"><b>-O</b> <i>start_point</i>,
+<b>--order-start</b>=<i>start_point</i></p>
+
+<p style="margin-left:17%;">When generating LDIF output,
+use the number specified by <i>start_point</i> in the
+sudoOrder attribute of the first sudoRole object. Subsequent
+sudoRole object use a sudoOrder value generated by adding an
+<i>increment</i>, see the <b>-I</b> option for details.
+Defaults to a starting point of 1. A starting point of 0
+will disable the generation of sudoOrder attributes in the
+resulting LDIF file.</p>
+
+
+<p style="margin-top: 1em"><b>--passwd-file</b>=<i>file</i></p>
+
+<p style="margin-left:17%;">When the <b>-M</b> option is
+also specified, perform passwd queries using <i>file</i>
+instead of the system passwd database.</p>
+
+<p style="margin-top: 1em"><b>-p</b>,
+<b>--prune-matches</b></p>
+
+<p style="margin-left:17%;">When the <b>-m</b> option is
+also specified, <b>cvtsudoers</b> will prune out
+non-matching users, groups, and hosts from matching
+entries.</p>
+
+<p style="margin-top: 1em"><b>-P</b> <i>padding</i>,
+<b>--padding</b>=<i>padding</i></p>
+
+<p style="margin-left:17%;">When generating LDIF output,
+construct the initial sudoOrder value by concatenating
+<i>order_start</i> and <i>increment</i>, padding the
+<i>increment</i> with zeros until it consists of
+<i>padding</i> digits. For example, if <i>order_start</i> is
+1027, <i>padding</i> is 3, and <i>increment</i> is 1, the
+value of sudoOrder for the first entry will be 1027000,
+followed by 1027001, 1027002, etc. If the number of sudoRole
+entries is larger than the padding would allow,
+<b>cvtsudoers</b> will exit with an error. By default, no
+padding is performed.</p>
+
+<p style="margin-top: 1em"><b>-s</b> <i>sections</i>,
+<b>--suppress</b>=<i>sections</i></p>
+
+<p style="margin-left:17%;">Suppress the output of specific
+<i>sections</i> of the security policy. One or more section
+names may be specified, separated by a comma
+(&rsquo;,&rsquo;). The supported section name are:
+<b>defaults</b>, <b>aliases</b> and <b>privileges</b> (which
+may be shortened to <b>privs</b>).</p>
+
+<p style="margin-top: 1em"><b>-V</b>, <b>--version</b></p>
+
+<p style="margin-left:17%;">Print the <b>cvtsudoers</b> and
+<i>sudoers</i> grammar versions and exit.</p>
+
+<p style="margin-left:6%; margin-top: 1em"><b>Merging
+multiple files</b> <br>
+When multiple input files are specified, <b>cvtsudoers</b>
+will attempt to merge them into a single policy file. It is
+assumed that user and group names are consistent among the
+policy files to be merged. For example, user
+&ldquo;bob&rdquo; on one host is the same as user
+&ldquo;bob&rdquo; on another host.</p>
+
+<p style="margin-left:6%; margin-top: 1em">When merging
+policy files, it is possible to prefix the input file name
+with a host name, separated by a colon (&rsquo;:&rsquo;).
+When the files are merged, the host name will be used to
+restrict the policy rules to that specific host where
+possible.</p>
+
+<p style="margin-left:6%; margin-top: 1em">The merging
+process is performed as follows:</p>
+
+<p style="margin-top: 1em"><b>&bull;</b></p>
+
+<p style="margin-left:10%;">Each input file is parsed into
+internal sudoers data structures.</p>
+
+<p style="margin-top: 1em"><b>&bull;</b></p>
+
+<p style="margin-left:10%;">Aliases are merged and renamed
+as necessary to avoid conflicts. In the event of a conflict,
+the first alias found is left as-is and subsequent aliases
+of the same name are renamed with a numeric suffix separated
+with a underscore (&rsquo;_&rsquo;). For example, if there
+are two different aliases named SERVERS, the first will be
+left as-is and the second will be renamed SERVERS_1.
+References to the renamed alias are also updated in the
+policy file. Duplicate aliases (those with identical
+contents) are pruned.</p>
+
+<p style="margin-top: 1em"><b>&bull;</b></p>
+
+<p style="margin-left:10%;">Defaults settings are merged
+and duplicates are removed. If there are conflicts in the
+Defaults settings, a warning is emitted for each conflict.
+If a host name is specified with the input file,
+<b>cvtsudoers</b> will change the global Defaults settings
+in that file to be host-specific. A warning is emitted for
+command, user, or runas-specific Defaults settings which
+cannot be made host-specific.</p>
+
+<p style="margin-top: 1em"><b>&bull;</b></p>
+
+<p style="margin-left:10%;">Per-user rules are merged and
+duplicates are removed. If a host name is specified with the
+input file, <b>cvtsudoers</b> will change rules that specify
+a host name of <b>ALL</b> to the host name associated with
+the policy file being merged. The merging of rules is
+currently fairly simplistic but will be improved in a later
+release.</p>
+
+<p style="margin-left:6%; margin-top: 1em">It is possible
+to merge policy files with differing formats.</p>
+
+<p style="margin-left:6%; margin-top: 1em"><b>The
+cvtsudoers.conf file</b> <br>
+Options in the form &ldquo;keyword = value&rdquo; may also
+be specified in a configuration file,
+<i>/etc/cvtsudoers.conf</i> by default. The following
+keywords are recognized:</p>
+
+<p style="margin-top: 1em"><b>defaults =</b>
+<i>deftypes</i></p>
+
+<p style="margin-left:14%;">See the description of the
+<b>-d</b> command line option.</p>
+
+<p style="margin-top: 1em"><b>expand_aliases =</b>
+<i>yes</i> | <i>no</i></p>
+
+<p style="margin-left:14%;">See the description of the
+<b>-e</b> command line option.</p>
+
+<p style="margin-top: 1em"><b>group_file =</b>
+<i>file</i></p>
+
+<p style="margin-left:14%;">See the description of the
+<b>--group-file</b> command line option.</p>
+
+<p style="margin-top: 1em"><b>input_format =</b>
+<i>ldif</i> | <i>sudoers</i></p>
+
+<p style="margin-left:14%;">See the description of the
+<b>-i</b> command line option.</p>
+
+<p style="margin-top: 1em"><b>match =</b> <i>filter</i></p>
+
+<p style="margin-left:14%;">See the description of the
+<b>-m</b> command line option.</p>
+
+<p style="margin-top: 1em"><b>match_local =</b> <i>yes</i>
+| <i>no</i></p>
+
+<p style="margin-left:14%;">See the description of the
+<b>-M</b> command line option.</p>
+
+<p style="margin-top: 1em"><b>order_increment =</b>
+<i>increment</i></p>
+
+<p style="margin-left:14%;">See the description of the
+<b>-I</b> command line option.</p>
+
+<p style="margin-top: 1em"><b>order_start =</b>
+<i>start_point</i></p>
+
+<p style="margin-left:14%;">See the description of the
+<b>-O</b> command line option.</p>
+
+<p style="margin-top: 1em"><b>output_format =</b>
+<i>csv</i> | <i>json</i> | <i>ldif</i> | <i>sudoers</i></p>
+
+<p style="margin-left:14%;">See the description of the
+<b>-f</b> command line option.</p>
+
+<p style="margin-top: 1em"><b>padding =</b>
+<i>padding</i></p>
+
+<p style="margin-left:14%;">See the description of the
+<b>-P</b> command line option.</p>
+
+<p style="margin-top: 1em"><b>passwd_file =</b>
+<i>file</i></p>
+
+<p style="margin-left:14%;">See the description of the
+<b>--passwd-file</b> command line option.</p>
+
+<p style="margin-top: 1em"><b>prune_matches =</b>
+<i>yes</i> | <i>no</i></p>
+
+<p style="margin-left:14%;">See the description of the
+<b>-p</b> command line option.</p>
+
+<p style="margin-top: 1em"><b>sudoers_base =</b>
+<i>dn</i></p>
+
+<p style="margin-left:14%;">See the description of the
+<b>-b</b> command line option.</p>
+
+<p style="margin-top: 1em"><b>suppress =</b>
+<i>sections</i></p>
+
+<p style="margin-left:14%;">See the description of the
+<b>-s</b> command line option.</p>
+
+<p style="margin-left:6%; margin-top: 1em">Options on the
+command line will override values from the configuration
+file.</p>
+
+<p style="margin-left:6%; margin-top: 1em"><b>JSON output
+format</b> <br>
+The <i>sudoers</i> JSON format may contain any of the
+following top-level objects:</p>
+
+<p style="margin-top: 1em">Defaults</p>
+
+<p style="margin-left:14%;">An array of objects, each
+containing an <i>Options</i> array and an optional
+<i>Binding</i> array.</p>
+
+<p style="margin-left:14%; margin-top: 1em">The
+<i>Options</i> array consists of one or more objects, each
+containing a &ldquo;name:value&rdquo; pair that corresponds
+to a <i>sudoers Defaults</i> setting. <i>Options</i> that
+operate on a list will also include an <i>operation</i>
+entry in the object, with a value of
+&ldquo;list_assign&rdquo; for &rsquo;=&rsquo;,
+&ldquo;list_add&rdquo; for &rsquo;+=&rsquo;, or
+&ldquo;list_remove&rdquo; for &rsquo;-=&rsquo;.</p>
+
+<p style="margin-left:14%; margin-top: 1em">The optional
+<i>Binding</i> array consists of one or more objects, each
+containing a &ldquo;name:value&rdquo; pair and an optional
+<i>negated</i> entry, which will negate any comparison
+performed with the object. If a <i>Binding</i> is present,
+the setting will only take effect if one of the specified
+<i>command</i>, <i>hostname</i>, <i>netgroup</i>,
+<i>networkaddr</i>, <i>nonunixgid</i>, <i>nonunixgroup</i>,
+<i>usergid</i>, <i>usergroup</i>, <i>userid</i>,
+<i>username</i>, or alias entries match.</p>
+
+<p style="margin-left:14%; margin-top: 1em">For example,
+the following <i>sudoers</i> entry:</p>
+
+
+<p style="margin-left:14%; margin-top: 1em">Defaults@somehost
+set_home, env_keep += DISPLAY</p>
+
+<p style="margin-left:14%; margin-top: 1em">converts
+to:</p>
+
+
+<p style="margin-left:14%; margin-top: 1em">&quot;Defaults&quot;:
+[ <br>
+{ <br>
+&quot;Binding&quot;: [ <br>
+{ &quot;hostname&quot;: &quot;somehost&quot; } <br>
+], <br>
+&quot;Options&quot;: [ <br>
+{ &quot;set_home&quot;: true }, <br>
+{ <br>
+&quot;operation&quot;: &quot;list_add&quot;, <br>
+&quot;env_keep&quot;: [ <br>
+&quot;DISPLAY&quot; <br>
+] <br>
+} <br>
+] <br>
+} <br>
+]</p>
+
+<p style="margin-top: 1em">User_Aliases</p>
+
+<p style="margin-left:14%;">A JSON object containing one or
+more <i>sudoers User_Alias</i> entries where each named
+alias has as its value an array containing one or more
+objects. Each object contains a &ldquo;name:value&rdquo;
+pair and an optional <i>negated</i> entry, which will negate
+any comparison performed with the object. The name may be
+one of <i>netgroup</i>, <i>nonunixgid</i>,
+<i>nonunixgroup</i>, <i>useralias</i>, <i>usergid</i>,
+<i>usergroup</i>, <i>userid</i>, or <i>username</i>.</p>
+
+<p style="margin-left:14%; margin-top: 1em">For example,
+the following <i>sudoers</i> entry:</p>
+
+<p style="margin-left:14%; margin-top: 1em">User_Alias
+SYSADMIN = will, %wheel, +admin</p>
+
+<p style="margin-left:14%; margin-top: 1em">converts
+to:</p>
+
+
+<p style="margin-left:14%; margin-top: 1em">&quot;User_Aliases&quot;:
+{ <br>
+&quot;SYSADMIN&quot;: [ <br>
+{ &quot;username&quot;: &quot;will&quot; }, <br>
+{ &quot;usergroup&quot;: &quot;wheel&quot; }, <br>
+{ &quot;netgroup&quot;: &quot;admin&quot; } <br>
+] <br>
+}</p>
+
+<p style="margin-top: 1em">Runas_Aliases</p>
+
+<p style="margin-left:14%;">A JSON object containing one or
+more <i>sudoers Runas_Alias</i> entries, where each named
+alias has as its value an array containing one or more
+objects. Each object contains a &ldquo;name:value&rdquo;
+pair and an optional <i>negated</i> entry, which will negate
+any comparison performed with the object. The name may be
+one of <i>netgroup</i>, <i>nonunixgid</i>,
+<i>nonunixgroup</i>, <i>runasalias</i>, <i>usergid</i>,
+<i>usergroup</i>, <i>userid</i>, or <i>username</i>.</p>
+
+<p style="margin-left:14%; margin-top: 1em">For example,
+the following <i>sudoers</i> entry:</p>
+
+<p style="margin-left:14%; margin-top: 1em">Runas_Alias DB
+= oracle, sybase : OP = root, operator</p>
+
+<p style="margin-left:14%; margin-top: 1em">converts
+to:</p>
+
+
+<p style="margin-left:14%; margin-top: 1em">&quot;Runas_Aliases&quot;:
+{ <br>
+&quot;DB&quot;: [ <br>
+{ &quot;username&quot;: &quot;oracle&quot; }, <br>
+{ &quot;username&quot;: &quot;sybase&quot; } <br>
+], <br>
+&quot;OP&quot;: [ <br>
+{ &quot;username&quot;: &quot;root&quot; }, <br>
+{ &quot;username&quot;: &quot;operator&quot; } <br>
+] <br>
+}</p>
+
+<p style="margin-top: 1em">Host_Aliases</p>
+
+<p style="margin-left:14%;">A JSON object containing one or
+more <i>sudoers Host_Alias</i> entries where each named
+alias has as its value an array containing one or more
+objects. Each object contains a &ldquo;name:value&rdquo;
+pair and an optional <i>negated</i> entry, which will negate
+any comparison performed with the object. The name may be
+one of <i>hostalias</i>, <i>hostname</i>, <i>netgroup</i>,
+or <i>networkaddr</i>.</p>
+
+<p style="margin-left:14%; margin-top: 1em">For example,
+the following <i>sudoers</i> entries:</p>
+
+<p style="margin-left:14%; margin-top: 1em">Host_Alias
+DORMNET = 128.138.243.0, 128.138.204.0/24 <br>
+Host_Alias SERVERS = boulder, refuge</p>
+
+<p style="margin-left:14%; margin-top: 1em">convert to:</p>
+
+
+<p style="margin-left:14%; margin-top: 1em">&quot;Host_Aliases&quot;:
+{ <br>
+&quot;DORMNET&quot;: [ <br>
+{ &quot;networkaddr&quot;: &quot;128.138.243.0&quot; }, <br>
+{ &quot;networkaddr&quot;: &quot;128.138.204.0/24&quot; }
+<br>
+], <br>
+&quot;SERVERS&quot;: [ <br>
+{ &quot;hostname&quot;: &quot;boulder&quot; }, <br>
+{ &quot;hostname&quot;: &quot;refuge&quot; } <br>
+] <br>
+}</p>
+
+<p style="margin-top: 1em">Cmnd_Aliases</p>
+
+<p style="margin-left:14%;">A JSON object containing one or
+more <i>sudoers Cmnd_Alias</i> entries where each named
+alias has as its value an array containing one or more
+objects. Each object contains a &ldquo;name:value&rdquo;
+pair and an optional <i>negated</i> entry, which will negate
+any comparison performed with the object. The name may be
+either another <i>cmndalias</i> or a <i>command</i>. For
+example, the following <i>sudoers</i> entries:</p>
+
+<p style="margin-left:14%; margin-top: 1em">Cmnd_Alias
+SHELLS = /bin/bash, /bin/csh, /bin/sh, /bin/zsh <br>
+Cmnd_Alias VIPW = /usr/bin/chpass, /usr/bin/chfn,
+/usr/bin/chsh, \ <br>
+/usr/bin/passwd, /usr/sbin/vigr, /usr/sbin/vipw</p>
+
+<p style="margin-left:14%; margin-top: 1em">convert to:</p>
+
+
+<p style="margin-left:14%; margin-top: 1em">&quot;Cmnd_Aliases&quot;:
+{ <br>
+&quot;SHELLS&quot;: [ <br>
+{ &quot;command&quot;: &quot;/bin/bash&quot; }, <br>
+{ &quot;command&quot;: &quot;/bin/csh&quot; }, <br>
+{ &quot;command&quot;: &quot;/bin/sh&quot; }, <br>
+{ &quot;command&quot;: &quot;/bin/zsh&quot; } <br>
+], <br>
+&quot;VIPW&quot;: [ <br>
+{ &quot;command&quot;: &quot;/usr/bin/chpass&quot; }, <br>
+{ &quot;command&quot;: &quot;/usr/bin/chfn&quot; }, <br>
+{ &quot;command&quot;: &quot;/usr/bin/chsh&quot; }, <br>
+{ &quot;command&quot;: &quot;/usr/bin/passwd&quot; }, <br>
+{ &quot;command&quot;: &quot;/usr/sbin/vigr&quot; }, <br>
+{ &quot;command&quot;: &quot;/usr/sbin/vipw&quot; } <br>
+] <br>
+}</p>
+
+<p style="margin-top: 1em">User_Specs</p>
+
+<p style="margin-left:14%;">A JSON array containing one or
+more objects, each representing a <i>sudoers</i> User_Spec.
+Each object in the <i>User_Specs</i> array should contain a
+<i>User_List</i> array, a <i>Host_List</i> array and a
+<i>Cmnd_Specs</i> array.</p>
+
+<p style="margin-left:14%; margin-top: 1em">A
+<i>User_List</i> consists of one or more objects. Each
+object contains a &ldquo;name:value&rdquo; pair and an
+optional <i>negated</i> entry, which will negate any
+comparison performed with the object. The name may be one of
+<i>netgroup</i>, <i>nonunixgid</i>, <i>nonunixgroup</i>,
+<i>useralias</i>, <i>usergid</i>, <i>usergroup</i>,
+<i>userid</i>, or <i>username</i>. If <i>username</i> is set
+to the special value <b>ALL</b>, it will match any user.</p>
+
+<p style="margin-left:14%; margin-top: 1em">A
+<i>Host_List</i> consists of one or more objects. Each
+object contains a &ldquo;name:value&rdquo; pair and an
+optional <i>negated</i> entry, which will negate any
+comparison performed with the object. The name may be one of
+<i>hostalias</i>, <i>hostname</i>, <i>netgroup</i>, or
+<i>networkaddr</i>. If <i>hostname</i> is set to the special
+value <b>ALL</b>, it will match any host.</p>
+
+<p style="margin-left:14%; margin-top: 1em">The
+<i>Cmnd_Specs</i> array consists of one or more JSON objects
+describing a command that may be run. Each <i>Cmnd_Specs</i>
+is made up of a <i>Commands</i> array, an optional
+<i>runasusers</i> array, an optional <i>runasgroups</i>
+array, and an optional <i>Options array.</i></p>
+
+<p style="margin-left:14%; margin-top: 1em">The
+<i>Commands</i> array consists of one or more objects
+containing &ldquo;name:value&rdquo; pair elements. The
+following names and values are supported:</p>
+
+<p style="margin-top: 1em">command</p>
+
+<p style="margin-left:26%; margin-top: 1em">A string
+containing the command to run. The special value <b>ALL</b>
+it will match any command.</p>
+
+<p style="margin-top: 1em">negated</p>
+
+<p style="margin-left:26%; margin-top: 1em">A boolean value
+that, if true, will negate any comparison performed with the
+object.</p>
+
+<p style="margin-top: 1em">sha224</p>
+
+<p style="margin-left:26%; margin-top: 1em">A string
+containing the SHA224 digest of the <i>command</i>.</p>
+
+<p style="margin-top: 1em">sha256</p>
+
+<p style="margin-left:26%; margin-top: 1em">A string
+containing the SHA256 digest of the <i>command</i>.</p>
+
+<p style="margin-top: 1em">sha384</p>
+
+<p style="margin-left:26%; margin-top: 1em">A string
+containing the SHA384 digest of the <i>command</i>.</p>
+
+<p style="margin-top: 1em">sha512</p>
+
+<p style="margin-left:26%; margin-top: 1em">A string
+containing the SHA512 digest of the <i>command</i>.</p>
+
+<p style="margin-left:14%; margin-top: 1em">The
+<i>runasusers</i> array consists of objects describing users
+the command may be run as. Each object contains a
+&ldquo;name:value&rdquo; pair and an optional <i>negated</i>
+entry, which will negate any comparison performed with the
+object. The name may be one of <i>netgroup</i>,
+<i>nonunixgid</i>, <i>nonunixgroup</i>, <i>runasalias</i>,
+<i>usergid</i>, <i>usergroup</i>, <i>userid</i>, or
+<i>username</i>. If <i>username</i> is set to the special
+value <b>ALL</b>, it will match any user. If <i>username</i>
+is set to the empty string &ldquo;&rdquo;, it will match the
+invoking user.</p>
+
+<p style="margin-left:14%; margin-top: 1em">The
+<i>runasgroups</i> array consists of objects describing
+groups the command may be run as. Each object contains a
+&ldquo;name:value&rdquo; pair and an optional <i>negated</i>
+entry, which will negate any comparison performed with the
+object. The name may be one of <i>runasalias</i>,
+<i>usergid</i>, or <i>usergroup</i>. If <i>usergroup</i> is
+set to the special value <b>ALL</b>, it will match any
+group.</p>
+
+<p style="margin-left:14%; margin-top: 1em">The
+<i>Options</i> array is of the same format as the one in the
+<i>Defaults</i> object. Any <i>Tag_Spec</i> entries in
+<i>sudoers</i> are converted to <i>Options</i>. A user with
+&ldquo;sudo ALL&rdquo; privileges will automatically have
+the <i>setenv</i> option enabled to match the implicit
+behavior provided by <i>sudoers</i>.</p>
+
+<p style="margin-left:14%; margin-top: 1em">For example,
+the following <i>sudoers</i> entry:</p>
+
+<p style="margin-left:14%; margin-top: 1em">millert ALL =
+(ALL : ALL) NOPASSWD: ALL, !/usr/bin/id</p>
+
+<p style="margin-left:14%; margin-top: 1em">converts
+to:</p>
+
+
+<p style="margin-left:14%; margin-top: 1em">&quot;User_Specs&quot;:
+[ <br>
+{ <br>
+&quot;User_List&quot;: [ <br>
+{ &quot;username&quot;: &quot;millert&quot; } <br>
+], <br>
+&quot;Host_List&quot;: [ <br>
+{ &quot;hostname&quot;: &quot;ALL&quot; } <br>
+], <br>
+&quot;Cmnd_Specs&quot;: [ <br>
+{ <br>
+&quot;runasusers&quot;: [ <br>
+{ &quot;username&quot;: &quot;ALL&quot; } <br>
+], <br>
+&quot;runasgroups&quot;: [ <br>
+{ &quot;usergroup&quot;: &quot;ALL&quot; } <br>
+], <br>
+&quot;Options&quot;: [ <br>
+{ &quot;authenticate&quot;: false }, <br>
+{ &quot;setenv&quot;: true } <br>
+], <br>
+&quot;Commands&quot;: [ <br>
+{ &quot;command&quot;: &quot;ALL&quot; }, <br>
+{ <br>
+&quot;command&quot;: &quot;/usr/bin/id&quot;, <br>
+&quot;negated&quot;: true <br>
+} <br>
+] <br>
+} <br>
+] <br>
+} <br>
+]</p>
+
+<p style="margin-left:6%; margin-top: 1em"><b>CSV output
+format</b> <br>
+CSV (comma-separated value) files are often used by
+spreadsheets and report generators. For CSV output,
+<b>cvtsudoers</b> double quotes strings that contain commas.
+For each literal double quote character present inside the
+string, two double quotes are output. This method of quoting
+commas is compatible with most spreadsheet programs.</p>
+
+<p style="margin-left:6%; margin-top: 1em">There are three
+possible sections in <b>cvtsudoers</b>&rsquo;s CSV output,
+each separated by a blank line:</p>
+
+<p style="margin-top: 1em">defaults</p>
+
+<p style="margin-left:14%;">This section includes any
+<i>Defaults</i> settings in <i>sudoers</i>. The
+<i>defaults</i> section begins with the following
+heading:</p>
+
+
+<p style="margin-left:22%; margin-top: 1em">defaults_type,binding,name,operator,value</p>
+
+<p style="margin-left:14%; margin-top: 1em">The fields are
+as follows:</p>
+
+<p style="margin-top: 1em">defaults_type</p>
+
+<p style="margin-left:22%;">The type of <i>Defaults</i>
+setting; one of <i>defaults</i>, <i>defaults_command</i>,
+<i>defaults_host</i>, <i>defaults_runas</i>, or
+<i>defaults_user</i>.</p>
+
+<p style="margin-top: 1em">binding</p>
+
+<p style="margin-left:22%;">For <i>defaults_command</i>,
+<i>defaults_host</i>, <i>defaults_runas</i>, and
+<i>defaults_user</i> this is the value that must match for
+the setting to be applied.</p>
+
+<p style="margin-top: 1em">name</p>
+
+<p style="margin-left:22%; margin-top: 1em">The name of the
+<i>Defaults</i> setting.</p>
+
+<p style="margin-top: 1em">operator</p>
+
+<p style="margin-left:22%;">The operator determines how the
+value is applied to the setting. It may be either
+&rsquo;=&rsquo; (assignment), &rsquo;+=&rsquo; (append), or
+&rsquo;-=&rsquo; (remove).</p>
+
+<p style="margin-top: 1em">value</p>
+
+<p style="margin-left:22%;">The setting&rsquo;s value,
+usually a string or, for settings used in a boolean context,
+<i>true</i> or <i>false</i>.</p>
+
+<p style="margin-top: 1em">aliases</p>
+
+<p style="margin-left:14%;">This section includes any
+<i>Cmnd_Alias Host_Alias</i>, <i>Runas_Alias</i>, or
+<i>User_Alias</i>, entries from <i>sudoers</i>. The
+<i>aliases</i> section begins with the following
+heading:</p>
+
+
+<p style="margin-left:22%; margin-top: 1em">alias_type,alias_name,members</p>
+
+<p style="margin-left:14%; margin-top: 1em">The fields are
+as follows:</p>
+
+<p style="margin-top: 1em">alias_type</p>
+
+<p style="margin-left:22%;">The type of alias; one of
+<i>Cmnd_Alias</i>, <i>Host_Alias</i>, <i>Runas_Alias</i>, or
+<i>User_Alias</i>.</p>
+
+<p style="margin-top: 1em">alias_name</p>
+
+<p style="margin-left:22%;">The name of the alias; a string
+starting with an upper-case letter that consists of
+upper-case letters, digits, or underscores.</p>
+
+<p style="margin-top: 1em">members</p>
+
+<p style="margin-left:22%;">A comma-separated list of
+members belonging to the alias. Due to the use of commas,
+<i>members</i> is surrounded by double quotes if it contains
+more than one member.</p>
+
+<p style="margin-top: 1em">rules</p>
+
+<p style="margin-left:14%;">This section includes the
+<i>sudoers</i> rules that grant privileges. The <i>rules</i>
+section begins with the following heading:</p>
+
+
+<p style="margin-left:22%; margin-top: 1em">rule,user,host,runusers,rungroups,options,command</p>
+
+<p style="margin-left:14%; margin-top: 1em">The fields are
+as follows:</p>
+
+<p style="margin-top: 1em">rule</p>
+
+<p style="margin-left:22%; margin-top: 1em">This field
+indicates a <i>sudoers rule</i> entry.</p>
+
+<p style="margin-top: 1em">user</p>
+
+<p style="margin-left:22%; margin-top: 1em">The user the
+rule applies to. This may also be a Unix group (preceded by
+a &rsquo;%&rsquo; character), a non-Unix group (preceded by
+&rsquo;%:&rsquo;) or a netgroup (preceded by a
+&rsquo;+&rsquo; character) or a <i>User_Alias</i>. If set to
+the special value <b>ALL</b>, it will match any user.</p>
+
+<p style="margin-top: 1em">host</p>
+
+<p style="margin-left:22%; margin-top: 1em">The host the
+rule applies to. This may also be a netgroup (preceded by a
+&rsquo;+&rsquo; character) or a <i>Host_Alias</i>. If set to
+the special value <b>ALL</b>, it will match any host.</p>
+
+<p style="margin-top: 1em">runusers</p>
+
+<p style="margin-left:22%;">An optional comma-separated
+list of users (or <i>Runas_Alias</i>es) the command may be
+run as. If it contains more than one member, the value is
+surrounded by double quotes. If set to the special value
+<b>ALL</b>, it will match any user. If empty, the root user
+is assumed.</p>
+
+<p style="margin-top: 1em">rungroups</p>
+
+<p style="margin-left:22%;">An optional comma-separated
+list of groups (or <i>Runas_Alias</i>es) the command may be
+run as. If it contains more than one member, the value is
+surrounded by double quotes. If set to the special value
+<b>ALL</b>, it will match any group. If empty, the
+<i>runuser</i>&rsquo;s group is used.</p>
+
+<p style="margin-top: 1em">options</p>
+
+<p style="margin-left:22%;">An optional list of
+<i>Defaults</i> settings to apply to the command. Any
+<i>Tag_Spec</i> entries in <i>sudoers</i> are converted to
+<i>options</i>.</p>
+
+<p style="margin-top: 1em">commands</p>
+
+<p style="margin-left:22%;">A list of commands, with
+optional arguments, that the user is allowed to run. If set
+to the special value <b>ALL</b>, it will match any
+command.</p>
+
+<p style="margin-left:14%; margin-top: 1em">For example,
+the following <i>sudoers</i> entry:</p>
+
+<p style="margin-left:14%; margin-top: 1em">millert ALL =
+(ALL : ALL) NOPASSWD: ALL, !/usr/bin/id</p>
+
+<p style="margin-left:14%; margin-top: 1em">converts
+to:</p>
+
+
+<p style="margin-left:14%; margin-top: 1em">rule,millert,ALL,ALL,ALL,&quot;!authenticate&quot;,&quot;ALL,!/usr/bin/id&quot;</p>
+
+<p style="margin-top: 1em"><b>FILES</b> <br>
+/etc/cvtsudoers.conf</p>
+
+<p style="margin-left:40%; margin-top: 1em">default
+configuration for cvtsudoers</p>
+
+<p style="margin-top: 1em"><b>EXAMPLES</b></p>
+
+<p style="margin-left:6%;">Convert <i>/etc/sudoers</i> to
+LDIF (LDAP Data Interchange Format) where the
+<i>ldap.conf</i> file uses a <i>sudoers_base</i> of
+my-domain,dc=com, storing the result in
+<i>sudoers.ldif</i>:</p>
+
+<p style="margin-left:12%; margin-top: 1em">$ cvtsudoers -b
+ou=SUDOers,dc=my-domain,dc=com -o sudoers.ldif \ <br>
+/etc/sudoers</p>
+
+<p style="margin-left:6%; margin-top: 1em">Convert
+<i>/etc/sudoers</i> to JSON format, storing the result in
+<i>sudoers.json</i>:</p>
+
+<p style="margin-left:12%; margin-top: 1em">$ cvtsudoers -f
+json -o sudoers.json /etc/sudoers</p>
+
+<p style="margin-left:6%; margin-top: 1em">Parse
+<i>/etc/sudoers</i> and display only rules that match user
+<i>ambrose</i> on host <i>hastur</i>:</p>
+
+<p style="margin-left:12%; margin-top: 1em">$ cvtsudoers -f
+sudoers -m user=ambrose,host=hastur /etc/sudoers</p>
+
+<p style="margin-left:6%; margin-top: 1em">Same as above,
+but expand aliases and prune out any non-matching users and
+hosts from the expanded entries.</p>
+
+<p style="margin-left:12%; margin-top: 1em">$ cvtsudoers
+-ep -f sudoers -m user=ambrose,host=hastur /etc/sudoers</p>
+
+<p style="margin-left:6%; margin-top: 1em">Convert
+<i>sudoers.ldif</i> from LDIF to traditional <i>sudoers</i>
+format:</p>
+
+<p style="margin-left:12%; margin-top: 1em">$ cvtsudoers -i
+ldif -f sudoers -o sudoers.new sudoers.ldif</p>
+
+<p style="margin-left:6%; margin-top: 1em">Merge a global
+<i>sudoers</i> file with two host-specific policy files from
+the hosts &ldquo;xyzzy&rdquo; and &ldquo;plugh&rdquo;:</p>
+
+<p style="margin-left:12%; margin-top: 1em">$ cvtsudoers -f
+sudoers -o sudoers.merged sudoers \ <br>
+xyzzy:sudoers.xyzzy plugh:sudoers.plugh</p>
+
+<p style="margin-top: 1em"><b>SEE ALSO</b></p>
+
+<p style="margin-left:6%;">sudoers(5), sudoers.ldap(5),
+sudo(8)</p>
+
+<p style="margin-top: 1em"><b>AUTHORS</b></p>
+
+<p style="margin-left:6%;">Many people have worked on
+<b>sudo</b> over the years; this version consists of code
+written primarily by:</p>
+
+<p style="margin-left:14%; margin-top: 1em">Todd C.
+Miller</p>
+
+<p style="margin-left:6%; margin-top: 1em">See the
+CONTRIBUTORS.md file in the <b>sudo</b> distribution
+(https://www.sudo.ws/about/contributors/) for an exhaustive
+list of people who have contributed to <b>sudo</b>.</p>
+
+<p style="margin-top: 1em"><b>BUGS</b></p>
+
+<p style="margin-left:6%;">If you believe you have found a
+bug in <b>cvtsudoers</b>, you can submit a bug report at
+https://bugzilla.sudo.ws/</p>
+
+<p style="margin-top: 1em"><b>SUPPORT</b></p>
+
+<p style="margin-left:6%;">Limited free support is
+available via the sudo-users mailing list, see
+https://www.sudo.ws/mailman/listinfo/sudo-users to subscribe
+or search the archives.</p>
+
+<p style="margin-top: 1em"><b>DISCLAIMER</b></p>
+
+<p style="margin-left:6%;"><b>cvtsudoers</b> is provided
+&ldquo;AS IS&rdquo; and any express or implied warranties,
+including, but not limited to, the implied warranties of
+merchantability and fitness for a particular purpose are
+disclaimed. See the LICENSE.md file distributed with
+<b>sudo</b> or https://www.sudo.ws/about/license/ for
+complete details.</p>
+
+<p style="margin-left:6%; margin-top: 1em">Sudo 1.9.13p3
+January&nbsp;16, 2023 Sudo 1.9.13p3</p>
+<hr>
+</body>
+</html>

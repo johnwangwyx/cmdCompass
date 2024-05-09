@@ -1,0 +1,181 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:42 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>PS2EPSI</title>
+
+</head>
+<body>
+
+<h1 align="center">PS2EPSI</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#USAGE">USAGE</a><br>
+<a href="#LIMITATIONS">LIMITATIONS</a><br>
+<a href="#COMPATIBILITY">COMPATIBILITY</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#VERSION">VERSION</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ps2epsi -
+generate conforming Encapsulated PostScript</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ps2epsi</b>
+<i>infile.ps</i> [ <i>outfile.epsi</i> ] <b>(Unix) <br>
+ps2epsi</b> <i>infile.ps</i> [ <i>outfile.epi</i> ]
+<b>(DOS)</b></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ps2epsi</b>
+uses <b>gs</b>(1) to process a <b>PostScript</b>(tm) file
+and generate as output a new file which conforms to
+Adobe&rsquo;s <b>Encapsulated PostScript Interchange</b>
+(EPSI) format. EPSI is a special form of encapsulated
+PostScript (EPS) which adds to the beginning of the file in
+the form of PostScript comments a bitmapped version of the
+final displayed page. Programs which understand EPSI
+(usually word processors or DTP programs) can use this
+bitmap to give a preview version on screen of the
+PostScript. The displayed quality is often not very good
+(e.g., low resolution, no colours), but the final printed
+version uses the real PostScript, and thus has the normal
+PostScript quality.</p>
+
+<h2>USAGE
+<a name="USAGE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">On Unix systems
+invoke <b>ps2epsi</b> like this:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="7%"></td>
+<td width="85%">
+
+
+<p><b>ps2epsi</b> <i>infile.ps</i> [ <i>outfile.epsi</i>
+]</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">where
+&quot;infile.ps&quot; is the input file and
+&quot;outfile.epsi&quot; is the resulting EPSI file. If the
+output filename is omitted, it is generated from the input
+filename. When a standard extension (&quot;.ps&quot;,
+&quot;.cps&quot;, &quot;.eps&quot; or &quot;.epsf&quot;) is
+used, it is replaced with the output extension
+&quot;.epsi&quot;. On DOS systems the command is:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="8%"></td>
+<td width="92%">
+
+
+<p><b>ps2epsi</b> <i>infile.ps outfile.epi</i></p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">where
+&quot;infile.ps&quot; is the original PostScript file, and
+&quot;outfile.epi&quot; is the name of the output file.</p>
+
+<h2>LIMITATIONS
+<a name="LIMITATIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Not every
+PostScript file can be encapsulated successfully, because
+there are restrictions on what PostScript constructs a
+correct encapsulated file may contain. <b>ps2epsi</b> does a
+little extra work to try to help encapsulation, and it
+automatically calculates the bounding box required for all
+encapsulated PostScript files, so most of the time it does a
+pretty good job. There are certain to be cases, however,
+where the encapsulation does not work because of the content
+of the original PostScript file.</p>
+
+<h2>COMPATIBILITY
+<a name="COMPATIBILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>Framemaker</b> DTP system is one application which
+understands EPSI files, and <b>ps2epsi</b> has been tested
+on a number of PostScript diagrams from a variety of
+sources, using Framemaker 3.0 on a Sun workstation.
+Framemaker on other platforms should be able to use these
+files, although I have not been able to test this.</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p align="center" style="margin-top: 1em"><b><img src="grohtml-165241.png" alt="Image grohtml-165241.png"></b></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">gs (1)</p>
+
+<h2>VERSION
+<a name="VERSION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This document
+was last revised for Ghostscript version 10.00.0. However,
+the content may be obsolete, or inconsistent with
+ps2epsi.txt.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">George
+Cameron</p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:00 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>DBUS-SEND</title>
+
+</head>
+<body>
+
+<h1 align="center">DBUS-SEND</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#BUGS">BUGS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">dbus-send -
+Send a message to a message bus</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="89%">
+
+
+<p style="margin-top: 1em"><b>dbus-send</b> [--system |
+--session | --bus=<i>ADDRESS</i> | --peer=<i>ADDRESS</i>]
+[--sender=<i>NAME</i>] [--dest=<i>NAME</i>]
+[--print-reply&nbsp;[<i>=literal</i>]]
+[--reply-timeout=<i>MSEC</i>] [--type=<i>TYPE</i>]
+<i>OBJECT_PATH INTERFACE.MEMBER</i> [<i>CONTENTS</i>...]</p></td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>dbus-send</b> command is used to send a message to a
+D-Bus message bus. See
+<b><font color="#0000FF">http://www.freedesktop.org/software/dbus/</font></b>
+<font color="#000000">for more information about the big
+picture.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">There
+are two well-known message buses: the systemwide message bus
+(installed on many systems as the &quot;messagebus&quot;
+service) and the per-user-login-session message bus (started
+each time a user logs in). The <b>--system</b> and
+<b>--session</b> options direct <b>dbus-send</b> to send
+messages to the system or session buses respectively. If
+neither is specified, <b>dbus-send</b> sends to the session
+bus.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Nearly
+all uses of <b>dbus-send</b> must provide the <b>--dest</b>
+argument which is the name of a connection on the bus to
+send the message to. If <b>--dest</b> is omitted, no
+destination is set.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+object path and the name of the message to send must always
+be specified. Following arguments, if any, are the message
+contents (message arguments). These are given as
+type-specified values and may include containers (arrays,
+dicts, and variants) as described below.</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">&lt;contents&gt;
+::= &lt;item&gt; | &lt;container&gt; [ &lt;item&gt; |
+&lt;container&gt;...] <br>
+&lt;item&gt; ::= &lt;type&gt;:&lt;value&gt; <br>
+&lt;container&gt; ::= &lt;array&gt; | &lt;dict&gt; |
+&lt;variant&gt; <br>
+&lt;array&gt; ::=
+array:&lt;type&gt;:&lt;value&gt;[,&lt;value&gt;...] <br>
+&lt;dict&gt; ::=
+dict:&lt;type&gt;:&lt;type&gt;:&lt;key&gt;,&lt;value&gt;[,&lt;key&gt;,&lt;value&gt;...]
+<br>
+&lt;variant&gt; ::= variant:&lt;type&gt;:&lt;value&gt; <br>
+&lt;type&gt; ::= string | int16 | uint16 | int32 | uint32 |
+int64 | uint64 | double | byte | boolean |
+objpath</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">D-Bus
+supports more types than these, but <b>dbus-send</b>
+currently does not. Also, <b>dbus-send</b> does not permit
+empty containers or nested containers (e.g. arrays of
+variants).</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Here
+is an example invocation:</font></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><font color="#000000">dbus-send
+--dest=org.freedesktop.ExampleName \ <br>
+/org/freedesktop/sample/object/name \ <br>
+org.freedesktop.ExampleInterface.ExampleMethod \ <br>
+int32:47 string:'hello world' double:65.32 \ <br>
+array:string:&quot;1st item&quot;,&quot;next
+item&quot;,&quot;last item&quot; \ <br>
+
+dict:string:int32:&quot;one&quot;,1,&quot;two&quot;,2,&quot;three&quot;,3
+\ <br>
+variant:int32:-8 \ <br>
+objpath:/org/freedesktop/sample/object/name</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Note
+that the interface is separated from a method or signal name
+by a dot, though in the actual protocol the interface and
+the interface member are separate fields.</font></p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">The
+following options are supported:</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--dest=</b><i>NAME</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Specify
+the name of the connection to receive the
+message.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--print-reply</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Block for
+a reply to the message sent, and print any reply received in
+a human-readable form. It also means the message type
+(<b>--type=</b>) is <b>method_call</b>.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--print-reply=literal</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Block for
+a reply to the message sent, and print the body of the
+reply. If the reply is an object path or a string, it is
+printed literally, with no punctuation, escape characters
+etc.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--reply-timeout=</b><i>MSEC</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Wait for
+a reply for up to <i>MSEC</i> milliseconds. The default is
+implementation-defined, typically 25 seconds.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--system</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Send to
+the system message bus.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--session</b></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Send to
+the session message bus. (This is the default.)</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--bus=</b><i>ADDRESS</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Register
+on a message bus at <i>ADDRESS</i>, typically a
+<b>dbus-daemon</b>.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--peer=</b><i>ADDRESS</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Send to a
+non-message-bus D-Bus server at <i>ADDRESS</i>. In this case
+<b>dbus-send</b> will not call the Hello method.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--sender=</b><i>NAME</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Request
+ownership of name <i>NAME</i> before sending the message.
+The name will be released when <b>dbus-send</b>
+exits.</font></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000"><b>--type=</b><i>TYPE</i></font></p>
+
+<p style="margin-left:17%;"><font color="#000000">Specify
+<b>method_call</b> or <b>signal</b> (defaults to
+&quot;<b>signal</b>&quot;).</font></p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">dbus-send
+was written by Philip Blundell.</font></p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><font color="#000000">Please
+send bug reports to the D-Bus mailing list or bug tracker,
+see</font>
+<b><font color="#0000FF">http://www.freedesktop.org/software/dbus/</font></b></p>
+<hr>
+</body>
+</html>

@@ -1,0 +1,312 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:24 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pamaddnoise User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pamaddnoise User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#REFERENCES">REFERENCES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#HISTORY">HISTORY</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pamaddnoise -
+add noise to a Netpbm image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamaddnoise</b>
+{ [<b>-type gaussian</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-sigma1</b>
+<i>value</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-sigma2</b>
+<i>value</i>] | <b>-type multiplicative_gaussian</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-mgsigma</b>
+<i>value</i>] | <b>-type impulse</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-tolerance</b>
+<i>ratio</i>] | <b>-type laplacian</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-lsigma</b>
+<i>value</i>] | <b>-type poisson</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-lambda</b>
+<i>value</i>] } [<b>-seed</b> <i>int</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<i>netpbmfile</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamaddnoise</b>
+adds the specified noise type to a Netpbm image.
+<b>pamaddnoise</b> treats a PPM image as 3 independent
+planes, not as a plane of colors in a color space.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pamaddnoise</b> recognizes the following command line
+options: <b><br>
+-lambda</b> <i>value</i></p>
+
+<p style="margin-left:22%;">This is the expected value of
+the Poisson distribution for a sample value <br>
+of mximum intensity. The expected value for other
+intensities is <br>
+proportional; e.g. for half intensity, it is half this
+value.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This is
+meaningful only with <b>-type=poisson</b>.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The default
+value is 12.</p>
+
+<p style="margin-left:11%;"><b>-lsigma</b> <i>value</i></p>
+
+<p style="margin-left:22%;">Used for laplacian noise only.
+The default value is 10.0.</p>
+
+<p style="margin-left:11%;"><b>-mgsigma</b>
+<i>value</i></p>
+
+<p style="margin-left:22%;">Used for multiplicative
+gaussian noise only. The default value is 0.5.</p>
+
+<p style="margin-left:11%;"><b>-seed</b> <i>int</i></p>
+
+<p style="margin-left:22%;">Used for all noise types. Set
+the initial random number generator seed value.</p>
+
+<p style="margin-left:11%;"><b>-sigma1</b> <i>value</i></p>
+
+<p style="margin-left:22%;">Used for gaussian noise only.
+The default value is 4.0.</p>
+
+<p style="margin-left:11%;"><b>-sigma2</b> <i>value</i></p>
+
+<p style="margin-left:22%;">Used for gaussian noise only.
+The default value is 20.0.</p>
+
+<p style="margin-left:11%;"><b>-tolerance</b>
+<i>ratio</i></p>
+
+<p style="margin-left:22%;">Used for impulse noise only.
+The default value is 0.10. This means that 5% of all pixel
+values will be set to 0 and 5% will be set to the maxval</p>
+
+<p style="margin-left:11%;"><b>-type</b>
+<i>noise_type</i></p>
+
+<p style="margin-left:22%;">Select type of noise by name.
+The following noise types are available: gaussian,
+multiplicative_gaussian, impulse, laplacian, poisson. Only
+enough letters to be unique are required for the noise type
+option. The default noise type is <b>gaussian</b>.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="35%">
+
+
+<p><b>gaussian</b></p></td>
+<td width="43%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="35%">
+
+
+<p><b>multiplicative_gaussian</b></p></td>
+<td width="43%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="35%">
+
+
+<p><b>impulse</b></p></td>
+<td width="43%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="35%">
+
+
+<p><b>laplacian</b></p></td>
+<td width="43%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="35%">
+
+
+<p><b>poisson</b></p></td>
+<td width="43%">
+</td></tr>
+</table>
+
+<h2>REFERENCES
+<a name="REFERENCES"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">&quot;Adaptive Image Restoration
+in Signal-Dependent Noise&quot; by R. Kasturi Institute for
+Electronic Science, Texas Tech University, 1982</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="10%"></td>
+<td width="78%">
+
+
+<p>&quot;Digital Image Processing Algorithms&quot; by
+Ioannis Pitas, Prentice Hall, 1993 ISBN 0-13-145814-0</p></td></tr>
+</table>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pgmnoise</b>(1),
+<b>pgmmedian</b>(1), <b>pnm</b>(1), <b>pam</b>(1),</p>
+
+<h2>HISTORY
+<a name="HISTORY"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamaddnoise</b>
+was added to Netpbm in Version 10.29 (August 2005). It had
+been distributed by Mike Burns via his own web site before
+that (and continued to be so).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Burns&rsquo;
+version, and the one in Netpbm 10.29, was called
+<b>pnmaddnoise</b> and worked only on PNM images. In Netpbm
+10.30, it was converted to handle PAM images and renamed to
+<b>pamaddnoise</b>.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1995 by Mike Burns &lt;<i>burns@cac.psu.edu</i>&gt;</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pamaddnoise.html</b></p>
+<hr>
+</body>
+</html>

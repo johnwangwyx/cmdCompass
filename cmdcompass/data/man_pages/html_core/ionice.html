@@ -1,0 +1,266 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:12 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>IONICE</title>
+
+</head>
+<body>
+
+<h1 align="center">IONICE</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#AVAILABILITY">AVAILABILITY</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ionice - set or
+get process I/O scheduling class and priority</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ionice</b>
+[<b>-c</b> <i>class</i>] [<b>-n</b> <i>level</i>]
+[<b>-t</b>] <b>-p</b> <i>PID</i></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ionice</b>
+[<b>-c</b> <i>class</i>] [<b>-n</b> <i>level</i>]
+[<b>-t</b>] <b>-P</b> <i>PGID</i></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ionice</b>
+[<b>-c</b> <i>class</i>] [<b>-n</b> <i>level</i>]
+[<b>-t</b>] <b>-u</b> <i>UID</i></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ionice</b>
+[<b>-c</b> <i>class</i>] [<b>-n</b> <i>level</i>]
+[<b>-t</b>] <i>command</i> [argument] ...</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program
+sets or gets the I/O scheduling class and priority for a
+program. If no arguments or just <b>-p</b> is given,
+<b>ionice</b> will query the current I/O scheduling class
+and priority for that process.</p>
+
+<p style="margin-left:11%; margin-top: 1em">When
+<i>command</i> is given, <b>ionice</b> will run this command
+with the given arguments. If no <i>class</i> is specified,
+then <i>command</i> will be executed with the
+&quot;best-effort&quot; scheduling class. The default
+priority level is 4.</p>
+
+<p style="margin-left:11%; margin-top: 1em">As of this
+writing, a process can be in one of three scheduling
+classes:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Idle</b></p>
+
+<p style="margin-left:17%;">A program running with idle I/O
+priority will only get disk time when no other program has
+asked for disk I/O for a defined grace period. The impact of
+an idle I/O process on normal system activity should be
+zero. This scheduling class does not take a priority
+argument. Presently, this scheduling class is permitted for
+an ordinary user (since kernel 2.6.25).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Best-effort</b></p>
+
+<p style="margin-left:17%;">This is the effective
+scheduling class for any process that has not asked for a
+specific I/O priority. This class takes a priority argument
+from <i>0-7</i>, with a lower number being higher priority.
+Programs running at the same best-effort priority are served
+in a round-robin fashion.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note that
+before kernel 2.6.26 a process that has not asked for an I/O
+priority formally uses &quot;<b>none</b>&quot; as scheduling
+class, but the I/O scheduler will treat such processes as if
+it were in the best-effort class. The priority within the
+best-effort class will be dynamically derived from the CPU
+nice level of the process: io_priority = (cpu_nice + 20) /
+5.</p>
+
+<p style="margin-left:17%; margin-top: 1em">For kernels
+after 2.6.26 with the CFQ I/O scheduler, a process that has
+not asked for an I/O priority inherits its CPU scheduling
+class. The I/O priority is derived from the CPU nice level
+of the process (same as before kernel 2.6.26).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Realtime</b></p>
+
+<p style="margin-left:17%;">The RT scheduling class is
+given first access to the disk, regardless of what else is
+going on in the system. Thus the RT class needs to be used
+with some care, as it can starve other processes. As with
+the best-effort class, 8 priority levels are defined
+denoting how big a time slice a given process will receive
+on each scheduling window. This scheduling class is not
+permitted for an ordinary (i.e., non-root) user.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-c</b>,
+<b>--class</b> <i>class</i></p>
+
+<p style="margin-left:17%;">Specify the name or number of
+the scheduling class to use; 0 for none, 1 for realtime, 2
+for best-effort, 3 for idle.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-n</b>,
+<b>--classdata</b> <i>level</i></p>
+
+<p style="margin-left:17%;">Specify the scheduling class
+data. This only has an effect if the class accepts an
+argument. For realtime and best-effort, <i>0-7</i> are valid
+data (priority levels), and 0 represents the highest
+priority level.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-p</b>,
+<b>--pid</b> <i>PID</i>...</p>
+
+<p style="margin-left:17%;">Specify the process IDs of
+running processes for which to get or set the scheduling
+parameters.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-P</b>,
+<b>--pgid</b> <i>PGID</i>...</p>
+
+<p style="margin-left:17%;">Specify the process group IDs
+of running processes for which to get or set the scheduling
+parameters.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-t</b>,
+<b>--ignore</b></p>
+
+<p style="margin-left:17%;">Ignore failure to set the
+requested priority. If <i>command</i> was specified, run it
+even in case it was not possible to set the desired
+scheduling priority, which can happen due to insufficient
+privileges or an old kernel version.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-u</b>,
+<b>--uid</b> <i>UID</i>...</p>
+
+<p style="margin-left:17%;">Specify the user IDs of running
+processes for which to get or set the scheduling
+parameters.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>,
+<b>--help</b></p>
+
+<p style="margin-left:17%;">Display help text and exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-V</b>,
+<b>--version</b></p>
+
+<p style="margin-left:17%;">Print version and exit.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Linux supports
+I/O scheduling priorities and classes since 2.6.13 with the
+CFQ I/O scheduler.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:17%; margin-top: 1em">&bull; #
+<b>ionice</b> -c 3 -p 89</p>
+
+<p style="margin-left:11%; margin-top: 1em">Sets process
+with PID 89 as an idle I/O process.</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; #
+<b>ionice</b> -c 2 -n 0 bash</p>
+
+<p style="margin-left:11%; margin-top: 1em">Runs 'bash' as
+a best-effort program with highest priority.</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; #
+<b>ionice</b> -p 89 91</p>
+
+<p style="margin-left:11%; margin-top: 1em">Prints the
+class and priority of the processes with PID 89 and 91.</p>
+
+<h2>AUTHORS
+<a name="AUTHORS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Jens
+Axboe</i> &lt;jens@axboe.dk&gt;, <i>Karel Zak</i>
+&lt;kzak@redhat.com&gt;</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ioprio_set</b>(2)</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For bug
+reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+
+<h2>AVAILABILITY
+<a name="AVAILABILITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>ionice</b> command is part of the util-linux package
+which can be downloaded from <i>Linux Kernel Archive</i>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>
+<hr>
+</body>
+</html>

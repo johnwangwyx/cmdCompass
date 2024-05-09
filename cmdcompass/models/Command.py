@@ -10,7 +10,13 @@ class Command:
     tag_ids: List[str]
     uuid: str = field(default_factory=lambda: str(uuid.uuid4()))
 
-    def parse_command(self, replacements: Dict[str, str]) -> str:
+    def get_template_variables(self) -> List[str]:
+        """Extracts variables enclosed in {{}} from the command string."""
+        pattern = r"\{\{\s*(\w+)\s*\}\}"
+        matches = re.findall(pattern, self.command_str)
+        return matches
+
+    def parse_template(self, replacements: Dict[str, str]) -> str:
         """Parses the command string, replaces variables, and handles missing keys."""
         def replace_var(match):
             var_name = match.group(1)

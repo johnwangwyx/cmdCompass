@@ -1,0 +1,250 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:38 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Ppmtobmp User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Ppmtobmp User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ppmtobmp -
+convert a PPM image into a BMP file</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmtobmp</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-windows</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-os2</b>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-bpp=</b><i>bits_per_pixel</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-mapfile=</b><i>filename</i>]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<i>ppmfile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviation of option is acceptable. You may use double
+hyphens instead of single hyphen to denote options. You may
+use white space in place of the equals sign to separate an
+option name from its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppmtobmp</b>
+reads a PPM image as input and produces a Microsoft Windows
+or OS/2 BMP file as output.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>ppmtobmp</b> recognizes the following command line
+options: <b><br>
+-windows</b></p>
+
+<p style="margin-left:22%;">Tells the program to produce a
+Microsoft Windows BMP file. (This is the default.)</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-os2</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>Tells the program to produce an OS/2 BMP file. (Before
+August 2000, this was the default).</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>-bpp</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p>This tells how many bits per pixel you want the BMP file
+to contain. Only 1, 4, 8, and 24 are possible. By default,
+<b>ppmtobmp</b> chooses the smallest number with which it
+can represent all the colors in the input image. If you
+specify a number too small to represent all the colors in
+the input image, <b>ppmtobmp</b> tells you and terminates.
+You can use <b>pnmquant</b> or <b>ppmdither</b> to reduce
+the number of colors in the image.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">Before Netpbm
+10.85 (December 2018), <b>ppmtobmp</b> ignores this option
+if the input is PBM and produces a BMP with 1 bit per pixel.
+With these versions, if you want more than that, use
+<b>pbmtopgm</b> to convert the PBM to PGM first.</p>
+
+
+<p style="margin-left:11%;"><b>-mapfile=</b><i>filename</i></p>
+
+<p style="margin-left:22%;">This identifies a file to use
+as the BMP palette (aka &quot;colormap&quot;). In one BMP
+subformat, the BMP stream contains a palette of up to 256
+colors, and represents the image raster as indices into that
+palette. Normally, <b>ppmtobmp</b> takes care of computing a
+suitable palette, but if you are going to dissect the BMP
+output in some way, you may want certain values for the
+palette indices. E.g. you might want red to be 13, where
+<b>ppmtobmp</b> would (arbitrarily) choose 39. In that case,
+you can construct the palette yourself and use this option
+to tell <b>ppmtobmp</b> to use your palette.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option
+does <i>not</i> control what colors are in the output. The
+colors in the output are exactly those in the input, and the
+palette you supply must contain at least all the colors that
+are in the input. You can use <b>pnmremap</b> to adjust your
+input image so that it contains only colors from your
+palette.</p>
+
+<p style="margin-left:22%; margin-top: 1em">The palette
+file is a Netpbm format file with one pixel per palette
+entry. Each pixel must have a distinct color (no repeats).
+The order of the BMP palette <b>ppmtobmp</b> generates is
+the order of the pixels in the palette file, going from top
+to bottom, left to right.</p>
+
+<p style="margin-left:22%; margin-top: 1em">A BMP palette
+may have at most 256 colors, so the palette file must have
+at most 256 pixels.</p>
+
+<p style="margin-left:22%; margin-top: 1em">You may find
+<b>pnmcolormap</b> useful in generating the palette file.
+<b>pamseq</b> too.</p>
+
+<p style="margin-left:22%; margin-top: 1em">In the case of
+grayscale image, if you are processing the BMP image, it
+<br>
+may be convenient for you to have the actual gray values in
+the raster <br>
+part of the image rather than arbitrary indices into a
+palette. There is <br>
+no BMP format specifically for that, but you can achieve it
+by using a <br>
+palette in which each index is equal to the indexed gray
+value, and then <br>
+ignoring the palette when you process the BMP image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Here is an
+example of doing that:</p>
+
+<p style="margin-left:22%; margin-top: 1em">$ pamseq 1 255
+&gt; mapfile.pgm</p>
+
+<p style="margin-left:22%; margin-top: 1em">$ ppmtobmp
+-mapfile=mapfile.pgm input.pgm &gt; output.bmp</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.45 (December 2008).</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">To get a
+faithful reproduction of the input image, the maxval of the
+input image must be 255. If it is something else, the colors
+in the BMP file may be slightly different from the colors in
+the input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Windows icons
+are not BMP files. Use <b>ppmtowinicon</b> to create
+those.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>bmptoppm</b>(1),
+<b>ppmtowinicon</b>(1), <b>pnmquant</b>(1),
+<b>ppmdither</b>(1), <b>pnmremap</b>(1), <b>ppm</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1992 by David W. Sanderson.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/ppmtobmp.html</b></p>
+<hr>
+</body>
+</html>

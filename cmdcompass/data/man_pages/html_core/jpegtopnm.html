@@ -1,0 +1,479 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:13 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Jpegtopnm User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Jpegtopnm User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#HINTS">HINTS</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">jpegtopnm -
+convert JPEG/JFIF file to PPM or PGM image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>jpegtopnm</b>
+[<b>-dct</b> {<b>int</b>|<b>fast</b>|<b>float</b>}]
+[<b>-nosmooth</b>] [<b>-maxmemory</b> <i>N</i>]
+[{<b>-adobe</b>|<b>-notadobe</b>}] [<b>-comments</b>]
+[<b>-dumpexif</b>] [<b>-exif=</b><i>filespec</i>]
+[<b>-multiple</b>] [<b>-repair</b>] [<b>-verbose</b>]
+[<b>-tracelevel</b> <i>N</i>] [<i>filename</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">Minimum unique
+abbreviation of option is acceptable. You may use double
+hyphens instead of single hyphen to denote options. You may
+use white space in place of the equals sign to separate an
+option name from its value.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>jpegtopnm</b>
+converts JFIF images to PPM or PGM images.</p>
+
+<p style="margin-left:11%; margin-top: 1em">By default,
+<b>jpegtopnm</b> expects the input stream to contain one
+JFIF image and produces one PGM or PPM image as output. It
+fails if the input stream is empty.</p>
+
+<p style="margin-left:11%; margin-top: 1em">But with the
+<b>-multiple</b> option, <b>jpegtopnm</b> reads JFIF images
+sequentially from the input stream and writes one PPM or PGM
+image to the output stream for each JFIF input. If the input
+stream is empty, so is the output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The input
+stream is the <i>filename</i> you specify or, if you
+don&rsquo;t specify <i>filename</i>, Standard Input. The
+output stream is Standard Output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If a JFIF input
+image is of the grayscale variety, <b>jpegtopnm</b>
+generates a PGM image. Otherwise, it generates a PPM
+image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Before Netpbm
+10.11 (October 2002), <b>jpegtopnm</b> did not have the
+multiple image stream capability. From 10.11 through 10.22,
+Netpbm always behaved as if you specified <b>-multiple</b>.
+Starting with Netpbm 10.23 (July 2004), Netpbm&rsquo;s
+default behavior went back to the pre-10.11 behavior and the
+new <b>-multiple</b> option selected the 10.12 behavior. The
+reason for the reversion was that there were discovered in
+the world files that contain JFIF images followed by
+something other than another JFIF image. The producers of
+these files expect them to work with any JFIF interpreter
+because most JFIF interpreters just stop reading the file
+after the first JFIF image.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>jpegtopnm</b>
+uses the Independent JPEG Group&rsquo;s JPEG library to
+interpret the input file. See
+<b><a href="http://www.ijg.org"></b>http://www.ijg.org<b></a></b>
+for information on the library.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em">&quot;JFIF&quot;
+is the correct name for the image format commonly known as
+&quot;JPEG.&quot; Strictly speaking, JPEG is a method of
+compression. The image format using JPEG compression that is
+by far the most common is JFIF. There is also a subformat of
+TIFF that uses JPEG compression.</p>
+
+<p style="margin-left:11%; margin-top: 1em">EXIF is an
+image format that is a subformat of JFIF (to wit, a JFIF
+file that contains an EXIF header as an APP1 marker).
+<b>jpegtopnm</b> handles EXIF.</p>
+
+<p style="margin-left:11%; margin-top: 1em">JFIF files can
+have either 8 bits per sample or 12 bits per sample. The 8
+bit variety is by far the most common. There are two
+versions of the IJG JPEG library. One reads only 8 bit files
+and the other reads only 12 bit files. You must link the
+appropriate one of these libraries with <b>jpegtopnm</b>.
+Ordinarily, this means the library is in your shared library
+search path when you run <b>jpegtopnm</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>jpegtopnm</b>
+generates output with either one byte or two bytes per
+sample depending on whether the JFIF input has either 8 bits
+or 12 bits per sample. You can use <b>pamdepth</b> to reduce
+a two-byte-per-sample file to a one-byte-per-sample file if
+you need to.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the JFIF
+file uses the CMYK or YCCK color space, the input does not
+actually contain enough information to know what color each
+pixel is. To know what color a pixel is, one would have to
+know the properties of the inks to which the color space
+refers. <b>jpegtopnm</b> interprets the colors using the
+common transformation which assumes all the inks are simply
+subtractive and linear.</p>
+
+<p style="margin-left:11%; margin-top: 1em">See the
+<b>jpegtopnm manual</b>(1) for information on how images
+lose quality when you convert to and from JFIF.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>jpegtopnm</b> recognizes the following command line
+options:</p>
+
+<p style="margin-left:11%; margin-top: 1em">The options are
+only for advanced users. <b><br>
+-dct int</b></p>
+
+<p style="margin-left:22%;">Use integer DCT method
+(default).</p>
+
+<p style="margin-left:11%;"><b>-dct fast</b></p>
+
+<p style="margin-left:22%;">Use fast integer DCT (less
+accurate).</p>
+
+<p style="margin-left:11%;"><b>-dct float</b></p>
+
+<p style="margin-left:22%;">Use floating-point DCT method.
+The float method is very slightly more accurate than the int
+method, but is much slower unless your machine has very fast
+floating-point hardware. Also note that results of the
+floating-point method may vary slightly across machines,
+while the integer methods should give the same results
+everywhere. The fast integer method is much less accurate
+than the other two.</p>
+
+<p style="margin-left:11%;"><b>-nosmooth</b></p>
+
+<p style="margin-left:22%;">Use a faster, lower-quality
+upsampling routine.</p>
+
+<p style="margin-left:11%;"><b>-maxmemory</b> <i>N</i></p>
+
+<p style="margin-left:22%;">Set limit on the amount of
+memory <b>jpegtopnm</b> uses in processing large images.
+Value is in thousands of bytes, or millions of bytes if
+&quot;M&quot; is suffixed to the number. For example,
+<b>-maxmemory 4m</b> selects 4000000 bytes. If
+<b>jpegtopnm</b> needs more space, it uses temporary
+files.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-adobe</b></p></td>
+<td width="80%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-notadobe</b></p>
+
+<p style="margin-left:22%;">There are two variations on the
+CMYK (and likewise YCCK) color space that may be used in the
+JFIF input. In the normal one, a zero value for a color
+components indicates absence of ink. In the other, a zero
+value means the maximum ink coverage. The latter is used by
+Adobe Photoshop when it creates a bare JFIF output file (but
+not when it creates JFIF output as part of Encapsulated
+Postscript output).</p>
+
+<p style="margin-left:22%; margin-top: 1em">These options
+tell <b>jpegtopnm</b> which version of the CMYK or YCCK
+color space the image uses. If you specify neither,
+<b>jpegtopnm</b> tries to figure it out on its own. In the
+present version, it doesn&rsquo;t try very hard at all: It
+just assumes the Photoshop version, since Photoshop and its
+emulators seem to be the main source of CMYK and YCCK
+images. But with experience of use, future versions might be
+more sophisticated.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If the JFIF
+image does not indicate that it is CMYK or YCCK, these
+options have no effect.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If you
+don&rsquo;t use the right one of these options, the symptom
+is output that looks like a negative.</p>
+
+<p style="margin-left:11%;"><b>-dumpexif</b></p>
+
+<p style="margin-left:22%;">Print the interpreted contents
+of any Exif header in the input file to the Standard Error
+file. Similar to the program <b>jhead</b> (not part of the
+Netpbm package).</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+added in Netpbm 9.19 (September 2001).</p>
+
+
+<p style="margin-left:11%;"><b>-exif=</b><i>filespec</i></p>
+
+<p style="margin-left:22%;">Extract the contents of the
+EXIF header from the input image and write it to the file
+<i>filespec</i>. <i>filespec</i>=<b>-</b> means write it to
+Standard Output. When you write the EXIF header to Standard
+Output, <b>jpegtopnm</b> does not output the converted image
+(which is what normally would go to Standard Output) at
+all.</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>jpegtopnm</b>
+writes the contents of the EXIF header byte-for-byte,
+starting with the two byte length field (which length
+includes those two bytes).</p>
+
+<p style="margin-left:22%; margin-top: 1em">You can use
+this file as input to <b>pnmtojpeg</b> to insert an
+identical EXIF header into a new JFIF image.</p>
+
+<p style="margin-left:22%; margin-top: 1em">If there is no
+EXIF header, <b>jpegtopnm</b> writes two bytes of binary
+zero and nothing else.</p>
+
+<p style="margin-left:22%; margin-top: 1em">An EXIF header
+takes the form of a JFIF APP1 marker. Only the first such
+marker within the JFIF header counts.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+added in Netpbm 9.19 (September 2001).</p>
+
+<p style="margin-left:11%;"><b>-multiple</b></p>
+
+<p style="margin-left:22%;">Read multiple JFIF images
+sequentially from the input stream. See
+<a href="#description">Description section</a> for
+details.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.23 (July 2004).</p>
+
+<p style="margin-left:11%;"><b>-repair</b></p>
+
+<p style="margin-left:22%;">If the JFIF input is invalid,
+try to salvage whatever information is there and produce a
+valid PNM image as output.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Without this
+option, some invalid input causes <b>jpegtopnm</b> to fail,
+and what output it produces is undefined. With
+<b>-repair</b> such invalid input causes <b>jpegtopnm</b> to
+succeed instead.</p>
+
+<p style="margin-left:22%; margin-top: 1em">But note that
+there are some forms of invalid input that always cause
+<b>jpegtopnm</b> to fail and others that always cause it to
+salvage image information and succeed.</p>
+
+<p style="margin-left:22%; margin-top: 1em">One particular
+case where <b>-repair</b> makes a difference is the common
+case that the file is truncated somewhere after the JFIF
+header. Without <b>-repair</b>, that always causes a
+failure; with <b>-repair</b> it always causes success.
+Because the image information is laid out generally top to
+bottom in the JFIF stream, the image <b>jpegtopnm</b>
+produces in this case has the proper image contents at the
+top, but the bottom is padded with gray.</p>
+
+<p style="margin-left:22%; margin-top: 1em">This option was
+new in Netpbm 10.38.0 (March 2007). Before that,
+<b>jpegtopnm</b> always fails in the cases in question.</p>
+
+<p style="margin-left:11%;"><b>-comments</b></p>
+
+<p style="margin-left:22%;">Print any comments in the input
+file to the Standard Error file.</p>
+
+<p style="margin-left:11%;"><b>-verbose</b></p>
+
+<p style="margin-left:22%;">Print details about the
+conversion to the Standard Error file.</p>
+
+<p style="margin-left:11%;"><b>-tracelevel</b> <i>n</i></p>
+
+<p style="margin-left:22%;">Turn on the JPEG
+library&rsquo;s trace messages to the Standard Error file. A
+higher value of <i>n</i> gets more trace information.
+<b>-verbose</b> implies a trace level of at least 1.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This example
+converts the color JFIF file foo.jpg to a PPM file named
+foo.ppm:</p>
+
+<p style="margin-left:11%; margin-top: 1em">jpegtopnm
+foo.jpg &gt;foo.ppm</p>
+
+<h2>HINTS
+<a name="HINTS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">You can use
+<b>pnmquant</b> to color quantize the result, i.e. to reduce
+the number of distinct colors in the image. In fact, you may
+have to if you want to convert the PPM file to certain other
+formats. <b>ppmdither</b> Does a more sophisticated
+quantization.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Use
+<b>pamscale</b> to change the dimensions of the resulting
+image.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Use
+<b>ppmtopgm</b> to convert a color JFIF file to a grayscale
+PGM file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can easily
+use these converters together. E.g.:</p>
+
+<p style="margin-left:11%; margin-top: 1em">jpegtopnm
+foo.jpg | ppmtopgm | pamscale .25 &gt;foo.pgm</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-dct
+fast</b> and/or <b>-nosmooth</b> gain speed at a small
+sacrifice in quality.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If you are
+fortunate enough to have very fast floating point hardware,
+<b>-dct float</b> may be even faster than <b>-dct fast</b>.
+But on most machines <b>-dct float</b> is slower than
+<b>-dct int</b>; in this case it is not worth using, because
+its theoretical accuracy advantage is too small to be
+significant in practice.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Another
+program, <b>djpeg</b>, is similar. <b>djpeg</b> is
+maintained by the Independent JPEG Group and packaged with
+the JPEG library which <b>jpegtopnm</b> uses for all its
+JPEG work. Because of that, you may expect it to exploit
+more current JPEG features. Also, since you have to have the
+library to run <b>jpegtopnm</b>, but not vice versa,
+<b>cjpeg</b> may be more commonly available.</p>
+
+<p style="margin-left:11%; margin-top: 1em">On the other
+hand, <b>djpeg</b> does not use the NetPBM libraries to
+generate its output, as all the NetPBM tools such as
+<b>jpegtopnm</b> do. This means it is less likely to be
+consistent with all the other programs that deal with the
+NetPBM formats. Also, the command syntax of <b>jpegtopnm</b>
+is consistent with that of the other Netpbm tools, unlike
+<b>djpeg</b>.</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>JPEGMEM</b></p>
+
+<p style="margin-left:22%;">If this environment variable is
+set, its value is the default memory limit. The value is
+specified as described for the <b>-maxmemory</b> option. An
+explicit <b>-maxmemory</b> option overrides any
+<b>JPEGMEM</b>.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ppm</b>(1),
+<b>pgm</b>(1), <b>pnmtojpeg</b>(1), <b>pnmquant</b>(1),
+<b>pamscale</b>(1), <b>ppmtopgm</b>(1), <b>ppmdither</b>(1),
+<b>pamdepth</b>(1),</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>djpeg</b>
+man page, <b>cjpeg</b> man page, <b>jpegtran</b> man page,
+<b>rdjpgcom</b> man page, <b>wrjpgcom</b> man page,
+<b>jhead</b> man page</p>
+
+<p style="margin-left:11%; margin-top: 1em">Wallace,
+Gregory K. &quot;The JPEG Still Picture Compression
+Standard&quot;, Communications of the ACM, April 1991 (vol.
+34, no. 4), pp. 30-44.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>jpegtopnm</b>
+and this manual were derived in large part from
+<b>djpeg</b>, by the Independent JPEG Group. The program is
+otherwise by Bryan Henderson on March 19, 2000.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/jpegtopnm.html</b></p>
+<hr>
+</body>
+</html>

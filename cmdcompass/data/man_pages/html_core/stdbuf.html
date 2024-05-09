@@ -1,0 +1,191 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:50 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>STDBUF</title>
+
+</head>
+<body>
+
+<h1 align="center">STDBUF</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#REPORTING BUGS">REPORTING BUGS</a><br>
+<a href="#COPYRIGHT">COPYRIGHT</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">stdbuf - Run
+COMMAND, with modified buffering operations for its standard
+streams.</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>stdbuf</b>
+<i>OPTION</i>... <i>COMMAND</i></p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Run COMMAND,
+with modified buffering operations for its standard
+streams.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Mandatory
+arguments to long options are mandatory for short options
+too. <b><br>
+-i</b>, <b>--input</b>=<i>MODE</i></p>
+
+<p style="margin-left:22%;">adjust standard input stream
+buffering</p>
+
+<p style="margin-left:11%;"><b>-o</b>,
+<b>--output</b>=<i>MODE</i></p>
+
+<p style="margin-left:22%;">adjust standard output stream
+buffering</p>
+
+<p style="margin-left:11%;"><b>-e</b>,
+<b>--error</b>=<i>MODE</i></p>
+
+<p style="margin-left:22%;">adjust standard error stream
+buffering</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>--help</b></p></td>
+<td width="2%"></td>
+<td width="40%">
+
+
+<p>display this help and exit</p></td>
+<td width="38%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>--version</b></p>
+
+<p style="margin-left:22%;">output version information and
+exit</p>
+
+<p style="margin-left:11%; margin-top: 1em">If MODE is
+&rsquo;L&rsquo; the corresponding stream will be line
+buffered. This option is invalid with standard input.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If MODE is
+&rsquo;0&rsquo; the corresponding stream will be
+unbuffered.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Otherwise MODE
+is a number which may be followed by one of the following:
+KB 1000, K 1024, MB 1000*1000, M 1024*1024, and so on for G,
+T, P, E, Z, Y. Binary prefixes can be used, too: KiB=K,
+MiB=M, and so on. In this case the corresponding stream will
+be fully buffered with the buffer size set to MODE
+bytes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">NOTE: If
+COMMAND adjusts the buffering of its standard streams
+(&rsquo;tee&rsquo; does for example) then that will override
+corresponding changes by &rsquo;stdbuf&rsquo;. Also some
+filters (like &rsquo;dd&rsquo; and &rsquo;cat&rsquo; etc.)
+don&rsquo;t use streams for I/O, and are thus unaffected by
+&rsquo;stdbuf&rsquo; settings.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>tail -f
+access.log | stdbuf -oL cut -d ' ' -f1 | uniq</b> <br>
+This will immediately display unique entries from
+access.log</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">On GLIBC
+platforms, specifying a buffer size, i.e., using fully
+buffered mode will result in undefined operation.</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Written by
+Padraig Brady.</p>
+
+<h2>REPORTING BUGS
+<a name="REPORTING BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">GNU coreutils
+online help: &lt;https://www.gnu.org/software/coreutils/&gt;
+<br>
+Report any translation bugs to
+&lt;https://translationproject.org/team/&gt;</p>
+
+<h2>COPYRIGHT
+<a name="COPYRIGHT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright
+&copy; 2022 Free Software Foundation, Inc. License GPLv3+:
+GNU GPL version 3 or later
+&lt;https://gnu.org/licenses/gpl.html&gt;. <br>
+This is free software: you are free to change and
+redistribute it. There is NO WARRANTY, to the extent
+permitted by law.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Full
+documentation
+&lt;https://www.gnu.org/software/coreutils/stdbuf&gt; <br>
+or available locally via: info '(coreutils) stdbuf
+invocation'</p>
+<hr>
+</body>
+</html>

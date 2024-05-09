@@ -1,0 +1,214 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:20 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>NROFF</title>
+
+</head>
+<body>
+
+<h1 align="center">NROFF</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">nroff - use
+groff to format documents for TTY devices</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em"><b>nroff</b></p></td>
+<td width="2%"></td>
+<td width="80%">
+
+
+<p style="margin-top: 1em">[<b>-CchipStUv</b>]
+[<b>-d</b><i>cs</i>] [<b>-M</b><i>dir</i>]
+[<b>-m</b><i>name</i>] [<b>-n</b><i>num</i>]
+[<b>-o</b><i>list</i>] [<b>-r</b><i>cn</i>]
+[<b>-T</b><i>name</i>] [<b>-W</b><i>warning</i>]
+[<b>-w</b><i>warning</i>] [<i>file</i> ...]</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em"><b>nroff</b></p></td>
+<td width="2%"></td>
+<td width="80%">
+
+
+<p style="margin-top: 1em"><b>--help</b></p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em"><b>nroff</b></p></td>
+<td width="2%"></td>
+<td width="80%">
+
+
+<p style="margin-top: 1em"><b>-v</b></p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="7%">
+
+
+<p><b>nroff</b></p></td>
+<td width="2%"></td>
+<td width="80%">
+
+
+<p><b>--version</b></p></td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><i>nroff</i></b>
+formats documents written in the <i>roff</i>(7) language for
+typewriter-like devices such as terminal emulators.</p>
+
+<p style="margin-left:11%; margin-top: 1em">GNU
+<i>nroff</i> emulates the traditional Unix <i>nroff</i>
+command using <i>groff</i>(1). <i>nroff</i> generates output
+via <i>grotty</i>(1), <i>groff</i>&rsquo;s TTY output
+device, which needs to know the character encoding scheme
+used by the terminal. Consequently, acceptable arguments to
+the <b>-T</b> option are <b>ascii</b>, <b>latin1</b>,
+<b>utf8</b>, and <b>cp1047</b>; any others are ignored. If
+neither the <i>GROFF_TYPESETTER</i> environment variable nor
+the <b>-T</b> command-line option (which overrides the
+environment variable) specifies a (valid) device,
+<i>nroff</i> consults the locale to select an appropriate
+output device. It first tries the <i>locale</i>(1) program,
+then checks several locale-related environment variables;
+see &ldquo;ENVIRONMENT&rdquo;, below. If all of the
+foregoing fail, <b>-Tascii</b> is implied.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Whitespace is
+not permitted between an option and its argument. The
+<b>-h</b> and <b>-c</b> options are equivalent to
+<i>grotty</i>&rsquo;s options <b>-h</b> (using tabs in the
+output) and <b>-c</b> (using the old output scheme instead
+of SGR escape sequences). The <b>-d</b>, <b>-C</b>,
+<b>-i</b>, <b>-M</b>, <b>-m</b>, <b>-n</b>, <b>-o</b>,
+<b>-r</b>, <b>-w</b>, and <b>-W</b> options have the effect
+described in <i>troff</i>(1). In addition, <i>nroff</i>
+ignores <b>-e</b>, <b>-q</b>, and <b>-s</b> (which are not
+implemented in <i>troff</i>). The options <b>-p</b> (pic),
+<b>-t</b> (tbl), <b>-S</b> (safer), and <b>-U</b> (unsafe)
+are passed to <i>groff</i>. <b>-v</b> and <b>--version</b>
+show version information, while <b>--help</b> displays a
+usage message; all exit afterward.</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>GROFF_TYPESETTER</i></p>
+
+<p style="margin-left:22%;">specifies the default output
+device for <i>groff</i>.</p>
+
+<p style="margin-left:11%;"><i>GROFF_BIN_PATH</i></p>
+
+<p style="margin-left:22%;">is a colon-separated list of
+directories in which to search for the <i>groff</i>
+executable before searching in <i>PATH</i>. If unset,
+<i>/usr/ bin</i> is used.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><i>LC_ALL</i></p></td>
+<td width="80%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><i>LC_CTYPE</i></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><i>LANG</i></p></td>
+<td width="83%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><i>LESSCHARSET</i></p>
+
+<p style="margin-left:22%;">are pattern-matched in this
+order for standard character encodings supported by
+<i>groff</i> in the event no <b>-T</b> option is given and
+<i>GROFF_TYPESETTER</i> is unset.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Character
+definitions in the file <i>/usr/share/groff/1.22.4/tmac/
+tty-char.tmac</i> are loaded to replace unrepresentable
+glyphs.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>groff</i>(1),
+<i>troff</i>(1), <i>grotty</i>(1), <i>locale</i>(1),
+<i>roff</i>(7)</p>
+<hr>
+</body>
+</html>

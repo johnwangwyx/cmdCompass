@@ -1,0 +1,189 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:35 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>Pnmpaste User Manual</title>
+
+</head>
+<body>
+
+<h1 align="center">Pnmpaste User Manual</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#DOCUMENT SOURCE">DOCUMENT SOURCE</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pnmpaste -
+paste a rectangle into a PNM image</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmpaste</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em">[<b>-replace</b>
+| <b>-or</b> | <b>-and</b> | <b>-xor</b> | <b>-nor</b> |
+<b>-nand</b> | <b>-nxor</b>]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>frompnmfile
+x y</i> [<i>intopnmfile</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em">You can
+abbreviate all options to their shortest unique prefix.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This program is
+part of <b>Netpbm</b>(1).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pnmpaste</b>
+reads two PNM images as input and inserts the first image
+(the &quot;pasted image&quot;) into the second (the
+&quot;base image&quot;) at the specified location, and
+produces a PNM image the same size and type as the base
+image as output.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Either file
+name argument (but not both) may be &rsquo;-&rsquo; to
+indicate Standard Input. If you don&rsquo;t specify the
+second file argument at all, that&rsquo;s the same as
+&rsquo;-&rsquo;.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>x</i> and
+<i>y</i> specify the location in the base image at which to
+put the top left corner of the pasted image, <i>x</i> giving
+the horizontal position and <i>x</i> giving the vertical
+position. A nonnegative value indicates the number of pixels
+right of the right edge or below the top edge of the base
+image, while a negative value indicates the number of pixels
+right of the right edge or below the bottom edge (so x = -5
+means 5 pixels left of the right edge).</p>
+
+<p style="margin-left:11%; margin-top: 1em">If any part of
+the pasted image does not fit within the base image,
+<b>pnmpaste</b> fails.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This tool is
+most useful in combination with <i>pamcut</i>. For instance,
+if you want to edit a small segment of a large image, and
+your image editor cannot edit the large image, you can cut
+out the segment you are interested in, edit it, and then
+paste it back in.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Another useful
+companion tool is <b>pbmmask</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamcomp</b>
+is a more general tool, except that it lacks the
+&quot;or,&quot; &quot;and,&quot; and &quot;xor&quot;
+functions. <b>pamcomp</b> allows you to specify a
+transparency mask in order to have only part of the inserted
+image get inserted. So the inserted pixels need not be a
+rectangle. You can also have the inserted image be
+translucent, so the resulting image is a mixture of the
+inserted image and the base image.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In addition to
+the options common to all programs based on libnetpbm (most
+notably <b>-quiet</b>, see
+<a href="index.html#commonoptions"> Common Options</a> ),
+<b>pnmpaste</b> recognizes the following command line
+options: <b><br>
+-replace</b>, <b>-or</b>, <b>-and</b>, <b>-xor</b>,</p>
+
+<p style="margin-left:22%;"><b>-nor</b>, <b>-nand</b>,
+<b>-nxor</b></p>
+
+<p style="margin-left:22%; margin-top: 1em">These option
+specify the operation to use when doing the paste. The
+default is <b>-replace</b>, which means to do the obvious
+paste: replace pixels of the &quot;into&quot; image with
+those of the &quot;from&quot; image.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>-and</b>,
+<b>-nand</b>, <b>-or</b>, <b>-nor</b>, <b>-xor</b>, and
+<b>nxor</b> are allowed only if both input images are PBM
+images. They say to combine the &quot;from&quot; and
+&quot;into&quot; images by performing boolean operations:
+Each pixel of the output image is the result of the boolean
+operation on the corresponding pixels of the two input
+images, where white is TRUE and black is FALSE.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Note that this
+is different from what you would get by doing a bit
+arithmetic on the bits in the PBM images, because in PBM,
+white is represented by a 0 bit, and 0 in bit arithmetic
+corresponds to FALSE in boolean arithmetic.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>-nand</b>,
+<b>-nor</b>, and <b>-nxor</b> were new in Netpbm 10.85
+(December 2018).</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pamcomp</b>(1),
+<b>pamcut</b>(1), <b>pnminvert</b>(1), <b>pnmarith</b>(1),
+<b>pbmmask</b>(1), <b>pnm</b>(1)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Copyright (C)
+1989, 1991 by Jef Poskanzer.</p>
+
+<h2>DOCUMENT SOURCE
+<a name="DOCUMENT SOURCE"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This manual
+page was generated by the Netpbm tool &rsquo;makeman&rsquo;
+from HTML source. The master documentation is at</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>http://netpbm.sourceforge.net/doc/pnmpaste.html</b></p>
+<hr>
+</body>
+</html>

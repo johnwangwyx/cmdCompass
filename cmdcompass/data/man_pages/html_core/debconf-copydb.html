@@ -1,0 +1,168 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Thu May  9 06:34:00 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>DEBCONF-COPYDB</title>
+
+</head>
+<body>
+
+<h1 align="center">DEBCONF-COPYDB</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">debconf-copydb
+- copy a debconf database</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">debconf-copydb
+sourcedb destdb [--pattern=pattern]
+[--owner-pattern=pattern] [--config=Foo:bar]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>debconf-copydb</b>
+copies items from an existing debconf database into another,
+possibly new database. The two databases may have different
+formats; if so a conversion will automatically be done.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>sourcedb</i></p>
+
+<p style="margin-left:17%;">The name of the source
+database. Typically it will be defined in your debconf.conf
+(or .debconfrc) file.</p>
+
+<p style="margin-left:11%;"><i>destdb</i></p>
+
+<p style="margin-left:17%;">The name of the destination
+database. It may be defined in debconf.conf or .debconfrc,
+or you might define it on the command line (see below).</p>
+
+<p style="margin-left:11%;"><b>-p</b> <i>pattern</i>,
+<b>--pattern</b> <i>pattern</i></p>
+
+<p style="margin-left:17%;">If this is specified, only
+items in <i>sourcedb</i> whose names match the pattern will
+be copied.</p>
+
+<p style="margin-left:11%;"><b>--owner-pattern</b>
+<i>pattern</i></p>
+
+<p style="margin-left:17%;">If this is specified, only
+items in <i>sourcedb</i> whose owners match the pattern will
+be copied.</p>
+
+<p style="margin-left:11%;"><b>-c</b> <i>foo:bar</i>,
+<b>--config</b> <i>Foo:bar</i></p>
+
+<p style="margin-left:17%;">Set option Foo to bar. This is
+similar to writing:</p>
+
+<p style="margin-left:17%; margin-top: 1em">Foo: bar</p>
+
+<p style="margin-left:17%; margin-top: 1em">In
+debconf.conf, except you probably want to leave off the
+space on the command line (or quote it: &quot;Foo:
+bar&quot;). Generally must be used multiple times, to build
+up a full configuration stanza. While blank lines are used
+to separate stanzas in debconf.conf, this program will
+assume that &quot;Name:dbname&quot; denotes the beginning of
+a new stanza.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">debconf-copydb
+configdb backup</p>
+
+<p style="margin-left:11%; margin-top: 1em">Copy all of
+configdb to backup, assuming you already have the backup
+database defined in debconf.conf.</p>
+
+<p style="margin-left:11%; margin-top: 1em">debconf-copydb
+configdb newdb --pattern='^slrn/' \ <br>
+--config=Name:newdb --config=Driver:File \ <br>
+--config=Filename:newdb.dat</p>
+
+<p style="margin-left:11%; margin-top: 1em">Copy
+slrn&rsquo;s data out of configdb, and into newdb. newdb is
+not defined in the rc file, so the --config switches set up
+the database on the fly.</p>
+
+<p style="margin-left:11%; margin-top: 1em">debconf-copydb
+configdb stdout -c Name:stdout -c Driver:Pipe \ <br>
+-c InFd:none --pattern='^foo/'</p>
+
+<p style="margin-left:11%; margin-top: 1em">Spit out all
+the items in the debconf database related to package
+foo.</p>
+
+<p style="margin-left:11%; margin-top: 1em">debconf-copydb
+configdb pipe --config=Name:pipe \ <br>
+--config=Driver:Pipe --config=InFd:none | \ <br>
+ssh remotehost debconf-copydb pipe configdb \ <br>
+--config=Name:pipe --config=Driver:Pipe</p>
+
+<p style="margin-left:11%; margin-top: 1em">This uses the
+special purpose pipe driver to copy a database to a remote
+system.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>debconf.conf</b>(5)</p>
+
+<h2>AUTHOR
+<a name="AUTHOR"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Joey Hess
+&lt;joeyh@debian.org&gt;</p>
+<hr>
+</body>
+</html>
