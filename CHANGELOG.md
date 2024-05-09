@@ -5,6 +5,8 @@
 * Add `man_pages_kv.db` to serve as the kv storage that maps a command to its package name. (They can indeed be different)
 * Add html_converter.py to convert man pages to html files, with support for Windows, Mac, and Linux.
 * Add Windows binary for `groff`. (Since it cannot be installed on Windows natively)
+* Add GUI and logic to get man pages for a command and display the man pages as html.
+* Use a Tab to toggle between comment and man pages.
 
 ### CHANGED
 ### DEBUGGED

@@ -3,20 +3,21 @@ from cmdcompass.data.datamanager import DataManager
 from cmdcompass.gui.commandbox import CommandBox
 from cmdcompass.gui.commentbox import CommentBox
 from cmdcompass.gui.commandbodybox import CommandBodyBox
-from cmdcompass.gui.tagoperationbox import TagOperationBox
 from cmdcompass.gui.utilitybox import UtilityBox
 from cmdcompass.gui.command_tag_operation import TagOperation
 from cmdcompass.gui.global_tag import GlobalTagWindow
 from cmdcompass.models.collection import Collection
+from cmdcompass.gui.manpagebox import ManPageBox
 from CTkToolTip import CTkToolTip
 
 from CTkMessagebox import CTkMessagebox
+
 
 class MainWindow(ctk.CTk):
     def __init__(self):
         super().__init__()
         self.title("cmdCompass")
-        self.geometry("900x650")
+        self.geometry("900x670")
 
         # Load data
         self.data_manager = DataManager()
@@ -104,25 +105,72 @@ class MainWindow(ctk.CTk):
         )
         self.theme_toggle_button.grid(row=4, column=0, padx=10, pady=10, sticky="nsew")
 
-        # Right Pane Boxes (using imported classes)
+        # Right Pane Boxes
         self.command_body_box = CommandBodyBox(self.right_frame)
         self.command_body_box.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
-
-        self.tag_operation_box = TagOperationBox(self.right_frame, width=70)
-        self.tag_operation_box.grid(row=0, column=1, padx=10, pady=10, sticky="nsew")
 
         self.utility_box = UtilityBox(self.right_frame)
         self.utility_box.grid(row=1, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")
 
-        self.comment_box = CommentBox(self.right_frame)
-        self.comment_box.grid(row=2, column=0, columnspan=2, padx=3, pady=3, sticky="nsew")
+        # Tab Control Frame
+        self.tab_control_frame = ctk.CTkFrame(self.right_frame)
+        self.tab_control_frame.grid(row=2, column=0, columnspan=2, padx=10, pady=0, sticky="ew")
+
+        # Tab Buttons
+        self.comment_tab_button = ctk.CTkButton(self.tab_control_frame, text="Comment",
+                                                command=lambda: self.switch_tab("comment"), height=20)
+        self.man_page_tab_button = ctk.CTkButton(self.tab_control_frame, text="Man Page",
+                                                 command=lambda: self.switch_tab("man_page"), height=20)
+        self.comment_tab_button.grid(row=0, column=0, padx=10, pady=(10, 0), sticky="nsew")
+        self.man_page_tab_button.grid(row=0, column=1, padx=10, pady=(10, 0), sticky="nsew")
+
+        # Comment Box
+        self.comment_box = CommentBox(self.tab_control_frame)
+        self.comment_box.grid(row=1, column=0, columnspan=2, padx=10, pady=3, sticky="nsew")
+
+        # Create ManPageBox
+        self.man_page_box = ManPageBox(self.tab_control_frame)
+
+        self.tab_control_frame.columnconfigure(0, weight=1)
+        self.tab_control_frame.columnconfigure(1, weight=1)
 
         # Adjust layout weights for right pane
-        self.right_frame.grid_rowconfigure((0,1,2), weight=1)
+        self.right_frame.grid_rowconfigure((0, 1, 2), weight=1)
         self.right_frame.grid_columnconfigure(0, weight=4)
+
+        self.active_tab = "comment"  # Set the initial active tab
+        self.switch_tab("comment")
 
         # Create TagOperation instance
         self.tag_operation = TagOperation(self, self.data_manager)
+
+    def switch_tab(self, tab_name):
+        if tab_name == "comment":
+            self.comment_box.grid(row=1, column=0, columnspan=2, padx=10, pady=3, sticky="nsew")
+            self.man_page_box.grid_forget()
+        elif tab_name == "man_page":
+            self.man_page_box.grid(row=1, column=0, columnspan=2, padx=10, pady=3, sticky="nsew")
+            self.comment_box.grid_forget()
+        self.active_tab = tab_name
+        self.update_tab_button_states()
+
+    def update_command_view(self):
+        if self.selected_command:
+            self.command_body_box.set_command(self.selected_command)
+            self.comment_box.set_comment(self.selected_command.comment)
+            # Load and display man page
+            self.man_page_box.set_man_page(self.selected_command.command_str)
+        else:
+            self.command_body_box.set_command(None)
+            self.comment_box.set_comment(None)
+
+    def update_tab_button_states(self):
+        if self.active_tab == "comment":
+            self.comment_tab_button.configure(state="disabled", fg_color="gray")
+            self.man_page_tab_button.configure(state="normal")
+        elif self.active_tab == "man_page":
+            self.man_page_tab_button.configure(state="disabled", fg_color="gray")
+            self.comment_tab_button.configure(state="normal")
 
     def open_tag_creation_window(self):
         tag_creation_window = GlobalTagWindow(self, self.data_manager)
@@ -205,19 +253,12 @@ class MainWindow(ctk.CTk):
         # Raise if the loop completes without finding the collection
         raise ValueError(f"Collection '{selected_collection_name}' not found.")
 
-    def update_command_view(self):
-        if self.selected_command:
-            self.command_body_box.set_command(self.selected_command)
-            self.comment_box.set_comment(self.selected_command.comment)
-        else:
-            self.command_body_box.set_command(None)
-            self.comment_box.set_comment(None)
-
     def refresh_command_list(self):
         selected_collection_name = self.collection_dropdown.get()
         selected_collection = self.data_manager.get_collection(selected_collection_name)
         if selected_collection:
             self.update_command_list(selected_collection.commands)
+
 
 if __name__ == "__main__":
     app = MainWindow()
