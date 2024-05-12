@@ -107,7 +107,7 @@ class MainWindow(ctk.CTk):
         self.theme_toggle_button.grid(row=4, column=0, padx=10, pady=10, sticky="nsew")
 
         # Right Pane Boxes
-        self.command_body_box = CommandBodyBox(self.right_frame)
+        self.command_body_box = CommandBodyBox(self.right_frame, self)
         self.command_body_box.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
 
         self.utility_box = UtilityBox(self.right_frame)
@@ -129,7 +129,7 @@ class MainWindow(ctk.CTk):
         print(DEFAULT_BUTTON_COLOR)
 
         # Comment Box
-        self.comment_box = CommentBox(self.tab_control_frame)
+        self.comment_box = CommentBox(self.tab_control_frame, self)
         self.comment_box.grid(row=1, column=0, columnspan=2, padx=10, pady=3, sticky="nsew")
 
         # Create ManPageBox

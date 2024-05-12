@@ -11,6 +11,7 @@
 * Support Command Templating and copy to clipboard.
 * Create a progress update window to update the progress while downloading packages and extract man pages.
 * Add command deletion button to each command in the list.
+* Detect user input for CommandBodyBox and CommentBox and create a save button in such events.
 
 ### CHANGED
 
