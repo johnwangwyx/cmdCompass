@@ -82,7 +82,7 @@ class MainWindow(ctk.CTk):
         # Tag Operations Button
         tag_operations_button = ctk.CTkButton(
             tag_operations_frame,
-            text="Tag Operations",
+            text="Create/Remove Tag",
             command=self.open_tag_creation_window
         )
         tag_operations_button.pack(pady=5, padx=10)
@@ -155,6 +155,10 @@ class MainWindow(ctk.CTk):
         elif tab_name == "man_page":
             self.man_page_box.grid(row=1, column=0, columnspan=2, padx=10, pady=3, sticky="nsew")
             self.comment_box.grid_forget()
+            # Load and display man page (passing progress_window)
+            self.man_page_box.set_man_page(
+                self.selected_command.command_str
+            )
         self.active_tab = tab_name
         self.update_tab_button_states()
 
@@ -162,8 +166,6 @@ class MainWindow(ctk.CTk):
         if self.selected_command:
             self.command_body_box.set_command(self.selected_command)
             self.comment_box.set_comment(self.selected_command.comment)
-            # Load and display man page
-            self.man_page_box.set_man_page(self.selected_command.command_str)
             self.utility_box.set_command(self.selected_command)
         else:
             self.command_body_box.set_command(None)
@@ -172,10 +174,10 @@ class MainWindow(ctk.CTk):
 
     def update_tab_button_states(self):
         if self.active_tab == "comment":
-            self.comment_tab_button.configure(state="disabled", fg_color="gray")
+            self.comment_tab_button.configure(state="disabled", fg_color="white")
             self.man_page_tab_button.configure(state="normal", fg_color=DEFAULT_BUTTON_COLOR)
         elif self.active_tab == "man_page":
-            self.man_page_tab_button.configure(state="disabled", fg_color="gray")
+            self.man_page_tab_button.configure(state="disabled", fg_color="white")
             self.comment_tab_button.configure(state="normal", fg_color=DEFAULT_BUTTON_COLOR)
 
     def open_tag_creation_window(self):
@@ -248,6 +250,7 @@ class MainWindow(ctk.CTk):
         else:
             ctk.set_appearance_mode("Dark")
             self.theme_toggle_button.configure(text="Dark Mode")
+        self.man_page_box.update_html_frame_background()
 
     def on_command_select(self, command_index):
         selected_collection_name = self.collection_dropdown.get()
@@ -255,6 +258,7 @@ class MainWindow(ctk.CTk):
             if collection.name == selected_collection_name:
                 self.selected_command = self.collections[i].commands[command_index]
                 self.update_command_view()
+                self.switch_tab("comment")
                 return  # Exit the loop once the collection is found
         # Raise if the loop completes without finding the collection
         raise ValueError(f"Collection '{selected_collection_name}' not found.")

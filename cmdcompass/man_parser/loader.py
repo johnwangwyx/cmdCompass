@@ -15,6 +15,7 @@ MAN_PAGE_DIR = "./data/man_pages/man"
 KV_DB_PATH = "./man_parser/man_pages_kv.db"
 DEB_DOWNLOAD_LINK = "http://ftp.ca.debian.org/debian"
 
+
 def extract_deb(data_path, extract_to):
     print(f"Extracting DEB package: {data_path} to {extract_to}")
     if not os.path.exists(extract_to):
@@ -45,7 +46,7 @@ def extract_deb(data_path, extract_to):
 
 def download_file(url):
     print(f"Downloading file from {url}")
-    local_filename = url.split('/')[-1]
+    local_filename = os.path.join(UNPACKING_DIR, url.split('/')[-1])
     with requests.get(url, stream=True) as r:
         with open(local_filename, 'wb') as f:
             for chunk in r.iter_content(chunk_size=8192):
@@ -58,27 +59,27 @@ def extract_gz(file_path):
         with open(file_path.replace('.gz', ''), 'wb') as f_out:
             f_out.write(f.read())
 
-def move_and_clean_man_pages(extract_to, man_dest_folder):
+def move_and_clean_man_pages(package_name, extract_to, man_dest_folder):
     print(f"Scanning and moving man pages from {extract_to} to {man_dest_folder}")
     man_page_regex = re.compile(r'(usr\\share\\man\\|usr\\man\\|usr\\X11R6\\man\\|usr\\local\\man/|opt\\man\\)')
 
-    pages_found = []
-    
     # Ensure destination folder exists
     if not os.path.exists(man_dest_folder):
         os.makedirs(man_dest_folder)
-    
+
+    found_page = ""
     # Walk through the directory structure
     for root, dirs, files in os.walk(extract_to):
         # Check if current directory matches the man page directory pattern
-        if man_page_regex.search(root):
+        if not found_page and man_page_regex.search(root):
             for file in files:
                 if file.endswith('.gz'):
                     src_file = os.path.join(root, file)
                     # Remove the .gz extension for the destination file
                     dst_file = os.path.join(man_dest_folder, file[:-3])  # Strip '.gz' from filename
-                    pages_found.append(dst_file)
-     
+                    # Not what we are looking for
+                    if os.path.basename(dst_file).split('.')[0] != package_name:
+                        continue
                     if not os.path.exists(dst_file):
                         # Decompress and move
                         with gzip.open(src_file, 'rb') as f_in:
@@ -86,31 +87,48 @@ def move_and_clean_man_pages(extract_to, man_dest_folder):
                                 shutil.copyfileobj(f_in, f_out)
                         print(f"Decompressed and moved {src_file} to {dst_file}")
                         os.remove(src_file)
-                    else:
-                        print(f"File {dst_file} already exists. Skipping.")
+                        found_page = dst_file
 
     # Clean up the entire extracted directory structure
     shutil.rmtree(extract_to)
     print(f"Cleaned up extraction directory {extract_to}")
-    return pages_found
+    return found_page
 
-def download_and_process_package(package_name):
+def download_and_process_package(package_name, progress_window):
+    progress_window.update_progress(f"Searching for {package_name}...", 0.1)
     # Ensure destination folders exist
     if not os.path.exists(UNPACKING_DIR):
         os.makedirs(UNPACKING_DIR)
     
     with SqliteDict(KV_DB_PATH) as db:
         if package_name in db:
-            # Note the db value can contain a list of package that includes the command.
-            # So we can have a feature to allow user to choose which package to use
-            link = list(db[package_name])[0]  # For now, use any one
-            full_link = f"{DEB_DOWNLOAD_LINK}/{link}"
-            deb_path = download_file(full_link)
-            extract_to = os.path.join(UNPACKING_DIR, os.path.basename(deb_path).replace('.deb', ''))
-            extract_deb(deb_path, extract_to)
-            pages_found = move_and_clean_man_pages(extract_to, MAN_PAGE_DIR)
-            for man_page in pages_found:
-                convert_man_pages(man_page)
-            os.remove(deb_path)  # Remove the .deb file to free up space
+            try:
+                # Note the db value can contain a list of package that includes the command man page.
+                # The value is in tuple of ("package_link", #number of man pages in this package) and ordered by the #number
+                # We can have a feature to allow user to choose which package to use
+                # For now, I will just use the first tuple, which will result in a faster extraction
+                link = db[package_name][0][0]  # Get package link from the first tuple
+                full_link = f"{DEB_DOWNLOAD_LINK}/{link}"
+                progress_window.update_progress(f"{package_name} is found in {link}.", 0.2)
+                progress_window.update_progress(f"Downloading from {full_link}", 0.2)
+
+                deb_path = download_file(full_link)
+                progress_window.update_progress(f"Downloading completed.", 0.3)
+                progress_window.update_progress(f"Unpacking and extracting man pages in this package...", 0.3)
+                extract_to = os.path.join(UNPACKING_DIR, os.path.basename(deb_path).replace('.deb', ''))
+
+                extract_deb(deb_path, extract_to)
+                page_found = move_and_clean_man_pages(package_name, extract_to, MAN_PAGE_DIR)
+
+                progress_window.update_progress(f"Converting the man for {package_name} to html", 0.7)
+                if page_found:
+                    progress_window.update_progress(f"Converting {page_found} to HTML...")
+                    convert_man_pages(page_found)  # Convert only the matching page
+                else:
+                    progress_window.update_progress(f"No matching man page found for {package_name}")
+                os.remove(deb_path)  # Remove the .deb file to free up space
+            except Exception as e:
+                progress_window.update_progress(f"Error: {e}")
         else:
+            progress_window.update_progress(f"No download link found for package name: {package_name}")
             raise ValueError(f"No download link found for package name: {package_name}")

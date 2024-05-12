@@ -9,8 +9,11 @@
 * Use a Tab to toggle between comment and man pages.
 * Add html man pages for core utils
 * Support Command Templating and copy to clipboard.
+* Create a progress update window to update the progress while downloading packages and extract man pages.
 
 ### CHANGED
+
+
 ### DEBUGGED
 
 ## Version 0.1.0 (Initial Development)
