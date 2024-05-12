@@ -33,7 +33,7 @@ class CommandBox(ctk.CTkFrame):
         # Delete button
         self.delete_button = ctk.CTkButton(
             self.delete_button_frame,
-            text="x",  # Use a bullet point character or a small image
+            text="x",
             width=7,
             height=7,
             fg_color="red",

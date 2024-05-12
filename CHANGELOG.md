@@ -14,7 +14,7 @@
 * Detect user input for CommandBodyBox and CommentBox and create a save button in such events.
 
 ### CHANGED
-
+* Use static images for some buttons
 
 ### DEBUGGED
 

@@ -8,6 +8,7 @@ from cmdcompass.gui.command_tag_operation import TagOperation
 from cmdcompass.gui.global_tag import GlobalTagWindow
 from cmdcompass.models.collection import Collection
 from cmdcompass.gui.manpagebox import ManPageBox
+from cmdcompass.utils.utils import load_ctk_image
 from CTkToolTip import CTkToolTip
 
 from CTkMessagebox import CTkMessagebox
@@ -53,7 +54,8 @@ class MainWindow(ctk.CTk):
         # Remove collection button
         self.remove_collection_button = ctk.CTkButton(
             self.collection_operation_frame,
-            text="x",
+            text="",
+            image=load_ctk_image("delete.png"),
             fg_color="red",
             hover_color="#c77c78",
             width=30,
@@ -67,7 +69,8 @@ class MainWindow(ctk.CTk):
         # Add new collection button
         self.add_collection_button = ctk.CTkButton(
             self.collection_operation_frame,
-            text="+",
+            text="",
+            image=load_ctk_image("add.png"),
             width=30,
             height=30,
             command=self.on_add_collection_click

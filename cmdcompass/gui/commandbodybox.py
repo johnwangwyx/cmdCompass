@@ -1,7 +1,5 @@
 import customtkinter as ctk
-from PIL import Image
-import os
-SAVE_BUTTON_IMG = os.path.join(".", "static", "save.png")
+from cmdcompass.utils.utils import load_ctk_image
 
 class CommandBodyBox(ctk.CTkFrame):
     def __init__(self, master, main_window, **kwargs):
@@ -15,8 +13,7 @@ class CommandBodyBox(ctk.CTkFrame):
         self.command_textbox.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
 
         # Save button
-        save_image = ctk.CTkImage(light_image=Image.open(SAVE_BUTTON_IMG))
-        self.save_button = ctk.CTkButton(self, image=save_image, text="", command=self.save_command, width=20)
+        self.save_button = ctk.CTkButton(self, image=load_ctk_image("save.png"), text="", command=self.save_command, width=20)
 
         # Bind text modification event
         self.command_textbox.bind("<<Modified>>", self.on_text_modified)
