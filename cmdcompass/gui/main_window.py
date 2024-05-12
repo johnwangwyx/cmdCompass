@@ -88,7 +88,7 @@ class MainWindow(ctk.CTk):
         tag_operations_button.pack(pady=5, padx=10)
 
         # Create scrollable frame for the command list
-        self.command_list_frame = ctk.CTkScrollableFrame(self.left_frame, height=450)
+        self.command_list_frame = ctk.CTkScrollableFrame(self.left_frame, height=450, width=220)
         self.command_list_frame.grid(row=3, column=0, padx=10, pady=10, sticky="nsew")
 
         # Command list (using CTkTextbox inside the scrollable frame)
@@ -262,6 +262,29 @@ class MainWindow(ctk.CTk):
                 return  # Exit the loop once the collection is found
         # Raise if the loop completes without finding the collection
         raise ValueError(f"Collection '{selected_collection_name}' not found.")
+
+    def delete_command(self, command_index):
+        # Get the currently selected collection
+        selected_collection_name = self.collection_dropdown.get()
+        selected_collection = self.data_manager.get_collection(selected_collection_name)
+
+        if selected_collection:
+            # Remove the command from the collection's commands list
+            del selected_collection.commands[command_index]
+
+            # Update the data manager
+            self.data_manager.save_data()
+
+            # Refresh the command list UI
+            self.refresh_command_list()
+
+            # Clear the command view if the deleted command was selected
+            if self.selected_command == selected_collection.commands[command_index]:
+                self.selected_command = None
+                self.update_command_view()
+        else:
+            # Handle case where no collection is selected
+            print("Error: No collection selected.")
 
     def refresh_command_list(self):
         selected_collection_name = self.collection_dropdown.get()

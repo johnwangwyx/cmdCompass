@@ -10,6 +10,7 @@
 * Add html man pages for core utils
 * Support Command Templating and copy to clipboard.
 * Create a progress update window to update the progress while downloading packages and extract man pages.
+* Add command deletion button to each command in the list.
 
 ### CHANGED
 

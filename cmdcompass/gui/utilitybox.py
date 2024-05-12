@@ -6,7 +6,6 @@ class UtilityBox(ctk.CTkFrame):
 
         # Frame for variable input fields
         self.variable_input_frame = ctk.CTkFrame(self, height=50)
-        self.variable_input_frame.pack(padx=10, pady=(10, 10), fill="both", expand=True)
 
         # Generate button
         self.generate_button = ctk.CTkButton(
@@ -17,6 +16,9 @@ class UtilityBox(ctk.CTkFrame):
         self.generate_button.pack(pady=(0, 10))
         self.generate_button.pack_forget()
 
+        self.message_label = ctk.CTkLabel(self, text="")
+        self.message_label.pack(padx=10, pady=10)
+
     def set_command(self, command):
         # Clear previous input fields
         for child in self.variable_input_frame.winfo_children():
@@ -26,6 +28,8 @@ class UtilityBox(ctk.CTkFrame):
             self.command = command
             variables = command.get_template_variables()
             if variables:
+                self.variable_input_frame.pack(padx=10, pady=(10, 10), fill="both", expand=True)
+                self.message_label.pack_forget()
                 self.generate_button.pack(pady=(0, 10))
                 for i, var in enumerate(variables):
                     entry = ctk.CTkEntry(self.variable_input_frame, placeholder_text=var)
@@ -33,8 +37,16 @@ class UtilityBox(ctk.CTkFrame):
 
                 # Make entry fields expandable and distribute space evenly
                 self.variable_input_frame.grid_columnconfigure(tuple(range(len(variables))), weight=1)
+                self.message_label.configure(text="")  # Clear the message if templates exist
             else:
                 self.generate_button.pack_forget()
+                self.variable_input_frame.pack_forget()
+                self.message_label.configure(
+                    text="The command selected does not contain any templates.\n"
+                         "You can specify {{variable name}} to allow dynamic variable\n"
+                         "replacement that is supported by the tool."
+                )
+                self.message_label.pack(padx=10, pady=10)
 
     def generate_command(self):
         # Get the currently selected command
