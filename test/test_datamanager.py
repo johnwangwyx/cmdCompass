@@ -8,6 +8,7 @@ from cmdcompass.models.command import Command
 from cmdcompass.models.tag import Tag
 from cmdcompass.data.datamanager import DataManager
 
+
 class TestDataManager(unittest.TestCase):
     def setUp(self):
         # Create a temporary file for testing

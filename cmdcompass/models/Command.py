@@ -1,7 +1,9 @@
 from dataclasses import dataclass, field
 from typing import List, Dict
+import shlex
 import re
 import uuid
+
 
 @dataclass
 class Command:
@@ -27,3 +29,25 @@ class Command:
         # Regular expression to match variables with optional spaces inside {{}}
         pattern = r"\{\{\s*(\w+)\s*\}\}"
         return re.sub(pattern, replace_var, self.command_str)
+
+    def extract_options(self):
+        command = self.command_str
+        options = set()
+        # Split the command into parts respecting quotes
+        parts = shlex.split(command)
+
+        for part in parts:
+            # Handle long-form options starting with --
+            if part.startswith('--'):
+                match = re.match(r'--(\w+)', part)
+                if match:
+                    options.add(match.group(1))
+
+            # Handle short options starting with -
+            elif part.startswith('-') and not part.startswith('--'):
+                match = re.match(r'-(\w+)', part)
+                if match:
+                    # Add each character as a separate option
+                    options.update(match.group(1))
+
+        return options
