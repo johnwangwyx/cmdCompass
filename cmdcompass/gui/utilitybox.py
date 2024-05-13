@@ -5,7 +5,7 @@ class UtilityBox(ctk.CTkFrame):
         super().__init__(master, **kwargs)
 
         # Frame for variable input fields
-        self.variable_input_frame = ctk.CTkFrame(self, height=50)
+        self.variable_input_frame = ctk.CTkFrame(self, height=60)
 
         # Generate button
         self.generate_button = ctk.CTkButton(
@@ -16,8 +16,8 @@ class UtilityBox(ctk.CTkFrame):
         self.generate_button.pack(pady=(0, 10))
         self.generate_button.pack_forget()
 
-        self.message_label = ctk.CTkLabel(self, text="")
-        self.message_label.pack(padx=10, pady=10)
+        self.message_label = ctk.CTkLabel(self, text="", height=60)
+        self.message_label.pack(padx=10, pady=10, fill="both", expand=True)
 
     def set_command(self, command):
         # Clear previous input fields

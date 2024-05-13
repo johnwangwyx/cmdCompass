@@ -27,7 +27,7 @@ class GlobalTagWindow(ctk.CTkToplevel):
         self.tag_name_entry.grid(row=0, column=1, padx=5, pady=5)
 
         # Color Selection
-        self.color_label = ctk.CTkLabel(create_tag_frame, text="Color:")
+        self.color_label = ctk.CTkLabel(create_tag_frame, text="Color:", text_color="black")
         self.color_label.grid(row=1, column=0, padx=(10, 0), pady=5)
 
         self.color_dropdown = ctk.CTkOptionMenu(
@@ -93,7 +93,7 @@ class GlobalTagWindow(ctk.CTkToplevel):
             tag_frame = ctk.CTkFrame(self.tag_list_frame)
             tag_frame.pack(fill="x", pady=5, padx=10)
 
-            tag_label = ctk.CTkLabel(tag_frame, text=tag.name, fg_color=tag.color)
+            tag_label = ctk.CTkLabel(tag_frame, text=tag.name, fg_color=tag.color, text_color="black")
             tag_label.configure(corner_radius=12)
             tag_label.pack(side=ctk.LEFT)
 

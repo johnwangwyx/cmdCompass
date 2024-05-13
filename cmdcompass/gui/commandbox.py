@@ -15,7 +15,7 @@ class TagBox(ctk.CTkFrame):
         self.add_tag_button.grid(row=0, column=0, padx=(0, 0), pady=2)
         self.add_tag_button.configure(corner_radius=3)
         for i, tag in enumerate(tags):
-            tag_label = ctk.CTkLabel(self, text=f"{tag.name}", fg_color=tag.color, font=("TkDefaultFont ", 9), height=15)
+            tag_label = ctk.CTkLabel(self, text=f"{tag.name}", fg_color=tag.color, text_color="black", font=("TkDefaultFont ", 9), height=15)
             tag_label.configure(corner_radius=8)
             tag_label.grid(row=0, column=i+1, padx=(2, 0), pady=2)
 

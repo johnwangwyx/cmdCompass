@@ -1,22 +1,42 @@
 import customtkinter as ctk
 from tkinterweb import HtmlFrame
 import os
-from cmdcompass.utils.utils import get_command_name
+from cmdcompass.utils.utils import get_command_name, highlight_options
 from cmdcompass.man_parser.loader import download_and_process_package
 from cmdcompass.man_parser.html_coverter import OUTPUT_DIR
 from cmdcompass.gui.progresswindow import ProgressWindow
 
 HTML_CORE_DIR = "./data/man_pages/html_core"
+from tkinter import ttk
 
 class ManPageBox(ctk.CTkFrame):
-    def __init__(self, master, **kwargs):
+    def __init__(self, master, dark_theme_enabled=False, **kwargs):
         super().__init__(master, **kwargs)
+        self.grid_rowconfigure(1, weight=1)
+        self.grid_columnconfigure(0, weight=1)
         self.html_view = HtmlFrame(self, height=450)
-        self.html_view.pack(fill="both", expand=True)
+        self.html_view.grid(row=1, column=0, sticky="nsew")
         self.html_view.grid_propagate(0)
+        self.capture_original_scroll_bar_style()
+        self.html_content = ""
 
-    def set_man_page(self, command_str):
+        self.highlight_switch = ctk.CTkSwitch(self, text="Highlight My Options", command=self.apply_with_highlight)
+
+    def capture_original_scroll_bar_style(self):
+        style = ttk.Style()
+        self.original_config = {
+            "gripcount": style.lookup("Vertical.TScrollbar", "gripcount"),
+            "background": style.lookup("Vertical.TScrollbar", "background"),
+            "darkcolor": style.lookup("Vertical.TScrollbar", "darkcolor"),
+            "lightcolor": style.lookup("Vertical.TScrollbar", "lightcolor"),
+            "troughcolor": style.lookup("Vertical.TScrollbar", "troughcolor"),
+            "bordercolor": style.lookup("Vertical.TScrollbar", "bordercolor"),
+            "arrowcolor": style.lookup("Vertical.TScrollbar", "arrowcolor")
+        }
+
+    def set_man_page(self, command):
         html_content = ""
+        command_str = command.command_str
         try:
             command_name = get_command_name(command_str)
 
@@ -47,10 +67,36 @@ class ManPageBox(ctk.CTkFrame):
                 download_thread.start()
         except Exception as e:
             print(f"Error getting man page: {e}")
-        self.html_view.load_html(html_content)
+        self.html_content = html_content
+        self.html_view.load_html(self.html_content)
+
+        self.options = command.extract_options()
+        if self.options:
+            self.highlight_switch.grid(row=0, column=0, pady=(10, 0), sticky="w")
+        else:
+            self.highlight_switch.grid_forget()
 
     def create_progress_window(self):
         progress_window = ProgressWindow(self.master, "Man Pages Processing")
         return progress_window
+
+    def change_theme(self):
+        style = ttk.Style()
+        if ctk.get_appearance_mode() == "Dark":
+            style.theme_use('clam')
+            style.configure("Vertical.TScrollbar", gripcount=0,
+                            background="black", darkcolor="grey", lightcolor="grey",
+                            troughcolor="black", bordercolor="black", arrowcolor="grey")
+            self.html_view.enable_dark_theme(enabled=True, invert_images=False)
+        else:
+            style.configure("Vertical.TScrollbar", **self.original_config)
+            self.html_view.enable_dark_theme(enabled=False, invert_images=False)
+        self.apply_with_highlight()
+
+    def apply_with_highlight(self):
+        html_content = self.html_content
+        if self.highlight_switch.get() == 1:
+            html_content = highlight_options(self.options, self.html_content)
+        self.html_view.load_html(html_content)
 
 

@@ -20,7 +20,7 @@ class MainWindow(ctk.CTk):
     def __init__(self):
         super().__init__()
         self.title("cmdCompass")
-        self.geometry("1000x670")
+        self.geometry("900x670")
 
         # Load data
         self.data_manager = DataManager()
@@ -41,7 +41,7 @@ class MainWindow(ctk.CTk):
 
         # Collection operations frame
         self.collection_operation_frame = ctk.CTkFrame(self.left_frame)
-        self.collection_operation_frame.grid(row=2, column=0, padx=10, pady=10, sticky="ew")
+        self.collection_operation_frame.grid(row=2, column=0, padx=10, pady=(10,0), sticky="ew")
 
         # Collection dropdown (within collection_operation_frame)
         self.collection_dropdown = ctk.CTkOptionMenu(
@@ -140,9 +140,16 @@ class MainWindow(ctk.CTk):
         self.tab_control_frame.columnconfigure(0, weight=1)
         self.tab_control_frame.columnconfigure(1, weight=1)
 
-        # Adjust layout weights for right pane
-        self.right_frame.grid_rowconfigure((0, 1, 2), weight=1)
+        # Adjust layout weights for the two pane
+        self.right_frame.grid_rowconfigure(0, weight=0)
+        self.right_frame.grid_rowconfigure(1, weight=0)
+        self.right_frame.grid_rowconfigure(2, weight=1)  # Tab control frame should shrink
         self.right_frame.grid_columnconfigure(0, weight=4)
+
+        self.left_frame.grid_rowconfigure(1, weight=0) # TagOperation button
+        self.left_frame.grid_rowconfigure(2, weight=0) # collection operations frame
+        self.left_frame.grid_rowconfigure(3, weight=1)  # command_list_frame
+        self.left_frame.grid_rowconfigure(4, weight=0)  # Theme toggle
 
         self.active_tab = "comment"  # Set the initial active tab
         self.switch_tab("comment")
@@ -159,7 +166,7 @@ class MainWindow(ctk.CTk):
             self.comment_box.grid_forget()
             # Load and display man page (passing progress_window)
             self.man_page_box.set_man_page(
-                self.selected_command.command_str
+                self.selected_command
             )
         self.active_tab = tab_name
         self.update_tab_button_states()
@@ -214,7 +221,6 @@ class MainWindow(ctk.CTk):
                 self.data_manager.add_collection(new_collection)
                 # Update the collection dropdown
                 self.collection_dropdown.configure(values=[c.name for c in self.data_manager.get_collections()])
-                # Optionally, select the newly added collection in the dropdown
                 self.collection_dropdown.set(collection_name)
                 self.on_collection_select(collection_name)
 
@@ -254,7 +260,7 @@ class MainWindow(ctk.CTk):
 
         for i, command in enumerate(commands):
             tags = [self.data_manager.tags[tag_id] for tag_id in command.tag_ids]
-            command_box = CommandBox(self.command_list_frame, command, tags, i, self)  # Pass self (MainWindow instance)
+            command_box = CommandBox(self.command_list_frame, command, tags, i, self)
             command_box.grid(row=i+1, column=0, pady=5, padx=0, sticky="ew")
 
     def add_new_command(self):
@@ -288,7 +294,7 @@ class MainWindow(ctk.CTk):
         else:
             ctk.set_appearance_mode("Dark")
             self.theme_toggle_button.configure(text="Dark Mode")
-        self.man_page_box.update_html_frame_background()
+        self.man_page_box.change_theme()
 
     def on_command_select(self, command_index):
         selected_collection_name = self.collection_dropdown.get()
@@ -298,7 +304,6 @@ class MainWindow(ctk.CTk):
                 self.update_command_view()
                 self.switch_tab("comment")
                 return  # Exit the loop once the collection is found
-        # Raise if the loop completes without finding the collection
         raise ValueError(f"Collection '{selected_collection_name}' not found.")
 
     def delete_command(self, command_index):
