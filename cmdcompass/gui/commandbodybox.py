@@ -12,8 +12,15 @@ class CommandBodyBox(ctk.CTkFrame):
         self.command_textbox = ctk.CTkTextbox(self, height=100)
         self.command_textbox.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
 
+        # Copy button
+        self.copy_button = ctk.CTkButton(self, image=load_ctk_image("copy.png"), text="", command=self.copy_command, width=20)
+        self.copy_button.grid(row=0, column=1, padx=(0, 5), pady=10, sticky = "ns")
+
         # Save button
         self.save_button = ctk.CTkButton(self, image=load_ctk_image("save.png"), text="", command=self.save_command, width=20)
+        self.save_button.grid(row=0, column=2, padx=(0, 5), pady=10, sticky="ns")
+        self.default_color = self.save_button._fg_color[0]
+        self.save_button.configure(state="disabled", fg_color="gray")
 
         # Bind text modification event
         self.command_textbox.bind("<<Modified>>", self.on_text_modified)
@@ -21,9 +28,9 @@ class CommandBodyBox(ctk.CTkFrame):
     def on_text_modified(self, event):
         current_text = self.command_textbox.get("1.0", "end-1c")  # Get text without newline
         if self.main_window.selected_command and current_text != self.main_window.selected_command.command_str:
-            self.save_button.grid(row=0, column=1, padx=(0, 10), pady=10, sticky="ns")
+            self.save_button.configure(state="normal", fg_color=self.default_color)
         else:
-            self.save_button.grid_forget()
+            self.save_button.configure(state="disabled", fg_color="gray")
         self.command_textbox.edit_modified(False)  # Reset modified flag
 
     def set_command(self, command):
@@ -32,12 +39,19 @@ class CommandBodyBox(ctk.CTkFrame):
             self.command_textbox.insert(ctk.END, command.command_str)
         else:
             self.command_textbox.insert(ctk.END, "")  # Clear if no command
-        self.save_button.grid_forget()
+        self.save_button.configure(state="disabled", fg_color="gray")
 
     def save_command(self):
         if self.main_window.selected_command:
             new_command_str = self.command_textbox.get("1.0", "end-1c")
             self.main_window.selected_command.command_str = new_command_str
             self.main_window.data_manager.save_data()
-            self.save_button.grid_forget()
+            self.save_button.configure(state="disabled", fg_color="gray")
             self.main_window.refresh_command_list()  # Refresh the command list
+            self.main_window.utility_box.set_command(self.main_window.selected_command)
+
+    def copy_command(self):
+        command_str = self.command_textbox.get("1.0", "end-1c")
+        # Copy the generated command to clipboard
+        self.master.master.clipboard_clear()
+        self.master.master.clipboard_append(command_str)

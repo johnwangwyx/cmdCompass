@@ -2,7 +2,7 @@ import customtkinter as ctk
 from cmdcompass.models.tag import Tag
 from CTkMessagebox import CTkMessagebox
 
-TAG_COLORS = ["Orange", "Blue", "Azure", "Yellow", "Green", "Red", "Purple", "Gray"]
+TAG_COLORS = ["Orange", "Cyan", "Azure", "Yellow", "Pink", "Green", "Red", "Purple", "Gray"]
 
 
 class GlobalTagWindow(ctk.CTkToplevel):
@@ -53,7 +53,7 @@ class GlobalTagWindow(ctk.CTkToplevel):
         remove_tags_frame = ctk.CTkFrame(main_frame)
         remove_tags_frame.pack(pady=30, fill="both", expand=True)
 
-        remove_tags_label = ctk.CTkLabel(remove_tags_frame, text="Remove Existing Tags:")
+        remove_tags_label = ctk.CTkLabel(remove_tags_frame, text="Existing Tags:")
         remove_tags_label.pack(pady=(0, 10))
 
         # Scrollable frame for tag list
