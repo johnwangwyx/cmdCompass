@@ -7,6 +7,7 @@ from cmdcompass.gui.utilitybox import UtilityBox
 from cmdcompass.gui.command_tag_operation import TagOperation
 from cmdcompass.gui.global_tag import GlobalTagWindow
 from cmdcompass.models.collection import Collection
+from cmdcompass.models.command import Command
 from cmdcompass.gui.manpagebox import ManPageBox
 from cmdcompass.utils.utils import load_ctk_image
 from CTkToolTip import CTkToolTip
@@ -85,22 +86,18 @@ class MainWindow(ctk.CTk):
         # Tag Operations Button
         tag_operations_button = ctk.CTkButton(
             tag_operations_frame,
-            text="Create/Remove Tag",
+            text="Define/Remove Tag",
             command=self.open_tag_creation_window
         )
         tag_operations_button.pack(pady=5, padx=10)
+        CTkToolTip(tag_operations_button, message="Define/Remove Tags here to be later assigned to commands")
 
         # Create scrollable frame for the command list
         self.command_list_frame = ctk.CTkScrollableFrame(self.left_frame, height=450, width=220)
         self.command_list_frame.grid(row=3, column=0, padx=10, pady=10, sticky="nsew")
 
-        # Command list (using CTkTextbox inside the scrollable frame)
-        self.command_list_box = ctk.CTkTextbox(self.command_list_frame)
-        self.command_list_box.grid(row=0, column=0, padx=(3, 0), pady=3, sticky="nsew")
-
         # Configure scrolling behavior
         self.command_list_frame.configure(corner_radius=5)
-        self.command_list_box.configure(fg_color="transparent")  # Make textbox background transparent
 
         self.theme_toggle_button = ctk.CTkSwitch(
             self.left_frame,
@@ -127,6 +124,8 @@ class MainWindow(ctk.CTk):
                                                  command=lambda: self.switch_tab("man_page"), height=20)
         self.comment_tab_button.grid(row=0, column=0, padx=10, pady=(10, 0), sticky="nsew")
         self.man_page_tab_button.grid(row=0, column=1, padx=10, pady=(10, 0), sticky="nsew")
+        CTkToolTip(self.comment_tab_button, message="Switch to the Comment Tab")
+        CTkToolTip(self.man_page_tab_button, message="Switch to the Man Page Tab")
         global DEFAULT_BUTTON_COLOR
         DEFAULT_BUTTON_COLOR = self.man_page_tab_button._fg_color[0]
         print(DEFAULT_BUTTON_COLOR)
@@ -177,10 +176,10 @@ class MainWindow(ctk.CTk):
 
     def update_tab_button_states(self):
         if self.active_tab == "comment":
-            self.comment_tab_button.configure(state="disabled", fg_color="white")
+            self.comment_tab_button.configure(state="disabled", fg_color="gray")
             self.man_page_tab_button.configure(state="normal", fg_color=DEFAULT_BUTTON_COLOR)
         elif self.active_tab == "man_page":
-            self.man_page_tab_button.configure(state="disabled", fg_color="white")
+            self.man_page_tab_button.configure(state="disabled", fg_color="gray")
             self.comment_tab_button.configure(state="normal", fg_color=DEFAULT_BUTTON_COLOR)
 
     def open_tag_creation_window(self):
@@ -217,6 +216,7 @@ class MainWindow(ctk.CTk):
                 self.collection_dropdown.configure(values=[c.name for c in self.data_manager.get_collections()])
                 # Optionally, select the newly added collection in the dropdown
                 self.collection_dropdown.set(collection_name)
+                self.on_collection_select(collection_name)
 
     def on_remove_collection_click(self):
         selected_collection_name = self.collection_dropdown.get()
@@ -241,10 +241,45 @@ class MainWindow(ctk.CTk):
         for child in self.command_list_frame.winfo_children():
             child.destroy()  # Clear previous command boxes
 
+        # Add Command button
+        self.add_command_button = ctk.CTkButton(
+            self.command_list_frame,
+            text="",
+            image=load_ctk_image("create.png"),
+            command=self.add_new_command,
+            width=200
+        )
+        self.add_command_button.grid(row=0, column=0, pady=5, padx=10, sticky="ew")
+        CTkToolTip(self.add_command_button, message="Add a new command to this Collection")
+
         for i, command in enumerate(commands):
             tags = [self.data_manager.tags[tag_id] for tag_id in command.tag_ids]
             command_box = CommandBox(self.command_list_frame, command, tags, i, self)  # Pass self (MainWindow instance)
-            command_box.pack(pady=5, padx=5, fill="x")
+            command_box.grid(row=i+1, column=0, pady=5, padx=0, sticky="ew")
+
+    def add_new_command(self):
+        # Get the currently selected collection
+        selected_collection_name = self.collection_dropdown.get()
+        selected_collection = self.data_manager.get_collection(selected_collection_name)
+
+        if selected_collection:
+            # Create a new Command object
+            new_command = Command(command_str="", comment="", tag_ids=[])
+
+            # Add the new command to the collection
+            selected_collection.commands.append(new_command)
+
+            # Update the data manager
+            self.data_manager.save_data()
+
+            # Refresh the command list UI
+            self.refresh_command_list()
+
+            # Select the newly created command
+            self.selected_command = new_command
+            self.update_command_view()
+        else:
+            raise ValueError("Error: No collection selected.")
 
     def toggle_theme(self):
         if ctk.get_appearance_mode() == "Dark":
@@ -272,6 +307,7 @@ class MainWindow(ctk.CTk):
         selected_collection = self.data_manager.get_collection(selected_collection_name)
 
         if selected_collection:
+            to_be_delete = selected_collection.commands[command_index]
             # Remove the command from the collection's commands list
             del selected_collection.commands[command_index]
 
@@ -282,8 +318,11 @@ class MainWindow(ctk.CTk):
             self.refresh_command_list()
 
             # Clear the command view if the deleted command was selected
-            if self.selected_command == selected_collection.commands[command_index]:
-                self.selected_command = None
+            if self.selected_command == to_be_delete:
+                if len(selected_collection.commands) >= 1:
+                    self.selected_command = selected_collection.commands[0]
+                else:
+                    self.selected_command = None
                 self.update_command_view()
         else:
             # Handle case where no collection is selected

@@ -1,0 +1,523 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon May 13 07:51:17 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>PG_AMCHECK</title>
+
+</head>
+<body>
+
+<h1 align="center">PG_AMCHECK</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pg_amcheck -
+checks for corruption in one or more PostgreSQL
+databases</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="47%">
+
+
+<p style="margin-top: 1em"><b>pg_amcheck</b>
+[<i>option</i>...] [<i>dbname</i>]</p></td>
+<td width="42%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pg_amcheck
+supports running amcheck's corruption checking functions
+against one or more databases, with options to select which
+schemas, tables and indexes to check, which kinds of
+checking to perform, and whether to perform the checks in
+parallel, and if so, the number of parallel connections to
+establish and use.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Only ordinary
+and toast table relations, materialized views, sequences,
+and btree indexes are currently supported. Other relation
+types are silently skipped.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If dbname is
+specified, it should be the name of a single database to
+check, and no other database selection options should be
+present. Otherwise, if any database selection options are
+present, all matching databases will be checked. If no such
+options are present, the default database will be checked.
+Database selection options include <b>--all</b>,
+<b>--database</b> and <b>--exclude-database</b>. They also
+include <b>--relation</b>, <b>--exclude-relation</b>,
+<b>--table</b>, <b>--exclude-table</b>, <b>--index</b>, and
+<b>--exclude-index</b>, but only when such options are used
+with a three-part pattern (e.g.
+<b>mydb*.myschema*.myrel*</b>). Finally, they include
+<b>--schema</b> and <b>--exclude-schema</b> when such
+options are used with a two-part pattern (e.g.
+<b>mydb*.myschema*</b>).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><i>dbname</i>
+can also be a connection string.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+command-line options control what is checked:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-a <br>
+--all</b></p>
+
+<p style="margin-left:17%;">Check all databases, except for
+any excluded via <b>--exclude-database</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-d</b>
+<i>pattern</i> <b><br>
+--database=</b><i>pattern</i></p>
+
+<p style="margin-left:17%;">Check databases matching the
+specified <i>pattern</i>, except for any excluded by
+<b>--exclude-database</b>. This option can be specified more
+than once.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-D</b>
+<i>pattern</i> <b><br>
+--exclude-database=</b><i>pattern</i></p>
+
+<p style="margin-left:17%;">Exclude databases matching the
+given <i>pattern</i>. This option can be specified more than
+once.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-i</b>
+<i>pattern</i> <b><br>
+--index=</b><i>pattern</i></p>
+
+<p style="margin-left:17%;">Check indexes matching the
+specified <i>pattern</i>, unless they are otherwise
+excluded. This option can be specified more than once.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This is similar
+to the <b>--relation</b> option, except that it applies only
+to indexes, not to other relation types.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-I</b>
+<i>pattern</i> <b><br>
+--exclude-index=</b><i>pattern</i></p>
+
+<p style="margin-left:17%;">Exclude indexes matching the
+specified <i>pattern</i>. This option can be specified more
+than once.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This is similar
+to the <b>--exclude-relation</b> option, except that it
+applies only to indexes, not other relation types.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-r</b>
+<i>pattern</i> <b><br>
+--relation=</b><i>pattern</i></p>
+
+<p style="margin-left:17%;">Check relations matching the
+specified <i>pattern</i>, unless they are otherwise
+excluded. This option can be specified more than once.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Patterns may be
+unqualified, e.g. myrel*, or they may be schema-qualified,
+e.g. myschema*.myrel* or database-qualified and
+schema-qualified, e.g. mydb*.myschema*.myrel*. A
+database-qualified pattern will add matching databases to
+the list of databases to be checked.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-R</b>
+<i>pattern</i> <b><br>
+--exclude-relation=</b><i>pattern</i></p>
+
+<p style="margin-left:17%;">Exclude relations matching the
+specified <i>pattern</i>. This option can be specified more
+than once.</p>
+
+<p style="margin-left:17%; margin-top: 1em">As with
+<b>--relation</b>, the <i>pattern</i> may be unqualified,
+schema-qualified, or database- and schema-qualified.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-s</b>
+<i>pattern</i> <b><br>
+--schema=</b><i>pattern</i></p>
+
+<p style="margin-left:17%;">Check tables and indexes in
+schemas matching the specified <i>pattern</i>, unless they
+are otherwise excluded. This option can be specified more
+than once.</p>
+
+<p style="margin-left:17%; margin-top: 1em">To select only
+tables in schemas matching a particular pattern, consider
+using something like --table=SCHEMAPAT.*
+--no-dependent-indexes. To select only indexes, consider
+using something like --index=SCHEMAPAT.*.</p>
+
+<p style="margin-left:17%; margin-top: 1em">A schema
+pattern may be database-qualified. For example, you may
+write --schema=mydb*.myschema* to select schemas matching
+myschema* in databases matching mydb*.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-S</b>
+<i>pattern</i> <b><br>
+--exclude-schema=</b><i>pattern</i></p>
+
+<p style="margin-left:17%;">Exclude tables and indexes in
+schemas matching the specified <i>pattern</i>. This option
+can be specified more than once.</p>
+
+<p style="margin-left:17%; margin-top: 1em">As with
+<b>--schema</b>, the pattern may be database-qualified.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-t</b>
+<i>pattern</i> <b><br>
+--table=</b><i>pattern</i></p>
+
+<p style="margin-left:17%;">Check tables matching the
+specified <i>pattern</i>, unless they are otherwise
+excluded. This option can be specified more than once.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This is similar
+to the <b>--relation</b> option, except that it applies only
+to tables, materialized views, and sequences, not to
+indexes.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-T</b>
+<i>pattern</i> <b><br>
+--exclude-table=</b><i>pattern</i></p>
+
+<p style="margin-left:17%;">Exclude tables matching the
+specified <i>pattern</i>. This option can be specified more
+than once.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This is similar
+to the <b>--exclude-relation</b> option, except that it
+applies only to tables, materialized views, and sequences,
+not to indexes.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--no-dependent-indexes</b></p>
+
+<p style="margin-left:17%;">By default, if a table is
+checked, any btree indexes of that table will also be
+checked, even if they are not explicitly selected by an
+option such as --index or --relation. This option suppresses
+that behavior.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--no-dependent-toast</b></p>
+
+<p style="margin-left:17%;">By default, if a table is
+checked, its toast table, if any, will also be checked, even
+if it is not explicitly selected by an option such as
+--table or --relation. This option suppresses that
+behavior.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--no-strict-names</b></p>
+
+<p style="margin-left:17%;">By default, if an argument to
+--database, --table, --index, or --relation matches no
+objects, it is a fatal error. This option downgrades that
+error to a warning.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+command-line options control checking of tables:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--exclude-toast-pointers</b></p>
+
+<p style="margin-left:17%;">By default, whenever a toast
+pointer is encountered in a table, a lookup is performed to
+ensure that it references apparently-valid entries in the
+toast table. These checks can be quite slow, and this option
+can be used to skip them.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--on-error-stop</b></p>
+
+<p style="margin-left:17%;">After reporting all corruptions
+on the first page of a table where corruption is found, stop
+processing that table relation and move on to the next table
+or index.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Note that index
+checking always stops after the first corrupt page. This
+option only has meaning relative to table relations.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--skip=</b><i>option</i></p>
+
+<p style="margin-left:17%;">If all-frozen is given, table
+corruption checks will skip over pages in all tables that
+are marked as all frozen.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If all-visible
+is given, table corruption checks will skip over pages in
+all tables that are marked as all visible.</p>
+
+<p style="margin-left:17%; margin-top: 1em">By default, no
+pages are skipped. This can be specified as none, but since
+this is the default, it need not be mentioned.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--startblock=</b><i>block</i></p>
+
+<p style="margin-left:17%;">Start checking at the specified
+block number. An error will occur if the table relation
+being checked has fewer than this number of blocks. This
+option does not apply to indexes, and is probably only
+useful when checking a single table relation. See --endblock
+for further caveats.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--endblock=</b><i>block</i></p>
+
+<p style="margin-left:17%;">End checking at the specified
+block number. An error will occur if the table relation
+being checked has fewer than this number of blocks. This
+option does not apply to indexes, and is probably only
+useful when checking a single table relation. If both a
+regular table and a toast table are checked, this option
+will apply to both, but higher-numbered toast blocks may
+still be accessed while validating toast pointers, unless
+that is suppressed using
+<b>--exclude-toast-pointers</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+command-line options control checking of B-tree indexes:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--heapallindexed</b></p>
+
+<p style="margin-left:17%;">For each index checked, verify
+the presence of all heap tuples as index tuples in the index
+using amcheck's <b>heapallindexed</b> option.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--parent-check</b></p>
+
+<p style="margin-left:17%;">For each btree index checked,
+use amcheck's <b>bt_index_parent_check</b> function, which
+performs additional checks of parent/child relationships
+during index checking.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The default is
+to use amcheck's <b>bt_index_check</b> function, but note
+that use of the <b>--rootdescend</b> option implicitly
+selects <b>bt_index_parent_check</b>.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--rootdescend</b></p>
+
+<p style="margin-left:17%;">For each index checked, re-find
+tuples on the leaf level by performing a new search from the
+root page for each tuple using amcheck's <b>rootdescend</b>
+option.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Use of this
+option implicitly also selects the <b>--parent-check</b>
+option.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This form of
+verification was originally written to help in the
+development of btree index features. It may be of limited
+use or even of no use in helping detect the kinds of
+corruption that occur in practice. It may also cause
+corruption checking to take considerably longer and consume
+considerably more resources on the server.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b><big>Warning</big></b>
+<br>
+The extra checks performed against B-tree indexes when the
+<b>--parent-check</b> option or the <b>--rootdescend</b>
+option is specified require relatively strong relation-level
+locks. These checks are the only checks that will block
+concurrent data modification from <b>INSERT</b>,
+<b>UPDATE</b>, and <b>DELETE</b> commands.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+command-line options control the connection to the
+server:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>
+<i>hostname</i> <b><br>
+--host=</b><i>hostname</i></p>
+
+<p style="margin-left:17%;">Specifies the host name of the
+machine on which the server is running. If the value begins
+with a slash, it is used as the directory for the Unix
+domain socket.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-p</b>
+<i>port</i> <b><br>
+--port=</b><i>port</i></p>
+
+<p style="margin-left:17%;">Specifies the TCP port or local
+Unix domain socket file extension on which the server is
+listening for connections.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-U <br>
+--username=</b><i>username</i></p>
+
+<p style="margin-left:17%;">User name to connect as.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-w <br>
+--no-password</b></p>
+
+<p style="margin-left:17%;">Never issue a password prompt.
+If the server requires password authentication and a
+password is not available by other means such as a .pgpass
+file, the connection attempt will fail. This option can be
+useful in batch jobs and scripts where no user is present to
+enter a password.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-W <br>
+--password</b></p>
+
+<p style="margin-left:17%;">Force pg_amcheck to prompt for
+a password before connecting to a database.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This option is
+never essential, since pg_amcheck will automatically prompt
+for a password if the server demands password
+authentication. However, pg_amcheck will waste a connection
+attempt finding out that the server wants a password. In
+some cases it is worth typing <b>-W</b> to avoid the extra
+connection attempt.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--maintenance-db=</b><i>dbname</i></p>
+
+<p style="margin-left:17%;">Specifies a database or
+connection string to be used to discover the list of
+databases to be checked. If neither <b>--all</b> nor any
+option including a database pattern is used, no such
+connection is required and this option does nothing.
+Otherwise, any connection string parameters other than the
+database name which are included in the value for this
+option will also be used when connecting to the databases
+being checked. If this option is omitted, the default is
+postgres or, if that fails, template1.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Other options
+are also available:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-e <br>
+--echo</b></p>
+
+<p style="margin-left:17%;">Echo to stdout all SQL sent to
+the server.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-j</b>
+<i>num</i> <b><br>
+--jobs=</b><i>num</i></p>
+
+<p style="margin-left:17%;">Use <i>num</i> concurrent
+connections to the server, or one per object to be checked,
+whichever is less.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The default is
+to use a single connection.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-P <br>
+--progress</b></p>
+
+<p style="margin-left:17%;">Show progress information.
+Progress information includes the number of relations for
+which checking has been completed, and the total size of
+those relations. It also includes the total number of
+relations that will eventually be checked, and the estimated
+size of those relations.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-v <br>
+--verbose</b></p>
+
+<p style="margin-left:17%;">Print more messages. In
+particular, this will print a message for each relation
+being checked, and will increase the level of detail shown
+for server errors.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-V <br>
+--version</b></p>
+
+<p style="margin-left:17%;">Print the pg_amcheck version
+and exit.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--install-missing
+<br>
+--install-missing=</b><i>schema</i></p>
+
+<p style="margin-left:17%;">Install any missing extensions
+that are required to check the database(s). If not yet
+installed, each extension's objects will be installed into
+the given <i>schema</i>, or if not specified into schema
+pg_catalog.</p>
+
+<p style="margin-left:17%; margin-top: 1em">At present, the
+only required extension is amcheck.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-? <br>
+--help</b></p>
+
+<p style="margin-left:17%;">Show help about pg_amcheck
+command line arguments, and exit.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pg_amcheck is
+designed to work with PostgreSQL 14.0 and later.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+ 
+<p style="margin-left:11%; margin-top: 1em">amcheck</p>
+<hr>
+</body>
+</html>

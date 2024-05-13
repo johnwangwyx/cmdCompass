@@ -1,0 +1,374 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon May 13 07:51:18 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>PG_RECVLOGICAL</title>
+
+</head>
+<body>
+
+<h1 align="center">PG_RECVLOGICAL</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pg_recvlogical
+- control PostgreSQL logical decoding streams</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="40%">
+
+
+<p style="margin-top: 1em"><b>pg_recvlogical</b>
+[<i>option</i>...]</p> </td>
+<td width="49%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pg_recvlogical</b>
+controls logical decoding replication slots and streams data
+from such replication slots.</p>
+
+<p style="margin-left:11%; margin-top: 1em">It creates a
+replication-mode connection, so it is subject to the same
+constraints as <b>pg_receivewal</b>(1), plus those for
+logical replication (see Chapter&nbsp;49).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pg_recvlogical</b>
+has no equivalent to the logical decoding SQL interface's
+peek and get modes. It sends replay confirmations for data
+lazily as it receives it and on clean exit. To examine
+pending data on a slot without consuming it, use
+<b>pg_logical_slot_peek_changes</b>.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">At least one of
+the following options must be specified to select an
+action:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--create-slot</b></p>
+
+<p style="margin-left:17%;">Create a new logical
+replication slot with the name specified by <b>--slot</b>,
+using the output plugin specified by <b>--plugin</b>, for
+the database specified by <b>--dbname</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The
+<b>--two-phase</b> can be specified with
+<b>--create-slot</b> to enable decoding of prepared
+transactions.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--drop-slot</b></p>
+
+<p style="margin-left:17%;">Drop the replication slot with
+the name specified by <b>--slot</b>, then exit.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--start</b></p>
+
+<p style="margin-left:17%;">Begin streaming changes from
+the logical replication slot specified by <b>--slot</b>,
+continuing until terminated by a signal. If the server side
+change stream ends with a server shutdown or disconnect,
+retry in a loop unless <b>--no-loop</b> is specified.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The stream
+format is determined by the output plugin specified when the
+slot was created.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The connection
+must be to the same database used to create the slot.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--create-slot</b>
+and <b>--start</b> can be specified together.
+<b>--drop-slot</b> cannot be combined with another
+action.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+command-line options control the location and format of the
+output and other replication behavior:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-E</b>
+<i>lsn</i> <b><br>
+--endpos=</b><i>lsn</i></p>
+
+<p style="margin-left:17%;">In <b>--start</b> mode,
+automatically stop replication and exit with normal exit
+status 0 when receiving reaches the specified LSN. If
+specified when not in <b>--start</b> mode, an error is
+raised.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If there's a
+record with LSN exactly equal to <i>lsn</i>, the record will
+be output.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The
+<b>--endpos</b> option is not aware of transaction
+boundaries and may truncate output partway through a
+transaction. Any partially output transaction will not be
+consumed and will be replayed again when the slot is next
+read from. Individual messages are never truncated.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-f</b>
+<i>filename</i> <b><br>
+--file=</b><i>filename</i></p>
+
+<p style="margin-left:17%;">Write received and decoded
+transaction data into this file. Use - for stdout.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-F</b>
+<i>interval_seconds</i> <b><br>
+--fsync-interval=</b><i>interval_seconds</i></p>
+
+<p style="margin-left:17%;">Specifies how often
+pg_recvlogical should issue <b>fsync()</b> calls to ensure
+the output file is safely flushed to disk.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The server will
+occasionally request the client to perform a flush and
+report the flush position to the server. This setting is in
+addition to that, to perform flushes more frequently.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Specifying an
+interval of 0 disables issuing <b>fsync()</b> calls
+altogether, while still reporting progress to the server. In
+this case, data could be lost in the event of a crash.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-I</b>
+<i>lsn</i> <b><br>
+--startpos=</b><i>lsn</i></p>
+
+<p style="margin-left:17%;">In <b>--start</b> mode, start
+replication from the given LSN. For details on the effect of
+this, see the documentation in Chapter&nbsp;49 and
+Section&nbsp;55.4. Ignored in other modes.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--if-not-exists</b></p>
+
+<p style="margin-left:17%;">Do not error out when
+<b>--create-slot</b> is specified and a slot with the
+specified name already exists.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-n <br>
+--no-loop</b></p>
+
+<p style="margin-left:17%;">When the connection to the
+server is lost, do not retry in a loop, just exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-o</b>
+<i>name</i><b>[=</b><i>value</i><b>] <br>
+--option=</b><i>name</i><b>[=</b><i>value</i><b>]</b></p>
+
+<p style="margin-left:17%;">Pass the option <i>name</i> to
+the output plugin with, if specified, the option value
+<i>value</i>. Which options exist and their effects depends
+on the used output plugin.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-P</b>
+<i>plugin</i> <b><br>
+--plugin=</b><i>plugin</i></p>
+
+<p style="margin-left:17%;">When creating a slot, use the
+specified logical decoding output plugin. See
+Chapter&nbsp;49. This option has no effect if the slot
+already exists.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-s</b>
+<i>interval_seconds</i> <b><br>
+--status-interval=</b><i>interval_seconds</i></p>
+
+<p style="margin-left:17%;">This option has the same effect
+as the option of the same name in <b>pg_receivewal</b>(1).
+See the description there.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-S</b>
+<i>slot_name</i> <b><br>
+--slot=</b><i>slot_name</i></p>
+
+<p style="margin-left:17%;">In <b>--start</b> mode, use the
+existing logical replication slot named <i>slot_name</i>. In
+<b>--create-slot</b> mode, create the slot with this name.
+In <b>--drop-slot</b> mode, delete the slot with this
+name.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-t <br>
+--two-phase</b></p>
+
+<p style="margin-left:17%;">Enables decoding of prepared
+transactions. This option may only be specified with
+<b>--create-slot</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-v <br>
+--verbose</b></p>
+
+<p style="margin-left:17%;">Enables verbose mode.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+command-line options control the database connection
+parameters.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-d</b>
+<i>dbname</i> <b><br>
+--dbname=</b><i>dbname</i></p>
+
+<p style="margin-left:17%;">The database to connect to. See
+the description of the actions for what this means in
+detail. The <i>dbname</i> can be a connection string. If so,
+connection string parameters will override any conflicting
+command line options. Defaults to the user name.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>
+<i>hostname-or-ip</i> <b><br>
+--host=</b><i>hostname-or-ip</i></p>
+
+<p style="margin-left:17%;">Specifies the host name of the
+machine on which the server is running. If the value begins
+with a slash, it is used as the directory for the Unix
+domain socket. The default is taken from the <b>PGHOST</b>
+environment variable, if set, else a Unix domain socket
+connection is attempted.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-p</b>
+<i>port</i> <b><br>
+--port=</b><i>port</i></p>
+
+<p style="margin-left:17%;">Specifies the TCP port or local
+Unix domain socket file extension on which the server is
+listening for connections. Defaults to the <b>PGPORT</b>
+environment variable, if set, or a compiled-in default.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-U</b>
+<i>user</i> <b><br>
+--username=</b><i>user</i></p>
+
+<p style="margin-left:17%;">User name to connect as.
+Defaults to current operating system user name.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-w <br>
+--no-password</b></p>
+
+<p style="margin-left:17%;">Never issue a password prompt.
+If the server requires password authentication and a
+password is not available by other means such as a .pgpass
+file, the connection attempt will fail. This option can be
+useful in batch jobs and scripts where no user is present to
+enter a password.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-W <br>
+--password</b></p>
+
+<p style="margin-left:17%;">Force pg_recvlogical to prompt
+for a password before connecting to a database.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This option is
+never essential, since pg_recvlogical will automatically
+prompt for a password if the server demands password
+authentication. However, pg_recvlogical will waste a
+connection attempt finding out that the server wants a
+password. In some cases it is worth typing <b>-W</b> to
+avoid the extra connection attempt.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+additional options are available:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-V <br>
+--version</b></p>
+
+<p style="margin-left:17%;">Print the pg_recvlogical
+version and exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-? <br>
+--help</b></p>
+
+<p style="margin-left:17%;">Show help about pg_recvlogical
+command line arguments, and exit.</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This utility,
+like most other PostgreSQL utilities, uses the environment
+variables supported by libpq (see Section&nbsp;34.15).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The environment
+variable <b>PG_COLOR</b> specifies whether to use color in
+diagnostic messages. Possible values are always, auto and
+never.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pg_recvlogical
+will preserve group permissions on the received WAL files if
+group permissions are enabled on the source cluster.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">See
+Section&nbsp;49.1 for an example.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pg_receivewal</b>(1)</p>
+<hr>
+</body>
+</html>

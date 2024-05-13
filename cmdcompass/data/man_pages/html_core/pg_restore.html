@@ -1,0 +1,842 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon May 13 07:51:18 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>PG_RESTORE</title>
+
+</head>
+<body>
+
+<h1 align="center">PG_RESTORE</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#DIAGNOSTICS">DIAGNOSTICS</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pg_restore -
+restore a PostgreSQL database from an archive file created
+by pg_dump</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="86%">
+
+
+<p style="margin-top: 1em"><b>pg_restore</b>
+[<i>connection-option</i>...] [<i>option</i>...]
+[<i>filename</i>]</p> </td>
+<td width="3%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pg_restore is a
+utility for restoring a PostgreSQL database from an archive
+created by <b>pg_dump</b>(1) in one of the non-plain-text
+formats. It will issue the commands necessary to reconstruct
+the database to the state it was in at the time it was
+saved. The archive files also allow pg_restore to be
+selective about what is restored, or even to reorder the
+items prior to being restored. The archive files are
+designed to be portable across architectures.</p>
+
+<p style="margin-left:11%; margin-top: 1em">pg_restore can
+operate in two modes. If a database name is specified,
+pg_restore connects to that database and restores archive
+contents directly into the database. Otherwise, a script
+containing the SQL commands necessary to rebuild the
+database is created and written to a file or standard
+output. This script output is equivalent to the plain text
+output format of pg_dump. Some of the options controlling
+the output are therefore analogous to pg_dump options.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Obviously,
+pg_restore cannot restore information that is not present in
+the archive file. For instance, if the archive was made
+using the &ldquo;dump data as <b>INSERT</b> commands&rdquo;
+option, pg_restore will not be able to load the data using
+<b>COPY</b> statements.</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pg_restore
+accepts the following command line arguments.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>filename</i></p>
+
+<p style="margin-left:17%;">Specifies the location of the
+archive file (or directory, for a directory-format archive)
+to be restored. If not specified, the standard input is
+used.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-a <br>
+--data-only</b></p>
+
+<p style="margin-left:17%;">Restore only the data, not the
+schema (data definitions). Table data, large objects, and
+sequence values are restored, if present in the archive.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This option is
+similar to, but for historical reasons not identical to,
+specifying <b>--section=data</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-c <br>
+--clean</b></p>
+
+<p style="margin-left:17%;">Before restoring database
+objects, issue commands to <b>DROP</b> all the objects that
+will be restored. This option is useful for overwriting an
+existing database. If any of the objects do not exist in the
+destination database, ignorable error messages will be
+reported, unless <b>--if-exists</b> is also specified.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-C <br>
+--create</b></p>
+
+<p style="margin-left:17%;">Create the database before
+restoring into it. If <b>--clean</b> is also specified, drop
+and recreate the target database before connecting to
+it.</p>
+
+<p style="margin-left:17%; margin-top: 1em">With
+<b>--create</b>, pg_restore also restores the database's
+comment if any, and any configuration variable settings that
+are specific to this database, that is, any <b>ALTER
+DATABASE ... SET ...</b> and <b>ALTER ROLE ... IN DATABASE
+... SET ...</b> commands that mention this database. Access
+privileges for the database itself are also restored, unless
+<b>--no-acl</b> is specified.</p>
+
+<p style="margin-left:17%; margin-top: 1em">When this
+option is used, the database named with <b>-d</b> is used
+only to issue the initial <b>DROP DATABASE</b> and <b>CREATE
+DATABASE</b> commands. All data is restored into the
+database name that appears in the archive.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-d</b>
+<i>dbname</i> <b><br>
+--dbname=</b><i>dbname</i></p>
+
+<p style="margin-left:17%;">Connect to database
+<i>dbname</i> and restore directly into the database. The
+<i>dbname</i> can be a connection string. If so, connection
+string parameters will override any conflicting command line
+options.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-e <br>
+--exit-on-error</b></p>
+
+<p style="margin-left:17%;">Exit if an error is encountered
+while sending SQL commands to the database. The default is
+to continue and to display a count of errors at the end of
+the restoration.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-f</b>
+<i>filename</i> <b><br>
+--file=</b><i>filename</i></p>
+
+<p style="margin-left:17%;">Specify output file for
+generated script, or for the listing when used with
+<b>-l</b>. Use - for stdout.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-F</b>
+<i>format</i> <b><br>
+--format=</b><i>format</i></p>
+
+<p style="margin-left:17%;">Specify format of the archive.
+It is not necessary to specify the format, since pg_restore
+will determine the format automatically. If specified, it
+can be one of the following:</p>
+
+<p style="margin-left:17%; margin-top: 1em">c <br>
+custom</p>
+
+<p style="margin-left:23%;">The archive is in the custom
+format of pg_dump.</p>
+
+<p style="margin-left:17%; margin-top: 1em">d <br>
+directory</p>
+
+<p style="margin-left:23%;">The archive is a directory
+archive.</p>
+
+<p style="margin-left:17%; margin-top: 1em">t <br>
+tar</p>
+
+<p style="margin-left:23%;">The archive is a <b>tar</b>
+archive.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-I</b>
+<i>index</i> <b><br>
+--index=</b><i>index</i></p>
+
+<p style="margin-left:17%;">Restore definition of named
+index only. Multiple indexes may be specified with multiple
+<b>-I</b> switches.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-j</b>
+<i>number-of-jobs</i> <b><br>
+--jobs=</b><i>number-of-jobs</i></p>
+
+<p style="margin-left:17%;">Run the most time-consuming
+steps of pg_restore &mdash; those that load data, create
+indexes, or create constraints &mdash; concurrently, using
+up to <i>number-of-jobs</i> concurrent sessions. This option
+can dramatically reduce the time to restore a large database
+to a server running on a multiprocessor machine. This option
+is ignored when emitting a script rather than connecting
+directly to a database server.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Each job is one
+process or one thread, depending on the operating system,
+and uses a separate connection to the server.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The optimal
+value for this option depends on the hardware setup of the
+server, of the client, and of the network. Factors include
+the number of CPU cores and the disk setup. A good place to
+start is the number of CPU cores on the server, but values
+larger than that can also lead to faster restore times in
+many cases. Of course, values that are too high will lead to
+decreased performance because of thrashing.</p>
+
+<p style="margin-left:17%; margin-top: 1em">Only the custom
+and directory archive formats are supported with this
+option. The input must be a regular file or directory (not,
+for example, a pipe or standard input). Also, multiple jobs
+cannot be used together with the option
+<b>--single-transaction</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-l <br>
+--list</b></p>
+
+<p style="margin-left:17%;">List the table of contents of
+the archive. The output of this operation can be used as
+input to the <b>-L</b> option. Note that if filtering
+switches such as <b>-n</b> or <b>-t</b> are used with
+<b>-l</b>, they will restrict the items listed.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-L</b>
+<i>list-file</i> <b><br>
+--use-list=</b><i>list-file</i></p>
+
+<p style="margin-left:17%;">Restore only those archive
+elements that are listed in <i>list-file</i>, and restore
+them in the order they appear in the file. Note that if
+filtering switches such as <b>-n</b> or <b>-t</b> are used
+with <b>-L</b>, they will further restrict the items
+restored.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>list-file</i>
+is normally created by editing the output of a previous
+<b>-l</b> operation. Lines can be moved or removed, and can
+also be commented out by placing a semicolon (;) at the
+start of the line. See below for examples.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-n</b>
+<i>schema</i> <b><br>
+--schema=</b><i>schema</i></p>
+
+<p style="margin-left:17%;">Restore only objects that are
+in the named schema. Multiple schemas may be specified with
+multiple <b>-n</b> switches. This can be combined with the
+<b>-t</b> option to restore just a specific table.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-N</b>
+<i>schema</i> <b><br>
+--exclude-schema=</b><i>schema</i></p>
+
+<p style="margin-left:17%;">Do not restore objects that are
+in the named schema. Multiple schemas to be excluded may be
+specified with multiple <b>-N</b> switches.</p>
+
+<p style="margin-left:17%; margin-top: 1em">When both
+<b>-n</b> and <b>-N</b> are given for the same schema name,
+the <b>-N</b> switch wins and the schema is excluded.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-O <br>
+--no-owner</b></p>
+
+<p style="margin-left:17%;">Do not output commands to set
+ownership of objects to match the original database. By
+default, pg_restore issues <b>ALTER OWNER</b> or <b>SET
+SESSION AUTHORIZATION</b> statements to set ownership of
+created schema elements. These statements will fail unless
+the initial connection to the database is made by a
+superuser (or the same user that owns all of the objects in
+the script). With <b>-O</b>, any user name can be used for
+the initial connection, and this user will own all the
+created objects.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-P</b>
+<i>function-name(argtype [, ...])</i> <b><br>
+--function=</b><i>function-name(argtype [, ...])</i></p>
+
+<p style="margin-left:17%;">Restore the named function
+only. Be careful to spell the function name and arguments
+exactly as they appear in the dump file's table of contents.
+Multiple functions may be specified with multiple <b>-P</b>
+switches.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-R <br>
+--no-reconnect</b></p>
+
+<p style="margin-left:17%;">This option is obsolete but
+still accepted for backwards compatibility.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-s <br>
+--schema-only</b></p>
+
+<p style="margin-left:17%;">Restore only the schema (data
+definitions), not data, to the extent that schema entries
+are present in the archive.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This option is
+the inverse of <b>--data-only</b>. It is similar to, but for
+historical reasons not identical to, specifying
+<b>--section=pre-data --section=post-data</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">(Do not confuse
+this with the <b>--schema</b> option, which uses the word
+&ldquo;schema&rdquo; in a different meaning.)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-S</b>
+<i>username</i> <b><br>
+--superuser=</b><i>username</i></p>
+
+<p style="margin-left:17%;">Specify the superuser user name
+to use when disabling triggers. This is relevant only if
+<b>--disable-triggers</b> is used.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-t</b>
+<i>table</i> <b><br>
+--table=</b><i>table</i></p>
+
+<p style="margin-left:17%;">Restore definition and/or data
+of only the named table. For this purpose,
+&ldquo;table&rdquo; includes views, materialized views,
+sequences, and foreign tables. Multiple tables can be
+selected by writing multiple <b>-t</b> switches. This option
+can be combined with the <b>-n</b> option to specify
+table(s) in a particular schema.</p>
+
+
+<p style="margin-left:23%; margin-top: 1em"><b><big>Note</big></b>
+<br>
+When <b>-t</b> is specified, pg_restore makes no attempt to
+restore any other database objects that the selected
+table(s) might depend upon. Therefore, there is no guarantee
+that a specific-table restore into a clean database will
+succeed.</p>
+
+
+<p style="margin-left:23%; margin-top: 1em"><b><big>Note</big></b>
+<br>
+This flag does not behave identically to the <b>-t</b> flag
+of pg_dump. There is not currently any provision for
+wild-card matching in pg_restore, nor can you include a
+schema name within its <b>-t</b>. And, while pg_dump's
+<b>-t</b> flag will also dump subsidiary objects (such as
+indexes) of the selected table(s), pg_restore's <b>-t</b>
+flag does not include such subsidiary objects.</p>
+
+
+<p style="margin-left:23%; margin-top: 1em"><b><big>Note</big></b>
+<br>
+In versions prior to PostgreSQL 9.6, this flag matched only
+tables, not any other type of relation.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><big>-T</big></b>
+<big><i>trigger</i> <b><br>
+--trigger=</b><i>trigger</i></big></p>
+
+<p style="margin-left:17%;"><big>Restore named trigger
+only. Multiple triggers may be specified with multiple
+<b>-T</b> switches.</big></p>
+
+<p style="margin-left:11%; margin-top: 1em"><big><b>-v <br>
+--verbose</b></big></p>
+
+<p style="margin-left:17%;"><big>Specifies verbose mode.
+This will cause pg_restore to output detailed object
+comments and start/stop times to the output file, and
+progress messages to standard error. Repeating the option
+causes additional debug-level messages to appear on standard
+error.</big></p>
+
+<p style="margin-left:11%; margin-top: 1em"><big><b>-V <br>
+--version</b></big></p>
+
+<p style="margin-left:17%;"><big>Print the pg_restore
+version and exit.</big></p>
+
+<p style="margin-left:11%; margin-top: 1em"><big><b>-x <br>
+--no-privileges <br>
+--no-acl</b></big></p>
+
+<p style="margin-left:17%;"><big>Prevent restoration of
+access privileges (grant/revoke commands).</big></p>
+
+<p style="margin-left:11%; margin-top: 1em"><big><b>-1 <br>
+--single-transaction</b></big></p>
+
+<p style="margin-left:17%;"><big>Execute the restore as a
+single transaction (that is, wrap the emitted commands in
+<b>BEGIN</b>/<b>COMMIT</b>). This ensures that either all
+the commands complete successfully, or no changes are
+applied. This option implies
+<b>--exit-on-error</b>.</big></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><big><b>--disable-triggers</b></big></p>
+
+<p style="margin-left:17%;"><big>This option is relevant
+only when performing a data-only restore. It instructs
+pg_restore to execute commands to temporarily disable
+triggers on the target tables while the data is restored.
+Use this if you have referential integrity checks or other
+triggers on the tables that you do not want to invoke during
+data restore.</big></p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><big>Presently,
+the commands emitted for <b>--disable-triggers</b> must be
+done as superuser. So you should also specify a superuser
+name with <b>-S</b> or, preferably, run pg_restore as a
+PostgreSQL superuser.</big></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><big><b>--enable-row-security</b></big></p>
+
+<p style="margin-left:17%;"><big>This option is relevant
+only when restoring the contents of a table which has row
+security. By default, pg_restore will set row_security to
+off, to ensure that all data is restored in to the table. If
+the user does not have sufficient privileges to bypass row
+security, then an error is thrown. This parameter instructs
+pg_restore to set row_security to on instead, allowing the
+user to attempt to restore the contents of the table with
+row security enabled. This might still fail if the user does
+not have the right to insert the rows from the dump into the
+table.</big></p>
+
+<p style="margin-left:17%; margin-top: 1em"><big>Note that
+this option currently also requires the dump be in
+<b>INSERT</b> format, as <b>COPY FROM</b> does not support
+row security.</big></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><big><b>--if-exists</b></big></p>
+
+<p style="margin-left:17%;"><big>Use DROP ... IF EXISTS
+commands to drop objects in <b>--clean</b> mode. This
+suppresses &ldquo;does not exist&rdquo; errors that might
+otherwise be reported. This option is not valid unless
+<b>--clean</b> is also specified.</big></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><big><b>--no-comments</b></big></p>
+
+<p style="margin-left:17%;"><big>Do not output commands to
+restore comments, even if the archive contains
+them.</big></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><big><b>--no-data-for-failed-tables</b></big></p>
+
+<p style="margin-left:17%;"><big>By default, table data is
+restored even if the creation command for the table failed
+(e.g., because it already exists). With this option, data
+for such a table is skipped. This behavior is useful if the
+target database already contains the desired table contents.
+For example, auxiliary tables for PostgreSQL extensions such
+as PostGIS might already be loaded in the target database;
+specifying this option prevents duplicate or obsolete data
+from being loaded into them.</big></p>
+
+<p style="margin-left:17%; margin-top: 1em"><big>This
+option is effective only when restoring directly into a
+database, not when producing SQL script output.</big></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><big><b>--no-publications</b></big></p>
+
+<p style="margin-left:17%;"><big>Do not output commands to
+restore publications, even if the archive contains
+them.</big></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><big><b>--no-security-labels</b></big></p>
+
+<p style="margin-left:17%;"><big>Do not output commands to
+restore security labels, even if the archive contains
+them.</big></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><big><b>--no-subscriptions</b></big></p>
+
+<p style="margin-left:17%;"><big>Do not output commands to
+restore subscriptions, even if the archive contains
+them.</big></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><big><b>--no-table-access-method</b></big></p>
+
+<p style="margin-left:17%;"><big>Do not output commands to
+select table access methods. With this option, all objects
+will be created with whichever access method is the default
+during restore.</big></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><big><b>--no-tablespaces</b></big></p>
+
+<p style="margin-left:17%;"><big>Do not output commands to
+select tablespaces. With this option, all objects will be
+created in whichever tablespace is the default during
+restore.</big></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><big><b>--section=</b><i>sectionname</i></big></p>
+
+<p style="margin-left:17%;"><big>Only restore the named
+section. The section name can be <b>pre-data</b>,
+<b>data</b>, or <b>post-data</b>. This option can be
+specified more than once to select multiple sections. The
+default is to restore all sections.</big></p>
+
+<p style="margin-left:17%; margin-top: 1em"><big>The data
+section contains actual table data as well as large-object
+definitions. Post-data items consist of definitions of
+indexes, triggers, rules and constraints other than
+validated check constraints. Pre-data items consist of all
+other data definition items.</big></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><big><b>--strict-names</b></big></p>
+
+<p style="margin-left:17%;"><big>Require that each schema
+(<b>-n</b>/<b>--schema</b>) and table
+(<b>-t</b>/<b>--table</b>) qualifier match at least one
+schema/table in the backup file.</big></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><big><b>--use-set-session-authorization</b></big></p>
+
+<p style="margin-left:17%;"><big>Output SQL-standard <b>SET
+SESSION AUTHORIZATION</b> commands instead of <b>ALTER
+OWNER</b> commands to determine object ownership. This makes
+the dump more standards-compatible, but depending on the
+history of the objects in the dump, might not restore
+properly.</big></p>
+
+<p style="margin-left:11%; margin-top: 1em"><big><b>-? <br>
+--help</b></big></p>
+
+<p style="margin-left:17%;"><big>Show help about pg_restore
+command line arguments, and exit.</big></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><big>pg_restore
+also accepts the following command line arguments for
+connection parameters:</big></p>
+
+<p style="margin-left:11%; margin-top: 1em"><big><b>-h</b>
+<i>host</i> <b><br>
+--host=</b><i>host</i></big></p>
+
+<p style="margin-left:17%;"><big>Specifies the host name of
+the machine on which the server is running. If the value
+begins with a slash, it is used as the directory for the
+Unix domain socket. The default is taken from the
+<b>PGHOST</b> environment variable, if set, else a Unix
+domain socket connection is attempted.</big></p>
+
+<p style="margin-left:11%; margin-top: 1em"><big><b>-p</b>
+<i>port</i> <b><br>
+--port=</b><i>port</i></big></p>
+
+<p style="margin-left:17%;"><big>Specifies the TCP port or
+local Unix domain socket file extension on which the server
+is listening for connections. Defaults to the <b>PGPORT</b>
+environment variable, if set, or a compiled-in
+default.</big></p>
+
+<p style="margin-left:11%; margin-top: 1em"><big><b>-U</b>
+<i>username</i> <b><br>
+--username=</b><i>username</i></big></p>
+
+<p style="margin-left:17%;"><big>User name to connect
+as.</big></p>
+
+<p style="margin-left:11%; margin-top: 1em"><big><b>-w <br>
+--no-password</b></big></p>
+
+<p style="margin-left:17%;"><big>Never issue a password
+prompt. If the server requires password authentication and a
+password is not available by other means such as a .pgpass
+file, the connection attempt will fail. This option can be
+useful in batch jobs and scripts where no user is present to
+enter a password.</big></p>
+
+<p style="margin-left:11%; margin-top: 1em"><big><b>-W <br>
+--password</b></big></p>
+
+<p style="margin-left:17%;"><big>Force pg_restore to prompt
+for a password before connecting to a database.</big></p>
+
+<p style="margin-left:17%; margin-top: 1em"><big>This
+option is never essential, since pg_restore will
+automatically prompt for a password if the server demands
+password authentication. However, pg_restore will waste a
+connection attempt finding out that the server wants a
+password. In some cases it is worth typing <b>-W</b> to
+avoid the extra connection attempt.</big></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><big><b>--role=</b><i>rolename</i></big></p>
+
+<p style="margin-left:17%;"><big>Specifies a role name to
+be used to perform the restore. This option causes
+pg_restore to issue a <b>SET ROLE</b> <i>rolename</i>
+command after connecting to the database. It is useful when
+the authenticated user (specified by <b>-U</b>) lacks
+privileges needed by pg_restore, but can switch to a role
+with the required rights. Some installations have a policy
+against logging in directly as a superuser, and use of this
+option allows restores to be performed without violating the
+policy.</big></p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><big><b>PGHOST
+<br>
+PGOPTIONS <br>
+PGPORT <br>
+PGUSER</b></big></p>
+
+<p style="margin-left:17%;"><big>Default connection
+parameters</big></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><big><b>PG_COLOR</b></big></p>
+
+<p style="margin-left:17%;"><big>Specifies whether to use
+color in diagnostic messages. Possible values are always,
+auto and never.</big></p>
+
+<p style="margin-left:11%; margin-top: 1em"><big>This
+utility, like most other PostgreSQL utilities, also uses the
+environment variables supported by libpq (see
+Section&nbsp;34.15). However, it does not read
+<b>PGDATABASE</b> when a database name is not
+supplied.</big></p>
+
+<h2>DIAGNOSTICS
+<a name="DIAGNOSTICS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><big>When a
+direct database connection is specified using the <b>-d</b>
+option, pg_restore internally executes SQL statements. If
+you have problems running pg_restore, make sure you are able
+to select information from the database using, for example,
+<b>psql</b>(1). Also, any default connection settings and
+environment variables used by the libpq front-end library
+will apply.</big></p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><big>If your
+installation has any local additions to the template1
+database, be careful to load the output of pg_restore into a
+truly empty database; otherwise you are likely to get errors
+due to duplicate definitions of the added objects. To make
+an empty database without any local additions, copy from
+template0 not template1, for example:</big></p>
+
+<p style="margin-left:17%; margin-top: 1em"><big>CREATE
+DATABASE foo WITH TEMPLATE template0;</big></p>
+
+<p style="margin-left:11%; margin-top: 1em"><big>The
+limitations of pg_restore are detailed below.</big></p>
+
+<p style="margin-left:17%; margin-top: 1em"><big>&bull;
+When restoring data to a pre-existing table and the option
+<b>--disable-triggers</b> is used, pg_restore emits commands
+to disable triggers on user tables before inserting the
+data, then emits commands to re-enable them after the data
+has been inserted. If the restore is stopped in the middle,
+the system catalogs might be left in the wrong
+state.</big></p>
+
+<p style="margin-left:17%; margin-top: 1em"><big>&bull;
+pg_restore cannot restore large objects selectively; for
+instance, only those for a specific table. If an archive
+contains large objects, then all large objects will be
+restored, or none of them if they are excluded via
+<b>-L</b>, <b>-t</b>, or other options.</big></p>
+
+<p style="margin-left:11%; margin-top: 1em"><big>See also
+the <b>pg_dump</b>(1) documentation for details on
+limitations of pg_dump.</big></p>
+
+<p style="margin-left:11%; margin-top: 1em"><big>Once
+restored, it is wise to run <b>ANALYZE</b> on each restored
+table so the optimizer has useful statistics; see
+Section&nbsp;25.1.3 and Section&nbsp;25.1.6 for more
+information.</big></p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><big>Assume we
+have dumped a database called mydb into a custom-format dump
+file:</big></p>
+
+<p style="margin-left:17%; margin-top: 1em"><big>$
+<b>pg_dump -Fc mydb &gt; db.dump</b></big></p>
+
+<p style="margin-left:11%; margin-top: 1em"><big>To drop
+the database and recreate it from the dump:</big></p>
+
+<p style="margin-left:17%; margin-top: 1em"><big>$
+<b>dropdb mydb</b> <br>
+$ <b>pg_restore -C -d postgres db.dump</b></big></p>
+
+<p style="margin-left:11%; margin-top: 1em"><big>The
+database named in the <b>-d</b> switch can be any database
+existing in the cluster; pg_restore only uses it to issue
+the <b>CREATE DATABASE</b> command for mydb. With <b>-C</b>,
+data is always restored into the database name that appears
+in the dump file.</big></p>
+
+<p style="margin-left:11%; margin-top: 1em"><big>To restore
+the dump into a new database called newdb:</big></p>
+
+<p style="margin-left:17%; margin-top: 1em"><big>$
+<b>createdb -T template0 newdb</b> <br>
+$ <b>pg_restore -d newdb db.dump</b></big></p>
+
+<p style="margin-left:11%; margin-top: 1em"><big>Notice we
+don't use <b>-C</b>, and instead connect directly to the
+database to be restored into. Also note that we clone the
+new database from template0 not template1, to ensure it is
+initially empty.</big></p>
+
+<p style="margin-left:11%; margin-top: 1em"><big>To reorder
+database items, it is first necessary to dump the table of
+contents of the archive:</big></p>
+
+<p style="margin-left:17%; margin-top: 1em"><big>$
+<b>pg_restore -l db.dump &gt; db.list</b></big></p>
+
+<p style="margin-left:11%; margin-top: 1em"><big>The
+listing file consists of a header and one line for each
+item, e.g.:</big></p>
+
+<p style="margin-left:17%; margin-top: 1em"><big>; <br>
+; Archive created at Mon Sep 14 13:55:39 2009 <br>
+; dbname: DBDEMOS <br>
+; TOC Entries: 81 <br>
+; Compression: 9 <br>
+; Dump Version: 1.10-0 <br>
+; Format: CUSTOM <br>
+; Integer: 4 bytes <br>
+; Offset: 8 bytes <br>
+; Dumped from database version: 8.3.5 <br>
+; Dumped by pg_dump version: 8.3.8 <br>
+; <br>
+; <br>
+; Selected TOC Entries: <br>
+; <br>
+3; 2615 2200 SCHEMA - public pasha <br>
+1861; 0 0 COMMENT - SCHEMA public pasha <br>
+1862; 0 0 ACL - public pasha <br>
+317; 1247 17715 TYPE public composite pasha <br>
+319; 1247 25899 DOMAIN public domain0 pasha</big></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><big>Semicolons
+start a comment, and the numbers at the start of lines refer
+to the internal archive ID assigned to each item.</big></p>
+
+<p style="margin-left:11%; margin-top: 1em"><big>Lines in
+the file can be commented out, deleted, and reordered. For
+example:</big></p>
+
+<p style="margin-left:17%; margin-top: 1em"><big>10; 145433
+TABLE map_resolutions postgres <br>
+;2; 145344 TABLE species postgres <br>
+;4; 145359 TABLE nt_header postgres <br>
+6; 145402 TABLE species_records postgres <br>
+;8; 145416 TABLE ss_old postgres</big></p>
+
+<p style="margin-left:11%; margin-top: 1em"><big>could be
+used as input to pg_restore and would only restore items 10
+and 6, in that order:</big></p>
+
+<p style="margin-left:17%; margin-top: 1em"><big>$
+<b>pg_restore -L db.list db.dump</b></big></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><big><b>pg_dump</b>(1),
+<b>pg_dumpall</b>(1), <b>psql</b>(1)</big></p>
+<hr>
+</body>
+</html>

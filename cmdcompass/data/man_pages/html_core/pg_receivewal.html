@@ -1,0 +1,443 @@
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Mon May 13 07:51:18 2024 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>PG_RECEIVEWAL</title>
+
+</head>
+<body>
+
+<h1 align="center">PG_RECEIVEWAL</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS">OPTIONS</a><br>
+<a href="#EXIT STATUS">EXIT STATUS</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pg_receivewal -
+stream write-ahead logs from a PostgreSQL server</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="38%">
+
+
+<p style="margin-top: 1em"><b>pg_receivewal</b>
+[<i>option</i>...]</p> </td>
+<td width="51%">
+</td></tr>
+</table>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pg_receivewal
+is used to stream the write-ahead log from a running
+PostgreSQL cluster. The write-ahead log is streamed using
+the streaming replication protocol, and is written to a
+local directory of files. This directory can be used as the
+archive location for doing a restore using point-in-time
+recovery (see Section&nbsp;26.3).</p>
+
+<p style="margin-left:11%; margin-top: 1em">pg_receivewal
+streams the write-ahead log in real time as it's being
+generated on the server, and does not wait for segments to
+complete like archive_command and archive_library do. For
+this reason, it is not necessary to set archive_timeout when
+using pg_receivewal.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Unlike the WAL
+receiver of a PostgreSQL standby server, pg_receivewal by
+default flushes WAL data only when a WAL file is closed. The
+option <b>--synchronous</b> must be specified to flush WAL
+data in real time. Since pg_receivewal does not apply WAL,
+you should not allow it to become a synchronous standby when
+synchronous_commit equals remote_apply. If it does, it will
+appear to be a standby that never catches up, and will cause
+transaction commits to block. To avoid this, you should
+either configure an appropriate value for
+synchronous_standby_names, or specify
+<i>application_name</i> for pg_receivewal that does not
+match it, or change the value of <i>synchronous_commit</i>
+to something other than remote_apply.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The write-ahead
+log is streamed over a regular PostgreSQL connection and
+uses the replication protocol. The connection must be made
+with a user having REPLICATION permissions (see
+Section&nbsp;22.2) or a superuser, and pg_hba.conf must
+permit the replication connection. The server must also be
+configured with max_wal_senders set high enough to leave at
+least one session available for the stream.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The starting
+point of the write-ahead log streaming is calculated when
+pg_receivewal starts:</p>
+
+<p style="margin-left:17%; margin-top: 1em">1. First, scan
+the directory where the WAL segment files are written and
+find the newest completed segment file, using as the
+starting point the beginning of the next WAL segment
+file.</p>
+
+<p style="margin-left:17%; margin-top: 1em">2. If a
+starting point cannot be calculated with the previous
+method, and if a replication slot is used, an extra
+<b>READ_REPLICATION_SLOT</b> command is issued to retrieve
+the slot's restart_lsn to use as the starting point. This
+option is only available when streaming write-ahead logs
+from PostgreSQL 15 and up.</p>
+
+<p style="margin-left:17%; margin-top: 1em">3. If a
+starting point cannot be calculated with the previous
+method, the latest WAL flush location is used as reported by
+the server from an IDENTIFY_SYSTEM command.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If the
+connection is lost, or if it cannot be initially
+established, with a non-fatal error, pg_receivewal will
+retry the connection indefinitely, and reestablish streaming
+as soon as possible. To avoid this behavior, use the -n
+parameter.</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the absence
+of fatal errors, pg_receivewal will run until terminated by
+the SIGINT signal (Control+C).</p>
+
+<h2>OPTIONS
+<a name="OPTIONS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>-D</b>
+<i>directory</i> <b><br>
+--directory=</b><i>directory</i></p>
+
+<p style="margin-left:17%;">Directory to write the output
+to.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This parameter
+is required.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-E</b>
+<i>lsn</i> <b><br>
+--endpos=</b><i>lsn</i></p>
+
+<p style="margin-left:17%;">Automatically stop replication
+and exit with normal exit status 0 when receiving reaches
+the specified LSN.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If there is a
+record with LSN exactly equal to <i>lsn</i>, the record will
+be processed.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--if-not-exists</b></p>
+
+<p style="margin-left:17%;">Do not error out when
+<b>--create-slot</b> is specified and a slot with the
+specified name already exists.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-n <br>
+--no-loop</b></p>
+
+<p style="margin-left:17%;">Don't loop on connection
+errors. Instead, exit right away with an error.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--no-sync</b></p>
+
+<p style="margin-left:17%;">This option causes
+<b>pg_receivewal</b> to not force WAL data to be flushed to
+disk. This is faster, but means that a subsequent operating
+system crash can leave the WAL segments corrupt. Generally,
+this option is useful for testing but should not be used
+when doing WAL archiving on a production deployment.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This option is
+incompatible with --synchronous.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-s</b>
+<i>interval</i> <b><br>
+--status-interval=</b><i>interval</i></p>
+
+<p style="margin-left:17%;">Specifies the number of seconds
+between status packets sent back to the server. This allows
+for easier monitoring of the progress from server. A value
+of zero disables the periodic status updates completely,
+although an update will still be sent when requested by the
+server, to avoid timeout disconnect. The default value is 10
+seconds.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-S</b>
+<i>slotname</i> <b><br>
+--slot=</b><i>slotname</i></p>
+
+<p style="margin-left:17%;">Require pg_receivewal to use an
+existing replication slot (see Section&nbsp;27.2.6). When
+this option is used, pg_receivewal will report a flush
+position to the server, indicating when each segment has
+been synchronized to disk so that the server can remove that
+segment if it is not otherwise needed.</p>
+
+<p style="margin-left:17%; margin-top: 1em">When the
+replication client of pg_receivewal is configured on the
+server as a synchronous standby, then using a replication
+slot will report the flush position to the server, but only
+when a WAL file is closed. Therefore, that configuration
+will cause transactions on the primary to wait for a long
+time and effectively not work satisfactorily. The option
+--synchronous (see below) must be specified in addition to
+make this work correctly.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--synchronous</b></p>
+
+<p style="margin-left:17%;">Flush the WAL data to disk
+immediately after it has been received. Also send a status
+packet back to the server immediately after flushing,
+regardless of --status-interval.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This option
+should be specified if the replication client of
+pg_receivewal is configured on the server as a synchronous
+standby, to ensure that timely feedback is sent to the
+server.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-v <br>
+--verbose</b></p>
+
+<p style="margin-left:17%;">Enables verbose mode.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-Z</b>
+<i>level</i> <b><br>
+-Z</b> <i>method</i><b>[:</b><i>detail</i><b>] <br>
+--compress=</b><i>level</i> <b><br>
+
+--compress=</b><i>method</i><b>[:</b><i>detail</i><b>]</b></p>
+
+<p style="margin-left:17%;">Enables compression of
+write-ahead logs.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The compression
+method can be set to gzip, lz4 (if PostgreSQL was compiled
+with <b>--with-lz4</b>) or none for no compression. A
+compression detail string can optionally be specified. If
+the detail string is an integer, it specifies the
+compression level. Otherwise, it should be a comma-separated
+list of items, each of the form keyword or keyword=value.
+Currently, the only supported keyword is level.</p>
+
+<p style="margin-left:17%; margin-top: 1em">If no
+compression level is specified, the default compression
+level will be used. If only a level is specified without
+mentioning an algorithm, gzip compression will be used if
+the level is greater than 0, and no compression will be used
+if the level is 0.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The suffix .gz
+will automatically be added to all filenames when using
+gzip, and the suffix .lz4 is added when using lz4.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The following
+command-line options control the database connection
+parameters.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-d</b>
+<i>connstr</i> <b><br>
+--dbname=</b><i>connstr</i></p>
+
+<p style="margin-left:17%;">Specifies parameters used to
+connect to the server, as a connection string; these will
+override any conflicting command line options.</p>
+
+<p style="margin-left:17%; margin-top: 1em">The option is
+called --dbname for consistency with other client
+applications, but because pg_receivewal doesn't connect to
+any particular database in the cluster, database name in the
+connection string will be ignored.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-h</b>
+<i>host</i> <b><br>
+--host=</b><i>host</i></p>
+
+<p style="margin-left:17%;">Specifies the host name of the
+machine on which the server is running. If the value begins
+with a slash, it is used as the directory for the Unix
+domain socket. The default is taken from the <b>PGHOST</b>
+environment variable, if set, else a Unix domain socket
+connection is attempted.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-p</b>
+<i>port</i> <b><br>
+--port=</b><i>port</i></p>
+
+<p style="margin-left:17%;">Specifies the TCP port or local
+Unix domain socket file extension on which the server is
+listening for connections. Defaults to the <b>PGPORT</b>
+environment variable, if set, or a compiled-in default.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-U</b>
+<i>username</i> <b><br>
+--username=</b><i>username</i></p>
+
+<p style="margin-left:17%;">User name to connect as.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-w <br>
+--no-password</b></p>
+
+<p style="margin-left:17%;">Never issue a password prompt.
+If the server requires password authentication and a
+password is not available by other means such as a .pgpass
+file, the connection attempt will fail. This option can be
+useful in batch jobs and scripts where no user is present to
+enter a password.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-W <br>
+--password</b></p>
+
+<p style="margin-left:17%;">Force pg_receivewal to prompt
+for a password before connecting to a database.</p>
+
+<p style="margin-left:17%; margin-top: 1em">This option is
+never essential, since pg_receivewal will automatically
+prompt for a password if the server demands password
+authentication. However, pg_receivewal will waste a
+connection attempt finding out that the server wants a
+password. In some cases it is worth typing <b>-W</b> to
+avoid the extra connection attempt.</p>
+
+<p style="margin-left:11%; margin-top: 1em">pg_receivewal
+can perform one of the two following actions in order to
+control physical replication slots:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--create-slot</b></p>
+
+<p style="margin-left:17%;">Create a new physical
+replication slot with the name specified in <b>--slot</b>,
+then exit.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>--drop-slot</b></p>
+
+<p style="margin-left:17%;">Drop the replication slot with
+the name specified in <b>--slot</b>, then exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Other options
+are also available:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-V <br>
+--version</b></p>
+
+<p style="margin-left:17%;">Print the pg_receivewal version
+and exit.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>-? <br>
+--help</b></p>
+
+<p style="margin-left:17%;">Show help about pg_receivewal
+command line arguments, and exit.</p>
+
+<h2>EXIT STATUS
+<a name="EXIT STATUS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">pg_receivewal
+will exit with status 0 when terminated by the SIGINT
+signal. (That is the normal way to end it. Hence it is not
+an error.) For fatal errors or other signals, the exit
+status will be nonzero.</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">This utility,
+like most other PostgreSQL utilities, uses the environment
+variables supported by libpq (see Section&nbsp;34.15).</p>
+
+<p style="margin-left:11%; margin-top: 1em">The environment
+variable <b>PG_COLOR</b> specifies whether to use color in
+diagnostic messages. Possible values are always, auto and
+never.</p>
+
+<h2>NOTES
+<a name="NOTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">When using
+pg_receivewal instead of archive_command or archive_library
+as the main WAL backup method, it is strongly recommended to
+use replication slots. Otherwise, the server is free to
+recycle or remove write-ahead log files before they are
+backed up, because it does not have any information, either
+from archive_command or archive_library or the replication
+slots, about how far the WAL stream has been archived. Note,
+however, that a replication slot will fill up the server's
+disk space if the receiver does not keep up with fetching
+the WAL data.</p>
+
+<p style="margin-left:11%; margin-top: 1em">pg_receivewal
+will preserve group permissions on the received WAL files if
+group permissions are enabled on the source cluster.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">To stream the
+write-ahead log from the server at mydbserver and store it
+in the local directory /usr/local/pgsql/archive:</p>
+
+<p style="margin-left:17%; margin-top: 1em">$
+<b>pg_receivewal -h mydbserver -D
+/usr/local/pgsql/archive</b></p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>pg_basebackup</b>(1)</p>
+<hr>
+</body>
+</html>

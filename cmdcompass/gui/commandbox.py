@@ -33,7 +33,7 @@ class CommandBox(ctk.CTkFrame):
         # Delete button
         self.delete_button = ctk.CTkButton(
             self.delete_button_frame,
-            text="x",
+            text="X",
             width=7,
             height=7,
             fg_color="red",
@@ -46,8 +46,8 @@ class CommandBox(ctk.CTkFrame):
 
         # Command label (first row)
         command_summery = command.command_str
-        if len(command_summery) > 27:
-            command_summery = command_summery[:27] + "..."
+        if len(command_summery) > 28:
+            command_summery = command_summery[:28] + "..."
         self.command_label = ctk.CTkLabel(self, text=command_summery,  font=("TkDefaultFont", 12))
         self.command_label.grid(row=0, column=0, padx=(20,0), pady=0, sticky="w")
 

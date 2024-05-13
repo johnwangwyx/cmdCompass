@@ -13,6 +13,7 @@
 * Add command deletion button to each command in the list.
 * Detect user input for CommandBodyBox and CommentBox and create a save button in such events.]
 * Add a button beside the command body to copy the command to clipboard.
+* Add a button to create a command for the current selected collection.
 
 ### CHANGED
 * Use static images for some buttons
