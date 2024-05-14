@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from cmdcompass.data.datamanager import DataManager
+from cmdcompass.datamanager import DataManager
 from cmdcompass.gui.commandbox import CommandBox
 from cmdcompass.gui.commentbox import CommentBox
 from cmdcompass.gui.commandbodybox import CommandBodyBox
@@ -31,9 +31,14 @@ class MainWindow(ctk.CTk):
         self.left_frame = ctk.CTkFrame(self)
         self.right_frame = ctk.CTkFrame(self)
 
+        self.placeholder_frame = ctk.CTkFrame(self)
+        self.placeholder_frame.grid(row=0, column=1, sticky="nsew", padx=3, pady=3)
+        self.placeholder_label = ctk.CTkLabel(self.placeholder_frame, text="Please choose a command.")
+        self.placeholder_label.pack(pady=20, padx=20)
+
         # Layout frames
         self.left_frame.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
-        self.right_frame.grid(row=0, column=1, sticky="nsew", padx=3, pady=3)
+        #self.right_frame.grid(row=0, column=1, sticky="nsew", padx=3, pady=3)
         self.grid_rowconfigure(0, weight=1)
         # Adjust layout weights
         self.grid_columnconfigure(0, weight=1)
@@ -93,7 +98,7 @@ class MainWindow(ctk.CTk):
         CTkToolTip(tag_operations_button, message="Define/Remove Tags here to be later assigned to commands")
 
         # Create scrollable frame for the command list
-        self.command_list_frame = ctk.CTkScrollableFrame(self.left_frame, height=450, width=220)
+        self.command_list_frame = ctk.CTkScrollableFrame(self.left_frame, height=450, width=230)
         self.command_list_frame.grid(row=3, column=0, padx=10, pady=10, sticky="nsew")
 
         # Configure scrolling behavior
@@ -173,14 +178,22 @@ class MainWindow(ctk.CTk):
 
     def update_command_view(self):
         if self.selected_command:
+            # Show the right frame and hide the placeholder
+            self.right_frame.grid(row=0, column=1, sticky="nsew", padx=3, pady=3)
+            self.placeholder_frame.grid_forget()
+
             self.command_body_box.set_command(self.selected_command)
             self.comment_box.set_comment(self.selected_command.comment)
             self.utility_box.set_command(self.selected_command)
         else:
+            # Hide the right frame and show the placeholder
+            self.right_frame.grid_forget()
+            self.placeholder_frame.grid(row=0, column=1, sticky="nsew", padx=3, pady=3)
+
             self.command_body_box.set_command(None)
             self.comment_box.set_comment(None)
             self.utility_box.set_command(None)
-
+        self.switch_tab("comment")
     def update_tab_button_states(self):
         if self.active_tab == "comment":
             self.comment_tab_button.configure(state="disabled", fg_color="gray")
@@ -246,22 +259,22 @@ class MainWindow(ctk.CTk):
     def update_command_list(self, commands):
         for child in self.command_list_frame.winfo_children():
             child.destroy()  # Clear previous command boxes
+        if self.collection_dropdown.get() != "Choose a collection":
+            # Add Command button
+            self.add_command_button = ctk.CTkButton(
+                self.command_list_frame,
+                text="",
+                image=load_ctk_image("create.png"),
+                command=self.add_new_command,
+                width=190
+            )
+            self.add_command_button.grid(row=0, column=0, pady=5, padx=10, sticky="ew")
+            CTkToolTip(self.add_command_button, message="Add a new command to this Collection")
 
-        # Add Command button
-        self.add_command_button = ctk.CTkButton(
-            self.command_list_frame,
-            text="",
-            image=load_ctk_image("create.png"),
-            command=self.add_new_command,
-            width=200
-        )
-        self.add_command_button.grid(row=0, column=0, pady=5, padx=10, sticky="ew")
-        CTkToolTip(self.add_command_button, message="Add a new command to this Collection")
-
-        for i, command in enumerate(commands):
-            tags = [self.data_manager.tags[tag_id] for tag_id in command.tag_ids]
-            command_box = CommandBox(self.command_list_frame, command, tags, i, self)
-            command_box.grid(row=i+1, column=0, pady=5, padx=0, sticky="ew")
+            for i, command in enumerate(commands):
+                tags = [self.data_manager.tags[tag_id] for tag_id in command.tag_ids]
+                command_box = CommandBox(self.command_list_frame, command, tags, i, self)
+                command_box.grid(row=i+1, column=0, pady=5, padx=0, sticky="ew")
 
     def add_new_command(self):
         # Get the currently selected collection
@@ -270,7 +283,9 @@ class MainWindow(ctk.CTk):
 
         if selected_collection:
             # Create a new Command object
-            new_command = Command(command_str="", comment="", tag_ids=[])
+            new_command = Command(command_str="Please Enter Your Command Here",
+                                  comment="Please Enter Your Comment for the Command Here",
+                                  tag_ids=[])
 
             # Add the new command to the collection
             selected_collection.commands.append(new_command)

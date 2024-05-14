@@ -6,13 +6,16 @@ import shutil
 import arpy
 import re
 from sqlitedict import SqliteDict
-from  cmdcompass.man_parser.html_coverter import convert_man_pages
+from cmdcompass.man_parser.html_coverter import convert_man_pages
+import platform
 
 ARCH = "binary-amd64"
 DEB_PACKAGE_URL = f"https://ftp.debian.org/debian/dists/Debian12.5/main/{ARCH}/Packages.gz"
-UNPACKING_DIR = "./data/man_pages/tmp"
-MAN_PAGE_DIR = "./data/man_pages/man"
-KV_DB_PATH = "./man_parser/man_pages_kv.db"
+
+UNPACKING_DIR = os.path.join('.', 'data', 'man_pages', 'tmp')
+MAN_PAGE_DIR = os.path.join('.', 'data', 'man_pages', 'man')
+KV_DB_PATH = os.path.join('.', 'data', 'man_pages_kv.db')
+
 DEB_DOWNLOAD_LINK = "http://ftp.ca.debian.org/debian"
 
 
@@ -61,7 +64,10 @@ def extract_gz(file_path):
 
 def move_and_clean_man_pages(package_name, extract_to, man_dest_folder):
     print(f"Scanning and moving man pages from {extract_to} to {man_dest_folder}")
-    man_page_regex = re.compile(r'(usr\\share\\man\\|usr\\man\\|usr\\X11R6\\man\\|usr\\local\\man/|opt\\man\\)')
+    if platform.system() == 'Windows':
+        man_page_regex = re.compile(r'(usr\\share\\man\\|usr\\man\\|usr\\X11R6\\man\\|usr\\local\\man/|opt\\man\\)')
+    else:
+        man_page_regex = re.compile(r"(usr/share/man/|usr/man/|usr/X11R6/man/|usr/local/man/|opt/man/)")
 
     # Ensure destination folder exists
     if not os.path.exists(man_dest_folder):

@@ -6,7 +6,7 @@ import json
 from cmdcompass.models.collection import Collection
 from cmdcompass.models.command import Command
 from cmdcompass.models.tag import Tag
-from cmdcompass.data.datamanager import DataManager
+from cmdcompass.datamanager import DataManager
 
 
 class TestDataManager(unittest.TestCase):
@@ -16,7 +16,7 @@ class TestDataManager(unittest.TestCase):
         self.data_file = os.path.join(self.temp_dir.name, "test_data.json")
         self.data_manager = DataManager(self.data_file)
         # Copy the testing file over
-        with open("test/test_data.json", "r") as f_in, open(self.data_file, "w") as f_out:
+        with open(os.path.join("test", "test_data.json"), "r") as f_in, open(self.data_file, "w") as f_out:
             f_out.write(f_in.read())
 
     def tearDown(self):
@@ -25,7 +25,7 @@ class TestDataManager(unittest.TestCase):
 
     def test_load_data_from_json(self):
         # Copy the mock JSON data to the temporary file
-        with open("test/test_data.json", "r") as f_in, open(self.data_file, "w") as f_out:
+        with open(os.path.join("test", "test_data.json"), "r") as f_in, open(self.data_file, "w") as f_out:
             f_out.write(f_in.read())
 
         self.data_manager.load_data()

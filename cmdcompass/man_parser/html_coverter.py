@@ -2,9 +2,9 @@ import os
 import subprocess
 import platform
 
-WINDOWS_GROFF_BIN = "./man_parser/bin/groff-1.22.4-w32-bin/bin/groff.exe"
-OUTPUT_DIR = "./data/man_pages/html_download"
-
+WINDOWS_GROFF_BIN = os.path.join('.', 'data', 'bin', 'groff-1.22.4-w32-bin', 'bin', 'groff.exe')
+OUTPUT_DIR = os.path.join('.', 'data', 'man_pages', 'html_download')
+CREATE_NO_WINDOW = 0x08000000  # To used on Windows to not open any terminal window while using subprocess
 
 def convert_man_pages(man_file, output_dir=OUTPUT_DIR):
     # Ensure destination folder exists
@@ -23,6 +23,9 @@ def convert_man_pages(man_file, output_dir=OUTPUT_DIR):
     output_path = os.path.join(output_dir, name_without_ext + '.html')
     if not os.path.exists(output_path):
         with open(output_path, 'w') as outfile:
-            subprocess.run(groff_command, stdout=outfile)
+            if platform.system() == 'Windows':
+                subprocess.run(groff_command, stdout=outfile, creationflags=CREATE_NO_WINDOW)
+            else:
+                subprocess.run(groff_command, stdout=outfile)
     else:
         print(f"File {output_path} already exists. Skipping.")

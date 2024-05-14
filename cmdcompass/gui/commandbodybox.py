@@ -49,6 +49,7 @@ class CommandBodyBox(ctk.CTkFrame):
             self.save_button.configure(state="disabled", fg_color="gray")
             self.main_window.refresh_command_list()  # Refresh the command list
             self.main_window.utility_box.set_command(self.main_window.selected_command)
+            self.main_window.man_page_box.set_man_page(self.main_window.selected_command)
 
     def copy_command(self):
         command_str = self.command_textbox.get("1.0", "end-1c")

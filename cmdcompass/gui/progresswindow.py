@@ -5,7 +5,7 @@ class ProgressWindow(ctk.CTkToplevel):
     def __init__(self, master, title, **kwargs):
         super().__init__(master, **kwargs)
         self.title(title)
-        self.geometry("700x300")
+        self.geometry("700x200")
 
         self.progress_textbox = ctk.CTkTextbox(self)
         self.progress_textbox.pack(pady=20, padx=20, fill="both", expand=True)

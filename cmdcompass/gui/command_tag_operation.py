@@ -40,10 +40,12 @@ class TagOperation:
 
         remove_tag_label = ctk.CTkLabel(remove_tag_frame, text="Remove an existing Tag:")
         remove_tag_label.grid(row=0, column=0, padx=10, pady=(0, 0), sticky="nsew")
-
+        tag_names = [self.data_manager.tags[tag_id].name for tag_id in command.tag_ids]
+        if not tag_names:
+            tag_names = ["The Command has no Tag"]
         self.remove_tag_dropdown = ctk.CTkOptionMenu(
             remove_tag_frame,
-            values=[self.data_manager.tags[tag_id].name for tag_id in command.tag_ids],
+            values=tag_names,
             width=90
         )
         self.remove_tag_dropdown.grid(row=0, column=1, padx=10, pady=(0, 0))
@@ -82,9 +84,11 @@ class TagOperation:
             CTkMessagebox(title="Error", message="Tag not found.", icon="cancel")
 
     def refresh_remove_tag_dropdown(self, command):
-        values = [self.data_manager.tags[tag_id].name for tag_id in command.tag_ids]
-        self.remove_tag_dropdown.configure(values=values)
-        self.remove_tag_dropdown.set(values[0])
+        tag_names = [self.data_manager.tags[tag_id].name for tag_id in command.tag_ids]
+        if not tag_names:
+            tag_names = ["The Command has no Tag"]
+        self.remove_tag_dropdown.configure(values=tag_names)
+        self.remove_tag_dropdown.set(tag_names[0])
 
     def remove_tag_from_command(self, command):
         tag_name = self.remove_tag_dropdown.get()

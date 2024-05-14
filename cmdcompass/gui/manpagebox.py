@@ -5,9 +5,10 @@ from cmdcompass.utils.utils import get_command_name, highlight_options
 from cmdcompass.man_parser.loader import download_and_process_package
 from cmdcompass.man_parser.html_coverter import OUTPUT_DIR
 from cmdcompass.gui.progresswindow import ProgressWindow
-
-HTML_CORE_DIR = "./data/man_pages/html_core"
 from tkinter import ttk
+
+HTML_CORE_DIR = os.path.join('.', 'data', 'man_pages', 'html_core')
+
 
 class ManPageBox(ctk.CTkFrame):
     def __init__(self, master, dark_theme_enabled=False, **kwargs):
@@ -40,8 +41,8 @@ class ManPageBox(ctk.CTkFrame):
         try:
             command_name = get_command_name(command_str)
 
-            dynamically_downloaded_html = f"{OUTPUT_DIR}/{command_name}.html"
-            existing_core_man_page = f"{HTML_CORE_DIR}/{command_name}.html"
+            dynamically_downloaded_html = os.path.join(OUTPUT_DIR, f"{command_name}.html")
+            existing_core_man_page = os.path.join(HTML_CORE_DIR, f"{command_name}.html")
             if os.path.exists(existing_core_man_page):
                 with open(existing_core_man_page, "r") as f:
                     html_content = f.read()
@@ -68,9 +69,8 @@ class ManPageBox(ctk.CTkFrame):
         except Exception as e:
             print(f"Error getting man page: {e}")
         self.html_content = html_content
-        self.html_view.load_html(self.html_content)
-
         self.options = command.extract_options()
+        self.apply_with_highlight()
         if self.options:
             self.highlight_switch.grid(row=0, column=0, pady=(10, 0), sticky="w")
         else:
@@ -98,5 +98,4 @@ class ManPageBox(ctk.CTkFrame):
         if self.highlight_switch.get() == 1:
             html_content = highlight_options(self.options, self.html_content)
         self.html_view.load_html(html_content)
-
 
