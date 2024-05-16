@@ -1,4 +1,7 @@
 import customtkinter as ctk
+import tkinter.font as tkFont
+
+COMMAND_LABLE_WIDTH = 210
 
 class TagBox(ctk.CTkFrame):
     def __init__(self, master, tags, command, main_window,**kwargs):
@@ -43,12 +46,15 @@ class CommandBox(ctk.CTkFrame):
         )
         self.delete_button.pack()
         self.delete_button.configure(corner_radius=5)
+        cmd_summary = command.command_str[:33]
+        font =tkFont.Font(family="TkDefaultFont", size=12)
+        text_width = font.measure(cmd_summary)
 
-        # Command label (first row)
-        command_summery = command.command_str
-        if len(command_summery) > 28:
-            command_summery = command_summery[:28] + "..."
-        self.command_label = ctk.CTkLabel(self, text=command_summery,  font=("TkDefaultFont", 12))
+        # Reduce text until it fits the given pixel width
+        while text_width > COMMAND_LABLE_WIDTH:
+            cmd_summary = cmd_summary[:-1]
+            text_width = font.measure(cmd_summary + '...')
+        self.command_label = ctk.CTkLabel(self, text=cmd_summary+ "...",  font=("TkDefaultFont", 12))
         self.command_label.grid(row=0, column=0, padx=(20,0), pady=0, sticky="w")
 
         # Tag box (second row, first column)

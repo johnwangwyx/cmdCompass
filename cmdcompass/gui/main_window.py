@@ -266,7 +266,7 @@ class MainWindow(ctk.CTk):
                 text="",
                 image=load_ctk_image("create.png"),
                 command=self.add_new_command,
-                width=190
+                width=200
             )
             self.add_command_button.grid(row=0, column=0, pady=5, padx=10, sticky="ew")
             CTkToolTip(self.add_command_button, message="Add a new command to this Collection")
