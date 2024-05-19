@@ -5,28 +5,39 @@ from cmdcompass.utils.utils import get_command_name, highlight_options, get_data
 from cmdcompass.man_parser.loader import download_and_process_package
 from cmdcompass.man_parser.html_coverter import OUTPUT_DIR
 from cmdcompass.gui.progresswindow import ProgressWindow
+from cmdcompass.gui.setmanpagewindow import SetManPageWindow
 from tkinter import ttk
 import sys
+from sqlitedict import SqliteDict
 
 if getattr(sys, 'frozen', False):
     BASE_DIR = get_data_and_static_parent_dir()
 else:
     BASE_DIR = "."
 HTML_CORE_DIR = os.path.join(BASE_DIR, 'data', 'man_pages', 'html_core')
+DB_PATH = os.path.join(BASE_DIR, 'data', 'man_pages_kv.db')
 
 
 class ManPageBox(ctk.CTkFrame):
-    def __init__(self, master, **kwargs):
+    def __init__(self, master, main_window, **kwargs):
         super().__init__(master, **kwargs)
+        self.main_window = main_window
         self.grid_rowconfigure(1, weight=1)
         self.grid_columnconfigure(0, weight=1)
-        self.html_view = HtmlFrame(self, height=450)
-        self.html_view.grid(row=1, column=0, sticky="nsew")
+        self.html_view = HtmlFrame(self, height=370)
+        self.html_view.grid(row=1, column=0, columnspan=2, sticky="nsew")
         self.html_view.grid_propagate(0)
         self.capture_original_scroll_bar_style()
         self.html_content = ""
 
         self.highlight_switch = ctk.CTkSwitch(self, text="Highlight My Options", command=self.apply_with_highlight)
+        self.not_the_page_button = ctk.CTkButton(
+            self,
+            text="Not the right page?",
+            command=lambda: self.open_set_man_page_window(),
+            height=15
+        )
+        self.not_the_page_button.grid(row=0, column=1, pady=(5,0), sticky="w")
 
     def capture_original_scroll_bar_style(self):
         style = ttk.Style()
@@ -42,7 +53,10 @@ class ManPageBox(ctk.CTkFrame):
 
     def set_man_page(self, command):
         html_content = ""
+        self.command = command
         command_str = command.command_str
+        if command.user_defined_man_page :
+            command_str = command.user_defined_man_page
         try:
             command_name = get_command_name(command_str)
 
@@ -105,3 +119,15 @@ class ManPageBox(ctk.CTkFrame):
             html_content = highlight_options(self.options, self.html_content)
         self.html_view.load_html(html_content)
 
+    def open_set_man_page_window(self):
+        set_man_page_window = SetManPageWindow(self, self.command, self.main_window)
+        command_name = get_command_name(self.command.command_str)
+
+        suggestion = []
+        with SqliteDict(DB_PATH) as db:
+            for command in db:
+                if command.startswith(command_name):
+                    suggestion.append(command)
+        suggestion.sort()
+
+        set_man_page_window.set_suggestions(suggestion)

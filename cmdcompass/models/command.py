@@ -11,6 +11,7 @@ class Command:
     comment: str
     tag_ids: List[str]
     uuid: str = field(default_factory=lambda: str(uuid.uuid4()))
+    user_defined_man_page: str = ""
 
     def get_template_variables(self) -> List[str]:
         """Extracts variables enclosed in {{}} from the command string."""

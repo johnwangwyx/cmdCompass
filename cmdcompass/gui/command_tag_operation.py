@@ -10,21 +10,24 @@ class TagOperation:
 
     def open_add_tag_window(self, command):
         add_tag_window = ctk.CTkToplevel(self.master)
-        add_tag_window.title("Add/Remove Tag")
+        add_tag_window.title("Add/Remove Tag for This Command")
 
         # Existing Tags Frame (Row 0)
         existing_tags_frame = ctk.CTkFrame(add_tag_window)
         existing_tags_frame.grid(row=0, column=0, padx=10, pady=10, sticky="ew")
 
         existing_tags_label = ctk.CTkLabel(existing_tags_frame, text="Add from an existing Tag:")
-        existing_tags_label.grid(row=0, column=0, padx=10, pady=(10, 10), sticky="nsew")
+        existing_tags_label.grid(row=0, column=0, padx=10, pady=(10, 10), sticky="nsew", columnspan=2)
 
+        existing_tags = [tag.name for tag in self.data_manager.tags.values()]
+        if not existing_tags:
+            existing_tags = ["Please defined your Tag first (top left)"]
         self.existing_tags_dropdown = ctk.CTkOptionMenu(
             existing_tags_frame,
-            values=[tag.name for tag in self.data_manager.tags.values()],
+            values=existing_tags,
             width=90
         )
-        self.existing_tags_dropdown.grid(row=0, column=1, padx=10, pady=(10, 0))
+        self.existing_tags_dropdown.grid(row=1, column=0, padx=10, pady=(10, 0))
 
         add_existing_tag_button = ctk.CTkButton(
             existing_tags_frame,
@@ -32,14 +35,14 @@ class TagOperation:
             command=lambda: self.add_existing_tag_to_command(command),
             width=90
         )
-        add_existing_tag_button.grid(row=0, column=2, padx=10, pady=(10, 0))
+        add_existing_tag_button.grid(row=1, column=1, padx=10, pady=(10, 0))
 
         # Remove Tag Frame (Row 1)
         remove_tag_frame = ctk.CTkFrame(add_tag_window)
         remove_tag_frame.grid(row=1, column=0, padx=10, pady=(10, 10), sticky="ew")
 
         remove_tag_label = ctk.CTkLabel(remove_tag_frame, text="Remove an existing Tag:")
-        remove_tag_label.grid(row=0, column=0, padx=10, pady=(0, 0), sticky="nsew")
+        remove_tag_label.grid(row=0, column=0, padx=10, pady=(0, 0), sticky="nsew", columnspan=2)
         tag_names = [self.data_manager.tags[tag_id].name for tag_id in command.tag_ids]
         if not tag_names:
             tag_names = ["The Command has no Tag"]
@@ -48,7 +51,7 @@ class TagOperation:
             values=tag_names,
             width=90
         )
-        self.remove_tag_dropdown.grid(row=0, column=1, padx=10, pady=(0, 0))
+        self.remove_tag_dropdown.grid(row=1, column=0, padx=10, pady=(0, 0))
 
         remove_tag_button = ctk.CTkButton(
             remove_tag_frame,
@@ -56,7 +59,7 @@ class TagOperation:
             command=lambda: self.remove_tag_from_command(command),
             width=90
         )
-        remove_tag_button.grid(row=0, column=2, padx=10, pady=(0, 0))
+        remove_tag_button.grid(row=1, column=1, padx=10, pady=(0, 0))
 
         # Adjust layout weights
         add_tag_window.grid_columnconfigure(0, weight=1)

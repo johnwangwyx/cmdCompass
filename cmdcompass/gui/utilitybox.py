@@ -10,7 +10,7 @@ class UtilityBox(ctk.CTkFrame):
         # Generate button
         self.generate_button = ctk.CTkButton(
             self,
-            text="Templating & Copy",
+            text="Replace & Copy",
             command=self.generate_command
         )
         self.generate_button.pack(pady=(0, 10))

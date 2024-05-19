@@ -143,7 +143,7 @@ class MainWindow(ctk.CTk):
         self.comment_box.grid(row=1, column=0, columnspan=2, padx=10, pady=3, sticky="nsew")
 
         # Create ManPageBox
-        self.man_page_box = ManPageBox(self.tab_control_frame)
+        self.man_page_box = ManPageBox(self.tab_control_frame, self)
 
         self.tab_control_frame.columnconfigure(0, weight=1)
         self.tab_control_frame.columnconfigure(1, weight=1)

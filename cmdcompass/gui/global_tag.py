@@ -16,26 +16,30 @@ class GlobalTagWindow(ctk.CTkToplevel):
         main_frame.pack(padx=20, pady=20, fill="both", expand=True)
 
         # Create Tag Frame
-        create_tag_frame = ctk.CTkFrame(main_frame)
-        create_tag_frame.pack(pady=0, fill="x")
+        self.create_tag_frame = ctk.CTkFrame(main_frame)
+        self.create_tag_frame.pack(pady=0, fill="x")
 
         # Tag Name Input
-        tag_name_label = ctk.CTkLabel(create_tag_frame, text="Tag Name:")
-        tag_name_label.grid(row=0, column=0, padx=(10, 0), pady=5)
+        create_tage_description_label = ctk.CTkLabel(self.create_tag_frame, text="Creating a new Tag")
+        create_tage_description_label.grid(row=0, column=0, padx=(10, 0), pady=5, columnspan=2)
 
-        self.tag_name_entry = ctk.CTkEntry(create_tag_frame)
-        self.tag_name_entry.grid(row=0, column=1, padx=5, pady=5)
+        # Tag Name Input
+        tag_name_label = ctk.CTkLabel(self.create_tag_frame, text="Tag Name:")
+        tag_name_label.grid(row=1, column=0, padx=(10, 0), pady=5)
+
+        self.tag_name_entry = ctk.CTkEntry(self.create_tag_frame)
+        self.tag_name_entry.grid(row=1, column=1, padx=5, pady=5)
 
         # Color Selection
-        self.color_label = ctk.CTkLabel(create_tag_frame, text="Color:", text_color="black")
-        self.color_label.grid(row=1, column=0, padx=(10, 0), pady=5)
+        self.color_label = ctk.CTkLabel(self.create_tag_frame, text="Color:", text_color="black")
+        self.color_label.grid(row=2, column=0, padx=(10, 0), pady=5)
 
         self.color_dropdown = ctk.CTkOptionMenu(
-            create_tag_frame,
+            self.create_tag_frame,
             values=TAG_COLORS,
             command=self.update_tag_color_preview
         )
-        self.color_dropdown.grid(row=1, column=1, padx=5, pady=5)
+        self.color_dropdown.grid(row=2, column=1, padx=5, pady=5)
 
         # Color Preview
         self.color_label.configure(fg_color=TAG_COLORS[0].lower())
@@ -43,11 +47,11 @@ class GlobalTagWindow(ctk.CTkToplevel):
 
         # Create Button
         create_button = ctk.CTkButton(
-            create_tag_frame,
+            self.create_tag_frame,
             text="Create Tag",
             command=self.create_tag
         )
-        create_button.grid(row=2, column=0, columnspan=3, padx=10, pady=10)
+        create_button.grid(row=3, column=0, columnspan=3, padx=10, pady=10)
 
         # Remove Tags Frame
         remove_tags_frame = ctk.CTkFrame(main_frame)
@@ -79,8 +83,6 @@ class GlobalTagWindow(ctk.CTkToplevel):
         new_tag = Tag(name=tag_name, color=color)
         try:
             self.data_manager.add_tag(new_tag)
-            CTkMessagebox(message=f"Tag '{tag_name}' created successfully.",
-                          icon="check", option_1="Thanks")
         except ValueError as e:
             CTkMessagebox(title="Error", message=str(e), icon="cancel")
         self.update_tag_list()  # Refresh the tag list
