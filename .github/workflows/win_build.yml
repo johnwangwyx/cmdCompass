@@ -1,0 +1,57 @@
+name: Build Application with PyInstaller on Windows
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+      name: Check out the repository code
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Build the executable with PyInstaller
+      run: |
+        pyinstaller --noconfirm --onedir --windowed --icon ".\cmdcompass\static\icon.ico" --name "cmdCompass" `
+        --add-data ".\cmdcompass\data:data" `
+        --add-data ".\cmdcompass\static:static" `
+        --add-data "C:\Users\John W\AppData\Local\Programs\Python\Python312\Lib\site-packages\customtkinter:customtkinter" `
+        --collect-all "tkinterweb" `
+        --distpath ".\dist" `
+        ".\cmdcompass\main.py"
+
+    - name: Reorganize Files
+      run: |
+        Move-Item .\dist\_internal\data .\dist\data
+        Move-Item .\dist\_internal\static .\dist\static
+
+    - name: Create zip Archive
+      run: |
+        Compress-Archive -Path .\dist\* -DestinationPath .\dist\cmdCompass.zip
+
+    - name: Create 7z Archive
+      run: |
+        7z a .\dist\cmdCompass.7z .\dist\*
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: cmdCompass-artifacts
+        path: |
+          .\dist\cmdCompass.zip
+          .\dist\cmdCompass.7z

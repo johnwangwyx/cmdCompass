@@ -131,3 +131,4 @@ class ManPageBox(ctk.CTkFrame):
         suggestion.sort()
 
         set_man_page_window.set_suggestions(suggestion)
+        set_man_page_window.grab_set()

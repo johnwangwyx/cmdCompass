@@ -106,7 +106,7 @@ class MainWindow(ctk.CTk):
         CTkToolTip(tag_operations_button, message="Define/Remove Tags here to be later assigned to commands")
 
         # Create scrollable frame for the command list
-        self.command_list_frame = ctk.CTkScrollableFrame(self.left_frame, height=450, width=230)
+        self.command_list_frame = ctk.CTkScrollableFrame(self.left_frame, height=450, width=240)
         self.command_list_frame.grid(row=3, column=0, padx=10, pady=10, sticky="nsew")
 
         # Configure scrolling behavior
@@ -278,15 +278,10 @@ class MainWindow(ctk.CTk):
             )
             self.add_command_button.grid(row=0, column=0, pady=5, padx=10, sticky="ew")
             CTkToolTip(self.add_command_button, message="Add a new command to this Collection")
-            max_width = 0
             for i, command in enumerate(commands):
                 tags = [self.data_manager.tags[tag_id] for tag_id in command.tag_ids]
                 command_box = CommandBox(self.command_list_frame, command, tags, i, self)
                 command_box.grid(row=i+1, column=0, pady=5, padx=0, sticky="ew")
-                self.command_list_frame.update_idletasks()  # Force the frame to update
-                max_width = max(max_width, command_box.winfo_reqwidth())  # Get the required width
-            # Set the width of the command_list_frame based on the widest CommandBox
-            self.command_list_frame.configure(width=max_width + 3)
 
     def add_new_command(self):
         # Get the currently selected collection

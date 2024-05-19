@@ -3,6 +3,7 @@
 ### ADDED
 * Create dmg installer for Mac build
 * Add a new window to allow user to set their defined man page for a command with hint from the db.
+* Add GitHub action for Windows build.
 
 ### CHANGED
 * GUI improvements.
