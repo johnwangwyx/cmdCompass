@@ -51,14 +51,19 @@ class MainWindow(ctk.CTk):
         self.collection_operation_frame = ctk.CTkFrame(self.left_frame)
         self.collection_operation_frame.grid(row=2, column=0, padx=10, pady=(10,0), sticky="ew")
 
+
+        collections = [collection.name for collection in self.collections]
         # Collection dropdown (within collection_operation_frame)
         self.collection_dropdown = ctk.CTkOptionMenu(
             self.collection_operation_frame,
-            values=[collection.name for collection in self.collections],
+            values=collections,
             command=self.on_collection_select
         )
         self.collection_dropdown.pack(side=ctk.LEFT, padx=(10, 0), pady=10)
-        self.collection_dropdown.set("Choose a collection")
+        if not collections:
+            self.collection_dropdown.set("No Collections")
+        else:
+            self.collection_dropdown.set("Choose a collection")
 
         # Remove collection button
         self.remove_collection_button = ctk.CTkButton(
