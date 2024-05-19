@@ -7,7 +7,7 @@ import arpy
 import re
 from sqlitedict import SqliteDict
 from cmdcompass.man_parser.html_coverter import convert_man_pages
-from cmdcompass.utils.utils import get_current_working_dir
+from cmdcompass.utils.utils import get_data_and_static_parent_dir
 import platform
 import sys
 
@@ -15,7 +15,7 @@ ARCH = "binary-amd64"
 DEB_PACKAGE_URL = f"https://ftp.debian.org/debian/dists/Debian12.5/main/{ARCH}/Packages.gz"
 
 if getattr(sys, 'frozen', False):
-    BASE_DIR = get_current_working_dir()
+    BASE_DIR = get_data_and_static_parent_dir()
 else:
     BASE_DIR = "."
 UNPACKING_DIR = os.path.join(BASE_DIR, 'data', 'man_pages', 'tmp')

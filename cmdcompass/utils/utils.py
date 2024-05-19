@@ -1,12 +1,16 @@
 import re
 import os
+import shutil
+
 from PIL import Image
 import customtkinter as ctk
 import sys
 
 from pathlib import Path
 import platform
+from platformdirs import PlatformDirs
 
+APP_NAME = "CmdCompass"
 IMG_DIR = "static"
 
 def get_command_name(command_str):
@@ -23,15 +27,32 @@ def get_command_name(command_str):
     raise ValueError(f"Unable to find the command name for {command_str}")
 
 
-def get_current_working_dir():
+def copy_resources(resource_name, source_root, dest_dir):
+    source_path = source_root / resource_name
+    dest_path = dest_dir / resource_name
+    if not dest_path.exists():
+        shutil.copytree(source_path, dest_path)
+    return dest_path
+
+
+def copy_data_and_static_to_app_support_dir():
+    app_path = Path(sys.executable).resolve()
+    resource_dir = Path(os.path.join(app_path.parents[1], "Resources"))
+
+    # i.e /Users/<User>/Library/Application Support/<App>
+    app_support_path = Path(get_data_and_static_parent_dir())
+    app_support_path.mkdir(parents=True, exist_ok=True)
+
+    # Copy 'data' and 'static' directories if they do not exist
+    copy_resources('data', resource_dir, app_support_path)
+    copy_resources('static', resource_dir, app_support_path)
+
+def get_data_and_static_parent_dir():
     # Get the working dir when app is built as an executable.
     if getattr(sys, 'frozen', False) and platform.system() == "Darwin":
-        # sys.executable in a PyInstaller bundle on macOS points to the MacOS executable
-        # This resolves to MyApp.app/Contents/MacOS/MyApp.
-        # So when user lick on Myapp.app, the real executable is 3 directory down.
-        app_path = Path(sys.executable).resolve()
-        # Navigate three levels up to get to the .app's parent directory
-        application_root = app_path.parents[3]
+        dirs = PlatformDirs(appname=APP_NAME)
+        # Use /Users/<User>/Library/Application Support/CmdCompass as the applications data and static root
+        application_root = dirs.user_data_dir
     else:
         # If running as a normal script
         application_root = "."
@@ -40,7 +61,7 @@ def get_current_working_dir():
 
 
 def load_ctk_image(image_file_name, **kwargs):
-    img_dir = os.path.join(get_current_working_dir(), IMG_DIR)
+    img_dir = os.path.join(get_data_and_static_parent_dir(), IMG_DIR)
     image_path = os.path.join(img_dir, image_file_name)
     return ctk.CTkImage(light_image=Image.open(image_path), **kwargs)
 

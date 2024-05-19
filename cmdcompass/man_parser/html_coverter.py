@@ -2,12 +2,12 @@ import os
 import subprocess
 import platform
 import sys
-from cmdcompass.utils.utils import get_current_working_dir
+from cmdcompass.utils.utils import get_data_and_static_parent_dir
 import shutil
 from pathlib import Path
 
 if getattr(sys, 'frozen', False):
-    BASE_DIR = get_current_working_dir()
+    BASE_DIR = get_data_and_static_parent_dir()
 else:
     BASE_DIR = "."
 WINDOWS_GROFF_BIN = os.path.join(BASE_DIR, 'data', 'bin', 'groff-1.22.4-w32-bin', 'bin', 'groff.exe')

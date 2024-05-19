@@ -29,6 +29,7 @@ class MainWindow(ctk.CTk):
 
         # Create main frames
         self.left_frame = ctk.CTkFrame(self)
+        self.left_frame.pack_propagate(False)
         self.right_frame = ctk.CTkFrame(self)
 
         self.placeholder_frame = ctk.CTkFrame(self)
@@ -38,7 +39,7 @@ class MainWindow(ctk.CTk):
 
         # Layout frames
         self.left_frame.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
-        #self.right_frame.grid(row=0, column=1, sticky="nsew", padx=3, pady=3)
+        self.right_frame.grid(row=0, column=1, sticky="nsew", padx=3, pady=3)
         self.grid_rowconfigure(0, weight=1)
         # Adjust layout weights
         self.grid_columnconfigure(0, weight=1)
@@ -149,7 +150,7 @@ class MainWindow(ctk.CTk):
         self.right_frame.grid_rowconfigure(0, weight=0)
         self.right_frame.grid_rowconfigure(1, weight=0)
         self.right_frame.grid_rowconfigure(2, weight=1)  # Tab control frame should shrink
-        self.right_frame.grid_columnconfigure(0, weight=4)
+        self.right_frame.grid_columnconfigure(0, weight=3)
 
         self.left_frame.grid_rowconfigure(1, weight=0) # TagOperation button
         self.left_frame.grid_rowconfigure(2, weight=0) # collection operations frame
@@ -270,11 +271,17 @@ class MainWindow(ctk.CTk):
             )
             self.add_command_button.grid(row=0, column=0, pady=5, padx=10, sticky="ew")
             CTkToolTip(self.add_command_button, message="Add a new command to this Collection")
-
+            last_box = None
             for i, command in enumerate(commands):
                 tags = [self.data_manager.tags[tag_id] for tag_id in command.tag_ids]
                 command_box = CommandBox(self.command_list_frame, command, tags, i, self)
                 command_box.grid(row=i+1, column=0, pady=5, padx=0, sticky="ew")
+                self.command_list_frame.update_idletasks()  # Force the frame to update
+                last_box = command_box
+            if last_box:
+                width = last_box.winfo_reqwidth()  # Get the required width
+                # Set the width of the command_list_frame based on the widest CommandBox
+                self.command_list_frame.configure(width=width + 3)
 
     def add_new_command(self):
         # Get the currently selected collection

@@ -1,7 +1,7 @@
 import customtkinter as ctk
 from tkinterweb import HtmlFrame
 import os
-from cmdcompass.utils.utils import get_command_name, highlight_options, get_current_working_dir
+from cmdcompass.utils.utils import get_command_name, highlight_options, get_data_and_static_parent_dir
 from cmdcompass.man_parser.loader import download_and_process_package
 from cmdcompass.man_parser.html_coverter import OUTPUT_DIR
 from cmdcompass.gui.progresswindow import ProgressWindow
@@ -9,7 +9,7 @@ from tkinter import ttk
 import sys
 
 if getattr(sys, 'frozen', False):
-    BASE_DIR = get_current_working_dir()
+    BASE_DIR = get_data_and_static_parent_dir()
 else:
     BASE_DIR = "."
 HTML_CORE_DIR = os.path.join(BASE_DIR, 'data', 'man_pages', 'html_core')

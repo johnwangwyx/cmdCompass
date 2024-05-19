@@ -21,6 +21,7 @@
 ### CHANGED
 * Use static images for some buttons.
 * GitHub Action for Mac build now build on MACOS 12 to support for more systems.
+* Use the App support dir on Mac for /data and /static
 
 ### DEBUGGED
 * Fix `extract_options` that was unable to identify options start with `--` but contains `-` like `--convert-links`.

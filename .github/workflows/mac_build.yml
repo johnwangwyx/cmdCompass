@@ -31,7 +31,7 @@ jobs:
 
     - name: Build the executable with PyInstaller
       run: |
-        pyinstaller --noconfirm --onedir --windowed --icon "./cmdcompass/static/icon.icns" --name "cmdCompass" \
+        pyinstaller --noconfirm --onedir --windowed --icon "./cmdcompass/static/icon.icns" --name "CmdCompass" \
         --add-data "./cmdcompass/data/man_pages:data" \
         --add-data "./cmdcompass/static:static" \
         --add-data "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/customtkinter:customtkinter" \
@@ -39,15 +39,13 @@ jobs:
         --distpath "./dist" \
         "./cmdcompass/main.py"
 
-    - name: Reorganize Files
+    - name: Clean dist
       run: |
-        mv dist/cmdCompass/_internal/static dist/
-        mv dist/cmdCompass/_internal/data dist/
         rm -rf dist/cmdCompass/
 
     - name: Create tar.gz Archive
       run: |
-        tar -czvf dist/cmdCompass.tar.gz -C dist cmdCompass.app static data
+        tar -czvf dist/cmdCompass.tar.gz -C dist cmdCompass.app
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v3

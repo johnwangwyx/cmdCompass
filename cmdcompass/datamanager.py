@@ -4,12 +4,12 @@ from typing import List, Dict
 from cmdcompass.models.collection import Collection
 from cmdcompass.models.command import Command
 from cmdcompass.models.tag import Tag
-from cmdcompass.utils.utils import get_current_working_dir
+from cmdcompass.utils.utils import get_data_and_static_parent_dir
 import sys
 import os
 
 if getattr(sys, 'frozen', False):
-    BASE_DIR = get_current_working_dir()
+    BASE_DIR = get_data_and_static_parent_dir()
 else:
     BASE_DIR = "."
 DATA_FILE = os.path.join(BASE_DIR, "data", "data.json")
