@@ -1,17 +1,22 @@
 import customtkinter as ctk
 from tkinterweb import HtmlFrame
 import os
-from cmdcompass.utils.utils import get_command_name, highlight_options
+from cmdcompass.utils.utils import get_command_name, highlight_options, get_current_working_dir
 from cmdcompass.man_parser.loader import download_and_process_package
 from cmdcompass.man_parser.html_coverter import OUTPUT_DIR
 from cmdcompass.gui.progresswindow import ProgressWindow
 from tkinter import ttk
+import sys
 
-HTML_CORE_DIR = os.path.join('.', 'data', 'man_pages', 'html_core')
+if getattr(sys, 'frozen', False):
+    BASE_DIR = get_current_working_dir()
+else:
+    BASE_DIR = "."
+HTML_CORE_DIR = os.path.join(BASE_DIR, 'data', 'man_pages', 'html_core')
 
 
 class ManPageBox(ctk.CTkFrame):
-    def __init__(self, master, dark_theme_enabled=False, **kwargs):
+    def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
         self.grid_rowconfigure(1, weight=1)
         self.grid_columnconfigure(0, weight=1)
@@ -52,6 +57,7 @@ class ManPageBox(ctk.CTkFrame):
             else:
                 def download_and_update():
                     progress_window = self.create_progress_window()
+                    progress_window.update_progress(HTML_CORE_DIR)
                     progress_window.update_progress(f"Downloading {command_name}...")
                     download_and_process_package(command_name, progress_window)
                     # After download and processing is complete, update the HTML
@@ -70,7 +76,7 @@ class ManPageBox(ctk.CTkFrame):
             print(f"Error getting man page: {e}")
         self.html_content = html_content
         self.options = command.extract_options()
-        self.apply_with_highlight()
+        self.change_theme()
         if self.options:
             self.highlight_switch.grid(row=0, column=0, pady=(10, 0), sticky="w")
         else:

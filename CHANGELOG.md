@@ -16,11 +16,14 @@
 * Add a button to create a command for the current selected collection.
 * Add extract_options() for command model class to extract options(with -- or -) as a list.
 * Add unit tests for extract_options() and get_template_variables() for the command model class.
+* Add GitHub Action to build executable on Mac
 
 ### CHANGED
-* Use static images for some buttons
+* Use static images for some buttons.
+* GitHub Action for Mac build now build on MACOS 12 to support for more systems.
 
 ### DEBUGGED
+* Fix `extract_options` that was unable to identify options start with `--` but contains `-` like `--convert-links`.
 
 ## Version 0.1.0 (Initial Development)
 

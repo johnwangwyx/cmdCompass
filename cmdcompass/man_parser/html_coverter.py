@@ -1,9 +1,17 @@
 import os
 import subprocess
 import platform
+import sys
+from cmdcompass.utils.utils import get_current_working_dir
+import shutil
+from pathlib import Path
 
-WINDOWS_GROFF_BIN = os.path.join('.', 'data', 'bin', 'groff-1.22.4-w32-bin', 'bin', 'groff.exe')
-OUTPUT_DIR = os.path.join('.', 'data', 'man_pages', 'html_download')
+if getattr(sys, 'frozen', False):
+    BASE_DIR = get_current_working_dir()
+else:
+    BASE_DIR = "."
+WINDOWS_GROFF_BIN = os.path.join(BASE_DIR, 'data', 'bin', 'groff-1.22.4-w32-bin', 'bin', 'groff.exe')
+OUTPUT_DIR = os.path.join(BASE_DIR, 'data', 'man_pages', 'html_download')
 CREATE_NO_WINDOW = 0x08000000  # To used on Windows to not open any terminal window while using subprocess
 
 def convert_man_pages(man_file, output_dir=OUTPUT_DIR):
@@ -16,7 +24,19 @@ def convert_man_pages(man_file, output_dir=OUTPUT_DIR):
     if platform.system() == 'Windows':
         groff_command = [WINDOWS_GROFF_BIN, '-mandoc', '-Thtml', man_file]
     else:
-        groff_command = ['groff', '-mandoc', '-Thtml', man_file]
+        # Try to locate 'groff' using 'which' command
+        # As per https://pyinstaller.org/en/stable/common-issues-and-pitfalls.html#macos,
+        # If the app is run from Finder, the app may have a reduced set of PATH vars, which may not include groff
+        groff_path = shutil.which('groff')
+        if not groff_path:
+            # Fallback to common paths if not found
+            for path in ['/usr/local/bin/groff', '/opt/homebrew/bin/groff']:
+                if Path(path).exists():
+                    groff_path = path
+                    break
+        if groff_path is None:
+            raise FileNotFoundError("The 'groff' command is not available in the system PATH.")
+        groff_command = [groff_path, '-mandoc', '-Thtml', man_file]
 
     base_name = os.path.basename(man_file)  # Get the file name without the directory path
     name_without_ext = os.path.splitext(base_name)[0]  # Remove extension

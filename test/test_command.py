@@ -95,7 +95,7 @@ class TestCommand(unittest.TestCase):
             comment="Download a website with wget",
             tag_ids=["tag2"]
         )
-        self.assertEqual(command.extract_options(), {'mirror', 'p', 'convert', 'P'})
+        self.assertEqual(command.extract_options(), {'mirror', 'p', 'convert-links', 'P'})
 
     def test_extract_options_docker(self):
         command = Command(

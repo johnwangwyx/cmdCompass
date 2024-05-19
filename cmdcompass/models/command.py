@@ -31,15 +31,14 @@ class Command:
         return re.sub(pattern, replace_var, self.command_str)
 
     def extract_options(self):
-        command = self.command_str
         options = set()
         # Split the command into parts respecting quotes
-        parts = shlex.split(command)
+        parts = shlex.split(self.command_str)
 
         for part in parts:
             # Handle long-form options starting with --
             if part.startswith('--'):
-                match = re.match(r'--(\w+)', part)
+                match = re.match(r'--([\w-]+)', part)
                 if match:
                     options.add(match.group(1))
 
@@ -51,3 +50,4 @@ class Command:
                     options.update(match.group(1))
 
         return options
+

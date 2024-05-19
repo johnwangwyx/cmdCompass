@@ -4,9 +4,17 @@ from typing import List, Dict
 from cmdcompass.models.collection import Collection
 from cmdcompass.models.command import Command
 from cmdcompass.models.tag import Tag
+from cmdcompass.utils.utils import get_current_working_dir
+import sys
+import os
 
+if getattr(sys, 'frozen', False):
+    BASE_DIR = get_current_working_dir()
+else:
+    BASE_DIR = "."
+DATA_FILE = os.path.join(BASE_DIR, "data", "data.json")
 class DataManager:
-    def __init__(self, data_file="./data/data.json"):
+    def __init__(self, data_file=DATA_FILE):
         self.data_file = data_file
         self.data: Dict[str, Collection] = {}  # {collection_name: Collection object}
         self.load_data()

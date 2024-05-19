@@ -7,14 +7,20 @@ import arpy
 import re
 from sqlitedict import SqliteDict
 from cmdcompass.man_parser.html_coverter import convert_man_pages
+from cmdcompass.utils.utils import get_current_working_dir
 import platform
+import sys
 
 ARCH = "binary-amd64"
 DEB_PACKAGE_URL = f"https://ftp.debian.org/debian/dists/Debian12.5/main/{ARCH}/Packages.gz"
 
-UNPACKING_DIR = os.path.join('.', 'data', 'man_pages', 'tmp')
-MAN_PAGE_DIR = os.path.join('.', 'data', 'man_pages', 'man')
-KV_DB_PATH = os.path.join('.', 'data', 'man_pages_kv.db')
+if getattr(sys, 'frozen', False):
+    BASE_DIR = get_current_working_dir()
+else:
+    BASE_DIR = "."
+UNPACKING_DIR = os.path.join(BASE_DIR, 'data', 'man_pages', 'tmp')
+MAN_PAGE_DIR = os.path.join(BASE_DIR, 'data', 'man_pages', 'man')
+KV_DB_PATH = os.path.join(BASE_DIR, 'data', 'man_pages_kv.db')
 
 DEB_DOWNLOAD_LINK = "http://ftp.ca.debian.org/debian"
 
@@ -23,7 +29,6 @@ def extract_deb(data_path, extract_to):
     print(f"Extracting DEB package: {data_path} to {extract_to}")
     if not os.path.exists(extract_to):
         os.makedirs(extract_to)
-
     # Open the DEB file as an AR archive
     with arpy.Archive(data_path) as archive:
         archive.read_all_headers()
@@ -105,10 +110,11 @@ def download_and_process_package(package_name, progress_window):
     # Ensure destination folders exist
     if not os.path.exists(UNPACKING_DIR):
         os.makedirs(UNPACKING_DIR)
-    
+    progress_window.update_progress(f"read from {KV_DB_PATH}")
     with SqliteDict(KV_DB_PATH) as db:
         if package_name in db:
             try:
+                progress_window.update_progress(f"found")
                 # Note the db value can contain a list of package that includes the command man page.
                 # The value is in tuple of ("package_link", #number of man pages in this package) and ordered by the #number
                 # We can have a feature to allow user to choose which package to use
