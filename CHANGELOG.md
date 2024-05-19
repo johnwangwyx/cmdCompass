@@ -1,3 +1,13 @@
+## Version 0.9.0 (Beta)
+
+### ADDED
+* Create dmg installer for Mac build
+
+### CHANGED
+
+### DEBUGGED
+
+
 ## Version 0.2.0 (Initial Development)
 
 ### ADDED

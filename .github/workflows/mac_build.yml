@@ -25,14 +25,22 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Show customtkinter package details
+    - name: Print Machine Architecture
       run: |
-        pip show customtkinter
+        uname -m
+        if [ "$(uname -m)" = "x86_64" ]; then
+          echo "Running on Intel x86_64 architecture"
+        elif [ "$(uname -m)" = "arm64" ]; then
+          echo "Running on ARM64 architecture"
+        else
+          echo "Unknown architecture"
+        fi
 
     - name: Build the executable with PyInstaller
       run: |
         pyinstaller --noconfirm --onedir --windowed --icon "./cmdcompass/static/icon.icns" --name "CmdCompass" \
         --add-data "./cmdcompass/data/man_pages:data" \
+        --add-data "./cmdcompass/data/man_pages_kv.db:data" \
         --add-data "./cmdcompass/static:static" \
         --add-data "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/customtkinter:customtkinter" \
         --collect-all "tkinterweb" \
@@ -47,8 +55,17 @@ jobs:
       run: |
         tar -czvf dist/cmdCompass.tar.gz -C dist cmdCompass.app
 
+    - name: Create dmg Installer
+      run: |
+        mkdir /tmp/MyApp
+        cp -R ./dist/CmdCompass.app /tmp/MyApp/
+        ln -s /Applications /tmp/MyApp/Applications
+        hdiutil create -volname "CmdCompass" -srcfolder /tmp/MyApp -ov -format UDZO ./dist/CmdCompass.dmg
+
     - name: Upload Artifacts
       uses: actions/upload-artifact@v3
       with:
         name: cmdCompass-artifacts
-        path: dist/cmdCompass.tar.gz
+        path: |
+          dist/CmdCompass.tar.gz
+          dist/CmdCompass.dmg
