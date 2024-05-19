@@ -19,6 +19,8 @@ DEFAULT_BUTTON_COLOR = "blue"
 class MainWindow(ctk.CTk):
     def __init__(self):
         super().__init__()
+        # Set starting mode to light
+        ctk.set_appearance_mode("light")
         self.title("cmdCompass")
         self.geometry("900x670")
 
@@ -271,17 +273,15 @@ class MainWindow(ctk.CTk):
             )
             self.add_command_button.grid(row=0, column=0, pady=5, padx=10, sticky="ew")
             CTkToolTip(self.add_command_button, message="Add a new command to this Collection")
-            last_box = None
+            max_width = 0
             for i, command in enumerate(commands):
                 tags = [self.data_manager.tags[tag_id] for tag_id in command.tag_ids]
                 command_box = CommandBox(self.command_list_frame, command, tags, i, self)
                 command_box.grid(row=i+1, column=0, pady=5, padx=0, sticky="ew")
                 self.command_list_frame.update_idletasks()  # Force the frame to update
-                last_box = command_box
-            if last_box:
-                width = last_box.winfo_reqwidth()  # Get the required width
-                # Set the width of the command_list_frame based on the widest CommandBox
-                self.command_list_frame.configure(width=width + 3)
+                max_width = max(max_width, command_box.winfo_reqwidth())  # Get the required width
+            # Set the width of the command_list_frame based on the widest CommandBox
+            self.command_list_frame.configure(width=max_width + 3)
 
     def add_new_command(self):
         # Get the currently selected collection

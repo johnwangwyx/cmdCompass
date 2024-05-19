@@ -6,7 +6,7 @@
 ### CHANGED
 
 ### DEBUGGED
-
+* Fix command heightening unable to highlight `&minus;` (a way to represent `-` in html)
 
 ## Version 0.2.0 (Initial Development)
 

@@ -66,26 +66,32 @@ def load_ctk_image(image_file_name, **kwargs):
     return ctk.CTkImage(light_image=Image.open(image_path), **kwargs)
 
 
-def highlight_options(options, html, highlight_class="highlight"):
+def highlight_options(options, html):
     highlighted_html = html
 
     highlighted_color = "yellow"
     if ctk.get_appearance_mode() == "Dark":
         highlighted_color = "red"
 
+    # First pass: Match options with standard dashes "--"
     for option in options:
         if len(option) == 1:
-            # For single-letter options, match both '-' and '&minus;'
-            pattern = r'([-&minus;]{})<'.format(re.escape(option))
-            # Replace the pattern in the HTML with a highlighted version using <span> with inline style
-            replacement = r'<span style="background-color:{};">\1</span><'.format(highlighted_color)
-        else:
-            # For multi-letter options, match both '--' and '&minus;&minus;' and handle hyphens in option names
-            option_pattern = re.escape(option).replace('-', '[-&minus;]')
-            pattern = r'([-&minus;][-&minus;]{})'.format(option_pattern)
-            # Replace the pattern in the HTML with a highlighted version using <span> with inline style
+            pattern = r'(-{})\b'.format(re.escape(option))
             replacement = r'<span style="background-color:{};">\1</span>'.format(highlighted_color)
+        else:
+            pattern = r'(--{})\b'.format(re.escape(option))
+            replacement = r'<span style="background-color:{};">\1</span>'.format(highlighted_color)
+        highlighted_html = re.sub(pattern, replacement, highlighted_html)
 
+    # Second pass: Match options with HTML entities "&minus;&minus;"
+    for option in options:
+        if len(option) == 1:
+            pattern = r'(&minus;{})\b'.format(re.escape(option))
+            replacement = r'<span style="background-color:{};">\1</span>'.format(highlighted_color)
+        else:
+            option_pattern = re.escape(option).replace('-', '&minus;')
+            pattern = r'(&minus;&minus;{})\b'.format(option_pattern)
+            replacement = r'<span style="background-color:{};">\1</span>'.format(highlighted_color)
         highlighted_html = re.sub(pattern, replacement, highlighted_html)
 
     return highlighted_html

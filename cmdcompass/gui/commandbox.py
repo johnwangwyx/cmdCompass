@@ -1,7 +1,7 @@
 import customtkinter as ctk
 import tkinter.font as tkFont
 
-COMMAND_LABLE_WIDTH = 210
+COMMAND_LABLE_WIDTH = 200
 
 class TagBox(ctk.CTkFrame):
     def __init__(self, master, tags, command, main_window,**kwargs):
@@ -54,7 +54,9 @@ class CommandBox(ctk.CTkFrame):
         while text_width > COMMAND_LABLE_WIDTH:
             cmd_summary = cmd_summary[:-1]
             text_width = font.measure(cmd_summary + '...')
-        self.command_label = ctk.CTkLabel(self, text=cmd_summary+ "...",  font=("TkDefaultFont", 12))
+        if cmd_summary != command.command_str:
+            cmd_summary += "..."
+        self.command_label = ctk.CTkLabel(self, text=cmd_summary,  font=("TkDefaultFont", 12))
         self.command_label.grid(row=0, column=0, padx=(20,0), pady=0, sticky="w")
 
         # Tag box (second row, first column)
