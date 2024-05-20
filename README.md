@@ -1,4 +1,4 @@
-# CmdCompass: Your Command-Line Compass (executable will be released in 6 hours after some testing)
+# CmdCompass: Your Command-Line Compass
 <img src="https://github.com/johnwangwyx/cmdCompass/assets/78456315/2c58004e-4d2f-4982-bda3-ed53ad6d7c79" height="150">
 
 # Table of Contents
