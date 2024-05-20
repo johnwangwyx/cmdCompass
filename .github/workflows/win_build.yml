@@ -41,6 +41,14 @@ jobs:
         --distpath ".\dist" `
         ".\cmdcompass\main.py"
 
+    - name: Wait for 15 seconds
+      run: |
+        Start-Sleep -Seconds 15
+
+    - name: List output directory structure
+      run: |
+        Get-ChildItem -Path .\dist\ -Recurse | Format-List
+
     - name: Reorganize Files
       run: |
         Move-Item .\dist\_internal\data .\dist\data
