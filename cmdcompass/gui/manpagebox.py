@@ -52,7 +52,6 @@ class ManPageBox(ctk.CTkFrame):
         }
 
     def set_man_page(self, command):
-        html_content = ""
         self.command = command
         command_str = command.command_str
         if command.user_defined_man_page :
@@ -64,10 +63,10 @@ class ManPageBox(ctk.CTkFrame):
             existing_core_man_page = os.path.join(HTML_CORE_DIR, f"{command_name}.html")
             if os.path.exists(existing_core_man_page):
                 with open(existing_core_man_page, "r") as f:
-                    html_content = f.read()
+                    self.html_content = f.read()
             elif os.path.exists(dynamically_downloaded_html):
                 with open(dynamically_downloaded_html, "r") as f:
-                    html_content = f.read()
+                    self.html_content = f.read()
             else:
                 def download_and_update():
                     progress_window = self.create_progress_window()
@@ -75,8 +74,8 @@ class ManPageBox(ctk.CTkFrame):
                     download_and_process_package(command_name, progress_window)
                     # After download and processing is complete, update the HTML
                     with open(dynamically_downloaded_html, "r") as f:
-                        html_content = f.read()
-                    self.html_view.load_html(html_content)
+                        self.html_content = f.read()
+                    self.html_view.load_html(self.html_content)
                     if progress_window:
                         progress_window.update_progress("Complete! Closing Window in 5 seconds", 1)
                         progress_window.close()
@@ -87,9 +86,9 @@ class ManPageBox(ctk.CTkFrame):
                 download_thread.start()
         except Exception as e:
             print(f"Error getting man page: {e}")
-        self.html_content = html_content
         self.options = command.extract_options()
         self.change_theme()
+        self.highlight_switch.deselect()
         if self.options:
             self.highlight_switch.grid(row=0, column=0, pady=(10, 0), sticky="w")
         else:

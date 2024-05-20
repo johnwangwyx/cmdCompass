@@ -9,7 +9,8 @@
 * GUI improvements.
 
 ### DEBUGGED
-* Fix command heightening unable to highlight `&minus;` (a way to represent `-` in html)
+* Fix command heightening unable to highlight `&minus;` (a way to represent `-` in html).
+* Fix Html not being loaded in some cases.
 
 ## Version 0.2.0 (Initial Development)
 
