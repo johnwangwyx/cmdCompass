@@ -25,12 +25,18 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
+    - name: Find customtkinter path
+      id: find_path
+      run: |
+        $path = python -c "import customtkinter; import os; print(os.path.dirname(customtkinter.__file__))"
+        echo "CUSTOMTKINTER_PATH=$path" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
     - name: Build the executable with PyInstaller
       run: |
         pyinstaller --noconfirm --onedir --windowed --icon ".\cmdcompass\static\icon.ico" --name "cmdCompass" `
         --add-data ".\cmdcompass\data:data" `
         --add-data ".\cmdcompass\static:static" `
-        --add-data "C:\Users\John W\AppData\Local\Programs\Python\Python312\Lib\site-packages\customtkinter:customtkinter" `
+        --add-data "${{ env.CUSTOMTKINTER_PATH }}:customtkinter" `
         --collect-all "tkinterweb" `
         --distpath ".\dist" `
         ".\cmdcompass\main.py"
