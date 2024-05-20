@@ -7,11 +7,9 @@ cmdCompass is a desktop application that helps you manage and organize your comm
 
 **Key Features:**
 
-* **Collections:** Group related commands into collections for easy access.
-* **Tags:** Categorize commands using tags with customizable colors.
-* **Command Templates:** Define commands with variables for dynamic replacement.
+* **Collections, Tags, Comments:** Group related commands into collections for easy access, categorize commands using tags with customizable colors, and add notes and descriptions to commands for better understanding.
+* **Command Templates:** Define commands with {{variables}} for dynamic replacement.
 * **Man (Manual) Page Integration:** View man pages directly within the app. Support automatic Highlighting for your command options.
-* **Comments:** Add notes and descriptions to commands for better understanding.
 * **Dark/Light Mode:** Choose your preferred theme.
 * **Cross-Platform:** Works on Windows, and macOS. (Linux support will be added by May 26th)
 
@@ -28,19 +26,29 @@ cmdCompass is a desktop application that helps you manage and organize your comm
 
 <img src="https://github.com/johnwangwyx/cmdCompass/assets/78456315/7f1c15be-61a0-4d0c-98ea-3d450357916d" width="600">
 
-## User Installation
+## User Installation - Mac
 
-### Mac
-The tool uses [GNU Roff](https://www.gnu.org/software/groff/) to convert downloaded man pages to HTML. 
+### Step 1:
+The tool uses groff ([GNU Roff](https://www.gnu.org/software/groff/)) to convert downloaded man pages to HTML. 
 
 Please install groff by:
 
 `brew install groff`
 
-TBC
+### Step 2: 
+* Download the dmg app installer from [release](https://github.com/johnwangwyx/cmdCompass/releases/tag/v0.9.0). Open the installer and drag the CmdCompass app to your Application folder as usuall.
 
-### Windows
-TBC
+* **For the first time only, open Application folder on Finder, right click the app and chooss `open`.** (This is to trust app because I am an "unreconized developer" and don't have 99 USD to pay for the [Apple Developer Program](https://developer.apple.com/support/enrollment/#:~:text=Completing%20your%20enrollment&text=The%20Apple%20Developer%20Program%20annual,currency%20during%20the%20enrollment%20process.) to be able to sign a certificate to my app)
+
+## ## User Installation - Windows
+* Download the zip or the 7z archive from [release](https://github.com/johnwangwyx/cmdCompass/releases/tag/v0.9.0) and decompress them. You are now ready to use the App (cmdCompass.exe)!
+  
+Note: When you open the Windows Smart Screen for the first time, Windows will block the app because it is an "unreconized app". You have to click on `More Info` and then a button will show up for you to open the app. (The App remain unreconized unless I pay $$$ to get a [certificate](https://www.reddit.com/r/electronjs/comments/17sizjf/a_guide_to_code_signing_certificates_for_the/) to sign my app)
+
+<img src="https://github.com/johnwangwyx/cmdCompass/assets/78456315/db4f526c-3008-4c9f-b020-d98c715b964c" width="400">
+<img src="https://github.com/johnwangwyx/cmdCompass/assets/78456315/020caeda-0dce-4975-b986-5d04c7eab8d8" width="400">
+
+In case you are wondering, for Windows, you don't need to install groff like Mac users as it is not avaliable natively on Windows. Thanks to the project [EZWinPorts](https://www.gnu.org/software/emacs/manual/html_node/efaq-w32/EZWinPorts.html), I have added the groff binary built for windows and added it directly to the Windows built.
 
 
 ## Contributing
