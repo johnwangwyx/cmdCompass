@@ -47,17 +47,17 @@ jobs:
 
     - name: Reorganize Files
       run: |
-        Move-Item .\dist\cmdCompass\_internal\data .\dist\data
-        Move-Item .\dist\cmdCompass\_internal\static .\dist\static
+        Move-Item .\dist\cmdCompass\_internal\data .\dist\cmdCompass\data
+        Move-Item .\dist\cmdCompass\_internal\static .\dist\cmdCompass\static
         New-Item -ItemType Directory -Force -Path .\release
 
     - name: Create zip Archive
       run: |
-        Compress-Archive -Path .\dist\* -DestinationPath .\release\cmdCompass.zip
+        Compress-Archive -Path .\dist\cmdCompass\* -DestinationPath .\release\cmdCompass.zip
 
     - name: Create 7z Archive
       run: |
-        7z a .\release\cmdCompass.7z .\dist\*
+        7z a .\release\cmdCompass.7z .\dist\cmdCompass\*
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v3

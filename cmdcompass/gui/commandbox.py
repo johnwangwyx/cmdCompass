@@ -9,7 +9,7 @@ class TagBox(ctk.CTkFrame):
         # Add Tag button
         self.add_tag_button = ctk.CTkButton(
             self,
-            text="+",
+            text="tag",
             font=("TkDefaultFont ", 8),
             width=15,
             height=3,
