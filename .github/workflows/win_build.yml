@@ -49,19 +49,20 @@ jobs:
       run: |
         Move-Item .\dist\cmdCompass\_internal\data .\dist\data
         Move-Item .\dist\cmdCompass\_internal\static .\dist\static
+        New-Item -ItemType Directory -Force -Path .\release
 
     - name: Create zip Archive
       run: |
-        Compress-Archive -Path .\dist\* -DestinationPath .\dist\cmdCompass.zip
+        Compress-Archive -Path .\dist\* -DestinationPath .\release\cmdCompass.zip
 
     - name: Create 7z Archive
       run: |
-        7z a .\dist\cmdCompass.7z .\dist\*
+        7z a .\release\cmdCompass.7z .\dist\*
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v3
       with:
         name: cmdCompass-artifacts
         path: |
-          .\dist\cmdCompass.zip
-          .\dist\cmdCompass.7z
+          .\release\cmdCompass.zip
+          .\release\cmdCompass.7z
