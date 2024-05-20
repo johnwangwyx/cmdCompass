@@ -71,7 +71,6 @@ class ManPageBox(ctk.CTkFrame):
             else:
                 def download_and_update():
                     progress_window = self.create_progress_window()
-                    progress_window.update_progress(HTML_CORE_DIR)
                     progress_window.update_progress(f"Downloading {command_name}...")
                     download_and_process_package(command_name, progress_window)
                     # After download and processing is complete, update the HTML

@@ -44,7 +44,10 @@ class CommandBodyBox(ctk.CTkFrame):
     def save_command(self):
         if self.main_window.selected_command:
             new_command_str = self.command_textbox.get("1.0", "end-1c")
+            new_command_str = new_command_str.replace('\u2212', '-')  # Minus sign should be dash
             self.main_window.selected_command.command_str = new_command_str
+            if '\u2212' in self.command_textbox.get("1.0", "end-1c"):
+                self.set_command(self.main_window.selected_command)
             self.main_window.data_manager.save_data()
             self.save_button.configure(state="disabled", fg_color="gray")
             self.main_window.refresh_command_list()  # Refresh the command list

@@ -106,15 +106,12 @@ def move_and_clean_man_pages(package_name, extract_to, man_dest_folder):
     return found_page
 
 def download_and_process_package(package_name, progress_window):
-    progress_window.update_progress(f"Searching for {package_name}...", 0.1)
     # Ensure destination folders exist
     if not os.path.exists(UNPACKING_DIR):
         os.makedirs(UNPACKING_DIR)
-    progress_window.update_progress(f"read from {KV_DB_PATH}")
     with SqliteDict(KV_DB_PATH) as db:
         if package_name in db:
             try:
-                progress_window.update_progress(f"found")
                 # Note the db value can contain a list of package that includes the command man page.
                 # The value is in tuple of ("package_link", #number of man pages in this package) and ordered by the #number
                 # We can have a feature to allow user to choose which package to use

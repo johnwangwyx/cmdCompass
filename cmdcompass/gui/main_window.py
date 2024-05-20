@@ -13,7 +13,12 @@ from cmdcompass.utils.utils import load_ctk_image
 from CTkToolTip import CTkToolTip
 
 from CTkMessagebox import CTkMessagebox
+import platform
+
 DEFAULT_BUTTON_COLOR = "blue"
+COMMAND_LIST_FRAME_WIDTH = 240
+if platform.system() == "Windows":
+    COMMAND_LIST_FRAME_WIDTH = 230
 
 
 class MainWindow(ctk.CTk):
@@ -106,7 +111,7 @@ class MainWindow(ctk.CTk):
         CTkToolTip(tag_operations_button, message="Define/Remove Tags here to be later assigned to commands")
 
         # Create scrollable frame for the command list
-        self.command_list_frame = ctk.CTkScrollableFrame(self.left_frame, height=450, width=240)
+        self.command_list_frame = ctk.CTkScrollableFrame(self.left_frame, height=450, width=COMMAND_LIST_FRAME_WIDTH)
         self.command_list_frame.grid(row=3, column=0, padx=10, pady=10, sticky="nsew")
 
         # Configure scrolling behavior
