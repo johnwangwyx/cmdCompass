@@ -52,7 +52,9 @@ class ManPageBox(ctk.CTkFrame):
         }
 
     def set_man_page(self, command):
-        self.command = command
+        self.html_content = ""
+        self.html_view.load_html("")
+        self.update()
         command_str = command.command_str
         if command.user_defined_man_page :
             command_str = command.user_defined_man_page
@@ -69,16 +71,19 @@ class ManPageBox(ctk.CTkFrame):
                     self.html_content = f.read()
             else:
                 def download_and_update():
-                    progress_window = self.create_progress_window()
-                    progress_window.update_progress(f"Downloading {command_name}...")
-                    download_and_process_package(command_name, progress_window)
+                    try:
+                        progress_window = self.create_progress_window()
+                        progress_window.update_progress(f"Downloading {command_name}...")
+                        download_and_process_package(command_name, progress_window)
+                    except Exception as e:  # Best effort attempt, still proceed to load html
+                        print(f" {e}")
                     # After download and processing is complete, update the HTML
                     with open(dynamically_downloaded_html, "r") as f:
                         self.html_content = f.read()
-                    self.html_view.load_html(self.html_content)
                     if progress_window:
                         progress_window.update_progress("Complete! Closing Window in 5 seconds", 1)
                         progress_window.close()
+                    self.html_view.load_html(self.html_content)
 
                 # Create and start a new thread for downloading and processing
                 import threading

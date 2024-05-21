@@ -7,6 +7,7 @@
 
 ### CHANGED
 * GUI improvements.
+* Reset man page to empty for each load.
 
 ### DEBUGGED
 * Fix command heightening unable to highlight `&minus;` (a way to represent `-` in html).
