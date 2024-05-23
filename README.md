@@ -21,13 +21,8 @@ https://github.com/johnwangwyx/cmdCompass/assets/78456315/a0074ff6-7416-4127-87e
 * **Cross-Platform:** Works on Windows, and macOS. (Linux support will be added by May 26th)
 
 ## Screenshots
-
-### Feature: Command templating for variables replacement
 ![image](https://github.com/johnwangwyx/cmdCompass/assets/78456315/e6010159-84a5-4fbf-a9c8-d614be41ce43)
-### Feature: Automatic Man Page Option Hightling
-
 ![image](https://github.com/johnwangwyx/cmdCompass/assets/78456315/c179fb52-c970-483a-88c0-944cba6ccff8)
-
 
 ### Support 1000+ Cached Core Utility Man pages for instant Lookup. (With the ability to get ~90000 Man pages from ~60000 packages from download and converted to HTML)
 
