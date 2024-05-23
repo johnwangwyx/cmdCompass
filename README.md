@@ -40,6 +40,7 @@ Please install groff by:
 
 ### Step 2: 
 * Download the dmg app installer from [release](https://github.com/johnwangwyx/cmdCompass/releases/tag/v0.9.0). Open the installer and drag the CmdCompass app to your Application folder.
+  
   <img width="300" alt="Screenshot 2024-05-23 at 4 38 37 PM" src="https://github.com/johnwangwyx/cmdCompass/assets/78456315/b709618a-2c40-4c48-887b-b628f3eb4dff">
 
 
