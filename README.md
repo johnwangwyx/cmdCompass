@@ -55,14 +55,21 @@ In case you are wondering, for Windows, you don't need to install groff like Mac
 ## User Guide
 ### GUI breakdown
 Below is a breakdown of the different components and their use cases:
-<img width="787" alt="Screenshot 2024-05-23 at 4 09 58 PM" src="https://github.com/johnwangwyx/cmdCompass/assets/78456315/8f1fcb1d-157e-4578-a58a-eee471a9ffd0">
+<img width="782" alt="Screenshot 2024-05-23 at 4 30 33 PM" src="https://github.com/johnwangwyx/cmdCompass/assets/78456315/53c73dfc-71ea-4d15-84b5-cce480fc7e8c">
+
 
 1. **[Tag Definations]** You can define your tags here with custom colors, and remove existing tags.
-2. **[Collection Management]** You can choose an existing collection to view your command in this collection. Additionally, you can use the add and remove buttons to add a new collection or remove the current selected collection.
-3. **[Command List]** This List contains all your commands within the currently selected collection. You can use the select (`>`) button to view the command in detail in the right penale. Or you can click on the `tag` button to add/remove your existing tags to this command.
-4. **[Command Body]** The full body of your command will be displayed here. You can use the copy button on the right to quickly copy this command to your clipboard. Note the save button will be enabled once you made changes to your command body.
+2. **[Collection Management]** You can choose an existing collection to view your command in this collection. Additionally, you can use the add (<img width="25" alt="Screenshot 2024-05-23 at 4 26 27 PM" src="https://github.com/johnwangwyx/cmdCompass/assets/78456315/d68956d7-5a65-4760-8075-0a672e17be4a">
+) and remove (<img width="25" alt="Screenshot 2024-05-23 at 4 26 53 PM" src="https://github.com/johnwangwyx/cmdCompass/assets/78456315/aafcf589-f098-46f0-b84c-c05b2dbf8bff">) buttons to add a new collection or remove the current selected collection.
+
+3. **[Command List]** This List contains all your commands within the currently selected collection. You can use the select (<img width="20" alt="Screenshot 2024-05-23 at 4 27 27 PM" src="https://github.com/johnwangwyx/cmdCompass/assets/78456315/54acbc4c-a4aa-4112-9716-2c2ec6f22b7c">) button to view the command in detail in the right penale. Or you can click on the <img width="24" alt="Screenshot 2024-05-23 at 4 28 24 PM" src="https://github.com/johnwangwyx/cmdCompass/assets/78456315/dd5a2376-aba9-47f5-aa94-525cb5f47a9f"> button to add/remove your existing tags to this command.
+
+4. **[Command Body]** The full body of your command will be displayed here. You can use the copy (<img width="32" alt="Screenshot 2024-05-23 at 4 31 26 PM" src="https://github.com/johnwangwyx/cmdCompass/assets/78456315/327e3b46-a085-4805-b63c-247acdc9fa9e">) button on the right to copy this command to your clipboard. Note: the save (<img width="31" alt="Screenshot 2024-05-23 at 4 32 14 PM" src="https://github.com/johnwangwyx/cmdCompass/assets/78456315/10513e3f-61e3-482b-90c9-118eadb1d977">)
+button will be enabled once you made changes to your command body.
+
 5. **[Comment Tab]** You can add your comment for the selected command here.
-6. **[Man Page Tab]** The man page of your current command will be displayed here. You can also choose to highlight your command options to view the man pages with your options highlighted.
+6. **[Man Page Tab]** The man page of your current command will be displayed here. You can also choose to highlight your command options (<img width="177" alt="Screenshot 2024-05-23 at 4 32 42 PM" src="https://github.com/johnwangwyx/cmdCompass/assets/78456315/13c77780-254d-4f23-bfed-f1539ef1785f">) to view the man pages with your options highlighted. 
+
 7. **[Theme Switch]** Toggle your theme between day and dark mode.
 
 ### Enabling variable replacement
