@@ -52,6 +52,22 @@ Note: When you open the app for the first time, the Windows Smart Screen will op
 
 In case you are wondering, for Windows, you don't need to install groff like Mac users. Groff is not available natively on Windows anyway but thanks to the project [EZWinPorts](https://www.gnu.org/software/emacs/manual/html_node/efaq-w32/EZWinPorts.html), I have added the groff binary built for Windows to the Windows build.
 
+## User Guide
+### GUI breakdown
+Below is a breakdown of the different components and their use cases:
+<img width="787" alt="Screenshot 2024-05-23 at 4 09 58 PM" src="https://github.com/johnwangwyx/cmdCompass/assets/78456315/8f1fcb1d-157e-4578-a58a-eee471a9ffd0">
+
+1. **[Tag Definations]** You can define your tags here with custom colors, and remove existing tags.
+2. **[Collection Management]** You can choose an existing collection to view your command in this collection. Additionally, you can use the add and remove buttons to add a new collection or remove the current selected collection.
+3. **[Command List]** This List contains all your commands within the currently selected collection. You can use the select (`>`) button to view the command in detail in the right penale. Or you can click on the `tag` button to add/remove your existing tags to this command.
+4. **[Command Body]** The full body of your command will be displayed here. You can use the copy button on the right to quickly copy this command to your clipboard. Note the save button will be enabled once you made changes to your command body.
+5. **[Comment Tab]** You can add your comment for the selected command here.
+6. **[Man Page Tab]** The man page of your current command will be displayed here. You can also choose to highlight your command options to view the man pages with your options highlighted.
+7. **[Theme Switch]** Toggle your theme between day and dark mode.
+
+### Enabling variable replacement
+If you define your command with `{{variable}}`, an input box will be automatically created after the command body window. You can specify as many as you want as long as your variables are enclosed in `{{}}`.
+
 
 ## Contributing
 
