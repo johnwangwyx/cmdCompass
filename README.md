@@ -10,7 +10,8 @@ https://github.com/johnwangwyx/cmdCompass/assets/78456315/a0074ff6-7416-4127-87e
 2. [Screenshots](#screenshots)
 3. [User Installation-Mac](#user-installation---mac)
 4. [User Installation-Windows](#user-installation---windows)
-5. [Contributing](#contributing)
+5. [User Guide](#user-guide)
+6. [Contributing](#contributing)
 
 ## Features
 
@@ -38,9 +39,14 @@ Please install groff by:
 `brew install groff`
 
 ### Step 2: 
-* Download the dmg app installer from [release](https://github.com/johnwangwyx/cmdCompass/releases/tag/v0.9.0). Open the installer and drag the CmdCompass app to your Application folder as usuall.
+* Download the dmg app installer from [release](https://github.com/johnwangwyx/cmdCompass/releases/tag/v0.9.0). Open the installer and drag the CmdCompass app to your Application folder.
+  <img width="300" alt="Screenshot 2024-05-23 at 4 38 37 PM" src="https://github.com/johnwangwyx/cmdCompass/assets/78456315/b709618a-2c40-4c48-887b-b628f3eb4dff">
 
-* **For the first time only, open Application folder on Finder, right click the app and chooss `open`.** (This is to trust app because I am an "unreconized developer" and don't have 99 USD to pay for the [Apple Developer Program](https://developer.apple.com/support/enrollment/#:~:text=Completing%20your%20enrollment&text=The%20Apple%20Developer%20Program%20annual,currency%20during%20the%20enrollment%20process.) to be able to sign a certificate to my app)
+
+* **For the first time only, open the Application folder on Finder, right-click the app and choose `open`.** (This is to trust app because I am an "unreconized developer" and don't have 99 USD to pay for the [Apple Developer Program](https://developer.apple.com/support/enrollment/#:~:text=Completing%20your%20enrollment&text=The%20Apple%20Developer%20Program%20annual,currency%20during%20the%20enrollment%20process.) to be able to sign a certificate to my app)
+  
+  <img width="280" alt="Screenshot 2024-05-23 at 4 40 15 PM" src="https://github.com/johnwangwyx/cmdCompass/assets/78456315/5f043910-c01b-4e3f-832a-2377255c2fb7">
+
 
 ## User Installation - Windows
 * Download the zip or the 7z archive from [release](https://github.com/johnwangwyx/cmdCompass/releases/tag/v0.9.0) and decompress it. You are now ready to use the App (cmdCompass.exe)!
