@@ -55,6 +55,7 @@ class ManPageBox(ctk.CTkFrame):
         self.html_content = ""
         self.html_view.load_html("")
         self.update()
+        self.command = command
         command_str = command.command_str
         if command.user_defined_man_page :
             command_str = command.user_defined_man_page

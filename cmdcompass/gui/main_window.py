@@ -15,25 +15,60 @@ from CTkToolTip import CTkToolTip
 from CTkMessagebox import CTkMessagebox
 import platform
 
+# Configuration Constants
 DEFAULT_BUTTON_COLOR = "blue"
-COMMAND_LIST_FRAME_WIDTH = 240
-if platform.system() == "Windows":
-    COMMAND_LIST_FRAME_WIDTH = 230
+COMMAND_LIST_FRAME_WIDTH = 230 if platform.system() == "Windows" else 240
+
+class GUIConfig:
+    WINDOW_TITLE = "cmdCompass"
+    WINDOW_GEOMETRY = "900x670"
+    DEFAULT_APPEARANCE_MODE = "light"
 
 
 class MainWindow(ctk.CTk):
     def __init__(self):
         super().__init__()
         # Set starting mode to light
-        ctk.set_appearance_mode("light")
-        self.title("cmdCompass")
-        self.geometry("900x670")
+        self.configure_main_window()
 
         # Load data
         self.data_manager = DataManager()
         self.data_manager.load_data()
         self.collections = self.data_manager.get_collections()
 
+        # Create left frame for collection, tag operations, and display command summary.
+        # Create right frame for displaying command detail, supporting variable replacement, and displaying comment and man pages.
+        # Create a placeholder_frame that will be set to cover the right frame if no current command is selected.
+        self.create_left_and_right_penal()
+
+        # Tag operation frame to define and remove tags
+        self.create_tag_operations_frame()
+
+        # Collection operations frame to create, remove, or select a collection
+        self.create_collection_operation_frame()
+
+        # Create scrollable frame for the command list
+        self.command_list_frame = ctk.CTkScrollableFrame(self.left_frame, height=450, width=COMMAND_LIST_FRAME_WIDTH)
+        self.command_list_frame.grid(row=3, column=0, padx=10, pady=10, sticky="nsew")
+        self.command_list_frame.configure(corner_radius=5)
+
+        # Create a theme toggle to toggle between light and dark mode
+        self.theme_toggle_button = ctk.CTkSwitch(
+            self.left_frame,
+            text="Light Mode",
+            command=self.toggle_theme
+        )
+        self.theme_toggle_button.grid(row=4, column=0, padx=10, pady=10, sticky="nsew")
+
+        # Populate the right frame with command body box, utility box, men page box, and comment box
+        self.populate_right_frame()
+
+    def configure_main_window(self):
+        ctk.set_appearance_mode(GUIConfig.DEFAULT_APPEARANCE_MODE)
+        self.title(GUIConfig.WINDOW_TITLE)
+        self.geometry(GUIConfig.WINDOW_GEOMETRY)
+
+    def create_left_and_right_penal(self):
         # Create main frames
         self.left_frame = ctk.CTkFrame(self)
         self.left_frame.pack_propagate(False)
@@ -47,15 +82,33 @@ class MainWindow(ctk.CTk):
         # Layout frames
         self.left_frame.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
         self.right_frame.grid(row=0, column=1, sticky="nsew", padx=3, pady=3)
+
         self.grid_rowconfigure(0, weight=1)
         # Adjust layout weights
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=30)
 
+        # Adjust layout weights for the two pane
+        self.right_frame.grid_rowconfigure(0, weight=0)
+        self.right_frame.grid_rowconfigure(1, weight=0)
+        self.right_frame.grid_rowconfigure(2, weight=1)  # Tab control frame should shrink
+        self.right_frame.grid_columnconfigure(0, weight=3)
+
+        self.left_frame.grid_rowconfigure(1, weight=0) # TagOperation button
+        self.left_frame.grid_rowconfigure(2, weight=0) # collection operations frame
+        self.left_frame.grid_rowconfigure(3, weight=1)  # command_list_frame
+        self.left_frame.grid_rowconfigure(4, weight=0)  # Theme toggle
+
+    def create_collection_operation_frame(self):
+        """
+        Creates a frame within the left panel for managing collection operations.
+        This frame includes a dropdown for selecting a collection, a button to remove the selected collection,
+        and a button to add a new collection. The frame is integrated with functionality to handle
+        collection selection, addition, and removal through user interactions with the buttons.
+        """
         # Collection operations frame
         self.collection_operation_frame = ctk.CTkFrame(self.left_frame)
-        self.collection_operation_frame.grid(row=2, column=0, padx=10, pady=(10,0), sticky="ew")
-
+        self.collection_operation_frame.grid(row=2, column=0, padx=10, pady=(10, 0), sticky="ew")
 
         collections = [collection.name for collection in self.collections]
         # Collection dropdown (within collection_operation_frame)
@@ -97,6 +150,11 @@ class MainWindow(ctk.CTk):
         self.add_collection_button.pack(side=ctk.LEFT, padx=(0, 5), pady=10)
         CTkToolTip(self.add_collection_button, message="Add New Collection")
 
+    def create_tag_operations_frame(self):
+        """
+        Creates a frame within the left panel for tag operations.
+        This frame includes a button that opens a new window for defining or removing tags.
+        """
         # Tag Operations Frame
         tag_operations_frame = ctk.CTkFrame(self.left_frame)
         tag_operations_frame.grid(row=1, column=0, padx=10, pady=10, sticky="ew")
@@ -109,32 +167,27 @@ class MainWindow(ctk.CTk):
         )
         tag_operations_button.pack(pady=5, padx=10)
         CTkToolTip(tag_operations_button, message="Define/Remove Tags here to be later assigned to commands")
+        # Create TagOperation instance
+        self.tag_operation = TagOperation(self, self.data_manager)
 
-        # Create scrollable frame for the command list
-        self.command_list_frame = ctk.CTkScrollableFrame(self.left_frame, height=450, width=COMMAND_LIST_FRAME_WIDTH)
-        self.command_list_frame.grid(row=3, column=0, padx=10, pady=10, sticky="nsew")
 
-        # Configure scrolling behavior
-        self.command_list_frame.configure(corner_radius=5)
-
-        self.theme_toggle_button = ctk.CTkSwitch(
-            self.left_frame,
-            text="Light Mode",
-            command=self.toggle_theme
-        )
-        self.theme_toggle_button.grid(row=4, column=0, padx=10, pady=10, sticky="nsew")
-
-        # Right Pane Boxes
+    def populate_right_frame(self):
+        """
+        Populates the right panel of the main window with various interactive components related to command handling.
+        This includes a command body box, utility box for dynamic variable replacement, and a tab control frame
+        for switching between the comment box and man page box.
+        """
+        # command body box
         self.command_body_box = CommandBodyBox(self.right_frame, self)
         self.command_body_box.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
 
+        # Utility box used for dynamic variable replacement
         self.utility_box = UtilityBox(self.right_frame)
         self.utility_box.grid(row=1, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")
 
-        # Tab Control Frame
+        # Tab Control Frame (used to switch between comment and man page)
         self.tab_control_frame = ctk.CTkFrame(self.right_frame)
         self.tab_control_frame.grid(row=2, column=0, columnspan=2, padx=10, pady=0, sticky="ew")
-
         # Tab Buttons
         self.comment_tab_button = ctk.CTkButton(self.tab_control_frame, text="Comment",
                                                 command=lambda: self.switch_tab("comment"), height=20)
@@ -144,9 +197,10 @@ class MainWindow(ctk.CTk):
         self.man_page_tab_button.grid(row=0, column=1, padx=10, pady=(10, 0), sticky="nsew")
         CTkToolTip(self.comment_tab_button, message="Switch to the Comment Tab")
         CTkToolTip(self.man_page_tab_button, message="Switch to the Man Page Tab")
+
+        # Store the current color to be able to re-apply it later
         global DEFAULT_BUTTON_COLOR
         DEFAULT_BUTTON_COLOR = self.man_page_tab_button._fg_color[0]
-        print(DEFAULT_BUTTON_COLOR)
 
         # Comment Box
         self.comment_box = CommentBox(self.tab_control_frame, self)
@@ -158,22 +212,8 @@ class MainWindow(ctk.CTk):
         self.tab_control_frame.columnconfigure(0, weight=1)
         self.tab_control_frame.columnconfigure(1, weight=1)
 
-        # Adjust layout weights for the two pane
-        self.right_frame.grid_rowconfigure(0, weight=0)
-        self.right_frame.grid_rowconfigure(1, weight=0)
-        self.right_frame.grid_rowconfigure(2, weight=1)  # Tab control frame should shrink
-        self.right_frame.grid_columnconfigure(0, weight=3)
-
-        self.left_frame.grid_rowconfigure(1, weight=0) # TagOperation button
-        self.left_frame.grid_rowconfigure(2, weight=0) # collection operations frame
-        self.left_frame.grid_rowconfigure(3, weight=1)  # command_list_frame
-        self.left_frame.grid_rowconfigure(4, weight=0)  # Theme toggle
-
         self.active_tab = "comment"  # Set the initial active tab
         self.switch_tab("comment")
-
-        # Create TagOperation instance
-        self.tag_operation = TagOperation(self, self.data_manager)
 
     def switch_tab(self, tab_name):
         if tab_name == "comment":
