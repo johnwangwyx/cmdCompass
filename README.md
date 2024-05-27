@@ -19,7 +19,7 @@ https://github.com/johnwangwyx/cmdCompass/assets/78456315/a0074ff6-7416-4127-87e
 * **Command Templates:** Define commands with {{variables}} for dynamic replacement.
 * **Man (Manual) Page Integration:** View man pages directly within the app. Support automatic Highlighting for your command options.
 * **Dark/Light Mode:** Choose your preferred theme.
-* **Cross-Platform:** Works on Windows, and macOS. (Linux support will be added by May 26th)
+* **Cross-Platform:** Works on Windows, and macOS. (Linux support will be added by ~May 26th~ June 2nd)
 
 ## Screenshots
 ![image](https://github.com/johnwangwyx/cmdCompass/assets/78456315/e6010159-84a5-4fbf-a9c8-d614be41ce43)
