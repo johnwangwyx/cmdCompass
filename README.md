@@ -11,6 +11,7 @@ https://github.com/johnwangwyx/cmdCompass/assets/78456315/a0074ff6-7416-4127-87e
 3. [User Installation-Mac](#user-installation---mac)
 4. [User Installation-Windows](#user-installation---windows)
 5. [User Guide](#user-guide)
+6. [Contributing](#contributing)
 
 ## Features
 
@@ -81,3 +82,8 @@ button will be enabled once you made changes to your command body.
 ### Enabling variable replacement
 If you define your command with `{{variable}}`, an input box will be automatically created after the command body window. You can specify as many as you want as long as your variables are enclosed in `{{}}`.
 
+## Contributing
+
+Contributions are welcome! Please feel free to open issues or submit pull requests. The tool is still in early stage so please bear with me. :)
+
+Please read [CONTRIBUTING.md](/CONTRIBUTING.md) for the project structure and workflows.

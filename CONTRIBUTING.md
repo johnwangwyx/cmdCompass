@@ -1,7 +1,5 @@
 ## Contributing
 
-Contributions are welcome! Please feel free to open issues or submit pull requests. The tool is still in early stage so please bear with me. :)
-
 ### Project Structure & file description
 The project is structured as follows:
 ```
