@@ -30,6 +30,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
+    - name: Find customtkinter path
+      id: find_path
+      run: |
+        path=$(python -c "import customtkinter; import os; print(os.path.dirname(customtkinter.__file__))")
+        echo "CUSTOMTKINTER_PATH=$path" >> $GITHUB_ENV
+
     - name: Build the executable with PyInstaller
       run: |
         SITE_PACKAGES=$(python -m site --user-site)
@@ -37,7 +43,7 @@ jobs:
         --add-data "./cmdcompass/data/man_pages:data" \
         --add-data "./cmdcompass/data/man_pages_kv.db:data" \
         --add-data "./cmdcompass/static:static" \
-        --add-data "$SITE_PACKAGES/customtkinter:customtkinter" \
+        --add-data "${{ env.CUSTOMTKINTER_PATH }}/customtkinter:customtkinter" \
         --collect-all "tkinterweb" \
         --hidden-import="PIL._tkinter_finder" \
         --distpath "./dist" \
