@@ -1,0 +1,68 @@
+name: Build Application with PyInstaller on Linux
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      name: Check out the repository code
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y python3-pil.imagetk python3-tk
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Find customtkinter path
+      id: find_path
+      run: |
+        path=$(python -c "import customtkinter; import os; print(os.path.dirname(customtkinter.__file__))")
+        echo "CUSTOMTKINTER_PATH=$path" >> $GITHUB_ENV
+
+    - name: Build the executable with PyInstaller
+      run: |
+        SITE_PACKAGES=$(python -m site --user-site)
+        pyinstaller --noconfirm --onedir --windowed --icon "./cmdcompass/static/icon.ico" --name "cmdCompass" \
+        --add-data "./cmdcompass/data/man_pages:data" \
+        --add-data "./cmdcompass/data/man_pages_kv.db:data" \
+        --add-data "./cmdcompass/static:static" \
+        --add-data "${{ env.CUSTOMTKINTER_PATH }}:customtkinter" \
+        --collect-all "tkinterweb" \
+        --hidden-import="PIL._tkinter_finder" \
+        --distpath "./dist" \
+        "./cmdcompass/main.py"
+
+    - name: Delay for filesystem
+      run: sleep 15
+
+    - name: Move internal data and static directories
+      run: |
+        mv ./dist/cmdCompass/_internal/data dist/cmdCompass/
+        mv ./dist/cmdCompass/_internal/static dist/cmdCompass/
+
+    - name: Create tar.gz Archive
+      run: |
+        tar -czvf dist/cmdCompass.tar.gz -C dist cmdCompass
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: cmdCompass-artifacts
+        path: dist/cmdCompass.tar.gz
