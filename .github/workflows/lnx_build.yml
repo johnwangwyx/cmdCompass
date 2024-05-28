@@ -39,7 +39,7 @@ jobs:
     - name: Build the executable with PyInstaller
       run: |
         SITE_PACKAGES=$(python -m site --user-site)
-        pyinstaller --noconfirm --onedir --windowed --icon "./cmdcompass/static/icon.ico" --name "CmdCompass" \
+        pyinstaller --noconfirm --onedir --windowed --icon "./cmdcompass/static/icon.ico" --name "cmdCompass" \
         --add-data "./cmdcompass/data/man_pages:data" \
         --add-data "./cmdcompass/data/man_pages_kv.db:data" \
         --add-data "./cmdcompass/static:static" \
@@ -54,8 +54,8 @@ jobs:
 
     - name: Move internal data and static directories
       run: |
-        mv ./dist/CmdCompass/_internal/data dist/cmdCompass/
-        mv ./dist/CmdCompass/_internal/static dist/cmdCompass/
+        mv ./dist/cmdCompass/_internal/data dist/cmdCompass/
+        mv ./dist/cmdCompass/_internal/static dist/cmdCompass/
 
     - name: Create tar.gz Archive
       run: |
