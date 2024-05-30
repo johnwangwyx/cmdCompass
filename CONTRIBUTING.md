@@ -41,6 +41,9 @@ cmdCompass/
     ├── __init__.py
     └── utils.py  # Contains utility functions for various tasks.
 ```
+### Main GUI Classes Breakdown
+<img width="703" alt="Screenshot 2024-05-30 at 3 05 12 PM" src="https://github.com/johnwangwyx/cmdCompass/assets/78456315/99e2d354-18ca-4564-a483-c273309fa23b">
+
 ### Customtkinter
 The application utilizes the [customtkinter](https://github.com/TomSchimansky/CustomTkinter) library, a modern and visually appealing toolkit for creating graphical user interfaces (GUIs) with Python. 
 CustomTkinter provides a set of themed widgets that are designed to look modern and consistent across different operating systems.
