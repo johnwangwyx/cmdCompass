@@ -1,5 +1,10 @@
 ## Contributing
 
+### Contributing Steps
+1. **Fork the repository**: Click the "Fork" button in the top-right corner of the repository page.
+2. **Clone your fork and make changes to it**.
+3. **Open a pull request**: On GitHub, go to your forked repository, select your branch, and click the "New pull request" button.
+
 ### Project Structure & file description
 The project is structured as follows:
 ```
@@ -41,15 +46,23 @@ cmdCompass/
     ├── __init__.py
     └── utils.py  # Contains utility functions for various tasks.
 ```
+### Development Environment
+Set up Python environment by:
+```
+pip install -r requirements.txt
+```
+For Mac users, you will want to have `groof` installed to be able to convert man pages to HTML. Please install `groff` by:
+```
+brew install groff
+```
+You can then run `main.py` from the `cmdcompass` directory to start the program in your IDE.
+
 ### Main GUI Classes Breakdown
 <img width="703" alt="Screenshot 2024-05-30 at 3 05 12 PM" src="https://github.com/johnwangwyx/cmdCompass/assets/78456315/99e2d354-18ca-4564-a483-c273309fa23b">
 
 ### Customtkinter
 The application utilizes the [customtkinter](https://github.com/TomSchimansky/CustomTkinter) library, a modern and visually appealing toolkit for creating graphical user interfaces (GUIs) with Python. 
 CustomTkinter provides a set of themed widgets that are designed to look modern and consistent across different operating systems.
-
-### Main Application Entry Point (main.py)
-The main entry point for the application is the `cmdcompass/main.py` file. This file initializes the MainWindow class, which is responsible for setting up the entire user interface (UI) of the application. 
 
 ### Man Page Loading Process
 Below are the steps that cmdCompass retrieves the package containing the man page, downloads the package, extract it, and convert the man page to HTML.
