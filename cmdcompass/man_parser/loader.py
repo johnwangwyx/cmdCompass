@@ -91,14 +91,13 @@ def move_and_clean_man_pages(package_name, extract_to, man_dest_folder):
                     # Not what we are looking for
                     if os.path.basename(dst_file).split('.')[0] != package_name:
                         continue
-                    if not os.path.exists(dst_file):
-                        # Decompress and move
-                        with gzip.open(src_file, 'rb') as f_in:
-                            with open(dst_file, 'wb') as f_out:
-                                shutil.copyfileobj(f_in, f_out)
-                        print(f"Decompressed and moved {src_file} to {dst_file}")
-                        os.remove(src_file)
-                        found_page = dst_file
+                    # Decompress and move
+                    with gzip.open(src_file, 'rb') as f_in:
+                        with open(dst_file, 'wb') as f_out:
+                            shutil.copyfileobj(f_in, f_out)
+                    print(f"Decompressed and moved {src_file} to {dst_file}")
+                    os.remove(src_file)
+                    found_page = dst_file
 
     # Clean up the entire extracted directory structure
     shutil.rmtree(extract_to)

@@ -8,7 +8,7 @@
 * CommentBox and CommandBodyBox no longer cut off words when starting a new line.
 
 ### DEBUGGED
-
+* Fix failure to load html page when man page exist but html file missing.
 
 ## Version 0.9.0 (Beta)
 
