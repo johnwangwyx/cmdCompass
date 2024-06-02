@@ -1,3 +1,15 @@
+## Version 1.0.0
+### ADDED
+* Add GitHub action for Linux build.
+
+### CHANGED
+* GUI improvements for maintaining similar layout across platforms.
+* Refactor main window code to make them more readable and maintainable.
+* CommentBox and CommandBodyBox no longer cut off words when starting a new line.
+
+### DEBUGGED
+
+
 ## Version 0.9.0 (Beta)
 
 ### ADDED
@@ -8,7 +20,7 @@
 ### CHANGED
 * GUI improvements.
 * Reset man page to empty for each load.
-* Refactor main window code to make them more readable and maintainable.
+
 
 ### DEBUGGED
 * Fix command heightening unable to highlight `&minus;` (a way to represent `-` in html).

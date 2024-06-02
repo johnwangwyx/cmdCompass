@@ -8,7 +8,7 @@ class CommentBox(ctk.CTkFrame):
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
 
-        self.comment_textbox = ctk.CTkTextbox(self, height=350)
+        self.comment_textbox = ctk.CTkTextbox(self, height=350, wrap='word')
         self.comment_textbox.grid(row=0, column=0, padx=0, pady=0, sticky="nsew")
 
         self.save_button = ctk.CTkButton(self, image=load_ctk_image("save.png"), text="", command=self.save_comment, width=20)

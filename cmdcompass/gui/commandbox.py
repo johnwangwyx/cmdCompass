@@ -2,9 +2,9 @@ import customtkinter as ctk
 import tkinter.font as tkFont
 import platform
 
-COMMAND_LABLE_WIDTH = 200
-if platform.system() == "Windows":
-    COMMAND_LABLE_WIDTH = 210
+COMMAND_LABLE_WIDTH = 210
+if platform.system() == "Darwin":
+    COMMAND_LABLE_WIDTH = 195
 
 class TagBox(ctk.CTkFrame):
     def __init__(self, master, tags, command, main_window,**kwargs):

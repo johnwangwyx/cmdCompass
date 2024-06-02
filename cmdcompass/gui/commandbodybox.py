@@ -9,7 +9,7 @@ class CommandBodyBox(ctk.CTkFrame):
         self.grid_rowconfigure(0, weight=1)  # Make the textbox row expandable
         self.grid_columnconfigure(0, weight=1)  # Make the textbox column expandable
 
-        self.command_textbox = ctk.CTkTextbox(self, height=100)
+        self.command_textbox = ctk.CTkTextbox(self, height=100, wrap='word')
         self.command_textbox.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
 
         # Copy button

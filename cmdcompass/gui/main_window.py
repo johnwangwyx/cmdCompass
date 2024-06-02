@@ -17,7 +17,7 @@ import platform
 
 # Configuration Constants
 DEFAULT_BUTTON_COLOR = "blue"
-COMMAND_LIST_FRAME_WIDTH = 230 if platform.system() == "Windows" else 240
+COMMAND_LIST_FRAME_WIDTH = 245 if platform.system() == "Darwin" else 230
 
 class GUIConfig:
     WINDOW_TITLE = "cmdCompass"
