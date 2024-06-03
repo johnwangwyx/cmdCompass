@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from tkinterweb import HtmlFrame
 import os
+import platform
 from cmdcompass.utils.utils import get_command_name, highlight_options, get_data_and_static_parent_dir
 from cmdcompass.man_parser.loader import download_and_process_package
 from cmdcompass.man_parser.html_coverter import OUTPUT_DIR
@@ -16,6 +17,7 @@ else:
     BASE_DIR = "."
 HTML_CORE_DIR = os.path.join(BASE_DIR, 'data', 'man_pages', 'html_core')
 DB_PATH = os.path.join(BASE_DIR, 'data', 'man_pages_kv.db')
+HTML_FRAME_HEIGHT = 420 if platform.system() == "Windows" else 370
 
 
 class ManPageBox(ctk.CTkFrame):
@@ -24,7 +26,7 @@ class ManPageBox(ctk.CTkFrame):
         self.main_window = main_window
         self.grid_rowconfigure(1, weight=1)
         self.grid_columnconfigure(0, weight=1)
-        self.html_view = HtmlFrame(self, height=370)
+        self.html_view = HtmlFrame(self, height=HTML_FRAME_HEIGHT)
         self.html_view.grid(row=1, column=0, columnspan=2, sticky="nsew")
         self.html_view.grid_propagate(0)
         self.capture_original_scroll_bar_style()
