@@ -6,20 +6,12 @@ https://github.com/johnwangwyx/cmdCompass/assets/78456315/a0074ff6-7416-4127-87e
 
 
 # Table of Contents
-1. [Features](#features)
-2. [Screenshots](#screenshots)
-3. [User Installation-Mac](#user-installation---mac)
-4. [User Installation-Windows](#user-installation---windows)
+1. [Screenshots](#screenshots)
+2. [User Installation-Mac](#user-installation---mac)
+3. [User Installation-Windows](#user-installation---windows)
+4. [User Installation-Linux](#user-installation---linux)
 5. [User Guide](#user-guide)
 6. [Contributing](#contributing)
-
-## Features
-
-* **Collections, Tags, Comments:** Group related commands into collections for easy access, categorize commands using tags with customizable colors, and add notes and descriptions to commands for better understanding.
-* **Command Templates:** Define commands with {{variables}} for dynamic replacement.
-* **Man (Manual) Page Integration:** View man pages directly within the app. Support automatic Highlighting for your command options.
-* **Dark/Light Mode:** Choose your preferred theme.
-* **Cross-Platform:** Works on Windows, and macOS. (Linux support will be added by ~May 26th~ June 2nd)
 
 ## Screenshots
 ![image](https://github.com/johnwangwyx/cmdCompass/assets/78456315/e6010159-84a5-4fbf-a9c8-d614be41ce43)
@@ -39,7 +31,7 @@ Please install groff by:
 `brew install groff`
 
 ### Step 2: 
-* Download the dmg app installer from [release](https://github.com/johnwangwyx/cmdCompass/releases/tag/v0.9.0). Open the installer and drag the CmdCompass app to your Application folder.
+* Download the dmg app installer from [release](https://github.com/johnwangwyx/cmdCompass/releases/tag/v1.0.0). Open the installer and drag the CmdCompass app to your Application folder.
   
   <img width="300" alt="Screenshot 2024-05-23 at 4 38 37 PM" src="https://github.com/johnwangwyx/cmdCompass/assets/78456315/b709618a-2c40-4c48-887b-b628f3eb4dff">
 
@@ -50,7 +42,7 @@ Please install groff by:
 
 
 ## User Installation - Windows
-* Download the zip or the 7z archive from [release](https://github.com/johnwangwyx/cmdCompass/releases/tag/v0.9.0) and decompress it. You are now ready to use the App (cmdCompass.exe)!
+* Download the zip or the 7z archive from [release](https://github.com/johnwangwyx/cmdCompass/releases/tag/v1.0.0) and decompress it. You are now ready to use the App (cmdCompass.exe)!
   
 Note: When you open the app for the first time, the Windows Smart Screen will open, Windows will block the app because it is an "unreconized app". You have to click on `More Info` and then a button will show up for you to open the app. (The App remain unreconized unless I pay $$$ to get a [certificate](https://www.reddit.com/r/electronjs/comments/17sizjf/a_guide_to_code_signing_certificates_for_the/) to sign my app)
 
@@ -58,6 +50,10 @@ Note: When you open the app for the first time, the Windows Smart Screen will op
 <img src="https://github.com/johnwangwyx/cmdCompass/assets/78456315/020caeda-0dce-4975-b986-5d04c7eab8d8" width="400">
 
 In case you are wondering, for Windows, you don't need to install groff like Mac users. Groff is not available natively on Windows anyway but thanks to the project [EZWinPorts](https://www.gnu.org/software/emacs/manual/html_node/efaq-w32/EZWinPorts.html), I have added the groff binary built for Windows to the Windows build.
+
+## User Installation - Linux
+* Install `groff` with your package manager.
+* Download and decompress the app from [release](https://github.com/johnwangwyx/cmdCompass/releases/tag/v1.0.0). You can just right-click and run the `cmdCompass` executable with `GNOME` or run with `./cmdCompass` in terminal.
 
 ## User Guide
 ### GUI breakdown
