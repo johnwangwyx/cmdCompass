@@ -1,8 +1,7 @@
 # CmdCompass: Your Command-Line Compass
 <img src="https://github.com/johnwangwyx/cmdCompass/assets/78456315/2c58004e-4d2f-4982-bda3-ed53ad6d7c79" height="150">
 
-https://github.com/johnwangwyx/cmdCompass/assets/78456315/a0074ff6-7416-4127-87e7-0b8958e72c99
-
+https://github.com/johnwangwyx/cmdCompass/assets/78456315/8e5a3321-6680-4857-a782-5e337547bacf
 
 
 # Table of Contents
