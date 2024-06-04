@@ -9,7 +9,7 @@ https://github.com/johnwangwyx/cmdCompass/assets/78456315/a0074ff6-7416-4127-87e
 1. [Screenshots](#screenshots)
 2. [User Installation-Mac](#user-installation---mac)
 3. [User Installation-Windows](#user-installation---windows)
-4. [User Installation-Linux](#user-installation---linux)
+4. [User Installation-Linux & Distro Compatibility](#user-installation---linux)
 5. [User Guide](#user-guide)
 6. [Contributing](#contributing)
 
@@ -49,11 +49,17 @@ Note: When you open the app for the first time, the Windows Smart Screen will op
 <img src="https://github.com/johnwangwyx/cmdCompass/assets/78456315/db4f526c-3008-4c9f-b020-d98c715b964c" width="400">
 <img src="https://github.com/johnwangwyx/cmdCompass/assets/78456315/020caeda-0dce-4975-b986-5d04c7eab8d8" width="400">
 
-In case you are wondering, for Windows, you don't need to install groff like Mac users. Groff is not available natively on Windows anyway but thanks to the project [EZWinPorts](https://www.gnu.org/software/emacs/manual/html_node/efaq-w32/EZWinPorts.html), I have added the groff binary built for Windows to the Windows build.
+In case you are wondering, for Windows, you don't need to install `groff` like Mac users. Groff is not available natively on Windows anyway but thanks to the project [EZWinPorts](https://www.gnu.org/software/emacs/manual/html_node/efaq-w32/EZWinPorts.html), I have added the groff binary built for Windows to the Windows build.
 
 ## User Installation - Linux
 * Install `groff` with your package manager.
+**Note on Debian or Ubuntu, even with `groff` already installed, you may likely need to run `sudo apt install groff` again as the pre-installed version is unable to convert to HTML documents, resulting in empty man HTML pages being displayed**
 * Download and decompress the app from [release](https://github.com/johnwangwyx/cmdCompass/releases/tag/v1.0.0). You can just right-click and run the `cmdCompass` executable with `GNOME` or run with `./cmdCompass` in terminal.
+
+Below distros are tested:
+- [x] Ubuntu 24.04 with GNOME
+- [x] Debian 12.5.0 with GNOME
+- [x] CentOS-Stream-9 with GNOME
 
 ## User Guide
 ### GUI breakdown
