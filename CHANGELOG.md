@@ -1,3 +1,7 @@
+## Version 1.0.1
+### DEBUGGED
+* Fix failure to view command for newly created collections.
+
 ## Version 1.0.0
 ### ADDED
 * Add GitHub action for Linux build.

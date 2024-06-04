@@ -285,6 +285,7 @@ class MainWindow(ctk.CTk):
                 new_collection = Collection(name=collection_name, commands=[])
                 # Add the collection using the DataManager
                 self.data_manager.add_collection(new_collection)
+                self.collections = self.data_manager.get_collections()
                 # Update the collection dropdown
                 self.collection_dropdown.configure(values=[c.name for c in self.data_manager.get_collections()])
                 self.collection_dropdown.set(collection_name)
