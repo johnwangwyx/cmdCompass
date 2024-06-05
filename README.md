@@ -1,4 +1,4 @@
-# CmdCompass: Your Command-Line Compass
+# CmdCompass: Collect, Learn, and Recall All Your Terminal Commands
 <img src="https://github.com/johnwangwyx/cmdCompass/assets/78456315/2c58004e-4d2f-4982-bda3-ed53ad6d7c79" height="150">
 
 https://github.com/johnwangwyx/cmdCompass/assets/78456315/8e5a3321-6680-4857-a782-5e337547bacf
