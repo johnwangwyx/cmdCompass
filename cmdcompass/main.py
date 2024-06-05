@@ -1,8 +1,14 @@
+import os
+import sys
+
+path_to_add = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+if path_to_add not in sys.path:
+    sys.path.insert(0, path_to_add)
+
+import platform
 from cmdcompass.gui.main_window import MainWindow
 from cmdcompass.utils.utils import get_data_and_static_parent_dir, copy_data_and_static_to_app_support_dir
-import os
-import platform
-import sys
+
 
 if __name__ == "__main__":
     if getattr(sys, 'frozen', False) and platform.system() == "Darwin":

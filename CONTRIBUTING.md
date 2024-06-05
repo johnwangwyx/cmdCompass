@@ -55,7 +55,8 @@ For Mac users, you will want to have `groof` installed to be able to convert man
 ```
 brew install groff
 ```
-You can then run `main.py` from the `cmdcompass` directory to start the program in your IDE.
+### Run From Local Env 
+Run `cmdcompass\main.py` from its current directory to start the program.
 
 ### Main GUI Classes Breakdown
 <img width="703" alt="Screenshot 2024-05-30 at 3 05 12 PM" src="https://github.com/johnwangwyx/cmdCompass/assets/78456315/99e2d354-18ca-4564-a483-c273309fa23b">
