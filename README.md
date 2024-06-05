@@ -59,6 +59,7 @@ Below distros are tested:
 - [x] Ubuntu 24.04 with GNOME
 - [x] Debian 12.5.0 with GNOME
 - [x] CentOS-Stream-9 with GNOME
+- [x] Arch 2024.5.01 with DNOME
 
 ## User Guide
 ### GUI breakdown
