@@ -1,3 +1,10 @@
+## Version 1.1.0
+### ADDED
+* Auto save command on new event (opening a man page, switch to other command or collection)
+
+### CHANGED
+* Command save button is now orange when command is modified to hint user.
+
 ## Version 1.0.1
 ### DEBUGGED
 * Fix failure to view command for newly created collections.

@@ -17,9 +17,9 @@ class CommandBodyBox(ctk.CTkFrame):
         self.copy_button.grid(row=0, column=1, padx=(0, 5), pady=10, sticky = "ns")
 
         # Save button
-        self.save_button = ctk.CTkButton(self, image=load_ctk_image("save.png"), text="", command=self.save_command, width=20)
+        self.save_button = ctk.CTkButton(self, image=load_ctk_image("save.png"), text="", command=self.save_command, width=20, fg_color="orange")
         self.save_button.grid(row=0, column=2, padx=(0, 5), pady=10, sticky="ns")
-        self.default_color = self.save_button._fg_color[0]
+        self.default_color = "orange"
         self.save_button.configure(state="disabled", fg_color="gray")
 
         # Bind text modification event
@@ -41,19 +41,20 @@ class CommandBodyBox(ctk.CTkFrame):
             self.command_textbox.insert(ctk.END, "")  # Clear if no command
         self.save_button.configure(state="disabled", fg_color="gray")
 
-    def save_command(self):
-        if self.main_window.selected_command:
+    def save_command(self, save_only=False):
+        if hasattr(self.main_window, "selected_command") and self.main_window.selected_command:
             new_command_str = self.command_textbox.get("1.0", "end-1c")
             new_command_str = new_command_str.replace('\u2212', '-')  # Minus sign should be dash
             self.main_window.selected_command.command_str = new_command_str
             if '\u2212' in self.command_textbox.get("1.0", "end-1c"):
                 self.set_command(self.main_window.selected_command)
             self.main_window.data_manager.save_data()
-            self.save_button.configure(state="disabled", fg_color="gray")
             self.main_window.refresh_command_list()  # Refresh the command list
-            self.main_window.utility_box.set_command(self.main_window.selected_command)
-            if self.main_window.active_tab == "man_page":
-                self.main_window.man_page_box.set_man_page(self.main_window.selected_command)
+            if not save_only:
+                self.save_button.configure(state="disabled", fg_color="gray")
+                self.main_window.utility_box.set_command(self.main_window.selected_command)
+                if self.main_window.active_tab == "man_page":
+                    self.main_window.man_page_box.set_man_page(self.main_window.selected_command)
 
     def copy_command(self):
         command_str = self.command_textbox.get("1.0", "end-1c")

@@ -216,6 +216,9 @@ class MainWindow(ctk.CTk):
         self.switch_tab("comment")
 
     def switch_tab(self, tab_name):
+        # Auto save previous command
+        if hasattr(self, 'command_body_box'):
+            self.command_body_box.save_command(save_only=True)
         if tab_name == "comment":
             self.comment_box.grid(row=1, column=0, columnspan=2, padx=10, pady=3, sticky="nsew")
             self.man_page_box.grid_forget()
@@ -263,6 +266,10 @@ class MainWindow(ctk.CTk):
         self.tag_operation.open_add_tag_window(command)
 
     def on_collection_select(self, choice):
+        # Auto save previous command
+        if hasattr(self, 'command_body_box'):
+            self.command_body_box.save_command(save_only=True)
+
         selected_collection = self.data_manager.get_collection(choice)
         if selected_collection:
             self.update_command_list(selected_collection.commands)
@@ -290,6 +297,9 @@ class MainWindow(ctk.CTk):
                 self.collection_dropdown.configure(values=[c.name for c in self.data_manager.get_collections()])
                 self.collection_dropdown.set(collection_name)
                 self.on_collection_select(collection_name)
+
+        # Add a placeholder command
+        self.add_new_command()
 
     def on_remove_collection_click(self):
         selected_collection_name = self.collection_dropdown.get()
@@ -346,6 +356,10 @@ class MainWindow(ctk.CTk):
             # Update the data manager
             self.data_manager.save_data()
 
+            # Auto save previous command
+            if hasattr(self, 'command_body_box'):
+                self.command_body_box.save_command(save_only=True)
+
             # Refresh the command list UI
             self.refresh_command_list()
 
@@ -365,6 +379,10 @@ class MainWindow(ctk.CTk):
         self.man_page_box.change_theme()
 
     def on_command_select(self, command_index):
+        # Auto save previous command
+        if hasattr(self, 'command_body_box'):
+            self.command_body_box.save_command(save_only=True)
+
         selected_collection_name = self.collection_dropdown.get()
         for i, collection in enumerate(self.collections):
             if collection.name == selected_collection_name:
