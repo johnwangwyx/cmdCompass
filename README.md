@@ -13,8 +13,12 @@ https://github.com/johnwangwyx/cmdCompass/assets/78456315/8e5a3321-6680-4857-a78
 6. [Contributing](#contributing)
 
 ## Screenshots
-![image](https://github.com/johnwangwyx/cmdCompass/assets/78456315/e6010159-84a5-4fbf-a9c8-d614be41ce43)
-![image](https://github.com/johnwangwyx/cmdCompass/assets/78456315/c179fb52-c970-483a-88c0-944cba6ccff8)
+<img src="https://github.com/johnwangwyx/cmdCompass/assets/78456315/5b8d24b2-8627-47ca-ba05-c3919830226b" width="700">
+
+#### View Manual Page with Option Highlighting
+<img src="https://github.com/johnwangwyx/cmdCompass/assets/78456315/ed3f7706-a1a0-4430-85d4-521fe2dfd7b1" width="700">
+
+
 
 ### Support 1000+ Cached Core Utility Man pages for instant Lookup. (With the ability to get ~90000 Man pages from ~60000 packages from download and converted to HTML)
 
