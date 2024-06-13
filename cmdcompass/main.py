@@ -1,3 +1,6 @@
+'''
+Plese Run under cmdCompass\cmdcompass directory for local development.
+'''
 import os
 import sys
 

@@ -50,8 +50,8 @@ class CommandBodyBox(ctk.CTkFrame):
                 self.set_command(self.main_window.selected_command)
             self.main_window.data_manager.save_data()
             self.main_window.refresh_command_list()  # Refresh the command list
+            self.save_button.configure(state="disabled", fg_color="gray")
             if not save_only:
-                self.save_button.configure(state="disabled", fg_color="gray")
                 self.main_window.utility_box.set_command(self.main_window.selected_command)
                 if self.main_window.active_tab == "man_page":
                     self.main_window.man_page_box.set_man_page(self.main_window.selected_command)
