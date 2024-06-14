@@ -50,6 +50,8 @@ jobs:
         Move-Item .\dist\cmdCompass\_internal\data .\dist\cmdCompass\data
         Move-Item .\dist\cmdCompass\_internal\static .\dist\cmdCompass\static
         New-Item -ItemType Directory -Force -Path .\release
+        Remove-Item -Recurse -Force .\dist\cmdCompass\_internal\tkinterweb\tkhtml\Darwin
+        Remove-Item -Recurse -Force .\dist\cmdCompass\_internal\tkinterweb\tkhtml\Linux
 
     - name: Create zip Archive
       run: |
@@ -57,7 +59,7 @@ jobs:
 
     - name: Create 7z Archive
       run: |
-        7z a -t7z -mx1 .\release\cmdCompass.7z .\dist\cmdCompass\*
+        7z a .\release\cmdCompass.7z .\dist\cmdCompass\*
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v3
