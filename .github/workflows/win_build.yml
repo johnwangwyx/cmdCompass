@@ -3,10 +3,10 @@ name: Build Application with PyInstaller on Windows
 on:
   push:
     branches:
-      - main
+      - fix-7z-github-action
   pull_request:
     branches:
-      - main
+      - fix-7z-github-action
 
 jobs:
   build:
@@ -57,7 +57,7 @@ jobs:
 
     - name: Create 7z Archive
       run: |
-        7z a .\release\cmdCompass.7z .\dist\cmdCompass\*
+        7z a -t7z -mx1 .\release\cmdCompass.7z .\dist\cmdCompass\*
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v3
