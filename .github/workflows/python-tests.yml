@@ -1,0 +1,42 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+
+name: Python Tests
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  example_matrix:
+      strategy:
+        matrix:
+          os:
+            - ubuntu-latest
+            - macos-latest
+            - windows-latest
+    
+      runs-on: ${{ matrix.os }}
+      steps:
+        - uses: actions/checkout@v4
+        - name: Setup Python
+          uses: actions/setup-python@v4
+          with:
+            python-version: '3.x'
+            architecture: 'x64'
+            cache: 'pip'
+        - name: Instal Dependencies
+          run: |
+            python -m pip install --upgrade pip
+            pip install -r requirements.txt
+        - name: Run tests
+        - run: |
+            python -m unittest discover -s "./test" -t "./"
+          
+        
+          
