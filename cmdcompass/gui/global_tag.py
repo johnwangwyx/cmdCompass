@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from cmdcompass.models.tag import Tag
 from CTkMessagebox import CTkMessagebox
+from cmdcompass.utils.utils import getScreenSize
 
 TAG_COLORS = ["Orange", "Cyan", "Azure", "Yellow", "Pink", "Green", "Red", "Purple", "Gray"]
 
@@ -9,6 +10,16 @@ class GlobalTagWindow(ctk.CTkToplevel):
     def __init__(self, master, data_manager):
         super().__init__(master)
         self.title("Create New Tag")
+        
+        screenSize = getScreenSize()
+        tag_window_height = 800
+        tag_window_width = 270
+
+        x = (screenSize["SCREEN_WIDTH"]*0.01) 
+        y = (screenSize["SCREEN_HEIGHT"]/2) - (tag_window_height/2)
+
+        self.geometry('%dx%d+%d+%d' % (tag_window_width, tag_window_height, x, y))
+        
         self.data_manager = data_manager
 
         # Main frame to hold everything
