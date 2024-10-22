@@ -10,6 +10,7 @@ class TagOperation:
         self.data_manager = data_manager
 
     def open_add_tag_window(self, command):
+        screenSize = getScreenSize()
         add_tag_window = ctk.CTkToplevel(self.master)
         add_tag_window.title("Add/Remove Tag for This Command")
         
