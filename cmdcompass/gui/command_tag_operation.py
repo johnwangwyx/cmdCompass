@@ -16,7 +16,6 @@ class TagOperation:
         
         add_tag_window_width = 450
         add_tag_window_height = 200
-        screenSize = getScreenSize()
         
         x = (screenSize["SCREEN_WIDTH"]/2) - (add_tag_window_width/2) + screenSize["CENTER_OFFSET"]
         y = (screenSize["SCREEN_HEIGHT"]/2) - (add_tag_window_height/2)
