@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from cmdcompass.models.tag import Tag
 from CTkMessagebox import CTkMessagebox
+from cmdcompass.utils.utils import getScreenSize
 
 
 class TagOperation:
@@ -9,8 +10,17 @@ class TagOperation:
         self.data_manager = data_manager
 
     def open_add_tag_window(self, command):
+        screenSize = getScreenSize()
         add_tag_window = ctk.CTkToplevel(self.master)
         add_tag_window.title("Add/Remove Tag for This Command")
+        
+        add_tag_window_width = 450
+        add_tag_window_height = 200
+        
+        x = (screenSize["SCREEN_WIDTH"]/2) - (add_tag_window_width/2) + screenSize["CENTER_OFFSET"]
+        y = (screenSize["SCREEN_HEIGHT"]/2) - (add_tag_window_height/2)
+
+        add_tag_window.geometry('%dx%d+%d+%d' % (add_tag_window_width, add_tag_window_height, x, y))
 
         # Existing Tags Frame (Row 0)
         existing_tags_frame = ctk.CTkFrame(add_tag_window)

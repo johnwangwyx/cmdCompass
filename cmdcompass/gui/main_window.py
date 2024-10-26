@@ -11,6 +11,7 @@ from cmdcompass.models.command import Command
 from cmdcompass.gui.manpagebox import ManPageBox
 from cmdcompass.utils.utils import load_ctk_image
 from CTkToolTip import CTkToolTip
+from cmdcompass.utils.utils import getScreenSize
 
 from CTkMessagebox import CTkMessagebox
 import platform
@@ -21,7 +22,8 @@ COMMAND_LIST_FRAME_WIDTH = 245 if platform.system() == "Darwin" else 230
 
 class GUIConfig:
     WINDOW_TITLE = "cmdCompass"
-    WINDOW_GEOMETRY = "900x670"
+    WINDOW_WIDTH = 900
+    WINDOW_HEIGHT = 670
     DEFAULT_APPEARANCE_MODE = "light"
 
 
@@ -66,7 +68,13 @@ class MainWindow(ctk.CTk):
     def configure_main_window(self):
         ctk.set_appearance_mode(GUIConfig.DEFAULT_APPEARANCE_MODE)
         self.title(GUIConfig.WINDOW_TITLE)
-        self.geometry(GUIConfig.WINDOW_GEOMETRY)
+
+        screenSize = getScreenSize()
+     
+        x = (screenSize["SCREEN_WIDTH"]/2) - (GUIConfig.WINDOW_WIDTH/2) + screenSize["CENTER_OFFSET"]
+        y = (screenSize["SCREEN_HEIGHT"]/2) - (GUIConfig.WINDOW_HEIGHT/2)
+
+        self.geometry('%dx%d+%d+%d' % (GUIConfig.WINDOW_WIDTH, GUIConfig.WINDOW_HEIGHT, x, y))
 
     def create_left_and_right_penal(self):
         # Create main frames
@@ -282,6 +290,17 @@ class MainWindow(ctk.CTk):
             text="Enter your new collection name",
             title="Add New Collection",
         )
+
+        dialog_window_width = 250
+        dialog_window_height = 150
+        screenSize = getScreenSize()
+        
+        x = (screenSize["SCREEN_WIDTH"]/2) - (dialog_window_width/2) + screenSize["CENTER_OFFSET"]
+        y = (screenSize["SCREEN_HEIGHT"]/2) - (dialog_window_height/2)
+
+        dialog.geometry('%dx%d+%d+%d' % (dialog_window_width, dialog_window_height, x, y))
+       
+
         collection_name = dialog.get_input()
         if collection_name:
             # Check for duplicate collection name

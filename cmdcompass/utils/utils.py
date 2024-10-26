@@ -9,6 +9,8 @@ import sys
 from pathlib import Path
 import platform
 from platformdirs import PlatformDirs
+import customtkinter as ctk
+
 
 APP_NAME = "CmdCompass"
 IMG_DIR = "static"
@@ -26,6 +28,19 @@ def get_command_name(command_str):
         return parts[0]
     raise ValueError(f"Unable to find the command name for {command_str}")
 
+
+def getScreenSize():
+    root = ctk.CTk()
+    root.attributes("-alpha", 0)
+
+    screenSize = {
+        "SCREEN_WIDTH" : root.winfo_screenwidth(),
+        "SCREEN_HEIGHT" : root.winfo_screenheight(),
+        "CENTER_OFFSET" : 50
+    }
+    root.destroy()
+
+    return screenSize
 
 def copy_resources(resource_name, source_root, dest_dir):
     source_path = source_root / resource_name
