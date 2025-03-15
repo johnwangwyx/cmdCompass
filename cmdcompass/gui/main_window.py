@@ -267,7 +267,7 @@ class MainWindow(ctk.CTk):
             self.comment_tab_button.configure(state="normal", fg_color=DEFAULT_BUTTON_COLOR)
 
     def open_tag_creation_window(self):
-        tag_creation_window = GlobalTagWindow(self, self.data_manager)
+        tag_creation_window = GlobalTagWindow(self, self.data_manager,self.winfo_x(),self.winfo_y())
         tag_creation_window.grab_set()
 
     def open_add_tag_window(self, command):
